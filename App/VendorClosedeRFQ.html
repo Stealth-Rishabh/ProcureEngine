@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <style>
+        .has-success {
+            border-color: #27a4b0 !important;
+        }
+    </style>
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <!--<img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />-->
+                </a>
+
+            </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="VendorHome.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+
+                        <li><a href="#">RFQ Closed Details</a> </li>
+                    </ul>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="portlet box blue-hoki" id="BidPreviewDiv">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    RFQ Closed Details
+                                </div>
+
+                            </div>
+                            <div class="portlet-body form">
+
+                                <!--Begin Form -->
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                      
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                               
+                                                <label class="col-md-4 control-label">
+                                                    RFQ Subject:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblRfqsubject">
+
+                                                    </p>
+                                                </div>
+
+                                                <!--</div>-->
+                                            </div>
+                                            <div class="col-md-6">
+                                                
+                                                <label class="control-label col-md-4">Reference Number:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="txtRFQReferencePrev"></p>
+                                                </div>
+                                             
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                              
+                                                <label class="col-md-4 control-label">RFQ StartDate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblrfqstartdate">
+
+                                                    </p>
+                                                </div>
+                                              
+                                            </div>
+                                            <div class="col-md-6">
+                                               
+                                                <label class="col-md-4 control-label">RFQ EndDate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblrfqenddate">
+
+                                                    </p>
+                                                </div>
+                                                
+                                            </div>
+
+
+
+                                            <div class="col-md-12">
+                                              
+                                                <label class="control-label col-md-2">RFQ Description:</label>
+                                                <div class="col-md-9">
+                                                    <p class="form-control-static" id="lblrfqdescription">
+
+                                                    </p>
+                                                </div>
+                                               
+                                            </div>
+                                            <!--/span-->
+
+
+                                            <div class="col-md-6">
+                                               
+                                                <label class="control-label col-md-4">Currency:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="dropCurrencyPrev">
+
+                                                    </p>
+                                                </div>
+                                                
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                              
+                                                <label class="control-label col-md-4">Conversion Rate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblConversionRatePrev">
+
+                                                    </p>
+                                                  
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+
+
+                                            <div class="col-md-6">
+                                                
+                                                <label class="control-label col-md-4">Term & Condition:</label>
+                                                <div class="col-md-8">
+                                                    <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;">
+                                                    </a>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+
+                                        <h3 class="form-section hide" id="headerotherrfqattach">Other RFQ Attachment</h3>
+                                        <div class="row hide" id="div_otherrfqattachprev">
+                                            <div class="col-md-12">
+                                                <div class="display-none" id="wrap_scrollerPrevAtt">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblotherrfqattachmentprev"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--/row-->
+                                        <h3 class="form-section">Input Parameters</h3>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="display-none" id="wrap_scrollerPrev">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h3 class="form-section">Other Commercial Terms</h3>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table id="tbltermsconditionprev" class="table table-bordered"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h3 class="form-section hide" id="headerresposeatt">Response Attachments</h3>
+                                        <div class="row hide" id="dicresponseatt">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table id="tblAttachmentsPrev" class="table table-bordered"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h3 class="form-section" id="headerspecificresponse">Specific Desired Response</h3>
+                                        <div class="row hide" id="divspecificresponse">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table id="tblQuestionsPrev" class="table table-bordered"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <input type="hidden" id="txtcurrency" value="0" />
+                                </form>
+                                <!-- End Forms -->
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+
+                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                        <h4 class="ppolicy-head4">RFQ Details</h4>
+                        <p class="ppolicy-text">
+
+
+                            In this page Vendor have to fill BOQ details and fill amount for the bid in "Quote" field and click on submit
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="responsiveDescModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Detailed Description
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form action="#" id="mapsections" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <p class="form-control-static" id="paraItemDescription"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+  
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VendorClosedeRFQ.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+
+
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            var param = getUrlVars()["param"]
+            var decryptedstring = fndecrypt(param)
+
+            var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+            var version = getUrlVarsURL(decryptedstring)["Ver"];
+            if (_RFQid == null)
+                sessionStorage.setItem('hddnRFQID', 0)
+            else {
+
+                sessionStorage.setItem('RFQVersionId', version)
+                sessionStorage.setItem('hddnRFQID', _RFQid)
+                fetchReguestforQuotationDetails();
+                fetchAttachments();
+
+                setTimeout(function () {
+                    fetchRFIParameteronload(version)
+                }, 1000);
+
+                fetchRFQResponse('Question', version);
+                fetchRFQResponse('Attachment', version);
+
+            }
+            Metronic.init();
+            Layout.init();
+
+            ComponentsPickers.init();
+            setCommonData();
+
+        });
+
+
+    </script>
+
+</body>
+
+
+
+</html>

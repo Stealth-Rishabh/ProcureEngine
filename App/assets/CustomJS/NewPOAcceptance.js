@@ -1,0 +1,335 @@
+﻿
+
+var param = getUrlVars()["param"]
+var decryptedstring = fndecrypt(param)
+
+var Type = getUrlVarsURL(decryptedstring)["Type"];
+
+var status = '';
+
+
+if (Type == 'P') {
+    $('#HDAction').removeClass('hide')
+    $('#div_action').removeClass('hide')
+    $('#div_status').addClass('hide')
+}
+else {
+    $('#HDAction').addClass('hide')
+    $('#div_action').addClass('hide')
+    $('#div_status').removeClass('hide')
+
+    if (Type == 'R') {
+        $('#POStatus').css("color", "red")
+        $('#POStatus').html("Reverted")
+    }
+    if (Type == 'F') {
+        $('#POStatus').css("color", "blue")
+        $('#POStatus').html("Pending")
+    }
+    else {
+        $('#POStatus').css("color", "green")
+        $('#POStatus').html("Accepted")
+    }
+
+}
+$('#txtRemarks').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
+
+var form = $('#frmsubmitapp');
+function formvalidate() {
+
+    form.validate({
+
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+
+        errorElement: 'span', //default input error message container
+
+        errorClass: 'help-block help-block-error', // default input error message class
+
+        focusInvalid: false, // do not focus the last invalid input
+
+        rules: {
+
+            txtRemarks: {
+                required: true
+            },
+            ddlActionType: {
+                required: true
+            }
+
+        },
+
+        messages: {
+            txtremarks: {
+                required: "Please Enter Remarks."
+            },
+            ddlActionType: {
+                required: "Please Select Action."
+            }
+        },
+
+
+
+        invalidHandler: function (event, validator) {
+
+        },
+
+        highlight: function (element) {
+
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+
+        success: function (label) {
+
+
+        },
+        submitHandler: function (form) {
+
+            acceptRevertPO();
+
+        }
+
+    });
+
+}
+function fetchPODetails(flag) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "POUpload/PODetails/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Flag=" + flag + "&POHeaderID=" + sessionStorage.getItem('hddnPOHID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+            var attach = "";
+
+            if (data.length > 0) {
+                if (flag == "Details") {
+
+                    jQuery("#tblServicesProduct").empty();
+                    jQuery('#tblServicesProduct').append("<thead><tr style='background: gray; color: #FFF;'><th>Item Code</th><th>Item/Service</th><th>Delivery Location</th><th>Po No</th><th>Delivery/Completion Date</th><th>Quantity</th><th>UOM</th></tr></thead>");
+                    for (var i = 0; i < data.length; i++) {
+                        jQuery("#tblServicesProduct").append('<tr><td  style="width:20%!important;">' + data[i].itemCode + '</td><td>' + data[i].itemServiceName + '</td><td>' + data[i].deliveryLocation + '</td><td>' + data[i].pONo + '</td><td class=text-right>' + data[i].pODeliveryDate + '</td><td class=text-right>' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uOM + '</td></tr>');
+                    }
+                }
+                else {
+                    jQuery("#tblAttachments").empty();
+                    $('#spnsentbyname').html("<b>" + data[0].createdByName + "</b>")
+                    $('#PODate').html("<b>" + data[0].actionTakenOn + "</b>")
+                    $('#txtvendorremarks').html("<b>" + data[0].userRemarks + "</b>")
+                    $('#headerotherrfqattach').removeClass('hide')
+                    $('#div_POAttach').removeClass('hide')
+                    jQuery('#tblAttachments').append("<thead><tr style='background: gray; color: #FFF;'><th class='bold'>Description</th><th class='bold'>Attachment</th></tr></thead>");
+                    for (var i = 0; i < data.length; i++) {
+                        attach = data[i].pOAttachment.replace(/\s/g, "%20");
+                        var str = "<tr><td style='width:47%!important'>" + data[i].pOAttachmentDescription + "</td><td class=style='width:47%!important'><a style='pointer:cursur;text-decoration:none;' target=_blank href=PortalDocs/PO/" + sessionStorage.getItem('hddnPOHID') + '/' + attach + '>' + data[i].pOAttachment + "</a></td></tr>";
+
+                        jQuery('#tblAttachments').append(str);
+                    }
+                }
+            }
+
+            else {
+                if (flag == "Details") {
+                }
+                else {
+                    $('#headerotherrfqattach').addClass('hide')
+                    $('#div_POAttach').addClass('hide')
+                    jQuery('#tblAttachments').append("<tr><td>No Attachments!!</td></tr>")
+                }
+            }
+          
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert(xhr.status + ' ' + xhr.statusText);
+                jQuery.unblockUI();
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    })
+}
+function acceptRevertPO() {
+    var attchname = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1)
+    attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    var Approvers = {
+        "POHeaderID": parseInt(sessionStorage.getItem('hddnPOHID')),
+        "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+        "Remarks": $('#txtRemarks').val(),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ActionType": "Vendor",
+        "Action": $('#ddlActionType').val(),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Attachment": attchname
+    }
+   
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "POUpload/acceptRevertPO",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Approvers),
+        dataType: "json",
+        success: function (data) {
+            var msz = '';
+            if (data.length > 0) {
+                if ($('#ddlActionType').val() == "Accept") {
+                    msz = "Thanks for the PO Acceptance..";
+                }
+                else {
+                    msz = "This PO is now reverted to Admin.";
+                }
+                //**  File upload in local folder
+                fileUploader()
+                setTimeout(function () {
+                //** Upload Files on Azure
+                    fnUploadFilesonAzure(attchname, sessionStorage.getItem('hddnPOHID'), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
+                }, 1000)
+
+                //** Delete Files in Local Folder
+                fnFileDeleteLocalfolder('PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + "/" + sessionStorage.getItem('VendorId')+"/"+AttachementFileName)
+
+                bootbox.alert(msz, function () {
+                    window.location = "VendorHome.html";
+                    return false;
+                });
+
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert(xhr.status + ' ' + xhr.statusText);
+                jQuery.unblockUI();
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+}
+function fileUploader() {
+
+    var fileTerms = $('#file1');
+    if ($('#file1').is('[disabled=disabled]')) {
+
+        var fileDataTerms = $('#file1').prop("files")[0];
+
+    }
+    else {
+        var fileDataTerms = fileTerms.prop("files")[0];
+    }
+
+    var formData = new window.FormData();
+
+    formData.append("fileTerms", fileDataTerms);
+    formData.append("fileAnyOther", '');
+    formData.append("fileRFQAttach", '');
+    formData.append("AttachmentFor", 'PO');
+    formData.append("BidID", sessionStorage.getItem('hddnPOHID'));
+    formData.append("VendorID", sessionStorage.getItem('VendorId'));
+    formData.append("Version", '');
+
+    $.ajax({
+
+        url: 'ConfigureFileAttachment.ashx',
+        data: formData,
+        processData: false,
+        contentType: false,
+        asyc: false,
+        type: 'POST',
+        success: function (data) {
+
+        },
+
+        error: function () {
+
+        }
+
+    });
+
+}
+function FetchRecomendedVendor() {
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "PoUpload/POHistory/?POHeaderID=" + sessionStorage.getItem('hddnPOHID') + "&UserID=" + (sessionStorage.getItem("VendorId")) + "&AuthenticationTonken=" + sessionStorage.getItem("AuthenticationToken"),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            $('#tblremarksforward').empty()
+            var attach = '';
+            if (data.length > 0) {
+                $('#HDHistory').removeClass('hide')
+                $('#frmdivforward').removeClass('hide')
+                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th class=hide id=thforward>Recommended Vendor</th><th>Completion DT</th><th>Attachment</th></tr>')
+                // if (AppStatus == 'Reverted') {
+
+                for (var i = 0; i < data.length; i++) {
+                    attach = data[i].attachment.replace(/\s/g, "%20");
+                    if (data[i].vendorName != "") {
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + '/' + data[0].vvendorID + '/' + attach + '>' + data[i].attachment + '</a></td></tr>')
+                        $('#thforward').removeClass('hide')
+                    }
+                    else {
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + '/' + data[0].vendorID + '/' + attach + '>' + data[i].attachment + '</a></td></tr>')
+                        $('#thforward').addClass('hide')
+                    }
+
+
+                }
+
+            }
+            else {
+                $('#HDHistory').addClass('hide')
+                $('#frmdivforward').addClass('hide')
+                $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert(xhr.status + ' ' + xhr.statusText);
+                jQuery.unblockUI();
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}

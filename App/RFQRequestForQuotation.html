@@ -1,0 +1,1225 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <style>
+        input#file3 {
+            position: fixed;
+            top: -100px;
+        }
+
+        input#file-excel {
+            position: fixed;
+            top: -120px;
+        }
+
+        input#file-excelparameter {
+            position: fixed;
+            top: -120px;
+        }
+    </style>
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+
+            </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+                        <li><a href="#">Configuration</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Request For Quotation</a> </li>
+                    </ul>
+                    <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box blue-hoki" id="form_wizard_1">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-gift"></i>Request For Quotation
+                                </div>
+                                <div class="tools hidden-xs">
+
+                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form action="#" class="form-horizontal" id="submit_form" method="POST">
+                                    <div class="form-wizard">
+                                        <div class="form-body">
+                                            <ul class="nav nav-pills nav-justified steps">
+                                                <li>
+                                                    <a href="#tab1" data-toggle="tab" class="step">
+                                                        <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>RFQ Details</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab2" data-toggle="tab" class="step">
+                                                        <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>RFQ Parameters</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab3" data-toggle="tab" class="step active">
+                                                        <span class="number">3 </span>
+                                                        <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                                <div class="progress-bar progress-bar-success">
+                                                </div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="alert alert-success" style='display: none;'>
+                                                    <span id="spansuccess1"> </span>
+                                                </div>
+                                                <div class="alert alert-danger" style='display: none; '>
+                                                    <span id="spandanger"> </span>
+                                                </div>
+                                                <div class="tab-pane active" id="tab1">
+
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                RFQ Subject<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
+                                                                       name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-2 control-label">
+                                                                RFQ Deadline<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                                                     data-date-start-date="+0d">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" id="btncal" tabindex='0' type="button">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                    <input type="text" id="txtrfqDuration" name="txtrfqDuration" class="form-control" tabindex='2' readonly>
+
+                                                                </div>
+                                                                <div id="daterr"></div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                    </div>
+                                                    <div class="form-group ">
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                RFQ Description<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-9">
+                                                                <textarea id="txtrfqdescription" name="txtrfqdescription" class="wysihtml5 form-control"
+                                                                          rows="6" tabindex='3' onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Currency<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="dropCurrency" name="dropCurrency" tabindex='4'></select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Conversion Rate<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" placeholder="Enter Conversion Rate" id="txtConversionRate"
+                                                                       name="txtConversionRate" tabindex='5'>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--<form id="form">-->
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Term & Condition<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
+                                                                <a href="javascript:;" id="attach-file" style="text-decoration: none !important; float:left;"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','attach-file','0')">
+                                                                    <i class='fa fa-times-circle-o' id='icon1'></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Reference No
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Enter Reference Number(If any)" id="txtRFQReference"
+                                                                       name="txtRFQReference" tabindex='7'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup display-none">
+                                                            <label class="control-label col-md-3">
+                                                                Attachment (If Any)
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="file" class="form-control" id="file2" name="file2" tabindex='7' onchange="checkfilesize(this)" />
+                                                                <a href="javascript:;" id="attach-file2" targt="_blank" style="text-decoration: none !important;float:left;"></a>
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','attach-file2','1')">
+                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="tab-pane" id="tab2">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            Item/Service Name  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtshortname" name="txtshortname"
+                                                                   autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Remarks<span class="required"> * </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="txtItemRemarks" name="txtItemRemarks"
+                                                                   class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" />
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                        <label class="control-label col-md-2">
+                                                            Quantity  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-2 xyz">
+                                                            <input type="text" class="form-control" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off"
+                                                                   onkeyup="thousands_separators_input(this)" />
+
+                                                        </div>
+                                                        <div class="col-md-2 xyz">
+                                                            <!--<select class="form-control" id="dropuom" name="dropuom" onchange="displayUOM()"></select>-->
+                                                            <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
+                                                                   data-provide="typeahead" autocomplete="off" name="txtUOM" />
+                                                            <input type="hidden" id="dropuom" value="" />
+                                                        </div>
+
+                                                        <label class="control-label col-md-2">
+                                                            Selected Currency
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="currencyparam" name="currencyparam" autocomplete="off" readonly />
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                    <div class="form-group">
+
+                                                        <label class="control-label col-md-2">
+                                                            Description<span class="required"> *</span>
+                                                        </label>
+                                                        <div class="col-md-10 xyz">
+                                                            <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
+                                                                      rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label  col-md-2">
+                                                            Target Price
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txttargetprice"
+                                                                   name="txttargetprice" number="true" autocomplete="off"
+                                                                   onkeyup="thousands_separators_input(this)" />
+                                                        </div>
+                                                        <label class="control-label  col-md-2">
+                                                            Last Invoice Price
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
+                                                                   number="true" autocomplete="off" onkeyup="thousands_separators_input(this)" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label  col-md-2">
+                                                            Turn around time (In Days)
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="txttat" name="txttat" class="form-control" autocomplete="off" placeholder="Turn around time (In Days)" />
+                                                        </div>
+                                                        <!--For Attachment-->
+                                                        <label class="control-label col-md-2">
+                                                            Attachment (If Any)
+                                                        </label>
+                                                        <div class="col-md-3" style="padding-right:0px;">
+                                                            <input type="text" class="form-control" id="txtAttachmentDescription" name="txtAttachmentDescription" autocomplete="off" placeholder="Enter file description" />
+                                                            <a href="javascript:;" id="attach-file3" targt="_blank" style="text-decoration: none !important;float:left;"></a>
+                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="removeAttachmentTab2" onclick="ajaxFileDelete('removeAttachmentTab2','file3', 'attach-file3','2')">
+                                                                <i class='fa fa-times-circle-o' id='i1'></i>
+                                                            </span>
+                                                            <span class="display-none" id="hddnattachmentSize">0</span>
+                                                            <span class="col-md-12" id="spnParamAttach" style="color:#2a6496;"></span>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <input type="file" id="file3" name="file3" onchange="checkfilesize(this); showFileName(this);" />
+                                                            <button class="btn" id="img-btn" type="button">Browse</button>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+
+                                                        <label class="control-label col-md-2">
+                                                            <input type="checkbox" name="checkmaskvendor" id="checkmaskvendor" />
+                                                        </label>
+                                                        <label class="col-md-4 checkbox-inline">
+                                                            Is BOQ/BOM Required
+                                                        </label>
+                                                        <label class="control-label col-md-2">
+                                                            Delivery Location <span class="required">* </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+
+
+
+                                                    </div>
+
+
+                                                    <div class="form-actions" style="border:none !important; background: none !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-offset-9 col-md-4">
+                                                                <input type="hidden" id="rowid" />
+                                                                <input type="hidden" id="validattachmentSize" />
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" href="#RfqParameterexcel">Excel Upload</button>
+                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                                <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="table-scrollable">
+
+                                                        <table class="table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
+                                                    </div>
+
+                                                </div>
+                                            
+                                                <div class="tab-pane" id="tab3">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <div class="col-md-10">
+                                                                        <div class="col-md-9">
+
+
+                                                                            <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                            <input type="text" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                    <!--#a1b2bd-->
+                                                                    <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
+                                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                            <thead class="flip-content">
+                                                                                <tr>
+                                                                                    <th width="20%">
+                                                                                        <div class="col-md-10 checkbox-list">
+                                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th width="100%">
+                                                                                        Vendors
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody></tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="hidden" id="hdnweightageIndex" value="0" />
+                                                                <div class="table-scrollable">
+                                                                    <table id="selectedvendorlists" class="table table-bordered display-none">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Vendors</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-5 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous">
+                                                        <i class="m-icon-swapleft">
+                                                        </i>Back
+                                                    </a><a href="javascript:;" class="btn yellow button-next">
+                                                        Save And Continue <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a><a href="javascript:;" class="btn green button-submit">
+                                                        Preview
+                                                        
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Preview div -->
+                        <div class="portlet box blue-hoki display-none" id="BidPreviewDiv">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    RFQ Preview
+                                </div>
+
+                            </div>
+                            <div class="portlet-body form">
+
+                                <!--Begin Form -->
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                        <h3 class="form-section">RFQ Details</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">
+                                                        RFQ Subject:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="lblRfqsubject">
+
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">RFQ Deadline:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="lblrfqdeadline">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">RFQ Description:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static" id="lblrfqdescription">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+
+                                        </div>
+
+
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Currency:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="dropCurrencyPrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Conversion Rate:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="lblConversionRatePrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Term & Condition:</label>
+                                                    <div class="col-md-8">
+                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Reference Number:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtRFQReferencePrev"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+
+                                        <!--/row-->
+                                        <h3 class="form-section">RFQ parameter details</h3>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="display-none" id="wrap_scrollerPrev">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <h3 class="form-section">Participants details</h3>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="table-scrollable">
+                                                    <table id="selectedvendorlistsPrev" class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Vendors</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-offset-11 col-md-9">
+                                                        <button type="button" class="btn default" id="back_prev_btn">Back</button>
+                                                        <button type="button" class="btn green" onclick="RFQInviteVendorTab3()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End Forms -->
+
+
+                            </div>
+                        </div>
+                        <!--End Preview div -->
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer" style="color: #FFF !important;">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    <div id="responsive" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>RFQ Parameter
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <form action="#" id="mapsections" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    BOQ/BOM&nbsp;Name&nbsp;<span class="required">*</span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodelshortname" name="txtmodelshortname" autocomplete="off" />
+                                    <input type="hidden" id="txtParentRFQParameterId" name="txtParentRFQParameterId" autocomplete="off" value="0" />
+                                    <input type="hidden" id="txtChildRFQParameterId" name="txtChildRFQParameterId" autocomplete="off" value="0" />
+                                </div>
+                                <label class="control-label col-md-2">
+                                    Target&nbsp;Price
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodeltargetprice" name="txtmodeltargetprice" number="true" autocomplete="off" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Quantity  <span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodelquantity" name="txtmodelquantity" autocomplete="off" />
+
+                                </div>
+                                <label class="control-label col-md-2">
+                                    UOM<span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    
+                                    <input type="text" class="form-control" placeholder="Select UOM" id="txtdrpUOM"
+                                           data-provide="typeahead" autocomplete="off" name="txtdrpUOM" />
+
+                                </div>
+                                <input type="hidden" value="" id="ddlropuom" />
+
+                            </div>
+                            <div class="form-group display-none">
+                                <label class="control-label col-md-2">
+                                    Remark
+                                </label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="txtmodelremark" name="txtmodelremark" autocomplete="off" />
+
+                                </div>
+                            </div>
+
+                            <div class="progress-form display-none" id="modalLoader">
+
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msg">
+
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                            </div>
+
+                            <div class="form-actions fluid" style="padding-bottom: 0px;">
+                                <span>Upload using excel file</span>&nbsp;
+                                <input type="file" id="file-excel" name="file-excel" />
+                                <button type="button" class="btn btn-primary" id="browseBtnExcel">Browse</button>
+                                <span><a href="javascript:;" id="btninstructionexcel">Instructions</a></span>
+                                <div class="pull-right  ">
+                                    <button type="submit" id="btnsubmit" class="btn blue-hoki">
+                                        <!--  onclick=" insboqvalues()" -->
+                                        Add
+                                    </button>
+                                    <button type="button" id="btnclear" class="btn yellow-lemon" onclick="Reset()">
+                                        Clear
+                                    </button>
+                                    <button type="button" class="btn green" data-dismiss="modal">
+                                        Go
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div><br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-danger display-hide" id="error-excel">
+                                            <button class="close" data-close="alert"></button>
+                                            <span id="errspan-excel"></span>
+                                        </div>
+                                        <div class="alert alert-success display-hide" id="success-excel">
+                                            <button class="close" data-close="alert"></button>
+                                            <span id="succspan-excel" class="text-center"></span><br />
+                                            <div class="col-md-12 col-md-offset-5" id="btnsyesnoBoqExcel">
+                                                <button class="btn green" type="button" onclick="InsupdRFQParameterfromExcel()">Yes</button>
+                                                <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="alert alert-success display-hide" id="instructionsDiv">
+                                            <button class="close" data-close="alert"></button>
+                                            <span id="instructionSpan" class="text-center">
+                                                1. Open excel sheet and write follwing columns in first row:
+                                                <br /><br />
+                                                <ul class='no-padding col-md-2 text-left'>
+                                                    <li>ShortName</li>
+                                                    <li>TargetPrice</li>
+                                                    <li>Quantity</li>
+                                                    <li>UOM</li>
+                                                </ul>
+                                                <div class='clearfix'></div>
+                                                <br />
+                                                2. Please enter UOM from given below:<br /><br />
+                                                <div id="ULUOMBOQ_instructions"></div>
+                                                                                          
+                                                <div class='clearfix'></div>
+                                                <br />
+                                                3. Please ensure Target price and Quantity should be in numbers only.
+                                            </span>
+                                        </div>
+                                        <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelData"></table>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="scroller" style="height: 250px; display: none !important; " data-always-visible="1" data-rail-visible="0" id="scrolr">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="tblRFQParameterComponet"></table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="RfqParameterexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Upload Parameter using excel file
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>
+                    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
+                        <div class="form-body">
+
+
+                            <div class="progress-form display-none" id="modalLoaderparameter">
+
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msgparameter">
+
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter" />
+                                        <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter">Instructions</a></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger display-hide" id="error-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="errspan-excelparameter"></span>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="success-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="succspan-excelparameter" class="text-center"></span><br />
+                                        <div class="col-md-12 col-md-offset-5" id="btnsforYesNo">
+                                            <button class="btn green" type="button" onclick="InsupdRFQParameterfromExcelparameter()">Yes</button>
+                                            <button class="btn yellow" type="button" onclick="fnNoExcelUpload()">No</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="instructionsDivParameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="instructionSpanParameter" class="text-center">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        1. Open excel sheet and write follwing columns in first row:
+                                                    </label>
+                                                    <br /><br />
+                                                    <ul class='no-padding col-md-2 text-left'>
+                                                        <li>ItemService</li>
+                                                        <li>Remarks</li>
+                                                        <li>TargetPrice</li>
+                                                        <li>LastInvoicePrice</li>
+                                                        <li>Quantity</li>
+                                                        <li>UOM</li>
+                                                        <li>Description</li>
+                                                        <li>TAT</li>
+                                                        <li>DeliveryLocation</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        2. Please enter UOM from given below:
+                                                    </label><br /><br />
+                                                    <div id="ULUOM_instructions"></div>
+                                                                
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            3. Please ensure Target price and Quantity and TAT should be in numbers only.
+                                        </span>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body" style="height: 400px; overflow-y: scroll;">
+                            <p class="ppolicy-text">
+                                Using this page user can define RFQ details and invite vendors to respond before specified deadline.<br />
+                                There are three steps to complete this process. All the mandatory information is marked with * sign.
+                            </p>
+                            <p class="ppolicy-text">Details required at every step are given below: </p>
+                            <p class="ppolicy-text"><b>Step -1: "RFQ Details"–</b>In this step user needs to fill all generic information related to RFQ.  Individual columns with their relevance are given below</p>
+                            <ul>
+                                <li><b>RFQ Subject: </b>Meaningful short subject for the RFQ. This is used as a subject for all related email notifications & reports.</li>
+                                <li><b>RFQ Deadline: </b>Date before which response should reach to company representative.</li>
+                                <li><b>RFQ Description: </b>Detailed information about the RFQ.</li>
+                                <li><b>Terms and conditions: </b>PDF file which includes all terms and conditions for the bid.</li>
+                                <li><b>Attachments: </b>You can upload supporting document related to bid (This field is optional).</li>
+                                <li><b>Currency: </b>Currency in which amount should be quoted. e.g. INR (Indian rupees).</li>
+                                <li><b>Conversion Rate: </b>Conversion rate of currency at the time of bid configuration.</li>
+                            </ul><br />
+
+                            <p class="ppolicy-text">Once all mandatory details are filled click on Save and Continue to move to next step.</p><br />
+
+                            <p class="ppolicy-text"><b>Step-2: "RFQ Parameters"–</b>In this step user needs to fill item/product details against which vendors will be quoting prices/rates. Individual columns with their relevance are given below.</p>
+                            <ul>
+                                <li><b>Short Name: </b>Specify short name of product/services, which would be visible at the time of bid participation.</li>
+                                <li><b>Target Price: </b>Unit price, which we expect to reach as a result of RFQ process, this is a non-mandatory field.</li>
+                                <li><b>Quantity: </b>Specify number of units required.</li>
+                                <li><b>UOM: </b>Select unit of measurement like number, kg, liter etc.</li>
+                                <li><b>Description: </b>Detailed information about the product/services.</li>
+                                <li><b>Remarks: </b>This field can be utilized to communicate any specific instruction related to product/services.</li>
+                                <li><b>Is BOQ Required?: </b>Check this item if bill of quantities are required for individual product/service.</li>
+                                <li><b>Delivery Location: </b>Name of the location where item/services need to be delivered.	</li>
+                            </ul><br />
+                            <p class="ppolicy-text">
+                                Clicking add button will add row in a grid with entered product/services to facilitate multiple entry in one RFQ.
+                                You may add more by repeating above process. Individual rows can be edited and deleted by clicking respective buttons.
+                                Please note that the product/services required BOQ would have “BOQ required” button marked in red color that will become green when user fills the BOQ details by clicking button.
+                                BOQ columns are almost similar to RFQ parameters.
+                            </p>
+                            <p class="ppolicy-text"><b>Step-3: "Invite Vendor"–</b>User can select vendors whom he wants to send invite for RFQ. User can search from the list by typing vendor name in search text box or he can check select all in case he wants to invite all available vendors.</p>
+                            <p class="ppolicy-text">When clicked on “Submit” system will send email alert having login id, password and RFQ specific details to selected vendors at their company’s email id.</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Advancesearch" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Advance Vendor Search<!--<span id='Nodename'></span>-->
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
+                            <div id="divalertSerach" class="alert alert-success" style='display: none; text-align: center;'>
+                                <span id="spansuccess1serach"></span>
+                            </div>
+                            <div id="divalerterrsearch" class="alert alert-danger" style='display: none; text-align: center;'>
+                                <span id="spanerterrserach"></span>
+                            </div>
+                            <div class="form-body">
+                                <div class="form-group">
+                                  
+                                    <div class="col-lg-4">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" />
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-lg-4">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" />
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-1 col-lg-offset-2 " style="margin-top:4px;">
+                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group hide" id="div_table">
+
+
+                                    <!--#a1b2bd-->
+                                    <div class="col-lg-12">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
+                                        </div>
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                            <div class="table-scrollable">
+                                                <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/RFQRequestForQuotation.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            Pageloaded()
+            fetchBidTypeMapping();
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            Metronic.init();
+            Layout.init();
+
+            var _RFQid = getUrlVars()["RFQID"];
+            if (_RFQid == null)
+                sessionStorage.setItem('hddnRFQID', 0)
+            else {
+                sessionStorage.setItem('hddnRFQID', _RFQid)
+                fetchReguestforQuotationDetails();
+                fetchRFIParameteronload();
+                fetchRFIParameterComponent(sessionStorage.getItem('hddnRFQID'));
+            }
+            FormWizard.init();
+            ComponentsPickers.init();
+            setCommonData();
+
+            fetchMenuItemsFromSession(1, 24);
+           
+            FetchCurrency('0');
+            fetchBidType();//for search vendor
+            FetchUOM(sessionStorage.getItem("CustomerID"));
+            
+            FormValidate()
+            fetchVendorGroup('M', 0);
+            fetchParticipantsVender();// fetch all vendors for advance search
+
+        });
+        setTimeout(function () {
+            $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+            $('#txtConversionRate').val(1);
+        }, 2000);
+        jQuery('#btnpush').click(function (e) {
+            jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+        });
+        jQuery('#btnpull').click(function (e) {
+            jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+        });
+
+
+        document.getElementById('img-btn').addEventListener('click', function () {
+            document.getElementById('file3').click();
+        });
+
+        document.getElementById('browseBtnExcel').addEventListener('click', function () {
+            document.getElementById('file-excel').click();
+        });
+
+
+        $('#file-excel').change(handleFile);
+
+        document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+            document.getElementById('file-excelparameter').click();
+        });
+
+        $('#file-excelparameter').change(handleFileparameter);
+
+    </script>
+</body>
+
+</html>

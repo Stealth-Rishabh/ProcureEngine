@@ -1,0 +1,508 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+	 <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+	  <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css">
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"   rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"  type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="header-inner">
+                <a class="navbar-brand" href="#" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+                <!--<a class="navbar-brand" href="javascript:;" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="logo-default" style="height:38px; width:180px;" />
+                </a>
+                <div class="menu-toggler sidebar-toggler hide">
+                </div>-->
+            </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <h3 class="page-title">
+                    Bid Participation
+                </h3>
+                <div class="page-bar">
+
+                    <ul class="page-breadcrumb">
+                        <li id="liHome">
+                        </li>
+                    </ul>
+					<!--  <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box green-haze" id="form_wizard_1">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span><i class="fa fa-gift"></i>Bid Participation (Sea Import)</span>
+                                </div>
+                                <div class="tools hidden-xs">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+
+                            <div id="div4" class="portlet-body form ">
+                                <form action="#" class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Subject:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidsubject" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Date:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbiddate" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    Bid Details:
+                                                </label>
+                                                <div class="col-md-10">
+                                                    <label id="lblbidDetails" style="text-align:left" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Time:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidtime" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Duration (In Minute):
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidduration" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Target Rate & Currency:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblcurrency" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Conv. Rate:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblConvRate" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Terms & Conditions:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static">
+                                                        <a id="lnkTermsAttachment" href="#" target="_blank"></a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Attachment (Any Other):
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static">
+                                                        <a id="lnkAnyOtherAttachment" href="#" target="_blank"></a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i><!--Bid Participation-->
+                                    English Reverse Auction - Only decrease in price will be accepted as a fresh bid
+                                </div>
+                                <div class="tools">
+                                    <a id="A2" href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div id="entryForm" class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="FormparticipateSea" class="form-horizontal">
+                                    <div id="divalertsucess" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccess1">Data saved sucessfully. </span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                &nbsp;
+                                                <div class="col-md-8">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Time Left (HH:MM:SS):
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static">
+                                                        <label id="lblTimeLeft" ></label>
+                                                        <input type="hidden" id="hdnDuration" />
+                                                    </p>&nbsp;
+													<p class="form-control-static">
+                                                        <label id="lblTimeLeftTxt" class="display-none">
+
+                                                        </label>
+                                                       
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group col-md-6">
+                                            <div class="table-scrollable">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><label class="control-label bold">Initial Quote</label></th>
+                                                            <th><label class="control-label bold">Current Quote</label></th>
+                                                            <th><label class="control-label bold">Present Status</label></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <label class="control-label" id="lblInitialQUote">
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="control-label" id="lblCurrentQuote">
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="control-label bold" id="lblPresentStatus">
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 row" >
+                                                <div class="col-md-6">
+                                                    <label class="col-md-3 control-label">
+                                                        Freight
+                                                    </label>
+
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" placeholder="Enter Freight" id="txtFreight" name="txtFreight" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" id="divExWorks" style="display:none">
+                                                    <label class="col-md-4 control-label" id="lblExwork">
+                                                        Ex-work
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" placeholder="Enter Ex-works" id="txtExWorks" name="txtExWorks" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 row">&nbsp;
+                                            </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-6" >
+                                                &nbsp;
+                                            </div>
+                                            <div class="col-md-6" style="text-align:center">
+											<input id="hdnval" type="hidden" value="0" />
+                                                <button id="btnsubmit" type="submit" class="btn btn-primary">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                                                                <!--<div class="form-actions fluid">
+                                            <div class="col-md-offset-3 col-md-6 " style="text-align: center">
+                                                <button id="btnsubmit" type="submit" class="btn yellow">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                    <!--<div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label" >
+                                                Initial Quote
+                                            </label>
+                                            <label class="col-md-2 control-label" id="lblInitialQUote">
+
+                                            </label>
+                                            <label class="col-md-2 control-label">
+                                                Current Quote
+                                            </label>
+                                            <label class="col-md-2 control-label" id="lblCurrentQuote">
+
+                                            </label>
+                                            <label class="col-md-2 control-label">
+                                                Present Status
+                                            </label>
+                                            <label class="col-md-2 control-label bold" id="lblPresentStatus">
+
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">&nbsp;</div>
+                                            <label class="col-md-2 control-label">
+                                                Freight
+                                            </label>
+
+                                            <div class="col-md-2">
+                                                <input type="text" class="form-control" placeholder="Enter Freight" id="txtFreight" name="txtFreight" />
+                                            </div>
+                                            <div id="divExWorks" style="display:none">
+                                                <label class="col-md-2 control-label" id="lblExwork">
+                                                    Ex-work
+                                                </label>
+                                                <div class="col-md-2">
+                                                    <input type="text" class="form-control" placeholder="Enter Ex-works" id="txtExWorks" name="txtFreight" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-actions fluid">
+                                            <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                                <button id="btnsubmit" type="submit" class="btn yellow">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+	<div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    
+                    <div class="modal-body">
+                        <div class="modal-body " style="overflow-y: scroll;" >
+                            <p>
+                                <ul>
+                                    <li>
+                                        L1 and Not L1 : All the vendors who has submit their quote will be marked either L1 and Not L1
+                                    </li>
+
+                                    <li>
+                                        L1 	: Vendor who has minimum price (quote) for the bid.
+                                    </li>
+                                </ul>
+                                Not L1   : All other vendors apart from L1 will be marked as Not L1
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!--<script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>-->
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+	<script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VendorParticipation.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/ParticipationSeaImport.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+		Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+                     window.location = sessionStorage.getItem('MainUrl');
+                    return false;
+                });
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+
+            }
+            App.init();
+            UIBlockUI.init();
+            //Metronic.init();
+            //Layout.init();
+
+            setCommonData();
+            FormValidation.init();
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+
+<!-- END BODY -->
+</html>

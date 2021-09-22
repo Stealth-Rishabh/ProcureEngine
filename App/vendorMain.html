@@ -1,0 +1,676 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+
+            </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <h3 class="page-title">
+                    Bid Participation
+                </h3>
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="VendorHome.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+
+                    </ul>
+                   <!--  <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box green-haze">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Bid Details
+                                </div>
+                                <div class="tools">
+                                    <a id="A1" href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div id="div4" class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                <form action="#" class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Subject:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidsubject" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Date:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbiddate" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    Bid Details:
+                                                </label>
+                                                <div class="col-md-10">
+                                                    <label id="lblbidDetails" style="text-align:left" class="control-label">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Bid Time:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidtime" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Duration (In Minute):
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblbidduration" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Currency:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblcurrency" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Conversion Rate:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <label id="lblConvRate" class="control-label" style="text-align:left">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Terms & Conditions:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static">
+                                                        <a id="lnkTermsAttachment" href="#" target="_blank">Attachment Not Available</a>
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Attachment (Any Other):
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static">
+                                                        <a id="lnkAnyOtherAttachment" href="#" target="_blank">Attachment Not Available</a>
+                                                    </p>
+                                                    <label id="lblstatus" class="control-label" style="text-align:left;display:none">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-horizontal">-->
+                    <div class="col-md-12">
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Basic Information
+                                </div>
+                                <!--<div class="tools">
+                                    <a id="showHide" href="javascript:;" class="collapse"></a>
+                                </div>-->
+                            </div>
+                            <div id="divSeaImport" class="portlet-body form" style="display: none;">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="formSea" class="form-horizontal">
+                                    <div id="divalertsucessSea" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccess1">Data saved sucessfully. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    BAF (In Foreign Currency)
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter BAF" id="txtBAF" name="txtBAF" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    CAF (%age of Freight)
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter CAF %" id="txtCAF" name="txtCAF" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Forwarders DO Charges
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Forwarder's DO Charges"
+                                                           id="txtFwdDOCharges" name="txtFwdDOCharges" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Shipping Line
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Shipping Line" id="txtShipingLine"
+                                                           name="txtShipingLine" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Sailing Days
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Sailing Days" id="txtSailingDays"
+                                                           name="txtSailingDays" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Ocean Transit Time
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Ocean Transit Time" id="txtOceanTransitTime"
+                                                           name="txtOceanTransitTime" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="divTotal">
+                                            <div class="form-group">
+                                                <div class="Validationgroup">
+                                                    <label class="col-md-3 control-label">
+                                                        Inland Haulage Charges (INR)
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" placeholder="Enter Inland Haulage Charges"
+                                                               id="txtHaulageCharges" name="txtHaulageCharges" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="Validationgroup">
+                                                    <label class="col-md-3 control-label">
+                                                        Shipping Line's DO Charges (INR)
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" placeholder="Enter Shipping Line's DO Charges"
+                                                               id="txtDOCharges" name="txtDOCharges" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="Validationgroup">
+                                                    <label class="col-md-3 control-label">
+                                                        Container Cleaning Charges (INR)
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" placeholder="Enter Container Cleaning Charges"
+                                                               id="txtCleaningCharges" name="txtCleaningCharges" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="Validationgroup">
+                                                    <label class="col-md-3 control-label">
+                                                        Shipping Line's Any Other Charges (INR)
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" placeholder="Enter Shipping Line's Any Other Charges"
+                                                               id="txtOtherCharges" name="txtOtherCharges" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="Button1" type="submit" class="btn btn-primary">
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                            <div id="divAirImport" class="portlet-body form" style="display: none;">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="formAir" class="form-horizontal">
+                                    <div id="divalertsucessAir" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccessAir">Data saved sucessfully. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    FSC
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter FSC" id="txtFSC" name="txtFSC" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    SSC/ WSC
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter SSC" id="txtSSC" name="txtSSC" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    DO Charges (In INR)
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter DO Charges" id="txtDOChargesAir"
+                                                           name="txtDOChargesAir" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Career
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Career" id="txtCareer"
+                                                           name="txtCareer" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Loading Airport (Full Name)
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Loading Airport" id="txtLoadingAirport"
+                                                           name="txtLoadingAirport" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                            <div class="Validationgroup">
+                                                <label class="col-md-3 control-label">
+                                                    Consolidation Days
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" placeholder="Enter Ocean Transit Time" id="txtConsDays"
+                                                           name="txtConsDays" autocomplete="off" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="btnsubmit" type="submit" class="btn yellow">
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                            <div id="divdomestic" class="portlet-body form" style="display: none;">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="formdomestic" class="form-horizontal">
+                                    <div id="divalerterrordomestic" class="alert alert-danger" style='display: none; text-align: center;'>
+                                        <span id="spanerrordomestic"> </span>
+                                    </div>
+                                    <div id="divalertsucessdomestic" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccessdomestic">Data saved sucessfully. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table class="table table-bordered " id="tbloriginDestination"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="btnsubmit" type="button" class="btn yellow" onclick="fnproceed()">
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                            <div id="divproduct" class="portlet-body form" style="display: none;">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="formproduct" class="form-horizontal">
+                                    <div id="divalerterrorproduct" class="alert alert-danger" style='display: none; text-align: center;'>
+                                        <span id="spanerrorproduct"> </span>
+                                    </div>
+                                    <div id="divalertsucessproduct" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccessproduct">Data saved sucessfully. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table class="table table-bordered " id="tblproductservices"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="btnsubmit" type="button" class="btn yellow" onclick="fnproceedforProduct()">
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                            <div id="divscrapsale" class="portlet-body form" style="display: none;">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="formscrapsale" class="form-horizontal">
+                                    <div id="divalerterrorscrap" class="alert alert-danger" style='display: none; text-align: center;'>
+                                        <span id="spanerrorscrap"> </span>
+                                    </div>
+                                    <div id="divalertsucessscrap" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccessscrap">Data saved sucessfully. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table class="table table-bordered " id="tblscrapsale"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="Button2" type="button" class="btn yellow" onclick="fnproceedforProduct()">
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-horizontal">-->
+                    <div class="col-md-12">
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                </div>
+                <div class="clearfix">
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer" style="color: #FFF !important;">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="modal-body" style="height: 150px; overflow-y: scroll;">
+                        <div class="display-none" id="Air">
+                            <h4>Basic Information </h4>
+                            <p> Vendor needs to fill few Basic Information like FSc, DO Charge,Loding Airport,SSC/WSC,Career,Consolidation days.</p>
+                        </div>
+                        <div class="display-none" id="Demostic">
+                            <h4>Basic Information </h4>
+                            <p> First Vendor needs to click on Participation box.</p>
+                        </div>
+                        <div class="display-none" id="Sea">
+                            <h4>Basic Information </h4>
+                            <p> Vendor needs to fill few Basic Information like,BAF (In Foreign currency),forwarders Do charge,Saling days,CAF(%Age of freight),shipping line,Ocean Transit Time.</p>
+                        </div>
+                        <div class="display-none" id="product">
+                            <h4>Basic Information </h4>
+                            <p>
+                                Vendor needs to check this box in order to participate in Bid and then click on Proceed.
+                                <ul>
+                                    <li>TAT(days)         : "Vendor has to fill the total Turn Around Time (TAT) " for the bid</li>
+                                    <li>Validity (days)   : "Vendor needs to fill the number of days bid remain valid</li>
+                                    <li> Warranty (days)   : "Vendor needs to fill warranty duration for the unit"</li>
+                                    <li>VAT 		  : "Vendor needs to fill Value Added TAX (VAT) in % which will be charged"</li>
+                                    <li>CST		  : "Vendor needs to fill Central Sales TAX(CST) in % which will be charged"</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="display-none" id="Warehouse">
+                            <h4>Basic Information </h4>
+                            <p> Vendor needs to fill few Basic Information about the bid Like Docket charge,<br />FOV,FSC,CFT,ODA,Min.Charges and TAT Days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/lib/markdown.js"></script>
+    <script src="assets/CustomJS/RegisterUser.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/scripts/custom/components-pickers.js"></script>
+    <script src="assets/CustomJS/Auction.js"></script>
+    <script src="assets/CustomJS/VendorParticipation.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+                     window.location = sessionStorage.getItem('MainUrl');
+                    return false;
+                });
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            App.init();
+            setCommonData();
+            FormValidation.init();
+        });
+    </script>
+</body>
+</html>

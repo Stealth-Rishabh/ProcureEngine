@@ -1,0 +1,146 @@
+﻿
+<div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box green-haze">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Register Participants
+                        </div>
+                        <div class="tools">
+                            <a id="showHide" href="javascript:;" class="collapse"></a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#" id="entryForm" class="form-horizontal">
+                            <div id="divalertsucess" class="alert alert-success" style='display: none; text-align: center;'>
+                                <span id="spansuccess1">Data saved sucessfully. </span>
+                            </div>
+                            <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
+                                <span id="spanerterr">This email address is already registerd with another company. </span>
+                            </div>
+                            <div class="form-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            Company Name
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
+                                                   data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            Address
+                                        </label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
+                                                      name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            City
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
+                                                   name="txtCity" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            PAN No.
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
+                                                   name="txtPanNo" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            GST No.
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo"
+                                                   name="txtTINNo">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            Company Phone
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
+                                                   name="txtPhoneNo">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                            Company Email
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
+                                                   name="txtcompanyemail">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="portlet box blue-hoki">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-reorder"></i>Tag Items/Services
+                                            </div>
+                                            <div class="tools">
+                                                <a href="javascript:;" class="collapse"></a>
+                                                <!--<a href="javascript:;" class="reload" onclick="fetchPlacemaster();"></a>-->
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="input-icon">
+                                                <i class="fa fa-search"></i>
+                                                <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
+                                            </div>
+
+                                            <div class="scroller" style="height: 250px;" data-always-visible="1" data-rail-visible1="1">
+                                                <div class="table-scrollable">
+                                                    <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <!--<div id="divisactive1" class="form-group">
+                                    <label class="col-md-6 control-label">
+                                        IsActive
+                                    </label>
+                                    <div class="col-md-4 checkbox-list">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                        </label>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <input type="hidden" value="0" id="hdnParticipantID" />
+                            <div class="clearfix"></div>
+                            <div class="form-actions" style="padding:5px!important;">
+                                <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                    <button type="submit" id="btnsumbit" class="btn yellow reload">
+                                        Submit
+                                    </button>
+                                    <button class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="top" data-original-title="Export to Excel">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

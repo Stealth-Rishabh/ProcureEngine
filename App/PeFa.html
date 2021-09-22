@@ -1,0 +1,1087 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+  
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+                <!--<a href="index.html">
+                    <img src="assets/img/logo.png" alt="logo" class="logo-default" />
+                </a>
+                <div class="menu-toggler sidebar-toggler hide">
+                </div>-->
+            </div>
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+                        <li><a href="#">Bid Configuration</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="#"> Forward Auction </a> </li>
+                    </ul>
+                    <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box blue-hoki" id="form_wizard_1">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-gift"></i> Forward Auction
+                                </div>
+                                
+                                <div class="tools ">
+                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <button class="btn btn-sm btn-success" onclick="cloneBid()">Clone</button>
+                                    <a href="javascript:;" class="collapse hidden-xs"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form action="#" class="form-horizontal" id="submit_form" method="POST">
+                                    <div class="form-wizard">
+                                        <div class="form-body">
+                                            <ul class="nav nav-pills nav-justified steps">
+                                                <li>
+                                                    <a href="#tab1" data-toggle="tab" class="step">
+                                                        <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>Event Configuration</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab2" data-toggle="tab" class="step">
+                                                        <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Setup Parameters</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab3" data-toggle="tab" class="step active">
+                                                        <span class="number">3 </span>
+                                                        <span class="desc"><i class="fa fa-check"></i>Invite Participants </span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                                <div class="progress-bar progress-bar-success">
+                                                </div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="alert alert-success" style='display: none;'>
+                                                    <span id="spansuccess1"> </span>
+                                                </div>
+                                                <div class="alert alert-danger" style='display: none; '>
+                                                    <span id="spandanger"> </span>
+                                                </div>
+                                                <div class="tab-pane active" id="tab1">
+
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Event Subject<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" maxlength="200"
+                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                    </div>
+                                                    <div class="form-group ">
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Event Description<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-9">
+                                                                <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
+                                                                          rows="3" onkeyup="replaceQuoutesFromString(this)" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Event Date<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                                                     data-date-start-date="+0d">
+                                                                    <input type="text" id="txtbidDate" name="txtbidDate" class="form-control" readonly>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" id="btncal" type="button">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Time<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
+                                                                           readonly>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" type="button">
+                                                                            <i class="fa fa-clock-o"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Auction Type: <span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                
+                                                                    <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="hideshowDuration()">
+                                                                    <!--<option value="" style="display:none;">Select</option>-->
+                                                                    <option value="81">English</option>
+                                                                    <option value="82">Dutch(RA)</option>
+                                                                    </select>
+                                                                    
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Event Duration (In Minutes)<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" placeholder="Enter Bid Duration" id="txtBidDuration"
+                                                                       name="txtBidDuration">
+                                                            </div>
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Currency<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="dropCurrency" name="dropCurrency" onchange="fillselectedcurrency();"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Conversion Rate<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" placeholder="Enter Currency Conversion Factor" id="txtConversionRate"
+                                                                       name="txtConversionRate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--<form id="form">-->
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Term & Condition<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
+                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left; word-break:break-all !important;" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
+                                                                    <i class='fa fa-times-circle-o' id='icon1'></i>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Attachment (If Any)
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="file" class="form-control" id="file2" name="file" onchange="checkfilesize(this)" />
+                                                                <a href="javascript:;" id="filepthattach" style="text-decoration: none !important; float:left;word-break:break-all !important;" onclick="DownloadFile(this)"></a>
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
+                                                                </span>
+
+                                                            </div>
+                                                        </div>
+                                                        <!--</form>-->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Display Vendors their Rank <span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="drpshowL1L2">
+                                                                    <option value="N">As H1 or Not H1</option>
+                                                                    <option value="Y">As H1, H2, H3 etc.</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Select Approvers
+                                                            </label>
+
+                                                            <div class="inputgroup">
+
+                                                                <label class="col-md-2 ">
+                                                                    <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
+                                                                           data-provide="typeahead" autocomplete="off" name="txtApprover" />
+                                                                </label>
+
+                                                            </div>
+                                                            <div class="inputgroup">
+                                                                <div class="col-md-1 ">
+                                                                    <!--pull-right-->
+                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                         </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <div class="col-md-3">&nbsp;</div>
+                                                            <div class="col-md-9">
+                                                                <div class="table-scrollable">
+                                                                    <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+                                                                </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="tab-pane" id="tab2">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            Item Name  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname"
+                                                                   name="txtshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Target Price
+                                                        </label>
+                                                        <div class="col-md-2">
+                                                            <input type="tel" class="form-control text-right" id="txttargetprice" name="txttargetprice"
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" />
+
+                                                        </div>
+                                                        <label class="control-label col-md-1 currencyparam" style="text-align: left !important; width:5.33333%"></label>
+                                                        <div class="col-md-1">
+                                                           
+                                                            <select class="form-control no-space" id="checkmaskvendor" name="checkmaskvendor">
+                                                                <option value="Y">Hide</option>
+                                                                <option value="N">Show</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            Quantity  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off" />
+                                                                   <!--onkeyup="thousands_separators_input(this)"-->
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Measurement Unit<span class="required"> *</span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                           
+                                                             
+                                                            <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
+                                                                   data-provide="typeahead" autocomplete="off" name="txtUOM" />
+                                                            <input type="hidden" value="" id="dropuom" />
+
+                                                        </div>
+
+
+                                                    </div>
+                                                  
+                                                    <div class="form-group">
+
+                                                        <label class="control-label  col-md-2" id="lblCeilingPrice">
+                                                            Ceiling/ Min. Price<span class="required"> *</span>
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <input type="tel" class="form-control input-inline input-medium" id="txtCeilingPrice" name="txtCeilingPrice"
+                                                                 autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                        </div>
+                                                        <label class="control-label col-md-1 lblUOM" style="text-align: left;">
+                                                        </label>
+                                                        <label class="control-label col-md-2" id="lbllastSalePrice">
+                                                            Last Invoice Price
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <input type="tel" class="form-control  input-inline input-medium text-right" id="txtlastinvoiceprice"
+                                                                   name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+
+                                                        </div>
+                                                        <label class="control-label col-md-1 lblUOM" style="text-align: left;">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group for-englishbid">
+                                                        <label class="control-label col-md-2">
+                                                            Minimum Increment<span class="required"> *</span>
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <input type="text" class="form-control input-inline input-medium for-englishbid" id="txtminimumdecreament"
+                                                                   number="true" name="txtminimumdecreament" autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                        </div>
+                                                        <label class="control-label col-md-1 currencyparam" style="text-align: left !important;">
+                                                        </label>
+
+                                                        <label class="control-label col-md-2">
+                                                            Increment On<span class="required">* </span>
+                                                        </label>
+
+                                                        <div class="col-md-4">
+                                                            <select class="form-control for-englishbid" id="drpdecreamenton" name="drpdecreamenton">
+                                                                <!--<option value="" style="display: none">Select</option>-->
+                                                                <option value="A">Amount</option>
+                                                                <option value="P">Percentage</option>
+
+
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                        <label class="control-label col-md-2 hide">
+                                                            Attachment
+                                                        </label>
+                                                        <div class="col-md-4 hide">
+                                                            <input type="file" class="form-control " id="fileattachment" name="fileattachment" onchange="checkfilesize(this)" />
+                                                            <a href="javascript:;" id="fileattachmentforitems" style="text-decoration: none !important; float:left;word-break:break-all !important;"></a> &nbsp;
+                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtnitms" onclick="ajaxFileDelete('icon3', 'fileattachment','fileattachmentforitems', 'ParameterFilesedit')">
+                                                                <i class='fa fa-times-circle-o' id='icon3'></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group for-dutch-bid">
+                                                        <label class="control-label col-md-2">
+                                                            Starting Price <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <input type="tel" class="form-control input-inline input-medium for-dutch-bid" id="txtStartingPrice"
+                                                                   name="txtStartingPrice"  autocomplete="off"  /> <!--onkeyup='thousands_separators_input(this)'-->
+
+                                                        </div>
+                                                        <label class="control-label col-md-1 lblUOM" style="text-align: left;">
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-group for-dutch-bid">
+                                                        <label class="control-label col-md-2">
+                                                            Price Increment Amount <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="tel" class="form-control input-inline input-medium for-dutch-bid" id="txtPriceReductionAmount"
+                                                                   name="txtPriceReductionAmount"  autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Price Increment Frequency&nbsp;<span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-1">
+                                                            
+                                                            <div id="spinner4" class="">
+                                                                <div class="input-group" style="width:120px;">
+                                                                    <div class="spinner-buttons input-group-btn">
+                                                                        <button type="button" class="btn spinner-up blue">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="text" class="spinner-input form-control" id="txtPriceReductionFrequency" name="txtPriceReductionFrequency" maxlength="3" readonly />
+                                                                    <div class="spinner-buttons input-group-btn">
+                                                                        <button type="button" class="btn spinner-down red">
+                                                                            <i class="fa fa-minus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <label class="control-label col-md-1">mins</label>
+                                                    </div>
+
+                                                    
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2" id="lblshowprice">
+                                                            Show H1 Price
+                                                        </label>
+                                                        <div class="col-md-4" id="divshowprice">
+                                                            <select class="form-control no-space" id="showhlprice" name="showhlprice">
+                                                                <option value="N">No</option>
+                                                                <option value="Y">Yes</option>
+                                                            </select>
+                                                        </div>
+                                                        <label class="control-label col-md-2" id="lblshowstartprice" >
+                                                            Show Start Price
+                                                        </label>
+                                                        <div class="col-md-2" id="divshowstartprice">
+                                                            <select class="form-control no-space" id="showstartprice" name="showstartprice">
+                                                                <option value="Y">Show</option>
+                                                                <option value="N">Hide</option>
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-offset-10">
+                                                            <input type="hidden" id="rowid" />
+                                                            <input type="hidden" id="rowidPrev" />
+                                                            <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                            <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="table-scrollable display-none" id="wrap_scroller">
+                                                        <table class=" table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
+                                                    </div>
+
+                                                </div>
+                                                <div class="tab-pane" id="tab3">
+                                                    
+                                                    <div class="row">
+                                                 <div class="col-md-12">
+                                                     <div class="col-md-6">
+                                                         <div class="row">
+                                                             <div class="col-md-10">
+                                                                 <div class="col-md-9">
+                                                                     <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
+                                                                            data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                     <!--<input type="text" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch"></br>-->
+                                                                     <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
+                                                                 </div>
+                                                                     <div class="col-md-1">
+                                                                         <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to 
+                                                                                  vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
+                                                                     </div></div></div>
+                                                                     <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                         <!--#a1b2bd-->
+                                                                         <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
+                                                                             <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                 <thead class="flip-content">
+                                                                                     <tr>
+                                                                                         <th width="20%">
+                                                                                             <div class="col-md-10 checkbox-list">
+                                                                                                 <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                    
+                                                                                                     #
+                                                                                                 </label>
+                                                                                             </div>
+                                                                                         </th>
+                                                                                         <th width="100%">
+                                                                                             Vendors
+                                                                                         </th>
+                                                                                     </tr>
+                                                                                 </thead>
+                                                                                 <tbody></tbody>
+                                                                             </table>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                                 <div class="col-md-6">
+                                                                     <div class="table-scrollable">
+                                                                         <table id="selectedvendorlists" class="table table-bordered display-none">
+                                                                             <thead>
+                                                                                 <tr>
+                                                                                     <th>Vendors</th>
+                                                                                     <th>Remove</th>
+                                                                                 </tr>
+                                                                             </thead>
+                                                                         </table>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                     </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-5 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous">
+                                                        <i class="m-icon-swapleft">
+                                                        </i>Back
+                                                    </a><a href="javascript:;" class="btn btn-success button-next">
+                                                        Save and Continue <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a>
+                                                   
+                                                    <a href="javascript:;" class="btn green button-submit">
+                                                        Preview
+                                                       
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Preview div -->
+                        <div class="portlet box blue-hoki display-none" id="BidPreviewDiv">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                   Event Preview
+                                </div>
+                               
+                            </div>
+                            <div class="portlet-body form">
+
+                                <!--Begin Form -->
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                        <h3 class="form-section">Event Details</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Event Subject:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtBidSubjectPrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                           
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Event Description:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static" id="txtbiddescriptionPrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Event Date:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtbidDatePrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Time:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtbidTimePrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Auction Type:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="ddlauctiontypePrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Event Duration(In Minutes):</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtBidDurationPrev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Currency:</label>
+                                                        <div class="col-md-8">
+                                                            <p class="form-control-static" id="dropCurrencyPrev">
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Conversion Rate:</label>
+                                                        <div class="col-md-8">
+                                                            <p class="form-control-static" id="txtConversionRatePrev">
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Term & Condition:</label>
+                                                        <div class="col-md-8">
+                                                            <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;word-break:break-all !important;" onclick="DownloadFile(this)">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Attachment (If Any):</label>
+                                                        <div class="col-md-8">
+                                                            <a class="form-control-static" id="filepthattachPrev" style="text-decoration: none;word-break:break-all !important;" onclick="DownloadFile(this)"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                           
+                                            <!--/row-->
+                                        <h3 class="form-section">Approvers</h3>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="display-none" id="wrap_scrollerPrevApp">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblapproversPrev"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <h3 class="form-section">Event parameter details</h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="table-scrollable display-none" id="wrap_scrollerPrev">
+                                                        <table class=" table table-striped table-bordered table-hover" id="tblServicesProductPrev"></table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <h3 class="form-section">Participants details</h3>
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="table-scrollable">
+                                                        <table id="selectedvendorlistsPrev" class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Vendors</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-offset-11 col-md-9">
+                                                        <button type="button" class="btn default" id="back_prev_btn">Back</button>
+                                                        <button type="button" class="btn green" onclick="ConfigureBidInsPefaTab3()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End Forms -->
+
+
+                            </div>
+                        </div>
+                        <!--End Preview div -->
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+
+                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
+
+                        <p class="ppolicy-text">
+                            Using this page user can configure bids related to Scrap Sale  area and invite vendors to participate on specified date and time.<br />
+                            There are three steps to complete this process.You may complete one step at a time by using “Save & Continue” feature and fill other details later by clicking activity displayed as “Saved as Draft” in pending activities. All the mandatory information is marked with * sign.
+                        </p>
+                        <p class="ppolicy-text">Details required at every step are given below: </p>
+                        <p class="ppolicy-text"><b>Step -1: "Bid Details"–</b>In this step user needs to fill all generic information related to product & services Bid.  Individual columns with their relevance are given below</p>
+                        <ul>
+                            <li><b>Event Subject:</b> Meaningful short subject for the event.This is used as a subject for all related email notifications & reports.</li>
+                            <li><b>Event Description: </b>Detailed information about the event.</li>
+                            <li><b>Event Duration(In minutes): </b>Minutes given to vendors for participating/quoting price.</li>
+                            <li><b>Event Date: </b>Date when the Event will be started.</li>
+                            <li><b>Time: </b>Time when the event will start and vendors may start participating.</li>
+                            <li><b>Currency:</b> Currency in which amount should be quoted. e.g. INR (Indian rupees).</li>
+                            <li><b>Current Conversion Factor: </b>Conversion rate of currency at the time of event configuration.</li>
+                            <li><b>Terms and conditions	: </b> PDF file which includes all terms and conditions for the event. </li>
+                            <li><b>Attachments: </b>You can upload supporting document related to event (This field is optional).</li>
+                            <li><b>Approvers:</b>Select name of approvers who will approve event.</li>
+                        </ul><br />
+
+                        <p class="ppolicy-text">Once all mandatory details are filled click on Save and Continue to move to next step.</p><br />
+
+                        <p class="ppolicy-text"><b>Step-2: "Setup Parameters"–</b>In this step user needs to fill product/services details against which vendors will be quoting prices/rates. Individual columns with their relevance are given below.</p>
+                        <ul>
+                            <li><b>Short Name: </b>Specify short name of product/services which would be visible at the time of event participation. </li>
+                            <li><b>Target Price: </b>which we expect to reach as a result of auction process.</li>
+                            <li><b>Quantity: </b>Specify number of units required.</li>
+                            <li><b>UOM: </b>unit of measurement Like number, kg, liter etc.</li>
+                            <li><b>Description: </b>Detailed information about the product/services.</li>
+                            <li><b>Contract duration: </b>Enter the time frame of the contract signed.</li>
+                            <li><b>Dispatch Location: </b>Name of the location where item/services need to be delivered.</li>
+                            <li><b>Ceiling/MIN. Price: </b>Enter the MIN price for event above which vendors will not be able to quote.</li>
+                            <li><b>Mask from vendor: </b>By checking this Bid start price will not be visible to vendors.</li>
+                            <li><b>Increament on: </b>You can define the increament in price would be based on Amount or percentage.</li>
+                        </ul><br />
+                        <p class="ppolicy-text"><b>Step-3: "Invite Participants"–</b>User can select participants whom he wants to send invite to participate in event. User can search from the list by typing participants name in search text box or he can check select all in case he wants to invite all available vendors.</p>
+                        <p class="ppolicy-text">When clicked on “Submit” system will send email alert having login id, password and bid specific details to selected vendors, their companies and approvers involved post event closer.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Advancesearch" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Advance Vendor Search<!--<span id='Nodename'></span>-->
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
+                            <div id="divalertSerach" class="alert alert-success" style='display: none; text-align: center;'>
+                                <span id="spansuccess1serach"></span>
+                            </div>
+                            <div id="divalerterrsearch" class="alert alert-danger" style='display: none; text-align: center;'>
+                                <span id="spanerterrserach"></span>
+                            </div>
+                            <div class="form-body">
+                                <div class="form-group">
+                                   
+                                    <div class="col-lg-4">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" />
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-lg-4">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" />
+
+                                        </div>
+                                    </div>
+                                   
+                                    
+                                    <div class="col-lg-1 col-lg-offset-2 " style="margin-top:4px;">
+                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group hide" id="div_table">
+
+
+                                    <!--#a1b2bd-->
+                                    <div class="col-lg-12">
+                                        <div class="input-icon">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
+                                        </div>
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                            <div class="table-scrollable">
+                                                <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+   
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+   <script src="assets/CustomJS/pefa.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                 window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            Metronic.init();
+            Layout.init();
+            FormWizard.init();
+            ComponentsPickers.init();
+            setCommonData();
+            fetchMenuItemsFromSession(1, 27);            
+            FetchCurrency('0');            
+          
+            fetchRegisterUser('1');
+            fetchBidType();// for serach vendor
+            FetchUOM(sessionStorage.getItem("CustomerID"));
+           
+            var _BidID;
+            if (window.location.search) {
+                var param = getUrlVars()["param"]
+                var decryptedstring = fndecrypt(param);
+                 _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+            }
+            var _savedDraft = '';
+            if (_BidID == null){
+                sessionStorage.setItem('CurrentBidID', 0);
+                sessionStorage.setItem('_savedDraft','N')
+            }
+            else {
+                sessionStorage.setItem('CurrentBidID', _BidID)
+                fetchScrapSalesBidDetails();
+                sessionStorage.setItem('_savedDraft', 'Y')
+            }
+            setTimeout(function () {
+                $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+                $('#txtConversionRate').val(1);
+               
+            }, 2000);
+            fetchParticipantsVender();// fetch all vendors for advance search
+            fetchVendorGroup('M', 0); // used to fetch product category
+        });
+       
+
+        $('#spinner4').spinner({ value:0, step: 1, min: 0, max: 10 });
+    </script>
+</body>
+
+</html>

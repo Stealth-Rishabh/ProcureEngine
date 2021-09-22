@@ -1,0 +1,649 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>EBidding Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+  
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+               
+            </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                           
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="login.html"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+                        <li><a href="#">Bid Configuration</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Request For Quotation</a> </li>
+                    </ul>
+
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box yellow" id="form_wizard_1">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-gift"></i>Request For Quotation
+                                </div>
+                                <div class="tools hidden-xs">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form action="#" class="form-horizontal" id="submit_form" method="POST">
+                                    <div class="form-wizard">
+                                        <div class="form-body">
+                                            <ul class="nav nav-pills nav-justified steps">
+                                                <li>
+                                                    <a href="#tab1" data-toggle="tab" class="step">
+                                                        <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>RFQ Details</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab2" data-toggle="tab" class="step">
+                                                        <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>RFQ Parameters</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab3" data-toggle="tab" class="step active">
+                                                        <span class="number">3 </span>
+                                                        <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
+                                                    </a>
+                                                </li>
+                                               
+                                            </ul>
+                                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                                <div class="progress-bar progress-bar-success">
+                                                </div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="alert alert-success" style='display: none;'>
+                                                    <span id="spansuccess1"> </span>
+                                                </div>
+                                                <div class="alert alert-danger" style='display: none; '>
+                                                    <span id="spandanger"> </span>
+                                                </div>
+                                                <div class="tab-pane active" id="tab1">
+
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                RFQ Subject<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
+                                                                       name="txtrfqSubject">
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-2 control-label">
+                                                                Currency<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="dropCurrency" name="dropCurrency"></select>
+                                                            </div>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                    </div>
+                                                    <div class="form-group ">
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                RFQ Description<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-9">
+                                                                <textarea id="txtrfqdescription" name="txtrfqdescription" class="wysihtml5 form-control"
+                                                                          rows="6"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                RFQ Deadline<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                                                     data-date-start-date="+0d">
+                                                                    <input type="text" id="txtrfqDuration" name="txtrfqDuration" class="form-control" readonly>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" id="btncal" type="button">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Conversion Rate<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" placeholder="Enter Conversion Rate" id="txtConversionRate"
+                                                                       name="txtConversionRate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--<form id="form">-->
+                                                            <div class="inputgroup">
+                                                                <label class="control-label col-md-3">
+                                                                    Term & Condition<span class="required"> *</span>
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="file" class="form-control" id="file1" name="file1" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="inputgroup">
+                                                                <label class="control-label col-md-3">
+                                                                    Attachment (If Any)
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="file" class="form-control" id="file2" name="file" />
+                                                                </div>
+                                                            </div>
+                                                        <!--</form>-->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Select Approvers
+                                                            </label>
+                                                            <div class="col-md-3 checkbox-list">
+                                                                <select id="approverList" class="form-control" multiple></select>
+                                                            </div>
+                                                            <div class="col-md-1 checkbox-list">
+                                                                <input id="btnpush" class="form-control" type="button" value=">>" />
+                                                                <input id="btnpull" class="form-control" type="button" value="<<" />
+                                                            </div>
+                                                            <div class="col-md-3 checkbox-list">
+                                                                <select id="mapedapprover" name="mapedapprover" class="form-control" multiple></select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="tab2">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            Short Name  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtshortname" name="txtshortname" autocomplete="off"/>
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Target Price 
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control input input-inline input-medium"
+                                                                   id="txttargetprice" name="txttargetprice" number="true" autocomplete="off"
+                                                                   onkeyup="thousands_separators_input(this)" />
+															<span class="help-inline spancurrncy"></span>
+                                                        </div>
+                                                       
+                                                       
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            Quantity  <span class="required">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtquantitiy"
+                                                                   name="txtquantitiy" number="true" autocomplete="off"
+                                                                   onkeyup="thousands_separators_input(this)" />
+
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            UOM<span class="required">
+    *
+</span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control" id="dropuom" name="dropuom" onchange="displayUOM()">
+                                                              
+                                                            </select>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                   
+                                                    <div class="form-group">
+                                                        
+                                                        <label class="control-label col-md-2">
+                                                            Description<span class="required">
+    *
+</span>
+                                                        </label>
+                                                            <div class="col-md-4">
+                                                                <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
+                                                                          rows="6" ></textarea>
+                                                            </div>
+                                                        
+                                                            <label class="control-label  col-md-2">
+                                                                Remark<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <textarea id="txtRemark" name="txtRemark" class="wysihtml5 form-control"
+                                                                          rows="6"></textarea>
+                                                              
+                                                            </div>
+                                                        </div>
+                                                        
+                                                   
+                                                    <div class="form-group">
+                                                       
+                                                            <label class="control-label col-md-2">
+                                                                <input type="checkbox" name="checkmaskvendor" id="checkmaskvendor" checked />
+                                                            </label>
+                                                            <label class="col-md-4 checkbox-inline">
+                                                                Is BOQ Required
+                                                            </label>
+                                                        <label class="control-label col-md-2">
+                                                            Delivery Location <span class="required">* </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" />
+                                                        </div>
+
+                                                        </div>
+                                                    <div class="form-group">
+                                                       
+                                                       
+                                                       
+                                                   </div>
+                                                 
+                                                    
+                                                    <div class="form-actions" style="border:none !important; background: none !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-offset-9 col-md-6">
+                                                                <input type="hidden" id="rowid" />
+                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                                <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                         <div class="table-responsive">
+
+                                                            <table class="table table-striped table-bordered table-hover" id="tblServicesProduct">
+                                                             </table>
+                                                        </div>
+                                                    
+                                                </div>
+                                                <div class="tab-pane" id="tab3">
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Search Vendor
+                                                            </label><div class="col-md-6">
+                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                            <div class="form-group">
+                                                                <div class="inputgroup">
+                                                                    <label class="col-md-3 control-label">
+                                                                        Select Vendor
+                                                                    </label>
+                                                                    <div class="col-md-3 checkbox-list">
+                                                                       
+                                                                        <div id="divvendorlist" class="portlet-body flip-scroll ">
+                                                                            <table style="width:600px" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                <thead class="flip-content">
+                                                                                    <tr>
+                                                                                        <th width="20%">
+                                                                                            <div class="col-md-10 checkbox-list">
+                                                                                                <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                    <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        <th width="100%">
+                                                                                            Vendors
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody></tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-5 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous">
+                                                        <i class="m-icon-swapleft">
+                                                        </i>Back
+                                                    </a><a href="javascript:;" class="btn yellow button-next">
+                                                        Save And Continue <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a><a href="javascript:;" class="btn green button-submit">
+                                                        Submit <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    <div id="responsive" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>RFQ Parameter
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <form action="#" id="mapsections" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Short&nbsp;Name  <span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodelshortname" name="txtmodelshortname" autocomplete="off" />
+                                    <input type="hidden" id="txtRFQParameterId" name="txtRFQParameterId" autocomplete="off" value="0" />
+                                    <input type="hidden" id="txtRFQId" name="txtRFQId" autocomplete="off" value="0" />
+                                </div>
+                                <label class="control-label col-md-2">
+                                    Target&nbsp;Price
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodeltargetprice" name="txtmodeltargetprice" number="true" autocomplete="off" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Quantity  <span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="txtmodelquantity" name="txtmodelquantity" autocomplete="off" />
+
+                                </div>
+                                <label class="control-label col-md-2">
+                                    UOM<span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="ddlropuom" name="ddlropuom" onchange="displayUOM()"> </select>
+                                   
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Remark  <span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="txtmodelremark" name="txtmodelremark" autocomplete="off" />
+
+                                </div>
+                            </div>
+                            <div class="form-actions fluid">
+                                <div class="col-md-offset-5">
+                                    <button type="submit" id="btnsubmit" class="btn blue-hoki ">
+                                        <!--  onclick=" insboqvalues()" -->
+                                        Add
+                                    </button>
+                                    <button type="button" id="btnclear" class="btn yellow-lemon" onclick="Reset()">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix"`></div>
+                            <div class="scroller" style="height: 250px;" data-always-visible="1" data-rail-visible="0">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="tblRFQParameterComponet"></table>
+                                    </div>
+                            </div>                                
+                           
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+  
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+
+    <script src="assets/CustomJS/RFQRequestForQuotation.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                 window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            Metronic.init();
+            Layout.init();
+            var _RFQID;
+            if (window.location.search) {
+                var param = getUrlVars()["param"]
+                var decryptedstring = fndecrypt(param)
+                _RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+            }
+            if (_RFQID == null)
+                sessionStorage.setItem('CurrentrfiID', 0)
+            else {
+                sessionStorage.setItem('CurrentrfiID', _RFQID)
+                fetchRequestForQuotaionDetails();
+            }
+            FormWizard.init();
+            ComponentsPickers.init();
+            setCommonData();
+          
+            fetchMenuItemsFromSession(1, 24);
+          
+            FetchCurrency('0');
+          
+            FetchVender();
+            fetchRegisterUser('1');
+            FetchUOM(sessionStorage.getItem("CustomerID"));
+            FetchUOMforpop(sessionStorage.getItem("CustomerID"));
+            FormValidate()
+
+        });
+        jQuery('#btnpush').click(function (e) {
+            jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+        });
+        jQuery('#btnpull').click(function (e) {
+            jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+        });
+
+    </script>
+</body>
+
+</html>

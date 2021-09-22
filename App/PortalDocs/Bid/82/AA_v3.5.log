@@ -1,0 +1,5 @@
+20160426-16:13:30.091 000019F0 - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20160426-16:17:21.598 00001A4C - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20160426-16:20:25.134 0000115C - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20160426-16:21:57.645 00001560 - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20160426-16:27:23.743 00001740 - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
