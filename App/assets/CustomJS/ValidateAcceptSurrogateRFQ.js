@@ -4,11 +4,9 @@ var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
 
 //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
-sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
 
-//var UrLToken = 'http://www.support2educate.com/procurengine/API/token';
-var UrLToken = 'https://www.procurengine.org/API/token';
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
    
@@ -23,32 +21,32 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            var EndDate = new Date(data[0].RFQEndDate.replace('-', ''));
+            var EndDate = new Date(data[0].rfqEndDate.replace('-', ''));
             var currentTime = new Date();
             if (EndDate > currentTime) {
-                sessionStorage.setItem('hddnRFQRFIID', data[0].RFQId)
-                sessionStorage.setItem('CustomerID', data[0].CustomerID)
+                sessionStorage.setItem('hddnRFQRFIID', data[0].rfqid)
+                sessionStorage.setItem('CustomerID', data[0].customerID)
                 
-                jQuery('#RFQSubject').text(data[0].RFQSubject)
-                jQuery('#RFQSubjectTT').text(data[0].RFQSubject)
+                jQuery('#RFQSubject').text(data[0].rfqSubject)
+                jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
                 
-                $('#Currency').html(data[0].CurrencyNm)
-                $('#CurrencyTT').html(data[0].CurrencyNm)
-                jQuery('#RFQDescription').text(data[0].RFQDescription)
-                jQuery('#RFQDescriptionTT').text(data[0].RFQDescription)
-                jQuery('#ConversionRate').html(data[0].RFQConversionRate);
-                jQuery('#refno').html(data[0].RFQConversionRate);
-                jQuery('#RFQStartDate').text(data[0].RFQStartDate)
-                jQuery('#RFQStartDateTT').text(data[0].RFQStartDate)
-                jQuery('#RFQEndDate').text(data[0].RFQEndDate)
-                jQuery('#RFQDeadlineTT').text(data[0].RFQEndDate)
+                $('#Currency').html(data[0].currencyNm)
+                $('#CurrencyTT').html(data[0].currencyNm)
+                jQuery('#RFQDescription').text(data[0].rfqDescription)
+                jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
+                jQuery('#ConversionRate').html(data[0].rfqConversionRate);
+                jQuery('#refno').html(data[0].rfqConversionRate);
+                jQuery('#RFQStartDate').text(data[0].rfqStartDate)
+                jQuery('#RFQStartDateTT').text(data[0].rfqStartDate)
+                jQuery('#RFQEndDate').text(data[0].rfqEndDate)
+                jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
                 
-                if (data[0].RFQTermandCondition != '') {
-                    replaced1 = data[0].RFQTermandCondition.replace(/\s/g, "%20")
+                if (data[0].rfqTermandCondition != '') {
+                    replaced1 = data[0].rfqTermandCondition.replace(/\s/g, "%20")
                 }
-                jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + RFQID + '/' + replaced1).html(data[0].RFQTermandCondition)
+                jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + RFQID + '/' + replaced1).html(data[0].rfqTermandCondition)
             }
             else {
                 bootbox.alert("This RFQ has already expired !!!", function () {
@@ -70,7 +68,7 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -82,29 +80,16 @@ function validatepassword() {
         jQuery.unblockUI();
     }
     else {
-
+        // Get Token For Password Validation
+        var url = sessionStorage.setItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + RFQID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateRFQ').toLowerCase();
         $.ajax({
-            url: UrLToken,
-            type: 'POST',
-            async: true,
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            "headers": {
-                "accept": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            data: {
-                grant_type: "password",
-                username: '',
-                password: jQuery("#txtpassword").val().trim(),
-                linkurl: '',
-                machineip: '',
-                APICallType: ('SurrogateRFQ').toLowerCase(),
-                EventID: RFQID
-                // expires_in: 0,
-
-            },
-            success: function (response) {
+            type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: url,
+                cache: false,
+                crossDomain: true,
+                dataType: "json",
+                success: function (response) {
 
                 sessionStorage.setItem("Token", response.access_token)
                 fnGtrTokenValidatePassword()
@@ -130,27 +115,27 @@ function validatepassword() {
         }
         //alert(JSON.stringify(Data))
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RFQSurrogateValidateData",
+            url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RFQSurrogateValidateData/?RFQID=" + RFQID + "&Password=" + jQuery("#txtpassword").val(),
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            type: "POST",
-            data: JSON.stringify(Data),
-            contentType: "application/json; charset=utf-8",
-            success: function (data, status, jqXHR) {
+            type: "GET",
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
 
-                if (data[0].FlagStatus == "1") {
+                if (data[0].flagStatus == "1") {
                     fetchReguestforQuotationDetailseRFQ();
                     sessionStorage.setItem("VendorId", data[0].vendorID)
-                    sessionStorage.setItem('RFQVersionId', data[0].Version)
+                    sessionStorage.setItem('RFQVersionId', data[0].version)
                     sessionStorage.setItem("UserType", "V")
-                    sessionStorage.setItem("UserID", data[0].UserID)
-                    sessionStorage.setItem("UserName", data[0].VendorName)
+                    sessionStorage.setItem("UserID", data[0].userID)
+                    sessionStorage.setItem("UserName", data[0].vendorName)
                     sessionStorage.setItem("RFQID", RFQID)
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")
-                    //sessionStorage.setItem("HomePage", "http://www.support2educate.com/procurengine/")
+                    //sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                    sessionStorage.setItem("HomePage", "https://pev3qaapp.azurewebsites.net/")
                     
-                    sessionStorage.setItem("HomePage", "https://www.procurengine.org/")
-                    //  alert(data[0].IsTermsConditionsAccepted)
-                    if (data[0].IsTermsConditionsAccepted == "N" || data[0].IsTermsConditionsAccepted == "NO") {
+                    if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {
                             $('#termscondition').modal('show');
                         }, 500);
@@ -266,8 +251,8 @@ function eRFQAcceptBidTerms() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            if (data[0].IsSuccess == 'Y') {
-                window.location = data[0].URL
+            if (data[0].isSuccess == 'Y') {
+                window.location = data[0].linkURL
             }
         },
         error: function (xhr, status, error) {
@@ -277,7 +262,7 @@ function eRFQAcceptBidTerms() {
                 error401Messagebox(err.Message);
             }
             else{
-                alert('error')
+               
                 jQuery("#error").text(xhr.d);
             }
             return false;

@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
-sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
+//sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
 
-//sessionStorage.setItem("APIPath", 'https://pev2api.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
@@ -137,8 +137,8 @@ var Login = function () {
     }
 
 function validateUser() {
-    //sessionStorage.setItem("APIPath", 'https://pev2api.azurewebsites.net/');
-    sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+    //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
     var LoginID = encodeURIComponent(jQuery("#username").val().trim());
     var Password = encodeURIComponent(jQuery("#password").val().trim());
     var LinkUrl = encodeURIComponent(window.location);

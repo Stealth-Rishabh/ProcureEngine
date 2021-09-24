@@ -1622,7 +1622,7 @@ function editValues(divName, rowid) {
             $('#checkmaskvendor').val($("#" + rowid).find("td:eq(7)").text())
             if ($('#hdnClosingval').val() == 81) {
                 $('#lblshowprice').html("Show H1 Price")
-                hdnSeId = $("#" + rowid).find("td:eq(13)").text()
+                hdnSeId = $("#" + rowid).find("td:eq(14)").text()
                 $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(8)").text())
                 $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
                 $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())

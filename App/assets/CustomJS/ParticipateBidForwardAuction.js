@@ -370,7 +370,7 @@ function refreshColumnsStaus() {
                             $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                             $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(data[i].mqQuotedPrice))
                             $("#lblstatus" + i).html(data[i].moQuotedPrice)
-
+                            $("#H1Price" + i).html(thousands_separators(data[i].h1Price))
                             if (data[i].moQuotedPrice == 'H1') {
                                 jQuery('#lblstatus' + i).css('color', 'Blue');
                             }

@@ -5,15 +5,11 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 var BIDTypeID = '';
 var BidClosingType='';
-sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
-//sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
-
-//var UrLToken = 'http://www.support2educate.com/procurengine/API/token';
-//var UrLToken = 'https://www.procurengine.org/API/token';
+//sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
 function fetchBidHeaderDetails() {
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+   
     var url = '';
   
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetailsForSurrogate/?BidID=" + BIDID;
@@ -58,10 +54,10 @@ function fetchBidHeaderDetails() {
                     BIDTypeID = data[0].bidTypeID;
                     BidClosingType = data[0].bidClosingType;
                     jQuery("a#lnkTermsAttachment").html(data[0].termsConditions);
-                    //jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + BIDID + "/" + tncAttachment)
+                    
 
                     jQuery("a#lnkAnyOtherAttachment").html(data[0].attachment);
-                    //jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + BIDID + "/" + anyotherAttachment)
+                   
 
                     jQuery("#lblbidduration").text(data[0].bidDuration);
                     jQuery("#lblcurrency").text(data[0].currencyName);
@@ -74,7 +70,7 @@ function fetchBidHeaderDetails() {
                 }
                 else {
                     bootbox.alert("This bid has already expired !!!", function () {
-                        //   $('.page-container').hide();
+                       
                         $('#btnpassword').attr('disabled', 'disabled')
                         $('#txtpassword').attr('disabled', 'disabled')
                         
@@ -102,10 +98,12 @@ function DownloadFile(aID) {
 }
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
+
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
-   // sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
+   // sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+
     if (jQuery("#txtpassword").val() == "" ) {
 
         erroropenbid.show();
@@ -124,7 +122,7 @@ function validatepassword() {
                 cache: false,
                 crossDomain: true,
                 dataType: "json",
-             success: function (response) {
+                success: function (response) {
                 sessionStorage.setItem("Token", response.access_token)
                 fnGtrTokenValidatePassword()
                 
@@ -162,9 +160,9 @@ function fnGtrTokenValidatePassword() {
                     sessionStorage.setItem("UserName", data[0].vendorName)
                     sessionStorage.setItem("BidID", BIDID)
                     sessionStorage.setItem("ISFromSurrogate", "Y")
-                    sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                   // sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                    sessionStorage.setItem("HomePage", "https://pev3qaapp.azurewebsites.net/")
                    
-                   // sessionStorage.setItem("HomePage", "https://www.procurengine.org/")
                   
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {
