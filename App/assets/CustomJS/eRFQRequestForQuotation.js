@@ -556,16 +556,15 @@ function InsUpdRFQDEtailTab1() {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            //** Upload Files in Local Folder
-            fileUploader(parseInt(data))
 
             sessionStorage.setItem('hddnRFQID', parseInt(data))
 
-            //** Upload Files on Azure
-            fnUploadFilesonAzure(TermsConditionFileName, sessionStorage.getItem('hddnRFQID'), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-           
-            //** Delete Files from Local Folder
-            fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + parseInt(data) + "/" + TermsConditionFileName)
+            //** Upload Files on Azure PortalDocs folder
+            if ($('#file1').val() != '') {
+                fnUploadFilesonAzure('file1',TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+
+            }
+            
         },
         error: function (xhr, status, error) {
 
@@ -635,8 +634,8 @@ function InsUpdRFQDEtailTab2() {
         
     };
 
-    // alert(JSON.stringify(Tab2data))
-    console.log(JSON.stringify(Tab2data))
+   
+   
     jQuery.ajax({
 
         type: "POST",
@@ -995,7 +994,7 @@ function fnsaveAttachmentsquestions() {
     var quesquery = '';
     $("#tblAttachments> tbody > tr").each(function (index) {
         var this_row = $(this);
-        attchquery = attchquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '#';
+        attchquery = attchquery + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(0)').html()) + '#';
 
      });
     $("#tblquestions> tbody > tr").each(function (index) {
@@ -1007,7 +1006,7 @@ function fnsaveAttachmentsquestions() {
         "AttachString": attchquery,
         "QuesString": quesquery
     }
-  //  console.log(JSON.stringify(data))
+ 
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1035,6 +1034,7 @@ function fnsaveAttachmentsquestions() {
    
 }
 var rowAttach = 0;
+
 function addmoreattachments() {
     
     if (jQuery("#AttachDescription1").val() == "") {
@@ -1063,45 +1063,47 @@ function addmoreattachments() {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
        
-       // strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attchname.replace(/\s/g, "%20") + '>' + attchname + '</a></td>';
-        strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;" target=_blank  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
+       
+        strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        //str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attchname.replace(/\s/g, "%20") + '>' + attchname + '</a></td>';
+        
         str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',aeRFQFile' + rowAttach + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
         var arr = $("#tblAttachments tr");
-
+       
         $.each(arr, function (i, item) {
             var currIndex = $("#tblAttachments tr").eq(i);
-          
             var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
+           
+            if (rowAttach == 1) {
+                //** Upload Files on Azure PortalDocs folder first Time
+                fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+             }
+            
             $(this).nextAll().each(function (i, inItem) {
-               
+                if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
+
+                  //** Upload Files on Azure PortalDocs folder
+                    fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+
+                    }
                 if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
                     $(this).remove();
                 }
-                else {
-                    //** Upload files in Local Folder
-                    fileUploader(sessionStorage.getItem('hddnRFQID'))
-                    setTimeout(function () {
-                    //** Upload Files on Azure
-                        fnUploadFilesonAzure(attchname, sessionStorage.getItem('hddnRFQID'), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-                    },1000)
-
-                }
+                
             });
+           
         });
         jQuery("#AttachDescription1").val('')
         jQuery('#fileToUpload1').val('')
 
-        //** Delete Files from Local Folder
-        fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + "/" + attchname)
+        
     }
 }
 function deleteattachrow(rowid, rowidPrev,aID) {
@@ -1110,7 +1112,7 @@ function deleteattachrow(rowid, rowidPrev,aID) {
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
     
-    //** Delete Files from Azure 
+    //** File delete from Blob or DB 
     ajaxFileDelete('', '', aID.id, 'eRFQAttachment')
  }
 
@@ -1136,21 +1138,19 @@ function fetchAttachments() {
                     rowAttach = rowAttach + 1;
                     attach = data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20");
                     var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                   // strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attach + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + i+' style="pointer:cursur;text-decoration:none;" target=_blank href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                   
+                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + i+'  style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachmentsPrev').append(strprev);
 
                     var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" target=_blank href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                    str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + i + ',trAttachidprev' + i + ',aeRFQFile' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + i + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + i + ',trAttachidprev' + rowAttach + ',aeRFQFile' + rowAttach + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                     jQuery('#tblAttachments').append(str);
                     
                 }
             }
           
-            else {
-                jQuery('#tblAttachmentsPrev').append("<tr><td>No Attachments!!</td></tr>")
-            }
+            
             
         },
         error: function (xhr, status, error) {
@@ -1201,52 +1201,6 @@ function addquestions() {
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
         jQuery("#txtreq").val('')
-
-        //var Questions = {
-        //    "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        //    "RFQQuestions": jQuery("#txtquestions").val(),
-        //    "RFQQuestionsRequirement": jQuery("#txtreq").val()
-        //}
-       
-        //jQuery.ajax({
-        //    type: "POST",
-        //    contentType: "application/json; charset=utf-8",
-        //    url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestions",
-        //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //    crossDomain: true,
-        //    async: false,
-        //    data: JSON.stringify(Questions),
-        //    dataType: "json",
-        //    success: function (data) {
-        //        //if (data.length > 0) {
-
-        //            if (data == "1") {
-        //                GetQuestions();
-        //                $('.alert-success').show();
-        //                $('#spansuccess1').html('Questions mapped successfully!');
-        //                Metronic.scrollTo($(".alert-success"), -200);
-        //                $('.alert-success').fadeOut(7000);
-        //                jQuery("#txtquestions").val('')
-        //                jQuery("#txtreq").val('')
-                       
-        //                return false;
-
-        //            }
-        //        //}
-
-        //    },
-        //    error: function (xhr, status, error) {
-
-        //        var err = eval("(" + xhr.responseText + ")");
-        //        if (xhr.status === 401) {
-        //            error401Messagebox(err.Message);
-        //        }
-
-        //        return false;
-        //        jQuery.unblockUI();
-        //    }
-
-        //});
     }
 }
 function deletequesrow(rowid, rowidPrev) {
@@ -1456,7 +1410,7 @@ function fetchRFIParameteronload() {
                     rowAppItems = rowAppItems + 1
                     rowAppItemsrno = rowAppItemsrno + 1;
                     jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button type=button class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type=button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
-                    jQuery('<tr id=tridprev' + i + '><td id=itemcodeprev' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpODate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
+                    jQuery('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
                 }
 
                 //for previe table
@@ -1884,8 +1838,6 @@ function RFQInviteVendorTab3() {
     var InsertQuery = '';
 
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
-
-        //InsertQuery = InsertQuery + " select " + sessionStorage.getItem("hddnRFQID") + "," + $.trim($(this).find('td:eq(0)').html()) + ",'" + $('#txtrfqSubject').val() + "',dbo.Decrypt('" + vendorID + "')," + $.trim($(this).find('td:eq(0)').html()) + ",'eRFQVendor.html?RFQID=" + sessionStorage.getItem("hddnRFQID") + "','N'," + sessionStorage.getItem('CustomerID') + ",getdate() union all "; //(convert(nvarchar(11),b.RFQClosureDate,103 )
         InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html())+','
     });
 
@@ -1898,8 +1850,7 @@ function RFQInviteVendorTab3() {
         "RFQDescription": jQuery('#txtrfqdescription').val(),
         "CustomerID":parseInt(sessionStorage.getItem('CustomerID'))
     };
-    //console.log(JSON.stringify(Tab3data))
-    //alert(JSON.stringify(Tab3data))
+    
     jQuery.ajax({
 
         type: "POST",
@@ -2138,20 +2089,13 @@ jQuery.ajax({
             jQuery('#txtstartdatettime').val(RFQData[0].general[0].rfqStartDate)
             jQuery('#txtenddatettime').val(RFQData[0].general[0].rfqEndDate)
             $("#cancelBidBtn").show();
+          
             if (RFQData[0].general[0].rfqTermandCondition != '') {
-				 $('#file1').attr('disabled', true);
+				$('#file1').attr('disabled', true);
                 $('#closebtn').removeClass('display-none');
-                replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
-                if (RFQData[0].general[0].rfqAttachment != '') {
-                    $('#file2').attr('disabled', true);
-                    $('#closebtn2').removeClass('display-none');
-
-                    
-                }
-            
-			}
-           // jQuery('#attach-file').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
-            $('#filepthterms').html(RFQData[0].general[0].rfqTermandCondition);
+                $('#attach-file').html(RFQData[0].general[0].rfqTermandCondition);
+            }
+           
          
         },
         error: function (xhr, status, error) {
@@ -2168,8 +2112,11 @@ jQuery.ajax({
     jQuery.unblockUI();
 }
 function DownloadFile(aID) {
+   
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ', sessionStorage.getItem('hddnRFQID'));
 }
+
+//*** File delete from Blob or DB 
 function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
    
     var data = {
@@ -2182,10 +2129,9 @@ function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-           
-            if (deletionFor == 'eRFQTerms') {
+         success: function (data, status, jqXHR) {
+            
+        if (deletionFor == 'eRFQTerms') {
                 fileDeletefromdb(closebtnid, fileid, filepath, deletionFor);
                 $('#' + filepath).html('')
                 $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
@@ -2211,18 +2157,18 @@ function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
 }
 
 function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
-    if (deletionFor == 'eRFQTerms') {
+   
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')
         $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
         $('#' + fileid).attr('disabled', false);
-    }
+ 
     var Attachments = {
-        "SrNo": parseInt($('#' + srno).html()),
+        "SrNo": 0,
         "DeletionFor": deletionFor,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
     }
-   // alert(JSON.stringify(Attachments))
+  //  alert(JSON.stringify(Attachments))
     jQuery.ajax({
 
         type: "POST",

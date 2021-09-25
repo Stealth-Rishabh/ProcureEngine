@@ -750,7 +750,7 @@ function fetchvendor() {
     });
 }
 
-function updateMsgReadFlag(bidId, vendorId,forUpdate) {
+function updateMsgReadFlag(bidId, vendorId, forUpdate) {
     //alert(index)
     var data = {
         "BidId": bidId,
@@ -771,88 +771,108 @@ function updateMsgReadFlag(bidId, vendorId,forUpdate) {
 
         },
         error: function (xhr, status, error) {
-              
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            else{
+            else {
                 alert('error in update')
             }
             jQuery.unblockUI();
         }
-        
+
     })
 }
-function fnUploadFilesonAzure(TermsConditionFileName,eventid,foldername) {
-    var Tab1Data = {
-
-        "filename": TermsConditionFileName,
-        "eventid": parseInt(eventid),
-        "foldername": foldername
-    }
-    // console.log(JSON.stringify(Tab1Data))
+//** upload Files on Blob/Portaldocs
+function fnUploadFilesonAzure(fileID, filename, foldername) {
+ 
+    var formData = new FormData();
+    formData.append('file', $('#' + fileID)[0].files[0]);
+    formData.append('foldername', foldername);
+    
     jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(Tab1Data),
-        dataType: "json",
-        success: function (data) {
-            return;
-        }
-    });
-
-}
-function fnDownloadAttachments(filename, foldername, eventid) {
-    foldername = foldername + '/' + eventid
-    //var downloadwindow = window.open(jQuery.ajax({
-    //    contentType: "application/json; charset=utf-8",
-    //    url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
-    //    type: "GET",
-    //    cache: false,
-    //    crossDomain: true,
-    //    dataType: "json",
-    //    success: function (data) {
-          
-    //    }
-    //}) + "/" + filename,"_blank");
-
-    var downloadwindow = window.open(sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername
-           + "/" + filename,"_blank");
-    downloadwindow.focus();
-}
-
-//,
-        //error: function (xhr, status, error) {
-        //    // alert('error')
-        //    var err = eval("(" + xhr.responseText + ")");
-        //    if (xhr.status === 401) {
-        //        error401Messagebox(err.Message);
-        //    }
-        //    jQuery.unblockUI();
-        //}
-function fnFileDeleteLocalfolder(path) {
-    var formData = new window.FormData();
-    formData.append("Path", path);
-    $.ajax({
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
         type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
         success: function (data) {
+          //  alert('success')
             return;
         },
-        error: function () {
-            console.log('Error in deletion in file from local path')
+        error: function (xhr, status, error) {
+            $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
+                Metronic.scrollTo(error, -200);
+                $(".alert-danger").show();
+                $(".alert-danger").fadeOut(5000);
+                jQuery.unblockUI();
+            
         }
-
     });
 }
+//function fnUploadFilesonBlob(FileName,foldername,flag) {
+//    var Tab1Data = {
+
+//        "filename": FileName,
+//        "foldername": foldername
+//    }
+//    // console.log(JSON.stringify(Tab1Data))
+//    jQuery.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFilesonBlob/",
+//        cache: false,
+//        crossDomain: true,
+//        data: JSON.stringify(Tab1Data),
+//        dataType: "json",
+//        success: function (data) {
+//            //** Delete Files in Local Folder
+//            //if (flag == "Bid")
+//            //{
+//            //    fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + FileName)
+//            //}
+           
+//            return;
+//        },
+//        error: function (xhr, status, error) {
+//            $(".alert-danger").find("span").html('').html(FileName+" Couldn't upload successfully on Azure")
+//            Metronic.scrollTo(error, -200);
+//            $(".alert-danger").show();
+//            $(".alert-danger").fadeOut(5000);
+//            jQuery.unblockUI();
+            
+//        }
+//    });
+
+//}
+
+//** DownLoad Files from Blob
+function fnDownloadAttachments(filename, foldername, eventid) {
+    foldername = foldername + '/' + eventid
+    
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        success: function (data) {
+           
+            var downloadwindow = window.open(data, "_blank");
+            downloadwindow.focus();
+        },
+        error: function () {
+            $(".alert-danger").find("span").html('').html(filename + " Couldn't download successfully from Azure");
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI();
+        }
+    }) 
+
+}
+
+//** Delete Files from Blob
 function fnFileDeleteAzure(filename, foldername) {
     var data = {
         "filename": filename,
@@ -866,9 +886,36 @@ function fnFileDeleteAzure(filename, foldername) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             return;
+        },
+        error: function (xhr, status, error) {
+            $(".alert-danger").find("span").html('').html(filename + " Couldn't deleted successfully from Azure");
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI();
         }
     })
 }
+//function fnFileDeleteLocalfolder(path) {
+//    var formData = new window.FormData();
+//    formData.append("Path", path);
+//    $.ajax({
+//        url: 'ConfigureFileAttachment.ashx',
+//        data: formData,
+//        processData: false,
+//        contentType: false,
+//        asyc: false,
+//        type: 'POST',
+//        success: function (data) {
+//            return;
+//        },
+//        error: function () {
+//            console.log('Error in deletion in file from local path')
+//        }
+
+//    });
+//}
+
 function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());

@@ -41,7 +41,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
-            // addApprovers();
+            
            fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
             
         }
@@ -1164,25 +1164,23 @@ function ConfigureBidForSeaExportTab1() {
 
         success: function (data) {
 
-            //** Upload Files in Local Folder
-            fileUploader(parseInt(data))
-
-            if ($('#ddlAuctiontype option:selected').val() =="83"){
+           
+            if ($('#ddlAuctiontype option:selected').val() == "83") {
                 $('#checkmaskL1price').val("Y").attr("disabled", true);
                 $("#tblServicesProduct tr:gt(0)").each(function () {
                     var this_row = $(this);
-                    $("#" +this_row.id).find("td:eq(14)").text("Y")
+                    $("#" + this_row.id).find("td:eq(14)").text("Y")
                 });
             }
-            else{
+            else {
                 $('#checkmaskL1price').val("N").attr("disabled", false);
             }
-        if ($('#ddlbidclosetype option:selected').val() == "S") {
+            if ($('#ddlbidclosetype option:selected').val() == "S") {
                 $('.itemclass').removeClass('hide')
             }
             else {
                 $('.itemclass').addClass('hide')
-                 $('.itemclass').val(0)
+                $('.itemclass').val(0)
             }
             if (window.location.search) {
                 var param = getUrlVars()["param"]
@@ -1193,13 +1191,16 @@ function ConfigureBidForSeaExportTab1() {
                 sessionStorage.setItem('CurrentBidID', parseInt(data))
             }
 
-            //** Upload Files on Azure
-            fnUploadFilesonAzure(TermsConditionFileName, sessionStorage.getItem('CurrentBidID'), 'Bid/' + sessionStorage.getItem('CurrentBidID'));
-            fnUploadFilesonAzure(AttachementFileName, sessionStorage.getItem('CurrentBidID'), 'Bid/' + sessionStorage.getItem('CurrentBidID'));
+            //** Upload Files on Azure PortalDocs folder
+            if ($('#file1').val() != '') {
+                fnUploadFilesonAzure('file1',TermsConditionFileName, 'Bid/' + sessionStorage.getItem('CurrentBidID'));
+               
+            }
+            if ($('#file2').val() != '') {
+                fnUploadFilesonAzure('file2',AttachementFileName, 'Bid/' + sessionStorage.getItem('CurrentBidID'));
+               
+            }
 
-            //** Delete Files in Local Folder
-            fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + AttachementFileName)
-            fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + TermsConditionFileName)
         },
        
         error: function (xhr, status, error) {
@@ -1216,38 +1217,29 @@ function ConfigureBidForSeaExportTab1() {
     jQuery.unblockUI();
 
 }
-
+//*** File delete from Blob or DB 
 function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-  
     var data = {
         "filename": $('#' + filepath).html(),
         "foldername": 'Bid/' + sessionStorage.getItem('CurrentBidID')
 
     }
+    
     //console.log(JSON.stringify(data))
     $.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DeleteFiles/",
-        //beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-        
-            fileDeletefromdb(closebtnid, fileid, filepath, deletionFor);
 
-                $('#' + filepath).html('')
-                $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
-                $('#' + fileid).attr('disabled', false);
-                $('#spansuccess1').html('File Deleted Successfully');
-                success.show();
-                Metronic.scrollTo(success, -200);
-                success.fadeOut(5000);
-           
-        },
+        //** file delete from DB
+                fileDeletefromdb(closebtnid, fileid, filepath, deletionFor);
+         },
         error: function () {
-             $(".alert-danger").find("span").html('').html('Error in file deletion.')
+            $(".alert-danger").find("span").html('').html($('#' + filepath).html() + " Couldn't deleted successfully on Azure");
              Metronic.scrollTo(error, -200);
              $(".alert-danger").show();
              $(".alert-danger").fadeOut(5000);
@@ -1283,12 +1275,15 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
         data: JSON.stringify(BidData),
         dataType: "json",
         success: function (data) {
-            if (data == '1') {
-                $('#spansuccess1').html('File Deleted Successfully');
-                success.show();
-                Metronic.scrollTo(success, -200);
-                success.fadeOut(5000);
-            }
+            $('#' + filepath).html('')
+            $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
+            $('#' + fileid).attr('disabled', false);
+            $('#spansuccess1').html('File Deleted Successfully');
+            success.show();
+            Metronic.scrollTo(success, -200);
+            success.fadeOut(5000);
+            jQuery.unblockUI();
+           
         },
         error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
@@ -1547,63 +1542,6 @@ function ConfigureBidForSeaExportandSave() {
 }
 
 
-
-function fileUploader(bidID) {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file2').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-
-    var fileAnyOther = $('#file2');
-    var fileDataAnyOther = fileAnyOther.prop("files")[0];
-
-
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-
-    formData.append("fileAnyOther", fileDataAnyOther);
-
-    formData.append("AttachmentFor", 'Bid');
-
-    formData.append("BidID", bidID);
-   // formData.append("VendorID", '');
-
-
-
-    $.ajax({
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-
-        contentType: false,
-
-        asyc: false,
-
-        type: 'POST',
-
-        success: function(data) {
-            jQuery.unblockUI();
-        },
-
-        error: function() {
-
-            bootbox.alert("Attachment error.");
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
 
 $("#txtbidDate").change(function() {
 
@@ -2085,7 +2023,7 @@ function ParametersQuery() {
             $('.itemclass').val(0)
         }
     $('#wrap_scrollerPrev').show();
-    //PriceDetails = PriceDetails + " select " + sessionStorage.getItem('CurrentBidID') + ",'" + $('#txtdestinationPort').val() + "','" + "," + $('#txtbiddescriptionP').val() + "," + $('#txttargetprice').val() + "'," + $('#txtquantitiy').val() +"',"+ $('#txtCeilingPrice').val() + "','" + status + "','" + $('#txtminimumdecreament').val() + "','" + $('#drpdecreamenton').val() + "," + $("#txtlastinvoiceprice").val() + "' union";
+    
     resetfun()
 
 }
@@ -2398,10 +2336,7 @@ function removevendorfrmDB(vendorid) {
                 $("#SelecetedVendorPrev" + vendorid).remove();
                 $("#chkvender" + vendorid).prop("disabled", false);
                 $("#chkvender" + vendorid).closest("span#spanchecked").removeClass("checked")
-                //$('#spansuccess1').html('File Deleted Successfully');
-                //success.show();
-                //Metronic.scrollTo(success, -200);
-                //success.fadeOut(5000);
+                
             }
         },
         error: function (xhr, status, error) {

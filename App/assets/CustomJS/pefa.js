@@ -1062,8 +1062,7 @@ function ConfigureBidInsPefaTab1() {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            //** Upload Files in Local Folder
-            fileUploader(parseInt(data))
+           
 
             if (window.location.search) {
                 var param = getUrlVars()["param"]
@@ -1116,14 +1115,17 @@ function ConfigureBidInsPefaTab1() {
                    // $("#lbllastSalePrice").html('').html('Last Purchase Price');
                 }
             }
-           
-            //** Upload Files on Azure
-            fnUploadFilesonAzure(TermsConditionFileName, sessionStorage.getItem('CurrentBidID'), 'Bid/' + sessionStorage.getItem('CurrentBidID'));
-            fnUploadFilesonAzure(AttachementFileName, sessionStorage.getItem('CurrentBidID'), 'Bid/' + sessionStorage.getItem('CurrentBidID'));
 
-            //** Delete Files in Local Folder
-            fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + AttachementFileName)
-            fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + TermsConditionFileName)
+            //** Upload Files on Azure PortalDocs folder
+            if ($('#file1').val() != '') {
+                fnUploadFilesonAzure('file1',TermsConditionFileName, 'Bid/' + sessionStorage.getItem('CurrentBidID'));
+
+            }
+            if ($('#file2').val() != '') {
+                fnUploadFilesonAzure('file2',AttachementFileName, 'Bid/' + sessionStorage.getItem('CurrentBidID'));
+
+            }
+            
             
         },
         error: function (xhr, status, error) {
@@ -1337,68 +1339,6 @@ function ConfigureBidInsPefaTab3() {
         });
     }
 
-
-}
-
-
-function fileUploader(bidID) {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file2').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-
-    var fileAnyOther = $('#file2');
-
-    var fileDataAnyOther = fileAnyOther.prop("files")[0];
-
-
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-
-    formData.append("fileAnyOther", fileDataAnyOther);
-
-    formData.append("AttachmentFor", 'Bid');
-
-    formData.append("BidID", bidID);
-    formData.append("VendorID", '');
-
-
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-
-        data: formData,
-
-        processData: false,
-
-        contentType: false,
-
-        asyc: false,
-
-        type: 'POST',
-
-        success: function (data) {
-            jQuery.unblockUI();
-        },
-
-        error: function () {
-
-            bootbox.alert("Attachment error.");
-            jQuery.unblockUI();
-        }
-
-    });
 
 }
 
@@ -2161,7 +2101,7 @@ function editvalues(rowid, rowidPrev) {
 }
 
 function deleterow(rowid, rowidPrev) {
-    ajaxFileDelete('', 'fileattachment', 'PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + $.trim($("#" + rowid.id).find('td:eq(15)').text()) + '/' + $.trim($("#" + rowid.id).find('td:eq(12)').text()).replace(/%20/g, " "), 'ParameterFiles')
+   
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
 
@@ -2472,40 +2412,31 @@ function fetchScrapSalesBidDetails() {
 }
 
 
-
+//*** File delete from Blob or DB 
 function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
    
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
-   
-    var data = {
+     var data = {
         "filename": $('#' + filepath).html(),
         "foldername": 'Bid/' + sessionStorage.getItem('CurrentBidID')
 
     }
     $.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DeleteFiles/",
-        //beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-      
+            //** file delete from DB
             fileDeletefromdb(closebtnid, fileid, filepath, deletionFor);
-            $('#' + filepath).html('')
-            $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
-            $('#' + fileid).attr('disabled', false);
-            $('#spansuccess1').html('File Deleted Successfully');
-            success.show();
-            Metronic.scrollTo(success, -200);
-            success.fadeOut(5000);
-            jQuery.unblockUI();
         },
 
         error: function () {
-
-            bootbox.alert("Attachment error.");
+            $(".alert-danger").find("span").html('').html($('#' + filepath).html() + " Couldn't deleted successfully on Azure");
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
             jQuery.unblockUI();
         }
 
@@ -2540,10 +2471,14 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
         dataType: "json",
         success: function (data) {
             if (data == '1') {
+                $('#' + filepath).html('')
+                $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
+                $('#' + fileid).attr('disabled', false);
                 $('#spansuccess1').html('File Deleted Successfully');
                 success.show();
                 Metronic.scrollTo(success, -200);
                 success.fadeOut(5000);
+                jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {

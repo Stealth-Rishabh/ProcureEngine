@@ -4,7 +4,7 @@ Changepassworderror.hide();
 Changepasswordsuccess.hide();
 
 function handleChangePasword() {
-   
+
     $('#ChangePasswordfrm').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
@@ -46,7 +46,7 @@ function handleChangePasword() {
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
@@ -82,8 +82,8 @@ function ChangePassword() {
             "NewPassword": $("#nPassword").val(),
             "UserType": sessionStorage.getItem("UserType")
         }
-     // alert(JSON.stringify(data));
-       
+        // alert(JSON.stringify(data));
+
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             type: "POST",
@@ -92,7 +92,7 @@ function ChangePassword() {
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
                 if (data == "1") {
-                   
+
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
                     Changepasswordsuccess.fadeOut(5000);
@@ -107,15 +107,15 @@ function ChangePassword() {
                 }
             },
             error: function (xhr, status, error) {
-              
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
-                        error401Messagebox(err.Message);
-                    }
-                    jQuery.unblockUI();
-                }
 
-            
+                var err = eval("(" + xhr.responseText + ")");
+                if (xhr.status === 401) {
+                    error401Messagebox(err.Message);
+                }
+                jQuery.unblockUI();
+            }
+
+
 
         });
     }
@@ -123,11 +123,11 @@ function ChangePassword() {
 }
 
 function clearResetForm() {
-        $('#nPassword').val('');
-        $('#reEnterPass').val('');
-        $('#oPassword').val('');
-    }
-function fnOpenLink(linkurl,isobserver) {
+    $('#nPassword').val('');
+    $('#reEnterPass').val('');
+    $('#oPassword').val('');
+}
+function fnOpenLink(linkurl, isobserver) {
     sessionStorage.setItem('IsObserver', isobserver);
     window.location = linkurl;
 }
@@ -158,12 +158,12 @@ function fnArchive(RFQID) {
         "RFQID": parseInt(RFQID),
         "UserID": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-       
+
     }
     // alert(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/ArchiveObserverRFQ/",
-         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + Token); },
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + Token); },
         type: "POST",
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
@@ -171,15 +171,15 @@ function fnArchive(RFQID) {
             if (data == "1") {
                 fetchDashboardData();
             }
-           
+
         },
-       
-            error: function (xhr, status, error) {
-               var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
-                    error401Messagebox(err.Message);
-                }
-            
+
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+
             jQuery.unblockUI();
         }
     })
@@ -195,7 +195,7 @@ function fetchDashboardData_old() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-        
+
             jQuery('#lblTodayBidCount').text(BidData[0].TodayBid[0].noofBid)
             jQuery('#lblNotForwardedBidCount').text(BidData[0].NotForwarded[0].noofBid)
             jQuery('#lblForwardedBidCount').text(BidData[0].Forwarded[0].NoofBid)
@@ -209,10 +209,10 @@ function fetchDashboardData_old() {
             jQuery("#UlPendingActivity").empty();
             $('#pendingact').text("Pending Activities (" + BidData[0].PendingActivity.length + ")")
             if (BidData[0].PendingActivity.length > 0) {
-               
+
                 for (var i = 0; i < BidData[0].PendingActivity.length; i++) {
                     //fnEnryptURL(BidData[0].PendingActivity[i].LinkURL)
-                   
+
                     //                    str = "<li><a href='BidSummarySea.html?BidID=" + BidData[i].BidID + "&BidTypeID=" + BidData[i].BidTypeID + "&BidForID=" + BidData[i].BidForID + "&CActive=Y'>";
                     str = "<li><a style='text-decoration:none;' href='javascript:;' onclick=fnOpenLink(\'" + BidData[0].PendingActivity[i].LinkURL + "'\,\'" + BidData[0].PendingActivity[i].isPPCObserver + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
@@ -227,17 +227,17 @@ function fetchDashboardData_old() {
                     //}
                     //else {
                     //    str += "<div class='col2'>";
-                   // }
+                    // }
                     str += "<div class='date'><span class='label label-sm label-info'>" + BidData[0].PendingActivity[i].ReceiptDt + "</span></div></div>";
                     str += "</li>";
                     jQuery('#UlPendingActivity').append(str);
 
-			if (BidData[0].PendingActivity[i].BidTypeName == 'Air (Import)') {
+                    if (BidData[0].PendingActivity[i].BidTypeName == 'Air (Import)') {
                         $('#icon' + i).addClass('fa fa-plane');
                     } else if (BidData[0].PendingActivity[i].BidTypeName == 'Sea (Import)') {
                         $('#icon' + i).addClass('fa fa-anchor');
                     } else if (BidData[0].PendingActivity[i].BidTypeName == 'Warehouse') {
-                            $('#icon' + i).addClass('fa fa-truck');
+                        $('#icon' + i).addClass('fa fa-truck');
                     } else if (BidData[0].PendingActivity[i].BidTypeName == 'VQ') {
                         jQuery('#icon' + i).addClass('fa fa-question-circle');
                     } else if (BidData[0].PendingActivity[i].BidTypeName == 'RFI') {
@@ -282,19 +282,19 @@ function fetchDashboardData_old() {
                     str += "<div class='date'>" + BidData[0].TodayBidStatus[i].BidStatus + "</div></div>";
                     str += "</a></li>";
                     jQuery('#all_pending_bids_list').append(str);
-                    
+
                     if (BidData[0].TodayBidStatus[i].BidTypeName == 'Air (Import)') {
                         $('#iconbid_all' + i).addClass('fa fa-plane');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Sea (Import)') {
-                    $('#iconbid_all' + i).addClass('fa fa-anchor');
+                        $('#iconbid_all' + i).addClass('fa fa-anchor');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Warehouse') {
 
-                    $('#iconbid_all' + i).addClass('fa fa-truck');
+                        $('#iconbid_all' + i).addClass('fa fa-truck');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'VQ') {
-                    jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
+                        jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
                     }
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'RFQ') {
-                    $('#iconbid_all' + i).addClass('fa fa-envelope-o');
+                        $('#iconbid_all' + i).addClass('fa fa-envelope-o');
                     }
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'eRFQ') {
                         $('#iconbid_all' + i).addClass('fa fa-envelope-o');
@@ -302,9 +302,9 @@ function fetchDashboardData_old() {
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'RFI') {
                         $('#iconbid_all' + i).addClass('fa fa-envelope-o');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Product/ Services') {
-                    $('#iconbid_all' + i).addClass('fa fa-cogs');
+                        $('#iconbid_all' + i).addClass('fa fa-cogs');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Domestic') {
-                    $('#iconbid_all' + i).addClass('fa fa-home');
+                        $('#iconbid_all' + i).addClass('fa fa-home');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Forward Auction') {
                         $('#iconbid_all' + i).addClass('fa fa-forward');
                     }
@@ -323,11 +323,11 @@ function fetchDashboardData_old() {
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData[0].TodayBidStatus.length + ")")
             if (BidData[0].TodayBidStatus.length > 0) {
-                
+
                 for (var i = 0; i < BidData[0].TodayBidStatus.length; i++) {
-                   
+
                     str = "<li><a href='" + BidData[0].TodayBidStatus[i].LinkURL + "'>";
-                    
+
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbid" + i + "></i></div></div>";
                     str += "<div class='cont-col2'><div class='desc'>" + BidData[0].TodayBidStatus[i].ActivityDescription + "&nbsp;&nbsp;";
@@ -337,13 +337,13 @@ function fetchDashboardData_old() {
                     str += "<div class='date'>" + BidData[0].TodayBidStatus[i].BidStatus + "</div></div>";
                     str += "</a></li>";
                     jQuery('#ulList').append(str);
-                    
-		   if (BidData[0].TodayBidStatus[i].BidTypeName == 'Air (Import)') {
+
+                    if (BidData[0].TodayBidStatus[i].BidTypeName == 'Air (Import)') {
                         $('#iconbid' + i).addClass('fa fa-plane');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Sea (Import)') {
                         $('#iconbid' + i).addClass('fa fa-anchor');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Warehouse') {
-                       
+
                         $('#iconbid' + i).addClass('fa fa-truck');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'VQ') {
                         jQuery('#iconbid' + i).addClass('fa fa-question-circle');
@@ -351,7 +351,7 @@ function fetchDashboardData_old() {
                         jQuery('#iconbid' + i).addClass('fa fa-envelope-o');
                     }
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'RFQ') {
-                    $('#iconbid' + i).addClass('fa fa-envelope-o');
+                        $('#iconbid' + i).addClass('fa fa-envelope-o');
                     }
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'eRFQ') {
                         $('#iconbid' + i).addClass('fa fa-envelope-o');
@@ -361,13 +361,13 @@ function fetchDashboardData_old() {
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Domestic') {
                         $('#iconbid' + i).addClass('fa fa-home');
                     } else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Forward Auction') {
-                    $('#iconbid' + i).addClass('fa fa-forward');
+                        $('#iconbid' + i).addClass('fa fa-forward');
                     }
                     else if (BidData[0].TodayBidStatus[i].BidTypeName == 'Reverse Auction') {
 
                         $('#iconbid' + i).addClass('fa fa-gavel');
                     }
-		
+
                 }
             }
             else {
@@ -380,13 +380,13 @@ function fetchDashboardData_old() {
                         //jQuery('#spanOpen').html(BidData[0].TodayBidStatusCount[i].BidCount)
                     }
                     else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Not Forwarded") {
-                       // jQuery('#spanNotForwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
+                        // jQuery('#spanNotForwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
                     }
                     else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Forwarded") {
                         ////jQuery('#spanForwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
                     }
                     else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Awarded") {
-                       //jQuery('#spanAwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
+                        //jQuery('#spanAwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
                     }
                 }
             }
@@ -395,9 +395,9 @@ function fetchDashboardData_old() {
         },
         error: function (xhr, status, error) {
 
-            
+
             var err = eval("(" + xhr.responseText + ")");
-          
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -407,7 +407,7 @@ function fetchDashboardData_old() {
     });
 }
 function fetchBidDataDashboard_old(requesttype) {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (requesttype == 'Today') {
         //jQuery('#spanPanelCaption').html("Today's Open Bids");
@@ -440,21 +440,21 @@ function fetchBidDataDashboard_old(requesttype) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-           
+
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData.length + ")")
             if (BidData.length > 0) {
                 if (requesttype == 'Today') {
                     for (var i = 0; i < BidData.length; i++) {
-                       
+
                         str = "<li><a href='" + BidData[i].LinkURL + "'>";
-                        
+
                         str += "<div class='col1'><div class='cont'>";
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].ActivityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].BidTypeName + "</span>";
                         str += "</div></div></div></div>";
-                       
+
                         str += "<div class='col2'>";
                         str += "<div class='date'>" + BidData[i].BidStatus + "</div></div>";
                         str += "</a></li>";
@@ -471,10 +471,10 @@ function fetchBidDataDashboard_old(requesttype) {
                             jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
                         } else if (BidData[i].BidTypeName == 'RFI') {
                             jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
-                         
+
                         } else if (BidData[i].BidTypeName == 'Product/ Services') {
                             $('#iconbidd' + i).addClass('fa fa-cogs');
-                        
+
                         } else if (BidData[i].BidTypeName == 'Forward Auction') {
 
                             $('#iconbidd' + i).addClass('fa fa-forward');
@@ -487,7 +487,7 @@ function fetchBidDataDashboard_old(requesttype) {
                 }
                 else {
                     for (var i = 0; i < BidData.length; i++) {
-                        
+
                         str = "<li><a href='" + BidData[i].LinkURL + "'>";
                         str += "<div class='col1'><div class='cont'>";
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
@@ -542,7 +542,7 @@ function fetchBidDataDashboard_old(requesttype) {
         },
         error: function (xhr, status, error) {
 
-           
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -569,13 +569,13 @@ function fetchDashboardData() {
             jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
             jQuery('#lblForwardedBidCount').text(BidData[0].bidcnt[0].forwarded)
             jQuery('#lblAwardedBidCount').text(BidData[0].bidcnt[0].awarded)
-            
-            jQuery('#lblopenRFQCount').text(BidData[0].todayBidRFx.noofBid)
-            jQuery('#lblNotFwRFQCount').text(BidData[0].notForwardedRFx.noofBid)
-            jQuery('#lblFwRFQCount').text(BidData[0].forwardedRFx.noofBid)
-            jQuery('#lblAwRFQCount').text(BidData[0].approvedRFx.noofBid)
 
-            
+            jQuery('#lblopenRFQCount').text(BidData[0].rFxcnt[0].todayRFx)
+            jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
+            jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
+            jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+
+
 
             jQuery("#UlPendingActivity").empty();
             $('#pendingact').text("Pending Activities (" + BidData[0].pendingActivity.length + ")")
@@ -609,12 +609,12 @@ function fetchDashboardData() {
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
                         $('#icon' + i).addClass('fa fa-envelope-o');
                     }
-                   else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
                         $('#icon' + i).addClass('fa fa-forward');
                     }
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
                         $('#icon' + i).addClass('fa fa-gavel');
-                    } 
+                    }
                 }
             }
             else {
@@ -710,22 +710,7 @@ function fetchDashboardData() {
                 jQuery('#ulList').append("<tr><td colspan='8' style='text-align: center; color:red;'>No bid is configured for today.</td></tr>");
             }
 
-            //if (BidData[0].TodayBidStatusCount.length > 0) {
-            //    for (var i = 0; i < BidData[0].TodayBidStatusCount.length; i++) {
-            //        if (BidData[0].TodayBidStatusCount[i].BidStatus == "Open") {
-            //            //jQuery('#spanOpen').html(BidData[0].TodayBidStatusCount[i].BidCount)
-            //        }
-            //        else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Not Forwarded") {
-            //            // jQuery('#spanNotForwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
-            //        }
-            //        else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Forwarded") {
-            //            ////jQuery('#spanForwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
-            //        }
-            //        else if (BidData[0].TodayBidStatusCount[i].BidStatus == "Awarded") {
-            //            //jQuery('#spanAwarded').html(BidData[0].TodayBidStatusCount[i].BidCount)
-            //        }
-            //    }
-            //}
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -754,7 +739,7 @@ function fetchBidDataDashboard(requesttype) {
         jQuery('#spanPanelCaption').html("Approved Bids");
     }
     else if (requesttype == 'TodayRFQ') {
-        jQuery('#spanPanelCaption').html("Opne RFx");
+        jQuery('#spanPanelCaption').html("Open RFx");
     }
     else if (requesttype == 'Not ForwardedRFQ') {
         jQuery('#spanPanelCaption').html("Not Forwarded RFx");
@@ -870,14 +855,14 @@ function fetchBidDataDashboard(requesttype) {
 }
 
 
-function showErrorMsg() { 
+function showErrorMsg() {
     bootbox.alert("You can not proceed further while current bid is running.");
 }
 
 
 jQuery("#searchPendingActivities").keyup(function () {
 
-   
+
     jQuery("#UlPendingActivity li:has(div)").hide(); // Hide all the rows.
 
     var iCounter = 0;
