@@ -200,16 +200,9 @@ function acceptRevertPO() {
                 else {
                     msz = "This PO is now reverted to Admin.";
                 }
-                //**  File upload in local folder
-                fileUploader()
-                setTimeout(function () {
-                //** Upload Files on Azure
-                    fnUploadFilesonAzure(attchname, sessionStorage.getItem('hddnPOHID'), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
-                }, 1000)
-
-                //** Delete Files in Local Folder
-                fnFileDeleteLocalfolder('PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + "/" + sessionStorage.getItem('VendorId')+"/"+AttachementFileName)
-
+                //** Upload Files on Azure PortalDocs folder first Time
+                fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID'));
+                
                 bootbox.alert(msz, function () {
                     window.location = "VendorHome.html";
                     return false;
@@ -234,47 +227,7 @@ function acceptRevertPO() {
         }
     });
 }
-function fileUploader() {
 
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", '');
-    formData.append("AttachmentFor", 'PO');
-    formData.append("BidID", sessionStorage.getItem('hddnPOHID'));
-    formData.append("VendorID", sessionStorage.getItem('VendorId'));
-    formData.append("Version", '');
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-        }
-
-    });
-
-}
 function FetchRecomendedVendor() {
 
     jQuery.ajax({
@@ -297,11 +250,11 @@ function FetchRecomendedVendor() {
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].attachment.replace(/\s/g, "%20");
                     if (data[i].vendorName != "") {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + '/' + data[0].vvendorID + '/' + attach + '>' + data[i].attachment + '</a></td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" id=POHistory' + i +' onclick="DownloadFile(this)" href="javascript:;">' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/PO/' + sessionStorage.getItem('hddnPOHID') + '/' + data[0].vendorID + '/' + attach + '>' + data[i].attachment + '</a></td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td><td><a id=POHistory' + i +' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)">' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').addClass('hide')
                     }
 
@@ -332,4 +285,7 @@ function FetchRecomendedVendor() {
         }
     });
 
+}
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
 }

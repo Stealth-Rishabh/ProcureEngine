@@ -2309,7 +2309,7 @@ function fetchSeaExportDetails() {
 
 }
 function DownloadFile(aID) {
-   fnDownloadAttachments($("#" + aID.id).html(), 'Bid', sessionStorage.getItem('CurrentBidID'));
+   fnDownloadAttachments($("#" + aID.id).html(), 'Bid/'+sessionStorage.getItem('CurrentBidID'));
 }
 function removevendorfrmDB(vendorid) {
   

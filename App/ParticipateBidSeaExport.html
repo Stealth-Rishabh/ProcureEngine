@@ -315,16 +315,14 @@
                                             <label class="col-md-2 control-label">
                                                 Terms & Condition:
                                             </label>
-                                            
-                                                <a id="lnkTermsAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                              <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
                                           
-                                       
                                         </div>
                                         <div class="form-control">
                                             <label class="col-md-2 control-label">
                                                 Attachment (Any Other):
                                             </label>
-                                            <a id="lnkAnyOtherAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                            <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
                                         </div>
                                     </div>
                             </div>
@@ -336,7 +334,7 @@
                         <div class="portlet box blue-hoki">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i><!--Bid Participation-->
+                                    <i class="fa fa-reorder"></i>
                                     Bid Participation Details
                                 </div>
                                 <div class="tools">
@@ -359,9 +357,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="tblParticipantsService"></table>
                                         </div>
-                                        <!--<button id="btnsubmit" style="display:none" type="button" class="btn yellow col-lg-offset-5" onclick="InsUpdQuoteSeaExport()">
-                                            Submit
-                                        </button>-->
+                                        
                                         <table class="table table-bordered" id="tblParticipantsServiceBeforeStartBid"></table>
                                         * Bidding may get disabled in the last few seconds. Please put your bid well in time.  
                                     </div>

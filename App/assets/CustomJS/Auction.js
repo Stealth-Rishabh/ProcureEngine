@@ -848,10 +848,9 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //}
 
 //** DownLoad Files from Blob
-function fnDownloadAttachments(filename, foldername, eventid) {
-    foldername = foldername + '/' + eventid
-    
-    jQuery.ajax({
+function fnDownloadAttachments(filename, foldername) {
+  
+        jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
         type: "GET",
         cache: false,

@@ -10,8 +10,7 @@ sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
    
-    var replaced1 = '';
-
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID + "&CustomerID=0&UserID=",
@@ -43,10 +42,7 @@ function fetchReguestforQuotationDetailseRFQ() {
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
                 
-                if (data[0].rfqTermandCondition != '') {
-                    replaced1 = data[0].rfqTermandCondition.replace(/\s/g, "%20")
-                }
-                jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + RFQID + '/' + replaced1).html(data[0].rfqTermandCondition)
+                jQuery('#TermCondition').html(data[0].rfqTermandCondition)
             }
             else {
                 bootbox.alert("This RFQ has already expired !!!", function () {
@@ -62,7 +58,9 @@ function fetchReguestforQuotationDetailseRFQ() {
     });
     jQuery.unblockUI();
 }
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + RFQID);
+}
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 

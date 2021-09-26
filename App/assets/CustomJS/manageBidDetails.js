@@ -387,13 +387,13 @@ function deletePEFAquote() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            //** delete Existing File (if any) on Azure
-            fnFileDeleteAzure(AttachementFileName, 'MangeBid/' + $('#ddlbid').val())
+           //** Upload Files on Azure PortalDocs folder
+            if ($('#fileToUpload').val() != '')
+            {
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
+            }
             if (data == "1") {
-
-                 //** Upload Files in Local Folder
-                fileUploaderQuotes($('#ddlbid').val())
 
                 success1.show();
                 $('#spansuccess1').html("Quoted Price deleted Successfully..");
@@ -404,11 +404,6 @@ function deletePEFAquote() {
                 $('#txtremarks').val('')
                 $('#fileToUpload').val('')
 
-                //** Upload Files on Azure
-                fnUploadFilesonAzure(AttachementFileName, $('#ddlbid').val(), 'Bid/' + $('#ddlbid').val());
-
-                //** Delete Files in Local Folder
-                fnFileDeleteLocalfolder('PortalDocs/ManageBid/' + $('#ddlbid').val() + "/" + AttachementFileName)
             }
             else if (data == "99") {
                 $('#deletepopup').modal('hide')
@@ -455,8 +450,7 @@ function deletePSquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    //console.log(JSON.stringify(QuoteProduct))
-    //alert(JSON.stringify(QuoteProduct))
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePSQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -464,12 +458,14 @@ function deletePSquote() {
         data: JSON.stringify(QuoteProduct),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //** delete Existing File (if any) on Azure
-            fnFileDeleteAzure(AttachementFileName, 'MangeBid/' + $('#ddlbid').val())
+            
 
             if (data == "1") {
-                //** Upload Files in Local Folder
-                fileUploaderQuotes($('#ddlbid').val())
+                //** Upload Files on Azure PortalDocs folder
+                if ($('#fileToUpload').val() != '') {
+                    fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+                }
                
                 success1.show();
                 $('#spansuccess1').html("Quoted Price deleted Successfully..");
@@ -480,14 +476,7 @@ function deletePSquote() {
                 $('#txtremarks').val('')
                 $('#fileToUpload').val('')
 
-                //** Delete Files on Azur for PS quote
-                fnUploadFilesonAzure(AttachementFileName, $('#ddlbid').val(), 'Bid/' + $('#ddlbid').val());
-
-                //** Upload Files on Azure
-                fnUploadFilesonAzure(AttachementFileName, $('#ddlbid').val(), 'Bid/' + $('#ddlbid').val());
-
-                //** Delete Files from Local Folder
-                fnFileDeleteLocalfolder('PortalDocs/ManageBid/' + $('#ddlbid').val() + "/" + AttachementFileName)
+                
             }
             else if (data == "99") {
                 $('#deletepopup').modal('hide')
@@ -520,37 +509,7 @@ $('#deletepopup').on('hidden.bs.modal', function () {
     $('#txtremarks').val('');
 
 });
-function fileUploaderQuotes(bidID) {
 
-    var fileTerms = $('#fileToUpload');
-    var fileDataTerms = fileTerms.prop("files")[0];
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("AttachmentFor", 'ManageBid');
-    formData.append("BidID", bidID);
-    //formData.append("VendorID", '');
-  
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-        },
-        error: function () {
-
-            bootbox.alert("Attachment error.");
-
-        }
-
-    });
-
-}
 jQuery("#txtvendor, #txtvendorSurrogateBid").keyup(function () {
     sessionStorage.setItem('hdnselectedvendor', '0');
     sessionStorage.setItem('hdnselectedEmail', '');
@@ -1681,8 +1640,7 @@ function formSubmitEditEvent() {
     }
 
     if ($('#file1').val() != '' && $('#divbidTermsFilePrevtab_0').is(':visible')) {
-        //** Upload Files in Local Folder
-        fileUploader(sessionStorage.getItem('hdnbid'))
+        
         var filename1 = (jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1)).replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
         Data = {
             "QueryString": filename1,
@@ -1694,11 +1652,12 @@ function formSubmitEditEvent() {
             "DecreamentOn": ''
 
         }
-        //** Upload Files on Azure
-        fnUploadFilesonAzure(filename1, sessionStorage.getItem('hdnbid'), 'Bid/' + sessionStorage.getItem('hdnbid'));
+        //** Upload Files on Azure PortalDocs folder
+        if ($('#file1').val() != '') {
+            fnUploadFilesonAzure('file1', filename1, 'Bid/' + sessionStorage.getItem('hdnbid'));
 
-        //** Delete Files in Local Folder
-        fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('hdnbid') + '/' + filename1)
+        }
+        
     }
     if ($('#drpshowL1L2').val() != '' && $('#divbidShowL1L2').is(':visible')) {
 
@@ -1714,8 +1673,7 @@ function formSubmitEditEvent() {
         }
     }
     if ($('#file2').val() != '' && $('#divbidAttachFilePrevtab_0').is(':visible')) {
-        //** Upload Files in Local Folder
-        fileUploader(sessionStorage.getItem('hdnbid'))
+      
         var filename2 = (jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1)).replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
         Data = {
             "QueryString": filename2,
@@ -1727,11 +1685,12 @@ function formSubmitEditEvent() {
             "DecreamentOn": ''
 
         }
-        //** Upload Files on Azure
-        fnUploadFilesonAzure(filename2, sessionStorage.getItem('hdnbid'), 'Bid/' + sessionStorage.getItem('hdnbid'));
+        //** Upload Files on Azure PortalDocs folder
+        if ($('#file1').val() != '') {
+            fnUploadFilesonAzure('file2', filename2, 'Bid/' + sessionStorage.getItem('hdnbid'));
 
-        //** Delete Files in Local Folder
-        fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('hdnbid') + '/' + filename2)
+        }
+        
     }
     var targetprice = 0;
     var lastinvoice = 0;
@@ -1831,62 +1790,7 @@ function formSubmitEditEvent() {
     }
 }
 
-function fileUploader(bidID) {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file2').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-
-    var fileAnyOther = $('#file2');
-
-    var fileDataAnyOther = fileAnyOther.prop("files")[0];
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-
-    formData.append("fileAnyOther", fileDataAnyOther);
-
-    formData.append("AttachmentFor", 'Bid');
-
-    formData.append("BidID", bidID);
-   // formData.append("VendorID", '');
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-
-        data: formData,
-
-        processData: false,
-
-        contentType: false,
-
-        asyc: false,
-
-        type: 'POST',
-
-        success: function (data) {
-            jQuery.unblockUI();
-        },
-
-        error: function () {
-
-            bootbox.alert("Attachment error.");
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
 
 function showhideItemBidDuration() {
     var bidCloseType = $('#hdnClosingval').val();

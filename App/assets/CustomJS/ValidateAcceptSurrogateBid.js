@@ -37,8 +37,7 @@ function fetchBidHeaderDetails() {
                     $('#txtpassword').removeAttr('disabled');
                     jQuery('#lblEventID').html(BIDID);
                     jQuery('#bid_EventID').html("Event ID : " + BIDID);
-                    tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-                    anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
+                   
                     jQuery("#lblbidsubject").text(data[0].bidSubject);
                     jQuery("#lblbidDetails").text(data[0].bidDetails);
                     jQuery("#lblbiddate").text(data[0].bidDate);
@@ -53,10 +52,9 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblbidforTT").text(data[0].bidFor);
                     BIDTypeID = data[0].bidTypeID;
                     BidClosingType = data[0].bidClosingType;
-                    jQuery("a#lnkTermsAttachment").html(data[0].termsConditions);
-                    
 
-                    jQuery("a#lnkAnyOtherAttachment").html(data[0].attachment);
+                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
                    
 
                     jQuery("#lblbidduration").text(data[0].bidDuration);
@@ -94,8 +92,9 @@ function fetchBidHeaderDetails() {
 
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'Bid', BIDID);
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
+
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 

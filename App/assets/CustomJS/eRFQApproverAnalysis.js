@@ -859,6 +859,9 @@ function FetchRFQVersion() {
     });
 
 }
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
+}
 function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
@@ -877,7 +880,7 @@ function fetchAttachments() {
 
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + data[0].Attachments[i].rfqAttachment.replace(/\s/g, "%20") + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:50%!important"><a id=eRFQFile' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
 
                 }

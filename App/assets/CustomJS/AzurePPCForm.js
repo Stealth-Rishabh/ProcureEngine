@@ -368,7 +368,7 @@ function fetchAzPPcFormDetails() {
                     jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Attachment</th><th></th></tr></thead>");
                     for (i = 0; i < data[0].attachments.length; i++) {
                         attach = data[0].attachments[i].attachment.replace(/\s/g, "%20");
-                        var str = "<tr><td style='width:47%!important'><a style='pointer:cursur;text-decoration:none;' target=_blank href=PortalDocs/eRFQ/PPC/" + RFQID + '/' + attach + '>' + data[0].attachments[i].attachment + "</a></td>";
+                        var str = '<tr><td style="width:47%!important"><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)" href="javascript:;" >' + data[0].attachments[i].attachment + "</a></td>";
                         str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[0].attachments[i].id + "'\,\'PPCAttach'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                         jQuery('#tblAttachments').append(str);
                     }
@@ -391,6 +391,9 @@ function fetchAzPPcFormDetails() {
         }
 
     })
+}
+function DownloadFilePPC(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + RFQID + '/PPC');
 }
 function fnSendActivitytoCommercialForPPCApp() {
     var Data = {
@@ -463,10 +466,14 @@ function addmoreattachments() {
             dataType: "json",
             success: function (data) {
 
-               // if (data.length > 0) {
+               
 
                     if (data == "1") {
-                        fileUploader();
+                        //** Upload Files on Azure PortalDocs folder
+                        if ($('#file1').val() != '') {
+                            fnUploadFilesonAzure('file1', attchname, 'eRFQ/' + RFQID+'/PPC');
+
+                        }
                         fetchAttachments()
                         jQuery('#file1').val('')
                         return false;
@@ -479,7 +486,7 @@ function addmoreattachments() {
                         $('.alert-danger').fadeOut(7000);
                         return false;
                     }
-               // }
+               
 
             },
             error: function (xhr, status, error) {
@@ -496,47 +503,7 @@ function addmoreattachments() {
         });
     }
 }
-function fileUploader() {
 
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", '');
-    formData.append("AttachmentFor", 'eRFQ');
-    formData.append("BidID", RFQID);
-    formData.append("VendorID", 'PPC');
-    formData.append("Version", '');
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-        }
-
-    });
-
-}
 function fetchAttachments() {
     //alert(sessionStorage.getItem("APIPath") + "POUpload/PODetails/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&UserID=" + sessionStorage.getItem('UserID') + "&Flag=Attachment&POHeaderID=" + $('#hdnPOHeader').val())
     jQuery.ajax({
@@ -556,7 +523,7 @@ function fetchAttachments() {
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (i = 0; i < data[0].attachments.length; i++) {
                     attach = data[0].attachments[i].attachment.replace(/\s/g, "%20");
-                    var str = "<tr><td><a style='pointer:cursur;text-decoration:none;' target=_blank href=PortalDocs/eRFQ/PPC/" + RFQID + '/' + attach + '>' + data[0].attachments[i].attachment + "</a></td>";
+                    var str = '<tr><td><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)"  href="javascript:;" >' + data[0].attachments[i].attachment + "</a></td>";
                     str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[0].attachments[i].id + "'\,\'PPCAttach'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                     jQuery('#tblAttachments').append(str);
                 }

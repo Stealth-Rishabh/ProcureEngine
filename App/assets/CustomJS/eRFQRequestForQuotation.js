@@ -752,51 +752,6 @@ function fnGetApprovers() {
     })
 }
 
-function fileUploader(RFQID) {
-
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-   
-    var fileRFQAttachments = $('#fileToUpload1');
-    var fileDataAnyRFQAttachments = fileRFQAttachments.prop("files")[0];
-
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", fileDataAnyRFQAttachments);
-    formData.append("AttachmentFor", 'eRFQ');
-    formData.append("BidID", RFQID);
-   // formData.append("VendorID", '');
-   // formData.append("Version", '');
-    
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-        }
-
-    });
-
-}
 
 
 
@@ -2113,7 +2068,7 @@ jQuery.ajax({
 }
 function DownloadFile(aID) {
    
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ', sessionStorage.getItem('hddnRFQID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+ sessionStorage.getItem('hddnRFQID'));
 }
 
 //*** File delete from Blob or DB 

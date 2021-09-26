@@ -84,9 +84,11 @@ function handlevalidation() {
         }
     });
 }
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
+}
 function fetchVendorDetails() {
- var tncAttachment = '';
- var anyotherAttachment = '';
+
  
  jQuery.ajax({
      type: "GET",
@@ -100,8 +102,7 @@ function fetchVendorDetails() {
          
          if (data.length == 1) {
              $('#tblParticipantsVender').show();
-             tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-             anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
+            
 
              jQuery("label#lblitem1").text(data[0].bidFor);
              jQuery("#lblbidsubject").text(data[0].bidSubject);
@@ -111,13 +112,11 @@ function fetchVendorDetails() {
              jQuery("#lblbidtype").text(data[0].bidTypeName);
              jQuery("#lblbidfor").text(data[0].bidFor);
 
-             jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-             jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-             jQuery("a#lnkAnyOtherAttachment").text(data[0].Attachment);
-             jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
-
-
+             jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+             if (data[0].attachment != "") {
+                 jQuery("#lnkAnyOtherAttachment").text(data[0].attachment);
+             }
+             
              jQuery("#lblbidduration").text(data[0].bidDuration);
              jQuery("#lblcurrency").text(data[0].currencyName);
              jQuery("#lblConvRate").text(data[0].conversionRate);
@@ -825,8 +824,7 @@ function closeBidAir() {
 
 function fetchBidHeaderDetails(_bidId) {
 
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+  
     var url = '';
     
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + _bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
@@ -843,9 +841,7 @@ function fetchBidHeaderDetails(_bidId) {
             //alert(JSON.stringify(data));
             if (data.length == 1) {
                 $('#tblParticipantsVender').show();
-                tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-                anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
-
+                
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
@@ -854,13 +850,12 @@ function fetchBidHeaderDetails(_bidId) {
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblbidfor").text(data[0].bidFor);
 
-                jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-                jQuery("a#lnkAnyOtherAttachment").text(data[0].Attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
-
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+               
+                if (data[0].attachment != "") {
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                }
+                
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);

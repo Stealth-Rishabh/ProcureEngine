@@ -853,7 +853,7 @@ function fetchAttachments() {
 
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20") + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
 
                 }
@@ -875,7 +875,11 @@ function fetchAttachments() {
             jQuery.unblockUI();
         }
     })
+} 
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
 }
+
 function fncheckradiotext() {
     var flagMapApprover = 'F';
     $("input[type='radio']:checked").each(function () {
@@ -1115,7 +1119,7 @@ function fetchReguestforQuotationDetails() {
                     replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
                 }
 
-                $('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + replaced1.replace(/\s/g, "%20") + '').html(RFQData[0].general[0].rfqTermandCondition)
+                $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
 
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
                 $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
@@ -1782,9 +1786,8 @@ function fetchAzPPcFormDetails() {
                     $('#tblPPCAttachments').removeClass('hide')
                     jQuery('#tblPPCAttachments').append("<thead><tr><th class='bold'>Attachment</th></tr></thead>");
                     for (i = 0; i < data[0].attachments.length; i++) {
-                        attach = data[0].attachments[i].attachment.replace(/\s/g, "%20");
-                        var str = "<tr><td><a style='pointer:cursur;text-decoration:none;' target=_blank href=PortalDocs/eRFQ/" + $("#hdnRfqID").val() + '/PPC/' + attach + '>' + data[0].attachments[i].attachment + "</a></td>";
-                       // str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[0].Attachments[i].ID + "'\,\'PPCAttach'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
+                       
+                        var str = '<tr><td><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)" href="javascript:;">' + data[0].attachments[i].attachment + '</a></td>';
                         jQuery('#tblPPCAttachments').append(str);
                     }
                 }
@@ -1818,6 +1821,9 @@ function fetchAzPPcFormDetails() {
         }
     
     })
+}
+function DownloadFilePPC(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val()+'/PPC');
 }
 function fnRemoveClassTab0() {
     $('#tab_0').removeClass('hide')

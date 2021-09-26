@@ -1343,7 +1343,7 @@ function ConfigureBidInsPefaTab3() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'Bid', sessionStorage.getItem('CurrentBidID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/'+sessionStorage.getItem('CurrentBidID'));
 }
 
 

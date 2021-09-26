@@ -317,11 +317,6 @@ function FormValidate() {
 function InsUpdRFQDEtailTab1() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    
-
-    //** Upload Files in Local Folder
-    fileUploader(sessionStorage.getItem('hdnrfqid'))
-
     var TermsConditionFileName = '';
     
     TermsConditionFileName = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1);
@@ -361,11 +356,10 @@ function InsUpdRFQDEtailTab1() {
             $('#spansuccess1').html('Terms & Condition updated successfully!');
             $('#successmsg').html('Terms & Condition updated successfully!');
 
-            //** Upload Files on Azure
-            fnUploadFilesonAzure(TermsConditionFileName, sessionStorage.getItem('hdnrfqid'), 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
+            //** Upload Files on Azure PortalDocs folder first Time
+            fnUploadFilesonAzure('file1', TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
 
-            //** Delete Files from Local Folder
-            fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + sessionStorage.getItem('hdnrfqid') + "/" + TermsConditionFileName)
+           
             confirmEditEventAction('File');
             Reset();
         },
@@ -464,7 +458,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                             attach = RFQData[0].attachments[i].rfqAttachment.replace(/\s/g, "%20");
                             var str = "<tr><td style='width:47%!important'>" + RFQData[0].attachments[i].rfqAttachmentDescription + "</td>";
                            // str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + RFQID + '/' + attach + '>' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
-                            str += '<td class=style="width:47%!important"><a id=eRFQFile'+i+' style="pointer:cursur;text-decoration:none;" target=_blank  href="javascript:;" onclick="DownloadFile(this)">' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
+                            str += '<td class=style="width:47%!important"><a id=eRFQFile'+i+' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)">' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
 
                             str += "<td style='width:5%!important' class=hide><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachmentQues(\'" + RFQData[0].attachments[i].srNo + "'\,\'Attachment'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                             jQuery('#tblAttachments').append(str);
@@ -509,7 +503,7 @@ function fetchReguestforQuotationDetails(RFQID) {
     jQuery.unblockUI();
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ', sessionStorage.getItem('hdnrfqid'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+sessionStorage.getItem('hdnrfqid'));
 }
 function fnRemoveAttachmentQues(srno, deletionfor) {
     var Attachments = {
@@ -884,8 +878,7 @@ function Reset() {
 }
 function addmoreattachments() {
 
-    //** Upload Files in Local Folder
-    fileUploader(sessionStorage.getItem('hdnrfqid'))
+    
 
     if (jQuery("#AttachDescription1").val() == "") {
         $('.alert-danger').show();
@@ -925,9 +918,10 @@ function addmoreattachments() {
                
                
 
-                    if (data == "1") {
-                        //** Upload Files on Azure
-                        fnUploadFilesonAzure(attchname, sessionStorage.getItem('hdnrfqid'), 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
+                if (data == "1") {
+                        //** Upload Files on Azure PortalDocs folder first Time
+                            fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
+                       
                         
                         fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                         jQuery("#AttachDescription1").val('')
@@ -937,8 +931,7 @@ function addmoreattachments() {
                         Metronic.scrollTo($(".alert-success"), -200);
                         $('.alert-success').fadeOut(7000);
                         confirmEditEventAction('File');
-                        //** Delete Files in Local Folder
-                        fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + sessionStorage.getItem('hdnrfqid') + "/" + attchname)
+                        
                         return false;
 
                     }
@@ -966,53 +959,7 @@ function addmoreattachments() {
         });
     }
 }
-function fileUploader(RFQID) {
 
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-    var fileRFQAttachments = $('#fileToUpload1');
-    var fileDataAnyRFQAttachments = fileRFQAttachments.prop("files")[0];
-
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", fileDataAnyRFQAttachments);
-    formData.append("AttachmentFor", 'eRFQ');
-    formData.append("BidID", RFQID);
-    formData.append("VendorID", '');
-    formData.append("Version", '');
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-            //jQuery.unblockUI();
-
-        }
-
-    });
-
-}
 
 
 function FetchRFQVersion(RFQID) {

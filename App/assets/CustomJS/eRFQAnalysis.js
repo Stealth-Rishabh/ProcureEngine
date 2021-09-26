@@ -870,7 +870,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           // alert(data[0].Attachments.length)
+          
             jQuery("#tblAttachments").empty();
            
             if (data[0].attachments.length > 0) {
@@ -879,7 +879,7 @@ function fetchAttachments() {
                 
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20") + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
                    
                 }
@@ -901,6 +901,9 @@ function fetchAttachments() {
             jQuery.unblockUI();
         }
     })
+}
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
 }
 function fncheckradiotext() {
     var flagMapApprover = 'F';
@@ -1139,11 +1142,8 @@ function fetchReguestforQuotationDetails() {
 
                 $('#hdnUserID').val(RFQData[0].general[0].userId)
                 
-                if (RFQData[0].general[0].rfqTermandCondition != '') {
-                    replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
-                }
-
-                $('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + replaced1.replace(/\s/g, "%20") + '').html(RFQData[0].general[0].rfqTermandCondition)
+                
+                $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
                 $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")

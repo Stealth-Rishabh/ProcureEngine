@@ -71,11 +71,12 @@ $(document).ready(function () {
 
 
 var strrowfordetails = '';
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BidID);
+}
 function fetchBidSummary(BidID) {
 
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -185,12 +186,9 @@ function fetchBidSummary(BidID) {
                 jQuery('#txtBidDurationPrev').val(data[0].bidDuration)
                 $('#spinnerBidclosingTab').spinner({ value: data[0].bidDuration, step: 1, min: 0, max: 999 });
                 jQuery("#lblcurrency").text(data[0].currencyName);
-                jQuery("a#lnkTermsAttachment").html(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + BidID + "/" + tncAttachment)
-                jQuery("a#lnkAnyOtherAttachment").html(data[0].attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + BidID + "/" + anyotherAttachment)
-
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                
                 BidID = data[0].bidID
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID

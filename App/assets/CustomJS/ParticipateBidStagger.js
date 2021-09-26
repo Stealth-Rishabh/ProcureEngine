@@ -8,15 +8,15 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var displayForS = "";
 
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
+}
 function fetchVendorDetails() {
 
     var url = '';
    
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidDetails/?BidID=" + sessionStorage.getItem("BidID") + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"));
    
-    var tncAttachment = '';
-    var anyotherAttachment = '';
-
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -44,14 +44,12 @@ function fetchVendorDetails() {
                
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
 
-                jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-                jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
-
-               
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                
+                if (data[0].attachment != '') {
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                }
+                
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);

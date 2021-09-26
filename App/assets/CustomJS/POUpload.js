@@ -418,22 +418,17 @@ function addAttachments() {
                         $('#hdnPOHeader').val(data[0].poHeaderID)
                         
                         $('#txtVendor').attr('disabled', 'disabled')
-
-                        //** Upload Files in Local Folder
-                        fileUploader(data[0].poHeaderID)
-
                         fetchAttachments()
 
-                        //** Upload Files on Azure
-                        fnUploadFilesonAzure(attchname, data[0].poHeaderID, 'PO/' + data[0].poHeaderID);
+                        //** Upload Files on Azure PortalDocs folder first Time
+                        fnUploadFilesonAzure('file1', attchname, 'PO/' + data[0].poHeaderID + '/' + sessionStorage.getItem('hdnVendorID'));
+
                         jQuery('#file1').val('')
                         jQuery('#AttachDescription1').val('')
                         Metronic.scrollTo($(".alert-success"), -200);
                         $('.alert-success').fadeOut(7000);
                         $('#cancelBidBtn').show();
-                        //** Delete Files from Local Folder
-                        fnFileDeleteLocalfolder('PortalDocs/PO/' + data[0].poHeaderID + "/" + attchname)
-
+                        
                         return false;
 
                     }
@@ -468,47 +463,7 @@ function addAttachments() {
         });
     }
 }
-function fileUploader(PoHeaderID) {
 
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", '');
-    formData.append("AttachmentFor", 'PO');
-    formData.append("BidID", PoHeaderID);
-    formData.append("VendorID", '');
-    formData.append("Version", '');
-
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-        }
-
-    });
-
-}
 function fetchAttachments() {
     
     jQuery.ajax({
@@ -531,8 +486,7 @@ function fetchAttachments() {
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");
-                   // var str = "<tr><td style='width:47%!important'>" + data[i].poAttachmentDescription + "</td><td style='width:47%!important'><a style='pointer:cursur;text-decoration:none;' target=_blank href=PortalDocs/PO/" + $('#hdnPOHeader').val() + '/' + attach + '>' + data[i].poAttachment + "</a></td>";
-                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile'+i+' style="pointer:cursur;text-decoration:none;" target=_blank href="javascript:;" onclick="DownloadFile(this)">' + data[i].poAttachment + '</a></td>';
+                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile'+i+' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)">' + data[i].poAttachment + '</a></td>';
                     str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[i].poid + "'\,\'POAttach'\,\'" + data[i].poAttachment+"'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                     jQuery('#tblAttachments').append(str);
                 }
@@ -563,7 +517,7 @@ function fetchAttachments() {
     })
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'PO', $('#hdnPOHeader').val());
+    fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + $('#hdnPOHeader').val() + '/' + sessionStorage.getItem('hdnVendorID'));
 }
 function fnRemoveAttachment(POID, deletionfor,attachname) {
 var Attachments = {
@@ -583,9 +537,7 @@ var Attachments = {
         success: function (data) {
             
             if (data == "1") {
-                //** delete Existing File (if any) on Azure
-                fnFileDeleteAzure(attachname, 'PO/' + $('#hdnPOHeader').val())
-
+                
                     fetchAttachments();
                     $('.alert-success').show();
                     $('#spansuccess1').html('Record deleted successfully!');

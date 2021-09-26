@@ -7,7 +7,7 @@ var BidForID = "";
 $(document).ready(function () {
     
     fetchBidTypeMapping();
-   // FetchContinent('0');
+  
     formvalidate()
     fetchregisterusers();
    
@@ -388,18 +388,12 @@ function fetchBidVendorSummary(dtfrom,dtto,subject) {
                      table.removeAttr('width').dataTable({
                         "bDestroy": true,
                         responsive: false,
-                        //"scrollX": true,
-                        // "scrollY": "800px",
-                       // columnDefs: [
-                       //     { width: 200, targets: 0 }
-                        //],
-
+                        
                          fixedColumns: true,
                          "oLanguage": { "sSearch": "", "sLengthMenu": "\_MENU_" },
                          "bAutoWidth": false,
                          "aaSorting": [[0, 'asc']],
-                         //"bPaginate": true,
-                         //"sPaginationType": "full_numbers",<'col-xs-1'l>
+                         
                          "iDisplayLength": 10,
                          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                          dom: 'Bfrtip',
