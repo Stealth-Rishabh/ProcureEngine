@@ -45,6 +45,7 @@ if (sessionStorage.getItem('IsObserver') == "Y") {
         fetchrfqcomprative();
         fetchAzPPcFormDetails();
         fetchApproverRemarks();
+        fetchAttachments();
      }, 400)
 
 
@@ -274,6 +275,7 @@ function fetchrfqcomprative() {
                 strExcel += "<tr><td colspan=5><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqno != 0) {
+                       
                         RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                         str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -696,7 +698,7 @@ function fetchrfqcomprative() {
 
 function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
-    
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceForReport/?RFQID=" + RFQID + "&VendorId=" + VendorID + "&RFQVersionId=99&BidID=0",
@@ -706,15 +708,15 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-         
+            
             $("#totBoxinitialwithoutgst" + VendorID).html(thousands_separators(data[0].initialTotalPriceExTax));
             $("#totBoxinitialwithoutgstExcel" + VendorID).html(thousands_separators(data[0].initialTotalPriceExTax));
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceIncTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
-            $("#totBoxTax" + VendorID).html(thousands_separators(RFQFetchTotalPriceForReport(data[0].totalPriceIncTax)));
+            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxTaxExcel" + VendorID).html(RFQFetchTotalPriceForReport(data[0].totalPriceIncTax));
+            $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $(".lambdafactor").addClass('hide');
             
         }, error: function (xhr, status, error) {
@@ -1176,6 +1178,7 @@ function deleteApprow(approwid) {
     }
 }
 function MapApprover() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblapprovers tr').length;
     if (rowCount > 1) {
@@ -1193,8 +1196,7 @@ function MapApprover() {
         "IsApproverObserver": $('#drp_isAppObs').val(),
         "PPCApprovers": approvers
     }
-    //  alert(JSON.stringify(Approvers))
-   // console.log(JSON.stringify(Approvers))
+  
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1205,9 +1207,9 @@ function MapApprover() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+           // if (data.length > 0) {
               
-                if (data == "1") {
+                //if (data == "1") {
 
                     $('#msgSuccessApp').show();
                     $('#msgSuccessApp').html('Activity Forward to PPC Approvers successfully!');
@@ -1229,9 +1231,9 @@ function MapApprover() {
                     });
                     return false;
 
-                }
+               // }
                 
-            }
+            //}
             
         },
         error: function (xhr, status, error) {
@@ -1516,14 +1518,14 @@ function fnFWDeRFQ() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+           // if (data.length > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
 
 
-            }
+          //  }
         },
         error: function (xhr, status, error) {
 
@@ -1550,7 +1552,8 @@ function ApprovalCommercialApp() {
         "Action": $('#ddlActionType').val()
     };
 
-     //alert(JSON.stringify(approvalbyapp))
+     
+    //console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQPPCApprove",

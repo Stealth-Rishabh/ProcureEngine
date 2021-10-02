@@ -868,7 +868,7 @@ function fetchBidHeaderDetails(_bidId) {
                 var display = document.querySelector('#lblTimeLeft');
               
                 startTimerBeforeBidStart(data[0].timeLeft, display)
-                //debugger;
+               
                 if (BidForID == 81) {
                     fetchBidSummaryVendorScrap();
                     $(".lbltimetextdutch").hide();

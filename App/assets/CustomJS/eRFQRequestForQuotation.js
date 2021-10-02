@@ -102,9 +102,9 @@ var FormWizard = function () {
                     txtedelivery: {
                         required: true
                     },
-                    dropuom: {
-                        required: true
-                    },
+                    //dropuom: {
+                    //    required: true
+                    //},
                     txtUOM:{
                         required: true
                     },
@@ -544,7 +544,6 @@ function InsUpdRFQDEtailTab1() {
 
     }; 
     //console.log(JSON.stringify(Tab1Data))
-  
     //alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
@@ -620,7 +619,7 @@ function InsUpdRFQDEtailTab2() {
                 "PoNo": $.trim(this_row.find('td:eq(11)').html()),
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
                 "PoDate": $.trim(this_row.find('td:eq(20)').html()),
-                "PoValue": parseFloat(povalue)
+                "PoValue": parseFloat(removeThousandSeperator(povalue))
                
 
             }
@@ -1145,7 +1144,7 @@ function addquestions() {
         var strprev = '<tr id=trquesidprev' + rowques + ' ><td>' + jQuery("#txtquestions").val() + '</td>';
         strprev += "<td>" + jQuery("#txtreq").val() + "</td></tr>"
        
-        jQuery('#tblquestionsPrev').append(strprev);
+        jQuery('#tblQuestionsPrev').append(strprev);
 
         if (!jQuery("#tblquestions thead").length) {
             jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:54.9%!important'>Questions</th><th class='bold' style='width:35%!important'>Requirement</th><th style='width:5%!important'></th></tr></thead>");
@@ -1395,7 +1394,7 @@ function fetchRFIParameteronload() {
 function InsUpdProductSevices() {
     
         jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
-        
+       
         if (form.valid() == true) {
             var st = "true"
            
@@ -1403,16 +1402,16 @@ function InsUpdProductSevices() {
            
             if ($('#add_or').text() == "Modify") {
                 st = "true";
-                i=0;
+                i = 1;
                 $("#tblServicesProduct tr:gt(0)").each(function () {
                     var this_row = $(this);
-                    if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() || ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                   
+                    if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                         st = "false"
-                        
                     }
                     i++;
                 });
-               
+             
                 if ($('#dropuom').val() == '') {
                     $('.alert-danger').show();
                     $('#spandanger').html('Please Select UOM Properly');
@@ -1429,6 +1428,7 @@ function InsUpdProductSevices() {
 
                else {
                    //Set data on main Table after edit
+                   
                    var Description = $('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " ");
                    var this_row=$('#rowid').val()
                    $("#itemcode" + this_row).text($('#txtItemCode').val())
@@ -1439,7 +1439,7 @@ function InsUpdProductSevices() {
 
                    $("#quan" + this_row).text($('#txtquantitiy').val())
                    $("#uom" + this_row).text($('#dropuom').val())
-                   $("#remarks" + this_row).text($('#txtItemRemarks').text())
+                   $("#remarks" + this_row).text($('#txtItemRemarks').val())
                    $("#tat" + this_row).text($('#txttat').val())
                    $("#delivery" + this_row).text($('#txtedelivery').val())
                    $("#pono" + this_row).text($("#txtPono").val())
@@ -1456,7 +1456,7 @@ function InsUpdProductSevices() {
                    $("#TPprev" + this_row).text($('#txttargetprice').val())
                    $("#quanprev" + this_row).text($('#txtquantitiy').val())
                    $("#uomprev" + this_row).text($('#dropuom').val())
-                   $("#remarksprev" + this_row).text($('#txtItemRemarks').text())
+                   $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
                    $("#tatprev" + this_row).text($('#txttat').val())
                    $("#deliveryprev" + this_row).text($('#txtedelivery').val())
                    $("#ponoprev" + this_row).text($("#txtPono").val())
@@ -1468,7 +1468,8 @@ function InsUpdProductSevices() {
                    resetfun()
                 }
             }
-            else{
+            else {
+                
                 st = "true"; i = 0;
                 if ($('#tblServicesProduct >tbody >tr').length == 0) {
                     ParametersQuery()
@@ -1476,28 +1477,29 @@ function InsUpdProductSevices() {
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
                         var this_row = $(this);
-                        if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() || ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                        if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                             st = "false"
                         }
                         i++;
                     });
-                }
-                if ($('#dropuom').val() == '') {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('Please Select UOM Properly');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    return false;
-                }
-                else if (st == "false") {
-                    error.show();
-                    $('#spandanger').html('Data already exists...');
-                    Metronic.scrollTo(error, -200);
-                    error.fadeOut(3000);
-                }
 
-                else {
-                    ParametersQuery();
+                   if ($('#dropuom').val() == '') {
+                        $('.alert-danger').show();
+                        $('#spandanger').html('Please Select UOM Properly');
+                        Metronic.scrollTo($(".alert-danger"), -200);
+                        $('.alert-danger').fadeOut(7000);
+                        return false;
+                    }
+                    else if (st == "false") {
+                        error.show();
+                        $('#spandanger').html('Data already exists...');
+                        Metronic.scrollTo(error, -200);
+                        error.fadeOut(3000);
+                    }
+
+                    else {
+                        ParametersQuery();
+                    }
                 }
             }
            
@@ -1505,8 +1507,8 @@ function InsUpdProductSevices() {
         jQuery.unblockUI();
          
     }
-    else {
-      
+        else {
+
         form.validate()
         jQuery.unblockUI();
         return false;
@@ -1541,12 +1543,12 @@ function ParametersQuery() {
     if (!jQuery("#tblRFQPrev thead").length) {
 
         jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev'+i+'>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev'+i+'>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
 
     }
     else {
 
-        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
     }
     $('#wrap_scrollerPrev').show();
     rowAppItems = rowAppItems + 1
@@ -1676,15 +1678,14 @@ jQuery("#txtUOM").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+       
         if (map[item].uom != "") {
-          $('#dropuom').val(map[item].uom)
-
+           $('#dropuom').val(map[item].uom)
         }
         else {
             gritternotification('Please select UOM  properly!!!');
         }
-
-        return item;
+       return item;
     }
 
 });
@@ -1817,7 +1818,7 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-            if (parseInt(data) > 0) {
+           // if (parseInt(data) > 0) {
                 jQuery.unblockUI();
                 bootbox.alert("Request for Quotation Submitted Successfully.", function () {
                     sessionStorage.removeItem('CurrentBidID');
@@ -1828,18 +1829,18 @@ function RFQInviteVendorTab3() {
                 });
                 return true;
 
-            }
-            else {
-                jQuery.unblockUI();
-                alert('error')
-                return false;
+           // }
+            //else {
+            //    jQuery.unblockUI();
+            //    alert('error')
+            //    return false;
 
-            }
+            //}
         },
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -2497,7 +2498,7 @@ function fnSeteRFQparameterTable() {
 
             if (!jQuery("#tblServicesProduct thead").length) {
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
             }
             else {
                 jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');

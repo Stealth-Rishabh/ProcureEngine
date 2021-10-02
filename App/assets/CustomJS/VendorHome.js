@@ -198,7 +198,7 @@ function fetchPendingBid() {
             jQuery('#lblAcceptedPO').text(data[0].poAccepted.noofBid)
             $('#totalrecord').text('');
             jQuery("#UlPendingActivity").empty();
-
+            
             if (data[0].pendingActivity.length > 0) {
                 $('#totalrecord').text('(' +data[0].pendingActivity.length+')')
                 for (var i = 0; i < data[0].pendingActivity.length; i++) {
@@ -471,9 +471,9 @@ function acceptBidTermsAuction() {
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
-            if (data[0].isSuccess == 'Y') {
-                window.location = data[0].linkURL
+          
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL
             }
         },
         
@@ -540,9 +540,9 @@ function eRFQAcceptBidTerms() {
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
-            if (data[0].isSuccess == 'Y') {
-                window.location = data[0].linkURL
+           
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
@@ -594,7 +594,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "</div></div></div></div>";
 
                         str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
-                        str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].BidStatus + "</span></div></div>";
+                        str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
                         jQuery('#UlPendingActivity').append(str);
 
@@ -977,32 +977,7 @@ function validateBid(bidid) {
     $('#validatebidmodal').modal('show')
 }
 
-function IsAcceptedBidTerms(vendorid) {
-    
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/IsAcceptedBidTerms/?bidid=" + sessionStorage.getItem('BidID') + "&Userid=" + encodeURIComponent(vendorid),
-        type: "GET",
-        async: false,
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-           
-           
-            window.location = data[0].linkURL;
-            sessionStorage.setItem("HomePage", data[0].homePage);
-        },
-        
-        error: function (xhr, status, error) {
-            $('.page-container').show();
-        var err = eval("(" + xhr.responseText + ")");
-        jQuery("#error").text(err.Message);
-        if (xhr.status === 401) {
-            error401Messagebox(err.Message);
-        }
 
-        jQuery.unblockUI();
-    }
-    });
-}
 
 function fetchMappedCustomers() {
 
@@ -1043,109 +1018,3 @@ function fetchMappedCustomers() {
     });
     jQuery.unblockUI();
 }
-
-//*** Unused code
-//function getvalidateBidvendor() {
-//    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-//    jQuery.ajax({
-//        type: "GET",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "User/validateUser/?LoginID=" + sessionStorage.getItem('ContactEmailID') + "&Password=" + $('#bidpassword').val(),
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        cache: false,
-//        crossDomain: true,
-//        dataType: "json",
-//        success: function (data) {
-//            sessionStorage.setItem('BidID', data[0].BidID)
-//            sessionStorage.setItem('BidTypeID', data[0].BidTypeID)
-//            sessionStorage.setItem('BidUserID', data[0].UserID)
-//            jQuery.each(data, function (key, value) {
-//                if (value.isValidUser == 'Y') {
-
-//                    IsAcceptedBidTerms(value.UserID);
-//                }
-//                else {
-//                    jQuery.unblockUI();
-//                    $('#bidpassword').val('')
-//                    $('.alert-danger').show();
-//                    $('#alertmessage').html('Enter a valid password for this Bid.')
-
-//                    return
-//                }
-//            });
-//        },
-//        error: function (xhr, status, error) {
-//            var err = eval("(" + xhr.responseText + ")");
-//            jQuery("#error").text(err.Message);
-//            if (xhr.status === 401) {
-//                error401Messagebox(err.Message);
-//            }
-
-//            jQuery.unblockUI();
-//        }
-//    });
-//}
-//function fetchPendingRFQ() {
-//    var str = '';
-    
-//    jQuery.ajax({
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "Activities/fetchPendingRFIRFQForvendor/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        type: "GET",
-//        cache: false,
-//        crossDomain: true,
-//        dataType: "json",
-//        success: function (data) {
-//            $('#totalrecord').text('');
-//            jQuery("#ulPendingRFIRFQ").empty();
-//            //alert(JSON.stringify(data))
-//            if (data.length > 0) {
-//                $('#totalrecord').text('(' + data.length + ')')
-				
-//                sessionStorage.setItem('VendorId', data[0].VendorId)
-//                for (var i = 0; i < data.length; i++) {
-//                    if (data[0].RFQId != 0) {
-//                        str = "<li><a href=" + data[i].LinkURL + ">";
-//                        str += "<div class='col1'><div class='cont'>";
-//                        str += "<div class='cont-col1'><div class='label label-sm label-success'>RFQ</div></div>";
-//                        str += "<div class='cont-col2'><div class='desc'>" + data[i].ActivityDescription;
-//                        str += "</div></div></div></div>";
-//                        str += "<div class='col2'>";
-//                        str += "<div class='date'><span class='label label-sm label-danger'>" + data[i].RFQClosureDate + "</span></div></div>";
-//                        str += "</a></li>";
-//                        jQuery('#ulPendingRFIRFQ').append(str);
-//                    } else {
-//                        str = "<li><a href=" + data[i].LinkURL + ">";
-//                        str += "<div class='col1'><div class='cont'>";
-//                        str += "<div class='cont-col1'><div class='label label-sm label-success'>RFI</i></div></div>";
-//                        str += "<div class='cont-col2'><div class='desc'>" + data[i].ActivityDescription;
-//                        str += "</div></div></div></div>";
-//                        str += "<div class='col2'>";
-//                        str += "<div class='date'><span class='label label-sm label-danger'>" + data[i].RFIClosureDate + "</span></div></div>";
-//                        str += "</a></li>";
-//                        jQuery('#ulPendingRFIRFQ').append(str);
-//                    }
-                    
-//                }
-//            }
-//            else {
-//                jQuery('#ulPendingRFIRFQ').append("<tr><td colspan='8' style='text-align: center; color:red;'>You have no pending activity.</td></tr>");
-//            }
-
-
-//        },
-//        error: function (xhr, status, error) {
-//            $('.page-container').show();
-//            var err = eval("(" + xhr.responseText + ")");
-//            jQuery("#error").text(err.Message);
-//            if (xhr.status === 401) {
-//                error401Messagebox(err.Message);
-//            }
-
-//            jQuery.unblockUI();
-//        }
-//    });
-//}
-

@@ -20,7 +20,7 @@ function fetchUserDetails() {
                     $('#usermobileno').val(data[i].mobileNo)
                     $('#userEmailID').html(data[i].emailID)
                     $('#userRole').html(data[i].roleName)
-                    $('#userdesignation').val(data[i].Designation)
+                    $('#userdesignation').val(data[i].designation)
                     
                 }
 

@@ -28,7 +28,7 @@ function RegisterUser() {
         data: JSON.stringify(RegisterUser),
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
-           
+          
         if (data == 'Y') {
                 jQuery('#divalerterror').hide();
                 App.scrollTo($('#divalertsucess'), -200);

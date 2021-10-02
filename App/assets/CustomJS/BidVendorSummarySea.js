@@ -1478,7 +1478,7 @@ function CancelBid(bidid, mailparam) {
         "SendMail": mailparam
 
     };
-    console.log(JSON.stringify(Cancelbid))
+    
   //  alert(JSON.stringify(Cancelbid))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",

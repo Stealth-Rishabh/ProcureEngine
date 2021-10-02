@@ -1300,25 +1300,25 @@ function ConfigureBidInsPefaTab3() {
             data: JSON.stringify(Tab3data),
             dataType: "json",
             success: function (data) {
-                if (parseInt(data) > 0) {
-                        jQuery.unblockUI();
+                //if (parseInt(data) > 0) {
+                    //    jQuery.unblockUI();
 
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
                         window.location = sessionStorage.getItem("HomePage")
                         return false;
                     });
-                }
-                else {
+                //}
+                //else {
 
-                    jQuery.unblockUI();
-                    bootbox.alert("Configuration error.", function () {
-                        sessionStorage.removeItem('CurrentBidID');
-                        window.location = sessionStorage.getItem("HomePage")
-                        return false;
-                    });
+                //    jQuery.unblockUI();
+                //    bootbox.alert("Configuration error.", function () {
+                //        sessionStorage.removeItem('CurrentBidID');
+                //        window.location = sessionStorage.getItem("HomePage")
+                //        return false;
+                //    });
 
-                }
+                //}
 
             },
             error: function (xhr, status, error) {
@@ -2812,7 +2812,7 @@ jQuery("#txtSearch").typeahead({
             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
             var str = "<tr><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + vName + " </td></tr>";
-            
+            jQuery('#tblvendorlist').empty();
             jQuery('#tblvendorlist > tbody').append(str);
 
 

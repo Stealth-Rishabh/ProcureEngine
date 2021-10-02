@@ -13,16 +13,16 @@ function fetchAttachments() {
 
             jQuery("#tblAttachments").empty();
             jQuery("#tblotherrfqattachmentprev").empty();
-            if (data[0].Attachments.length > 0) {
+            if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:50%!important'>Description</th><th style='width:50%!important'>Attachment</th></tr></thead>")
                 jQuery("#tblotherrfqattachmentprev").append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:50%!important'>Description</th><th style='width:50%!important'>Attachment</th></tr></thead>")
                 $('#div_attachments').removeClass('hide')
                 $('#div_otherrfqattachprev').removeClass('hide')
                 $('#headerotherrfqattach').removeClass('hide')
                 $('#wrap_scrollerPrevAtt').show();
-                for (var i = 0; i < data[0].Attachments.length; i++) {
-                    var str = "<tr><td style='width:50%!important'>" + data[0].Attachments[i].rFQAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + data[0].Attachments[i].rFQAttachment.replace(/\s/g, "%20") + '>' + data[0].Attachments[i].rFQAttachment + '</a></td>';
+                for (var i = 0; i < data[0].attachments.length; i++) {
+                    var str = "<tr><td style='width:50%!important'>" + data[0].Attachments[i].rfqAttachmentDescription + "</td>";
+                    str += '<td class=style="width:50%!important"><a id=eRFqvendorAtt' + i +' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this) >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
                     jQuery('#tblotherrfqattachmentprev').append(str);
                 }
@@ -46,7 +46,12 @@ function fetchAttachments() {
         }
     })
 }
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+}
+function DownloadFileVendor(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
+}  
 function fetchRFQParameterComponent(version, BoqPID) {
    
 
@@ -71,7 +76,7 @@ function fetchRFQParameterComponent(version, BoqPID) {
 
                     
                     if (data[i].isDefault == "N") {
-                        jQuery('<tr id=trid' + i + '><td class=hidden >' + data[i].rFQParameterId + '</td><td class=hidden >' + data[i].rFQID + '</td><td class=hidden >' + data[i].tCID + '</td><td>' + data[i].tCName + '</td><td><input type="text"  id="mkswithtax1' + i + '" class="form-control text-right" value="' + thousands_separators(data[i].rFQVendorPricewithTax) + '"  autocomplete=off   onkeyup="this.value = minmax(this.value, 0, 50)" /></td></tr>').appendTo("#tblRFQParameterComponet");
+                        jQuery('<tr id=trid' + i + '><td class=hidden >' + data[i].rfqParameterId + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hidden >' + data[i].tcid + '</td><td>' + data[i].tCName + '</td><td><input type="text"  id="mkswithtax1' + i + '" class="form-control text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off   onkeyup="this.value = minmax(this.value, 0, 50)" /></td></tr>').appendTo("#tblRFQParameterComponet");
 
                     }
                 }
@@ -116,7 +121,7 @@ function fetchRFQLevelTC(ver) {
                 jQuery("#tbltermsconditionprev").append("<thead><tr style='background: gray; color: #FFF;'><th>Other Commercial Terms</th><th>Our Requirement</th><th>Your Offer</th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     
-                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tCID + '</td><td class=hidden >' + data[i].eFQID + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tCName + '</td><td>' + data[i].requirement + '</td><td><label class="control-label" >' + data[i].rFQRemark + '</label></td></tr>').appendTo("#tbltermsconditionprev");
+                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tCName + '</td><td>' + data[i].requirement + '</td><td><label class="control-label" >' + data[i].rfqRemark + '</label></td></tr>').appendTo("#tbltermsconditionprev");
                 }
             }
             else {
@@ -165,9 +170,9 @@ function fetchRFQResponse(Flag, version) {
                     for (var i = 0; i < data.length; i++) {
 
                         
-                        strprev = "<tr><td style='width:30%!important'>" + data[i].rFQQuestions + "</td>";
+                        strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         
-                        strprev += "<td style='width:30%!important'>" + data[i].rFQQuestionsRequirement + "</td>";
+                        strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         
                         strprev += '<td style="width:40%!important"><label class="control-label" >' + data[i].answer + '</label></td></tr>';
                        
@@ -192,7 +197,7 @@ function fetchRFQResponse(Flag, version) {
 
                     for (var i = 0; i < data.length; i++) {
                         var str = "<tr><td style='width:47%!important'>" + data[i].attachmentdescription + "</td>";
-                        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + data[i].rFQAttachment + '>' + data[i].attachment + '</a></td>';
+                        str += '<td class=style="width:47%!important"><a id=attvendor'+i+' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
                         jQuery('#tblAttachmentsPrev').append(str);
                         
                     }
@@ -233,37 +238,21 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
 
-            sessionStorage.setItem('hddnRFQID', RFQData[0].General[0].rFQId)
-            jQuery('#RFQSubject').text(RFQData[0].General[0].rFQSubject)
-
-            jQuery('#RFQDescription').html(RFQData[0].General[0].rFQDescription)
-            $('#Currency').html(RFQData[0].General[0].currencyNm)
-          
-            $('#txtcurrency').val(RFQData[0].General[0].currencyNm)
-            jQuery('#ConversionRate').html(RFQData[0].General[0].rFQConversionRate);
-            jQuery('#refno').html(RFQData[0].General[0].rFQReference);
-            jQuery('#txtRFQReference').html(RFQData[0].General[0].rFQReference)
-            jQuery('#RFQStartDate').html(RFQData[0].General[0].rFQStartDate)
-            jQuery('#RFQEndDate').html(RFQData[0].General[0].rFQEndDate)
-
-            if (RFQData[0].General[0].rFQTermandCondition != '') {
-                replaced1 = RFQData[0].General[0].rFQTermandCondition.replace(/\s/g, "%20")
-            }
-            jQuery('#TermCondition').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1.replace(/\s/g, "%20")).html(RFQData[0].General[0].rFQTermandCondition)
-            $('#filepthtermsPrev').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1.replace(/\s/g, "%20")).html(RFQData[0].General[0].rFQTermandCondition);
-
+            //sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqid)
+           
+            $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition);
             //Preview Details
-            var TermsConditionFileName = '';
+           
 
-            jQuery('#lblRfqsubject').html(RFQData[0].General[0].rFQSubject)
+            jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
 
-            jQuery('#lblrfqstartdate').html(RFQData[0].General[0].rFQStartDate)
-            jQuery('#lblrfqenddate').html(RFQData[0].General[0].rFQEndDate)
-            jQuery('#lblrfqdescription').html(RFQData[0].General[0].rFQDescription)
+            jQuery('#lblrfqstartdate').html(RFQData[0].general[0].rfqStartDate)
+            jQuery('#lblrfqenddate').html(RFQData[0].general[0].rfqEndDate)
+            jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
 
-            jQuery("#dropCurrencyPrev").html(RFQData[0].General[0].currencyNm)
-            jQuery('#lblConversionRatePrev').html(RFQData[0].General[0].rFQConversionRate)
-            jQuery("#txtRFQReferencePrev").html(RFQData[0].General[0].rFQReference);
+            jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
+            jQuery('#lblConversionRatePrev').html(RFQData[0].general[0].rfqConversionRate)
+            jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
 
 
@@ -314,14 +303,14 @@ function fetchRFIParameteronload(ver) {
                 
                 $('#txtvendorremarks').val(data[0].vendorRemarks);
                 for (var i = 0; i < data.length; i++) {
-                    description = stringDivider(data[i].rFQDescription, 40, "<br/>\n");
-                    var detailsdesc = (data[i].rFQDescription).replace(/(\r\n|\n|\r)/gm, "");
+                    description = stringDivider(data[i].rfqDescription, 40, "<br/>\n");
+                    var detailsdesc = (data[i].rfqDescription).replace(/(\r\n|\n|\r)/gm, "");
                     detailsdesc = detailsdesc.replace(/'/g, '');
                     $('#wrap_scrollerPrev').show();
                   
-                    totalammwithoutGST = totalammwithoutGST + (data[i].rFQPriceWithoutGST * data[i].rFQuantity);
-                    totalammwithGST = totalammwithGST + (data[i].rFQVendorPricewithTax * data[i].rFQuantity);
-                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rFQParameterId + '</td><td class=hidden>' + data[i].rFQID + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rFQShortName + '</a></td><td>' + data[i].rFQDelivery + '</td><td>' + data[i].rFQUomId + '</td><td>' + thousands_separators(data[i].rFQuantity) + '</td><td class="fit hide">' + data[i].tAT + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class=hide>' + data[i].rFQDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rFQPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rFQVendorPricewithTax) + '</td><td class="text-right">' + thousands_separators((data[i].rFQPriceWithoutGST * data[i].rFQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rFQVendorPricewithTax * data[i].rFQuantity).round(2)) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rFQRemark + '</td></tr>').appendTo("#tblRFQPrev");
+                    totalammwithoutGST = totalammwithoutGST + (data[i].rfqPriceWithoutGST * data[i].rfQuantity);
+                    totalammwithGST = totalammwithGST + (data[i].rfqVendorPricewithTax * data[i].rfQuantity);
+                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class=hide>' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td></tr>').appendTo("#tblRFQPrev");
 
                 }
                 jQuery('<tr><td colspan=6><b>Total</b></td><td class="text-right">' + thousands_separators(totalammwithoutGST.round(2)) + '</td><td class="text-right">' + thousands_separators(totalammwithGST.round(2)) + '</td></tr>').appendTo("#tblRFQPrev");

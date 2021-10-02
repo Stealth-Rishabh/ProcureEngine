@@ -612,6 +612,7 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblConvRate").text(data[0].conversionRate);
               
                 var display = document.querySelector('#lblTimeLeft');
+                alert(ata[0].timeLeft)
                 startTimerBeforeBidStart(data[0].timeLeft, display)
                 fetchBidSummaryVendorproduct()
             }

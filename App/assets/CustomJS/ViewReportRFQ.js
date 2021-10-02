@@ -168,7 +168,7 @@ function fetchrfqcomprative(RFQID) {
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                       
-                                        str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators(data[0].quotesDetails[j].rFQVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                        str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
 
                                     }
 
@@ -238,7 +238,7 @@ function fetchrfqcomprative(RFQID) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
                                  var p = thousands_separators(data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST);
                             if (p != 0) {
-                                str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].VendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td>";
+                                str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td>";
                                 
                             }
                             else {
@@ -742,376 +742,376 @@ function fetchrfqcomprativeRA(RFQID,BidID) {
 
                 }
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                //str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 
-                for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
-                        RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
-                        str += "<td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstRA" + data[0].VendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].VendorNames[k].vendorID + " class=text-right></td>";
-                    }
-                    else {
-                        str += "<td colspan=3>&nbsp;</td>"; //
+                //for (var k = 0; k < data[0].vendorNames.length; k++) {
+                //    if (data[0].vendorNames[k].seqno != 0) {
+                //        RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
+                //        str += "<td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstRA" + data[0].VendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].VendorNames[k].vendorID + " class=text-right></td>";
+                //    }
+                //    else {
+                //        str += "<td colspan=3>&nbsp;</td>"; //
                         
-                    }
+                //    }
 
-                }
-                str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=5>&nbsp;</td></tr>";
+                //}
+                //str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=5>&nbsp;</td></tr>";
                 
 
-                //For Loading Factor
-                str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                ////For Loading Factor
+                //str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                
-                for (var l = 0; l < data[0].vendorNames.length; l++) {
-                    for (var k = 0; k < data[0].loadedFactor.length; k++) {
-                        if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
+                //for (var l = 0; l < data[0].vendorNames.length; l++) {
+                //    for (var k = 0; k < data[0].loadedFactor.length; k++) {
+                //        if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
 
-                            var p = thousands_separators(data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST);
-                            if (p != 0) {
-                                str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td>";
+                //            var p = thousands_separators(data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST);
+                //            if (p != 0) {
+                //                str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td>";
                                 
-                            }
-                            else {
+                //            }
+                //            else {
 
-                                str += "<td colspan=3>&nbsp;</td>";
+                //                str += "<td colspan=3>&nbsp;</td>";
                                
-                            }
+                //            }
 
-                        }
-
-
-                    }
-                }
-                str += "<td colspan=6>&nbsp;</td></tr>";
-               
-
-                //For Loading Factor reason Row
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
-                
-                for (var l = 0; l < data[0].vendorNames.length; l++) {
-                    for (var k = 0; k < data[0].loadedFactor.length; k++) {
-                        if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
-
-                            if (data[0].loadedFactor[k].loadingFactorReason != '') {
-                                str += "<td style='text-align:left;' colspan=3 id=LoadingReason" + data[0].vendorNames[k].vendorID + ">" + data[0].loadedFactor[k].loadingFactorReason + "</td>";
-                               
-                            }
-                            else {
-
-                                str += "<td colspan=3>&nbsp;</td>";
-                                
-                            }
-
-                        }
+                //        }
 
 
-                    }
-                }
-                str += "<td colspan=6>&nbsp;</td></tr>";
+                //    }
+                //}
+                //str += "<td colspan=6>&nbsp;</td></tr>";
                
 
-                //For Commercial Rank
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                ////For Loading Factor reason Row
+                //str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
                 
-                for (var l = 0; l < data[0].vendorNames.length; l++) {
-                    for (var k = 0; k < data[0].lStatus.length; k++) {
+                //for (var l = 0; l < data[0].vendorNames.length; l++) {
+                //    for (var k = 0; k < data[0].loadedFactor.length; k++) {
+                //        if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
 
-                        if (data[0].lStatus[k].vendorID == data[0].vendorNames[l].vendorID) {
-                            if (data[0].lStatus[k].status != 'N/A') {
-                                str += "<td colspan=3 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
-                                
-                            }
-                            else {
-                                str += "<td colspan=3 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
+                //            if (data[0].loadedFactor[k].loadingFactorReason != '') {
+                //                str += "<td style='text-align:left;' colspan=3 id=LoadingReason" + data[0].vendorNames[k].vendorID + ">" + data[0].loadedFactor[k].loadingFactorReason + "</td>";
                                
-                            }
+                //            }
+                //            else {
 
-                        }
+                //                str += "<td colspan=3>&nbsp;</td>";
+                                
+                //            }
 
-                    }
-                }
-                str += "<td colspan=6>&nbsp;</td></tr>";
+                //        }
+
+
+                //    }
+                //}
+                //str += "<td colspan=6>&nbsp;</td></tr>";
+               
+
+                ////For Commercial Rank
+                //str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                
+                //for (var l = 0; l < data[0].vendorNames.length; l++) {
+                //    for (var k = 0; k < data[0].lStatus.length; k++) {
+
+                //        if (data[0].lStatus[k].vendorID == data[0].vendorNames[l].vendorID) {
+                //            if (data[0].lStatus[k].status != 'N/A') {
+                //                str += "<td colspan=3 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
+                                
+                //            }
+                //            else {
+                //                str += "<td colspan=3 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
+                               
+                //            }
+
+                //        }
+
+                //    }
+                //}
+                //str += "<td colspan=6>&nbsp;</td></tr>";
                 
 
-                //For Blank Row
-                str += "<tr>";
+                ////For Blank Row
+                //str += "<tr>";
                 
-                var t = 0;
-                for (var k = 1; k <= data[0].vendorNames.length; k++) {
-                    t = k;
-                }
+                //var t = 0;
+                //for (var k = 1; k <= data[0].vendorNames.length; k++) {
+                //    t = k;
+                //}
 
-                str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
+                //str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
                 
 
-                //For Commercial Header Row
-                // ***************** Start  Commercial Row
-                if (data[0].commercialTerms.length > 0) {
+                ////For Commercial Header Row
+                //// ***************** Start  Commercial Row
+                //if (data[0].commercialTerms.length > 0) {
                    
-                    str += "<tr style='background: #f5f5f5; color:light black;'>";
+                //    str += "<tr style='background: #f5f5f5; color:light black;'>";
                     
-                    str += "<td><b>SrNo</b></td><td colspan=4><b>Other Commercial Terms</b></td>";
+                //    str += "<td><b>SrNo</b></td><td colspan=4><b>Other Commercial Terms</b></td>";
                    
-                    for (var k = 0; k < data[0].vendorNames.length; k++) {
+                //    for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                            str += "<td colspan=3 style='text-align:center;'><b>" + data[0].vendorNames[k].vName; +"</b></td>";
+                //            str += "<td colspan=3 style='text-align:center;'><b>" + data[0].vendorNames[k].vName; +"</b></td>";
                             
 
                         
 
-                    }
-                    str += "<td colspan=6><b>Our Requirement</b></td></tr>";
+                //    }
+                //    str += "<td colspan=6><b>Our Requirement</b></td></tr>";
                     
 
-                    $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
+                //    $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
 
-                    //For  Commercial table 
-                    for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
+                //    //For  Commercial table 
+                //    for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
 
-                        var flag1 = 'T';
-                        $("#tblRFQComprativetest > tbody > tr").each(function (index) {
-                            var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html()) == data[0].commercialTerms[p].termName) {
-                                flag1 = 'F';
-                            }
+                //        var flag1 = 'T';
+                //        $("#tblRFQComprativetest > tbody > tr").each(function (index) {
+                //            var this_row = $(this);
+                //            if ($.trim(this_row.find('td:eq(0)').html()) == data[0].commercialTerms[p].termName) {
+                //                flag1 = 'F';
+                //            }
 
-                        });
+                //        });
 
 
-                        if (flag1 == 'T') {
+                //        if (flag1 == 'T') {
 
-                            str += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
+                //            str += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
                             
 
-                            for (var s = 0; s < data[0].commercialTerms.length; s++) {
+                //            for (var s = 0; s < data[0].commercialTerms.length; s++) {
                               
-                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
+                //                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
 
-                                    //  q = q + 1;
-                                    for (var q = 0; q < data[0].vendorNames.length; q++) {
-                                        if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
+                //                    //  q = q + 1;
+                //                    for (var q = 0; q < data[0].vendorNames.length; q++) {
+                //                        if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
 
-                                            if (data[0].commercialTerms[s].remarks != '' && data[0].commercialTerms[s].remarks != 'Rejected') {
-                                                str += "<td colspan=3>" + data[0].commercialTerms[s].remarks + "</td>";
+                //                            if (data[0].commercialTerms[s].remarks != '' && data[0].commercialTerms[s].remarks != 'Rejected') {
+                //                                str += "<td colspan=3>" + data[0].commercialTerms[s].remarks + "</td>";
                                                 
 
-                                            }
-                                            else if (data[0].commercialTerms[s].remarks == 'Rejected') {
-                                                str += "<td colspan=3 style='color: red!important; text-align: center;'>Regretted</td>";
+                //                            }
+                //                            else if (data[0].commercialTerms[s].remarks == 'Rejected') {
+                //                                str += "<td colspan=3 style='color: red!important; text-align: center;'>Regretted</td>";
                                                 
 
-                                            }
-                                            else {
-                                                str += "<td colspan=3  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                //                            }
+                //                            else {
+                //                                str += "<td colspan=3  style='color: red!important; text-align: center;' >Not Quoted</td>";
                                                
-                                            }
+                //                            }
 
-                                        }
+                //                        }
 
-                                    }
-                                }
-                            }
-                            str += "<td colspan=6>" + data[0].commercialTerms[p].requirement + "</td>";
+                //                    }
+                //                }
+                //            }
+                //            str += "<td colspan=6>" + data[0].commercialTerms[p].requirement + "</td>";
                           
 
-                            str += " </tr>";
+                //            str += " </tr>";
                             
-                            jQuery('#tblRFQComprativetest').append(str);
-                        }
-                    }
-                }
-
-                // ***************** End  Commercial Row
-
-
-
-                //For Vendor Comments
-                // str += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
-                
-                for (var k = 0; k < data[0].vendorNames.length; k++) {
-
-                    if (data[0].vendorNames[k].vendorRemarks != "") {
-                        var VRemarks = stringDivider(data[0].vendorNames[k].vendorRemarks, 40, "<br/>\n");
-                        str += "<td colspan='3' class='text-left' >" + VRemarks + "</td>";
-                        
-                    }
-                    else {
-                        str += "<td colspan=3>&nbsp;</td>";
-                       
-                    }
-                }
-                str += "<td colspan=6>&nbsp;</td>";
-               
-                str += " </tr>";
-               
-
-                //For Qusetion table
-                // ***************** Start  Answer Question Row
-                if (data[0].questions.length > 0) {
-
-                    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
-                    for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
-
-                        var flag2 = 'T';
-                        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
-                            var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].questions[p].question.toLowerCase()) {
-                                flag2 = 'F';
-
-                            }
-
-                        });
-
-
-                        if (flag2 == 'T') {
-
-                            strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
-                            
-
-                            for (var s = 0; s < data[0].questions.length; s++) {
-
-                                if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
-
-                                    //  q = q + 1;
-                                    for (var q = 0; q < data[0].vendorNames.length; q++) {
-                                        if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
-
-                                            if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
-                                                strQ += "<td>" + data[0].questions[s].answer + "</td>";
-                                                
-
-                                            }
-                                            else if (data[0].questions[s].answer == 'Rejected') {
-                                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
-                                                
-
-                                            }
-                                            else {
-                                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
-                                               
-                                            }
-
-                                        }
-
-                                    }
-                                }
-                            }
-
-
-                            strQ += " </tr>";
-                            
-                            jQuery('#tblRFQComprativetestQ').append(strQ);
-
-                        }
-                    }
-                }
-                else {
-                    strQ += "<tr>";
-                    
-                    t = 0;
-                    for (var k = 1; k <= data[0].vendorNames.length; k++) {
-
-                        t = k;
-
-                    }
-                    strQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
-                    
-                    strQ += "</tr>";
-                    
-                }
-                // ***************** END  Answer Question Row
-                // ***************** Start  Define Technical  Approver Row**********************
-                strQ += " <tr><td><b>Technical Approver Required</b></td>";
-                //for (var k = 0; k < data[0].VendorNames.length; k++) {
-
-                if (data[0].vendorNames[0].isApproverRequired == "Y") {
-                    strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio'  value='Y' checked disabled/> &nbsp;<span for=AppYes>Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id=AppNo   onclick='fncheckradiotext()' disabled /> &nbsp;<span for=AppNo >No</span></td>"
-                }
-                else {
-                    if ($("#ddlrfqVersion option:selected").val() == 99) {
-                        strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio' value='Y' disabled/> &nbsp;<span for=AppYes >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id=AppNo checked  onclick='fncheckradiotext()'  value='N'   /> &nbsp;<span for=AppNo >No</span></td>"
-                    }
-                    else {
-                        strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio' value='Y'/> &nbsp;<span for='AppYes' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id='AppNo' checked  onclick='fncheckradiotext()'  value='N'   /> &nbsp;<span for=AppNo >No</span></td>"
-                    }
-                }
+                //            jQuery('#tblRFQComprativetest').append(str);
+                //        }
+                //    }
                 //}
-                strQ += "</tr>"
-                // ***************** END  Define Technical  Row **********************
-                // ***************** Start  Technical Approver Row**********************
+
+                //// ***************** End  Commercial Row
+
+
+
+                ////For Vendor Comments
+                //// str += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                //str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
+                
+                //for (var k = 0; k < data[0].vendorNames.length; k++) {
+
+                //    if (data[0].vendorNames[k].vendorRemarks != "") {
+                //        var VRemarks = stringDivider(data[0].vendorNames[k].vendorRemarks, 40, "<br/>\n");
+                //        str += "<td colspan='3' class='text-left' >" + VRemarks + "</td>";
+                        
+                //    }
+                //    else {
+                //        str += "<td colspan=3>&nbsp;</td>";
+                       
+                //    }
+                //}
+                //str += "<td colspan=6>&nbsp;</td>";
+               
+                //str += " </tr>";
                
 
-                if (data[0].approverStatus.length > 0) {
-                    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
-                    for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
+                ////For Qusetion table
+                //// ***************** Start  Answer Question Row
+                //if (data[0].questions.length > 0) {
 
-                        var flag3 = 'T';
-                        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
-                            var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].approverStatus[p].approverName.toLowerCase()) {
-                                flag3 = 'F';
+                //    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                //    for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
-                            }
+                //        var flag2 = 'T';
+                //        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
+                //            var this_row = $(this);
+                //            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].questions[p].question.toLowerCase()) {
+                //                flag2 = 'F';
 
-                        });
+                //            }
 
-                        if (flag3 == 'T') {
+                //        });
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
+
+                //        if (flag2 == 'T') {
+
+                //            strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             
 
-                            for (var s = 0; s < data[0].approverStatus.length; s++) {
+                //            for (var s = 0; s < data[0].questions.length; s++) {
 
-                                if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
+                //                if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
 
-                                    for (var q = 0; q < data[0].vendorNames.length; q++) {
-                                        if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
+                //                    //  q = q + 1;
+                //                    for (var q = 0; q < data[0].vendorNames.length; q++) {
+                //                        if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
 
-                                            if (data[0].approverStatus[s].status == 'Approved') {
-                                                strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
+                //                            if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
+                //                                strQ += "<td>" + data[0].questions[s].answer + "</td>";
                                                 
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
+                //                            }
+                //                            else if (data[0].questions[s].answer == 'Rejected') {
+                //                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
                                                 
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Pending') {
-                                                strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
+                //                            }
+                //                            else {
+                //                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                               
+                //                            }
+
+                //                        }
+
+                //                    }
+                //                }
+                //            }
+
+
+                //            strQ += " </tr>";
+                            
+                //            jQuery('#tblRFQComprativetestQ').append(strQ);
+
+                //        }
+                //    }
+                //}
+                //else {
+                //    strQ += "<tr>";
+                    
+                //    t = 0;
+                //    for (var k = 1; k <= data[0].vendorNames.length; k++) {
+
+                //        t = k;
+
+                //    }
+                //    strQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
+                    
+                //    strQ += "</tr>";
+                    
+                //}
+                //// ***************** END  Answer Question Row
+                //// ***************** Start  Define Technical  Approver Row**********************
+                //strQ += " <tr><td><b>Technical Approver Required</b></td>";
+                ////for (var k = 0; k < data[0].VendorNames.length; k++) {
+
+                //if (data[0].vendorNames[0].isApproverRequired == "Y") {
+                //    strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio'  value='Y' checked disabled/> &nbsp;<span for=AppYes>Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id=AppNo   onclick='fncheckradiotext()' disabled /> &nbsp;<span for=AppNo >No</span></td>"
+                //}
+                //else {
+                //    if ($("#ddlrfqVersion option:selected").val() == 99) {
+                //        strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio' value='Y' disabled/> &nbsp;<span for=AppYes >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id=AppNo checked  onclick='fncheckradiotext()'  value='N'   /> &nbsp;<span for=AppNo >No</span></td>"
+                //    }
+                //    else {
+                //        strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio' value='Y'/> &nbsp;<span for='AppYes' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id='AppNo' checked  onclick='fncheckradiotext()'  value='N'   /> &nbsp;<span for=AppNo >No</span></td>"
+                //    }
+                //}
+                ////}
+                //strQ += "</tr>"
+                //// ***************** END  Define Technical  Row **********************
+                //// ***************** Start  Technical Approver Row**********************
+               
+
+                //if (data[0].approverStatus.length > 0) {
+                //    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                //    for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
+
+                //        var flag3 = 'T';
+                //        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
+                //            var this_row = $(this);
+                //            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].approverStatus[p].approverName.toLowerCase()) {
+                //                flag3 = 'F';
+
+                //            }
+
+                //        });
+
+                //        if (flag3 == 'T') {
+
+                //            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
+                            
+
+                //            for (var s = 0; s < data[0].approverStatus.length; s++) {
+
+                //                if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
+
+                //                    for (var q = 0; q < data[0].vendorNames.length; q++) {
+                //                        if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
+
+                //                            if (data[0].approverStatus[s].status == 'Approved') {
+                //                                strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
+                                                
+
+                //                            }
+                //                            else if (data[0].approverStatus[s].status == 'Rejected') {
+                //                                strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
+                                                
+
+                //                            }
+                //                            else if (data[0].approverStatus[s].status == 'Pending') {
+                //                                strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
                                                
 
-                                            }
+                //                            }
 
-                                        }
-                                    }
-                                }
-                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
 
 
-                            strQ += " </tr>";
-                           jQuery('#tblRFQComprativetestQ').append(strQ);
+                //            strQ += " </tr>";
+                //           jQuery('#tblRFQComprativetestQ').append(strQ);
 
-                        }
+                //        }
 
-                    }
+                //    }
 
-                }
-                //  }
-                // ***************** END  Technical Approver Row
+                //}
+                ////  }
+                //// ***************** END  Technical Approver Row
 
-                //For Blank Row after question table 
-                strQ += "<tr>";
+                ////For Blank Row after question table 
+                //strQ += "<tr>";
                
-                t = 0;
-                for (var k = 1; k <= data[0].vendorNames.length; k++) {
+                //t = 0;
+                //for (var k = 1; k <= data[0].vendorNames.length; k++) {
 
-                    t = k;
+                //    t = k;
 
-                }
-                strQ += "<td colspan=" + (t + 2) + ">&nbsp;</td>";
+                //}
+                //strQ += "<td colspan=" + (t + 2) + ">&nbsp;</td>";
                 
-                strQ += "</tr>";
+                //strQ += "</tr>";
                 
 
 

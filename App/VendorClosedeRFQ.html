@@ -136,10 +136,10 @@
                                 <!--Begin Form -->
                                 <form class="form-horizontal" role="form">
                                     <div class="form-body">
-                                      
+
                                         <div class="row">
                                             <div class="col-md-6">
-                                               
+
                                                 <label class="col-md-4 control-label">
                                                     RFQ Subject:
                                                 </label>
@@ -152,83 +152,86 @@
                                                 <!--</div>-->
                                             </div>
                                             <div class="col-md-6">
-                                                
+
                                                 <label class="control-label col-md-4">Reference Number:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="txtRFQReferencePrev"></p>
                                                 </div>
-                                             
+
                                             </div>
-
-
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6">
-                                              
+
                                                 <label class="col-md-4 control-label">RFQ StartDate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblrfqstartdate">
 
                                                     </p>
                                                 </div>
-                                              
+
                                             </div>
                                             <div class="col-md-6">
-                                               
+
                                                 <label class="col-md-4 control-label">RFQ EndDate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblrfqenddate">
 
                                                     </p>
                                                 </div>
-                                                
+
                                             </div>
 
-
-
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-12">
-                                              
+
                                                 <label class="control-label col-md-2">RFQ Description:</label>
                                                 <div class="col-md-9">
                                                     <p class="form-control-static" id="lblrfqdescription">
 
                                                     </p>
                                                 </div>
-                                               
+
                                             </div>
-                                            <!--/span-->
+                                        </div>
+                                        <!--/span-->
 
-
+                                        <div class="row">
                                             <div class="col-md-6">
-                                               
+
                                                 <label class="control-label col-md-4">Currency:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="dropCurrencyPrev">
 
                                                     </p>
                                                 </div>
-                                                
+
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
-                                              
+
                                                 <label class="control-label col-md-4">Conversion Rate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblConversionRatePrev">
 
                                                     </p>
-                                                  
+
                                                 </div>
                                             </div>
-                                            <!--/span-->
+                                        </div>
+                                        <!--/span-->
 
-
+                                        <div class="row">
                                             <div class="col-md-6">
-                                                
+
                                                 <label class="control-label col-md-4">Term & Condition:</label>
                                                 <div class="col-md-8">
-                                                    <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;">
+                                                    <a class="form-control-static" href="javascript:;" onclick="DownloadFile(this)" id="filepthtermsPrev" style="text-decoration: none;">
                                                     </a>
                                                 </div>
-                                               
+
+                                            </div>
                                             </div>
                                         </div>
 
@@ -436,7 +439,7 @@
                 sessionStorage.setItem('RFQVersionId', version)
                 sessionStorage.setItem('hddnRFQID', _RFQid)
                 fetchReguestforQuotationDetails();
-                fetchAttachments();
+                
 
                 setTimeout(function () {
                     fetchRFIParameteronload(version)

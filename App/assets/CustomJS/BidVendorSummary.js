@@ -778,7 +778,7 @@ function fetchBidVendorSummarySummarization(dtfrom,dtto,subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
-
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -842,7 +842,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
                     if (BidData[i].lastInvoicePrice != 0) {
                         if (BidData[i].role == "Administrator") {
-                            str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].bidID + '\',\'' + BidData[i].sEID + '\',\'' + thousands_separators(BidData[i].lastInvoicePrice) + '\',\'LIP\')"> ' + thousands_separators(BidData[i].lastInvoicePrice) + '</a></td>';
+                            str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].bidID + '\',\'' + BidData[i].seid + '\',\'' + thousands_separators(BidData[i].lastInvoicePrice) + '\',\'LIP\')"> ' + thousands_separators(BidData[i].lastInvoicePrice) + '</a></td>';
                         }
                         else {
                             str += "<td class=text-right>" + thousands_separators(BidData[i].lastInvoicePrice) + "</td>";
@@ -1213,7 +1213,7 @@ function updlastinvoiceprice() {
        
     }
 
-        //alert(JSON.stringify(Data))
+        
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateLastInvoicePrice/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1224,10 +1224,10 @@ function updlastinvoiceprice() {
                 if (data == "1") {
                     
                     if (jQuery("#ddlBidtype option:selected").val() == 7) {
-                        fetchBidVendorSummaryDetail();
+                        fetchBidVendorSummaryDetail('', '','X-X');
                     }
                     else {
-                        fetchBidVendorSummaryDetailFA();
+                        fetchBidVendorSummaryDetailFA('', '','X-X');
                     }
                         $("#editLastInvoiceprice").modal("hide")
                     
@@ -1394,7 +1394,7 @@ function invitevendors() {
             }
         });
         if (checkedValue != '') {
-            checkedValue = 'insert into BidVendorDetails(BidId,EmailId,MailSent,VendorID) ' + checkedValue
+            checkedValue = 'insert into PE.BidVendorDetails(BidId,EmailId,MailSent,VendorID) ' + checkedValue
             checkedValue = checkedValue.substring(0, checkedValue.length - 6);
         }
 
@@ -1404,7 +1404,7 @@ function invitevendors() {
          "BidTypeID": parseInt(BidTypeID),
          "UserID": sessionStorage.getItem("UserID")
         }
-       // alert(JSON.stringify(data)) 
+       
          jQuery.ajax({
              url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/Invitevendors",
              beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1412,14 +1412,14 @@ function invitevendors() {
              type: "POST",
              contentType: "application/json",
              success: function(data) {
-                 if (data == "1") {
+                 //if (data == "1") {
                      $('.alert-success').show();
                      $('#spansuccess1').html('Vendor Invited Successfully..');
                      FetchVenderNotInvited();
                      $('.alert-success').fadeOut(5000);
                      Metronic.scrollTo($('.alert-success'), -200);
                      jQuery.unblockUI();
-                 }
+                // }
              },
              error: function (xhr, status, error) {
 

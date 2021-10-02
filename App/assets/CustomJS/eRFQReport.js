@@ -208,7 +208,7 @@ function RFQFetchQuotedPriceReport() {
                     else {
                         version = sessionStorage.getItem('RFQVersionId');
                     }
-                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
+                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor'+i+' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
                 }
             }
@@ -240,7 +240,7 @@ function DownloadFileVendor(aID) {
     else {
         version = sessionStorage.getItem('RFQVersionId');
     }
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + sessionStorage.getItem('hddnVendorId') + '/' + version+'/');
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + sessionStorage.getItem('hddnVendorId') + '/' + version);
 }
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {

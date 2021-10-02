@@ -115,30 +115,10 @@ function getSummary(vendorid, version) {
 
 function fetchrfqcomprative() {
    
-    var reInvited = '';
-    var dtfrom = '';
-    var dtto = '';
    
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        dtfrom = '';
-
-    }
-    else {
-        dtfrom = $("#txtFromDate").val()
-    }
-
-    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = '';
-
-    }
-    else {
-        dtto = $("#txtToDate").val()
-    }
-    
-    
+        
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&dateTo=" + dtto + "&dateFrom=" + dtfrom + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -1177,7 +1157,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalCommercialApp() {
-    
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' }); 
     var approvalbyapp = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1220,6 +1200,7 @@ function ApprovalCommercialApp() {
     });
 }
 function AwardCommeRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var a = $('#drpVendors').val();
     // alert(a)
@@ -1271,6 +1252,7 @@ function AwardCommeRFQ() {
 }
 function fnFWDeRFQ()
 {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1292,14 +1274,14 @@ function fnFWDeRFQ()
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+            //if (data.length > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
                
                 
-            }
+            //}
         },
         error: function (xhr, status, error) {
 
@@ -1315,6 +1297,7 @@ function fnFWDeRFQ()
     });
    }
 function ApprovalApp() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     for (var i = 0; i < Vendor.length; i++) {
       
@@ -1326,7 +1309,7 @@ function ApprovalApp() {
            
         }
 
-        approvalstatus = approvalstatus + " Select " + RFQID + "," + Vendor[i].vendorID + ",dbo.decrypt('" + sessionStorage.getItem("UserID") + "'),'" + checkedval + "' union all";
+        approvalstatus = approvalstatus + " Select " + RFQID + "," + Vendor[i].vendorID + ",PE.decrypt('" + sessionStorage.getItem("UserID") + "'),'" + checkedval + "' union all";
     }
     if (approvalstatus != '') {
 
@@ -1348,6 +1331,7 @@ function ApprovalApp() {
        
     };
    // alert(JSON.stringify(approvalbyapp))
+   // console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
@@ -1359,12 +1343,12 @@ function ApprovalApp() {
         dataType: "json",
         success: function (data) {
           
-            if (parseInt(data) > 0) {
+            //if (parseInt(data) > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
-            }
+            //}
            
 
         },
