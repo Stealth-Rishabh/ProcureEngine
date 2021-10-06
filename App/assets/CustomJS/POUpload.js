@@ -211,9 +211,9 @@ function insPoDetails() {
         if (rowCount > 0) {
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                PriceDetails = PriceDetails + ' insert into PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
+                PriceDetails = PriceDetails + ' insert into PE.PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
                 var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
-                PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(2)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(6)').html())) + "','" + $.trim(this_row.find('td:eq(7)').html()) + "','" + this_row.find('td:eq(4)').html() + "','" + $.trim(this_row.find('td:eq(5)').html()) + "',dbo.decrypt('" + sessionStorage.getItem('UserID') + "'),getdate())";
+                PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(2)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(6)').html())) + "','" + $.trim(this_row.find('td:eq(7)').html()) + "','" + this_row.find('td:eq(4)').html() + "','" + $.trim(this_row.find('td:eq(5)').html()) + "',PE.decrypt('" + sessionStorage.getItem('UserID') + "'),[PE].FN_Now())";
             })
         }
        // console.log(PriceDetails)
@@ -240,7 +240,7 @@ function insPoDetails() {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-                if (data == '1') {
+               // if (data == '1') {
                     if (AppType != 'Reverted') {
                         $('.alert-success').show();
                         $('#spansuccess1').html('PO sent to vendor successfully');
@@ -259,7 +259,7 @@ function insPoDetails() {
                     }
 
                     jQuery.unblockUI();
-                }
+               // }
 
             },
             error: function (xhr, status, error) {
@@ -394,7 +394,6 @@ function addAttachments() {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
             "POAttachment": attchname,
-            "AttachmentDescription": $('#AttachDescription1').val(),
             "UserID": sessionStorage.getItem('UserID'),
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
             "POAttachmentDescription": $('#AttachDescription1').val()

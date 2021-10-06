@@ -213,30 +213,27 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
            
-            $("#hdnParticipantID").val(data[0].participantID)
-            $("#hdnParticipantCode").val(data[0].vendorCode)
+            $("#hdnParticipantID").val(data.ParticipantID)
+            $("#hdnParticipantCode").val(data.VendorCode)
 
-            if (data[0].isSuccess == '1') {
+            if (data.IsSuccess == '1') {
                
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
             }
-            else if (data[0].isSuccess == '2') {
+            else if (data.IsSuccess == '2') {
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
             }
             else {
                 fnshowexistedVendorForextend();
-                
-               
             }
             setTimeout(function() {
                 jQuery('#divalertsucess').css('display', 'none');
                 jQuery('#divalerterr').css('display', 'none');
             }, 5000);
-            
             fetchParticipantsVenderTable();
             
         },
@@ -362,8 +359,6 @@ function validateDuplicateEmailId(elem) {
         }, 3000);
     }
 }
-
-
 
 function validateVendorGroup(ctrl,categoryId) {
     if (jQuery(ctrl).is(':checked') == true) {
@@ -668,9 +663,7 @@ $('div#divisactive').on('change', '.has-error', function () {
 function ValidateVendor() {
     var chkstatus = "false";
     var i = 0;
-  
-
-    $('div#divbidtypecontend').each(function (index) {
+   $('div#divbidtypecontend').each(function (index) {
         
         if ($(this).find("span#spanchecked").attr('class') == 'checked') {
             chkstatus = 'True';
@@ -732,7 +725,7 @@ function MapVendorCategories() {
     });
 
     if (InsertQuery != '') {
-        InsertQuery = 'Insert into VendorCategoryTypeMapping(CategoryID,VendorID,CustomerID,MappedBy,MappedOn)' + InsertQuery;
+        InsertQuery = 'Insert into PE.VendorCategoryTypeMapping(CategoryID,VendorID,CustomerID,MappedBy,MappedOn)' + InsertQuery;
         InsertQuery = InsertQuery.substring(0, InsertQuery.length - 11);
     } else {
         jQuery('#divalerterr').find('span').text('Please select atleast one group!');
@@ -853,8 +846,7 @@ jQuery("#ParticipantName").typeahead({
 });
 
 function validatePanNumber(pan) {
-
-        fnfetchfoundVendors();
+         fnfetchfoundVendors();
   
 }
 function fnfetchfoundVendors() {
@@ -971,8 +963,6 @@ $("#txtUI").keyup(function () {
 });
 function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode,alternatemailid) {
    // alert(buttonname)
-   
-   
     $('#hdnFlagType').val(buttonname)
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
@@ -997,6 +987,7 @@ function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, add
     }
     $('#divVendorForm').removeClass('hide')
     fetchMapCategory('Z', vendorid);
+
     if (buttonname == "EditCustomerVendor") {
         $('#ParticipantName').attr('disabled', 'disabled')
         $('#txtAddress').attr('disabled', 'disabled')
@@ -1071,7 +1062,6 @@ function ExtendParticipants() {
         "VendorCode": jQuery("#hdnParticipantCode").val(),
         "UserID": sessionStorage.getItem('UserID')
     }
-    
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegisterParticipanttoCustomer_PEV2/",

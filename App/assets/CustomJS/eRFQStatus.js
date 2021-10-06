@@ -20,12 +20,12 @@ function FetchInvitedVendorsForeRFQ() {
                 jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
                 
              
-                $('#rq_subject').html('<b>' + data[0].rQSubject + '</b>');
+                $('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
                 $('#rq_deadline').html(data[0].deadline);
-                $('#rq_description').html(data[0].rQDescription);
+                $('#rq_description').html(data[0].rqDescription);
                 $("#deadlineModal").html(data[0].deadline);
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rQStatus + '</td><td>' + data[i].responseDTTime + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + data[i].responseDTTime + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
                 }
             }
         },
@@ -48,7 +48,8 @@ function sendremainderstoparicipants() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
         var checkedValue = '';
-        var temp = new Array();
+    var temp = new Array();
+  
         $("#tblVendorSummary> tbody > tr").each(function (index) {
 
             vemail = $(this).find("td").eq(4).html();
@@ -62,13 +63,13 @@ function sendremainderstoparicipants() {
             checkedValue = 'insert into #temp(RFQID,EmailId,MailSent,VendorID) ' + checkedValue
             checkedValue = checkedValue.substring(0, checkedValue.length - 6);
         }
-
+    
         var data = {
             "QueryString": checkedValue,
             "RFQID": parseInt(RFQID),
             "UserID": sessionStorage.getItem("UserID")
         }
-          
+      
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "eRFQReport/SendRemainderToParticipanteRFQ",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -76,15 +77,14 @@ function sendremainderstoparicipants() {
             type: "POST",
             contentType: "application/json",
             success: function (data) {
-               
-                if (data == "1") {
+              
                     errorremainder.hide();
                     succesremainder.show();
                     $('#success').html('Reminder has been sent Successfully..');
                     succesremainder.fadeOut(3000);
                    
                     jQuery.unblockUI();
-                }
+               
             },
             error: function (xhr, status, error) {
 

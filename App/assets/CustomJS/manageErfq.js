@@ -409,7 +409,7 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (RFQData[0].general[0].rfqTermandCondition != '') {
                 replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
             }
-            jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + RFQID + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
+            jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
             
             
             if (RFQData[0].parameters.length > 0) {
@@ -503,7 +503,7 @@ function fetchReguestforQuotationDetails(RFQID) {
     jQuery.unblockUI();
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+sessionStorage.getItem('hdnrfqid'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
 }
 function fnRemoveAttachmentQues(srno, deletionfor) {
     var Attachments = {
@@ -878,7 +878,7 @@ function Reset() {
 }
 function addmoreattachments() {
 
-    
+   
 
     if (jQuery("#AttachDescription1").val() == "") {
         $('.alert-danger').show();
@@ -904,6 +904,7 @@ function addmoreattachments() {
             "RFQAttachment": attchname
             
         }
+       
         //alert(JSON.stringify(Attachments))
         jQuery.ajax({
             type: "POST",
@@ -915,9 +916,6 @@ function addmoreattachments() {
             data: JSON.stringify(Attachments),
             dataType: "json",
             success: function (data) {
-               
-               
-
                 if (data == "1") {
                         //** Upload Files on Azure PortalDocs folder first Time
                             fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
@@ -1285,7 +1283,7 @@ function openVendorsQuotes() {
             contentType: "application/json",
             success: function (data) {
              
-                if (data[0].IsSuccess == "1") {
+               // if (data[0].IsSuccess == "1") {
                     success1.show();
                     $('#spansuccess1').html("Quotes has been opened Successfully..'");
                     success1.fadeOut(6000);
@@ -1294,7 +1292,7 @@ function openVendorsQuotes() {
                     clearsession();
                     jQuery.unblockUI();
                     return true;
-                }
+               // }
             },
 
             error: function (xhr, status, error) {
@@ -1409,7 +1407,7 @@ function sendremainderstoparicipants() {
             contentType: "application/json",
             success: function (data) {
                
-                if (data == "1") {
+             //   if (data == "1") {
                     errorremainder.hide();
                     succesremainder.show();
                     $('#succrem').html('Reminder has been sent Successfully..');
@@ -1419,7 +1417,7 @@ function sendremainderstoparicipants() {
                     succesremainder.fadeOut(3000);
                     App.scrollTo(succesremainder, -200);
                     jQuery.unblockUI();
-                }
+              //  }
             },
 
             error: function (xhr, status, error) {
@@ -1531,11 +1529,11 @@ function invitevendors() {
         
         $("#tblvendorlist tr:gt(0)").each(function () {
             var this_row = $(this);
-            checkedValue = checkedValue + " select " + sessionStorage.getItem("hdnrfqid") + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','',dbo.Decrypt('" + sessionStorage.getItem("UserID") + "'),'" + $.trim(this_row.find('td:eq(0)').html()) + "','eRFQVendor.html?RFQID=" + sessionStorage.getItem("hdnrfqid") + "','N'," + sessionStorage.getItem('CustomerID') + ",getdate() union all "; //(convert(nvarchar(11),b.RFQClosureDate,103 )
+            checkedValue = checkedValue + " select " + sessionStorage.getItem("hdnrfqid") + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','',PE.Decrypt('" + sessionStorage.getItem("UserID") + "'),'" + $.trim(this_row.find('td:eq(0)').html()) + "','eRFQVendor.html?RFQID=" + sessionStorage.getItem("hdnrfqid") + "','N'," + sessionStorage.getItem('CustomerID') + ",[PE].FN_Now() union all "; //(convert(nvarchar(11),b.RFQClosureDate,103 )
            
         });
         if (checkedValue != '') {
-            checkedValue = "Insert into ActivityDetails(eRFQId,VendorId,ActivityDescription,FromUserId,ToUserId,LinkURL,Status,CustomerID,ReceiptDt)" + checkedValue;
+            checkedValue = "Insert into PE.ActivityDetails(eRFQId,VendorId,ActivityDescription,FromUserId,ToUserId,LinkURL,Status,CustomerID,ReceiptDt)" + checkedValue;
             checkedValue = checkedValue.substring(0, checkedValue.length - 11);
         }
 
@@ -1548,6 +1546,7 @@ function invitevendors() {
             "RFQDescription": ''
         }
      //  alert(JSON.stringify(data))
+       // console.log(JSON.stringify(data))
         jQuery.ajax({
             url: APIPath + "eRFQReport/GeteRFQInviteVendorAfterOpen/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1555,7 +1554,7 @@ function invitevendors() {
             type: "POST",
             contentType: "application/json",
             success: function (data) {
-                if (parseInt(data) > 0) {
+                //if (parseInt(data) > 0) {
                     success1.show();
                     $('#spansuccess1').html('Vendor Invited Successfully..');
                     FetchVenderNotInvited(sessionStorage.getItem("hdnrfqid"))
@@ -1567,7 +1566,7 @@ function invitevendors() {
                     success1.fadeOut(3000);
                     App.scrollTo(success1, -200);
                     jQuery.unblockUI();
-                }
+               // }
             },
             error: function (xhr, status, error) {
 
@@ -1711,16 +1710,16 @@ function saveBidSurrogate() {
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
 
-                if (data == "1") {
+               // if (data == "1") {
                     success1.show();
                     $('#spansuccess1').html("Data Successfully saved");
                     success1.fadeOut(6000);
                     App.scrollTo(success1, -200);
                     clearSurrogateForm();
-                }
-                else {
-                    alert("Error.")
-                }
+               // }
+                //else {
+                //    alert("Error.")
+                //}
 
                 jQuery.unblockUI();
             },

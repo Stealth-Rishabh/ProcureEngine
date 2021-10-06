@@ -38,18 +38,22 @@ public class ConfigureFileAttachment : IHttpHandler {
 
                 if (BidID != "0")
                 {
+                    
                     string savepath = "";
-                    string tempPath = ""; 
-                    string rootpath=@"C:\PEV1SC\SourcingPortal\"; 
+                    //string tempPath = "";
+                    //string rootpath=@"C:\PEV1SC\SourcingPortal\";
+                    string rootpath = @"C:\home\site\wwwroot\";
+                         Console.Write(FolderFor);
+                         Console.Write(rootpath);
                     if (FolderFor == "Customer")
                     {
                         savepath = rootpath + "\\"+BidID+ "\\assets\\";
                     }
-                    else
-                    {
-                        savepath = context.Server.MapPath(tempPath) + "\\PortalDocs\\" + "\\" + FolderFor + "\\" + BidID + "\\" + VendorID+"\\" + Version;
-                    }
-                   
+                    //else
+                    //{
+                    //    savepath = context.Server.MapPath(tempPath) + "\\PortalDocs\\" + "\\" + FolderFor + "\\" + BidID + "\\" + VendorID+"\\" + Version;
+                    //}
+
                     string filenameTerms ="";
                     string filenameAnyOther = ""; // = postedFileAnyOther.FileName;
                     string filenameRFQAttach = "";

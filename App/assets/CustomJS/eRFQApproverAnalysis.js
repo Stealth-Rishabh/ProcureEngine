@@ -171,7 +171,7 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Select"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     
-                    if (data[0].vendorNames[i].seqno != 0) {
+                    if (data[0].vendorNames[i].seqNo != 0) {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
@@ -294,7 +294,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
                
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                         str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                        
@@ -381,7 +381,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         
@@ -416,7 +416,7 @@ function fetchrfqcomprative() {
                    
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                        if (data[0].vendorNames[k].seqno != '0') {
+                        if (data[0].vendorNames[k].seqNo != '0') {
 
                             str += "<td colspan=4 style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[k].vendorID + "'\,\'" + data[0].vendorNames[k].rfqVersionId + "'\)  style='color:#2474f6; text-decoration:underline;'><b>" + data[0].vendorNames[k].vName + "<b></a></td>";
                            

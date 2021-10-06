@@ -133,7 +133,7 @@ function fetchrfqcomprative() {
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                    if (data[0].vendorNames[i].seqno != 0) {
+                    if (data[0].vendorNames[i].seqNo != 0) {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
@@ -369,7 +369,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";

@@ -29,13 +29,13 @@ function RegisterUser() {
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
           
-        if (data == 'Y') {
+            if (data.isSuccess == 'Y') {
                 jQuery('#divalerterror').hide();
                 App.scrollTo($('#divalertsucess'), -200);
                 jQuery('#divalertsucess').slideDown(1000);
                 fetchRegisterUser();
         }
-        else if (data == 'N') {
+            else if (data.isSuccess == 'N') {
 
                 $('.alert-danger').show();
                 $('#spanerror1').html('Server Error.');

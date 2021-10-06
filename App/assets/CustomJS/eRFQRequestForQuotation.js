@@ -1566,7 +1566,6 @@ function editRow(icount) {
     
 	//sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
    
-
     $('#txtshortname').val($("#sname" + icount).text())
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txttargetprice').val($("#TP" + icount).text())
@@ -2457,8 +2456,6 @@ function printDataparameter(result) {
                  }
                  ErrorUOMMsz = ErrorUOMMsz + '</ul>'
                  ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
-
-
                  $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
 
                  return false;
@@ -2478,7 +2475,7 @@ function printDataparameter(result) {
                  $("#error-excelparameter").show();
                  $("#errspan-excelparameter").html(ErrorMszDuplicate)
              }
-             // fnSeteRFQparameterTable()
+            
          }
     
     
@@ -2535,7 +2532,6 @@ function fnSeteRFQparameterTable() {
 
 
 $("#btninstructionexcel").click(function() {
-    
     $("#instructionsDiv").show();
     $("#instructionSpan").show();
 });
@@ -2618,7 +2614,6 @@ jQuery("#txtSearch").typeahead({
             map[vName] = username;
             usernames.push(vName);
         });
-
         process(usernames);
 
     },

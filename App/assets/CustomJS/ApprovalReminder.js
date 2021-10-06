@@ -190,7 +190,7 @@ function FetchViewAllPendingBids() {
 }
 function FetchAllCloseBids() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+    alert(APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=" + $('#ddlPendingwith').val())
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -393,6 +393,7 @@ function fnCloseBids() {
     }
     
    // alert(JSON.stringify(data))
+  // console.log(JSON.stringify(data))
     jQuery.ajax({
         url: APIPath + "BidVendorSummary/SendReminderToPendingApprovers",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -400,7 +401,7 @@ function fnCloseBids() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            if (data == "1") {
+           // if (data == "1") {
                 $('.alert-success').show();
                 $('#success').html('Reminder Sent successfully.');
 
@@ -408,7 +409,7 @@ function fnCloseBids() {
                 $('.alert-success').fadeOut(5000);
                 FetchAllCloseBids();
                 jQuery.unblockUI();
-            }
+          //  }
 
         },
         error: function (xhr, status, error) {

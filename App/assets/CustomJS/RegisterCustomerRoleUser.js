@@ -717,7 +717,7 @@ function ins_updCustomer() {
         return false;
 
     }
-  
+    console.log(JSON.stringify(data))
     jQuery.ajax({
         url: APIPath + "CustomerRegistration/InsCustomerRegistration",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -725,11 +725,13 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-          
-            if (data[0].isSuccess == '1') {
+           
+            alert(data.isSuccess)
+           
+            if (data.isSuccess == '1') {
                 
-                sessionStorage.setItem("hdnCustomerID", data[0].customerID)
-                sessionStorage.setItem("hdnAdminID", data[0].adminID)
+                sessionStorage.setItem("hdnCustomerID", data.CustomerID)
+                sessionStorage.setItem("hdnAdminID", data.AdminID)
                 error.hide();
                 success.hide();
                
@@ -738,7 +740,7 @@ function ins_updCustomer() {
                 return true;
                
             }
-            else if (data[0].isSuccess == '-1') {
+            else if (data.isSuccess == '-1') {
                 
                 success.hide();
                 error.show();
@@ -753,7 +755,7 @@ function ins_updCustomer() {
                 return false;
             }
            
-            else if (data[0].isSuccess == '0') {
+            else if (data.isSuccess == '0') {
                 success.hide();
                 error.show();
                 error.fadeOut(7000);
@@ -1019,7 +1021,7 @@ function fileUploader(CustomerName) {
 
     formData.append("BidID", CustomerName);
     formData.append("VendorID", '');
-
+    debugger;
      $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',

@@ -196,8 +196,8 @@ function fetchrfqcomprative() {
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
               
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
-                    
-                    if (data[0].vendorNames[i].seqno != 0) {
+                   
+                    if (data[0].vendorNames[i].seqNo != 0) {
                        
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
@@ -349,7 +349,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
                 strExcel += "<tr><td colspan=5><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                          RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                          str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                          strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -443,7 +443,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -478,7 +478,7 @@ function fetchrfqcomprative() {
                      strExcel += "<td>SrNo</td><td colspan=4><b>Other Commercial Terms</b></td>";
                      for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                         if (data[0].vendorNames[k].seqno != '0') {
+                         if (data[0].vendorNames[k].seqNo != '0') {
 
                              str += "<td colspan=4 style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[k].vendorID + "'\,\'" + data[0].vendorNames[k].rfqVersionId + "'\)  style='color:#2474f6; text-decoration:underline;'><b>" + data[0].vendorNames[k].vName + "<b></a></td>";
                              strExcel += "<td colspan=4 ><b>" + data[0].vendorNames[k].vName; +"</b></td>";
@@ -1504,7 +1504,7 @@ function deleteApprow(approwid) {
     }
 }
 function MapApprover() {
-   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblapprovers tr').length;
     if (rowCount > 1) {
@@ -1521,9 +1521,7 @@ function MapApprover() {
             "ShowQuotedPrice": $('#drp_ShowPrice').val(),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-    
-     
-        jQuery.ajax({
+    jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQTechInsApprover",
@@ -1532,18 +1530,18 @@ function MapApprover() {
             async: false,
             data: JSON.stringify(Approvers),
             dataType: "json",
-            success: function (data) {
-                    jQuery('#btnTechSubmit').attr("disabled", "disabled");
+        success: function (data) {
+                jQuery('#btnTechSubmit').attr("disabled", "disabled");
                         $('#msgSuccessApp').show();
                         $('#msgSuccessApp').html('Approver mapped successfully!');
                         Metronic.scrollTo($('#msgSuccessApp'), -200);
-                        $('#msgSuccessApp').fadeOut(7000);
-                       
-                fetchrfqcomprative();
+                $('#msgSuccessApp').fadeOut(7000);
+                jQuery.unblockUI();
                 setTimeout(function () {
                     $("#MapTechnicalApprover").modal('hide');
-                },1000)
-                        return true;
+                    fetchrfqcomprative();
+                }, 1000);
+                 return true;
 
             },
             error: function (xhr, status, error) {
@@ -1561,6 +1559,7 @@ function MapApprover() {
     
 }
 function fnSendActivityToCommercial() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1592,6 +1591,7 @@ function fnSendActivityToCommercial() {
                     $('#txtfwdToCommApproverrem').val('')
                     $('#btn_commercial').attr('disabled', 'disabled')
                     $("#btn_commercial").addClass('hide');
+                    jQuery.unblockUI();
                     setTimeout(function () {
                         $("#FwdCommercialApprover").modal('hide');
                         fetchrfqcomprative();
@@ -1716,9 +1716,7 @@ function fnUpdateApproverFlag() {
 
 var str = '';
 function checkForSelectedVendors() {
-
-    
-    $(".chkReinvitation:checked").each(function(x, i) {
+   $(".chkReinvitation:checked").each(function(x, i) {
         str += $(this).val() + ',';
 
     });

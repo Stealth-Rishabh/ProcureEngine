@@ -793,7 +793,10 @@ function fetchAttachments() {
                            strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                            str += "<td class='hide'>" + data[i].questionID + "</td>";
                            str += '<td style="width:40%!important"><textarea type=text class="form-control" autocomplete="off" id=answers' + i + '>' + data[i].answer + '</textarea></td></tr>';
-                           strprev += '<td style="width:40%!important"><label class="control-label" >' + data[i].answer + '</label></td></tr>';
+                           strprev += '<td style="width:40%!important"><label class="control-label" id=lblanswer' + i + '>' + data[i].answer + '</label></td></tr>';
+                         
+                           $('#lblanswer' + i).html($('#answers' + i).val())
+                          
                            jQuery('#tblquestions').append(str);
                            jQuery('#tblQuestionsPrev').append(strprev);
 
@@ -861,14 +864,14 @@ function fetchAttachments() {
     function fnsaveAttachmentsquestions() {
         var attchquery = '';
         var quesquery = '';
-        var i = 0;
+        var i = 1;
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
             
             var this_row = $(this);
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#eRFQVFilesPrev' + i).html()) + '#';
             i++;
         });
-         i = 0;
+        i = 0;
         $("#tblquestions> tbody > tr").each(function (index) {
             var this_row = $(this);
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '#';

@@ -5,9 +5,8 @@
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
 var Token = '';
-//var APIPath = sessionStorage.getItem("APIPath");
-var APIPath = "http://localhost:51739/";
-fetchMapCategory();
+var APIPath = sessionStorage.getItem("APIPath");
+
 var Login = function () {
    
     var handleLogin = function () {

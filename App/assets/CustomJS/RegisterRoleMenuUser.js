@@ -823,7 +823,7 @@ function fnMapMenus() {
         "RoleID": parseInt(jQuery("#ddlrole1").val())
         
     };
-   
+    console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: APIPath + "RoleMenus/MapMenusRole/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -832,7 +832,7 @@ function fnMapMenus() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             if (data == '1') {
-                bootbox.alert("Customer Regsitered Successfully.", function () {
+                bootbox.alert("Menu mapped Successfully with Roles.", function () {
                    
                     window.location = "RegisterRoleMenuUser.html";
                     return false;

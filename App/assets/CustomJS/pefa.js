@@ -2609,7 +2609,7 @@ function Dateandtimevalidate(indexNo) {
 
 function fetchPSBidDetailsForPreview() {
     var TermsConditionFileName = '';
-    var AttachementFileName = '';
+     var AttachementFileName = '';
    
     jQuery('#mapedapproverPrev').html('');
    
@@ -2628,13 +2628,13 @@ function fetchPSBidDetailsForPreview() {
     });
 
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
-        $('#filepthterms').html($('#filepthterms').html());
+        $('#filepthtermsPrev').html($('#filepthterms').html());
        
 
     }
     else {
         TermsConditionFileName = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1);
-        $('#filepthterms').html(TermsConditionFileName);
+        $('#filepthtermsPrev').html(TermsConditionFileName);
     
     }
 
@@ -2806,16 +2806,14 @@ jQuery("#txtSearch").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].participantID != "0") {
-
             sessionStorage.setItem('hdnVendorID', map[item].participantID);
-           
+            jQuery("#tblvendorlist > tbody").empty();
+
+
             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
-            var str = "<tr><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + vName + " </td></tr>";
-            jQuery('#tblvendorlist').empty();
+            var str = "<tr><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
-
-
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {

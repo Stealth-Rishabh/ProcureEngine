@@ -73,7 +73,7 @@ function FetchAllOpenBids() {
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                     str += "<td>" + BidDate + "</td>";
                     
-                    str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].aMPM + "</td>";
+                    str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].ampm + "</td>";
                     str += "<td class=text-right>" + BidData[i].bidDuartion + "</td>";
                     str += "<td>" + BidData[i].currencyName + "</td>";
                     str += "</tr>";
@@ -246,7 +246,7 @@ function fnCloseBids() {
  var temp = new Array();
  $("#tblVendorSummary> tbody > tr").each(function (index) {
      if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-       checkedValue = checkedValue + " Update BidDetails set Status='Close' where BidID=" + $(this).find("#chkvender").val() +"  ;";
+       checkedValue = checkedValue + " Update PE.BidDetails set Status='Close' where BidID=" + $(this).find("#chkvender").val() +"  ;";
      }
  });
  
