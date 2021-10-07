@@ -47,7 +47,8 @@ public class ConfigureFileAttachment : IHttpHandler {
                          Console.Write(rootpath);
                     if (FolderFor == "Customer")
                     {
-                        savepath = rootpath + "\\"+BidID+ "\\assets\\";
+                        //savepath = rootpath + "\\"+BidID+ "\\assets\\";
+                        savepath = BidID+ "\\assets\\";
                     }
                     //else
                     //{

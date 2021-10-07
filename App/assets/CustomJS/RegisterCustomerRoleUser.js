@@ -726,7 +726,7 @@ function ins_updCustomer() {
         contentType: "application/json",
         success: function (data) {
            
-            alert(data.isSuccess)
+          
            
             if (data.isSuccess == '1') {
                 
