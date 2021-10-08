@@ -42,13 +42,12 @@ public class ConfigureFileAttachment : IHttpHandler {
                     string savepath = "";
                     //string tempPath = "";
                     //string rootpath=@"C:\PEV1SC\SourcingPortal\";
-                    string rootpath = @"C:\home\site\wwwroot\";
-                         Console.Write(FolderFor);
-                         Console.Write(rootpath);
+                    //string rootpath = @"C:\home\site\wwwroot\";
                     if (FolderFor == "Customer")
                     {
-                        //savepath = rootpath + "\\"+BidID+ "\\assets\\";
-                        savepath = BidID+ "\\assets\\";
+                       //savepath = rootpath + "\\"+BidID+ "\\assets\\";
+                        savepath =BidID+ "\\assets\\";
+                       
                     }
                     //else
                     //{
@@ -75,7 +74,7 @@ public class ConfigureFileAttachment : IHttpHandler {
                     if (!System.IO.Directory.Exists(savepath))
                         System.IO.Directory.CreateDirectory(savepath);
 
-                    //Regex re = new Regex("[;\\/:*?\"<>|&']");
+                   
                     Regex re = new Regex("[|@|*|&|/|\\|,|+|$|~|%|'|\"|:|?|<|>|{|}|]|/g|#|]");
                     if (filenameTerms != null && filenameTerms!="")
                     {
