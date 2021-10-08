@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\App",
+    "\\App\\assets",
+    "\\App\\assets\\CustomJS",
     "\\Vendor"
   ],
+  "SelectedNode": "\\App\\assets\\CustomJS\\ValidateAcceptSurrogateRFQ.js",
   "PreviewInSolutionExplorer": false
 }
