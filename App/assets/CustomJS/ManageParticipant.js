@@ -225,15 +225,15 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
             
-            $("#hdnParticipantID").val(data.ParticipantID)
-            $("#hdnParticipantCode").val(data.VendorCode)
+            $("#hdnParticipantID").val(data.participantID)
+            $("#hdnParticipantCode").val(data.vendorCode)
 
-            if (data.IsSuccess == '1') {
+            if (data.isSuccess == '1') {
                 jQuery('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
                
             }
-            else if (data.IsSuccess == '2') {
+            else if (data.isSuccess == '2') {
                 jQuery('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
                

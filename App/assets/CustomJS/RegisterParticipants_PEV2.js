@@ -8,6 +8,7 @@ $('#txtUI,txtPanNo,#txtTINNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
 var FormValidation = function () {
     var ValidateParticipants = function () {
         var form1 = $('#entryForm');
@@ -142,6 +143,7 @@ var FormValidation = function () {
                         ExtendParticipants();
                     }
                     else {
+                      
                         RegisterParticipants();
                     }
                    
@@ -203,6 +205,7 @@ function RegisterParticipants() {
         "AlternateEmailID": $('#txtAlternateeMailID').val()
 
     };
+    //console.log(JSON.stringify(RegisterParticipants))
     //alert(JSON.stringify(RegisterParticipants))
     jQuery.ajax({
        
@@ -213,16 +216,16 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
            
-            $("#hdnParticipantID").val(data.ParticipantID)
-            $("#hdnParticipantCode").val(data.VendorCode)
-
-            if (data.IsSuccess == '1') {
+            $("#hdnParticipantID").val(data.participantID)
+            $("#hdnParticipantCode").val(data.vendorCode)
+           
+            if (data.isSuccess == '1') {
                
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
             }
-            else if (data.IsSuccess == '2') {
+            else if (data.isSuccess == '2') {
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
@@ -717,7 +720,7 @@ function MapVendorCategories() {
     
     $('.childchkbox').each(function() {
         if (this.checked) {
-            InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",dbo.Decrypt('" + UserID + "'),getdate() union all ";
+            InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
         }
         else {
             InsertQuery = InsertQuery;
@@ -745,6 +748,7 @@ function MapVendorCategories() {
         "VendorID": parseInt($("#hdnParticipantID").val())
         
     };
+    //console.log(JSON.stringify(MapParticipants))
     //alert(JSON.stringify(MapParticipants))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
@@ -753,7 +757,7 @@ function MapVendorCategories() {
         data: JSON.stringify(MapParticipants),
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
-         
+       
         if (data == '1') {
             jQuery('#divalertsucess').slideDown('show');
             App.scrollTo(jQuery('#divalertsucess'), -200);

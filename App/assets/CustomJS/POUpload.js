@@ -856,7 +856,7 @@ function InsupdProductfromExcel() {
             var this_row = $(this);
             PriceDetails = PriceDetails + 'insert into PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
             var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
-            PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(4)').html())) + "','" + $.trim(this_row.find('td:eq(5)').html()) + "','" + this_row.find('td:eq(6)').html() + "','" + $.trim(this_row.find('td:eq(7)').html()) + "',dbo.decrypt('" + sessionStorage.getItem('UserID') + "'),getdate())";
+            PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(4)').html())) + "','" + $.trim(this_row.find('td:eq(5)').html()) + "','" + this_row.find('td:eq(6)').html() + "','" + $.trim(this_row.find('td:eq(7)').html()) + "',PE.decrypt('" + sessionStorage.getItem('UserID') + "'),PE.FN_Now() )";
 
 
         })

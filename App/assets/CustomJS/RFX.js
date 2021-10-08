@@ -694,7 +694,7 @@ function RFXConfigureTab2() {
     var UsID = sessionStorage.getItem('UserID')
     $('.childchkbox').each(function () {
         if (this.checked) {
-            InsertQuery = InsertQuery + "select " + sessionStorage.getItem('CurrentRFXID') + "," + sessionStorage.getItem('CustomerID') + "," + $(this).val() + ",dbo.DECRYPT('" + UsID + "'),getdate() union all ";
+            InsertQuery = InsertQuery + "select " + sessionStorage.getItem('CurrentRFXID') + "," + sessionStorage.getItem('CustomerID') + "," + $(this).val() + ",PE.DECRYPT('" + UsID + "'),PE.FN_Now() union all ";
         }
         else {
             InsertQuery = InsertQuery;

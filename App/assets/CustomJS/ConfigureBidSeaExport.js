@@ -619,7 +619,8 @@ var FormWizard = function () {
                     },
                     txtBidSubject: {
                         required: true,
-                        maxlength: 2000
+                        maxlength: 2000,
+                       
                     },
 
                     txtbiddescription: {

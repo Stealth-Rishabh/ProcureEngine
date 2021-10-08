@@ -684,7 +684,7 @@ function ins_updCustomer() {
             'CountryID': parseInt($('#dropCountry').val()),
             'StateID': parseInt($('#dropState').val()),
             'CityID': parseInt($('#dropCity').val()),
-            'PinCode': parseInt($('#pincode').val()),
+            'PinCode': parseInt($('#pincode').val() == null ? 0 : $('#pincode').val()),
             'Website': $('#txtwebsite').val(),
             'PhoneNo': $('#phoneno').val(),
             'AdminName': $('#txtadminfirstname').val(),

@@ -1004,16 +1004,14 @@ function fetchAttachments() {
                 jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
                 jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
 
-                if (RFQData[0].general[0].rfqTermandCondition != '') {
-                    replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
-                }
+               
                // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
                 //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
 
                 jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition)
                 //Preview Details
-                var TermsConditionFileName = '';
+              
 
                 jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
                
@@ -1247,6 +1245,7 @@ function fetchAttachments() {
  sessionStorage.removeItem('selectedboqtxtboxidTax');
 
 function DownloadFile(aID) {
+   
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+sessionStorage.getItem('hddnRFQID'));
 }
 function DownloadFileVendor(aID) {
