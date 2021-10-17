@@ -15,14 +15,14 @@ function fetchUserDetails() {
         success: function (data) {
             if (data.length > 0) {
                 
-                for (var i = 0; i < data.length; i++) {
-                    $('#username').html(data[i].userName)
-                    $('#usermobileno').val(data[i].mobileNo)
-                    $('#userEmailID').html(data[i].emailID)
-                    $('#userRole').html(data[i].roleName)
-                    $('#userdesignation').val(data[i].designation)
+                //for (var i = 0; i < data.length; i++) {
+                    $('#username').html(data[0].userName)
+                    $('#usermobileno').val(data[0].mobileNo)
+                    $('#userEmailID').html(data[0].emailID)
+                    $('#userRole').html(data[0].roleName)
+                    $('#userdesignation').val(data[0].designation)
                     
-                }
+               // }
 
                 
             }
@@ -58,20 +58,20 @@ function fetchVendorDetails() {
         dataType: "json",
         success: function (data) {
             if (data.length > 0) {
-               
-                for (var i = 0; i < data.length; i++) {
-                    $('#vendorname').html(data[i].vendorName)
-                    $('#vendormobileno').val(data[i].mobileNo)
-                    $('#vendorEmailID').html(data[i].emailID)
-                    $('#vendoraddress').val(data[i].address)
-                    $('#vendorCity').val(data[i].city)
-                    $('#vendorphone').val(data[i].phone)
-                    $('#vendorpanno').html(data[i].pANNo)
-                    $('#vendorservicetaxno').html(data[i].serviceTaxNo)
-                    $('#vendoralternateemail').val(data[i].alternateEmailID)
-                    $('#personname').val(data[i].Contactperson)
-                    $('#Vendorcode').html("<b>"+data[i].vendorCode+"</b>")
-                }
+                
+               // for (var i = 0; i < data.length; i++) {
+                    $('#vendorname').html(data[0].vendorName)
+                    $('#vendormobileno').val(data[0].mobileNo)
+                    $('#vendorEmailID').html(data[0].emailID)
+                    $('#vendoraddress').val(data[0].address)
+                    $('#vendorCity').val(data[0].city)
+                    $('#vendorphone').val(data[0].phone)
+                    $('#vendorpanno').html(data[0].panNo)
+                    $('#vendorservicetaxno').html(data[0].serviceTaxNo)
+                    $('#vendoralternateemail').val(data[0].alternateEmailID)
+                    $('#personname').val(data[0].contactPerson)
+                    $('#Vendorcode').html("<b>"+data[0].vendorCode+"</b>")
+                //}
 
 
             }
@@ -172,6 +172,9 @@ function formvalidatevendor(){
             },
             vendoralternateemail:{
                 email:true
+            },
+            personname: {
+                required: true
             }
 
         },

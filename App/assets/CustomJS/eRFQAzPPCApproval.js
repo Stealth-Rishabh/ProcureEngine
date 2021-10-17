@@ -681,12 +681,15 @@ function fetchrfqcomprative() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
@@ -722,12 +725,15 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -756,10 +762,12 @@ function RFQFetchL1Package(VendorID, Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -787,10 +795,12 @@ function FetchRFQVersion() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -831,10 +841,12 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -884,10 +896,12 @@ function fetchReguestforQuotationDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -987,12 +1001,15 @@ function fetchAzPPcFormDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
@@ -1027,12 +1044,15 @@ function fetchRegisterUser() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
@@ -1239,12 +1259,15 @@ function MapApprover() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
 
@@ -1314,12 +1337,15 @@ function fnGetApprovers() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     })
@@ -1380,12 +1406,15 @@ function fetchApproverRemarks() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     })
@@ -1530,12 +1559,15 @@ function fnFWDeRFQ() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -1573,54 +1605,17 @@ function ApprovalCommercialApp() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
 }
 
-//function fnRemoveApprover(rowsrno, approvertype) {
-//    var Approvers = {
-//        "ApproverType": approvertype,
-//        "SrNo": rowsrno,
-//        "RFQID": $('#hdnRfqID').val()
-//    }
-//    //alert(JSON.stringify(Approvers))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQApproveRemove",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        crossDomain: true,
-//        async: false,
-//        data: JSON.stringify(Approvers),
-//        dataType: "json",
-//        success: function (data) {
-//            if (data[0].OutPut == "1") {
-//                fnGetApprovers();
-//                $('#msgSuccessApp').show();
-//                $('#msgSuccessApp').html('Approver removed successfully!');
-//                Metronic.scrollTo($('#msgSuccessApp'), -200);
-//                $('#msgSuccessApp').fadeOut(7000);
-//                return false;
-
-//            }
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = eval("(" + xhr.responseText + ")");
-//            if (xhr.status === 401) {
-//                error401Messagebox(err.Message);
-//            }
-
-//            return false;
-//            jQuery.unblockUI();
-//        }
-
-//    })
-//}

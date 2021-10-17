@@ -688,7 +688,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                
                 for (var i = 0; i < data.length; i++) {
                   
-                    TotalBidValue = parseFloat($('#quantity' + i).html()) * parseFloat(data[i].lQuote);
+                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                    
                     if (TotalBidValue != 0) {
@@ -768,7 +768,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                         if (data[i].itemStatus.toLowerCase() == 'open' || data[i].itemStatus.toLowerCase() == 'inactive') {
                             if ($('#seid' + j).html() == data[i].seId) {
 
-                                TotalBidValue = parseFloat($('#quantity' + j).text()) * parseFloat(data[i].lQuote);
+                                TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + j).text())) * parseFloat(data[i].lQuote);
                                 TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                                 if (TotalBidValue != 0) {
                                     if ($('#TP' + j).html() != 0) {
@@ -843,9 +843,9 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
             else {
                 for (var i = 0; i < data.length; i++) {
 
-                    TotalBidValue = parseFloat($('#quantity' + i).html()) * parseFloat(data[i].lQuote);
+                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-
+                   
                     if (TotalBidValue != 0) {
                         if ($('#TP' + i).html() != 0) {
                             Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
@@ -960,7 +960,7 @@ function AwardBid(bidid) {
         }
     }
     var AwardBid = {
-        "BidID": bidid,
+        "BidID": parseInt(bidid),
         "Vendors": vendors,//jQuery("#hdnvendor").val(),
         "LoginUserID": sessionStorage.getItem("UserID"),
         "Remarks": jQuery("#txtRemarksAward").val()

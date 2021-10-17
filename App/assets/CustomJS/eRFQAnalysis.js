@@ -66,12 +66,15 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 
@@ -797,17 +800,20 @@ function fetchrfqcomprative() {
 
                     }
                     else {
-                       // $("#btn-reInvite").removeClass('hide')
-                        $("#btn_mapaaprover").removeClass('hide');
-                        $("#btn_commercial").addClass('hide');
+                        //$("#btn-reInvite").removeClass('hide')
                         //$("#btn-reInvite").attr('disabled', false)
+                        $("#btn_commercial").addClass('hide');
+                       
+                        if ($("#ddlrfqVersion option:selected").val() == '0') {
+                            $("#btn_mapaaprover").removeClass('hide');
+                        }
 
                     }
                    if (Type != undefined && Type.toLowerCase() == "aw") {
                         $("#btn_commercial").addClass('hide');
                     }
 
-                jQuery('#tblRFQComprative').append(str);
+                    jQuery('#tblRFQComprative').append(str);
                     jQuery("#tblRFQComprativeForExcel").append(strExcel);
 
                     jQuery('#tblRFQComprativeQ').append(strQ);
@@ -842,12 +848,15 @@ function fetchrfqcomprative() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -888,12 +897,15 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+          
         }
     })
 }
@@ -956,12 +968,15 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 }
@@ -989,12 +1004,15 @@ function RFQFetchL1Package(VendorID, Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+          
         }
     });
 }
@@ -1038,12 +1056,15 @@ function updloadingfactor() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
@@ -1081,12 +1102,15 @@ function FetchRFQVersion() {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 
@@ -1147,12 +1171,15 @@ function fetchReguestforQuotationDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 
@@ -1390,7 +1417,7 @@ function fetchRegisterUser() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1547,12 +1574,15 @@ function MapApprover() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spnerror', '');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
 
         });
@@ -1602,12 +1632,15 @@ function fnSendActivityToCommercial() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
      });
 }
@@ -1647,12 +1680,15 @@ function fetchApproverRemarks() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     })
 }
@@ -1704,12 +1740,15 @@ function fnUpdateApproverFlag() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
         });
 }
@@ -1771,16 +1810,17 @@ function ReInviteVendorsForRFQ() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spnerror', '');
                 $('#SaveExsist').removeAttr('disabled')
                 $("#modalreInviteDate").modal("hide");
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
         
     });
@@ -1874,8 +1914,12 @@ function cancelRFQ(mailparam) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spnerror', '');
+               
             }
             jQuery.unblockUI();
         }

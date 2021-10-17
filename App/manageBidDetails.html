@@ -330,7 +330,7 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Attachment (If Any):</label>
                                                                                     <div class="col-md-8">
-                                                                                        <a class="form-control-static" id="filepthattachPrevtab_0" style="text-decoration: none;" onclick="DownloadFile(this)"></a>
+                                                                                        <a class="form-control-static" id="filepthattachPrevtab_0" style="text-decoration: none;cursor:pointer" onclick="DownloadFile(this)"></a>
                                                                                         <a class="isDisabledClass" id="ctrlFileAttachment"><i class="fa fa-pencil"></i></a>
                                                                                     </div>
                                                                                 </div>
@@ -909,6 +909,12 @@
                                                         <div class="portlet light ">
 
                                                             <div class="portlet-body">
+                                                                <div class="alert alert-block alert-danger" id="errorsurro" style="display: none">
+                                                                    <span id="spnerrorsurr"></span>
+                                                                </div>
+                                                                <div class="alert alert-success" id="successsurro" style="display: none">
+                                                                    <span id="spnsuccsurr"></span>
+                                                                </div>
                                                                 <form action="#" class="form-horizontal">
                                                                     <div class="form-body">
                                                                         <div class="form-group">

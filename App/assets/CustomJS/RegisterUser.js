@@ -1,6 +1,6 @@
 ﻿
 function RegisterUser() {
-   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActive').is(':checked') == true) {
         status = 'Y';
@@ -48,15 +48,15 @@ function RegisterUser() {
                 App.scrollTo($('#divalerterror'), -200);
                 jQuery('#divalerterror').slideDown(1000);
             }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
-                alert('error')
                 jQuery("#error").text(xhr.d);
             }
             return false;
@@ -138,7 +138,7 @@ function EditUser(ctrl) {
     
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
-    //fetchUserBidTypeMapping(UserID);
+   
 }
 
 

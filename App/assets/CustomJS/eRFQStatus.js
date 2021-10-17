@@ -32,12 +32,15 @@ function FetchInvitedVendorsForeRFQ() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -89,12 +92,15 @@ function sendremainderstoparicipants() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-            
-                return false;
+                else {
+                    fnErrorMessageText('error', '');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
            
         });
@@ -143,22 +149,22 @@ function CancelRFIRFQ(MailPermit) {
         },
         error: function(jqXHR, exception) {
             var err = eval("(" + jqXHR.responseText + ")");
-            if (jqXHR.status === 401) {
+            if (jqXHR.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
                 var msg = '';
-                if (jqXHR.status === 0) {
+                if (jqXHR.status == 0) {
                     msg = 'Not connect.\n Verify Network.';
                 } else if (jqXHR.status == 404) {
                     msg = 'Requested page not found. [404]';
                 } else if (jqXHR.status == 500) {
                     msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
+                } else if (exception == 'parsererror') {
                     msg = 'Error connecting server. Please retry.';
-                } else if (exception === 'timeout') {
+                } else if (exception == 'timeout') {
                     msg = 'Time out error.';
-                } else if (exception === 'abort') {
+                } else if (exception == 'abort') {
                     msg = 'Ajax request aborted.';
                 } else {
                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
@@ -311,12 +317,15 @@ function ExtendDuration() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('error', '');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
 
         });

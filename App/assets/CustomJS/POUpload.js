@@ -485,7 +485,7 @@ function fetchAttachments() {
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");
-                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile'+i+' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)">' + data[i].poAttachment + '</a></td>';
+                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile'+i+' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[i].poAttachment + '</a></td>';
                     str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[i].poid + "'\,\'POAttach'\,\'" + data[i].poAttachment+"'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                     jQuery('#tblAttachments').append(str);
                 }
@@ -854,7 +854,7 @@ function InsupdProductfromExcel() {
         PriceDetails = '';
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
-            PriceDetails = PriceDetails + 'insert into PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
+            PriceDetails = PriceDetails + 'insert into PE.PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
             var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
             PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(4)').html())) + "','" + $.trim(this_row.find('td:eq(5)').html()) + "','" + this_row.find('td:eq(6)').html() + "','" + $.trim(this_row.find('td:eq(7)').html()) + "',PE.decrypt('" + sessionStorage.getItem('UserID') + "'),PE.FN_Now() )";
 
@@ -942,7 +942,7 @@ function fetchDeliverySpread() {
 
 
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(trid' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;">' + data[i].itemCode + '</td><td>' + data[i].itemServiceName + '</td><td>' + data[i].deliveryLocation + '</td><td>' + data[i].pONo + '</td><td>' + data[i].pODeliveryDate + '</td><td class=text-right>' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uOM + '</td></tr>');
+                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(trid' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;">' + data[i].itemCode + '</td><td>' + data[i].itemServiceName + '</td><td>' + data[i].deliveryLocation + '</td><td>' + data[i].poNo + '</td><td>' + data[i].poDeliveryDate + '</td><td class=text-right>' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td></tr>');
 
                 }
             }
@@ -1027,6 +1027,7 @@ function CancelPO() {
 }
 
 function cnPO() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Cancelbid = {
         "BidID": parseInt($('#hdnPOHeader').val()),
         "For": 'PO',
@@ -1046,6 +1047,7 @@ function cnPO() {
         success: function (data) {
             if (data == '1' ) {
                 bootbox.alert("PO Cancelled successfully.", function () {
+                    jQuery.unblockUI();
                     window.location = "index.html";
                     return false;
                 });

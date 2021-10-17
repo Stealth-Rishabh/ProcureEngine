@@ -57,8 +57,8 @@ function fetchVendorDetails() {
 
                 _isBidStarted = true;
                 $('#lblTimeLeftBeforeBid').html('').hide('');
-                BidTypeID = data[0].BidTypeID;
-                BidForID = data[0].BidForID;
+                BidTypeID = data[0].bidTypeID;
+                BidForID = data[0].bidForID;
                 //alert(BidForID)
                 fetchBidSummaryVendorproduct()
 
@@ -133,7 +133,8 @@ function fninsupdQuotesS(index) {
             vjap = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()));
         }
     }
-
+   
+ 
     if ((removeThousandSeperator($('#txtquote' + index).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + index).val())))) {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Amount is required in number only')
@@ -154,8 +155,8 @@ function fninsupdQuotesS(index) {
         jQuery.unblockUI();
         return false
     }
-    else if (valuejap < parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "83") {
-
+    else if (valuejap < parseFloat(Amount) && $.trim($('#decon' + index).text()) == "A" && value != 0 && $.trim(BidForID) == "83") {
+       
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Maximum bid amount = current L1 price less the minimum Decrement Value of ' + Amount + " " + $("#lblcurrency").text())
         jQuery.unblockUI();
@@ -641,10 +642,8 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblbidfor").text('Price (' + data[0].bidFor + ')');
 
                 jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-                jQuery("a#lnkAnyOtherAttachment").text(data[0].Attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
+                jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
+               
 
               
 

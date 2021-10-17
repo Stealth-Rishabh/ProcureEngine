@@ -48,7 +48,9 @@ function fetchVendorDetails() {
                 if (data[0].attachment != '') {
                     jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
                 }
-                
+                else {
+                    jQuery("#lnkAnyOtherAttachment").removeAttr('onclick');
+                }
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 
@@ -362,7 +364,7 @@ function InsUpdQuoteSeaExport(index) {
             vjap = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()));
         }
     }
-  
+   
     if ((removeThousandSeperator($('#txtquote' + index).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + index).val())))) {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Amount is required in number only')
@@ -379,7 +381,7 @@ function InsUpdQuoteSeaExport(index) {
        $('#spanamount' + index).text('Maximum Bid  = Your last quote minus minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text())
         return false
     }
-    else if (valuejap < parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "83") {
+    else if (valuejap < parseFloat(Amount) && $.trim($('#decon' + index).text() == "A") && value != 0 && $.trim(BidForID) == "83") {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Maximum bid amount = current L1 price less the minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text() + ".")
         return false
@@ -586,7 +588,7 @@ function fetchBidHeaderDetails(bidId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            console.log("dataa > ", data)
+          
             if (data.length == 1) {
                 $('#tblParticipantsService').show();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -602,9 +604,12 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblbidfor").text('Price ('+data[0].bidFor+')');
 
                 jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-                
+               
                 if (data[0].attachment != '') {
                     jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                }
+                else {
+                    jQuery("#lnkAnyOtherAttachment").removeAttr('onclick');
                 }
                 
                 jQuery("#lblbidduration").text(data[0].bidDuration);
@@ -612,7 +617,7 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblConvRate").text(data[0].conversionRate);
               
                 var display = document.querySelector('#lblTimeLeft');
-                alert(ata[0].timeLeft)
+               
                 startTimerBeforeBidStart(data[0].timeLeft, display)
                 fetchBidSummaryVendorproduct()
             }

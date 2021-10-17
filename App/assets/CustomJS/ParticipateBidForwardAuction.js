@@ -132,7 +132,8 @@ function fetchVendorDetails() {
                  $(".lbltimetextdutch").hide();
                  fetchBidSummaryVendorScrap();
                  $("#captionAuctionType").html('').html('<i class="fa fa-reorder"></i> H1 indicates you have entered best buying price');
-                 startTimer((parseInt(data[0].TimeLeft)), display);
+                 
+                 startTimer((parseInt(data[0].timeLeft)), display);
              }  
 
              else {
@@ -217,6 +218,7 @@ function fetchBidSummaryVendorScrap() {
 
                             jQuery('#lblstatus' + i).css('color', 'Red');
                         }
+                      
                         if (data[i].showHLPrice == 'N') {
                             $("#H1Price" + i).html('Not Disclosed');
                         }
@@ -378,7 +380,7 @@ function refreshColumnsStaus() {
                                 jQuery('#lblstatus' + i).css('color', 'Red');
 
                             }
-                            if (data[i].ShowHLPrice == "N") {
+                            if (data[i].showHLPrice == "N") {
                                 $("#H1Price" + i).html('Not Disclosed');
                             }
                             

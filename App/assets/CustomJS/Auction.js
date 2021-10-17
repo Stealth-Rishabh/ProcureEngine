@@ -13,6 +13,18 @@ function error401Messagebox(error) {
         return false;
     });
 }
+function fnErrorMessageText(spanid,formid) {
+    
+    $('.alert-danger').show();
+    $('#' + spanid).html('Some error occured . Please contact administrator');
+    $('.alert-danger').fadeOut(6000);
+    if (formid != '') {
+        $('#' + formid).bootstrapWizard('previous')
+    }
+    jQuery.unblockUI();
+    return false;
+    
+}
 function fnredirecttoHome(){
 	if(sessionStorage.getItem('UserType')=="V"){
 		window.location="VendorHome.html"
@@ -856,7 +868,7 @@ function fnDownloadAttachments(filename, foldername) {
         cache: false,
         crossDomain: true,
         success: function (data) {
-           
+            
             var downloadwindow = window.open(data, "_blank");
             downloadwindow.focus();
         },

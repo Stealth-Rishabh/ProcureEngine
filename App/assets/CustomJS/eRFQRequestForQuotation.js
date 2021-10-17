@@ -27,11 +27,19 @@ $(".thousandseparated").inputmask({
     'removeMaskOnSubmit': false
 
 });
-$('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversionRate,#txtPono,#txtItemCode,#txttat').maxlength({
+$('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversionRate,#txtPono,#txtItemCode,#txttat,#txtrfqSubject,#txtrfqdescription,#txtRFQReference,#txtedelivery,#txtvendorname,#AttachDescription1,#txtquestions,#txtreq').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
 var totalFileSize = 0;
+jQuery.validator.addMethod(
+    "notEqualTo",
+    function (elementValue, element, param) {
+        return elementValue != param;
+    },
+    //"Value cannot be {0}"
+    "This field is required."
+);
 var FormWizard = function () {
 
     return {
@@ -90,9 +98,6 @@ var FormWizard = function () {
                         required: true
                     },
                   
-                 
-                   
-
                     //Second Tab
                     
                     txtbiddescriptionP: {
@@ -109,13 +114,16 @@ var FormWizard = function () {
                         required: true
                     },
                      txttargetprice: {
-                         number: true
+                         number: true,
+                        
                     },
                     //txtlastinvoiceprice: {
                     //    number: true
                     //},
                      txtquantitiy: {
-                         required: true
+                         required: true,
+                         maxlength: 18,
+                         notEqualTo: 0
                      },
                      txtshortname: {
                          required: true,
@@ -129,13 +137,14 @@ var FormWizard = function () {
                         required: true,
                         maxlength:200
                      },
-                     txttat: {
-                         digits: true,
-                         maxlength: 4
-                     },
+                     //txttat: {
+                     //    digits: true,
+                     //    maxlength: 4,
+                     //    //notEqualTo: 0
+                     //},
                      txtPono: {
-                         maxlength:20
-                        // required: true
+                         maxlength:20,
+                         required: true
                      },
                      txtunitrate: {
                         // required: true,
@@ -151,7 +160,7 @@ var FormWizard = function () {
                         // required: true,
                          number:true
                      },
-                    //Thord Tab
+                    //Third Tab
                     AttachDescription1:{
                         required: true
                     }
@@ -210,28 +219,17 @@ var FormWizard = function () {
                 success: function (label) {
 
                     if (label.attr("for") == "gender" || label.attr("for") == "payment[]") {
-
-                        label
-
-                            .closest('.inputgroup').removeClass('has-error').addClass('has-success');
-                        label
-
-                        .closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success');
-
+                        label.closest('.inputgroup').removeClass('has-error').addClass('has-success');
+                        label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success');
                         label.remove();
 
-                    } else {
-
-                        label
-
-                            .addClass('valid') // mark the current input as valid and display OK icon
-
-                        .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                    else
+                    {
+                        label.addClass('valid').closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
                         label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success'); // set success class to the control group
 
                     }
-
-                   
 
                 },
 
@@ -568,12 +566,15 @@ function InsUpdRFQDEtailTab1() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
 
@@ -618,7 +619,7 @@ function InsUpdRFQDEtailTab2() {
                 "PoUnitRate": parseFloat(unitrate),
                 "PoNo": $.trim(this_row.find('td:eq(11)').html()),
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
-                "PoDate": $.trim(this_row.find('td:eq(20)').html()),
+                "PoDate": $.trim(this_row.find('td:eq(14)').html()),
                 "PoValue": parseFloat(removeThousandSeperator(povalue))
                
 
@@ -633,7 +634,7 @@ function InsUpdRFQDEtailTab2() {
         
     };
 
-   
+    //console.log(JSON.stringify(Tab2data))
    
     jQuery.ajax({
 
@@ -661,6 +662,9 @@ function InsUpdRFQDEtailTab2() {
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
             jQuery.unblockUI();
 
@@ -741,12 +745,15 @@ function fnGetApprovers() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
@@ -780,14 +787,17 @@ function fnGetTermsCondition() {
                    var strPrev = "<tr><td>" + data[i].name + "</td>";
                    
                    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
-                   str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+                   str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=1000 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
                     
                    
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
                         jQuery('#tblTermsCondition').append(str);
                         
                     }
-                   
+                    $('#rem' + i).maxlength({
+                        limitReachedClass: "label label-danger",
+                        alwaysShow: true
+                    });
                     if (data[i].level == "R") {
                         strPrev += "<td>RFQ</td></tr>";
                         $("#levelR" + i).attr("checked", "checked");
@@ -827,14 +837,15 @@ function fnGetTermsCondition() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
 
         
@@ -932,12 +943,15 @@ function fnsavetermscondition(isbuttonclick) {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
 
         });
@@ -971,17 +985,22 @@ function fnsaveAttachmentsquestions() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            fetchAttachments();
+            GetQuestions();
             return;
         },
         error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
                 return false;
-                jQuery.unblockUI();
+               
             }
 
         });
@@ -1110,7 +1129,7 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1197,12 +1216,15 @@ function GetQuestions() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
         })
 }
@@ -1229,12 +1251,15 @@ function fetchRegisterUser() {
          error: function (xhr, status, error) {
 
              var err = eval("(" + xhr.responseText + ")");
-             if (xhr.status === 401) {
+             if (xhr.status == 401) {
                  error401Messagebox(err.Message);
              }
-
-             return false;
+             else {
+                 fnErrorMessageText('spandanger', 'form_wizard_1');
+             }
              jQuery.unblockUI();
+             return false;
+            
          }
 
     });
@@ -1375,14 +1400,15 @@ function fetchRFIParameteronload() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
         
     });
@@ -1404,9 +1430,8 @@ function InsUpdProductSevices() {
                 st = "true";
                 i = 1;
                 $("#tblServicesProduct tr:gt(0)").each(function () {
-                    var this_row = $(this);
-                   
-                    if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                    
+                     if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                         st = "false"
                     }
                     i++;
@@ -1417,6 +1442,7 @@ function InsUpdProductSevices() {
                     $('#spandanger').html('Please Select UOM Properly');
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(7000);
+                    jQuery.unblockUI();
                     return false;
                 }
                else if (st == "false") {
@@ -1471,7 +1497,15 @@ function InsUpdProductSevices() {
             else {
                 
                 st = "true"; i = 0;
-                if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                if ($('#dropuom').val() == '') {
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Please Select UOM Properly');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    jQuery.unblockUI();
+                    return false;
+                }
+               else if ($('#tblServicesProduct >tbody >tr').length == 0) {
                     ParametersQuery()
                 }
                 else {
@@ -1483,14 +1517,8 @@ function InsUpdProductSevices() {
                         i++;
                     });
 
-                   if ($('#dropuom').val() == '') {
-                        $('.alert-danger').show();
-                        $('#spandanger').html('Please Select UOM Properly');
-                        Metronic.scrollTo($(".alert-danger"), -200);
-                        $('.alert-danger').fadeOut(7000);
-                        return false;
-                    }
-                    else if (st == "false") {
+                   
+                     if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -1568,8 +1596,8 @@ function editRow(icount) {
    
     $('#txtshortname').val($("#sname" + icount).text())
     $('#txtItemCode').val($("#itemcode" + icount).text())
-    $('#txttargetprice').val($("#TP" + icount).text())
-    $('#txtquantitiy').val($("#quan" + icount).text())
+    $('#txttargetprice').val(removeThousandSeperator($("#TP" + icount).text()))
+    $('#txtquantitiy').val(removeThousandSeperator($("#quan" + icount).text()))
     $('#txtUOM').val($("#uom" + icount).text())
     $('#dropuom').val($("#uom" + icount).text())
     $('#txtItemRemarks').val(RFQRemark)
@@ -1577,12 +1605,27 @@ function editRow(icount) {
     $('#txtedelivery').val($("#delivery" + icount).text())
     $("#txttat").val($("#tat" + icount).text())
     $('#txtPono').val($("#pono" + icount).text())
-    $('#txtunitrate').val($("#unitrate" + icount).text())
+    $('#txtunitrate').val(removeThousandSeperator($("#unitrate" + icount).text()))
     $('#txtvendorname').val($("#povname" + icount).text())
     $('#txtPODate').val($("#podate" + icount).text())
-    $('#txtpovalue').val($("#povalue" + icount).text())
+    $('#txtpovalue').val(removeThousandSeperator($("#povalue" + icount).text()))
     $('#add_or').text('Modify');
-    
+
+    $(".thousandseparated").inputmask({
+        alias: "decimal",
+        rightAlign: false,
+        groupSeparator: ",",
+        radixPoint: ".",
+        autoGroup: true,
+        integerDigits: 40,
+        digitsOptional: true,
+        allowPlus: false,
+        allowMinus: false,
+        clearMaskOnLostFocus: true,
+        supportsInputType: ["text", "tel", "password"],
+        'removeMaskOnSubmit': false
+
+    });
     
 }
 function deleterow(TrId, Trprevid) {
@@ -1598,7 +1641,14 @@ function deleterow(TrId, Trprevid) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
+        i = 1;
+        $("#tblRFQPrev tr:gt(0)").each(function () {
+            var this_row = $(this);
+            $.trim(this_row.find('td:eq(0)').html(i));
+            i++;
+        });
     }
+   
 }
 
 function resetfun() {
@@ -1646,12 +1696,15 @@ function FetchUOM(CustomerID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1708,12 +1761,15 @@ function FetchUOMforpop(CustomerID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1775,12 +1831,15 @@ function FetchCurrency(CurrencyID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1842,9 +1901,12 @@ function RFQInviteVendorTab3() {
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });   
 }
@@ -1880,12 +1942,15 @@ function FetchVender(ByBidTypeID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -2056,12 +2121,15 @@ jQuery.ajax({
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
     jQuery.unblockUI();
@@ -2140,12 +2208,15 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -2468,7 +2539,7 @@ function printDataparameter(result) {
              // $("#errspan-excelparameter").html('');
              $("#success-excelparameter").show();
              $('#btnsforYesNo').show()
-             $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? ')
+             $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
              $("#file-excelparameter").val('');
              excelCorrect = '';
              if (st == 'false') {
@@ -2488,8 +2559,12 @@ function fnSeteRFQparameterTable() {
         $("#error-excelparameter").hide();
         $('#loader-msgparameter').html('Processing. Please Wait...!');
         $('#modalLoaderparameter').removeClass('display-none');
+        jQuery("#tblServicesProduct").empty();
+        jQuery("#tblRFQPrev").empty();
         var i;
-        i = rowAppItems;
+        //i = rowAppItems;
+        i = 0;
+        rowAppItemsrno = 0;
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
 
@@ -2555,15 +2630,15 @@ function fetchVendorGroup(categoryFor, vendorId) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
        
     });
@@ -2689,12 +2764,15 @@ function getCategoryWiseVendors(categoryID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });

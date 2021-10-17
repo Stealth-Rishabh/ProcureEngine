@@ -293,9 +293,10 @@ function FormValidate() {
             label.remove();
         },
         submitHandler: function (form) {
+          
             if ($("#file1").val() != '' && $('#divbidTermsFilePrevtab_0').is(':visible')) {
-
-                InsUpdRFQDEtailTab1();
+                
+                     InsUpdRFQDEtailTab1();
                 }
             else {
                     if ($('#dropuom').val() == '') {
@@ -305,8 +306,9 @@ function FormValidate() {
                         $('.alert-danger').fadeOut(7000);
                         return false;
                     }
-                else{
-                            InsUpdProductSevices();
+                    else {
+                       
+                      InsUpdProductSevices();
                 }
             }
         }
@@ -331,16 +333,17 @@ function InsUpdRFQDEtailTab1() {
         "RFQStartDate": jQuery("#RFQStartDate").text(),
         "RFQEndDate": jQuery("#RFQEndDate").text(),
         "RFQDescription": jQuery("#RFQDescription").text(),
-        "RFQCurrencyId": parseInt(jQuery("#Currency").text()),
-        "RFQConversionRate": jQuery("#ConversionRate").text(),
+        "RFQCurrencyId": parseInt($('#currencyid').val()),
+        "RFQConversionRate": parseFloat(jQuery("#ConversionRate").text()),
         "RFQTermandCondition": TermsConditionFileName,
-        "RFQAttachment": '',
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "RFQReference": $("#txtRFQReference").text()
+        "RFQReference": $("#txtRFQReference").text(),
+        "RFQApprovers": ''
 
     };
-   // alert(JSON.stringify(Tab1Data))
+    //alert(JSON.stringify(Tab1Data))
+   // console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -397,9 +400,10 @@ function fetchReguestforQuotationDetails(RFQID) {
             jQuery('#mapedapproverPrevtab_0').html('');
             
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-
             jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
-            $('#Currency').html(RFQData[0].general[0].crurrencyNm)
+            
+            $('#currencyid').val(RFQData[0].general[0].rfqCurrencyId)
+            $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -547,8 +551,10 @@ function fnRemoveAttachmentQues(srno, deletionfor) {
         }
     })
 }
+
 function editRow(divName, RFQParameterId, rowid) {
     isRFQChanged = true;
+
     if (divName == 'divParameter') {
         $('#divParameter').removeClass('hide');
         $('#divbidTermsFilePrevtab_0').addClass('hide');
@@ -732,14 +738,12 @@ function confirmEditEventAction(eventType) {
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
               
-                if (data == "1") {
+              
                     bootbox.alert("An email notification has been sent to all participants invited for the bid.", function () {
                         window.location = sessionStorage.getItem('HomePage');
                         return false;
                     });
-                } else {
-                    alert("error")
-                }
+                
 
                 jQuery.unblockUI();
             },

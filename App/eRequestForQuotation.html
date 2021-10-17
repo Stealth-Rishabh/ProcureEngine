@@ -202,7 +202,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                       name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                                    maxlength="100"  autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
 
@@ -215,7 +215,7 @@
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control"
                                                                        placeholder="Enter Reference Number(If any)" id="txtRFQReference"
-                                                                       name="txtRFQReference" tabindex='7'>
+                                                                    maxlength="15" autocomplete="off"  name="txtRFQReference" tabindex='7'>
                                                             </div>
 
                                                         </div>
@@ -261,7 +261,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <textarea id="txtrfqdescription" name="txtrfqdescription" class="wysihtml5 form-control"
-                                                                          rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                        maxlength="2000"  rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -282,7 +282,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control" placeholder="Enter Conversion Rate" id="txtConversionRate"
-                                                                       name="txtConversionRate" tabindex='5'>
+                                                                    maxlength="7"   name="txtConversionRate" tabindex='5'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -451,7 +451,7 @@
                                                             Delivery Location <span class="required">* </span>
                                                       </label>
                                                         <div class="col-md-4 xyz">
-                                                            <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                            <input type="text" class="form-control" maxlength="100" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                         </div>
 
                                                     </div>
@@ -469,7 +469,7 @@
                                                         <div class="col-md-3 xyz">
                                                            
                                                             <label class="control-label">Vendor Name</label>
-                                                            <input type="text" id="txtvendorname" name="txtvendorname" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
+                                                            <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
 
                                                          
                                                         </div>
@@ -592,7 +592,7 @@
                                                                                 </div>
                                                                                 <div class="inputgroup">
                                                                                     <div class="col-md-4">
-                                                                                        <input type="text" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                        <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="inputgroup">
@@ -644,10 +644,10 @@
                                                                                 </div>
                                                                                 <div class="inputgroup">
                                                                                     <div class="col-md-6">
-                                                                                        <input type="text" class="form-control" id="txtquestions" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                        <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                                     </div>
                                                                                     <div class="col-md-3">
-                                                                                        <input type="text" class="form-control" id="txtreq" name="txtreq" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                        <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                                     </div>
                                                                                 </div>
 

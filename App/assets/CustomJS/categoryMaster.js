@@ -5,7 +5,10 @@ var success = $('#successdiv');
 
 success.hide();
 error.hide();
-
+$('#categoryName').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
 
 function FormValidate() {
 

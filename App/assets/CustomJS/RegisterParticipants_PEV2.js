@@ -180,6 +180,7 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
         status = 'Y';
@@ -220,7 +221,7 @@ function RegisterParticipants() {
             $("#hdnParticipantCode").val(data.vendorCode)
            
             if (data.isSuccess == '1') {
-               
+
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
@@ -238,7 +239,7 @@ function RegisterParticipants() {
                 jQuery('#divalerterr').css('display', 'none');
             }, 5000);
             fetchParticipantsVenderTable();
-            
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -292,7 +293,7 @@ function fnshowexistedVendorForextend() {
                     }
                 }
             }
-            
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -408,10 +409,7 @@ function fetchParticipantsVenderTable() {
                                str += "<td style=\"width:10%!important;\">Yes</td>";
                                
                             }
-
-                            
-                        
-                       }
+                        }
                        else {
                            if (value.actionType == "EditVendor") {
                                //str += "<a href=\"#\"   class=\"btn btn-xs grey\">Not Editable</a>&nbsp;&nbsp;";
@@ -716,21 +714,17 @@ jQuery("#txtSearch").keyup(function () {
 function MapVendorCategories() {
 
     var InsertQuery = '';
-    var UserID  = sessionStorage.getItem('UserID');
-    
+   
     $('.childchkbox').each(function() {
         if (this.checked) {
-            InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
+           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
+            InsertQuery = InsertQuery + $(this).val() + "#";
         }
-        else {
-            InsertQuery = InsertQuery;
-        }
+        
     });
 
-    if (InsertQuery != '') {
-        InsertQuery = 'Insert into PE.VendorCategoryTypeMapping(CategoryID,VendorID,CustomerID,MappedBy,MappedOn)' + InsertQuery;
-        InsertQuery = InsertQuery.substring(0, InsertQuery.length - 11);
-    } else {
+    if (InsertQuery == '') {
+
         jQuery('#divalerterr').find('span').text('Please select atleast one group!');
         jQuery('#divalerterr').slideDown('show');
         App.scrollTo(jQuery('#divalerterr'), -200);
@@ -749,7 +743,7 @@ function MapVendorCategories() {
         
     };
     //console.log(JSON.stringify(MapParticipants))
-    //alert(JSON.stringify(MapParticipants))
+   // alert(JSON.stringify(MapParticipants))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

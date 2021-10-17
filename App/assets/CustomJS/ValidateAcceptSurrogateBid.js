@@ -2,7 +2,6 @@
 var decryptedstring = fndecrypt(param)
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
-
 var BIDTypeID = '';
 var BidClosingType='';
 //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
@@ -113,7 +112,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
-       var url = sessionStorage.setItem("APIPath") +"User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
+       var url = sessionStorage.getItem("APIPath") +"User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
             jQuery.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -122,8 +121,9 @@ function validatepassword() {
                 crossDomain: true,
                 dataType: "json",
                 success: function (response) {
-                sessionStorage.setItem("Token", response.access_token)
-                fnGtrTokenValidatePassword()
+                   
+                    sessionStorage.setItem("Token", response.token)
+                    fnGtrTokenValidatePassword()
                 
             },
             error: function (xhr, status, error) {
@@ -269,17 +269,17 @@ function acceptBidTermsAuction() {
         "BidID": parseInt(BIDID),
         "VendorID": vendorID
     };
-    // alert(JSON.stringify(acceptTerms))
+   
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTermsForSurrogate/",
+        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            if (data[0].isSuccess == 'Y') {
-                window.location = data[0].linkURL
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL;
             }
         },
         error: function (xhr, status, error) {

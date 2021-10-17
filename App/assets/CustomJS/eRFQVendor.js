@@ -792,13 +792,14 @@ function fetchAttachments() {
                            str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                            strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                            str += "<td class='hide'>" + data[i].questionID + "</td>";
-                           str += '<td style="width:40%!important"><textarea type=text class="form-control" autocomplete="off" id=answers' + i + '>' + data[i].answer + '</textarea></td></tr>';
-                           strprev += '<td style="width:40%!important"><label class="control-label" id=lblanswer' + i + '>' + data[i].answer + '</label></td></tr>';
-                         
-                           $('#lblanswer' + i).html($('#answers' + i).val())
+                           str += '<td style="width:40%!important"><textarea type=text class="form-control" autocomplete="off" id=answers' + i + ' value=' + data[i].answer+'>' + data[i].answer + '</textarea></td></tr>';
+                           strprev += '<td style="width:40%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
+                          
                           
                            jQuery('#tblquestions').append(str);
                            jQuery('#tblQuestionsPrev').append(strprev);
+                           $('#lblanswer' + i).html($('#answers' + i).val())
+                           
 
                        }
                    }
@@ -895,6 +896,7 @@ function fetchAttachments() {
             data: JSON.stringify(data),
             dataType: "json",
             success: function (data) {
+                fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
             },
             error: function (xhr, status, error) {
 
@@ -911,7 +913,7 @@ function fetchAttachments() {
 
     }
     function addQuestionAnswer(ismailsent) {
-       
+        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
             var Tab2data = {
                 "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
@@ -946,6 +948,7 @@ function fetchAttachments() {
                                     }
                                     else {
                                         window.location = 'VendorHome.html';
+                                        jQuery.unblockUI();
                                     }
                                     return false;
                                 });
@@ -959,9 +962,6 @@ function fetchAttachments() {
                        
                     }, 500)
                   
-                    //if (data[0].RFQID == 0) {
-                    //    bootbox.alert("Error connecting server. Please try later.");
-                    //}
                 },
                 error: function (xhr, status, error) {
 
@@ -1077,7 +1077,9 @@ function fetchAttachments() {
         });
 
     }
-    function fnRegreteRFQ() {
+function fnRegreteRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    $('#SaveExsist').attr("disabled", "disabled");
         var RegretData = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "VendorID": parseInt(sessionStorage.getItem('VendorId')),
@@ -1103,6 +1105,7 @@ function fetchAttachments() {
                             sessionStorage.clear();
                         }
                         else {
+                            $('#SaveExsist').removeAttr("disabled");
                             window.location = 'VendorHome.html';
                         } 
                         return false;

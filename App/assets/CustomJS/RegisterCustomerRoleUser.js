@@ -650,7 +650,7 @@ sessionStorage.setItem("hdnAdminID", 0)
 function ins_updCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
-    var noofbids = '';
+    var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
     
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();
@@ -677,14 +677,23 @@ function ins_updCustomer() {
     else {
         noofbids = $('#txtnobids').val();
     }
+    if ($('#dropState').val() != "" && $('#dropState').val() != null) {
+        state = $('#dropState').val()
+    }
+    if ($('#dropCity').val() != "" && $('#dropCity').val() != null) {
+        city = $('#dropCity').val()
+    }
+    if ($('#pincode').val() != "" && $('#pincode').val() != null) {
+        pincode = $('#pincode').val()
+    }
     if (checkimageExtension(logo)) {
         var data = {
             'CustomerName': $('#txtcustomername').val(),
             'CustomerAddress': $('#txtAddress1').val(),
             'CountryID': parseInt($('#dropCountry').val()),
-            'StateID': parseInt($('#dropState').val()),
-            'CityID': parseInt($('#dropCity').val()),
-            'PinCode': parseInt($('#pincode').val() == null ? 0 : $('#pincode').val()),
+            'StateID': parseInt(state),
+            'CityID': parseInt(city),
+            'PinCode': parseInt(pincode),
             'Website': $('#txtwebsite').val(),
             'PhoneNo': $('#phoneno').val(),
             'AdminName': $('#txtadminfirstname').val(),
@@ -730,8 +739,8 @@ function ins_updCustomer() {
            
             if (data.isSuccess == '1') {
                 
-                sessionStorage.setItem("hdnCustomerID", data.CustomerID)
-                sessionStorage.setItem("hdnAdminID", data.AdminID)
+                sessionStorage.setItem("hdnCustomerID", data.customerID)
+                sessionStorage.setItem("hdnAdminID", data.adminID)
                 error.hide();
                 success.hide();
                
@@ -1013,15 +1022,13 @@ function fileUploader(CustomerName) {
     var fileTerms = $('#file1');
     var fileDataTerms = fileTerms.prop("files")[0];
 
-   // alert(CustomerName)
+  
     var formData = new window.FormData();
 
     formData.append("fileTerms", fileDataTerms);
     formData.append("AttachmentFor", "Customer");
-
-    formData.append("BidID", CustomerName);
-    formData.append("VendorID", '');
-    debugger;
+    formData.append("CustomerName", CustomerName);
+   
      $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',

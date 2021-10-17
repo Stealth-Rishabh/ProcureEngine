@@ -37,12 +37,15 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     })
 }
@@ -89,11 +92,11 @@ function fetchRFQParameterComponent(version, BoqPID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('error', '');
             }
             return false;
             jQuery.unblockUI();
@@ -132,11 +135,11 @@ function fetchRFQLevelTC(ver) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('error', '');
             }
             return false;
             jQuery.unblockUI();
@@ -213,12 +216,15 @@ function fetchRFQResponse(Flag, version) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     })
@@ -263,9 +269,12 @@ function fetchReguestforQuotationDetails() {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
     jQuery.unblockUI();
@@ -321,14 +330,16 @@ function fetchRFIParameteronload(ver) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('error', '');
             }
-            return false;
+
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 }

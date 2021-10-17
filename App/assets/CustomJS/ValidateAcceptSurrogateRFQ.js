@@ -13,7 +13,7 @@ function fetchReguestforQuotationDetailseRFQ() {
    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID + "&CustomerID=0&UserID=",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -79,7 +79,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
-        var url = sessionStorage.setItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + RFQID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateRFQ').toLowerCase();
+        var url = sessionStorage.getItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + RFQID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateRFQ').toLowerCase();
         $.ajax({
             type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -89,7 +89,7 @@ function validatepassword() {
                 dataType: "json",
                 success: function (response) {
 
-                sessionStorage.setItem("Token", response.access_token)
+                sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
 
             },
@@ -107,7 +107,7 @@ function validatepassword() {
 
     function fnGtrTokenValidatePassword(){
         var Data = {
-            "BidID": RFQID,
+            "BidID": parseInt(RFQID),
             "Password": jQuery("#txtpassword").val()
 
         }
@@ -220,9 +220,7 @@ function formvalidate() {
         },
 
         submitHandler: function (form) {
-
-           
-            eRFQAcceptBidTerms()
+          eRFQAcceptBidTerms()
 
         }
     });
@@ -237,8 +235,8 @@ function eRFQAcceptBidTerms() {
     vendorID = sessionStorage.getItem('VendorId');
 
     var acceptTerms = {
-        "RFQID": RFQID,
-        "VID": vendorID
+        "RFQID": parseInt(RFQID),
+        "VID": parseInt(vendorID)
     };
     // alert(JSON.stringify(acceptTerms))
     jQuery.ajax({
@@ -249,22 +247,23 @@ function eRFQAcceptBidTerms() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            if (data[0].isSuccess == 'Y') {
-                window.location = data[0].linkURL
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
                
-                jQuery("#error").text(xhr.d);
+                fnErrorMessageText('erropenbid', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
        
     });

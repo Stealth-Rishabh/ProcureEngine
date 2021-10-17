@@ -121,64 +121,6 @@ var _BidDuration = 0;
 
 
 
-function fetchVendorparticipanType() {
-
-    jQuery.ajax({
-
-        type: "GET",
-
-        contentType: "application/json; charset=utf-8",
-
-        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-
-        crossDomain: true,
-
-        dataType: "json",
-
-        success: function (bidTypedata) {
-
-
-
-            var strbidtypes = "<div id=\"divrblist\" class=\"checkbox-list\">";
-
-            for (i = 0; i < bidTypedata.length; i++) {
-
-                //strbidtypes += "<label><div class=\"radio\" style=\"cursor:pointer\" ><span id=\"spanrb\"><input type=\"radio\" grou name=\"rbradio\"  onchange=\"Validate(this)\" value=" + bidTypedata[i].BidTypeID + "></span></div>" + bidTypedata[i].BidTypeName + " </label>";
-
-                strbidtypes += "<div class=\"col-md-3\">";
-
-                strbidtypes += "<div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" id=\"chkBidType\" style=\"cursor:pointer\"  onchange=\"Validate(this)\" name=\"chkBidType\"/></span></div>";
-
-                strbidtypes += "<label class=\"control-label\" id=\"BidTypeID\">&nbsp;&nbsp;" + bidTypedata[i].bidTypeName + "</label><input type=\"hidden\" id=\"hdnBidTypeID\" value=" + bidTypedata[i].bidTypeID + " /></div>";
-
-            }
-
-            strbidtypes += "</div>";
-
-            jQuery("div#divbidtypelist").append(strbidtypes);
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
-
 function FetchCurrency(CurrencyID) {
 
     jQuery.ajax({
@@ -209,12 +151,11 @@ function FetchCurrency(CurrencyID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
 
             return false;
@@ -227,51 +168,6 @@ function FetchCurrency(CurrencyID) {
 
 
 
-function FetchVender(ByBidTypeID) {
-
-    jQuery.ajax({
-
-        type: "GET",
-
-        contentType: "application/json; charset=utf-8",
-
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendor/?ByBidTypeID=" + ByBidTypeID + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-
-        dataType: "json",
-
-        success: function (data) {
-
-            jQuery("#tblvendorlist > tbody").empty();
-            var vName = '';
-            for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + i + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
-
-                jQuery('#tblvendorlist > tbody').append(str);
-
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
 var vCount = 0;
 
 function Check(event, vname, vendorID) {
@@ -468,16 +364,15 @@ function fetchRegisterUser() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -1131,16 +1026,15 @@ function ConfigureBidInsPefaTab1() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -1234,16 +1128,15 @@ function ConfigureBidInsPefaTab2() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -1324,16 +1217,15 @@ function ConfigureBidInsPefaTab3() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 else {
-                    alert(xhr.status + ' ' + xhr.statusText);
-                    jQuery.unblockUI();
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
                 }
-
-                return false;
                 jQuery.unblockUI();
+                return false;
+                
             }
 
         });
@@ -2158,16 +2050,15 @@ function FetchUOM(CustomerID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+          
         }
 
     });
@@ -2392,13 +2283,12 @@ function fetchScrapSalesBidDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
-            }
+                 fnErrorMessageText('spandanger', 'form_wizard_1');
+             }
 
             return false;
             jQuery.unblockUI();
@@ -2484,16 +2374,15 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -2590,15 +2479,15 @@ function Dateandtimevalidate(indexNo) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
                 bootbox.alert("you have some error.Please try agian.");
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+          
         }
         
     });
@@ -2708,15 +2597,15 @@ function deleteBidParameter(For) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
                 bootbox.alert("you have some error.Please try agian.");
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -2742,7 +2631,7 @@ function fetchVendorGroup(categoryFor, vendorId) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -2807,17 +2696,21 @@ jQuery("#txtSearch").typeahead({
     updater: function (item) {
         if (map[item].participantID != "0") {
             sessionStorage.setItem('hdnVendorID', map[item].participantID);
-            jQuery("#tblvendorlist > tbody").empty();
+            //jQuery("#tblvendorlist > tbody").empty();
 
 
             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
-            var str = "<tr><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
+            var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
+                    //** remove from main table if already selected in selected List
+                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].participantID).remove();
+
+                    }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
 
@@ -2849,7 +2742,7 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName;
-                var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                var str = "<tr id=vList" + data[i].vendorID + " ><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
@@ -2857,7 +2750,7 @@ function getCategoryWiseVendors(categoryID) {
           
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
+                   
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
 
@@ -2867,15 +2760,15 @@ function getCategoryWiseVendors(categoryID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
                 bootbox.alert("you have some error.Please try agian.");
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });

@@ -53,12 +53,15 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 
@@ -787,13 +790,15 @@ function fetchrfqcomprative() {
                     $("#btn-reInvite").attr('disabled', true);
                     $("#btn-reInvite").addClass('hide')
                     $("#btn_mapaaprover").addClass('hide');
-                   
                     $(".lambdafactor").addClass('hide');
 
                 }
                 else {
                   
                     $("#btn_mapaaprover").removeClass('hide');
+                    if ($("#ddlrfqVersion option:selected").val() == '1') {
+                        $("#btn_mapaaprover").removeClass('hide');
+                    }
                     //$("#btn-reInvite").attr('disabled', false)
                     // $("#btn-reInvite").removeClass('hide')
                 }
@@ -818,12 +823,15 @@ function fetchrfqcomprative() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -863,12 +871,15 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 } 
@@ -931,12 +942,15 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 }
@@ -964,12 +978,15 @@ function RFQFetchL1Package(VendorID, Counter) {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 }
@@ -1014,12 +1031,15 @@ function updloadingfactor() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
@@ -1056,12 +1076,15 @@ function FetchRFQVersion() {
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 
@@ -1126,12 +1149,15 @@ function fetchReguestforQuotationDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 
@@ -1326,7 +1352,7 @@ function fetchRegisterUser() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1487,12 +1513,15 @@ function MapApprover() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1533,12 +1562,15 @@ function fnUpdateApproverFlag() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 }
@@ -1607,17 +1639,18 @@ function ReInviteVendorsForRFQ() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('error', '');
                 $('#SaveExsist').removeAttr('disabled')
                 $("#modalreInviteDate").modal("hide");
             }
             
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
         
     });
@@ -1729,13 +1762,17 @@ function fetchAzPPcFormDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
+            else {
+                fnErrorMessageText('error', '');
+               
+            }
 
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
     
     })
@@ -1782,12 +1819,16 @@ function fetchApproverRemarks() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
@@ -1869,8 +1910,12 @@ function cancelRFQ(mailparam) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+
             }
             jQuery.unblockUI();
         }

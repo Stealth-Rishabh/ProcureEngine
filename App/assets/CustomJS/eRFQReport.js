@@ -4,8 +4,7 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 function fetchReguestforQuotationDetails() {
-    var attachment = '';
-    var termattach = '';
+   
     
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -37,12 +36,15 @@ function fetchReguestforQuotationDetails() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -222,12 +224,15 @@ function RFQFetchQuotedPriceReport() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
