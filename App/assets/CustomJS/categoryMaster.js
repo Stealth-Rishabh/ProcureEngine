@@ -124,6 +124,18 @@ function insupdCategorymaster() {
                 jQuery.unblockUI();
             }
 
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
 
         });
@@ -163,12 +175,20 @@ function insupdCategorymaster() {
                  }
                 jQuery.unblockUI();
             },
-            error: function (result) {
-                alert("error");
-                jQuery.unblockUI();
+            error: function (xhr, status, error) {
 
+                var err = eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+                return false;
             }
-            });
+
+        });
     }
 
 function updateType(rname, status, id) {

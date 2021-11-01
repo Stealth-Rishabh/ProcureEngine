@@ -148,8 +148,7 @@ function fetchUserBids() {
         dataType: "json",
         success: function (data) {
             if (data.length > 0) {
-
-                sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
+                 sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
 
             }
             else {
@@ -164,15 +163,16 @@ function fetchUserBids() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('spandanger', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+
         }
 
     });
@@ -267,15 +267,15 @@ function fetchvendors(bidid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('spandanger', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -337,13 +337,15 @@ function fetchparticationQuotes() {
 
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -378,8 +380,8 @@ function deletePEFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    // alert(JSON.stringify(QuoteProduct))
-   // console.log(JSON.stringify(QuoteProduct))
+    
+  
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePEFAQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -420,13 +422,15 @@ function deletePEFAquote() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -493,13 +497,15 @@ function deletePSquote() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -577,10 +583,13 @@ function FetchVenderNotInvited(bidid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
             }
             jQuery.unblockUI();
             return false;
@@ -671,24 +680,26 @@ function resetpasswordForBidVendor() {
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             contentType: "application/json",
             success: function (data) {
-                if (data = "1") {
+               // if (data = "1") {
                     success1.show();
                     $('#spansuccess1').html('New password is sent to registered email of vendor..');
 
                     success1.fadeOut(6000);
                     App.scrollTo(success1, -200);
                     jQuery.unblockUI();
-                }
+              //  }
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -722,13 +733,10 @@ function sendremainderstoparicipants() {
 
             vemail = $(this).find("td").eq(1).html();
             vid = $(this).find("td").eq(0).html();
-            checkedValue = checkedValue + " select  " + sessionStorage.getItem("hdnbid") + ",'" + vemail + "','N','" + vid + "'  union";
+            checkedValue = checkedValue + vid + '#';
 
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into #temp(BidId,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
+       
 
         var data = {
             "QueryString": checkedValue,
@@ -736,7 +744,7 @@ function sendremainderstoparicipants() {
             "BidTypeID": parseInt(sessionStorage.getItem("hdnbidtypeid")),
             "UserID": sessionStorage.getItem("UserID")
         }
-        // alert(JSON.stringify(data))
+       //  alert(JSON.stringify(data))
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/SendRemainderToParticipant",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -760,13 +768,15 @@ function sendremainderstoparicipants() {
 
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
 
@@ -853,29 +863,21 @@ function invitevendors() {
        
     else {
         var checkedValue = '';
-        //var temp = new Array();
-        // $("#tblvendorlist> tbody > tr").each(function (index) {
+      
         $("#tblvendorlist tr:gt(0)").each(function () {
             var this_row = $(this);
-            // if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-            //  temp = ($(this).find("#chkvender").val()).split(",");
-
-            checkedValue = checkedValue + " select  " + sessionStorage.getItem("hdnbid") + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','N','" + $.trim(this_row.find('td:eq(0)').html()) + "'  union";
-            //}
+            checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '#';
+           
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into PE.BidVendorDetails(BidId,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
-
+        
         var data = {
             "QueryString": checkedValue,
             "BidId": parseInt(sessionStorage.getItem("hdnbid")),
             "BidTypeID":parseInt(sessionStorage.getItem("hdnbidtypeid")),
             "UserID": sessionStorage.getItem("UserID")
         }
-        //alert(JSON.stringify(data))
-        console.log(JSON.stringify(data))
+        
+        
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/Invitevendors",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -883,7 +885,7 @@ function invitevendors() {
             type: "POST",
             contentType: "application/json",
             success: function (data) {
-               // if (data == "1") {
+              
                     success1.show();
                     $('#spansuccess1').html('Vendor Invited Successfully..');
                     fetchallexportdetails();
@@ -893,17 +895,19 @@ function invitevendors() {
                     success1.fadeOut(3000);
                     App.scrollTo(success1, -200);
                     jQuery.unblockUI();
-               // }
+             
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
 
@@ -947,8 +951,7 @@ var FlagForCheckShowPrice = "N";
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
     $('#extendedDurationPara').hide();
-    var replaced1 = '';
-    var replaced2 = '';
+   
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val() + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken');
     }
@@ -1136,7 +1139,7 @@ function fetchallexportdetails() {
                             $('#spinner' + i).spinner({ value: 0, step: 1, min: 0, max: 999 }); //BidData[0].bidSeaExportDetails[i].ItemBidDuration
 
                             if (BidData[0].bidDetails[0].bidForID == "81" || BidData[0].bidDetails[0].bidForID == "1") {
-                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidSeaExportDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue) + "</td></tr>");
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidSeaExportDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\') class=pencilHLP ><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue) + "</td></tr>");
                             }
                             else {
                                 jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidSeaExportDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "</td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue) + "</td></tr>");
@@ -1147,13 +1150,12 @@ function fetchallexportdetails() {
                             
                             jQuery("#tblServicesProductPrev").append("<tr id=tridPrev" + i + "><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + "</td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + '</td><td>' + BidData[0].bidSeaExportDetails[i].maskL1Price + '</td><td>' + BidData[0].bidSeaExportDetails[i].showStartPrice + '</td><td class=text-right>' + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + '</td><td>' + BidData[0].bidSeaExportDetails[i].poNo + '</td><td>' + BidData[0].bidSeaExportDetails[i].poVendorName + '</td><td>' + BidData[0].bidSeaExportDetails[i].poDate + '</td><td class=text-right>' + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue )+ '</td></tr>');
                             if (BidData[0].bidDetails[0].bidForID == "81" || BidData[0].bidDetails[0].bidForID == "1") {
-                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td style='width:150px !important;'><a class='isDisabledClass' onclick=editValues('\divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].ceilingPrice + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue ) + "</td></tr>");
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td style='width:150px !important;'><a class='isDisabledClass' onclick=editValues('\divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].ceilingPrice + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\') class=pencilHLP ><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue ) + "</td></tr>");
                             }
                             else {
                                 jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td style='width:150px !important;'><a class='isDisabledClass' onclick=editValues('\divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].quantity + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].lastInvoicePrice + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "</td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].poUnitRate + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].poValue + "</td></tr>");
                             }
                         }
-
 
                     }
                     jQuery('#selectedvendorlistsPrev> tbody').empty()
@@ -1189,7 +1191,7 @@ function fetchallexportdetails() {
                     $('#wrap_scrollerPrevtab_0').show();
 
                     $('#hdnauctiontype').val(BidData[0].bidDetails[0].bidForID)
-                    if (BidData[0].bidDetails[0].bidForID == 81) {
+                    if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
                         jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increament</th><th>Increament On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").removeAttr("disabled", "disabled");
                         $('#btndiv').show()
@@ -1221,17 +1223,17 @@ function fetchallexportdetails() {
                         var attach = (BidData[0].bidScrapSalesDetails[i].attachments).replace(/\s/g, "%20");
 
 
-                        if (BidData[0].bidDetails[0].bidForID == 81) {
+                        if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
 
                             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right >' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td class=text-right>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '</td><td>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + ' </a></td><td class=text-right>' + BidData[0].bidScrapSalesDetails[i].lastSalePrice + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '</td><td>' + BidData[0].bidScrapSalesDetails[i].showStartPrice + '</td></tr>');
-                            jQuery("#tblServicesProductPrevtab_0").append('<tr id=trid' + i + '><td><a class="isDisabledClass" onclick="editValues(\'divbidItemsPrevtab_0\',\'trid' + i + '\')" ><i class="fa fa-pencil"></i></a></td><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '&nbsp;<a class="editbidstartprice ml-1" onclick=editbidstartpriceFA(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '&nbsp;<a class="changeMinDecreament ml-1" onclick=editincreament(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + jQuery('#ddlbid').val() + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + '</a></td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].increamentOn + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].lastSalePrice) + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td  class=hide>' + BidData[0].bidScrapSalesDetails[i].psid + '</td><td>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '&nbsp;<a  onclick=editShowL1Price(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].showStartPrice + '&nbsp;<a class=lambdafactor onclick=editShowStartPrice(' + BidData[0].bidScrapSalesDetails[i].psid + ',\'trid' + i + '\')><i class="fa fa-pencil"></i></a></td></tr>');
+                            jQuery("#tblServicesProductPrevtab_0").append('<tr id=trid' + i + '><td><a class="isDisabledClass" onclick="editValues(\'divbidItemsPrevtab_0\',\'trid' + i + '\')" ><i class="fa fa-pencil"></i></a></td><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '&nbsp;<a class="editbidstartprice ml-1" onclick=editbidstartpriceFA(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '&nbsp;<a class="changeMinDecreament ml-1" onclick=editincreament(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + jQuery('#ddlbid').val() + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + '</a></td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].increamentOn + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].lastSalePrice) + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td  class=hide>' + BidData[0].bidScrapSalesDetails[i].psid + '</td><td>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '&nbsp;<a  onclick=editShowL1Price(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)  class=pencilHLP ><i class="fa fa-pencil"  ></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].showStartPrice + '&nbsp;<a class=lambdafactor onclick=editShowStartPrice(' + BidData[0].bidScrapSalesDetails[i].psid + ',\'trid' + i + '\')><i class="fa fa-pencil"></i></a></td></tr>');
 
                         }
 
                         if (BidData[0].bidDetails[0].bidForID == 82) {
                             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right >' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td class=text-right>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '</td><td>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + ' </a></td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].lastSalePrice) + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '</td></tr>');
 
-                            jQuery("#tblServicesProductPrevtab_0").append('<tr id=tridPrev' + i + '><td><a class="isDisabledClass" onclick="editValues(\'divbidItemsPrevtab_0\',\'tridPrev' + i + '\')" ><i class="fa fa-pencil"></i></a></td><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td class=text-right>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '&nbsp;<a class="editbidstartprice ml-1" onclick=editbidstartpriceFA(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '&nbsp;<a class="changeMinDecreament ml-1" onclick=editincreament(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"tridPrev' + i + '"\)><i class="fa fa-pencil"></i></a></td><td class=hide>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + ' </a></td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].increamentOn + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].lastSalePrice) + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].startingPrice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].priceReductionFrequency) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].priceReductionAmount) + '</td><td  class=hide>' + BidData[0].bidScrapSalesDetails[i].psid + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '&nbsp;<a  onclick=editShowL1Price(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"tridPrev' + i + '"\)><i class="fa fa-pencil"></i></a></td></tr>');
+                            jQuery("#tblServicesProductPrevtab_0").append('<tr id=tridPrev' + i + '><td><a class="isDisabledClass" onclick="editValues(\'divbidItemsPrevtab_0\',\'tridPrev' + i + '\')" ><i class="fa fa-pencil"></i></a></td><td>' + (i + 1) + '</td><td>' + BidData[0].bidScrapSalesDetails[i].itemName + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].targetprice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].quantity) + '</td><td class=text-right>' + BidData[0].bidScrapSalesDetails[i].measurementUnit + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].ceilingPrice) + '&nbsp;<a class="editbidstartprice ml-1" onclick=editbidstartpriceFA(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"trid' + i + '"\)><i class="fa fa-pencil"></i></a></td><td>' + BidData[0].bidScrapSalesDetails[i].maskVendor + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].minimumIncreament + '&nbsp;<a class="changeMinDecreament ml-1" onclick=editincreament(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"tridPrev' + i + '"\)><i class="fa fa-pencil"></i></a></td><td class=hide>' + increamenton + '</td><td class=hide><a href=PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '/' + attach + ' style=text-decoration:none; >' + BidData[0].bidScrapSalesDetails[i].attachments + ' </a></td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].increamentOn + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].lastSalePrice) + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].attachmentSeqID + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].startingPrice) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].priceReductionFrequency) + '</td><td class=text-right>' + thousands_separators(BidData[0].bidScrapSalesDetails[i].priceReductionAmount) + '</td><td  class=hide>' + BidData[0].bidScrapSalesDetails[i].psid + '</td><td class=hide>' + BidData[0].bidScrapSalesDetails[i].showHLPrice + '&nbsp;<a  onclick=editShowL1Price(' + BidData[0].bidScrapSalesDetails[i].psid + ',\"tridPrev' + i + '"\) class=pencilHLP ><i class="fa fa-pencil"></i></a></td></tr>');
 
                         }
 
@@ -1249,24 +1251,29 @@ function fetchallexportdetails() {
                     jQuery('#tblparicipantslists').append('<tr ><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td class=hide>' + BidData[0].bidVendorDetails[i].emailID + '</td><<td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
                 }
             }
+           
             if (BidData[0].bidDetails[0].isRunningBid == 'RunningBid' || BidData[0].bidDetails[0].isRunningBid == 'ClosedBid') {
 
                 $("a.isDisabledClass").removeAttr("onclick");
                 isRunningBid = "Y";
             }
             else if (BidData[0].bidDetails[0].isRunningBid == 'ClosedBid') {
-
-            }
+             }
+    if (BidData[0].bidDetails[0].bidForID == "83") {
+        $("a.pencilHLP").removeAttr("onclick");
+    }
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -1310,13 +1317,15 @@ function fnTimeUpdateS(index, seaid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -1343,15 +1352,15 @@ function Dateandtimevalidate(indexNo) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                bootbox.alert("you have some error. Please try again.");
+                fnErrorMessageText('spandanger', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
 
 
@@ -1371,7 +1380,7 @@ function convertTo24Hour(time) {
 }
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
-    console.log(s)
+   
     s.setMinutes(s.getMinutes() + 5);
     var datearray = $("#txtbidDate").val().split("/");
     var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
@@ -1419,13 +1428,15 @@ function fnTimeUpdate() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -1433,7 +1444,10 @@ function fnTimeUpdate() {
 function fnTimeUpdateClosedBid(isMailSend) {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    var finalStatus = "";
+    if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
+        finalStatus = $('#ddlBidfinalStatus').val();
+    }
     var Data = {
         "BidStatus":parseInt( $('#ddlBidStatus option:selected').val()),
         "BidID": parseInt(jQuery('#ddlbid').val()),
@@ -1441,9 +1455,9 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "BidDate": jQuery('#txtbidDate').val(),
         "BidTime": jQuery('#txtbidTime').val(),
         "IsMailSend": isMailSend,
-        "FinalStatus": $('#ddlBidfinalStatus').val()
+        "FinalStatus": finalStatus
     }
-    //alert(JSON.stringify(Data))
+  
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateBidStatus",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1465,20 +1479,15 @@ function fnTimeUpdateClosedBid(isMailSend) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                successopenbid.hide();
-                erroropenbid.show();
-                $('#erropenbid').html('You have error.Please try agian.');
-                erroropenbid.fadeOut(3000);
-                App.scrollTo(erroropenbid, -200);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
 
     })
@@ -1531,7 +1540,7 @@ function editValues(divName, rowid) {
             $(".fadutchAuctionFields").hide();
             $("#" + divName).show();
             $('#rowid').val(rowid.id);
-            console.log(' > ', $("#" + rowid));
+           
             $('#txtdestinationPort').val($("#" + rowid).find("td:eq(2)").text())
             $('#txtbiddescriptionP').val($("#" + rowid).find("td:eq(3)").text())
 
@@ -1568,7 +1577,7 @@ function editValues(divName, rowid) {
             $(".faEngilshAuctionFields").show();
             $("#" + divName).show();
             $('#rowid').val(rowid.id);
-            console.log(' > ', $("#" + rowid));
+           
 
             $('#txtshortname').val($("#" + rowid).find("td:eq(2)").text())
 
@@ -1579,7 +1588,7 @@ function editValues(divName, rowid) {
             $('#txtUOM').val($("#" + rowid).find("td:eq(5)").text())
             $('#txtCeilingPrice').val($("#" + rowid).find("td:eq(6)").text())
             $('#checkmaskvendor').val($("#" + rowid).find("td:eq(7)").text())
-            if ($('#hdnClosingval').val() == 81) {
+            if ($('#hdnClosingval').val() == 81 || $('#hdnClosingval').val() == 83) {
                 $('#lblshowprice').html("Show H1 Price")
                 hdnSeId = $("#" + rowid).find("td:eq(14)").text()
                 $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(8)").text())
@@ -1692,50 +1701,17 @@ function formSubmitEditEvent() {
         }
         
     }
-    var targetprice = 0;
-    var lastinvoice = 0;
-    var _Totalbiddurationfordutch = 0;
+   
     if ($("#divbidItemsPrevtab_0").is(':visible')) {
-
-        if ($('#txttargetprice').val() != '') {
-            targetprice = $('#txttargetprice').val();
-        }
-        if ($('#txtlastinvoiceprice').val() != '') {
-            lastinvoice = $('#txtlastinvoiceprice').val();
-        }
-        var upateQuery = '';
-        if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7) {
-
-            upateQuery = "Update PE.BidSeaExportDetails set ItemBidDuration=0,DestinationPort='" + $('#txtdestinationPort').val() + "',Targetprice=" + removeThousandSeperator(targetprice) + ",Quantity=" + removeThousandSeperator($("#txtquantitiy").val()) + ",UOM='" + $('#dropuom').val() + "',LastInvoicePrice=" + removeThousandSeperator(lastinvoice) + ",Remarks='" + $('#txtbiddescriptionP').val() + "',CeilingPrice=" + removeThousandSeperator($('#txtCeilingPrice').val()) + ",MaskVendor='" + $('#checkmaskvendor option:selected').val() + "',MinimumDecreament=" + removeThousandSeperator($('#txtminimumdecreament').val()) + ",DecreamentOn='" + $('#drpdecreamenton option:selected').val() + "',SelectedCurrency='" + $('#txtselectedCurrency').val() + "',MaskL1Price='" + $('#checkL1Price').val() + "',ShowStartPrice='" + $('#checkshowstartPrice').val() + "'  where SEID= " + hdnSeId + " and BidID = " + sessionStorage.getItem('hdnbid');  //,ClosingTime=' + $("#").val() + ',Extension=' + $("#").val() + ',NoofExtension=' + $("#").val() + ',ItemStatus=' + $("#").val(0);
-        }
-        if ($('#hdnClosingval').val() == 'S' && sessionStorage.getItem("hdnbidtypeid") == 7) {
-            upateQuery = "Update PE.BidSeaExportDetails set ItemBidDuration=" + $("#txtitembidduration").val() + ",DestinationPort='" + $('#txtdestinationPort').val() + "',Targetprice=" + removeThousandSeperator(targetprice) + ",Quantity=" + removeThousandSeperator($("#txtquantitiy").val()) + ",UOM='" + $('#dropuom').val() + "',LastInvoicePrice=" + removeThousandSeperator(lastinvoice) + ",Remarks='" + $('#txtbiddescriptionP').val() + "',CeilingPrice=" + removeThousandSeperator($('#txtCeilingPrice').val()) + ",MaskVendor='" + $('#checkmaskvendor option:selected').val() + "',MinimumDecreament=" + removeThousandSeperator($('#txtminimumdecreament').val()) + ",DecreamentOn='" + $('#drpdecreamenton option:selected').val() + "',SelectedCurrency='" + $('#txtselectedCurrency').val() + "',MaskL1Price='" + $('#checkL1Price').val() + "',ShowStartPrice='" + $('#checkshowstartPrice').val() + "'  where SEID= " + hdnSeId + " and BidID = " + sessionStorage.getItem('hdnbid');  //,ClosingTime=' + $("#").val() + ',Extension=' + $("#").val() + ',NoofExtension=' + $("#").val() + ',ItemStatus=' + $("#").val(0);            
-        }
-        if (sessionStorage.getItem("hdnbidtypeid") == 6) {
-            if ($('#hdnClosingval').val() == 81) {
-                upateQuery = "Update PE.BidPefaDetails set ItemName='" + $('#txtshortname').val() + "',Targetprice=" + removeThousandSeperator(targetprice) + ",Quantity=" + removeThousandSeperator($("#txtquantitiy").val()) + ",MeasurementUnit='" + $('#dropuom').val() + "',LastSalePrice=" + removeThousandSeperator(lastinvoice) + ",CeilingPrice=" + removeThousandSeperator($('#txtCeilingPrice').val()) + ",MaskVendor='" + $('#checkmaskvendor option:selected').val() + "',MinimumIncreament=" + removeThousandSeperator($('#txtminimumdecreament').val()) + ",IncreamentOn='" + removeThousandSeperator($('#drpdecreamenton option:selected').val()) + "',ShowHLPrice='" + $('#checkL1Price option:selected').val() + "',ShowStartPrice='" + $('#checkshowstartPrice option:selected').val() + "'  where PSID= " + hdnSeId + " and BidID = " + sessionStorage.getItem('hdnbid');
-            }
-            else {
-                upateQuery = "Update PE.BidPefaDetails set ItemName='" + $('#txtshortname').val() + "',Targetprice=" + removeThousandSeperator(targetprice) + ",Quantity=" + removeThousandSeperator($("#txtquantitiy").val()) + ",MeasurementUnit='" + $('#dropuom').val() + "',LastSalePrice=" + removeThousandSeperator(lastinvoice) + ",CeilingPrice=" + removeThousandSeperator($('#txtCeilingPrice').val()) + ",MaskVendor='" + $('#checkmaskvendor option:selected').val() + "',MinimumIncreament=" + 0.0 + ",StartingPrice=" + removeThousandSeperator($('#txtminimumdecreament').val()) + ",PriceReductionFrequency=" + $('#txtpricefrequency').val() + ",PriceReductionAmount=" + removeThousandSeperator($('#txtpriceincreamentamount').val()) + ",IncreamentOn='',ShowHLPrice='" + $('#checkL1Price option:selected').val() + "'  where PSID= " + hdnSeId + " and BidID = " + sessionStorage.getItem('hdnbid') + ";";
-                _Totalbiddurationfordutch = (((removeThousandSeperator($("#txtCeilingPrice").val()) - removeThousandSeperator($("#txtminimumdecreament").val())) / removeThousandSeperator($("#txtpriceincreamentamount").val())) * $("#txtpricefrequency").val()) + parseInt($("#txtpricefrequency").val());
-                upateQuery = upateQuery + " Update PE.Biddetails set BidDuration=" + _Totalbiddurationfordutch + " where BidID = " + sessionStorage.getItem('hdnbid')
-            }
-        }
-        Data = {
-            "QueryString": upateQuery,
-            "QueryStringDT": 'NA',
-            "valType": "BI",
-            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
-            "BidClosingType": $('#hdnClosingval').val(),
-            "SeId": parseInt(hdnSeId),
-            "DecreamentOn": ''
-
-        }
+        //** update bid parameters RA/FA
+        editrowfields();
+        Data = '';
+       
     }
     
  
-    if (Data != '' || Data != null) {
-
+    if (Data != '' ) {
+       
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1769,8 +1745,8 @@ function formSubmitEditEvent() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 else {
@@ -1786,7 +1762,144 @@ function formSubmitEditEvent() {
         });
     }
 }
+function editrowfields() {
+    var targetprice = 0;
+    var lastinvoice = 0; var itemduration = 0;
+    var _Totalbiddurationfordutch = 0; var mininc = 0; var startingprice = 0; var incon = ''; var pricereducfeq = 0;
+    var pricereductionamount = 0;
+   
+    if ($('#txttargetprice').val() != '') {
+        targetprice = $('#txttargetprice').val();
+    }
+    if ($('#txtlastinvoiceprice').val() != '') {
+        lastinvoice = $('#txtlastinvoiceprice').val();
+    }
+   
+    if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7) {
+        itemduration = 0;
+    }
+    else if ($('#hdnClosingval').val() == 'S' && sessionStorage.getItem("hdnbidtypeid") == 7) {
+        itemduration = $("#txtitembidduration").val();
+    }
+    else if (($('#hdnClosingval').val() == 81 ||   $('#hdnClosingval').val() == 83) && sessionStorage.getItem("hdnbidtypeid") == 6) {
+        mininc = parseFloat(removeThousandSeperator($('#txtminimumdecreament').val()))
+        startingprice = 0;
+        incon = $('#drpdecreamenton option:selected').val();
+        pricereducfeq = 0;
+        pricereductionamount = 0;
+        _Totalbiddurationfordutch = 0;
+    }
+    else if ($('#hdnClosingval').val() == 82 && sessionStorage.getItem("hdnbidtypeid") == 6) {
+        mininc = 0;
+        incon = '';
+        startingprice = removeThousandSeperator($('#txtminimumdecreament').val())
+        pricereducfeq = $('#txtpricefrequency').val()
+        pricereductionamount = removeThousandSeperator($('#txtpriceincreamentamount').val())
+        _Totalbiddurationfordutch = (((removeThousandSeperator($("#txtCeilingPrice").val()) - removeThousandSeperator($("#txtminimumdecreament").val())) / removeThousandSeperator($("#txtpriceincreamentamount").val())) * $("#txtpricefrequency").val()) + parseInt($("#txtpricefrequency").val());
+    }
+    if (sessionStorage.getItem("hdnbidtypeid") == 7) {
+         //,ClosingTime=' + $("#").val() + ',Extension=' + $("#").val() + ',NoofExtension=' + $("#").val() + ',ItemStatus=' + $("#").val(0);
+        Data = {
+            "ItemBidDuration": parseInt(itemduration),
+            "DestinationPort": $('#txtdestinationPort').val(),
+            "Targetprice": parseFloat(removeThousandSeperator(targetprice)),
+            "Quantity": parseFloat(removeThousandSeperator($("#txtquantitiy").val())),
+            "UOM": $('#dropuom').val(),
+            "LastInvoicePrice": parseFloat(removeThousandSeperator(lastinvoice)),
+            "Remarks": $('#txtbiddescriptionP').val(),
+            "CeilingPrice": parseFloat(removeThousandSeperator($('#txtCeilingPrice').val())),
+            "MaskVendor": $('#checkmaskvendor option:selected').val(),
+            "MinimumDecreament": parseFloat(removeThousandSeperator($('#txtminimumdecreament').val())),
+            "DecreamentOn": $('#drpdecreamenton option:selected').val(),
+            "SelectedCurrency": $('#txtselectedCurrency').val(),
+            "MaskL1Price": $('#checkL1Price').val(),
+            "ShowStartPrice": $('#checkshowstartPrice').val(),
+            "StartingPrice": parseFloat(startingprice),
+            "PriceReductionFrequency": parseFloat(pricereducfeq),
+            "PriceReductionAmount": parseFloat(pricereductionamount),
+            "_Totalbiddurationfordutch": 0,
+            "BidID": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
+            "BidClosingType": $('#hdnClosingval').val(),
+            "SeId": parseInt(hdnSeId),
 
+        }
+        
+     }
+    else {
+       
+        Data = {
+            "ItemBidDuration": 0,
+            "DestinationPort": $('#txtshortname').val(),
+            "Targetprice": parseFloat(removeThousandSeperator(targetprice)),
+            "Quantity": parseFloat(removeThousandSeperator($("#txtquantitiy").val())),
+            "UOM": $('#dropuom').val(),
+            "LastInvoicePrice": parseFloat(removeThousandSeperator(lastinvoice)),
+            "Remarks":'',
+            "CeilingPrice": parseFloat(removeThousandSeperator($('#txtCeilingPrice').val())),
+            "MaskVendor": $('#checkmaskvendor option:selected').val(),
+            "MinimumDecreament": mininc,
+            "DecreamentOn": $('#drpdecreamenton option:selected').val(),
+            "SelectedCurrency": '',
+            "MaskL1Price": $('#checkL1Price').val(),
+            "ShowStartPrice": $('#checkshowstartPrice').val(),
+            "StartingPrice": startingprice,
+            "PriceReductionFrequency": parseFloat(pricereducfeq),
+            "PriceReductionAmount": parseFloat(pricereductionamount),
+            "_Totalbiddurationfordutch": parseInt(_Totalbiddurationfordutch),
+            "BidID": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
+            "BidClosingType": $('#hdnClosingval').val(),
+            "SeId": parseInt(hdnSeId),
+
+        }
+    }
+    
+    
+    if (Data != '' || Data != null) {
+
+        jQuery.ajax({
+            url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidParameterDetails/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            data: JSON.stringify(Data),
+            contentType: "application/json; charset=utf-8",
+            success: function (data, status, jqXHR) {
+
+                if (isBidEventChanged == true) {
+                    $("#btnuserConfirmation").show();
+                }
+                fetchallexportdetails();
+                setTimeout(function () {
+                    $("#editValuesModal").modal("hide")
+                }, 5000)
+
+                $("#msgSuccessEditEvent").find("span").html('Data Successfully saved.')
+                $("#msgSuccessEditEvent").show();
+                $("#msgSuccessEditEvent").fadeOut(5000);
+                
+
+                jQuery.unblockUI();
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    $("#msgErrorEditEvent").find("span").html('You have error in saving data.Please try again.')
+                    $("#msgErrorEditEvent").show();
+                    $("#msgErrorEditEvent").fadeOut(5000);
+                }
+
+                return false;
+                jQuery.unblockUI();
+            }
+
+        });
+    }
+}
 
 
 function showhideItemBidDuration() {
@@ -1828,13 +1941,15 @@ function FetchUOM(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -1901,13 +2016,15 @@ function FetchCurrency(CurrencyID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -1977,13 +2094,15 @@ function confirmEditEventAction(eventType) {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2004,7 +2123,7 @@ function editShowL1Price(seId, rowid) {
 
     }
     else {
-        if ($('#hdnauctiontype').val() == 81) {
+        if ($('#hdnauctiontype').val() == 81 || $('#hdnauctiontype').val() == 83) {
             var flag = $("#" + rowid).find("td:eq(15)").text().trim()
         }
         else {
@@ -2028,7 +2147,7 @@ function editShowStartPrice(seId, rowid) {
 
     }
     else {
-        if ($('#hdnauctiontype').val() == 81) {
+        if ($('#hdnauctiontype').val() == 81 || $('#hdnauctiontype').val() == 83) {
             var flag = $("#" + rowid).find("td:eq(16)").text().trim()
         }
 
@@ -2054,6 +2173,7 @@ function editMinDecreament(seId, rowid) {
     $("#editMinDecreamentModal").modal('show');
 }
 function editincreament(psid, rowid) {
+   
     $("#hddnPSForMinIncreament").val(psid);
     $('#drpincreamentontab_0').val($("#" + rowid).find("td:eq(11)").text())
     $("#txtminimumincreamenttab_0").val($.trim($("#" + rowid).find("td:eq(8)").text()))
@@ -2093,27 +2213,27 @@ function updMinIncreament() {
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
 
-                if (parseInt(data) == 1) {
-
-                    if (isBidEventChanged == true) {
+                     if (isBidEventChanged == true) {
                         $("#btnuserConfirmation").show();
                     }
                     fetchallexportdetails();
                     $("#editMinincreamentModal").modal("hide")
 
-                } 
+                
 
                 jQuery.unblockUI();
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2167,13 +2287,15 @@ function updMinDecreament() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2223,13 +2345,15 @@ function UpdShowL1Price() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2278,13 +2402,15 @@ function UpdShowStartPrice() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2333,13 +2459,15 @@ function updBidStartPrice() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2405,13 +2533,15 @@ function saveBidSurrogate() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -2558,13 +2688,15 @@ function fnsubmitRAPrePrices() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -2580,7 +2712,7 @@ function fnsubmitFAPrePrices() {
             HeaderQuery = HeaderQuery + $.trim(this_row.find('td:eq(0)').html()) + "," + sessionStorage.getItem('hdnbid') + "," + removeThousandSeperator(quote) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + $.trim(this_row.find('td:eq(0)').html()) + " ; "
         }
     })
-    //console.log(HeaderQuery)
+    
     var Data = {
         "DetailQuery": '',
         "HeaderDetails": HeaderQuery,
@@ -2611,13 +2743,14 @@ function fnsubmitFAPrePrices() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            } else {
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }

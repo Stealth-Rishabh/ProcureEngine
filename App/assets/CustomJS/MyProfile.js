@@ -35,12 +35,10 @@ function fetchUserDetails() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('errormsg', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
     
@@ -84,12 +82,10 @@ function fetchVendorDetails() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('errormsg', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -278,16 +274,14 @@ function updMobileNo() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('errormsg', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     })
 
@@ -336,16 +330,14 @@ function updVnedorMobileNo(){
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('errormsg', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     })
 }

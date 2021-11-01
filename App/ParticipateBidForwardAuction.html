@@ -137,6 +137,9 @@
                             </div>
                           
                             <div class="portlet-body form" id="content">
+                                <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
+                                    <span id="error"></span>
+                                </div>
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-12 ">
@@ -221,51 +224,51 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       
-                                            <div class="col-md-6">
-                                                <div class="form-control">
-                                                    <label class="col-md-4 control-label">
-                                                        Terms & Condition:
-                                                    </label>
-                                                    <label class="col-md-8 control-label">
-                                                        <a id="lnkTermsAttachment" href="javascript:;"  onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
-                                                    </label>
-                                                </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-control">
+                                                <label class="col-md-4 control-label">
+                                                    Terms & Condition:
+                                                </label>
+                                                <label class="col-md-8 control-label">
+                                                    <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
+                                                </label>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-control">
-                                                    <label class="col-md-4 control-label">
-                                                        Attachment (Any Other):
-                                                    </label>
-                                                    <label class="col-md-8 control-label">
-                                                        <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
-                                                    </label>
-                                                    </div>
-                                                </div>
-                                          
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-control">
+                                                <label class="col-md-4 control-label">
+                                                    Attachment (Any Other):
+                                                </label>
+                                                <label class="col-md-8 control-label">
+                                                    <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
+                                                </label>
+                                            </div>
                                         </div>
 
+                                    </div>
+
                                     <div class="form-control">
-                                        <label class="col-md-3 control-label bold text-right"  style="font-size:17px!important;">
+                                        <label class="col-md-3 control-label bold text-right" style="font-size:17px!important;">
                                             Time left (HH:MM:SS):
                                         </label>
                                         <b>
                                             <label style="color:red;font-size:17px!important;" class="bold" id="lblTimeLeftBeforeBid">
                                             </label>
                                         </b>&nbsp;
-                                        
+
                                         <label style="color:red;font-size:17px!important;text-align:left!important;" id="lblTimeLeft" class="bold ">
                                         </label>
-                                            <span class="lbltimetextdutch" style="display:none">or till one of the participants accepts the price, whichever is earlier</span>
-                                            <input type="hidden" id="hdnDuration" />
+                                        <span class="lbltimetextdutch" style="display:none">or till one of the participants accepts the price, whichever is earlier</span>
+                                        <input type="hidden" id="hdnDuration" />
                                         &nbsp;
-                                       
+
                                         <label id="lblTimeLeftTxt" class="display-none;font-size:17px!important;">
                                         </label>
-                                      
+
                                     </div>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
                                 </div>
                     </div>
                 </div>

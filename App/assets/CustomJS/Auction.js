@@ -14,13 +14,17 @@ function error401Messagebox(error) {
     });
 }
 function fnErrorMessageText(spanid,formid) {
-    
-    $('.alert-danger').show();
-    $('#' + spanid).html('Some error occured . Please contact administrator');
-    $('.alert-danger').fadeOut(6000);
+   
     if (formid != '') {
         $('#' + formid).bootstrapWizard('previous')
+        $('.button-next').removeClass('hide');
+        $('.button-submit').addClass('hide');
     }
+    $('.alert-danger').show();
+    $('#' + spanid).html('Some error occured . Please contact administrator');
+    $('.alert-danger').fadeOut(8000);
+    
+   // App.scrollTo(error1, -200);
     jQuery.unblockUI();
     return false;
     
@@ -177,6 +181,7 @@ function CheckOnlineStatus(msg) {
         
     }
     else {
+        
         toastr.clear();
     }
    
@@ -244,10 +249,7 @@ function thousands_Sep_Text(num) {
     return num_parts.join(".");
 }
 function thousands_separators(num) {
-    //var num_parts = num.toString().split(".");
-    //num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    //return num_parts.join(".");
- 
+    
     x = num.toString();
     x = x.replace(/,/g, '');
    
@@ -263,7 +265,24 @@ function thousands_separators(num) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     return res;
 }
+function thousands_separators_NonMadCol(ele) {
+    var num = ele.value;
+  
+    x = num.toString();
+    x = x.replace(/,/g, '');
 
+    var afterPoint = '';
+    if (x.indexOf('.') > 0)
+        afterPoint = x.substring(x.indexOf('.'), x.length);
+    x = Math.floor(x);
+    x = x.toString();
+    var lastThree = x.substring(x.length - 3);
+    var otherNumbers = x.substring(0, x.length - 3);
+    if (otherNumbers != '')
+        lastThree = ',' + lastThree;
+    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+    ele.value= res;
+}
 function thousands_separators_input(ele) {
     var valArr, val = ele.value;
     val = val.replace(/[^0-9\.]/g, '');
@@ -389,8 +408,8 @@ function CancelBidDuringConfig() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             jQuery.unblockUI();
@@ -421,7 +440,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 function openForm() {
     updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
-    //$(".scroller").stop().animate({ scrollTop: $(".scroller")[0].scrollHeight }, 100);
+ 
 }
 
 function closeForm() {
@@ -433,8 +452,8 @@ function openChatDiv(name, email, vendorId) {
     $("#chat-label").html(name + '(' + email + ')');
     $("#hddnVendorId").val(vendorId);
     fetchUserChats(vendorId,'S');
-    updateMsgReadFlag(getUrlVars()["BidID"], vendorId,'A');
-    //document.getElementById("chatWindow").style.display = "block";
+    updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
+    
 }
 
 function closeChatsForAdmin() {
@@ -465,15 +484,15 @@ function getUrlVars() {
 
 
 function sendChatMsgs() {
-    //alert(index)
+  
     var data = {
         "ChatMsg": jQuery("#txtChatMsg").val(),
         "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? getUrlVarsURL(decryptedstring)["BidID"] : sessionStorage.getItem("BidID"),
+        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
         "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
     }
-   // alert(JSON.stringify(data))
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -481,21 +500,20 @@ function sendChatMsgs() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            if (data[0].Success == '1') {
+
                 jQuery("#txtChatMsg").val('');
                 if (sessionStorage.getItem("UserType") == 'E') {
                     fetchUserChats($('#hddnVendorId').val(),'S');
                 } else {
                     fetchUserChats(sessionStorage.getItem('UserID'),'S');
                 }
-            }
-
+            
         },
         
         error: function (xhr, status, error) {
               
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
         }
         jQuery.unblockUI();
@@ -504,15 +522,15 @@ function sendChatMsgs() {
 }
 
 function sendBroadCastChatMsgs() {
-    //alert(index)
+   
     var data = {
         "ChatMsg": jQuery("#txtBroadcastMsg").val(),
         "fromID": sessionStorage.getItem("UserID"),
-        "BidId": getUrlVarsURL(decryptedstring)["BidID"], //(sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? getUrlVars()["BidID"] : sessionStorage.getItem("BidID"),
+        "BidId":parseInt( getUrlVarsURL(decryptedstring)["BidID"]), 
         "msgType": 'B',
         "toID": ''
     }
-   // alert(JSON.stringify(data))
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -520,21 +538,21 @@ function sendBroadCastChatMsgs() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            if (data[0].Success == '1') {
+            
                 jQuery("#txtBroadcastMsg").val('');
-               
                 bootbox.alert("Message has been successfully sent to all vendors.", function () {
-                    //return false;
                     fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
                 });
-            }
-
+           
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else{
+                fnErrorMessageText('errormsg', '');
             }
             jQuery.unblockUI();
         }
@@ -621,10 +639,11 @@ function fetchUserChats(userId,msgType) {
 
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else { fnErrorMessageText('errormsg', ''); }
             jQuery.unblockUI();
         }
     })
@@ -665,8 +684,8 @@ function fetchBroadcastMsgs(userId,msgType) {
 
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -697,8 +716,8 @@ function fetchvendor() {
                 $(".pulsate-regular").css('animation', 'none');
                 var vName = '';
                 for (var i = 0; i < data.length; i++) {
-                    if (vName != data[i].VendorName) { 
-                    if (data[i].ReadFlag == 'N') {
+                    if (vName != data[i].vendorName) { 
+                    if (data[i].readFlag == 'N') {
                         if (i <= 1) {
                             $(".pulsate-regular").css('animation', 'pulse 2s infinite');
                             toastr.options = {
@@ -718,31 +737,31 @@ function fetchvendor() {
                             //$('#basic').modal('show');
                             toastr.success('You have a new message.', 'New Message')
                         }
-                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].VendorName + '\', \'' + data[i].EmailId + '\', \'' + data[i].VendorID + '\');">'
+                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
                             + '<div class="media-status">'
                                 + '<span class="actions-dot bg-red"></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                                + '<h4 class="media-heading">' + data[i].VendorName + '</h4>'
-                                + '<div class="media-heading-sub">' + data[i].EmailId + '</div>'
+                                + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
+                                + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
                             + '</div>'
                         + '</li>');
-                        // (' + data[i].EmailId + ')
+                       
                     } else {
                         //$(".pulsate-regular-li").hide();
-                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].VendorName + '\', \'' + data[i].EmailId + '\', \'' + data[i].VendorID + '\');">'
+                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
                             + '<div class="media-status">'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                                + '<h4 class="media-heading">' + data[i].VendorName + '</h4>'
-                                + '<div class="media-heading-sub">' + data[i].EmailId + '</div>'
+                                + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
+                                + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
                             + '</div>'
                         + '</li>');
 
                     }
-                    vName = data[i].VendorName
+                    vName = data[i].vendorName
                   }
                 }
             }
@@ -750,12 +769,13 @@ function fetchvendor() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('errormsg', '');
+               
             }
             jQuery.unblockUI();
         }
@@ -763,13 +783,14 @@ function fetchvendor() {
 }
 
 function updateMsgReadFlag(bidId, vendorId, forUpdate) {
-    //alert(index)
+   
     var data = {
-        "BidId": bidId,
+        "BidId": parseInt(bidId),
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-    //alert(JSON.stringify(SeaQuote))
+    //console.log(JSON.stringify(data))
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -777,19 +798,18 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            if (data == '1') {
-                //fetchvendor(vendorId);
-            }
+           //fetchvendor(vendorId);
+            return true;
 
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error in update')
+                fnErrorMessageText('errormsg', '');
             }
             jQuery.unblockUI();
         }
@@ -798,7 +818,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
 }
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
- 
+   
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
@@ -868,7 +888,8 @@ function fnDownloadAttachments(filename, foldername) {
         cache: false,
         crossDomain: true,
         success: function (data) {
-            
+           
+            console.log(data)
             var downloadwindow = window.open(data, "_blank");
             downloadwindow.focus();
         },
@@ -884,7 +905,7 @@ function fnDownloadAttachments(filename, foldername) {
 }
 
 //** Delete Files from Blob
-function fnFileDeleteAzure(filename, foldername) {
+function fnFileDeleteAzure(filename, foldername,deletionfor,srno) {
     var data = {
         "filename": filename,
         "foldername": foldername
@@ -896,7 +917,14 @@ function fnFileDeleteAzure(filename, foldername) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            return;
+            if (deletionfor == 'VAttachment' && srno != 0) {
+                fileDeletefromdb(srno, deletionfor)
+            }
+            $('#spansuccess1').html('File Deleted Successfully');
+            success.show();
+            Metronic.scrollTo(success, -200);
+            success.fadeOut(5000);
+         
         },
         error: function (xhr, status, error) {
             $(".alert-danger").find("span").html('').html(filename + " Couldn't deleted successfully from Azure");
@@ -907,6 +935,7 @@ function fnFileDeleteAzure(filename, foldername) {
         }
     })
 }
+
 //function fnFileDeleteLocalfolder(path) {
 //    var formData = new window.FormData();
 //    formData.append("Path", path);
@@ -931,9 +960,10 @@ function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
-var allvendorsforautocomplete
+var allvendorsforautocomplete;
  
 function fetchParticipantsVender() {
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -943,7 +973,7 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-            
+           
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
                
@@ -954,9 +984,9 @@ function fetchParticipantsVender() {
             }
         },
         error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+          
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {

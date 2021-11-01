@@ -41,13 +41,16 @@ function fetchReguestforQuotationDetails() {
         },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
+                
             }
     });
 
@@ -56,6 +59,7 @@ function fetchReguestforQuotationDetails() {
 var form = $('#frmIntroduction');
 var error = $('.alert-danger');
 var success = $('.alert-success');
+var BiddingVendorQuery = [];
 function formvalidate() {
    
     form.validate({
@@ -97,16 +101,14 @@ function formvalidate() {
 
 }
 function frmAzurePPCForm() {
-    var BiddingVendorQuery = '';
+    
     var i = 0;
+    var BiddingVendorQuery = '';
     $("#tblvendors> tbody > tr").each(function (index) {
-        BiddingVendorQuery = BiddingVendorQuery + " select  '##PPCID##'," + RFQID + ",'" + $(this).find("td").eq(0).html() + "','" + $("input[name=OpQuotation" + index + "]:checked").val() + "','" + $("input[name=OpTechAccep" + index + "]:checked").val() + "'  union";
-      
+       
+        BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
     });
-    if (BiddingVendorQuery != '') {
-        BiddingVendorQuery = 'insert into PE.AzurePPCBidVendorDetails(PPCID,RFQID,VendorID,QuotationReceived,TexhnicallyAcceptable) ' + BiddingVendorQuery
-        BiddingVendorQuery = BiddingVendorQuery.substring(0, BiddingVendorQuery.length - 6);
-    }
+   
     var EnquiryIssuedthrogh = $("input[name='optionenquiryissued']:checked").val();
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
@@ -217,18 +219,15 @@ function frmAzurePPCForm() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
+            else {
+                fnErrorMessageText('spandanger', '');
             }
-                
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -381,13 +380,15 @@ function fetchAzPPcFormDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     })
@@ -418,18 +419,15 @@ function fnSendActivitytoCommercialForPPCApp() {
         
         error: function (xhr, status, error) {
 
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
         }
-        else{
-            jQuery("#diverror").text(xhr.d);
-            error.show();
-            error.fadeOut(5000);
-        }
-           
-        return false;
-        jQuery.unblockUI();
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
     }
     })
 }
@@ -491,13 +489,15 @@ function addmoreattachments() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
 
         });
@@ -505,7 +505,7 @@ function addmoreattachments() {
 }
 
 function fetchAttachments() {
-    //alert(sessionStorage.getItem("APIPath") + "POUpload/PODetails/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&UserID=" + sessionStorage.getItem('UserID') + "&Flag=Attachment&POHeaderID=" + $('#hdnPOHeader').val())
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -538,13 +538,15 @@ function fetchAttachments() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -580,13 +582,15 @@ function fnRemoveAttachment(POID, deletionfor) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }

@@ -81,10 +81,13 @@ function fetchVendorDetails() {
         },
         
         error: function (xhr, status, error) {
-            jQuery("#error").text(xhr.d);      
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+               
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
+            }
+        else {
+            fnErrorMessageText('error', '');
         }
         jQuery.unblockUI();
     }
@@ -212,11 +215,14 @@ function fninsupdQuotesS(index) {
             },
             error: function (xhr, status, error) {
                
-                jQuery("#error").text(xhr.d +" you're offline check your connection and try again");
+                
                    
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
+                }
+                    else {
+                        fnErrorMessageText('error', '');
                     }
                     jQuery.unblockUI();
                 
@@ -246,11 +252,14 @@ function extendbidS(index) {
         
         error: function (xhr, status, error) {
                
-            jQuery("#error").text(xhr.d +" error in update");
+            
               
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
+            }
+        else {
+            fnErrorMessageText('error', '');
         }
         jQuery.unblockUI();
                 
@@ -368,12 +377,12 @@ function fetchBidSummaryVendorproduct() {
         },
         error: function (xhr, status, error) {
 
-            jQuery("#error").text(xhr.d + " error in update");
-
-          
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
 
@@ -471,9 +480,12 @@ function refreshColumnsStaus() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
 
@@ -599,8 +611,11 @@ function closeBidAir() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
 
@@ -611,8 +626,7 @@ function closeBidAir() {
 
 
 function fetchBidHeaderDetails(bidId) {
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+  
     var url = '';
     
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
@@ -658,9 +672,12 @@ function fetchBidHeaderDetails(bidId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
 

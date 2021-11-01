@@ -24,6 +24,7 @@ jQuery("#txtApprover").keyup(function () {
 
 });
 sessionStorage.setItem('hdnApproverid', 0);
+
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
         var data = allUsers;
@@ -42,8 +43,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
-            
-           fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
+            fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
             
         }
         else {
@@ -143,7 +143,7 @@ function FetchUOM(CustomerID) {
             
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -230,7 +230,7 @@ function FetchCurrency(CurrencyID) {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -257,7 +257,7 @@ $("#chkAll").click(function() {
             var v = vCount;
             vCount = vCount + 1;
             var vname = $.trim($(this).find('td:eq(2)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorid + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + vendorid + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" id=Lambda' + vendorid + ' class="btn btn-xs btn-success lambdafactor" data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorid + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorid + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',SelecetedVendorPrev' + vendorid + ',' + vendorid+')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" id=Lambda' + vendorid + ' class="btn btn-xs btn-success lambdafactor" data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorid + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
             jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td id=tblcolweightagePrev' + vendorid + '>0</td><td class=hide>N</td></tr>')
             if (FlagForCheckShowPrice == "Y") {
                 $('#Lambda' + vendorid).addClass('tooltips')
@@ -309,7 +309,7 @@ function Check(event, vname, vendorID) {
         var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',' + EvID + ',SelecetedVendorPrev' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ','+vendorID+')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
         jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td id=tblcolweightagePrev' + vendorID + '>0</td><td class=hide>N</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
@@ -354,14 +354,12 @@ $("#weightageModal").on("hidden.bs.modal", function () {
     $("#tblcolweightagePrev" + $("#hdnweightageIndex").val()).html(weightageval);
 });
 
-function removevendor(trid, chkid, Prevtrid) {
-   
+function removevendor(trid, trprevid, vid) {
+
     vCount = vCount - 1;
-   
     $('#' + trid.id).remove()
-    $('#' + Prevtrid.id).remove()
-    $(chkid).closest("span#spanchecked").removeClass("checked")
-    $(chkid).prop("disabled", false);
+    $('#' + trprevid.id).remove()
+
     if (vCount > 0) {
         jQuery('#selectedvendorlists').show()
         jQuery('#selectedvendorlistsPrev').show()
@@ -374,6 +372,11 @@ function removevendor(trid, chkid, Prevtrid) {
         jQuery('#selectedvendorlistsPrev').hide()
 
     }
+    if ($('#chkvender' + vid).length) {
+        $('#chkvender' + vid).closest("span#spanchecked").removeClass("checked")
+        $('#chkvender' + vid).prop("disabled", false);
+    }
+
 }
 
 var status;
@@ -399,7 +402,8 @@ function ValidateVendor() {
             }
 
         });
-    } else {
+    }
+    else {
         $("#tblvendorlist> tbody > tr").each(function (index) {
 
             if ($(this).find("span#spanchecked").attr('class') == 'checked') {
@@ -456,8 +460,8 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -568,14 +572,14 @@ var FormWizard = function () {
                         maxlength: 200
                     },
                     txtItemCode: {
-                        maxlength: 200
+                        maxlength: 50
                     },
                     txtdescription: {
                         maxlength: 2000
                     },
                     txtbiddescriptionP:{
                         required: true,
-                        maxlength: 100
+                        maxlength: 200
                     },
                     txtquantitiy: {
                         required:true,
@@ -643,8 +647,7 @@ var FormWizard = function () {
         }
 
         if ($("#txtPODate").closest('.input-group').attr('class') == 'input-group has-error') {
-
-            $("#btncal").css("margin-top", "-22px");
+                 $("#btncal").css("margin-top", "-22px");
 
         }
 
@@ -700,8 +703,6 @@ var FormWizard = function () {
         }
 
     },
-
-
 
     submitHandler: function(form) {
 
@@ -885,6 +886,7 @@ $('#form_wizard_1').bootstrapWizard({
                 else {
                     $('.lambdafactor').removeAttr("disabled", "disabled");
                 }
+                
                 if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null){
                     fnfetchRFQVendor();
                 }
@@ -1074,7 +1076,7 @@ function ConfigureBidForSeaExportTab1() {
 
         },
         error: function (xhr, status, error) {
-             var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
              if (xhr.status == 401) {
                     error401Messagebox(err.Message);
             }
@@ -1160,7 +1162,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
            
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1293,7 +1295,7 @@ function ConfigureBidForSeaExportTab2() {
 
             },
            error: function (xhr, status, error) {
-               var err = eval("(" + xhr.responseText + ")");
+               var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                if (xhr.status == 401) {
                    error401Messagebox(err.Message);
                }
@@ -1343,7 +1345,7 @@ function ConfigureBidForSeaExportTab3() {
             }
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1383,7 +1385,7 @@ function ConfigureBidForSeaExportandSave() {
            
            // if (data[0].mailSubject !='') {
 
-                jQuery.unblockUI();
+               // jQuery.unblockUI();
 
                 bootbox.alert("Bid Configured Successfully.", function () {
                     sessionStorage.removeItem('CurrentBidID');
@@ -1404,7 +1406,7 @@ function ConfigureBidForSeaExportandSave() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1736,7 +1738,7 @@ function editvalues(icount) {
     // $('#txtdescription').val(Descriptiontxt)
     $('#txtbiddescriptionP').val(Remark)
 
-    $('#txttargetprice').val(removeThousandSeperator($("#TP" + icount).text()))
+    $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
     $('#txtquantitiy').val(removeThousandSeperator($("#quan" + icount).text()))
     $('#dropuom').val($("#uom" + icount).text())
     $('#txtUOM').val($("#uom" + icount).text())
@@ -1751,11 +1753,11 @@ function editvalues(icount) {
     $('#checkmaskL1price').val($("#maskL1" + icount).text())
     $('#checkshowstartprice').val($("#showstart" + icount).text())
 
-    $('#txtunitrate').val(removeThousandSeperator($("#unitrate" + icount).text()))
+    $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
     $('#txtPono').val($("#pono" + icount).text())
     $('#txtvendorname').val($("#povendorname" + icount).text())
     $('#txtPODate').val($("#podate" + icount).text())
-    $('#txtpovalue').val(removeThousandSeperator($("#povalue" + icount).text()))
+    $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     
 
     $('#add_or').text('Modify');
@@ -1806,7 +1808,7 @@ function resetfun() {
 
     $('#txtlastinvoiceprice').val('')
     $('#txtitembidduration').val('');
-    $('#checkmaskL1price').val('N');
+    //$('#checkmaskL1price').val('N');
     $('#checkshowstartprice').val('Y');
     showhideItemBidDuration()
     if ($('#ddlAuctiontype option:selected').val() == "83") {
@@ -2005,12 +2007,25 @@ function fetchSeaExportDetails() {
                     $('.itemclass').addClass('hide')
                     $('.itemclass').val(0)
                 }
+            if (BidData[0].bidVendorDetails.length > 0) {
+
+                for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
+                    vCount = vCount + 1;
+                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + '>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID  +')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                    jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + '>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
+                   
+                }
+
+                jQuery('#selectedvendorlists').show()
+                jQuery('#selectedvendorlistsPrev').show()
+
+            }
 
             }
           
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -2153,8 +2168,8 @@ function fetchVendorGroup(categoryFor,vendorId) {
         },
       
             error: function (xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 jQuery.unblockUI();
@@ -2164,7 +2179,11 @@ function fetchVendorGroup(categoryFor,vendorId) {
         
     });
 }
-
+jQuery("#txtVendorGroup").keyup(function () {
+    jQuery("#txtSearch").val('')
+    jQuery("#tblvendorlist> tbody").empty();
+    sessionStorage.setItem('hdnVendorID', '0');
+});
 jQuery("#txtVendorGroup").typeahead({
     source: function (query, process) {
         var data = vendorsForAutoComplete
@@ -2194,6 +2213,8 @@ jQuery("#txtVendorGroup").typeahead({
 });
 
 jQuery("#txtSearch").keyup(function () {
+    jQuery("#txtVendorGroup").val('')
+    jQuery("#tblvendorlist> tbody").empty();
     sessionStorage.setItem('hdnVendorID', '0');
 
 });
@@ -2281,7 +2302,7 @@ function getCategoryWiseVendors(categoryID) {
                 }
             },
             error: function (xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -2294,16 +2315,10 @@ function getCategoryWiseVendors(categoryID) {
         });
 
     } 
-
-
-
 function cloneBid() {
     var encrypdata = fnencrypt("bidTypeId=7")
     window.location = 'cloneBid.html?param=' + encrypdata;
 }
-
-
-
 $('#RAexcel').on("hidden.bs.modal", function () {
     $("#instructionsDivParameter").hide();
     $("#instructionSpanParameter").hide();
@@ -2475,6 +2490,12 @@ function printdataSeaBid(result) {
             $("#file-excelparameter").val('');
             return false;
         }
+        else if ($.trim(result[i].ItemCode).length > 50) {
+            $("#error-excelparameter").show();
+            $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#file-excelparameter").val('');
+            return false;
+        }
         else if ($.trim(result[i].ItemService).toLowerCase() == $.trim(result[i - z].ItemService).toLowerCase() && i > 0) {
            
             $("#error-excelparameter").show();
@@ -2506,9 +2527,9 @@ function printdataSeaBid(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].Remarks) == '') {
+        else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].ItemService).length > 200) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Remarks can not be blank of Item no ' + (i + 1) +'. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Remarks can not be blank or length should be 200 characters of Item no ' + (i + 1) +'. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
@@ -2772,6 +2793,7 @@ function fnSeteRFQparameterTable() {
         $("#error-excelparameter").hide();
         $('#loader-msgparameter').html('Processing. Please Wait...!');
         $('#modalLoaderparameter').removeClass('display-none');
+        $('#hdnRfiRfqID').val(0); // Set RFQ ID 0 to remove vendors if already selected on RFQ
         jQuery("#tblServicesProduct").empty();
         jQuery("#tblServicesProductPrev").empty();
 
@@ -2837,7 +2859,6 @@ function fnSeteRFQparameterTable() {
     }
 }
 
-
 function fetchRFIRFQSubjectforReport(subjectFor) {
 
     jQuery.ajax({
@@ -2850,8 +2871,8 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
             sessionStorage.setItem('hdnRfiRfqSubject', JSON.stringify(data));
         },
         error: function(xhr) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
         }
@@ -3024,8 +3045,8 @@ function populatetablewithRFQData() {
         error: function (xhr) {
             jQuery('#divalerterrpull').slideDown('show');
             $('#spanerterrpull').text('You have error .Please try again after page refresh.')
-             var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
             
@@ -3075,7 +3096,7 @@ function fnfetchRFQVendor() {
                     str = "<tr id=vList" + data[i].vendorID +" ><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class='checked'><input disabled type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
                     jQuery('#tblvendorlist > tbody').append(str);
 
-                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',' + 'chkvender' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ','+data[i].vendorID+')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
                     
                     if (data[i].isFromRFQ == "Y") {
                         jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
@@ -3092,7 +3113,7 @@ function fnfetchRFQVendor() {
        
             error: function(xhr) {
               
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -3106,7 +3127,7 @@ function fnfetchRFQVendor() {
 }
 $("#RFQPullData").on("hidden.bs.modal", function () {
     $("#txtrfirfqsubject").val('')
-    $('#hdnRfiRfqID').val(0);
+   
    
 });
 
@@ -3155,7 +3176,7 @@ function viewRFQQuotes(vendorid) {
        
             error: function(xhr) {
               
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }

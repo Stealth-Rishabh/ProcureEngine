@@ -105,14 +105,15 @@ function fetchBidDetailsForCloning() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -177,17 +178,15 @@ function clone(BidId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert('error')
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('error', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });

@@ -31,7 +31,7 @@ function FetchVendors(BidID) {
             jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
             jQuery("#ddlVendors,#ddlVendorsAdmin").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < data.length; i++) {
-                jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").append(jQuery("<option ></option>").val(data[i].VendorID).html(data[i].VendorName));
+                jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").append(jQuery("<option ></option>").val(data[i].vendorID).html(data[i].vendorName));
                 //selectedValues.push(data[i].VendorID);
             }
             // $("#drpVendors").select2("val",selectedValues);
@@ -40,10 +40,14 @@ function FetchVendors(BidID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -111,7 +115,6 @@ var FormValidation = function () {
                     }
                 }
                 else {
-                   
                     ForwardBid(BidID, BidTypeID, BidForID)
                   
                 }

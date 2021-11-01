@@ -187,7 +187,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" maxlength="200"
-                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" />
+                                                                       autocomplete="off" name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
                                                         <!---->
@@ -201,8 +201,8 @@
                                                                 Event Description<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-9">
-                                                                <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                          rows="3" onkeyup="replaceQuoutesFromString(this)" ></textarea>
+                                                                <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control maxlength"
+                                                                      autocomplete="off"    rows="3" onkeyup="replaceQuoutesFromString(this)"  maxlength="2000" ></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -229,7 +229,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <div class="input-group">
-                                                                    <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
+                                                                    <input type="text" id="txtbidTime"  autocomplete="off" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
                                                                            readonly>
                                                                     <span class="input-group-btn">
                                                                         <button class="btn default" type="button">
@@ -247,11 +247,12 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 
-                                                                    <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="hideshowDuration()">
+                                                                <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="hideshowDuration()">
                                                                     <!--<option value="" style="display:none;">Select</option>-->
                                                                     <option value="81">English</option>
                                                                     <option value="82">Dutch(RA)</option>
-                                                                    </select>
+                                                                    <option value="83">Japanese</option>
+                                                                </select>
                                                                     
                                                                 
                                                             </div>
@@ -262,7 +263,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Duration" id="txtBidDuration"
-                                                                       name="txtBidDuration">
+                                                                     autocomplete="off"  name="txtBidDuration">
                                                             </div>
                                                         </div>                                                        
                                                     </div>
@@ -281,7 +282,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control" placeholder="Enter Currency Conversion Factor" id="txtConversionRate"
-                                                                       name="txtConversionRate">
+                                                                       name="txtConversionRate" maxlength="7">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,7 +418,6 @@
                                                     </div>
                                                   
                                                     <div class="form-group">
-
                                                         <label class="control-label  col-md-2" id="lblCeilingPrice">
                                                             Ceiling/ Min. Price<span class="required"> *</span>
                                                         </label>
@@ -534,7 +534,7 @@
                                                         <div class="col-md-4" id="divshowprice">
                                                             <select class="form-control no-space" id="showhlprice" name="showhlprice">
                                                                 <option value="N">No</option>
-                                                                <option value="Y">Yes</option>
+                                                                <option value="Y">Yes</option>a
                                                             </select>
                                                         </div>
                                                         <label class="control-label col-md-2" id="lblshowstartprice" >

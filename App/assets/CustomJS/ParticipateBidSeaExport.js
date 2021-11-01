@@ -79,11 +79,15 @@ function fetchVendorDetails() {
             }
         },
         error: function(xhr) {
-            jQuery("#error").text(xhr.d);
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+           
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
         }
     });
 
@@ -176,9 +180,12 @@ function fetchBidSummaryVendorproduct() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
         }
     })
@@ -257,9 +264,12 @@ function refreshColumnsStaus() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
         }
@@ -328,7 +338,6 @@ function startTimer(duration, display) {
 function InsUpdQuoteSeaExport(index) {
 
     var vendorID = 0;
-    
     vendorID = sessionStorage.getItem('VendorId'); 
     
     var insertquery = '';
@@ -435,11 +444,12 @@ function InsUpdQuoteSeaExport(index) {
                 },
                 error: function(xhr) {
                    
-                    jQuery("#error").text(xhr.d + " you're offline check your connection and try again");
-                    
-                        var err = eval("(" + xhr.responseText + ")");
-                        if (xhr.status === 401) {
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                        if (xhr.status == 401) {
                             error401Messagebox(err.Message);
+                    }
+                        else {
+                            fnErrorMessageText('error', '');
                         }
                         jQuery.unblockUI();
                         return false;
@@ -479,11 +489,13 @@ function InsUpdQuoteSeaExport(index) {
 
                 },
                 error: function(xhr) {
-                    jQuery("#error").text(xhr.d);
-                    
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                   
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('error', '');
                     }
                     jQuery.unblockUI();
                     return false;
@@ -512,11 +524,14 @@ function extendbidA() {
             return true
         },
         error: function(xhr) {
-            jQuery("#error").text(xhr.d);
             
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
@@ -554,9 +569,12 @@ function closeBidAir() {
         },
         error: function (xhr, status, error) {
             
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
@@ -624,9 +642,12 @@ function fetchBidHeaderDetails(bidId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;

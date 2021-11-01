@@ -39,10 +39,14 @@ function FetchVendors(BidID) {
         },
         error: function (xhr, status, error) {
          var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 

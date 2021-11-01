@@ -35,7 +35,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -223,7 +223,7 @@ function RFQFetchQuotedPriceReport() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

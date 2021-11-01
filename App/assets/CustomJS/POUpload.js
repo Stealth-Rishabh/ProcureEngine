@@ -25,7 +25,7 @@ if (window.location.search) {
 }
 if (AppType == "Reverted") {
     $('#txtVendor').attr('disabled', 'disabled')
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     fetchAttachments();
     setTimeout(function () {
@@ -35,7 +35,7 @@ if (AppType == "Reverted") {
 }
 else {
     $('#txtVendor').removeAttr('disabled')
-   // $('#txtVendorGroup').removeAttr('disabled', 'disabled')
+    // $('#txtVendorGroup').removeAttr('disabled', 'disabled')
 }
 var form = $('#frmbidsummaryreport');
 function InsUpdProductSevices() {
@@ -148,7 +148,7 @@ function InsUpdProductSevices() {
 
 var i = 0;
 var z = 0;
-var PriceDetails = '';
+
 
 function ParametersQuery() {
 
@@ -194,8 +194,10 @@ function deleterow(rowid) {
     $('#' + rowid.id).remove();
 
 }
-function insPoDetails() {
 
+var PriceDetails = [];
+function insPoDetails() {
+    var items = '', PriceDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (jQuery('#file1').val() != '') {
         $('.alert-danger').show();
@@ -207,16 +209,27 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct tr').length;
-        PriceDetails = '';
+
         if (rowCount > 0) {
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                PriceDetails = PriceDetails + ' insert into PE.PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
+
                 var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
-                PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(2)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(6)').html())) + "','" + $.trim(this_row.find('td:eq(7)').html()) + "','" + this_row.find('td:eq(4)').html() + "','" + $.trim(this_row.find('td:eq(5)').html()) + "',PE.decrypt('" + sessionStorage.getItem('UserID') + "'),[PE].FN_Now())";
+                items = {
+                    "POHeaderID": parseInt($('#hdnPOHeader').val()),
+                    "ItemCode": $.trim(this_row.find('td:eq(1)').html()),
+                    "ItemServiceName": $.trim(this_row.find('td:eq(2)').html()),
+                    "DeliveryLocation": $.trim(deliverylocation),
+                    "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(6)').html()))),
+                    "UOM": $.trim(this_row.find('td:eq(7)').html()),
+                    "PONo": $.trim(this_row.find('td:eq(4)').html()),
+                    "PODeliveryDate": $.trim(this_row.find('td:eq(5)').html())
+
+                }
+                PriceDetails.push(items)
             })
         }
-       // console.log(PriceDetails)
+        // console.log(PriceDetails)
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
@@ -227,7 +240,7 @@ function insPoDetails() {
             "UserRemarks": $('#txtvendorremarks').val()
         };
 
-       
+
         //console.log(JSON.stringify(Tab2data))
         jQuery.ajax({
 
@@ -240,43 +253,39 @@ function insPoDetails() {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-               // if (data == '1') {
-                    if (AppType != 'Reverted') {
-                        $('.alert-success').show();
-                        $('#spansuccess1').html('PO sent to vendor successfully');
-                        Metronic.scrollTo($(".alert-success"), -200);
-                        $('.alert-success').fadeOut(7000);
-                        $('#cancelBidBtn').hide();
+                // if (data == '1') {
+                if (AppType != 'Reverted') {
+                    $('.alert-success').show();
+                    $('#spansuccess1').html('PO sent to vendor successfully');
+                    Metronic.scrollTo($(".alert-success"), -200);
+                    $('.alert-success').fadeOut(7000);
+                    $('#cancelBidBtn').hide();
 
-                        resetfun();
-                        resetForm();
-                    }
-                    else {
-                        bootbox.alert("PO is now forwarded again to the vendor for acceptance.", function () {
-                            window.location = "index.html";
-                            return false;
-                        });
-                    }
+                    resetfun();
+                    resetForm();
+                }
+                else {
+                    bootbox.alert("PO is now forwarded again to the vendor for acceptance.", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+                }
 
-                    jQuery.unblockUI();
-               // }
+                jQuery.unblockUI();
+                // }
 
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 else {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('You have error. Please try again.');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
+                    fnErrorMessageText('spandanger', '');
                 }
-
-                return false;
                 jQuery.unblockUI();
+                return false;
             }
 
         });
@@ -288,9 +297,9 @@ function resetForm() {
     $('#tblServicesProduct').empty();
     $('#tblAttachments').empty();
 
- 
+
     $('#txtVendor').removeAttr('disabled')
-  
+
     $('#txtVendor').val('');
     sessionStorage.setItem('hdnVendorID', '0')
     $('#txtvendorremarks').val('');
@@ -307,10 +316,10 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-           
+
             if (Venderdata.length > 0) {
                 vendor = Venderdata;
-               
+
             }
             else {
                 vendor = '';
@@ -319,14 +328,15 @@ function fetchParticipantsVender() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('spandanger', '');
             }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -346,7 +356,7 @@ jQuery("#txtVendor").typeahead({
             vName = username.participantName + ' (' + username.companyEmail + ')'
             map[vName] = username;
             usernames.push(vName);
-          
+
         });
 
         process(usernames);
@@ -399,7 +409,7 @@ function addAttachments() {
             "POAttachmentDescription": $('#AttachDescription1').val()
         }
         // alert(JSON.stringify(Attachments))
-       // console.log(JSON.stringify(Attachments))
+        // console.log(JSON.stringify(Attachments))
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -410,12 +420,12 @@ function addAttachments() {
             data: JSON.stringify(Attachments),
             dataType: "json",
             success: function (data) {
-              
-                if(data.length>0){
-                    
+
+                if (data.length > 0) {
+
                     if (data[0].outPut == "1") {
                         $('#hdnPOHeader').val(data[0].poHeaderID)
-                        
+
                         $('#txtVendor').attr('disabled', 'disabled')
                         fetchAttachments()
 
@@ -427,11 +437,11 @@ function addAttachments() {
                         Metronic.scrollTo($(".alert-success"), -200);
                         $('.alert-success').fadeOut(7000);
                         $('#cancelBidBtn').show();
-                        
+
                         return false;
 
                     }
-                    else if (data[0].outPut== "2") {
+                    else if (data[0].outPut == "2") {
                         $('.alert-danger').show();
                         $('#spandanger').html('Attachment is already Exists.');
                         Metronic.scrollTo($(".alert-danger"), -200);
@@ -439,24 +449,20 @@ function addAttachments() {
                         return false;
                     }
                 }
-            
+
 
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 else {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('You have error. Please try again.');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
+                    fnErrorMessageText('spandanger', '');
                 }
-
-                return false;
                 jQuery.unblockUI();
+                return false;
             }
 
         });
@@ -464,7 +470,7 @@ function addAttachments() {
 }
 
 function fetchAttachments() {
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -485,41 +491,37 @@ function fetchAttachments() {
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");
-                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile'+i+' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[i].poAttachment + '</a></td>';
-                    str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[i].poid + "'\,\'POAttach'\,\'" + data[i].poAttachment+"'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
+                    var str = '<tr><td style="width:47%!important">' + data[i].poAttachmentDescription + '</td><td style="width:47%!important"><a id=POFile' + i + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[i].poAttachment + '</a></td>';
+                    str += "<td style='width:5%!important'><button type='button' class='btn btn-xs btn-danger' id=Removebtnattach" + i + " onclick=fnRemoveAttachment(\'" + data[i].poid + "'\,\'POAttach'\,\'" + data[i].poAttachment + "'\)><i class='glyphicon glyphicon-remove-circle'></i></button></td></tr>";
                     jQuery('#tblAttachments').append(str);
                 }
             }
 
             else {
-                 $('#txtVendor').removeAttr('disabled')
+                $('#txtVendor').removeAttr('disabled')
                 jQuery('#tblAttachments').append("<tr><td>No Attachments!!</td></tr>")
             }
 
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').show();
-                $('#spandanger').html('You have error. Please try again.');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     })
 }
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + $('#hdnPOHeader').val() + '/' + sessionStorage.getItem('hdnVendorID'));
 }
-function fnRemoveAttachment(POID, deletionfor,attachname) {
-var Attachments = {
+function fnRemoveAttachment(POID, deletionfor, attachname) {
+    var Attachments = {
         "SrNo": parseInt(POID),
         "DeletionFor": deletionfor,
         "RFQID": 0
@@ -534,35 +536,31 @@ var Attachments = {
         data: JSON.stringify(Attachments),
         dataType: "json",
         success: function (data) {
-            
+
             if (data == "1") {
-                
-                    fetchAttachments();
-                    $('.alert-success').show();
-                    $('#spansuccess1').html('Record deleted successfully!');
 
-                    Metronic.scrollTo($(".alert-success"), -200);
-                    $('.alert-success').fadeOut(7000);
+                fetchAttachments();
+                $('.alert-success').show();
+                $('#spansuccess1').html('Record deleted successfully!');
 
-                    return false;
-                }
-            
+                Metronic.scrollTo($(".alert-success"), -200);
+                $('.alert-success').fadeOut(7000);
+
+                return false;
+            }
+
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').show();
-                $('#spandanger').html('You have error. Please try again.');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -588,19 +586,15 @@ function FetchUOM(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').show();
-                $('#spandanger').html('You have error. Please try again.');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -663,7 +657,7 @@ $("#btninstructionexcelparameter").click(function () {
     var ErrorUOMMsz = '<ul class="col-md-3 text-left">';
     var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-    for (var i = 0; i < parseInt(quorem) ; i++) {
+    for (var i = 0; i < parseInt(quorem); i++) {
         ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {
@@ -711,7 +705,7 @@ function handleFileparameter(e) {
                     result = roa;
                 }
             });
-           
+
             printdataSeaBid(result)
         };
         reader.readAsArrayBuffer(f);
@@ -815,7 +809,7 @@ function printdataSeaBid(result) {
             $("#error-excelparameter").show();
             ErrorUOMMsz = 'UOM not filled properly at row no ' + Rowcount + '. Please choose UOM from given below: <br><ul class="col-md-5 text-left">';
             ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
-            for (var i = 0; i < parseInt(quorem) ; i++) {
+            for (var i = 0; i < parseInt(quorem); i++) {
                 ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
                 var z = (parseInt(quorem) + i);
                 if (z <= allUOM.length - 1) {
@@ -848,17 +842,26 @@ function InsupdProductfromExcel() {
     $("#error-excelparameter").hide();
     $('#loader-msgparameter').html('Processing. Please Wait...!');
     $('#modalLoaderparameter').removeClass('display-none');
-
+    var items = '', PriceDetails = [];
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
-        PriceDetails = '';
+
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
-            PriceDetails = PriceDetails + 'insert into PE.PODeliverySpread(POHeaderID,CustomerID,VendorID,ItemCode,ItemServiceName,DeliveryLocation,Quantity,UOM,PONo,PODeliveryDate,CreatedBy,CreatedOn) values('
-            var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
-            PriceDetails = PriceDetails + $('#hdnPOHeader').val() + "," + sessionStorage.getItem('CustomerID') + "," + sessionStorage.getItem('hdnVendorID') + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(deliverylocation) + "','" + removeThousandSeperator($.trim(this_row.find('td:eq(4)').html())) + "','" + $.trim(this_row.find('td:eq(5)').html()) + "','" + this_row.find('td:eq(6)').html() + "','" + $.trim(this_row.find('td:eq(7)').html()) + "',PE.decrypt('" + sessionStorage.getItem('UserID') + "'),PE.FN_Now() )";
 
+            var deliverylocation = $.trim(this_row.find('td:eq(2)').html()).replace(/'/g, "");
+            items = {
+                "POHeaderID": parseInt($('#hdnPOHeader').val()),
+                "ItemCode": $.trim(this_row.find('td:eq(0)').html()),
+                "ItemServiceName": $.trim(this_row.find('td:eq(1)').html()),
+                "DeliveryLocation": $.trim(deliverylocation),
+                "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
+                "UOM": $.trim(this_row.find('td:eq(5)').html()),
+                "PONo": $.trim(this_row.find('td:eq(6)').html()),
+                "PODeliveryDate": $.trim(this_row.find('td:eq(7)').html())
 
+            }
+            PriceDetails.push(items)
         })
 
         var Tab2data = {
@@ -870,7 +873,7 @@ function InsupdProductfromExcel() {
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
             "UserRemarks": $('#txtvendorremarks').val()
         };
-      
+
         jQuery.ajax({
 
             type: "POST",
@@ -937,7 +940,7 @@ function fetchDeliverySpread() {
             jQuery("#tblServicesProduct").empty();
 
             if (data.length > 0) {
-               
+
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th>Delivery Location</th><th>Po No</th><th>Po Delivery Date</th><th>Quantity</th><th>UOM</th></tr></thead>");
 
 
@@ -948,7 +951,7 @@ function fetchDeliverySpread() {
             }
 
             else {
-               
+
                 jQuery('#tblServicesProduct').append("<tr><td>No Delivery Spread!!</td></tr>")
             }
             jQuery.unblockUI();
@@ -986,7 +989,7 @@ $("#btndownloadTemplate").click(function (e) {
     var hour = dt.getHours();
     var mins = dt.getMinutes();
     var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-    
+
     tableToExcelMultipleWorkSheet(['tbldetails', 'tblUOM'], ['DataTemplate', 'Instructions'], 'POXLTemplate -' + postfix + '.xls')
 });
 function fnfillInstructionExcel() {
@@ -994,7 +997,7 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append('<thead><tr><th   colspan=2  data-style="Header" colspan=2>Please enter UOM as given below:</th></tr></thead>')
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-    for (var i = 0; i < parseInt(quorem) ; i++) {
+    for (var i = 0; i < parseInt(quorem); i++) {
         $('#tblUOM').append('<tr id=TR' + i + '><td>' + allUOM[i].uom + '</td>');
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {
@@ -1045,7 +1048,7 @@ function cnPO() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            if (data == '1' ) {
+            if (data == '1') {
                 bootbox.alert("PO Cancelled successfully.", function () {
                     jQuery.unblockUI();
                     window.location = "index.html";
@@ -1055,11 +1058,15 @@ function cnPO() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1067,7 +1074,7 @@ function FetchRecomendedVendor() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "PoUpload/POHistory/?POHeaderID=" + $('#hdnPOHeader').val() + "&UserID=" + (sessionStorage.getItem("VendorId")) ,
+        url: sessionStorage.getItem("APIPath") + "PoUpload/POHistory/?POHeaderID=" + $('#hdnPOHeader').val() + "&UserID=" + (sessionStorage.getItem("VendorId")),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1075,14 +1082,14 @@ function FetchRecomendedVendor() {
         dataType: "json",
         success: function (data) {
             $('#tblremarksforward').empty()
-          
+
             if (data.length > 0) {
                 $('#HDHistory').removeClass('hide')
                 $('#frmdivforward').removeClass('hide')
                 $('#divRemarks').removeClass('col-md-12')
                 $('#divRemarks').addClass('col-md-6')
                 $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th class=hide id=thforward>Recommended Vendor</th><th>Completion DT</th></tr>')
-                
+
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].VendorName != "") {
                         $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
@@ -1106,17 +1113,15 @@ function FetchRecomendedVendor() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -1141,19 +1146,15 @@ function fetchVendorGroup(categoryFor, vendorId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').show();
-                $('#spandanger').html('You have error. Please try again.');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1209,19 +1210,15 @@ function getCategoryWiseVendors(categoryID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').show();
-                $('#spandanger').html('You have error. Please try again.');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
+                fnErrorMessageText('spandanger', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
 
     });

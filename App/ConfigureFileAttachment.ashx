@@ -46,9 +46,7 @@ public class ConfigureFileAttachment : IHttpHandler {
                     {
                         
                         savepath = rootpath + "\\"+CustomerName+ "\\assets\\";
-
-
-                    }
+             }
 
                     string filenameTerms ="";
                    

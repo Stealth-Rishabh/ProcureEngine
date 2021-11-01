@@ -29,11 +29,15 @@ function FetchAllCustomer() {
         },
         error: function (xhr, status, error) {
               
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+            var err = xhr.responseText //; eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
         }
-        jQuery.unblockUI();
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
     }
 
         
@@ -71,11 +75,15 @@ function FetchAllpendingWith() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
         })
     jQuery.unblockUI();
@@ -176,21 +184,23 @@ function FetchViewAllPendingBids() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
            
         }
-
-
 
     })
     jQuery.unblockUI();
 }
 function FetchAllCloseBids() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    alert(APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=" + $('#ddlPendingwith').val())
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -287,10 +297,14 @@ function FetchAllCloseBids() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//;eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            } else {
+                fnErrorMessageText('error', '');
             }
+            jQuery.unblockUI();
+            return false;
            
         }
 
@@ -378,10 +392,10 @@ function fnCloseBids() {
     $("#tblVendorSummary> tbody > tr").each(function (index) {
         if ($(this).find("span#spanchecked").attr('class') == 'checked') {
           
-            checkedBid = checkedBid + $(this).find("#chkvender").val() + ","
+            checkedBid = checkedBid + $(this).find("#chkvender").val() + "#"
         }
     });
-    checkedBid=checkedBid.slice(0, -1);
+   
    
     var data = {
         
@@ -414,11 +428,16 @@ function fnCloseBids() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 

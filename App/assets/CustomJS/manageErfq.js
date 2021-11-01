@@ -136,13 +136,16 @@ function fetchRFIRFQSubjectforReport() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 }
@@ -177,7 +180,7 @@ jQuery("#txtRFQ").typeahead({
                     setTimeout(function () {
                         FetchVendorNotsubmittedQuotesPassreset(map[item].rfqid)
                         FetchVendorsubmittedQuotes(map[item].rfqid)
-                    }, 1000)
+                    }, 4000)
                     $('#ddlrfq').val(map[item].rfqid)
                     $('#hdnDeadline').val(map[item].rfqDeadline)
                     $('#deadlineModal').text(map[item].rfqDeadline)
@@ -369,7 +372,7 @@ function InsUpdRFQDEtailTab1() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -384,7 +387,7 @@ function InsUpdRFQDEtailTab1() {
 var isrunnigRFQ = 'Y';
 function fetchReguestforQuotationDetails(RFQID) {
    
-    var replaced1 = '';
+   
     $("#eventDetailstab_0").show();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -496,12 +499,15 @@ function fetchReguestforQuotationDetails(RFQID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
     jQuery.unblockUI();
@@ -541,13 +547,16 @@ function fnRemoveAttachmentQues(srno, deletionfor) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
@@ -683,13 +692,16 @@ function InsUpdProductSevices() {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                    var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
-
-                    return false;
+                    else {
+                        fnErrorMessageText('spandanger', '');
+                    }
                     jQuery.unblockUI();
+                    return false;
+                   
                 }
             });
             
@@ -740,8 +752,8 @@ function confirmEditEventAction(eventType) {
               
               
                     bootbox.alert("An email notification has been sent to all participants invited for the bid.", function () {
-                        window.location = sessionStorage.getItem('HomePage');
-                        return false;
+                       // window.location = sessionStorage.getItem('HomePage');
+                        return true;
                     });
                 
 
@@ -749,13 +761,15 @@ function confirmEditEventAction(eventType) {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -784,13 +798,15 @@ function FetchUOM(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -950,7 +966,7 @@ function addmoreattachments() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
 
@@ -975,7 +991,7 @@ function FetchRFQVersion(RFQID) {
         dataType: "json",
         success: function (data) {
             $("#ddlrfqVersion").empty();
-          
+         
            if (data.length > 0) {
               
                 $('#ddlrfqVersion').append(jQuery('<option ></option>').val(data[0].rfqVersionId).html(parseInt(data[0].rfqVersionId)+1));
@@ -984,13 +1000,15 @@ function FetchRFQVersion(RFQID) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -1016,13 +1034,15 @@ function fetchInvitedVendorList(rfqid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 
@@ -1045,10 +1065,23 @@ function FetchVenderNotInvited(rfqid) {
                 
             }
             else {
+                
                 $('#inviteVendorBody').hide();
             }
 
 
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1085,13 +1118,15 @@ function FetchVendorNotsubmittedQuotesPassreset(rfqid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -1163,24 +1198,26 @@ function resetpasswordForBidVendor() {
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                if (data = "1") {
+                //if (data = "1") {
                     success1.show();
                     $('#spansuccess1').html('New password is sent to registered email of vendor..');
                     clearsession();
                     success1.fadeOut(6000);
                     App.scrollTo(success1, -200);
                     jQuery.unblockUI();
-                }
+               // }
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -1217,13 +1254,15 @@ function FetchVendorsubmittedQuotes(rfqid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 
@@ -1263,14 +1302,11 @@ function openVendorsQuotes() {
         $("#tblSubmittedquotesvendor> tbody > tr").each(function (index) {
             if ($(this).find("span#spancheckedQT").attr('class') == 'checked') {
                 temp = ($(this).find("#chkvenderQT").val()).split(",");
-                checkedValue = checkedValue + " select  " + sessionStorage.getItem("hdnrfqid") + ",'" + temp[1] + "','N'," + temp[0] + "  union";
+                checkedValue = checkedValue + temp[0] + '#';
              }
         });
        
-        if (checkedValue != '') {
-            checkedValue = 'insert into #temp(RFQID,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
+       
 
         var data = {
             "QueryString": checkedValue,
@@ -1301,13 +1337,15 @@ function openVendorsQuotes() {
 
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
 
@@ -1389,13 +1427,10 @@ function sendremainderstoparicipants() {
            
             vemail = $(this).find("td").eq(1).html();
             vid = $(this).find("td").eq(0).html();
-            checkedValue = checkedValue + " select  " + sessionStorage.getItem("hdnrfqid") + ",'" + vemail + "','N','" + vid + "'  union";
-            // }
+           
+            checkedValue = checkedValue + vid + '#';
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into #temp(RFQID,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
+       
         
         var data = {
             "QueryString": checkedValue,
@@ -1426,13 +1461,15 @@ function sendremainderstoparicipants() {
 
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
 
@@ -1533,14 +1570,9 @@ function invitevendors() {
         
         $("#tblvendorlist tr:gt(0)").each(function () {
             var this_row = $(this);
-            checkedValue = checkedValue + " select " + sessionStorage.getItem("hdnrfqid") + ",'" + $.trim(this_row.find('td:eq(0)').html()) + "','',PE.Decrypt('" + sessionStorage.getItem("UserID") + "'),'" + $.trim(this_row.find('td:eq(0)').html()) + "','eRFQVendor.html?RFQID=" + sessionStorage.getItem("hdnrfqid") + "','N'," + sessionStorage.getItem('CustomerID') + ",[PE].FN_Now() union all "; //(convert(nvarchar(11),b.RFQClosureDate,103 )
-           
+            checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) +'~'+ sessionStorage.getItem('CustomerID') + '#';
         });
-        if (checkedValue != '') {
-            checkedValue = "Insert into PE.ActivityDetails(eRFQId,VendorId,ActivityDescription,FromUserId,ToUserId,LinkURL,Status,CustomerID,ReceiptDt)" + checkedValue;
-            checkedValue = checkedValue.substring(0, checkedValue.length - 11);
-        }
-
+        
         var data = {
             "BidVendors": checkedValue,
             "RFQId": parseInt(sessionStorage.getItem("hdnrfqid")),
@@ -1549,8 +1581,7 @@ function invitevendors() {
             "Deadline": '',
             "RFQDescription": ''
         }
-     //  alert(JSON.stringify(data))
-       // console.log(JSON.stringify(data))
+    
         jQuery.ajax({
             url: APIPath + "eRFQReport/GeteRFQInviteVendorAfterOpen/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1574,13 +1605,15 @@ function invitevendors() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
 
@@ -1627,13 +1660,15 @@ function ExtendDuration() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -1730,7 +1765,7 @@ function saveBidSurrogate() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
 

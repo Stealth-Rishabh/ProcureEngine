@@ -38,8 +38,7 @@ function saveAspdf() {
 var _bidclosingtype='';
 function ReportBind(Bidid, Bidtypeid, Bidforid) {
 
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+    
     
     jQuery.ajax({
         type: "GET",
@@ -91,9 +90,16 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
                     BidForID = data[0].bidForID
                     _bidclosingtype = data[0].bidClosingType;
 
-            }
-            
+                
 
+                    jQuery('#tdtargetprice').css('display', 'none');
+                    jQuery('#tblprice').css('display', 'none');
+                    jQuery('#thmodelclass').css('display', 'none');
+                    
+                   jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + data[0].bidDate + ' - ' + data[0].bidTime + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
+                        jQuery('#trtargetprice').css('display', 'none');
+                    
+                }
 
         },
         error: function (xhr, status, error) {
@@ -157,7 +163,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
                     $('#divTarget').hide();
                     var sname = '';
-                    if (BidForID == 81) {
+                     if (BidForID == 81 || BidForID == 83) {
                         $('#BidTrendGraph').css('display','block');
                         var strHead = "<tr><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increament</th><th>Level</th><th>Vendor</th><th>Initial Quote</th><th>Highest Quote</th><th>Bid Value</th><th>Percentage Increment (Target Price)</th><th>Percentage Increment (Last Invoice Price)</th><th>Percentage Increment (Bid start price)</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
                     }
@@ -177,7 +183,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         if (TotalBidValue != 0) {
                             if (data[i].targetPrice != 0) {
-                                if (BidForID == 81) {
+                                if (BidForID == 81 || BidForID==83) {
                                     Percentreduction = parseFloat(parseFloat(data[i].lQuote / data[i].targetPrice) * 100 - 100).toFixed(2) + ' %'
                                 }
                                 else {
@@ -188,7 +194,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                                 Percentreduction = 'Not Specified';
                             }
                             if (data[i].lastInvoicePrice != 0) {
-                                if (BidForID == 81) {
+                                if (BidForID == 81 || BidForID==83) {
                                     Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / data[i].lastInvoicePrice) * 100 - 100).toFixed(2) + ' %'
                                 }
                                 else {
@@ -200,7 +206,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                                 Percentreductioninvoice = 'Not Specified';
                             }
 
-                            if (BidForID == 81) {
+                            if (BidForID == 81 || BidForID == 83) {
                                 Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / data[i].ceilingPrice) * 100 - 100).toFixed(2) + ' %'
                             }
                             else {
@@ -216,7 +222,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         }
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
-                            if (BidForID == 81) {
+                            if (BidForID == 81 || BidForID == 83) {
                                 var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators(data[i].targetPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].lastInvoicePrice) + "</td><td class='text-right'>" + thousands_separators(data[i].ceilingPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
                                 counterForItenscount = counterForItenscount + 1;
                                 if (counterForItenscount <= 6) {
@@ -231,7 +237,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
                         else {
-                            if (BidForID == 81) {
+                            if (BidForID == 81 || BidForID == 83) {
                                 var str = "<tr id=low" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
                             }
                             else {
@@ -242,7 +248,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         }
 
 
-                        if (BidForID == 81) {
+                        if (BidForID == 81 || BidForID == 83) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators((data[i].lQuote == '0' ? '' : data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
@@ -551,7 +557,7 @@ function fetchGraphData(itemId, counter) {
                         if (z <= data.length - 1) {
                             _date = new Date(data[z].submissionTime);
                             _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[z].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getSeconds()));
-                            str = str + '<td>' + _finaldate + '</td><td>' + data[z].quotedPrice + '</td><td>' + data[z].VendorName + '</td><td style="border: none;">&nbsp;</td>';
+                            str = str + '<td>' + _finaldate + '</td><td>' + data[z].quotedPrice + '</td><td>' + data[z].vendorName + '</td><td style="border: none;">&nbsp;</td>';
                         }
 
                         var o = (parseInt(quorem) * 2) + i;

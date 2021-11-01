@@ -65,7 +65,7 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -847,7 +847,7 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -896,7 +896,7 @@ function fetchAttachments() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -910,6 +910,7 @@ function fetchAttachments() {
     })
 }
 function DownloadFile(aID) {
+    
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
 }
 function fncheckradiotext() {
@@ -967,7 +968,7 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1003,7 +1004,7 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1055,7 +1056,7 @@ function updloadingfactor() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1101,7 +1102,7 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1170,7 +1171,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1416,7 +1417,7 @@ function fetchRegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1573,7 +1574,7 @@ function MapApprover() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -1631,7 +1632,7 @@ function fnSendActivityToCommercial() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1679,7 +1680,7 @@ function fetchApproverRemarks() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1739,7 +1740,7 @@ function fnUpdateApproverFlag() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1809,7 +1810,7 @@ function ReInviteVendorsForRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1913,7 +1914,7 @@ function cancelRFQ(mailparam) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

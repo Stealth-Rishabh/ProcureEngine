@@ -181,12 +181,14 @@ function FetchAllCustomer() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -253,15 +255,14 @@ function RegisterParticipants() {
         error: function (xhr, status, error) {
 
         var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
-            error401Messagebox(err.Message);
-        }
-        else{
-            jQuery("#error").text(xhr.d);
-        }
-           
-        return false;
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
         jQuery.unblockUI();
+        return false;
     }
     });
 
@@ -327,12 +328,14 @@ function fetchParticipantsVenderTable() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -400,15 +403,14 @@ function fetchMapCategory(categoryFor, vendorId) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });

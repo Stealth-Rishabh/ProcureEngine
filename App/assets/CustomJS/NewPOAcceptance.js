@@ -155,16 +155,14 @@ function fetchPODetails(flag) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('error', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -222,12 +220,10 @@ function acceptRevertPO() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('error', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -280,12 +276,10 @@ function FetchRecomendedVendor() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+                fnErrorMessageText('error', '');
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 

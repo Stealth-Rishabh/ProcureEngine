@@ -79,12 +79,10 @@ function ChangePassword() {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
             "NewPassword": $("#nPassword").val(),
-            "BidID": sessionStorage.getItem("BidID"),
             "UserType": sessionStorage.getItem("UserType")
         }
 
-        //alert(JSON.stringify(data));
-
+       
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -93,29 +91,32 @@ function ChangePassword() {
             contentType: "application/json; charset=utf-8",
             EnableViewState:false,
             success: function (data, status, jqXHR) {
-                if (data == "1") {
+                //if (data == "1") {
 
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
                     Changepasswordsuccess.fadeOut(5000);
                     clearResetForm();
                     jQuery.unblockUI();
-                }
-                else {
-                    jQuery("#errorpassword").html("Please try again with correct current password..");
-                    Changepassworderror.show();
-                    Changepassworderror.fadeOut(5000);
-                    jQuery.unblockUI();
-                }
+                //}
+                //else {
+                //    jQuery("#errorpassword").html("Please try again with correct current password..");
+                //    Changepassworderror.show();
+                //    Changepassworderror.fadeOut(5000);
+                //    jQuery.unblockUI();
+                //}
             },
             error: function (xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                jQuery("#error").text(err.Message);
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
+                else {
+                    fnErrorMessageText('errorpassword', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -253,8 +254,8 @@ function fetchPendingBid() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+          
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -373,9 +374,9 @@ function fetchRFIDetails() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -404,9 +405,9 @@ function fetchVQDetails(){
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -417,8 +418,7 @@ function fetchVQDetails(){
 
 function fetchReguestforQuotationDetailseRFQ() {
    
-    var attachment = '';
-    var termattach = '';
+  
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -442,9 +442,9 @@ function fetchReguestforQuotationDetailseRFQ() {
            
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -478,8 +478,8 @@ function acceptBidTermsAuction() {
         },
         
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -512,9 +512,9 @@ function acceptBidTermsRFIRFQ() {
             }
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+           
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -546,9 +546,9 @@ function eRFQAcceptBidTerms() {
             }
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -818,8 +818,8 @@ function fetchBidDataDashboard(requesttype) {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -872,8 +872,8 @@ function fetchBidHeaderDetails() {
             }
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1006,8 +1006,8 @@ function fetchMappedCustomers() {
         },
         error: function (xhr, status, error) {
             $('.page-container').show();
-            var err = eval("(" + xhr.responseText + ")");
-            jQuery("#error").text(err.Message);
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+           
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }

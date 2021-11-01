@@ -31,7 +31,7 @@ function FetchInvitedVendorsForeRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -58,14 +58,11 @@ function sendremainderstoparicipants() {
             vemail = $(this).find("td").eq(4).html();
             vid = $(this).find("td").eq(0).html();
             if($(this).find("td").eq(2).html().toLowerCase()!='close' &&  $(this).find("td").eq(2).html().toLowerCase()!='regretted'){
-                checkedValue = checkedValue + " select  " + RFQID + ",'" + vemail + "','N','" + vid + "'  union";
+                checkedValue = checkedValue + vid + '#';
             }
-            // }
+            
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into #temp(RFQID,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
+        
     
         var data = {
             "QueryString": checkedValue,
@@ -90,8 +87,9 @@ function sendremainderstoparicipants() {
                
             },
             error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
+              
+                var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+              
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -121,7 +119,7 @@ function CancelRFIRFQ(MailPermit) {
 
     };
    // alert(JSON.stringify(Data))
-
+    //console.log(JSON.stringify(Data))
     jQuery.ajax({
 
         type: "POST",
@@ -148,7 +146,7 @@ function CancelRFIRFQ(MailPermit) {
 
         },
         error: function(jqXHR, exception) {
-            var err = eval("(" + jqXHR.responseText + ")");
+            var err = jqXHR.responseText //eval("(" + jqXHR.responseText + ")");
             if (jqXHR.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -316,7 +314,7 @@ function ExtendDuration() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }

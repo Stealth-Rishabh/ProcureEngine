@@ -58,13 +58,15 @@ function fetchBidHeaderDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -210,13 +212,15 @@ function fetchBidSummaryVendorproduct() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
     jQuery.unblockUI();
@@ -278,13 +282,15 @@ function fetchBidSummaryVendorScrap() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -336,13 +342,15 @@ function fetchBidSummaryVendorScrapDutch() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -382,12 +390,15 @@ function fetchGraphData(itemId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     }).done(function () {
         
@@ -477,13 +488,15 @@ function linegraphsforItems(itemId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
      })
 

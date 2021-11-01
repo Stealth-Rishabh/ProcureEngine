@@ -35,13 +35,13 @@ function RegisterUser() {
                 jQuery('#divalertsucess').slideDown(1000);
                 fetchRegisterUser();
         }
-            else if (data.isSuccess == 'N') {
+        //    else if (data.isSuccess == 'N') {
 
-                $('.alert-danger').show();
-                $('#spanerror1').html('Server Error.');
-                App.scrollTo($('.alert-danger'), -300)
-                $('.alert-danger').fadeOut(5000);
-        }
+        //        $('.alert-danger').show();
+        //        $('#spanerror1').html('Server Error.');
+        //        App.scrollTo($('.alert-danger'), -300)
+        //        $('.alert-danger').fadeOut(5000);
+        //}
         else {
             jQuery('#divalertsucess').hide();
                 $("#spanerror1").html('User already exists.!');
@@ -52,15 +52,15 @@ function RegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spanerror1', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -95,13 +95,15 @@ function fetchRegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -158,15 +160,15 @@ function fetchRoleMaster() {
             }        },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('spanerror1', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }

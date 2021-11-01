@@ -39,8 +39,8 @@ function fetchregisterusers() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -67,8 +67,8 @@ function FetchContinent(ContinentID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -119,8 +119,8 @@ function fetchCountry(continentID, countryID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -146,8 +146,8 @@ function fetchBidTypeMapping() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -177,8 +177,8 @@ function fetchBidFor(BidTypeID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -442,8 +442,8 @@ function fetchBidVendorSummary(dtfrom,dtto,subject) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -633,8 +633,8 @@ function fetchBidVendorSummaryDetail(dtfrom,dtto,subject) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -766,8 +766,8 @@ function fetchBidVendorSummarySummarization(dtfrom,dtto,subject) {
             }
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -979,8 +979,8 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1152,8 +1152,8 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1237,8 +1237,8 @@ function updlastinvoiceprice() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
 
@@ -1309,8 +1309,8 @@ function FetchVenderNotInvited() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1389,14 +1389,10 @@ function invitevendors() {
         $("#tblvendorlist> tbody > tr").each(function(index) {
             if ($(this).find("span#spanchecked").attr('class') == 'checked') {
                 temp = ($(this).find("#chkvender").val()).split(",");
-
-                checkedValue = checkedValue + " select  " + BidID + ",'" + temp[1] + "','N','" + temp[0] + "' union";
+                checkedValue = checkedValue + temp[0] + '#';
             }
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into PE.BidVendorDetails(BidId,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
+       
 
         var data = {
         "QueryString": checkedValue,
@@ -1404,7 +1400,7 @@ function invitevendors() {
          "BidTypeID": parseInt(BidTypeID),
          "UserID": sessionStorage.getItem("UserID")
         }
-       
+        //console.log(JSON.stringify(data))
          jQuery.ajax({
              url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/Invitevendors",
              beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1412,22 +1408,24 @@ function invitevendors() {
              type: "POST",
              contentType: "application/json",
              success: function(data) {
-                 //if (data == "1") {
+                
                      $('.alert-success').show();
                      $('#spansuccess1').html('Vendor Invited Successfully..');
                      FetchVenderNotInvited();
                      $('.alert-success').fadeOut(5000);
                      Metronic.scrollTo($('.alert-success'), -200);
                      jQuery.unblockUI();
-                // }
+                
              },
              error: function (xhr, status, error) {
 
-                 var err = eval("(" + xhr.responseText + ")");
-                 if (xhr.status === 401) {
+                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                 if (xhr.status == 401) {
                      error401Messagebox(err.Message);
                  }
-
+                 else {
+                     fnErrorMessageText('spandanger', '');
+                 }
                  return false;
                  jQuery.unblockUI();
              }

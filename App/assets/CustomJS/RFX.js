@@ -1336,7 +1336,7 @@ function insupdRFXQuestionMaster() {
     }
   // alert(JSON.stringify(data))
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdRFIQuestionMaster",
+        url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionMaster",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
         type: "POST",

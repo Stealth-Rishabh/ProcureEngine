@@ -22,7 +22,7 @@ function fetchregisterusers() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -231,7 +231,7 @@ function fetchRFQVendorSummary() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -260,7 +260,6 @@ function fetchBidVendorSummaryDetail() {
     var dtfrom = '', dtto = '', subject = 'X-X';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
         dtfrom = '1900/01/01';
-
     }
     else {
         dtfrom = $("#txtFromDate").val()
@@ -437,7 +436,7 @@ function fetchBidVendorSummaryDetail() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -502,7 +501,7 @@ function updlastinvoiceprice() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -664,7 +663,7 @@ function fetchBidVendorSummarySummarization() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

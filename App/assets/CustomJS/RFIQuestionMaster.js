@@ -443,7 +443,7 @@ function insupdRFIQuestionMaster() {
         }
        
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdRFIQuestionMaster",
+            url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionMaster",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             data: JSON.stringify(data),
             type: "POST",
@@ -474,7 +474,7 @@ function insupdRFIQuestionMaster() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status === 401) {
                     error401Messagebox(err.Message);
                 }

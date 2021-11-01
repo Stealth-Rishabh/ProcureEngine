@@ -107,7 +107,7 @@ function fetchApproverRemarks() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" +  + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -723,7 +723,7 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;// eval("(" + + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -780,7 +780,7 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" +  + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -817,7 +817,7 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" +  + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -849,7 +849,7 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;// eval("(" + + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -964,7 +964,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1219,7 +1219,7 @@ function ApprovalCommercialApp() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1273,7 +1273,7 @@ function AwardCommeRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1322,7 +1322,7 @@ function fnFWDeRFQ()
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1348,18 +1348,9 @@ function ApprovalApp() {
             checkedval = $("#AppNo" + Vendor[i].vendorID).val()
            
         }
-
-        approvalstatus = approvalstatus + " Select " + RFQID + "," + Vendor[i].vendorID + ",PE.decrypt('" + sessionStorage.getItem("UserID") + "'),'" + checkedval + "' union all";
+         approvalstatus = approvalstatus + Vendor[i].vendorID + '~' + checkedval + '#';
     }
-    if (approvalstatus != '') {
-
-        approvalstatus = "Insert into PE.eRFQVendorApprovalStatus(RFQID,VendorId,ApproverID,isApproved)" + approvalstatus;
-        approvalstatus = approvalstatus.substring(0, approvalstatus.length - 10);
-
-    }
-    else {
-        approvalstatus = "Print 1";
-    }
+    
   
     var approvalbyapp = {
         "RFQID": parseInt(RFQID),
@@ -1371,7 +1362,7 @@ function ApprovalApp() {
        
     };
    // alert(JSON.stringify(approvalbyapp))
-   // console.log(JSON.stringify(approvalbyapp))
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
@@ -1394,7 +1385,7 @@ function ApprovalApp() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

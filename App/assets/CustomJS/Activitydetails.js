@@ -82,8 +82,7 @@ function ChangePassword() {
             "NewPassword": $("#nPassword").val(),
             "UserType": sessionStorage.getItem("UserType")
         }
-        //alert(JSON.stringify(data));
-
+       // console.log(JSON.stringify(data))
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             type: "POST",
@@ -108,11 +107,15 @@ function ChangePassword() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
+                else {
+                    fnErrorMessageText('errorpassword', '');
+                }
                 jQuery.unblockUI();
+                return false;
             }
 
 
@@ -174,8 +177,8 @@ function fnArchive(RFQID) {
         },
 
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -347,7 +350,7 @@ function fetchDashboardData() {
         error: function (xhr, status, error) {
 
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -474,8 +477,8 @@ function fetchBidDataDashboard(requesttype) {
         error: function (xhr, status, error) {
 
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 

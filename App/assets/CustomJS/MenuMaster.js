@@ -128,17 +128,14 @@ function insupdMenuMaster() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -190,16 +187,14 @@ function fnfetchMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -291,16 +286,14 @@ function fnfetchParentMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });

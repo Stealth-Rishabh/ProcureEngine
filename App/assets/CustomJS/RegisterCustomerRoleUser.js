@@ -397,6 +397,7 @@ function countWords(str) {
     return str.trim().split(/\s+/).length;
 }
 
+
 function fillCountryDropDown(dropdownID, countryid) {
 
     jQuery.ajax({
@@ -423,12 +424,14 @@ function fillCountryDropDown(dropdownID, countryid) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
       });
 }
@@ -480,12 +483,14 @@ function fillStateDropDown(dropdownID, stateid) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -530,9 +535,11 @@ function fillCityDropDown(dropdownID, cityid) {
            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -562,12 +569,14 @@ function FetchCurrency(CurrencyID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -599,12 +608,14 @@ function fetchALLmenuitems() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -734,11 +745,8 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
-          
-           
+            alert(data.isSuccess)
             if (data.isSuccess == '1') {
-                
                 sessionStorage.setItem("hdnCustomerID", data.customerID)
                 sessionStorage.setItem("hdnAdminID", data.adminID)
                 error.hide();
@@ -778,12 +786,14 @@ function ins_updCustomer() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -963,6 +973,18 @@ function fetchCustomerDetails(customerid) {
                 }
             }
             jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
+            jQuery.unblockUI();
+            return false;
         }
          
 
@@ -1011,6 +1033,18 @@ function fnFetchMenusonRoleBased() {
 
                 }
             }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
+            jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -1140,17 +1174,14 @@ function fnMapMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
-               
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });

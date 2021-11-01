@@ -7,6 +7,10 @@ var form = $('#submit_form');
 
 var Vehicleerror1 = $('#errordiv1');
 var Vehiclesuccess1 = $('#successdiv1');
+$('.maxlength').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
 function formValidation() {
    
     $('#mapPrices').validate({
@@ -478,15 +482,16 @@ function fncheckItemWiseTC(ver, BoqPID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -531,13 +536,15 @@ function fetchAttachments() {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
-                    
-                    return false;
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
                     jQuery.unblockUI();
+                    return false;
                 }
             })
         }
@@ -579,15 +586,15 @@ function fetchAttachments() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
-            }      
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -614,8 +621,13 @@ function fetchAttachments() {
                 jQuery("#tbltermsconditionprev").append("<thead><tr style='background: gray; color: #FFF;'><th>Other Commercial Terms</th><th>Our Requirement</th><th>Your Offer</th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                  
-                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>'+ data[i].requirement +'</td><td><textarea name=comm rows=2 class="form-control"  autocomplete=off id=commremarks' + i + ' >' + data[i].rfqRemark + '</textarea></td></tr>').appendTo("#tblRFQLevelTCForQuot");
+                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>'+ data[i].requirement +'</td><td><textarea name=comm rows=2 class="form-control" maxlength=1000  autocomplete=off id=commremarks' + i + ' >' + data[i].rfqRemark + '</textarea></td></tr>').appendTo("#tblRFQLevelTCForQuot");
                     jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>' + data[i].requirement + '</td><td><label class="control-label" >' + data[i].rfqRemark + '</label></td></tr>').appendTo("#tbltermsconditionprev");
+
+                    $('#commremarks' + i).maxlength({
+                        limitReachedClass: "label label-danger",
+                        alwaysShow: true
+                    });
                 }
             }
             else {
@@ -626,15 +638,15 @@ function fetchAttachments() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
-            }      
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -675,32 +687,36 @@ function fetchAttachments() {
             var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
             str += '<td class=hide>' + attchname + '</td>'
             str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
-            str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+            str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',VAttachment,0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
             jQuery('#tblAttachmentsresponse').append(str);
+            fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 
-            var arr = $("#tblAttachmentsresponse tr");
+           //** function to insert record in DB after file upload on Blob
+            fnsaveAttachmentsquestions();
 
-            $.each(arr, function (i, item) {
-                var currIndex = $("#tblAttachmentsresponse tr").eq(i);
-                var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
-                if (rowAttach == 1) {
-                    //** Upload Files on Azure PortalDocs folder first Time
-                    fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId')+'/'+ sessionStorage.getItem('RFQVersionId'));
-                }
+           // var arr = $("#tblAttachmentsresponse tr");
 
-                $(this).nextAll().each(function (i, inItem) {
+            //$.each(arr, function (i, item) {
+            //    var currIndex = $("#tblAttachmentsresponse tr").eq(i);
+            //    var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
+            //    if (rowAttach == 1) {
+            //        //** Upload Files on Azure PortalDocs folder first Time
+            //        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId')+'/'+ sessionStorage.getItem('RFQVersionId'));
+            //    }
 
-                    if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
-                        $(this).remove();
-                    }
-                    if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
+            //    $(this).nextAll().each(function (i, inItem) {
 
-                        //** Upload Files on Azure PortalDocs folder
-                        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') +'/'+ sessionStorage.getItem('RFQVersionId'));
+            //        if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
+            //            $(this).remove();
+            //        }
+            //        if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
 
-                    }
-                });
-            });
+            //            //** Upload Files on Azure PortalDocs folder
+            //            fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') +'/'+ sessionStorage.getItem('RFQVersionId'));
+
+            //        }
+            //    });
+            //});
             jQuery("#AttachDescription1").val('')
             jQuery('#fileToUpload1').val('')
 
@@ -708,7 +724,7 @@ function fetchAttachments() {
         
         }
     }
-    function deleteattachrow(rowid, rowidPrev,alinkID) {
+    function deleteattachrow(rowid, rowidPrev,filename,deletionfor,srno) {
 
         rowAttach = rowAttach - 1;
         $('#' + rowid.id).remove();
@@ -717,11 +733,49 @@ function fetchAttachments() {
             $('#headerresposeatt').addClass('hide')
             $('#dicresponseatt').addClass('hide')
         }
-        //** delete Existing File (if any) on Azure
-        fnFileDeleteAzure($('#' + alinkID.id).html(),'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'))
+        //** delete Existing File (if any) on Azure/DB
+        
+        fnFileDeleteAzure(filename, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'), deletionfor, srno)
 
 }
+//** vendor response file deletion from DB
+function fileDeletefromdb(srno, deletionFor) {
+    
+    var Attachments = {
+        "SrNo": parseInt(srno),
+        "DeletionFor": deletionFor,
+        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
+    }
+    //alert(JSON.stringify(Attachments))
+    jQuery.ajax({
 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQAttachmentQuesremove",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Attachments),
+        dataType: "json",
+        success: function (data) {
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
     function fetchRFQResponseTocheckVersion(Flag, ver) {
         
         jQuery.ajax({
@@ -752,13 +806,15 @@ function fetchAttachments() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
     }
@@ -792,14 +848,18 @@ function fetchAttachments() {
                            str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                            strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                            str += "<td class='hide'>" + data[i].questionID + "</td>";
-                           str += '<td style="width:40%!important"><textarea type=text class="form-control" autocomplete="off" id=answers' + i + ' value=' + data[i].answer+'>' + data[i].answer + '</textarea></td></tr>';
+                           str += '<td style="width:40%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer+'>' + data[i].answer + '</textarea></td></tr>';
                            strprev += '<td style="width:40%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
                           
                           
                            jQuery('#tblquestions').append(str);
                            jQuery('#tblQuestionsPrev').append(strprev);
                            $('#lblanswer' + i).html($('#answers' + i).val())
-                           
+
+                           $('#answers' + i).maxlength({
+                               limitReachedClass: "label label-danger",
+                               alwaysShow: true
+                           });
 
                        }
                    }
@@ -823,12 +883,12 @@ function fetchAttachments() {
                             rowAttach = rowAttach + 1;
                             attach = data[i].attachment.replace(/\s/g, "%20");
                             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[i].attachmentdescription + '</td>';
-                            strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + i +' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
+                            strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach +' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
                             jQuery('#tblAttachmentsPrev').append(strprev);
 
                             var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[i].attachmentdescription + '</td>';
-                            str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + i +' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
-                            str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',eRFQVFiles' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                            str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach +' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
+                            str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                             jQuery('#tblAttachmentsresponse').append(str);
                            
                             if (parseInt(sessionStorage.getItem('RFQVersionId')) > version) {
@@ -851,13 +911,15 @@ function fetchAttachments() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
             
         })
@@ -869,7 +931,7 @@ function fetchAttachments() {
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
             
             var this_row = $(this);
-            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#eRFQVFilesPrev' + i).html()) + '#';
+            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim($('#eRFQVFilesPrev' + i).text()) + '#';
             i++;
         });
         i = 0;
@@ -900,13 +962,15 @@ function fetchAttachments() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
 
         });
@@ -965,13 +1029,15 @@ function fetchAttachments() {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                    var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
-
-                    return false;
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
                     jQuery.unblockUI();
+                    return false;
                 }
             });
        
@@ -1038,13 +1104,15 @@ function fetchAttachments() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         });
         jQuery.unblockUI();
@@ -1097,7 +1165,7 @@ function fnRegreteRFQ() {
             data: JSON.stringify(RegretData),
             dataType: "json",
             success: function (data) {
-               // if (data == "1") {
+              
                     bootbox.alert("RFQ Regretted Successfully.", function () {
                         
                         if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
@@ -1111,17 +1179,19 @@ function fnRegreteRFQ() {
                         return false;
                     });
                     return true;
-               // }
+             
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         })
     }
@@ -1150,15 +1220,16 @@ function fnRegreteRFQ() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                else{
-                    alert("error");
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
                 }
-                return false;
                 jQuery.unblockUI();
+                return false;
+                
             }
             
         });
@@ -1166,9 +1237,7 @@ function fnRegreteRFQ() {
 
     function fetchRFIParameteronload(ver) {
         fetchRFQLevelTC(ver);
-        var attachment = '';
-        var vendorAttachment = '';
-        var replaced = '';
+       
          //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
         jQuery.ajax({
             type: "GET",
@@ -1225,15 +1294,15 @@ function fnRegreteRFQ() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-                else{
-                    alert("error");
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
                 }
-                return false;
                 jQuery.unblockUI();
+                return false;
             }
             
         });
@@ -1369,13 +1438,15 @@ function DownloadFileVendor(aID) {
                      },
                     error: function (xhr, status, error) {
 
-                        var err = eval("(" + xhr.responseText + ")");
-                        if (xhr.status === 401) {
+                        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                        if (xhr.status == 401) {
                             error401Messagebox(err.Message);
                         }
-                        
-                        return false;
+                        else {
+                            fnErrorMessageText('spandanger', 'form_wizard_1');
+                        }
                         jQuery.unblockUI();
+                        return false;
                     }
                 });
             }
@@ -1430,7 +1501,7 @@ function DownloadFileVendor(aID) {
                 "VendorRemarks": $('#txtvendorremarks').val()
         };
         //console.log(JSON.stringify(Tab2data))
-          //  console.log(JSON.stringify(Tab2data))
+        
             jQuery.ajax({
 
                 type: "POST",
@@ -1457,13 +1528,15 @@ function DownloadFileVendor(aID) {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
-                    
-                    return false;
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
                     jQuery.unblockUI();
+                    return false;
                 }
             });
         
@@ -1543,13 +1616,15 @@ function DownloadFileVendor(aID) {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         })
         $('.progress-form').hide()
