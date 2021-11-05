@@ -2,7 +2,7 @@
 var error = $('#diverror');
 var success = $('.alert-success', form);
 var MenuID = 0;
-var Ordering = 0;
+var Ordering = '0';
 var APIPath = sessionStorage.getItem("APIPath");
 
 $("#txt_ordering").TouchSpin({
@@ -92,7 +92,8 @@ function insupdMenuMaster() {
         "SrNo": Ordering
         
     };
-    //alert(JSON.stringify(Data));
+   // alert(JSON.stringify(Data));
+    console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: APIPath + "RoleMenus/insUpdMenuMasters/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -127,17 +128,14 @@ function insupdMenuMaster() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -189,16 +187,14 @@ function fnfetchMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -249,7 +245,7 @@ function fnUpdateType(menuid, parentmenuid, status, menuname, link, menutype, ic
 }
 function resetForm() {
     MenuID = 0;
-    Ordering = 0;
+    Ordering = '0';
    // $("#txt_ordering").val(1)
     jQuery('#txt_menuname').val('');
     jQuery('input:checkbox[name=chkactiveYN]').prop('checked', true);
@@ -290,16 +286,14 @@ function fnfetchParentMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert(xhr.status + ' ' + xhr.statusText);
-                jQuery.unblockUI();
+            else {
+                fnErrorMessageText('spnerror', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -316,7 +310,7 @@ $('#chkIsparent').on('ifChanged', function (e) {
         $('#ddl_parent').attr("required", "false")
         jQuery('#txt_pagelink').attr('disabled', 'disabled');
         jQuery('#txt_ordering').attr('disabled', 'disabled');
-        jQuery('#txt_ordering').val(1)
+        jQuery('#txt_ordering').val('1')
         jQuery('#txt_pagelink').val('#')
         $('#ddl_parent').val('0');
         //$('#ddl_parent').text('Select');

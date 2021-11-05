@@ -27,11 +27,19 @@ $(".thousandseparated").inputmask({
     'removeMaskOnSubmit': false
 
 });
-$('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversionRate,#txtPono,#txtItemCode,#txttat').maxlength({
+$('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversionRate,#txtPono,#txtItemCode,#txttat,#txtrfqSubject,#txtrfqdescription,#txtRFQReference,#txtedelivery,#txtvendorname,#AttachDescription1,#txtquestions,#txtreq').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
 var totalFileSize = 0;
+jQuery.validator.addMethod(
+    "notEqualTo",
+    function (elementValue, element, param) {
+        return elementValue != param;
+    },
+    //"Value cannot be {0}"
+    "This field is required."
+);
 var FormWizard = function () {
 
     return {
@@ -90,9 +98,6 @@ var FormWizard = function () {
                         required: true
                     },
                   
-                 
-                   
-
                     //Second Tab
                     
                     txtbiddescriptionP: {
@@ -102,20 +107,23 @@ var FormWizard = function () {
                     txtedelivery: {
                         required: true
                     },
-                    dropuom: {
-                        required: true
-                    },
+                    //dropuom: {
+                    //    required: true
+                    //},
                     txtUOM:{
                         required: true
                     },
                      txttargetprice: {
-                         number: true
+                         number: true,
+                        
                     },
                     //txtlastinvoiceprice: {
                     //    number: true
                     //},
                      txtquantitiy: {
-                         required: true
+                         required: true,
+                         maxlength: 18,
+                         notEqualTo: 0
                      },
                      txtshortname: {
                          required: true,
@@ -129,13 +137,14 @@ var FormWizard = function () {
                         required: true,
                         maxlength:200
                      },
-                     txttat: {
-                         digits: true,
-                         maxlength: 4
-                     },
+                     //txttat: {
+                     //    digits: true,
+                     //    maxlength: 4,
+                     //    //notEqualTo: 0
+                     //},
                      txtPono: {
-                         maxlength:20
-                        // required: true
+                         maxlength:20,
+                        /* required: true*/
                      },
                      txtunitrate: {
                         // required: true,
@@ -151,7 +160,7 @@ var FormWizard = function () {
                         // required: true,
                          number:true
                      },
-                    //Thord Tab
+                    //Third Tab
                     AttachDescription1:{
                         required: true
                     }
@@ -210,28 +219,17 @@ var FormWizard = function () {
                 success: function (label) {
 
                     if (label.attr("for") == "gender" || label.attr("for") == "payment[]") {
-
-                        label
-
-                            .closest('.inputgroup').removeClass('has-error').addClass('has-success');
-                        label
-
-                        .closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success');
-
+                        label.closest('.inputgroup').removeClass('has-error').addClass('has-success');
+                        label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success');
                         label.remove();
 
-                    } else {
-
-                        label
-
-                            .addClass('valid') // mark the current input as valid and display OK icon
-
-                        .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                    else
+                    {
+                        label.addClass('valid').closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
                         label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success'); // set success class to the control group
 
                     }
-
-                   
 
                 },
 
@@ -469,33 +467,21 @@ var FormWizard = function () {
                     error.show();
 
                     $('#spandanger').html('Please Configure RFQ Parameters.')
-
                     error.fadeOut(3000)
-
                     return false;
 
                 }
-               
-
                 else if (ValidateVendor() == 'false') {
                          return false;
-
                 }
-
-                else {
+                 else {
+                    RFQInviteVendorTab3();
                     fetchPSBidDetailsForPreview()
-                    $('#BidPreviewDiv').show();
-                    $('#form_wizard_1').hide();
-                   
                     return true;
-
                 }
 
             }).hide();
 
-
-
-            //unblock code
             jQuery.unblockUI();
         }
 
@@ -509,7 +495,7 @@ sessionStorage.setItem('hddnRFQID', 0)
 function InsUpdRFQDEtailTab1() {
    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 	var TermsConditionFileName = '';
-    var AttachementFileName = '';
+   
     if ($('#attach-file').html() != '' && $('#file1').val() == '') {
         TermsConditionFileName = $.trim(jQuery('#attach-file').html());
     } else {
@@ -544,7 +530,6 @@ function InsUpdRFQDEtailTab1() {
 
     }; 
     //console.log(JSON.stringify(Tab1Data))
-  
     //alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
@@ -556,26 +541,28 @@ function InsUpdRFQDEtailTab1() {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            //** Upload Files in Local Folder
-            fileUploader(parseInt(data))
 
             sessionStorage.setItem('hddnRFQID', parseInt(data))
 
-            //** Upload Files on Azure
-            fnUploadFilesonAzure(TermsConditionFileName, sessionStorage.getItem('hddnRFQID'), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-           
-            //** Delete Files from Local Folder
-            fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + parseInt(data) + "/" + TermsConditionFileName)
+            //** Upload Files on Azure PortalDocs folder
+            if ($('#file1').val() != '') {
+                fnUploadFilesonAzure('file1',TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+
+            }
+            
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
 
@@ -620,8 +607,8 @@ function InsUpdRFQDEtailTab2() {
                 "PoUnitRate": parseFloat(unitrate),
                 "PoNo": $.trim(this_row.find('td:eq(11)').html()),
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
-                "PoDate": $.trim(this_row.find('td:eq(20)').html()),
-                "PoValue": parseFloat(povalue)
+                "PoDate": $.trim(this_row.find('td:eq(14)').html()),
+                "PoValue": parseFloat(removeThousandSeperator(povalue))
                
 
             }
@@ -635,8 +622,8 @@ function InsUpdRFQDEtailTab2() {
         
     };
 
-    // alert(JSON.stringify(Tab2data))
-    console.log(JSON.stringify(Tab2data))
+    //console.log(JSON.stringify(Tab2data))
+   
     jQuery.ajax({
 
         type: "POST",
@@ -660,9 +647,12 @@ function InsUpdRFQDEtailTab2() {
         },
 
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
             jQuery.unblockUI();
 
@@ -742,64 +732,19 @@ function fnGetApprovers() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     })
 }
-
-function fileUploader(RFQID) {
-
-    var fileTerms = $('#file1');
-    if ($('#file1').is('[disabled=disabled]')) {
-
-        var fileDataTerms = $('#file1').prop("files")[0];
-
-    }
-    else {
-        var fileDataTerms = fileTerms.prop("files")[0];
-    }
-   
-    var fileRFQAttachments = $('#fileToUpload1');
-    var fileDataAnyRFQAttachments = fileRFQAttachments.prop("files")[0];
-
-
-    var formData = new window.FormData();
-
-    formData.append("fileTerms", fileDataTerms);
-    formData.append("fileAnyOther", '');
-    formData.append("fileRFQAttach", fileDataAnyRFQAttachments);
-    formData.append("AttachmentFor", 'eRFQ');
-    formData.append("BidID", RFQID);
-   // formData.append("VendorID", '');
-   // formData.append("Version", '');
-    
-    $.ajax({
-
-        url: 'ConfigureFileAttachment.ashx',
-        data: formData,
-        processData: false,
-        contentType: false,
-        asyc: false,
-        type: 'POST',
-        success: function (data) {
-
-        },
-
-        error: function () {
-
-        }
-
-    });
-
-}
-
-
 
 function fnGetTermsCondition() {
    
@@ -827,14 +772,17 @@ function fnGetTermsCondition() {
                    var strPrev = "<tr><td>" + data[i].name + "</td>";
                    
                    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
-                   str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+                   str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
                     
                    
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
                         jQuery('#tblTermsCondition').append(str);
                         
                     }
-                   
+                    $('#rem' + i).maxlength({
+                        limitReachedClass: "label label-danger",
+                        alwaysShow: true
+                    });
                     if (data[i].level == "R") {
                         strPrev += "<td>RFQ</td></tr>";
                         $("#levelR" + i).attr("checked", "checked");
@@ -873,15 +821,16 @@ function fnGetTermsCondition() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
 
         
@@ -941,6 +890,7 @@ function fnsavetermscondition(isbuttonclick) {
             "ConditionType": jQuery("#ddlConditiontype").val()
 
         }
+        console.log(JSON.stringify(Attachments))
         // alert(JSON.stringify(Attachments))
         jQuery.ajax({
             type: "POST",
@@ -953,8 +903,7 @@ function fnsavetermscondition(isbuttonclick) {
             dataType: "json",
             success: function (data) {
 
-                // if (data.length > 0) {
-                if (parseInt(data) > 0) {
+
                     fnGetTermsCondition();
                     if (isbuttonclick == 'Y') {
                         $('.alert-success').show();
@@ -963,28 +912,20 @@ function fnsavetermscondition(isbuttonclick) {
                         $('.alert-success').fadeOut(7000)
                     }
 
-                }
-                else {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('You have some error.');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    return false;
-
-                }
-
-                //  }
+                
 
             },
             error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
 
         });
@@ -995,7 +936,7 @@ function fnsaveAttachmentsquestions() {
     var quesquery = '';
     $("#tblAttachments> tbody > tr").each(function (index) {
         var this_row = $(this);
-        attchquery = attchquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '#';
+        attchquery = attchquery + $.trim(this_row.find('td:eq(1)').text()) + '~' + $.trim(this_row.find('td:eq(0)').text()) + '#';
 
      });
     $("#tblquestions> tbody > tr").each(function (index) {
@@ -1007,7 +948,7 @@ function fnsaveAttachmentsquestions() {
         "AttachString": attchquery,
         "QuesString": quesquery
     }
-  //  console.log(JSON.stringify(data))
+    
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1018,23 +959,29 @@ function fnsaveAttachmentsquestions() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            fetchAttachments();
+            GetQuestions();
             return;
         },
         error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
                 return false;
-                jQuery.unblockUI();
+               
             }
 
         });
    
 }
 var rowAttach = 0;
+
 function addmoreattachments() {
     
     if (jQuery("#AttachDescription1").val() == "") {
@@ -1063,55 +1010,63 @@ function addmoreattachments() {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
        
-       // strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attchname.replace(/\s/g, "%20") + '>' + attchname + '</a></td>';
-        strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;" target=_blank  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
+       
+        strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        //str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attchname.replace(/\s/g, "%20") + '>' + attchname + '</a></td>';
+        
         str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         
-        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',aeRFQFile' + rowAttach + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach+',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
-        var arr = $("#tblAttachments tr");
+        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 
-        $.each(arr, function (i, item) {
-            var currIndex = $("#tblAttachments tr").eq(i);
-          
-            var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
-            $(this).nextAll().each(function (i, inItem) {
+        //** function to insert record in DB after file upload on Blob
+        fnsaveAttachmentsquestions();
+
+        //var arr = $("#tblAttachments tr");
+       
+        //$.each(arr, function (i, item) {
+        //    var currIndex = $("#tblAttachments tr").eq(i);
+        //    var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
+           
+        //    if (rowAttach == 1) {
+        //        //** Upload Files on Azure PortalDocs folder first Time
+        //        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+        //     }
+            
+        //    $(this).nextAll().each(function (i, inItem) {
+        //        if (matchText == $(this).find("td:eq(1)").text().toLowerCase()) {
+        //            $(this).remove();
+        //        }
+        //        if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
+        //                //** Upload Files on Azure PortalDocs folder
+        //             fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+                  
+        //        }
                
-                if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
-                    $(this).remove();
-                }
-                else {
-                    //** Upload files in Local Folder
-                    fileUploader(sessionStorage.getItem('hddnRFQID'))
-                    setTimeout(function () {
-                    //** Upload Files on Azure
-                        fnUploadFilesonAzure(attchname, sessionStorage.getItem('hddnRFQID'), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-                    },1000)
-
-                }
-            });
-        });
+                
+        //    });
+           
+        //});
         jQuery("#AttachDescription1").val('')
         jQuery('#fileToUpload1').val('')
 
-        //** Delete Files from Local Folder
-        fnFileDeleteLocalfolder('PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + "/" + attchname)
+        
     }
 }
-function deleteattachrow(rowid, rowidPrev,aID) {
+function deleteattachrow(rowid, rowidPrev,filename,aID,srno) {
 
     rowAttach = rowAttach - 1;
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
+
     
-    //** Delete Files from Azure 
-    ajaxFileDelete('', '', aID.id, 'eRFQAttachment')
+    //** File delete from Blob or DB 
+    ajaxFileDelete('', '', filename, 'eRFQAttachment', aID, srno)
  }
 
 function fetchAttachments() {
@@ -1136,27 +1091,25 @@ function fetchAttachments() {
                     rowAttach = rowAttach + 1;
                     attach = data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20");
                     var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                   // strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + attach + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + i+' style="pointer:cursur;text-decoration:none;" target=_blank href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                   
+                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach+'  style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachmentsPrev').append(strprev);
 
                     var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" target=_blank href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                    str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + i + ',trAttachidprev' + i + ',aeRFQFile' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach +' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"   onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[0].attachments[i].rfqAttachment + '\',aeRFQFile' + rowAttach + ',\'' + data[0].attachments[i].srNo + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                     jQuery('#tblAttachments').append(str);
                     
                 }
             }
           
-            else {
-                jQuery('#tblAttachmentsPrev').append("<tr><td>No Attachments!!</td></tr>")
-            }
+            
             
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" +  + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1190,63 +1143,17 @@ function addquestions() {
         var strprev = '<tr id=trquesidprev' + rowques + ' ><td>' + jQuery("#txtquestions").val() + '</td>';
         strprev += "<td>" + jQuery("#txtreq").val() + "</td></tr>"
        
-        jQuery('#tblquestionsPrev').append(strprev);
+        jQuery('#tblQuestionsPrev').append(strprev);
 
         if (!jQuery("#tblquestions thead").length) {
             jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:54.9%!important'>Questions</th><th class='bold' style='width:35%!important'>Requirement</th><th style='width:5%!important'></th></tr></thead>");
         }
         var str = '<tr id=trquesid' + rowques + ' ><td>' + jQuery("#txtquestions").val() + '</td>';
         str += "<td>" + jQuery("#txtreq").val() + "</td>"
-        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowques + ' onclick="deletequesrow(trquesid' + rowques + ',trquesidprev' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deletequesrow(trquesid' + rowques + ',trquesidprev' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
         jQuery("#txtreq").val('')
-
-        //var Questions = {
-        //    "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        //    "RFQQuestions": jQuery("#txtquestions").val(),
-        //    "RFQQuestionsRequirement": jQuery("#txtreq").val()
-        //}
-       
-        //jQuery.ajax({
-        //    type: "POST",
-        //    contentType: "application/json; charset=utf-8",
-        //    url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestions",
-        //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //    crossDomain: true,
-        //    async: false,
-        //    data: JSON.stringify(Questions),
-        //    dataType: "json",
-        //    success: function (data) {
-        //        //if (data.length > 0) {
-
-        //            if (data == "1") {
-        //                GetQuestions();
-        //                $('.alert-success').show();
-        //                $('#spansuccess1').html('Questions mapped successfully!');
-        //                Metronic.scrollTo($(".alert-success"), -200);
-        //                $('.alert-success').fadeOut(7000);
-        //                jQuery("#txtquestions").val('')
-        //                jQuery("#txtreq").val('')
-                       
-        //                return false;
-
-        //            }
-        //        //}
-
-        //    },
-        //    error: function (xhr, status, error) {
-
-        //        var err = eval("(" + xhr.responseText + ")");
-        //        if (xhr.status === 401) {
-        //            error401Messagebox(err.Message);
-        //        }
-
-        //        return false;
-        //        jQuery.unblockUI();
-        //    }
-
-        //});
     }
 }
 function deletequesrow(rowid, rowidPrev) {
@@ -1288,13 +1195,16 @@ function GetQuestions() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
         })
 }
@@ -1320,13 +1230,16 @@ function fetchRegisterUser() {
          },
          error: function (xhr, status, error) {
 
-             var err = eval("(" + xhr.responseText + ")");
-             if (xhr.status === 401) {
+             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+             if (xhr.status == 401) {
                  error401Messagebox(err.Message);
              }
-
-             return false;
+             else {
+                 fnErrorMessageText('spandanger', 'form_wizard_1');
+             }
              jQuery.unblockUI();
+             return false;
+            
          }
 
     });
@@ -1456,7 +1369,7 @@ function fetchRFIParameteronload() {
                     rowAppItems = rowAppItems + 1
                     rowAppItemsrno = rowAppItemsrno + 1;
                     jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button type=button class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type=button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
-                    jQuery('<tr id=tridprev' + i + '><td id=itemcodeprev' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpODate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
+                    jQuery('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
                 }
 
                 //for previe table
@@ -1466,15 +1379,16 @@ function fetchRFIParameteronload() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
         
     });
@@ -1486,7 +1400,7 @@ function fetchRFIParameteronload() {
 function InsUpdProductSevices() {
     
         jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
-        
+       
         if (form.valid() == true) {
             var st = "true"
            
@@ -1494,21 +1408,21 @@ function InsUpdProductSevices() {
            
             if ($('#add_or').text() == "Modify") {
                 st = "true";
-                i=0;
+                i = 1;
                 $("#tblServicesProduct tr:gt(0)").each(function () {
-                    var this_row = $(this);
-                    if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() || ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                    
+                     if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                         st = "false"
-                        
                     }
                     i++;
                 });
-               
+             
                 if ($('#dropuom').val() == '') {
                     $('.alert-danger').show();
                     $('#spandanger').html('Please Select UOM Properly');
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(7000);
+                    jQuery.unblockUI();
                     return false;
                 }
                else if (st == "false") {
@@ -1520,6 +1434,7 @@ function InsUpdProductSevices() {
 
                else {
                    //Set data on main Table after edit
+                   
                    var Description = $('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " ");
                    var this_row=$('#rowid').val()
                    $("#itemcode" + this_row).text($('#txtItemCode').val())
@@ -1530,7 +1445,7 @@ function InsUpdProductSevices() {
 
                    $("#quan" + this_row).text($('#txtquantitiy').val())
                    $("#uom" + this_row).text($('#dropuom').val())
-                   $("#remarks" + this_row).text($('#txtItemRemarks').text())
+                   $("#remarks" + this_row).text($('#txtItemRemarks').val())
                    $("#tat" + this_row).text($('#txttat').val())
                    $("#delivery" + this_row).text($('#txtedelivery').val())
                    $("#pono" + this_row).text($("#txtPono").val())
@@ -1544,10 +1459,10 @@ function InsUpdProductSevices() {
                    $("#itemcodeprev" + this_row).text($('#txtItemCode').val())
                    $("#snameprev" + this_row).text($('#txtshortname').val())
                    $("#descprev" + this_row).text(Description)
-                   $("#TPprev" + this_row).text($('#txttargetprice').val())
+                   $("#TPPrev" + this_row).text($('#txttargetprice').val())
                    $("#quanprev" + this_row).text($('#txtquantitiy').val())
                    $("#uomprev" + this_row).text($('#dropuom').val())
-                   $("#remarksprev" + this_row).text($('#txtItemRemarks').text())
+                   $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
                    $("#tatprev" + this_row).text($('#txttat').val())
                    $("#deliveryprev" + this_row).text($('#txtedelivery').val())
                    $("#ponoprev" + this_row).text($("#txtPono").val())
@@ -1559,36 +1474,40 @@ function InsUpdProductSevices() {
                    resetfun()
                 }
             }
-            else{
+            else {
+                
                 st = "true"; i = 0;
-                if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                    ParametersQuery()
-                }
-                else {
-                    $("#tblServicesProduct tr:gt(0)").each(function () {
-                        var this_row = $(this);
-                        if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() || ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
-                            st = "false"
-                        }
-                        i++;
-                    });
-                }
                 if ($('#dropuom').val() == '') {
                     $('.alert-danger').show();
                     $('#spandanger').html('Please Select UOM Properly');
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(7000);
+                    jQuery.unblockUI();
                     return false;
                 }
-                else if (st == "false") {
-                    error.show();
-                    $('#spandanger').html('Data already exists...');
-                    Metronic.scrollTo(error, -200);
-                    error.fadeOut(3000);
+               else if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                    ParametersQuery()
                 }
-
                 else {
-                    ParametersQuery();
+                    $("#tblServicesProduct tr:gt(0)").each(function () {
+                        var this_row = $(this);
+                        if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                            st = "false"
+                        }
+                        i++;
+                    });
+
+                   
+                     if (st == "false") {
+                        error.show();
+                        $('#spandanger').html('Data already exists...');
+                        Metronic.scrollTo(error, -200);
+                        error.fadeOut(3000);
+                    }
+
+                    else {
+                        ParametersQuery();
+                    }
                 }
             }
            
@@ -1596,8 +1515,8 @@ function InsUpdProductSevices() {
         jQuery.unblockUI();
          
     }
-    else {
-      
+        else {
+
         form.validate()
         jQuery.unblockUI();
         return false;
@@ -1632,12 +1551,12 @@ function ParametersQuery() {
     if (!jQuery("#tblRFQPrev thead").length) {
 
         jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev'+i+'>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev'+i+'>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
 
     }
     else {
 
-        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
     }
     $('#wrap_scrollerPrev').show();
     rowAppItems = rowAppItems + 1
@@ -1655,11 +1574,10 @@ function editRow(icount) {
     
 	//sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
    
-
     $('#txtshortname').val($("#sname" + icount).text())
     $('#txtItemCode').val($("#itemcode" + icount).text())
-    $('#txttargetprice').val($("#TP" + icount).text())
-    $('#txtquantitiy').val($("#quan" + icount).text())
+    $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
+    $('#txtquantitiy').val(removeThousandSeperator($("#quan" + icount).text()))
     $('#txtUOM').val($("#uom" + icount).text())
     $('#dropuom').val($("#uom" + icount).text())
     $('#txtItemRemarks').val(RFQRemark)
@@ -1667,13 +1585,12 @@ function editRow(icount) {
     $('#txtedelivery').val($("#delivery" + icount).text())
     $("#txttat").val($("#tat" + icount).text())
     $('#txtPono').val($("#pono" + icount).text())
-    $('#txtunitrate').val($("#unitrate" + icount).text())
+    $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
     $('#txtvendorname').val($("#povname" + icount).text())
     $('#txtPODate').val($("#podate" + icount).text())
-    $('#txtpovalue').val($("#povalue" + icount).text())
+    $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     $('#add_or').text('Modify');
-    
-    
+
 }
 function deleterow(TrId, Trprevid) {
     //rowAppItems = rowAppItems - 1;
@@ -1688,7 +1605,14 @@ function deleterow(TrId, Trprevid) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
+        i = 1;
+        $("#tblRFQPrev tr:gt(0)").each(function () {
+            var this_row = $(this);
+            $.trim(this_row.find('td:eq(0)').html(i));
+            i++;
+        });
     }
+   
 }
 
 function resetfun() {
@@ -1735,13 +1659,16 @@ function FetchUOM(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1767,15 +1694,14 @@ jQuery("#txtUOM").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+       
         if (map[item].uom != "") {
-          $('#dropuom').val(map[item].uom)
-
+           $('#dropuom').val(map[item].uom)
         }
         else {
             gritternotification('Please select UOM  properly!!!');
         }
-
-        return item;
+       return item;
     }
 
 });
@@ -1798,13 +1724,16 @@ function FetchUOMforpop(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1827,7 +1756,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblvendorlist tbody").find("tr"), function () {
-        console.log($(this).text());
+       
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -1865,41 +1794,41 @@ function FetchCurrency(CurrencyID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
 
 }
-
 function RFQInviteVendorTab3() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var vendorID = sessionStorage.getItem('UserID');
+    
     var InsertQuery = '';
 
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
-
-        //InsertQuery = InsertQuery + " select " + sessionStorage.getItem("hddnRFQID") + "," + $.trim($(this).find('td:eq(0)').html()) + ",'" + $('#txtrfqSubject').val() + "',dbo.Decrypt('" + vendorID + "')," + $.trim($(this).find('td:eq(0)').html()) + ",'eRFQVendor.html?RFQID=" + sessionStorage.getItem("hddnRFQID") + "','N'," + sessionStorage.getItem('CustomerID') + ",getdate() union all "; //(convert(nvarchar(11),b.RFQClosureDate,103 )
-        InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html())+','
+        InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
     });
 
     var Tab3data = {
-        "BidVendors": InsertQuery,       
+        "BidVendors": InsertQuery,
+        "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         "subject": jQuery('#txtrfqSubject').val(),
         "Deadline": jQuery('#txtenddatettime').val(),
-        "RFQDescription": jQuery('#txtrfqdescription').val(),
-        "CustomerID":parseInt(sessionStorage.getItem('CustomerID'))
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        
     };
-    //console.log(JSON.stringify(Tab3data))
-    //alert(JSON.stringify(Tab3data))
+    console.log(JSON.stringify(Tab3data))
     jQuery.ajax({
 
         type: "POST",
@@ -1911,80 +1840,76 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-            if (parseInt(data) > 0) {
-                jQuery.unblockUI();
-                bootbox.alert("Request for Quotation Submitted Successfully.", function () {
-                    sessionStorage.removeItem('CurrentBidID');
-                    window.location = sessionStorage.getItem("HomePage")
 
-                    return false;
-
-                });
-                return true;
-
-            }
-            else {
-                jQuery.unblockUI();
-                alert('error')
-                return false;
-
-            }
+            $('#BidPreviewDiv').show();
+            $('#form_wizard_1').hide();
+            jQuery.unblockUI();
+             return true;
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             jQuery.unblockUI();
+            return false;
+
+        }
+    });
+}
+function fnsubmitRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+   
+    var Tab3data = {
+        
+        "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
+        "UserID": sessionStorage.getItem('UserID'),
+        "subject": jQuery('#txtrfqSubject').val(),
+        "Deadline": jQuery('#txtenddatettime').val(),
+        "RFQDescription": jQuery('#txtrfqdescription').val(),
+        "CustomerID":parseInt(sessionStorage.getItem('CustomerID'))
+    };
+    console.log(JSON.stringify(Tab3data))
+    jQuery.ajax({
+
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQSubmit/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Tab3data),
+        dataType: "json",
+        success: function (data) {
+                bootbox.alert("Request for Quotation Submitted Successfully.", function () {
+                    sessionStorage.removeItem('CurrentBidID');
+                    window.location = sessionStorage.getItem("HomePage")
+                    return false;
+
+                });
+               
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+            
         }
     });   
 }
 
-function FetchVender(ByBidTypeID) {
 
-    jQuery.ajax({
-        type: "GET",
-
-        contentType: "application/json; charset=utf-8",
-
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendor/?ByBidTypeID=" + ByBidTypeID + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-
-        dataType: "json",
-
-        success: function(data) {
-        if (data.length > 0) {
-            $("#txtSearch").show();
-        }
-            jQuery("#tblvendorlist > tbody").empty();
-            var vName = '';
-            for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + i + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
-
-                jQuery('#tblvendorlist > tbody').append(str);
-
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
 
 var vCount = 0;
 $("#chkAll").click(function() {
@@ -2031,19 +1956,17 @@ $("#chkAll").click(function() {
 function Check(event, vname, vendorID) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
-
-        $(event).closest("span#spanchecked").removeClass("checked")
-
-    }
+          $(event).closest("span#spanchecked").removeClass("checked")
+   }
 
     else {
 
         vCount = vCount + 1;
-        
-        var EvID = event.id;
+        //var EvID = event.id;
+       
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',' + EvID + ',SelecetedVendorPrev' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ','+vendorID+')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
         jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
@@ -2061,14 +1984,12 @@ function Check(event, vname, vendorID) {
 
 }
 
-function removevendor(trid, chkid, trprevid) {
-    
+function removevendor(trid, trprevid,vid) {
+   
     vCount = vCount - 1;
-
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
-    $(chkid).closest("span#spanchecked").removeClass("checked")
-    $(chkid).prop("disabled", false);
+    
     if (vCount > 0) {
         jQuery('#selectedvendorlists').show()
         jQuery('#selectedvendorlistsPrev').show()
@@ -2081,23 +2002,36 @@ function removevendor(trid, chkid, trprevid) {
         jQuery('#selectedvendorlistsPrev').hide()
 
     }
+    if ($('#chkvender'+vid).length)         
+    {
+        $('#chkvender' + vid).closest("span#spanchecked").removeClass("checked")
+        $('#chkvender' + vid).prop("disabled", false);
+    }
+ 
 }
 
 function ValidateVendor() {
 
     var status = "false";
 
-    $("#tblvendorlist> tbody > tr").each(function (index) {
+   // $("#tblvendorlist> tbody > tr").each(function (index) {
         
-       if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-                status = "True";
-       }
-       else {
-           status == "false";
-       }
+   //    if ($(this).find("span#spanchecked").attr('class') == 'checked') {
+   //             status = "True";
+   //    }
+   //    else {
+   //        status == "false";
+   //    }
     
-   });
-
+    //});
+    if ($("#selectedvendorlists> tbody > tr").length == 0)
+    {
+        status == "false";
+    }
+    else {
+        status = "True";
+    }
+    
     if (status == "false") {        
         $('.alert-danger').show();
         $('#spandanger').html('Please select atleast one vendors');
@@ -2114,11 +2048,7 @@ function ValidateVendor() {
 }
 
 function fetchReguestforQuotationDetails() {
-  
-    var replaced1 = '';
-   
-    
-jQuery.ajax({
+ jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2138,59 +2068,84 @@ jQuery.ajax({
             jQuery('#txtstartdatettime').val(RFQData[0].general[0].rfqStartDate)
             jQuery('#txtenddatettime').val(RFQData[0].general[0].rfqEndDate)
             $("#cancelBidBtn").show();
+          
             if (RFQData[0].general[0].rfqTermandCondition != '') {
-				 $('#file1').attr('disabled', true);
+				$('#file1').attr('disabled', true);
                 $('#closebtn').removeClass('display-none');
-                replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
-                if (RFQData[0].general[0].rfqAttachment != '') {
-                    $('#file2').attr('disabled', true);
-                    $('#closebtn2').removeClass('display-none');
+                $('#attach-file').html(RFQData[0].general[0].rfqTermandCondition);
+            }
 
-                    
+            //Vendor Details
+            if (RFQData[0].vendors.length > 0) {
+
+                for (var i = 0; i < RFQData[0].vendors.length; i++) {
+                    vCount = vCount + 1;
+                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + RFQData[0].vendors[i].vendorId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + RFQData[0].vendors[i].vendorId + ',SelecetedVendorPrev' + RFQData[0].vendors[i].vendorId + ',' + RFQData[0].vendors[i].vendorId + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                    jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + RFQData[0].vendors[i].vendorId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td></tr>')
+
                 }
-            
-			}
-           // jQuery('#attach-file').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
-            $('#filepthterms').html(RFQData[0].general[0].rfqTermandCondition);
+
+                jQuery('#selectedvendorlists').show()
+                jQuery('#selectedvendorlistsPrev').show()
+
+            }
          
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
     jQuery.unblockUI();
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ', sessionStorage.getItem('hddnRFQID'));
-}
-function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
    
-    var data = {
-        "filename": $('#' + filepath).html(),
-        "foldername": 'eRFQ/' + sessionStorage.getItem('hddnRFQID')
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+ sessionStorage.getItem('hddnRFQID'));
+}
+
+//*** File delete from Blob or DB 
+function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srno) {
+   
+    if (deletionFor == 'eRFQTerms') {
+        filename= $('#'+filename).html()
     }
-    //console.log(JSON.stringify(data))
+    else {
+        filename = filename;
+    }
+        var data = {
+            "filename": filename,
+            "foldername": 'eRFQ/' + sessionStorage.getItem('hddnRFQID')
+        }
+   
+   
      $.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DeleteFiles/",
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-           
-            if (deletionFor == 'eRFQTerms') {
-                fileDeletefromdb(closebtnid, fileid, filepath, deletionFor);
-                $('#' + filepath).html('')
-                $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
-                $('#' + fileid).attr('disabled', false);
-            }
+         success: function (data, status, jqXHR)
+         {
+         
+             if (deletionFor == 'eRFQTerms') {
+                 fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
+                 $('#' + filepath).html('')
+                 $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
+                 $('#' + fileid).attr('disabled', false);
+             }
+             else {
+                 if (srno != 0) {
+                     fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
+                 }
+             }
             $('#spansuccess1').html('File Deleted Successfully');
             success.show();
             Metronic.scrollTo(success, -200);
@@ -2211,18 +2166,19 @@ function ajaxFileDelete(closebtnid, fileid, filepath, deletionFor) {
 }
 
 function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
-    if (deletionFor == 'eRFQTerms') {
+    if (srno == 0) {
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')
         $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
         $('#' + fileid).attr('disabled', false);
     }
+ 
     var Attachments = {
-        "SrNo": parseInt($('#' + srno).html()),
+        "SrNo": parseInt(srno),
         "DeletionFor": deletionFor,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
     }
-   // alert(JSON.stringify(Attachments))
+   //alert(JSON.stringify(Attachments))
     jQuery.ajax({
 
         type: "POST",
@@ -2238,13 +2194,16 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -2413,25 +2372,25 @@ function printDataparameter(result) {
             povendorname = $.trim(result[i].PoVendorName);
             
         }
-     if ($.trim(result[i].ItemCode) != '') {
+        if ($.trim(result[i].ItemCode) != '' ) {
             itemcode = $.trim(result[i].ItemCode);
            
         }
         //alert($.trim(result[i].Remarks))
-        if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService) > 200) {
+        if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Item/Service can not be blank or length should be 200 characters of item no '+(i+1)+'. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
-        //if ($.trim(result[i].ItemCode) == '' ) {
-        //    $("#error-excelparameter").show();
-        //    $("#errspan-excelparameter").html('ItemCode can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
-        //    $("#file-excelparameter").val('');
-        //    return false;
-            //}
+        else if ($.trim(result[i].ItemCode).length > 50 ) {
+            $("#error-excelparameter").show();
+            $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#file-excelparameter").val('');
+            return false;
+            }
             
-        else if ($.trim(result[i].Remarks) == '') {
+        else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Remarks can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
@@ -2443,9 +2402,9 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].Description) == '') {
+        else if ($.trim(result[i].Description) == '' || $.trim(result[i].Description).length > 2000) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Description can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Description can not be blank or length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
@@ -2484,9 +2443,9 @@ function printDataparameter(result) {
 
         }
         
-        else if ($.trim(result[i].DeliveryLocation) == '') {
+        else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Delivery Location can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Delivery Location can not be blank or length should be 100 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
@@ -2555,8 +2514,6 @@ function printDataparameter(result) {
                  }
                  ErrorUOMMsz = ErrorUOMMsz + '</ul>'
                  ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
-
-
                  $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
 
                  return false;
@@ -2569,14 +2526,14 @@ function printDataparameter(result) {
              // $("#errspan-excelparameter").html('');
              $("#success-excelparameter").show();
              $('#btnsforYesNo').show()
-             $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? ')
+             $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
              $("#file-excelparameter").val('');
              excelCorrect = '';
              if (st == 'false') {
                  $("#error-excelparameter").show();
                  $("#errspan-excelparameter").html(ErrorMszDuplicate)
              }
-             // fnSeteRFQparameterTable()
+            
          }
     
     
@@ -2589,14 +2546,18 @@ function fnSeteRFQparameterTable() {
         $("#error-excelparameter").hide();
         $('#loader-msgparameter').html('Processing. Please Wait...!');
         $('#modalLoaderparameter').removeClass('display-none');
+        jQuery("#tblServicesProduct").empty();
+        jQuery("#tblRFQPrev").empty();
         var i;
-        i = rowAppItems;
+        //i = rowAppItems;
+        i = 0;
+        rowAppItemsrno = 0;
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
 
             if (!jQuery("#tblServicesProduct thead").length) {
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
             }
             else {
                 jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
@@ -2607,12 +2568,12 @@ function fnSeteRFQparameterTable() {
             if (!jQuery("#tblRFQPrev thead").length) {
 
                 jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
+                jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
 
             }
             else {
 
-                jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
+                jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
             }
             $('#wrap_scrollerPrev').show();
             rowAppItems = rowAppItems + 1;
@@ -2633,7 +2594,6 @@ function fnSeteRFQparameterTable() {
 
 
 $("#btninstructionexcel").click(function() {
-    
     $("#instructionsDiv").show();
     $("#instructionSpan").show();
 });
@@ -2656,21 +2616,25 @@ function fetchVendorGroup(categoryFor, vendorId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
        
     });
 }
-
+jQuery("#txtVendorGroup").keyup(function () {
+    jQuery("#txtSearch").val('')
+    jQuery("#tblvendorlist> tbody").empty();
+    sessionStorage.setItem('hdnVendorID', '0');
+});
 jQuery("#txtVendorGroup").typeahead({
     source: function (query, process) {
         var data = vendorsForAutoComplete
@@ -2700,9 +2664,11 @@ jQuery("#txtVendorGroup").typeahead({
 });
 
 jQuery("#txtSearch").keyup(function () {
+    jQuery("#txtVendorGroup").val('')
+    jQuery("#tblvendorlist> tbody").empty();
     sessionStorage.setItem('hdnVendorID', '0');
-
 });
+
 sessionStorage.setItem('hdnVendorID', 0);
 jQuery("#txtSearch").typeahead({
     source: function (query, process) {
@@ -2716,28 +2682,28 @@ jQuery("#txtSearch").typeahead({
             map[vName] = username;
             usernames.push(vName);
         });
-
         process(usernames);
 
     },
     minLength: 2,
     updater: function (item) {
+        
         if (map[item].participantID != "0") {
 
-            sessionStorage.setItem('hdnVendorID', map[item].participantID);
-            jQuery("#tblvendorlist > tbody").empty();
-
-
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
-
-            var str = "<tr><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + vName + " </td></tr>";
-            jQuery('#tblvendorlist > tbody').append(str);
-
-
+            //sessionStorage.setItem('hdnVendorID', map[item].participantID);
+             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
+          
+            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
+                    // console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
+
+                    //** remove from main table if already selected in selected List
+                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].participantID).remove();
+
+                    }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
 
@@ -2774,15 +2740,14 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName;
-                var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
-
+                var str = "<tr id=vList" + data[i].vendorID +"><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
            
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
+                   
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
 
@@ -2791,13 +2756,16 @@ function getCategoryWiseVendors(categoryID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });

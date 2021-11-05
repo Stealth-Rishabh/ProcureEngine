@@ -389,17 +389,15 @@ function InsUpdRoleMaster() {
              },
              error: function (xhr, status, error) {
 
-                 var err = eval("(" + xhr.responseText + ")");
-                 if (xhr.status === 401) {
+                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                 if (xhr.status == 401) {
                      error401Messagebox(err.Message);
                  }
-                 else{
-                     $('#spandanger').text(xhr.d);
-                     error.show();
-                     error.fadeOut(5000);
+                 else {
+                     fnErrorMessageText('spandanger', 'form-wizard');
                  }
-                 return false;
                  jQuery.unblockUI();
+                 return false;
              }
             
          });
@@ -432,15 +430,15 @@ function fetchRoleMaster() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-               alert('error')
+                fnErrorMessageText('spandanger', 'form-wizard');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -483,15 +481,15 @@ function fetchAllRoleMaster() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert('error')
+                fnErrorMessageText('spandanger', 'form-wizard');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -535,13 +533,15 @@ function fetchRegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
     })
 }
@@ -616,13 +616,15 @@ function fnmapuserRole() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-               
-                return false;
+                else {
+                    fnErrorMessageText('spandanger', 'form-wizard');
+                }
                 jQuery.unblockUI();
+                return false;
             }
         })
 
@@ -660,15 +662,16 @@ function fnfetchMenuswithRole() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
-        //
     });
 }
 function paintmenus() {
@@ -750,13 +753,15 @@ function fnalreadyMappedMenus() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -823,7 +828,7 @@ function fnMapMenus() {
         "RoleID": parseInt(jQuery("#ddlrole1").val())
         
     };
-   
+    console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: APIPath + "RoleMenus/MapMenusRole/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -832,7 +837,7 @@ function fnMapMenus() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             if (data == '1') {
-                bootbox.alert("Customer Regsitered Successfully.", function () {
+                bootbox.alert("Menu mapped Successfully with Roles.", function () {
                    
                     window.location = "RegisterRoleMenuUser.html";
                     return false;
@@ -849,18 +854,15 @@ function fnMapMenus() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });

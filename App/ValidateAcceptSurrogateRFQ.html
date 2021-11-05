@@ -61,42 +61,19 @@
             background-color: white;
         }
 
-        /* Full-width textarea */
-        /*.form-container textarea {
-                    width: 100%;
-                    /*padding: 15px;
-                    margin: 5px 0 22px 0;*/
-        border: none; background: #f1f1f1; resize: none; min-height: 50px;
-        }
-
-        */
+        
         /* When the textarea gets focus, do something */
         .form-container textarea:focus {
             background-color: #ddd;
             outline: none;
         }
 
-        /* Set a style for the submit/send button */
-        /*.form-container .btn {
-                    background-color: #4CAF50;
-                    color:x white;
-                    padding: 16px 20px;
-                    border: none;
-                    cursor: pointer;
-                    width: 100%;
-                    margin-bottom: 10px;
-                    opacity: 0.8;
-                }*/
-
-        /* Add a red background color to the cancel button */
+        
         .form-container .cancel {
             background-color: red;
         }
 
-        /* Add some hover effects to buttons */
-        /*.form-container .btn:hover, .open-button:hover {
-                    opacity: 1;
-                }*/
+        
 
         .page-quick-sidebar-wrapper {
             right: -310px;
@@ -280,7 +257,7 @@
                                                 </label>
                                                 <div class="col-md-8">
                                                     <label class="control-label">
-                                                        <a href="" id="TermCondition" style="text-align:left; text-decoration: none !important;">
+                                                        <a href="javascript:;" id="TermCondition" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;">
 
                                                         </a>
                                                     </label>
@@ -521,7 +498,7 @@
 
                                 <div class="form-actions fluid">
                                     <div class="col-md-offset-3 col-md-6" style="text-align: center">
-                                        <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled" onclick="acceptterms()">
+                                        <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled" >
                                             Continue
                                         </button>
 

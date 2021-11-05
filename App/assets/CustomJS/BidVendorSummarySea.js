@@ -71,11 +71,12 @@ $(document).ready(function () {
 
 
 var strrowfordetails = '';
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BidID);
+}
 function fetchBidSummary(BidID) {
 
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -175,7 +176,7 @@ function fetchBidSummary(BidID) {
                 else if (data[0].bidForID == 83) {
 
                     jQuery("#lblbidfor").text('Price (japanese)');
-
+                    PEfaBidForId = 83;
                 }
                 else {
                     jQuery("#lblbidfor").text(data[0].bidFor);
@@ -185,12 +186,9 @@ function fetchBidSummary(BidID) {
                 jQuery('#txtBidDurationPrev').val(data[0].bidDuration)
                 $('#spinnerBidclosingTab').spinner({ value: data[0].bidDuration, step: 1, min: 0, max: 999 });
                 jQuery("#lblcurrency").text(data[0].currencyName);
-                jQuery("a#lnkTermsAttachment").html(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + BidID + "/" + tncAttachment)
-                jQuery("a#lnkAnyOtherAttachment").html(data[0].attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + BidID + "/" + anyotherAttachment)
-
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                
                 BidID = data[0].bidID
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID
@@ -205,8 +203,8 @@ function fetchBidSummary(BidID) {
 
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -254,8 +252,8 @@ function fnTimeUpdate() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -306,7 +304,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     var minimuminc;
                     $('#divTarget').hide();
                     var sname = '';
-                    if (PEfaBidForId == 81) {
+                    if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                         var strHead = "<tr><th>S No</th><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increment</th><th>Level</th><th>Vendor</th><th>Initial Quote</th><th>Highest Quote</th><th>Bid Value</th><th>Percentage Increment (Target Price)</th><th>Percentage Increment (Last Invoice Price)</th><th>Percentage Increment (Bid start price)</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
                         var strHeadsummary = "<tr><th>S No</th><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increment</th><th>Level</th><th>Vendor</th><th>Initial Quote</th><th>Highest Quote</th><th>Bid Value</th><th>Percentage Increment (Target Price)</th><th>Percentage Increment (Last Invoice Price)</th><th>Percentage Increment (Bid start price)</th></tr>";
                     }
@@ -326,7 +324,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                         if (TotalBidValue != 0) {
                             if (data[i].targetPrice != 0) {
-                                if (PEfaBidForId == 81) {
+                                if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                     Percentreduction = parseFloat(parseFloat(data[i].lQuote / data[i].targetPrice) * 100 - 100).toFixed(2) + ' %'
                                 }
                                 else {
@@ -337,7 +335,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                                 Percentreduction = 'Not Specified';
                             }
                             if (data[i].lastInvoicePrice != 0) {
-                                if (PEfaBidForId == 81) {
+                                if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                     Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / data[i].lastInvoicePrice) * 100 - 100).toFixed(2) + ' %'
                                 }
                                 else {
@@ -349,7 +347,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                                 Percentreductioninvoice = 'Not Specified';
                             }
 
-                            if (PEfaBidForId == 81) {
+                            if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                 Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / data[i].ceilingPrice) * 100 - 100).toFixed(2) + ' %'
                             }
                             else {
@@ -371,8 +369,8 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         }
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
-
-                            if (PEfaBidForId == 81) {
+                            
+                            if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                 var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
                                 var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP'+i+' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity'+i+' >' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec'+i+' >' + (minimuminc) + '</td>';
 
@@ -385,7 +383,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
                         else {
-                            if (PEfaBidForId == 81) {
+                            if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                 var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
                                 var strsumm = "<tr id=low" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
                             }
@@ -396,7 +394,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
 
-                        if (PEfaBidForId == 81) {
+                        if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
@@ -406,7 +404,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         else {
                             // alert(data[i].SrNo)
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
-                            str += "<td class=text-right>" + (data[i].lQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
+                            str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
                             strsumm += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             strsumm += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td><td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
@@ -637,13 +635,13 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
             jQuery.unblockUI();
+            return false;
+            
         }
     });
     //jQuery.unblockUI();
@@ -690,7 +688,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                
                 for (var i = 0; i < data.length; i++) {
                   
-                    TotalBidValue = parseFloat($('#quantity' + i).html()) * parseFloat(data[i].lQuote);
+                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                    
                     if (TotalBidValue != 0) {
@@ -770,7 +768,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                         if (data[i].itemStatus.toLowerCase() == 'open' || data[i].itemStatus.toLowerCase() == 'inactive') {
                             if ($('#seid' + j).html() == data[i].seId) {
 
-                                TotalBidValue = parseFloat($('#quantity' + j).text()) * parseFloat(data[i].lQuote);
+                                TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + j).text())) * parseFloat(data[i].lQuote);
                                 TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                                 if (TotalBidValue != 0) {
                                     if ($('#TP' + j).html() != 0) {
@@ -845,9 +843,9 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
             else {
                 for (var i = 0; i < data.length; i++) {
 
-                    TotalBidValue = parseFloat($('#quantity' + i).html()) * parseFloat(data[i].lQuote);
+                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-
+                   
                     if (TotalBidValue != 0) {
                         if ($('#TP' + i).html() != 0) {
                             Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
@@ -953,6 +951,7 @@ jQuery("#btnbackAdmin").click(function () {
 
 
 function AwardBid(bidid) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var a = $('#drpVendors').val();
     // alert(a)
@@ -962,7 +961,7 @@ function AwardBid(bidid) {
         }
     }
     var AwardBid = {
-        "BidID": bidid,
+        "BidID": parseInt(bidid),
         "Vendors": vendors,//jQuery("#hdnvendor").val(),
         "LoginUserID": sessionStorage.getItem("UserID"),
         "Remarks": jQuery("#txtRemarksAward").val()
@@ -986,13 +985,15 @@ function AwardBid(bidid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1089,8 +1090,8 @@ function FetchRecomendedVendor(bidid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1101,6 +1102,7 @@ function FetchRecomendedVendor(bidid) {
 
 }
 function ForwardBid(bidid, bidtypeid, bidforid) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorid = 0;
     if (jQuery("#ddlVendorsAdmin option:selected").val() != undefined) {
         vendorid = jQuery("#ddlVendorsAdmin option:selected").val()
@@ -1134,17 +1136,20 @@ function ForwardBid(bidid, bidtypeid, bidforid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
 function ApprovalApp() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorid = 0;
     if (jQuery("#ddlVendors option:selected").val() != undefined) {
         vendorid = jQuery("#ddlVendors option:selected").val();
@@ -1162,6 +1167,7 @@ function ApprovalApp() {
     };
 
     //alert(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/ApprovalApp",
@@ -1184,13 +1190,20 @@ function ApprovalApp() {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
 function ApprovalAdmin() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var vendorid = 0;
+    if (jQuery("#ddlVendorsAdmin option:selected").val() != null && jQuery("#ddlVendorsAdmin option:selected").val() != "" && jQuery("#ddlVendorsAdmin option:selected").val() != undefined) {
+        vendorid = jQuery("#ddlVendorsAdmin option:selected").val();
+    }
     var approvalbyapp = {
         "BidID": parseInt(BidID),
         "FromUserId": sessionStorage.getItem("UserID"),
@@ -1199,9 +1212,10 @@ function ApprovalAdmin() {
         "BidTypeID": BidTypeID,
         "Action": "",
         "ForwardedBy": "Administrator",
-        "VendorId": parseInt(jQuery("#ddlVendorsAdmin option:selected").val()),
+        "VendorId": parseInt(vendorid),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/ApprovalApp",
@@ -1220,13 +1234,15 @@ function ApprovalAdmin() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1322,8 +1338,8 @@ function fetchApproverStatus() {
 
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -1480,7 +1496,7 @@ function CancelBid(bidid, mailparam) {
         "SendMail": mailparam
 
     };
-    console.log(JSON.stringify(Cancelbid))
+    
   //  alert(JSON.stringify(Cancelbid))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1500,13 +1516,15 @@ function CancelBid(bidid, mailparam) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -1580,8 +1598,8 @@ function fetchGraphData(itemId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1680,8 +1698,8 @@ function linegraphsforItems(itemId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 

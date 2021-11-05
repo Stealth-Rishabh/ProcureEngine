@@ -20,24 +20,27 @@ function FetchInvitedVendorsForeRFQ() {
                 jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
                 
              
-                $('#rq_subject').html('<b>' + data[0].rQSubject + '</b>');
+                $('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
                 $('#rq_deadline').html(data[0].deadline);
-                $('#rq_description').html(data[0].rQDescription);
+                $('#rq_description').html(data[0].rqDescription);
                 $("#deadlineModal").html(data[0].deadline);
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rQStatus + '</td><td>' + data[i].responseDTTime + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + data[i].responseDTTime + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
                 }
             }
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -48,27 +51,25 @@ function sendremainderstoparicipants() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
         var checkedValue = '';
-        var temp = new Array();
+    var temp = new Array();
+  
         $("#tblVendorSummary> tbody > tr").each(function (index) {
 
             vemail = $(this).find("td").eq(4).html();
             vid = $(this).find("td").eq(0).html();
             if($(this).find("td").eq(2).html().toLowerCase()!='close' &&  $(this).find("td").eq(2).html().toLowerCase()!='regretted'){
-                checkedValue = checkedValue + " select  " + RFQID + ",'" + vemail + "','N','" + vid + "'  union";
+                checkedValue = checkedValue + vid + '#';
             }
-            // }
+            
         });
-        if (checkedValue != '') {
-            checkedValue = 'insert into #temp(RFQID,EmailId,MailSent,VendorID) ' + checkedValue
-            checkedValue = checkedValue.substring(0, checkedValue.length - 6);
-        }
-
+        
+    
         var data = {
             "QueryString": checkedValue,
             "RFQID": parseInt(RFQID),
             "UserID": sessionStorage.getItem("UserID")
         }
-          
+      
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "eRFQReport/SendRemainderToParticipanteRFQ",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -76,25 +77,28 @@ function sendremainderstoparicipants() {
             type: "POST",
             contentType: "application/json",
             success: function (data) {
-               
-                if (data == "1") {
+              
                     errorremainder.hide();
                     succesremainder.show();
                     $('#success').html('Reminder has been sent Successfully..');
                     succesremainder.fadeOut(3000);
                    
                     jQuery.unblockUI();
-                }
+               
             },
             error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+              
+                var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+              
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-            
-                return false;
+                else {
+                    fnErrorMessageText('error', '');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
            
         });
@@ -115,7 +119,7 @@ function CancelRFIRFQ(MailPermit) {
 
     };
    // alert(JSON.stringify(Data))
-
+    //console.log(JSON.stringify(Data))
     jQuery.ajax({
 
         type: "POST",
@@ -142,23 +146,23 @@ function CancelRFIRFQ(MailPermit) {
 
         },
         error: function(jqXHR, exception) {
-            var err = eval("(" + jqXHR.responseText + ")");
-            if (jqXHR.status === 401) {
+            var err = jqXHR.responseText //eval("(" + jqXHR.responseText + ")");
+            if (jqXHR.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
                 var msg = '';
-                if (jqXHR.status === 0) {
+                if (jqXHR.status == 0) {
                     msg = 'Not connect.\n Verify Network.';
                 } else if (jqXHR.status == 404) {
                     msg = 'Requested page not found. [404]';
                 } else if (jqXHR.status == 500) {
                     msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
+                } else if (exception == 'parsererror') {
                     msg = 'Error connecting server. Please retry.';
-                } else if (exception === 'timeout') {
+                } else if (exception == 'timeout') {
                     msg = 'Time out error.';
-                } else if (exception === 'abort') {
+                } else if (exception == 'abort') {
                     msg = 'Ajax request aborted.';
                 } else {
                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
@@ -310,13 +314,16 @@ function ExtendDuration() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
-                return false;
+                else {
+                    fnErrorMessageText('error', '');
+                }
                 jQuery.unblockUI();
+                return false;
+               
             }
 
         });

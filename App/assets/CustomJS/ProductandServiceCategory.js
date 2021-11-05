@@ -78,6 +78,18 @@ function fetchRFICategory(SubCategoryID) {
                     $('<label class="checkbox-inline"><input type="checkbox"  checked  class=childChkbox id=Chkbox' + i + ' value=' + data[i].BidTypeID + '> ' + data[i].BidTypeName + ' </label>').appendTo('#rficategories')
                 }
             }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -139,6 +151,18 @@ function insupdRFIQuestionMaster() {
                 Vehicleerror.fadeOut(5000);    
                 
             }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
     });
     jQuery.unblockUI();
@@ -184,10 +208,17 @@ function fetchRFIQuestiondetail() {
                 jQuery("#tblFetchRFIQuestion").append('<tr><td>No Information is there..</td></tr>');
             }
         },
-        error: function (result) {
-            alert("error");
-            
+        error: function (xhr, status, error) {
 
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -208,10 +239,6 @@ function updateType(CustomerID, QuestionID, SubCategoryName, Status) {
         jQuery('#checkboxactive').parents('span').removeClass('checked');
     }
 }
-
-
-
-
 
 jQuery("#search").keyup(function () {
  

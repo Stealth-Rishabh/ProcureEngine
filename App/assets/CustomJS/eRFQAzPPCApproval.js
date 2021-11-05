@@ -45,6 +45,7 @@ if (sessionStorage.getItem('IsObserver') == "Y") {
         fetchrfqcomprative();
         fetchAzPPcFormDetails();
         fetchApproverRemarks();
+        fetchAttachments();
      }, 400)
 
 
@@ -67,6 +68,9 @@ function getSummary(vendorid, version) {
 
     window.open("eRFQReport.html?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=99&RFQVersionTxt=Final%20Version", "_blank")
 
+}
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
 }
 
 var Vendor;
@@ -129,7 +133,7 @@ function fetchrfqcomprative() {
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                    if (data[0].vendorNames[i].seqno != 0) {
+                    if (data[0].vendorNames[i].seqNo != 0) {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
@@ -271,6 +275,7 @@ function fetchrfqcomprative() {
                 strExcel += "<tr><td colspan=5><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqno != 0) {
+                       
                         RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                         str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -364,7 +369,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -508,7 +513,7 @@ function fetchrfqcomprative() {
                         var flag2 = 'T';
                         $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
                             var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].Questions[p].question.toLowerCase()) {
+                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].questions[p].question.toLowerCase()) {
                                 flag2 = 'F';
 
                             }
@@ -675,13 +680,16 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
@@ -693,7 +701,7 @@ function fetchrfqcomprative() {
 
 function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
-    
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceForReport/?RFQID=" + RFQID + "&VendorId=" + VendorID + "&RFQVersionId=99&BidID=0",
@@ -703,26 +711,29 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-         
+            
             $("#totBoxinitialwithoutgst" + VendorID).html(thousands_separators(data[0].initialTotalPriceExTax));
             $("#totBoxinitialwithoutgstExcel" + VendorID).html(thousands_separators(data[0].initialTotalPriceExTax));
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceIncTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
-            $("#totBoxTax" + VendorID).html(thousands_separators(RFQFetchTotalPriceForReport(data[0].totalPriceIncTax)));
+            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxTaxExcel" + VendorID).html(RFQFetchTotalPriceForReport(data[0].totalPriceIncTax));
+            $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $(".lambdafactor").addClass('hide');
             
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -750,11 +761,13 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -775,17 +788,19 @@ function FetchRFQVersion() {
             $("#ddlrfqVersion").empty();
             if (data.length > 0) {
                 max = data[0].rfqVersionId;
-                
+
             }
 
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -809,12 +824,9 @@ function fetchAttachments() {
 
             if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:50%!important'>Description</th><th style='width:50%!important'>Attachment</th></tr></thead>")
-
-               
-
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/PPC/' + $('#hdnRfqID').val() + '/' + data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20") + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
 
                 }
@@ -828,11 +840,13 @@ function fetchAttachments() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -872,7 +886,7 @@ function fetchReguestforQuotationDetails() {
                     replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
                 }
 
-                $('#TermCondition').attr('href', 'PortalDocs/RFQ/' + $('#hdnRfqID').val() + '/' + replaced1.replace(/\s/g, "%20") + '').html(RFQData[0].general[0].rfqTermandCondition)
+                $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
                 $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
@@ -881,11 +895,13 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -968,7 +984,7 @@ function fetchAzPPcFormDetails() {
                     jQuery('#tblPPCAttachments').append("<thead><tr><th class='bold'>Attachment</th></tr></thead>");
                     for (i = 0; i < data[0].attachments.length; i++) {
                         attach = data[0].attachments[i].attachment.replace(/\s/g, "%20");
-                        var str = "<tr><td><a style='pointer:cursur;text-decoration:none;' target=_blank  href=PortalDocs/eRFQ/" + $("#hdnRfqID").val() + '/PPC/' + attach + '>' + data[0].attachments[i].attachment + "</a></td>";
+                        var str = '<tr><td><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)" href="javascript:;" >' + data[0].attachments[i].attachment + "</a></td>";
                        jQuery('#tblPPCAttachments').append(str);
                     }
                 }
@@ -984,17 +1000,23 @@ function fetchAzPPcFormDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
     })
+}
+function DownloadFilePPC(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/PPC');
 }
 function fnRemoveClassTab0() {
     $('#tab_0').removeClass('hide')
@@ -1021,13 +1043,16 @@ function fetchRegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
 
@@ -1173,6 +1198,7 @@ function deleteApprow(approwid) {
     }
 }
 function MapApprover() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblapprovers tr').length;
     if (rowCount > 1) {
@@ -1190,8 +1216,7 @@ function MapApprover() {
         "IsApproverObserver": $('#drp_isAppObs').val(),
         "PPCApprovers": approvers
     }
-    //  alert(JSON.stringify(Approvers))
-   // console.log(JSON.stringify(Approvers))
+  
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1202,9 +1227,9 @@ function MapApprover() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+           // if (data.length > 0) {
               
-                if (data == "1") {
+                //if (data == "1") {
 
                     $('#msgSuccessApp').show();
                     $('#msgSuccessApp').html('Activity Forward to PPC Approvers successfully!');
@@ -1226,20 +1251,19 @@ function MapApprover() {
                     });
                     return false;
 
-                }
-                
-            }
-            
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
 
@@ -1308,13 +1332,16 @@ function fnGetApprovers() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     })
@@ -1374,13 +1401,16 @@ function fetchApproverRemarks() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     })
@@ -1513,24 +1543,27 @@ function fnFWDeRFQ() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+           // if (data.length > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
 
 
-            }
+          //  }
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -1547,7 +1580,8 @@ function ApprovalCommercialApp() {
         "Action": $('#ddlActionType').val()
     };
 
-     //alert(JSON.stringify(approvalbyapp))
+     
+    //console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQPPCApprove",
@@ -1566,55 +1600,18 @@ function ApprovalCommercialApp() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
 }
 
-//function fnRemoveApprover(rowsrno, approvertype) {
-//    var Approvers = {
-//        "ApproverType": approvertype,
-//        "SrNo": rowsrno,
-//        "RFQID": $('#hdnRfqID').val()
-//    }
-//    //alert(JSON.stringify(Approvers))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQApproveRemove",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        crossDomain: true,
-//        async: false,
-//        data: JSON.stringify(Approvers),
-//        dataType: "json",
-//        success: function (data) {
-//            if (data[0].OutPut == "1") {
-//                fnGetApprovers();
-//                $('#msgSuccessApp').show();
-//                $('#msgSuccessApp').html('Approver removed successfully!');
-//                Metronic.scrollTo($('#msgSuccessApp'), -200);
-//                $('#msgSuccessApp').fadeOut(7000);
-//                return false;
-
-//            }
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = eval("(" + xhr.responseText + ")");
-//            if (xhr.status === 401) {
-//                error401Messagebox(err.Message);
-//            }
-
-//            return false;
-//            jQuery.unblockUI();
-//        }
-
-//    })
-//}

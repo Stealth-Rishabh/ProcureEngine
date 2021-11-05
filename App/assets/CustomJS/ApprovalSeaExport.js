@@ -31,7 +31,7 @@ function FetchVendors(BidID) {
             jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
             jQuery("#ddlVendors,#ddlVendorsAdmin").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < data.length; i++) {
-                jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").append(jQuery("<option ></option>").val(data[i].VendorID).html(data[i].VendorName));
+                jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").append(jQuery("<option ></option>").val(data[i].vendorID).html(data[i].vendorName));
                 //selectedValues.push(data[i].VendorID);
             }
             // $("#drpVendors").select2("val",selectedValues);
@@ -40,10 +40,14 @@ function FetchVendors(BidID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -51,94 +55,7 @@ function FetchVendors(BidID) {
 }
 
 var FormValidation = function () {
-    var validateModication = function () {
-        var form1 = $('#formModify');
-        var error1 = $('.alert-danger', form1);
-        var success1 = $('.alert-success', form1);
-
-        form1.validate({
-            errorElement: 'span',
-            errorClass: 'help-block',
-            focusInvalid: false,
-            ignore: "",
-
-            rules: {
-                txtPerSqFtRate: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 10
-                },
-                txtManPowerCost: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 10
-                },
-                txtInfrastructureCost: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 10
-                },
-                txtUtilitiesCost: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 10
-                },
-                txtFixedManagementFee: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 10
-                }
-            },
-            messages: {
-                txtPerSqFtRate: {
-                    required: "Please enter Per Square Feet Rent"
-                },
-                txtManPowerCost: {
-                    required: "Please enter Man Power Cost"
-                },
-                txtInfrastructureCost: {
-                    required: "Please enter Infrastructure Cost"
-                },
-                txtUtilitiesCost: {
-                    required: "Please enter Utilities Cost"
-                },
-                txtFixedManagementFee: {
-                    required: "Please enter Fixed Management Fee"
-                }
-            },
-
-            invalidHandler: function (event, validator) { //display error alert on form submit              
-                success1.hide();
-                error1.show();
-                // App.scrollTo(error1, -300);
-            },
-
-            highlight: function (element) { // hightlight error inputs
-                $(element)
-                        .closest('.Input-group').addClass('has-error'); // set error class to the control group
-            },
-
-            unhighlight: function (element) { // revert the change done by hightlight
-                $(element)
-                        .closest('.Input-group').removeClass('has-error'); // set error class to the control group
-            },
-
-            success: function (label) {
-                label
-                        .closest('.Input-group').removeClass('has-error'); // set success class to the control group
-            },
-
-            submitHandler: function (form) {
-                InsertBidModificationProductServices();
-                //App.scrollTo(error1, -100);
-            }
-        });
-    }
+  
     var validateformProductServices = function () {
         var form1 = $('#formsubmitadmin');
         var error1 = $('.alert-danger', form1);
@@ -198,7 +115,6 @@ var FormValidation = function () {
                     }
                 }
                 else {
-                   
                     ForwardBid(BidID, BidTypeID, BidForID)
                   
                 }
@@ -377,7 +293,7 @@ var FormValidation = function () {
     return {
         init: function () {
             handleWysihtml5();
-            validateModication();
+          
             validateformProductServices();
             validateAppsubmitData();
             validateformAwardedsubmit();

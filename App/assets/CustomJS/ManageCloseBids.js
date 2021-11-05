@@ -24,12 +24,14 @@ function FetchAllCustomer() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -73,7 +75,7 @@ function FetchAllOpenBids() {
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                     str += "<td>" + BidDate + "</td>";
                     
-                    str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].aMPM + "</td>";
+                    str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].ampm + "</td>";
                     str += "<td class=text-right>" + BidData[i].bidDuartion + "</td>";
                     str += "<td>" + BidData[i].currencyName + "</td>";
                     str += "</tr>";
@@ -148,12 +150,14 @@ function FetchAllOpenBids() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
        
     
@@ -246,16 +250,16 @@ function fnCloseBids() {
  var temp = new Array();
  $("#tblVendorSummary> tbody > tr").each(function (index) {
      if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-       checkedValue = checkedValue + " Update BidDetails set Status='Close' where BidID=" + $(this).find("#chkvender").val() +"  ;";
+         checkedValue = checkedValue +$(this).find("#chkvender").val() + ',';
      }
  });
- 
+    checkedValue = checkedValue.slice(0, -1);
  var data = {
-     "BidID": 0,
      "QueryString": checkedValue,
      "UserID": sessionStorage.getItem("UserID")
     
- }
+    }
+    console.log(checkedValue)
    //  alert(JSON.stringify(data))
  jQuery.ajax({
      url: APIPath + "BidVendorSummary/Upd_CloseBids",
@@ -277,12 +281,14 @@ function fnCloseBids() {
      error: function (xhr, status, error) {
 
          var err = eval("(" + xhr.responseText + ")");
-         if (xhr.status === 401) {
+         if (xhr.status == 401) {
              error401Messagebox(err.Message);
          }
-
-         return false;
+         else {
+             fnErrorMessageText('error', '');
+         }
          jQuery.unblockUI();
+         return false;
      }
  });
 

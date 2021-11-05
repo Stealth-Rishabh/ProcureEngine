@@ -141,15 +141,16 @@ function fillCountryDropDown(dropdownID, countryid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
                 alert(response.status + ' ' + response.statusText);
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
        
     });
@@ -193,8 +194,8 @@ function fillStateDropDown(dropdownID, stateid) {
         
         error: function (xhr, status, error) {
 
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
             error401Messagebox(err.Message);
         }
         else{
@@ -243,8 +244,8 @@ function fillCityDropDown(dropdownID, cityid) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -307,8 +308,8 @@ function RegisterCustomer() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -388,15 +389,16 @@ function FetchCustomerDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
                 alert(response.status + ' ' + response.statusText);
             }
-            return false;
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });

@@ -48,8 +48,18 @@ function formvalidate() {
 
 }
 function fetchPOSummary() {
-    var url = sessionStorage.getItem("APIPath") + "POUpload/POSummary/?FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val() + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID');// + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+    var frmdate = "1900-01-01";
+    var todate = "1900-01-01";
+    if (jQuery("#txtFromDate").val() != "" && jQuery("#txtFromDate").val() != null) {
+        frmdate = jQuery("#txtFromDate").val();
+    }
   
+    if (jQuery("#txtToDate").val() != "" && jQuery("#txtToDate").val() != null) {
+        todate = jQuery("#txtToDate").val();
+    }
+   
+    var url = sessionStorage.getItem("APIPath") + "POUpload/POSummary/?FromDate=" + frmdate + "&ToDate=" + todate + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID');// + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -65,17 +75,17 @@ function fetchPOSummary() {
             if (BidData.length > 0) {
 
                 for (var i = 0; i < BidData.length; i++) {
-                    var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + BidData[i].POHeaderID + "'\,\'" + BidData[i].Status.charAt(0) + "'\) href='javascript:;' >" + BidData[i].POHeaderID + "</a></td>";
+                    var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + BidData[i].poHeaderID + "'\,\'" + BidData[i].status.charAt(0) + "'\) href='javascript:;' >" + BidData[i].poHeaderID + "</a></td>";
                    
-                    str += "<td>" + BidData[i].VendorName + "</td>";
-                    str += "<td>" + BidData[i].CreatedByName + "</td>";
+                    str += "<td>" + BidData[i].vendorName + "</td>";
+                    str += "<td>" + BidData[i].createdByName + "</td>";
 
-                    var datearray = BidData[i].PODate.split("/");
+                    var datearray = BidData[i].poDate.split("/");
 
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
 
                     str += "<td>" + BidDate + "</td>";
-                    var status = (BidData[i].Status.split(" ")[0] == 'Forward') ? "Pending" : BidData[i].Status.split(" ")[0] != 'Cancel' ? BidData[i].Status.split(" ")[0]+"ed": BidData[i].Status.split(" ")[0]
+                    var status = (BidData[i].status.split(" ")[0] == 'Forward') ? "Pending" : BidData[i].status.split(" ")[0] != 'Cancel' ? BidData[i].status.split(" ")[0]+"ed": BidData[i].Status.split(" ")[0]
                     str += "<td>" + status + "</td>";
 
                     str += "</tr>";
@@ -146,12 +156,14 @@ function fetchPOSummary() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }

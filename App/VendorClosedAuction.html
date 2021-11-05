@@ -99,6 +99,9 @@
 
                             <div class="portlet-body form" id="content">
                                 <div class="form-body">
+                                    <div class="alert alert-danger" id="divalerterror" style='display: none; text-align: center;'>
+                                        <span id="spanerror1"> </span>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12 ">
                                             <div class="form-group">
@@ -116,10 +119,10 @@
                                                 <label class=" col-md-1 control-label">
                                                     Bid Details:
                                                 </label>
-                                                
+
                                                 <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
                                                 </label>
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -188,15 +191,15 @@
                                             Terms & Condition:
                                         </label>
 
-                                        <a id="lnkTermsAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                        <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
 
-                                       
+
                                     </div>
                                     <div class="form-control">
                                         <label class="col-md-2 control-label">
                                             Attachment (Any Other):
                                         </label>
-                                        <a id="lnkAnyOtherAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                        <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
                                     </div>
                                 </div>
                             </div>

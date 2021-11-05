@@ -104,6 +104,19 @@ function fetchApproverRemarks() {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//eval("(" +  + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
         }
     })
 }
@@ -115,30 +128,10 @@ function getSummary(vendorid, version) {
 
 function fetchrfqcomprative() {
    
-    var reInvited = '';
-    var dtfrom = '';
-    var dtto = '';
    
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        dtfrom = '';
-
-    }
-    else {
-        dtfrom = $("#txtFromDate").val()
-    }
-
-    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = '';
-
-    }
-    else {
-        dtto = $("#txtToDate").val()
-    }
-    
-    
+        
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&dateTo=" + dtto + "&dateFrom=" + dtfrom + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -191,7 +184,7 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Select"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     
-                    if (data[0].vendorNames[i].seqno != 0) {
+                    if (data[0].vendorNames[i].seqNo != 0) {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
@@ -303,7 +296,7 @@ function fetchrfqcomprative() {
 
                         }
                         totallowestValue = totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue)
-                        str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].pono + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                        str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         str += "</tr>"
                         jQuery('#tblRFQComprativetest').append(str);
 
@@ -314,7 +307,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
                
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                         str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                        
@@ -401,7 +394,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         
@@ -436,7 +429,7 @@ function fetchrfqcomprative() {
                    
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                        if (data[0].vendorNames[k].seqno != '0') {
+                        if (data[0].vendorNames[k].seqNo != '0') {
 
                             str += "<td colspan=4 style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[k].vendorID + "'\,\'" + data[0].vendorNames[k].rfqVersionId + "'\)  style='color:#2474f6; text-decoration:underline;'><b>" + data[0].vendorNames[k].vName + "<b></a></td>";
                            
@@ -730,13 +723,16 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;// eval("(" + + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -784,13 +780,16 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" +  + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
@@ -818,13 +817,16 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;//eval("(" +  + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
     });
 }
@@ -847,17 +849,23 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText;// eval("(" + + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+          
         }
 
     });
 
+}
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
 }
 function fetchAttachments() {
     jQuery.ajax({
@@ -877,7 +885,7 @@ function fetchAttachments() {
 
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a style="pointer:cursur;text-decoration:none;" target=_blank href=PortalDocs/eRFQ/' + $('#hdnRfqID').val() + '/' + data[0].Attachments[i].rfqAttachment.replace(/\s/g, "%20") + '>' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:50%!important"><a id=eRFQFile' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachments').append(str);
 
                 }
@@ -891,12 +899,15 @@ function fetchAttachments() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     })
@@ -953,13 +964,16 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
@@ -1174,7 +1188,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalCommercialApp() {
-    
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' }); 
     var approvalbyapp = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1205,18 +1219,22 @@ function ApprovalCommercialApp() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
 }
 function AwardCommeRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var a = $('#drpVendors').val();
     // alert(a)
@@ -1255,19 +1273,23 @@ function AwardCommeRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+           
         }
 
     });
 }
 function fnFWDeRFQ()
 {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1289,29 +1311,33 @@ function fnFWDeRFQ()
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            if (data.length > 0) {
+            //if (data.length > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
                
                 
-            }
+            //}
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });
    }
 function ApprovalApp() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     for (var i = 0; i < Vendor.length; i++) {
       
@@ -1322,18 +1348,9 @@ function ApprovalApp() {
             checkedval = $("#AppNo" + Vendor[i].vendorID).val()
            
         }
-
-        approvalstatus = approvalstatus + " Select " + RFQID + "," + Vendor[i].vendorID + ",dbo.decrypt('" + sessionStorage.getItem("UserID") + "'),'" + checkedval + "' union all";
+         approvalstatus = approvalstatus + Vendor[i].vendorID + '~' + checkedval + '#';
     }
-    if (approvalstatus != '') {
-
-        approvalstatus = "Insert into PE.eRFQVendorApprovalStatus(RFQID,VendorId,ApproverID,isApproved)" + approvalstatus;
-        approvalstatus = approvalstatus.substring(0, approvalstatus.length - 10);
-
-    }
-    else {
-        approvalstatus = "Print 1";
-    }
+    
   
     var approvalbyapp = {
         "RFQID": parseInt(RFQID),
@@ -1345,6 +1362,7 @@ function ApprovalApp() {
        
     };
    // alert(JSON.stringify(approvalbyapp))
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
@@ -1356,24 +1374,27 @@ function ApprovalApp() {
         dataType: "json",
         success: function (data) {
           
-            if (parseInt(data) > 0) {
+            //if (parseInt(data) > 0) {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
-            }
+            //}
            
 
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
 
     });

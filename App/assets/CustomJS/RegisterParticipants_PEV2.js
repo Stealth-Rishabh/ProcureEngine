@@ -8,6 +8,7 @@ $('#txtUI,txtPanNo,#txtTINNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
 var FormValidation = function () {
     var ValidateParticipants = function () {
         var form1 = $('#entryForm');
@@ -142,6 +143,7 @@ var FormValidation = function () {
                         ExtendParticipants();
                     }
                     else {
+                      
                         RegisterParticipants();
                     }
                    
@@ -178,6 +180,7 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
         status = 'Y';
@@ -203,6 +206,7 @@ function RegisterParticipants() {
         "AlternateEmailID": $('#txtAlternateeMailID').val()
 
     };
+    // console.log(JSON.stringify(RegisterParticipants))
     //alert(JSON.stringify(RegisterParticipants))
     jQuery.ajax({
        
@@ -213,45 +217,41 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
            
-            $("#hdnParticipantID").val(data[0].participantID)
-            $("#hdnParticipantCode").val(data[0].vendorCode)
+            $("#hdnParticipantID").val(data.participantID)
+            $("#hdnParticipantCode").val(data.vendorCode)
+           
+            if (data.isSuccess == '1') {
 
-            if (data[0].isSuccess == '1') {
-               
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
             }
-            else if (data[0].isSuccess == '2') {
+            else if (data.isSuccess == '2') {
                 if ($("#hdnParticipantID").val() != '') {
                     MapVendorCategories();
                 }
             }
             else {
                 fnshowexistedVendorForextend();
-                
-               
             }
             setTimeout(function() {
                 jQuery('#divalertsucess').css('display', 'none');
                 jQuery('#divalerterr').css('display', 'none');
             }, 5000);
-            
             fetchParticipantsVenderTable();
-            
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-            
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });
@@ -292,22 +292,19 @@ function fnshowexistedVendorForextend() {
                     }
                 }
             }
-            
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                jQuery('#divalerterr').slideDown('show');
-                $('#div_tableVendor').addClass('hide');
-                $('#spanerterr').text('You have error .Please try again')
-                App.scrollTo(jQuery('#divalerterr'), -200);
+                fnErrorMessageText('spanerterr', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
 
     })
@@ -363,8 +360,6 @@ function validateDuplicateEmailId(elem) {
     }
 }
 
-
-
 function validateVendorGroup(ctrl,categoryId) {
     if (jQuery(ctrl).is(':checked') == true) {
         
@@ -399,31 +394,28 @@ function fetchParticipantsVenderTable() {
                         if (sessionStorage.getItem('UserID') == value.createdBy) {
 
                            if (value.actionType == "EditVendor") {
-                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                                str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                str += "<td style=\"width:10%!important;\">No</td>";
                               
                            }
                            else {
-                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";//Edit
+                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\ )\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";//Edit
                                str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                str += "<td style=\"width:10%!important;\">Yes</td>";
                                
                             }
-
-                            
-                        
-                       }
+                        }
                        else {
                            if (value.actionType == "EditVendor") {
                                //str += "<a href=\"#\"   class=\"btn btn-xs grey\">Not Editable</a>&nbsp;&nbsp;";
-                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
                                str += "<td style=\"width:10%!important;\">" + value.createdByName +"</td>";
                                str += "<td style=\"width:10%!important;\">No</td>";
                             
                            }
                            else {
-                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
+                               str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
                                str += "<td style=\"width:10%!important;\">External</td>";
                                str += "<td style=\"width:10%!important;\">Yes</td>";
                               
@@ -446,13 +438,15 @@ function fetchParticipantsVenderTable() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -538,15 +532,15 @@ function fetchMapCategory(categoryFor, vendorId) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -668,9 +662,7 @@ $('div#divisactive').on('change', '.has-error', function () {
 function ValidateVendor() {
     var chkstatus = "false";
     var i = 0;
-  
-
-    $('div#divbidtypecontend').each(function (index) {
+   $('div#divbidtypecontend').each(function (index) {
         
         if ($(this).find("span#spanchecked").attr('class') == 'checked') {
             chkstatus = 'True';
@@ -710,7 +702,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
    
     jQuery.each($("#tblParticipantsVender tbody").find("tr"), function () {
-        console.log($(this).text());
+        //console.log($(this).text());
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -720,21 +712,17 @@ jQuery("#txtSearch").keyup(function () {
 function MapVendorCategories() {
 
     var InsertQuery = '';
-    var UserID  = sessionStorage.getItem('UserID');
-    
+   
     $('.childchkbox').each(function() {
         if (this.checked) {
-            InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",dbo.Decrypt('" + UserID + "'),getdate() union all ";
+           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
+            InsertQuery = InsertQuery + $(this).val() + "#";
         }
-        else {
-            InsertQuery = InsertQuery;
-        }
+        
     });
 
-    if (InsertQuery != '') {
-        InsertQuery = 'Insert into VendorCategoryTypeMapping(CategoryID,VendorID,CustomerID,MappedBy,MappedOn)' + InsertQuery;
-        InsertQuery = InsertQuery.substring(0, InsertQuery.length - 11);
-    } else {
+    if (InsertQuery == '') {
+
         jQuery('#divalerterr').find('span').text('Please select atleast one group!');
         jQuery('#divalerterr').slideDown('show');
         App.scrollTo(jQuery('#divalerterr'), -200);
@@ -752,7 +740,8 @@ function MapVendorCategories() {
         "VendorID": parseInt($("#hdnParticipantID").val())
         
     };
-    //alert(JSON.stringify(MapParticipants))
+    //console.log(JSON.stringify(MapParticipants))
+   // alert(JSON.stringify(MapParticipants))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -760,18 +749,18 @@ function MapVendorCategories() {
         data: JSON.stringify(MapParticipants),
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
-         
-        if (data == '1') {
+       
+        //if (data == '1') {
             jQuery('#divalertsucess').slideDown('show');
             App.scrollTo(jQuery('#divalertsucess'), -200);
             fetchParticipantsVenderTable();
             clearform();
-         }
-            else {
+        // }
+            //else {
 
-                jQuery('#divalerterr').slideDown('show');
-                App.scrollTo(jQuery('#divalerterr'), -200);
-             }
+            //    jQuery('#divalerterr').slideDown('show');
+            //    App.scrollTo(jQuery('#divalerterr'), -200);
+            // }
             setTimeout(function() {
                 jQuery('#divalertsucess').css('display', 'none');
                 jQuery('#divalerterr').css('display', 'none');
@@ -781,15 +770,15 @@ function MapVendorCategories() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -853,12 +842,11 @@ jQuery("#ParticipantName").typeahead({
 });
 
 function validatePanNumber(pan) {
-
-        fnfetchfoundVendors();
+         fnfetchfoundVendors();
   
 }
 function fnfetchfoundVendors() {
-   
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -915,18 +903,15 @@ function fnfetchfoundVendors() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery('#divalerterr').slideDown('show');
-                $('#div_tableVendor').addClass('hide');
-                $('#spanerterr').text('You have error .Please try again')
-                App.scrollTo(jQuery('#divalerterr'), -200);
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     })
@@ -971,14 +956,12 @@ $("#txtUI").keyup(function () {
 });
 function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode,alternatemailid) {
    // alert(buttonname)
-   
-   
     $('#hdnFlagType').val(buttonname)
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
     jQuery("#ParticipantName").val(vname)
-    jQuery("#txtAddress").val(addr1)
-    jQuery("#txtCity").val(addr2)
+    jQuery("#txtAddress").val(decodeURIComponent(addr1))
+    jQuery("#txtCity").val(decodeURIComponent(addr2))
     jQuery("#txtPanNo").val(pan)
     jQuery("#txtTINNo").val(gst)
     jQuery("#txtPhoneNo").val(phone)
@@ -997,6 +980,7 @@ function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, add
     }
     $('#divVendorForm').removeClass('hide')
     fetchMapCategory('Z', vendorid);
+
     if (buttonname == "EditCustomerVendor") {
         $('#ParticipantName').attr('disabled', 'disabled')
         $('#txtAddress').attr('disabled', 'disabled')
@@ -1071,7 +1055,6 @@ function ExtendParticipants() {
         "VendorCode": jQuery("#hdnParticipantCode").val(),
         "UserID": sessionStorage.getItem('UserID')
     }
-    
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegisterParticipanttoCustomer_PEV2/",
@@ -1080,9 +1063,9 @@ function ExtendParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            
-            if (data[0].IsSuccess == '1') {
-                $("#hdnParticipantID").val(data[0].ParticipantID)
+           
+            if (data.isSuccess == '1') {
+                $("#hdnParticipantID").val(data.participantID)
                 MapVendorCategories();
             }
             else {
@@ -1102,16 +1085,16 @@ function ExtendParticipants() {
         
         error: function (xhr, status, error) {
 
-        var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
-            error401Messagebox(err.Message);
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
         }
-        else{
-            jQuery("#error").text(xhr.d);
-        }
-        return false;
-        jQuery.unblockUI();
-    }
     });
 
 

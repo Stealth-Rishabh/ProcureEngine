@@ -397,6 +397,7 @@ function countWords(str) {
     return str.trim().split(/\s+/).length;
 }
 
+
 function fillCountryDropDown(dropdownID, countryid) {
 
     jQuery.ajax({
@@ -423,12 +424,14 @@ function fillCountryDropDown(dropdownID, countryid) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
       });
 }
@@ -480,12 +483,14 @@ function fillStateDropDown(dropdownID, stateid) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -530,9 +535,11 @@ function fillCityDropDown(dropdownID, cityid) {
            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -562,12 +569,14 @@ function FetchCurrency(CurrencyID) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -599,12 +608,14 @@ function fetchALLmenuitems() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -650,7 +661,7 @@ sessionStorage.setItem("hdnAdminID", 0)
 function ins_updCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
-    var noofbids = '';
+    var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
     
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();
@@ -677,14 +688,23 @@ function ins_updCustomer() {
     else {
         noofbids = $('#txtnobids').val();
     }
+    if ($('#dropState').val() != "" && $('#dropState').val() != null) {
+        state = $('#dropState').val()
+    }
+    if ($('#dropCity').val() != "" && $('#dropCity').val() != null) {
+        city = $('#dropCity').val()
+    }
+    if ($('#pincode').val() != "" && $('#pincode').val() != null) {
+        pincode = $('#pincode').val()
+    }
     if (checkimageExtension(logo)) {
         var data = {
             'CustomerName': $('#txtcustomername').val(),
             'CustomerAddress': $('#txtAddress1').val(),
             'CountryID': parseInt($('#dropCountry').val()),
-            'StateID': parseInt($('#dropState').val()),
-            'CityID': parseInt($('#dropCity').val()),
-            'PinCode': parseInt($('#pincode').val()),
+            'StateID': parseInt(state),
+            'CityID': parseInt(city),
+            'PinCode': parseInt(pincode),
             'Website': $('#txtwebsite').val(),
             'PhoneNo': $('#phoneno').val(),
             'AdminName': $('#txtadminfirstname').val(),
@@ -717,7 +737,7 @@ function ins_updCustomer() {
         return false;
 
     }
-  
+    console.log(JSON.stringify(data))
     jQuery.ajax({
         url: APIPath + "CustomerRegistration/InsCustomerRegistration",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -725,11 +745,10 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-          
-            if (data[0].isSuccess == '1') {
-                
-                sessionStorage.setItem("hdnCustomerID", data[0].customerID)
-                sessionStorage.setItem("hdnAdminID", data[0].adminID)
+            alert(data.isSuccess)
+            if (data.isSuccess == '1') {
+                sessionStorage.setItem("hdnCustomerID", data.customerID)
+                sessionStorage.setItem("hdnAdminID", data.adminID)
                 error.hide();
                 success.hide();
                
@@ -738,7 +757,7 @@ function ins_updCustomer() {
                 return true;
                
             }
-            else if (data[0].isSuccess == '-1') {
+            else if (data.isSuccess == '-1') {
                 
                 success.hide();
                 error.show();
@@ -753,7 +772,7 @@ function ins_updCustomer() {
                 return false;
             }
            
-            else if (data[0].isSuccess == '0') {
+            else if (data.isSuccess == '0') {
                 success.hide();
                 error.show();
                 error.fadeOut(7000);
@@ -767,12 +786,14 @@ function ins_updCustomer() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -952,6 +973,18 @@ function fetchCustomerDetails(customerid) {
                 }
             }
             jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
+            jQuery.unblockUI();
+            return false;
         }
          
 
@@ -1000,6 +1033,18 @@ function fnFetchMenusonRoleBased() {
 
                 }
             }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
+            }
+            jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -1011,15 +1056,13 @@ function fileUploader(CustomerName) {
     var fileTerms = $('#file1');
     var fileDataTerms = fileTerms.prop("files")[0];
 
-   // alert(CustomerName)
+  
     var formData = new window.FormData();
 
     formData.append("fileTerms", fileDataTerms);
     formData.append("AttachmentFor", "Customer");
-
-    formData.append("BidID", CustomerName);
-    formData.append("VendorID", '');
-
+    formData.append("CustomerName", CustomerName);
+   
      $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',
@@ -1131,17 +1174,14 @@ function fnMapMenus() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                jQuery("#diverror").text(xhr.d);
-                error.show();
-                error.fadeOut(5000);
-               
+            else {
+                fnErrorMessageText('spandanger', 'form-wizard');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });

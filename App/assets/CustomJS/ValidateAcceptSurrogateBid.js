@@ -2,18 +2,12 @@
 var decryptedstring = fndecrypt(param)
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
-
 var BIDTypeID = '';
 var BidClosingType='';
-sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
-//sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
-
-//var UrLToken = 'http://www.support2educate.com/procurengine/API/token';
-//var UrLToken = 'https://www.procurengine.org/API/token';
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
 function fetchBidHeaderDetails() {
-    var tncAttachment = '';
-    var anyotherAttachment = '';
+   
     var url = '';
   
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetailsForSurrogate/?BidID=" + BIDID;
@@ -41,8 +35,7 @@ function fetchBidHeaderDetails() {
                     $('#txtpassword').removeAttr('disabled');
                     jQuery('#lblEventID').html(BIDID);
                     jQuery('#bid_EventID').html("Event ID : " + BIDID);
-                    tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-                    anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
+                   
                     jQuery("#lblbidsubject").text(data[0].bidSubject);
                     jQuery("#lblbidDetails").text(data[0].bidDetails);
                     jQuery("#lblbiddate").text(data[0].bidDate);
@@ -57,11 +50,10 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblbidforTT").text(data[0].bidFor);
                     BIDTypeID = data[0].bidTypeID;
                     BidClosingType = data[0].bidClosingType;
-                    jQuery("a#lnkTermsAttachment").html(data[0].termsConditions);
-                    //jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + BIDID + "/" + tncAttachment)
 
-                    jQuery("a#lnkAnyOtherAttachment").html(data[0].attachment);
-                    //jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + BIDID + "/" + anyotherAttachment)
+                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                   
 
                     jQuery("#lblbidduration").text(data[0].bidDuration);
                     jQuery("#lblcurrency").text(data[0].currencyName);
@@ -74,7 +66,7 @@ function fetchBidHeaderDetails() {
                 }
                 else {
                     bootbox.alert("This bid has already expired !!!", function () {
-                        //   $('.page-container').hide();
+                       
                         $('#btnpassword').attr('disabled', 'disabled')
                         $('#txtpassword').attr('disabled', 'disabled')
                         
@@ -98,14 +90,17 @@ function fetchBidHeaderDetails() {
 
 }
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'Bid', BIDID);
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
+
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
+
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
-   // sessionStorage.setItem("APIPath", 'https://www.procurengine.org/API/api/');
+   // sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+
     if (jQuery("#txtpassword").val() == "" ) {
 
         erroropenbid.show();
@@ -116,7 +111,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
-       var url = sessionStorage.setItem("APIPath") +"User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
+       var url = sessionStorage.getItem("APIPath") +"User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
             jQuery.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -124,9 +119,10 @@ function validatepassword() {
                 cache: false,
                 crossDomain: true,
                 dataType: "json",
-             success: function (response) {
-                sessionStorage.setItem("Token", response.access_token)
-                fnGtrTokenValidatePassword()
+                success: function (response) {
+                   
+                    sessionStorage.setItem("Token", response.token)
+                    fnGtrTokenValidatePassword()
                 
             },
             error: function (xhr, status, error) {
@@ -162,9 +158,9 @@ function fnGtrTokenValidatePassword() {
                     sessionStorage.setItem("UserName", data[0].vendorName)
                     sessionStorage.setItem("BidID", BIDID)
                     sessionStorage.setItem("ISFromSurrogate", "Y")
-                    sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                   // sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                    sessionStorage.setItem("HomePage", "https://pev3proapp.azurewebsites.net/")
                    
-                   // sessionStorage.setItem("HomePage", "https://www.procurengine.org/")
                   
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {
@@ -272,17 +268,17 @@ function acceptBidTermsAuction() {
         "BidID": parseInt(BIDID),
         "VendorID": vendorID
     };
-    // alert(JSON.stringify(acceptTerms))
+   
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTermsForSurrogate/",
+        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            if (data[0].isSuccess == 'Y') {
-                window.location = data[0].linkURL
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL;
             }
         },
         error: function (xhr, status, error) {

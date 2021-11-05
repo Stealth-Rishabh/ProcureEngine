@@ -154,7 +154,7 @@
                                                     <select class="form-control" id="ddlrfqVersion" name="ddlrfqVersion" style="margin: 0 auto;"></select>
                                                 </div>
                                                 <div class="col-md-4" style="text-align: left">
-                                                    <button type="submit" id="btnrfirfq" class="btn yellow"> Go</button>
+                                                    <button type="submit" id="btnrfirfq" class="btn yellow" > Go</button>
                                                     <button class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="left" data-original-title="Export to Excel">
                                                         Export
                                                     </button>
@@ -257,7 +257,7 @@
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label class="control-label">
-                                                            <a href="" id="TermCondition" target="_blank" style="text-align:left; text-decoration: none !important;">
+                                                            <a href="javascript:;" id="TermCondition" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;">
 
                                                             </a>
                                                         </label>
@@ -278,7 +278,7 @@
                                             </div>
 
                                         </div>
-                                        <!--<hr />-->
+                                       
                                     </div>
                                 </form>
                             </div>
@@ -385,7 +385,7 @@
 
                                                 </div>
                                             </div>
-                                            <!--<div class="clearfix margin-top-20"></div>-->
+                                           
                                         </div>
 
                                     </div>
@@ -499,7 +499,7 @@
                     <form action="#" class="form-horizontal" id="frmRemarksCancel">
                         <div class="form-body">
                             <div class="alert alert-danger" id="msgErrorL1" style='display: none;'>
-                                <span id=""> </span>
+                                <span id="spnerror"> </span>
                             </div>
                             <div class="alert alert-success" id="msgSuccessL1" style='display: none;'>
                                 <span id=""> </span>
@@ -653,8 +653,8 @@
             </div>
         </div>
     </div>
-    <div id="MapTechnicalApprover" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md">
+    <div id="MapTechnicalApprover" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
@@ -673,53 +673,53 @@
                             <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
                                 <span id=""> </span>
                             </div>
-                            <div class="form-group" id="">
-                             <input id="hdnApproverID" value="0" type="hidden"/>
+
+                            <div class="form-group">
+                                <input id="hdnApproverID" value="0" type="hidden" />
+                                <input id="hdnAppEmailIDID" value="0" type="hidden" />
                                 <div class="col-md-12">
-                                    <label class="control-label col-md-4">
-                                       Approver<span class="required"> *</span>
+                                    <label class="control-label col-md-2">
+                                        Approver<span class="required"> *</span>
                                     </label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
                                                data-provide="typeahead" autocomplete="off" name="txtApprover" />
                                     </div>
-
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label class="control-label col-md-4">
-                                        Show Quoted Price
+                                    <label class="control-label col-md-3">
+                                        Show Quoted Price<span class="required">*</span>
                                     </label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-2">
                                         <select class="form-control" id="drp_ShowPrice" name="drp_ShowPrice">
                                             <option value="N">No</option>
                                             <option value="Y">Yes</option>
                                         </select>
-
                                     </div>
-
+                                    <div class="col-md-1 pull-right">
+                                        <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="divapprover">
                                 <div class="col-md-12">
                                     <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
 
 
-                                </div></div>
+                                </div>
                             </div>
+
+                        </div>
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="row">
-                                        <div class="col-md-offset-11 col-md-9">
-                                            <button type="submit" class="btn green" > Submit</button>
+                                        <div class="col-md-offset-8 col-md-9">
+                                            <button type="button" class="btn green" id="btnTechSubmit" disabled onclick="MapApprover()"> Submit for Technical Approval</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                       
                     </form>
                 </div>
             </div>

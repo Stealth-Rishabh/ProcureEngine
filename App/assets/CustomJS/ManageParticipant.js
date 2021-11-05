@@ -181,12 +181,14 @@ function FetchAllCustomer() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -225,15 +227,15 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
             
-            $("#hdnParticipantID").val(data[0].participantID)
-            $("#hdnParticipantCode").val(data[0].vendorCode)
+            $("#hdnParticipantID").val(data.participantID)
+            $("#hdnParticipantCode").val(data.vendorCode)
 
-            if (data[0].isSuccess == '1') {
+            if (data.isSuccess == '1') {
                 jQuery('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
                
             }
-            else if (data[0].isSuccess == '2') {
+            else if (data.isSuccess == '2') {
                 jQuery('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
                
@@ -253,15 +255,14 @@ function RegisterParticipants() {
         error: function (xhr, status, error) {
 
         var err = eval("(" + xhr.responseText + ")");
-        if (xhr.status === 401) {
-            error401Messagebox(err.Message);
-        }
-        else{
-            jQuery("#error").text(xhr.d);
-        }
-           
-        return false;
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
         jQuery.unblockUI();
+        return false;
     }
     });
 
@@ -327,12 +328,14 @@ function fetchParticipantsVenderTable() {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-           
-            return false;
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 }
@@ -400,15 +403,14 @@ function fetchMapCategory(categoryFor, vendorId) {
         error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert("error");
+            else {
+                fnErrorMessageText('spanerterr', '');
             }
-           
-            return false;
             jQuery.unblockUI();
+            return false;
         }
        
     });

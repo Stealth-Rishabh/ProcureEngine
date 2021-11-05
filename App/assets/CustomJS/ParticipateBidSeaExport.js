@@ -6,16 +6,16 @@ sessionStorage.setItem('BidClosingType', '');
 //sessionStorage.setItem('BidID', 951)
 var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
-var displayForS="";
+var displayForS = "";
 
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
+}
 function fetchVendorDetails() {
 
     var url = '';
    
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidDetails/?BidID=" + sessionStorage.getItem("BidID") + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"));
-    
-    var tncAttachment = '';
-    var anyotherAttachment = '';
    
     jQuery.ajax({
         type: "GET",
@@ -31,8 +31,7 @@ function fetchVendorDetails() {
                
                 $('#tblParticipantsService').show();
                 jQuery("#tblParticipantsServiceBeforeStartBid").hide();
-                tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-                anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
+               
                 $("#hdnAdvFactor").val(data[0].advFactor);
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
@@ -44,14 +43,14 @@ function fetchVendorDetails() {
                
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
 
-                jQuery("a#lnkTermsAttachment").text(data[0].aermsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-                jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
-
-              
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+               
+                if (data[0].attachment != '') {
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                }
+                else {
+                    jQuery("#lnkAnyOtherAttachment").removeAttr('onclick');
+                }
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 
@@ -80,11 +79,15 @@ function fetchVendorDetails() {
             }
         },
         error: function(xhr) {
-            jQuery("#error").text(xhr.d);
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+           
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
         }
     });
 
@@ -177,9 +180,12 @@ function fetchBidSummaryVendorproduct() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
         }
     })
@@ -258,9 +264,12 @@ function refreshColumnsStaus() {
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
         }
@@ -329,7 +338,6 @@ function startTimer(duration, display) {
 function InsUpdQuoteSeaExport(index) {
 
     var vendorID = 0;
-    
     vendorID = sessionStorage.getItem('VendorId'); 
     
     var insertquery = '';
@@ -365,7 +373,7 @@ function InsUpdQuoteSeaExport(index) {
             vjap = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()));
         }
     }
-  
+   
     if ((removeThousandSeperator($('#txtquote' + index).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + index).val())))) {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Amount is required in number only')
@@ -382,7 +390,7 @@ function InsUpdQuoteSeaExport(index) {
        $('#spanamount' + index).text('Maximum Bid  = Your last quote minus minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text())
         return false
     }
-    else if (valuejap < parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "83") {
+    else if (valuejap < parseFloat(Amount) && $.trim($('#decon' + index).text() == "A") && value != 0 && $.trim(BidForID) == "83") {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Maximum bid amount = current L1 price less the minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text() + ".")
         return false
@@ -436,11 +444,12 @@ function InsUpdQuoteSeaExport(index) {
                 },
                 error: function(xhr) {
                    
-                    jQuery("#error").text(xhr.d + " you're offline check your connection and try again");
-                    
-                        var err = eval("(" + xhr.responseText + ")");
-                        if (xhr.status === 401) {
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                        if (xhr.status == 401) {
                             error401Messagebox(err.Message);
+                    }
+                        else {
+                            fnErrorMessageText('error', '');
                         }
                         jQuery.unblockUI();
                         return false;
@@ -480,11 +489,13 @@ function InsUpdQuoteSeaExport(index) {
 
                 },
                 error: function(xhr) {
-                    jQuery("#error").text(xhr.d);
-                    
-                    var err = eval("(" + xhr.responseText + ")");
-                    if (xhr.status === 401) {
+                   
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
                         error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('error', '');
                     }
                     jQuery.unblockUI();
                     return false;
@@ -513,11 +524,14 @@ function extendbidA() {
             return true
         },
         error: function(xhr) {
-            jQuery("#error").text(xhr.d);
             
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
@@ -555,9 +569,12 @@ function closeBidAir() {
         },
         error: function (xhr, status, error) {
             
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
@@ -589,7 +606,7 @@ function fetchBidHeaderDetails(bidId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            console.log("dataa > ", data)
+          
             if (data.length == 1) {
                 $('#tblParticipantsService').show();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -604,28 +621,33 @@ function fetchBidHeaderDetails(bidId) {
                 
                 jQuery("#lblbidfor").text('Price ('+data[0].bidFor+')');
 
-                jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-                jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
-
-                jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
-                jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
-
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
                
-
+                if (data[0].attachment != '') {
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                }
+                else {
+                    jQuery("#lnkAnyOtherAttachment").removeAttr('onclick');
+                }
+                
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);
               
                 var display = document.querySelector('#lblTimeLeft');
+               
                 startTimerBeforeBidStart(data[0].timeLeft, display)
                 fetchBidSummaryVendorproduct()
             }
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;

@@ -209,7 +209,7 @@
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label class="control-label">
-                                                            <a href="" id="TermCondition" target="_blank" style="text-align:left; text-decoration: none !important;">
+                                                            <a href="javascript:;" onclick="DownloadFile(this)" id="TermCondition"  style="text-align:left; text-decoration: none !important;">
 
                                                             </a>
                                                         </label>
@@ -939,7 +939,7 @@
                             <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
                                 <span id=""> </span>
                             </div>
-                            <div class="form-group" id="">
+                            <div class="form-group" >
                                 <input id="hdnApproverID" value="0" type="hidden" />
                                 <input id="hdnAppEmailIDID" value="0" type="hidden" />
                                 <div class="col-md-12">
@@ -1089,7 +1089,7 @@
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
             formvalidate();
             validateAppsubmitData();
-            fetchRegisterUser('1');
+            fetchRegisterUser();
             
         });
     </script>

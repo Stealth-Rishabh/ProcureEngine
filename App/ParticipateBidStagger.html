@@ -220,109 +220,111 @@
                             </div>
                         
                             <div class="portlet-body form" id="content">
-                                <div class="form-body">
-                                    <div class="row">
-                                        <div class="col-md-12 ">
-                                            <div class="form-group">
-                                                <label class="col-md-1 control-label">
-                                                    Bid Subject:
-                                                </label>
-                                                <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
-                                                </label>
+                                <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
+                                    <span id="error"></span></div>
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-12 ">
+                                                <div class="form-group">
+                                                    <label class="col-md-1 control-label">
+                                                        Bid Subject:
+                                                    </label>
+                                                    <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 ">
-                                            <div class="form-group">
-                                                <label class=" col-md-1 control-label">
-                                                    Bid Details:
-                                                </label>
-                                                <!-- <div class="col-md-10"> -->
-                                                <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
-                                                </label>
-                                                <!-- </div> -->
+                                        <div class="row">
+                                            <div class="col-md-12 ">
+                                                <div class="form-group">
+                                                    <label class=" col-md-1 control-label">
+                                                        Bid Details:
+                                                    </label>
+                                                    <!-- <div class="col-md-10"> -->
+                                                    <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
+                                                    </label>
+                                                    <!-- </div> -->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Bid Date:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbiddate">
-                                                </label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Bid Date:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblbiddate">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 ">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Bid Time:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblbidtime">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 ">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Bid Type:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblbidtype">
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 ">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Bid Time:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbidtime">
-                                                </label>
+                                        <div class="row">
+                                            <div class="col-md-4 ">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Bid For:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblbidfor">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 ">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Bid Duration:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblbidduration">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 ">
+                                                <div class="form-control">
+                                                    <label class="col-md-6 control-label">
+                                                        Currency:
+                                                    </label>
+                                                    <label class="col-md-6 control-label" id="lblcurrency">
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 ">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Bid Type:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbidtype">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4 ">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Bid For:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbidfor">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 ">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Bid Duration:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbidduration">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 ">
-                                            <div class="form-control">
-                                                <label class="col-md-6 control-label">
-                                                    Currency:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblcurrency">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-control">
-                                        <!--<div class="col-md-6">-->
-                                        <label class="col-md-2 control-label">
-                                            Terms & Condition:
-                                        </label>
+                                        <div class="form-control">
 
-                                        <a id="lnkTermsAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                            <label class="col-md-2 control-label">
+                                                Terms & Condition:
+                                            </label>
 
-                                    
-                                    </div>
-                                    <div class="form-control">
-                                        <label class="col-md-2 control-label">
-                                            Attachment (Any Other):
-                                        </label>
-                                        <a id="lnkAnyOtherAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
+                                            <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
+
+
+                                        </div>
+                                        <div class="form-control">
+                                            <label class="col-md-2 control-label">
+                                                Attachment (Any Other):
+                                            </label>
+                                            <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="row">

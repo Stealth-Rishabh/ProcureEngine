@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
-sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
-
-//sessionStorage.setItem("APIPath", 'https://pev2api.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
@@ -136,9 +136,12 @@ var Login = function () {
         });
     }
 
-function validateUser() {
-    //sessionStorage.setItem("APIPath", 'https://pev2api.azurewebsites.net/');
-    sessionStorage.setItem("APIPath", 'http://www.support2educate.com/PEV2/PEAPIV2/');
+    function validateUser() {
+
+        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    
     var LoginID = encodeURIComponent(jQuery("#username").val().trim());
     var Password = encodeURIComponent(jQuery("#password").val().trim());
     var LinkUrl = encodeURIComponent(window.location);
@@ -356,11 +359,11 @@ function validateUser() {
 }();
 function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    
     var data = {
         "EmailID": $("#txtemail").val()
     }
-    //alert(JSON.stringify(data))
+   
     jQuery.ajax({
        
         url: APIPath + "ChangeForgotPassword/forgotPassword/",
@@ -369,8 +372,16 @@ function Changeforgotpasswordfn() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-
-            if (data == "1") {
+           
+            if (data.isSuccess == "-1") {
+                $('#alrt2').show();
+                $('#alertmessage2').html('Email Id does not exists.!');
+                $('#alrt2').fadeOut(6000);
+                App.scrollTo($('#alrt2'), -200);
+                resetfileds()
+                jQuery.unblockUI();
+            }
+            else { 
                 $('#succs2').show();
                 $('#sucssmessage2').html('Your new password is sent to your email address');
                 $('#succs2').fadeOut(6000);
@@ -378,15 +389,7 @@ function Changeforgotpasswordfn() {
                 resetfileds()
                 jQuery.unblockUI();
             }
-            else if (data == "-1") {
-                $('#alrt2').show();
-                $('#alertmessage2').html('Email Id does not exists.!');
-                $('#alrt2').fadeOut(6000);
-                App.scrollTo($('#alrt2'), -200);
-                resetfileds()
-                jQuery.unblockUI();
-
-            }
+            
         }
     });
 
@@ -412,7 +415,7 @@ function fetchMapCategory(categoryFor, vendorId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-          
+         
             jQuery("#tblCategoryMaster").empty();
            
             var count = 3;

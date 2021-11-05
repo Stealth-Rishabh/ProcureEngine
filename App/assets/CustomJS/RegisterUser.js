@@ -1,6 +1,6 @@
 ﻿
 function RegisterUser() {
-   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActive').is(':checked') == true) {
         status = 'Y';
@@ -28,39 +28,39 @@ function RegisterUser() {
         data: JSON.stringify(RegisterUser),
         contentType: "application/json; charset=utf-8",
         success: function(data, status, jqXHR) {
-           
-        if (data == 'Y') {
+          
+            if (data.isSuccess == 'Y') {
                 jQuery('#divalerterror').hide();
                 App.scrollTo($('#divalertsucess'), -200);
                 jQuery('#divalertsucess').slideDown(1000);
                 fetchRegisterUser();
         }
-        else if (data == 'N') {
+        //    else if (data.isSuccess == 'N') {
 
-                $('.alert-danger').show();
-                $('#spanerror1').html('Server Error.');
-                App.scrollTo($('.alert-danger'), -300)
-                $('.alert-danger').fadeOut(5000);
-        }
+        //        $('.alert-danger').show();
+        //        $('#spanerror1').html('Server Error.');
+        //        App.scrollTo($('.alert-danger'), -300)
+        //        $('.alert-danger').fadeOut(5000);
+        //}
         else {
             jQuery('#divalertsucess').hide();
                 $("#spanerror1").html('User already exists.!');
                 App.scrollTo($('#divalerterror'), -200);
                 jQuery('#divalerterror').slideDown(1000);
             }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                alert('error')
-                jQuery("#error").text(xhr.d);
+            else {
+                fnErrorMessageText('spanerror1', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
         
     });
@@ -95,13 +95,15 @@ function fetchRegisterUser() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            
-            return false;
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
 
     });
@@ -138,7 +140,7 @@ function EditUser(ctrl) {
     
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
-    //fetchUserBidTypeMapping(UserID);
+   
 }
 
 
@@ -158,15 +160,15 @@ function fetchRoleMaster() {
             }        },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('spanerror1', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false;
         }
     });
 }

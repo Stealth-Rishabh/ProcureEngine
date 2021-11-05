@@ -97,11 +97,12 @@
                             <label style="text-align: center;">Bid Summary</label>
                         </div>
 
-                        <table style="width:100%;border-collapse: collapse;" border="1" id="tbldetails" cellpadding="5">
+                        <table style="width:100%;border-collapse: collapse;" border="1" id="tbldetails" cellpadding="2" cellspacing="2">
+                            <!--cellpadding="5"-->
                             <thead>
                                 <tr style="background: #44b6ae;">
                                     <th colspan="2" style="font-size: 19px; text-align: left;color: #FFF;">Bid Details <label style="width: auto; float: right!important;font-size: 14px!important;">Bid Configured By:<span id="spnconfiguredby"> </span></label></th>
-                                   
+
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -109,54 +110,38 @@
                     </td>
 
                 </tr>
+               
                 <tr><td></td></tr>
                 <tr>
                     <td>
-
-                        <table id="tblprice" style="width:100%;border-collapse: collapse;" border="1">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Min</th>
-                                    <th>45+</th>
-                                    <th>100+</th>
-                                    <th>300+</th>
-                                    <th>500+</th>
-                                    <th>1000+</th>
-                                </tr>
-                            </thead>
-                        </table>
-
-                    </td>
-                </tr>
-                <tr><td></td></tr>
-                <tr>
-                    <td>
-                        <table style="width:100%;border-collapse: collapse;" border="1" id="tblBidSummary" cellpadding="8">
+                        <table style="width:100%;border-collapse: collapse;" border="1" id="tblBidSummary" cellpadding="2" cellspacing="2">
+                            <!--cellpadding="8"-->
                             <thead></thead>
                             <tbody></tbody>
                         </table>
                     </td>
                 </tr>
                 <tr><td></td></tr>
-                <table width="100%" cellpadding="8" style="border-collapse: collapse; display: none;" border="1" id="tblapprovalprocess">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="15" style="text-align: center; color: Red">
-                                No record's found
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <tr>
+                    <td>
+                        <table width="100%" cellpadding="8" style="border-collapse: collapse; display: none;" border="1" id="tblapprovalprocess">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="15" style="text-align: center; color: Red">
+                                        No record's found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table></td></tr>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
-               
+
                 <tr><td><div id="Items"></div></td></tr>
-              
+
             </table>
 
         </form><br />

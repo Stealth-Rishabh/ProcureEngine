@@ -47,17 +47,15 @@ function fetchBidTime() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            //if (data.length > 0) {
-           
+            
             startTimer(data[0].timeLeft, display);
                 $('#tmleft').html($('#lblTimeLeft').text())
-				
-           // }
+			
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -90,7 +88,6 @@ function startTimer(duration, display) {
 
 
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-            // fetchBidSummaryDetails(BidID, BidTypeID, BidForID);
            
             if (BidTypeID = 6 && BidForID == 82) {
                 fetchBidSummaryDetails(BidID, BidTypeID, BidForID);
@@ -101,7 +98,6 @@ function startTimer(duration, display) {
             }
            
             fetchBidTime()
-            //drawSeriesChart()
             if (sessionStorage.getItem("UserType") == 'E') {
                 fetchUserChats($('#hddnVendorId').val(),'S');
             } else {
@@ -114,7 +110,7 @@ function startTimer(duration, display) {
         //    return //alert(err.toString());
 
         //});
-        fetchBidTime();
+       fetchBidTime();
        setTimeout(function () {
             
             if (--timer <= 0) {

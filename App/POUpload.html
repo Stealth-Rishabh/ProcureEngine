@@ -141,15 +141,16 @@
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" placeholder="Select Vendor" id="txtVendor"
                                                                    data-provide="typeahead" autocomplete="off" name="txtVendor" />
-                                                                        </div>
                                                         </div>
+                                                    </div>
                                                     <div class="col-md-4">
                                                         <label class="control-label col-md-3 pull-left">
                                                             Descrp<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-9">
                                                             <input style="width:325px!important" maxlength="700" type="text" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" />
-                                                        </div></div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-3">
 
                                                         <label class="control-label col-md-3">
@@ -163,17 +164,17 @@
 
                                                     </div>
 
-                                                        <div class="col-md-1 pull-right" style="margin-top:5px!important">
-                                                            <button type="button" id="Addbtn1" onclick="addAttachments()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                        </div>
-                                                        <div class="inputgroup">
-                                                            <div class="col-md-9">
+                                                    <div class="col-md-1 pull-right" style="margin-top:5px!important">
+                                                        <button type="button" id="Addbtn1" onclick="addAttachments()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                    <div class="inputgroup">
+                                                        <div class="col-md-9">
 
-                                                                <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
-                                                                <input type="hidden" value="0" id="hdnPOHeader" />
-                                                            </div>
+                                                            <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
+                                                            <input type="hidden" value="0" id="hdnPOHeader" />
                                                         </div>
                                                     </div>
+                                                </div>
                                             </div>
 
                                             <div>&nbsp;</div>
@@ -340,7 +341,7 @@
             </div>
         </div>
     </div>
-  
+
     <div id="RAexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -349,7 +350,7 @@
                         <i class="fa fa-reorder"></i>Upload PO Delivery Spread using excel file
                     </div>
                     <div class="tools">
-                        
+
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     </div>
                 </div>
@@ -460,15 +461,15 @@
                                                         <label class="col-md-12 text-left">  2. Please enter UOM from given below:</label><br /><br />
                                                         <div id="ULUOM_instructions"></div>
 
-                                                       
+
                                                         <div class='clearfix'></div>
                                                         <br />
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
-                                      
+
                                     </div>
                                     <!--</div>-->
                                     <!--<div class="table-scrollable">-->
@@ -498,7 +499,7 @@
                     <th data-style="Mandatory">UOM</th>
                     <th data-style="NonMandatory">PoNo</th>
                     <th data-style="NonMandatory">PoDeliveryDate</th>
-                    
+
 
                 </tr>
             </thead>
@@ -606,13 +607,13 @@
             }
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
             fetchMenuItemsFromSession(49, 50);
-           // fetchVendorGroup('M', 0);
+            // fetchVendorGroup('M', 0);
             fetchParticipantsVender();
             FetchUOM(sessionStorage.getItem("CustomerID"));
-           
+
             setTimeout(function () {
                 fnfillInstructionExcel();
-            },1000)
+            }, 1000)
         });
         document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
             document.getElementById('file-excelparameter').click();

@@ -9,6 +9,7 @@ jQuery(document).ready(function () {
         allowClear: true
     });
     BidID = getUrlVarsURL(decryptedstring)["BidID"]
+    
     FetchVendors(BidID);
 	Fillhelp(getUrlVars()["App"]);
 });
@@ -22,7 +23,7 @@ function FetchVendors(BidID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ApprovalAir/fetchVendor/?BidID=" + BidID ,
+        url: sessionStorage.getItem("APIPath") + "ApprovalAir/fetchVendor/?BidID=" + BidID +"&VendorType=YES",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -38,10 +39,14 @@ function FetchVendors(BidID) {
         },
         error: function (xhr, status, error) {
          var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
             jQuery.unblockUI();
+            return false;
         }
     });
 

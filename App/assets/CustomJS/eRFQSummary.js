@@ -22,13 +22,16 @@ function fetchregisterusers() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     });
 }
@@ -228,13 +231,16 @@ function fetchRFQVendorSummary() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+          
         }
     });
 }
@@ -254,7 +260,6 @@ function fetchBidVendorSummaryDetail() {
     var dtfrom = '', dtto = '', subject = 'X-X';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
         dtfrom = '1900/01/01';
-
     }
     else {
         dtfrom = $("#txtFromDate").val()
@@ -431,11 +436,13 @@ function fetchBidVendorSummaryDetail() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('error', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -494,13 +501,16 @@ function updlastinvoiceprice() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+          
         }
        
     });
@@ -653,13 +663,16 @@ function fetchBidVendorSummarySummarization() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-
-            return false;
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+            
         }
     })
 

@@ -5,6 +5,8 @@ using System.Web;
 using System.IO;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+
 public class ConfigureFileAttachment : IHttpHandler {
 
     public void ProcessRequest(HttpContext context)
@@ -27,67 +29,40 @@ public class ConfigureFileAttachment : IHttpHandler {
             else if (context.Request.Files["fileTerms"] != null || context.Request.Files["fileAnyOther"] != null || context.Request.Files["fileRFQAttach"] != null)
             {
                 HttpPostedFile postedFileTerms = context.Request.Files["fileTerms"];
-                HttpPostedFile postedFileAnyOther = context.Request.Files["fileAnyOther"];
-                HttpPostedFile postedeRFQFile = context.Request.Files["fileRFQAttach"];
                 string FolderFor = context.Request["AttachmentFor"];
-                string BidID = context.Request["BidID"];
-                string VendorID = context.Request["VendorID"];
-                string Version = context.Request["Version"];
+                string CustomerName = context.Request["CustomerName"];
+               
 
+               // Debugger.Break();
 
-
-                if (BidID != "0")
+                if (CustomerName != "")
                 {
+                    //  Debug.Write(BidID);
+                    // Debug.Write(FolderFor);
                     string savepath = "";
-                    string tempPath = ""; 
-                    string rootpath=@"C:\PEV1SC\SourcingPortal\"; 
+
+                    string rootpath = @"C:\home\site\wwwroot\";
                     if (FolderFor == "Customer")
                     {
-                        savepath = rootpath + "\\"+BidID+ "\\assets\\";
-                    }
-                    else
-                    {
-                        savepath = context.Server.MapPath(tempPath) + "\\PortalDocs\\" + "\\" + FolderFor + "\\" + BidID + "\\" + VendorID+"\\" + Version;
-                    }
-                   
+                        
+                        savepath = rootpath + "\\"+CustomerName+ "\\assets\\";
+             }
+
                     string filenameTerms ="";
-                    string filenameAnyOther = ""; // = postedFileAnyOther.FileName;
-                    string filenameRFQAttach = "";
+                   
                     if (postedFileTerms != null)
                     {
                         filenameTerms = postedFileTerms.FileName;
                     }
-                    if (postedFileAnyOther != null)
-                    // if (context.Request.Files["fileAnyOther"].FileName != null)
-                    {
-                        filenameAnyOther = postedFileAnyOther.FileName;
-                    }
-                    if (postedeRFQFile != null)
-                    {
-                        filenameRFQAttach = postedeRFQFile.FileName;
-                    }
+                   
 
                     if (!System.IO.Directory.Exists(savepath))
                         System.IO.Directory.CreateDirectory(savepath);
 
-                    //Regex re = new Regex("[;\\/:*?\"<>|&']");
-                    Regex re = new Regex("[|@|*|&|/|\\|,|+|$|~|%|'|\"|:|?|<|>|{|}|]|/g|#|]");
-                    if (filenameTerms != null && filenameTerms!="")
-                    {
-                        filenameTerms= re.Replace(filenameTerms, "_");
-                        postedFileTerms.SaveAs(savepath + @"\" + filenameTerms);
-                    }
-                    if (postedFileAnyOther != null)
-                    {
-                        filenameAnyOther= re.Replace(filenameAnyOther, "_");
-                        postedFileAnyOther.SaveAs(savepath + @"\" + filenameAnyOther);
-                    }
-                    if (postedeRFQFile != null)
-                    {
-                        filenameRFQAttach = re.Replace(filenameRFQAttach, "_");
-                        postedeRFQFile.SaveAs(savepath + @"\" + filenameRFQAttach);
-                    }
-                    //context.Response.StatusCode = 200;
+
+                  //  Regex re = new Regex("[|@|*|&|/|\\|,|+|$|~|%|'|\"|:|?|<|>|{|}|]|/g|#|]");
+                   
+                    
 
                     if (System.IO.File.Exists(savepath + @"\" + filenameTerms))
                     {
@@ -111,20 +86,6 @@ public class ConfigureFileAttachment : IHttpHandler {
 
                 }
 
-                //HttpPostedFile postedFile = context.Request.Files["file"];
-                //string BidID = context.Request["BidID"];
-                //if (BidID !="0")
-                //{
-                //    string savepath = "";
-                //    string tempPath = "";
-                //    savepath = context.Server.MapPath(tempPath) + "/TermsConditions/" + BidID;
-                //    string filename = postedFile.FileName;
-                //    if (!System.IO.Directory.Exists(savepath))
-                //        System.IO.Directory.CreateDirectory(savepath);
-
-                //    postedFile.SaveAs(savepath + @"\" + filename);
-                //    context.Response.StatusCode = 200;
-                //}
             }
         }
         catch (Exception ex)

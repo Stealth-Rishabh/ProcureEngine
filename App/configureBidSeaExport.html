@@ -188,9 +188,9 @@
                                                             <label class="col-md-3 control-label">
                                                                 Bid Subject<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-9">
+                                                            <div class="col-md-9 xyz">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject"
-                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" />
+                                                                      autocomplete="off"  name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" maxlength="100" />
                                                             </div>
                                                         </div>
 
@@ -203,9 +203,9 @@
                                                             <label class="control-label col-md-3">
                                                                 Bid Description<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-9">
+                                                            <div class="col-md-9 xyz">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                          rows="3" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                        autocomplete="off"  rows="3" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -214,10 +214,10 @@
                                                             <label class="control-label col-md-3">
                                                                 Bid Date<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                      data-date-start-date="+0d">
-                                                                    <input type="text" id="txtbidDate" name="txtbidDate" class="form-control" readonly>
+                                                                    <input type="text" id="txtbidDate" autocomplete="off" name="txtbidDate" class="form-control" readonly>
                                                                     <span class="input-group-btn">
                                                                         <button class="btn default" id="btncal" type="button">
                                                                             <i class="fa fa-calendar"></i>
@@ -231,7 +231,7 @@
                                                                 Bid Start Time<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <div class="input-group">
+                                                                <div class="input-group xyz">
                                                                     <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
                                                                            readonly>
                                                                     <span class="input-group-btn">
@@ -248,7 +248,7 @@
                                                             <label class="col-md-3 control-label">
                                                                 Currency<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="dropCurrency" name="dropCurrency"></select>
                                                             </div>
                                                         </div>
@@ -256,9 +256,9 @@
                                                             <label class="col-md-3 control-label">
                                                                 Conversion Rate<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
-                                                                <input type="text" class="form-control" placeholder="Enter Current Conversion Factor" id="txtConversionRate"
-                                                                       name="txtConversionRate">
+                                                            <div class="col-md-3 xyz">
+                                                                <input type="text" autocomplete="off" class="form-control" placeholder="Enter Current Conversion Factor" id="txtConversionRate"
+                                                                       name="txtConversionRate" maxlength="7">
                                                             </div>
                                                             </div>
                                                            
@@ -269,7 +269,7 @@
                                                             <label class="control-label col-md-3">
                                                                 Term & Condition<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
                                                                 <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left;" onclick="DownloadFile(this)"></a> &nbsp;
                                                                 <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
@@ -282,7 +282,7 @@
                                                             <label class="control-label col-md-3">
                                                                 Attachment (If Any)
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <input type="file" class="form-control" id="file2" name="file" onchange="checkfilesize(this)" />
                                                                 <a href="javascript:;" id="filepthattach" style="text-decoration: none !important; float:left;" onclick="DownloadFile(this)"></a>
                                                                 <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
@@ -298,14 +298,11 @@
                                                             <label class="control-label col-md-3">
                                                                 Auction Type: <span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
-
-                                                                <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="HideShowL1price()">
-                                                                  
-                                                                    <option value="81">English</option>
+                                                            <div class="col-md-3 xyz">
+                                                             <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="HideShowL1price()">
+                                                                  <option value="81">English</option>
                                                                     <option value="83">Japanese</option>
                                                                 </select>
-
 
                                                             </div>
                                                         </div>
@@ -313,7 +310,7 @@
                                                             <label class="col-md-3 control-label">
                                                                 Bid Closing Type<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="ddlbidclosetype" name="ddlbidclosetype" onchange="showhideItemBidDuration();">
                                                                     
                                                                     <option value="A">All items in one go</option>
@@ -329,15 +326,15 @@
                                                             <label class="col-md-3 control-label">
                                                                 Bid Duration (in minutes)<span class="required" id="spanbidduration"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
-                                                                <input type="text" class="form-control" placeholder="Enter Bid Duration" id="txtBidDuration" name="txtBidDuration">
+                                                            <div class="col-md-3 xyz">
+                                                                <input type="text" class="form-control" autocomplete="off" placeholder="Enter Bid Duration" id="txtBidDuration" name="txtBidDuration" maxlength="3">
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Display Vendors their Rank <span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="drpshowL1L2">
                                                                     <option value="N">As L1 or Not L1</option>
                                                                     <option value="Y">As L1, L2, L3 etc.</option>
@@ -358,12 +355,12 @@
                                                                 </label>
 
                                                             </div>
-                                                            <div class="inputgroup">
+                                                            <!--<div class="inputgroup">
                                                                 <div class="col-md-1 ">
-                                                                    <!--pull-right-->
+                                                                   
                                                                     <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                         </div>
                                                     </div>
                                                         <div class="form-group">
@@ -386,7 +383,7 @@
                                                                 *
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-4 xyz">
                                                             <input type="text" class="form-control" maxlength="200" id="txtdestinationPort"
                                                                    name="txtdestinationPort" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
 
@@ -396,9 +393,9 @@
 
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-4 xyz">
                                                             <input type="text" class="form-control" id="txtItemCode" name="txtItemCode"
-                                                                   autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
+                                                                   autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="50" />
 
                                                         </div>
                                                        
@@ -411,7 +408,7 @@
                                                         </label>
                                                         <div class="col-md-10 xyz">
                                                             <textarea id="txtdescription" name="txtdescription" class="wysihtml5 form-control"
-                                                                      rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                                     autocomplete="off"  rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -422,12 +419,12 @@
                                                                 *
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-2">
-                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                        <div class="col-md-2 xyz">
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off" maxlength="8" /> <!--onkeyup="thousands_separators_input(this)"-->
                                                                    
 
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 xyz">
                                                            
                                                             <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
                                                                    data-provide="typeahead" autocomplete="off" name="txtUOM" />
@@ -436,9 +433,9 @@
                                                         <label class="control-label col-md-2">
                                                             Remarks<span class="required"> * </span>
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-4 xyz">
                                                             <input type="text" id="txtbiddescriptionP" name="txtbiddescriptionP"
-                                                                   class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" />
+                                                                  autocomplete="off" class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" />
                                                         </div>
 
                                                     </div>
@@ -448,12 +445,12 @@
                                                         <label class="control-label col-md-2">
                                                             Target Unit Price
                                                         </label>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 xyz">
                                                             <input type="tel" class="form-control text-right" id="txttargetprice" name="txttargetprice"
-                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!---->
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
 
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-1 xyz">
                                                             <select class="form-control no-space" id="checkmaskvendor" name="checkmaskvendor">
                                                                 <option value="Y">Hide</option>
                                                                 <option value="N">Show</option>
@@ -462,7 +459,7 @@
                                                         <label class="control-label col-md-2">
                                                            Selected Currency
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-4 xyz">
                                                             <input type="text" class="form-control" id="txtselectedCurrency" name="txtselectedCurrency" autocomplete="off" readonly />
 
                                                         </div>
@@ -479,11 +476,11 @@
                                                         <label class="control-label  col-md-2">
                                                             Bid Start Price<span class="required"> *</span>
                                                         </label>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 xyz">
                                                             <input type="tel" class="form-control" id="txtCeilingPrice" name="txtCeilingPrice"
                                                                     autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-1 xyz">
                                                             <select class="form-control no-space" id="checkshowstartprice" name="checkshowstartprice">
                                                                 <option value="Y">Show</option>
                                                                 <option value="N">Hide</option>
@@ -493,11 +490,11 @@
                                                         <label class="control-label col-md-2">
                                                             Minimum Decrement<span class="required"> *</span>
                                                         </label>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 xyz">
                                                             <input type="tel" class="form-control " id="txtminimumdecreament" name="txtminimumdecreament"
                                                                    autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
                                                         </div>
-                                                        <div class="col-md-1 ">
+                                                        <div class="col-md-1 xyz">
                                                             <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton">
                                                                 <option value="A">Amount</option>
                                                                 <option value="P">%age</option>
@@ -513,7 +510,7 @@
                                                             <label class="control-label col-md-2">
                                                                 Bid Duration <span class="required">*</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 xyz">
                                                                 <input type="tel" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" />
                                                             </div>
                                                             <label class="control-label col-md-1">
@@ -524,7 +521,7 @@
                                                             <label class="control-label col-md-3 col-md-offset-1">
                                                                 Show L1 Price
                                                             </label>
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-2 xyz">
                                                                 <select class="form-control no-space" id="checkmaskL1price" name="checkmaskL1price">
                                                                     <option value="N">No</option>
                                                                     <option value="Y">Yes</option>
@@ -539,14 +536,14 @@
                                                         <div class="col-md-3 xyz">
                                                             
                                                             <label class="control-label">PO Number</label>
-                                                            <input type="text" id="txtPono" name="txtPono" class="form-control" placeholder="PO Number" onkeyup="replaceQuoutesFromString(this)">
+                                                            <input type="text" id="txtPono" maxlength="20" name="txtPono" class="form-control maxlength" placeholder="PO Number" onkeyup="replaceQuoutesFromString(this)" autocomplete="off">
 
                                                            
                                                         </div>
                                                         <div class="col-md-3 xyz">
                                                            
                                                             <label class="control-label">Vendor Name</label>
-                                                            <input type="text" id="txtvendorname" name="txtvendorname" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
+                                                            <input type="text" id="txtvendorname" maxlength="100"  name="txtvendorname" class="form-control maxlength" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)" autocomplete="off">
 
                                                           
                                                         </div>
@@ -569,7 +566,7 @@
                                                                         <i class="fa fa-calendar"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly>
+                                                                <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly autocomplete="off">
                                                                 <div id="daterr"></div>
                                                             </div>
 
@@ -580,7 +577,7 @@
                                                            
                                                             <label class="control-label">PO Value</label>
 
-                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control" placeholder="PO Value" autocomplete="off" onkeyup="thousands_separators_input(this)" />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control" placeholder="PO Value" autocomplete="off" onkeyup="thousands_separators_input(this)"  />  <!--onkeyup="thousands_separators_input(this)"-->
 
                                                         </div>
                                                     </div>
@@ -616,7 +613,7 @@
                                                                             <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
                                                                                    data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
                                                                             <!--<input type="text" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch"></br>-->
-                                                                            <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
+                                                                            <input type="text"  class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                         </div>
                                                                         <div class="col-md-1">
                                                                             <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
@@ -961,7 +958,8 @@
                                         <button class="close" data-close="alert"></button>
                                         <span id="succspan-excelparameter" class="text-center"></span><br />
                                         <div class="col-md-12 col-md-offset-5" id="btnyesno">
-                                            <button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>
+                                            <!--<button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>-->
+                                               <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
                                             <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
                                         </div>
                                         <div class="clearfix"></div>

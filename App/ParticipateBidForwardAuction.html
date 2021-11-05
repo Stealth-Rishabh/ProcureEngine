@@ -135,148 +135,11 @@
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
-                            <!--<div id="div4" class="portlet-body form">
-
-        <form action="#" class="form-horizontal">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Bid Subject:
-                        </label>
-                        <div class="col-md-8">
-                            <label id="lblbidsubject" class="control-label col-md-12" style="text-align: left;">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Bid Date:
-                        </label>
-                        <div class="col-md-8">
-                            <label id="lblbiddate" class="control-label col-md-12" style="text-align: left;">
-
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Bid Time:
-                        </label>
-                        <div class="col-md-8">
-                            <label id="lblbidtime" class="control-label col-md-12" style="text-align: left;">
-
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Duration (In Minute):
-                        </label>
-                        <div class="col-md-8">
-                            <label id="lblbidduration" class="control-label col-md-12" style="text-align: left;">
-
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Currency:
-                        </label>
-                        <div class="col-md-8">
-                            <label id="lblcurrency" class="control-label col-md-12" style="text-align: left;">
-
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Conv. Rate:
-                        </label>
-                        <div class="col-md-8">
-
-                            <label id="lblConvRate" class="control-label col-md-12" style="text-align: left;">
-
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Terms & Conditions:
-                        </label>
-                        <div class="col-md-8">
-                            <p class="form-control-static col-md-12">
-                                <a id="lnkTermsAttachment" href="#" target="_blank" style="word-break:break-all !important;"></a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">
-                            Attachment (Any Other):
-                        </label>
-                        <div class="col-md-8">
-                            <p class="form-control-static col-md-12">
-                                <a id="lnkAnyOtherAttachment" href="#" target="_blank" style="word-break:break-all !important;"></a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-
-                            <label class="control-label col-md-3">
-                                Time left (HH:MM:SS):
-                            </label>
-                            <div class="col-md-8">
-                                <b>
-                                    <label style="color:red;" id="lblTimeLeftBeforeBid">
-
-                                    </label>
-                                </b>&nbsp;
-                                <p class="form-control-static">
-                                    <label style="color:red;" id="lblTimeLeft">
-                                    </label>
-                                    <span class="lbltimetextdutch" style="display:none">or till one of the participants accepts the price, whichever is earlier</span>
-                                    <input type="hidden" id="hdnDuration" />
-                                </p>&nbsp;
-                                <p class="form-control-static">
-                                    <label id="lblTimeLeftTxt" class="display-none">
-
-                                    </label>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-        </form>
-
-    </div>-->
+                          
                             <div class="portlet-body form" id="content">
+                                <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
+                                    <span id="error"></span>
+                                </div>
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-12 ">
@@ -361,51 +224,51 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       
-                                            <div class="col-md-6">
-                                                <div class="form-control">
-                                                    <label class="col-md-4 control-label">
-                                                        Terms & Condition:
-                                                    </label>
-                                                    <label class="col-md-8 control-label">
-                                                        <a id="lnkTermsAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
-                                                    </label>
-                                                </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-control">
+                                                <label class="col-md-4 control-label">
+                                                    Terms & Condition:
+                                                </label>
+                                                <label class="col-md-8 control-label">
+                                                    <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
+                                                </label>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-control">
-                                                    <label class="col-md-4 control-label">
-                                                        Attachment (Any Other):
-                                                    </label>
-                                                    <label class="col-md-8 control-label">
-                                                        <a id="lnkAnyOtherAttachment" href="#" target="_blank" class="control-label ">No Attachment Found</a>
-                                                    </label>
-                                                    </div>
-                                                </div>
-                                          
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-control">
+                                                <label class="col-md-4 control-label">
+                                                    Attachment (Any Other):
+                                                </label>
+                                                <label class="col-md-8 control-label">
+                                                    <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
+                                                </label>
+                                            </div>
                                         </div>
 
+                                    </div>
+
                                     <div class="form-control">
-                                        <label class="col-md-3 control-label bold text-right"  style="font-size:17px!important;">
+                                        <label class="col-md-3 control-label bold text-right" style="font-size:17px!important;">
                                             Time left (HH:MM:SS):
                                         </label>
                                         <b>
                                             <label style="color:red;font-size:17px!important;" class="bold" id="lblTimeLeftBeforeBid">
                                             </label>
                                         </b>&nbsp;
-                                        
+
                                         <label style="color:red;font-size:17px!important;text-align:left!important;" id="lblTimeLeft" class="bold ">
                                         </label>
-                                            <span class="lbltimetextdutch" style="display:none">or till one of the participants accepts the price, whichever is earlier</span>
-                                            <input type="hidden" id="hdnDuration" />
+                                        <span class="lbltimetextdutch" style="display:none">or till one of the participants accepts the price, whichever is earlier</span>
+                                        <input type="hidden" id="hdnDuration" />
                                         &nbsp;
-                                       
+
                                         <label id="lblTimeLeftTxt" class="display-none;font-size:17px!important;">
                                         </label>
-                                      
+
                                     </div>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
                                 </div>
                     </div>
                 </div>
