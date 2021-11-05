@@ -1124,6 +1124,7 @@ function ConfigureBidInsPefaTab2() {
     };
     //console.log(PriceDetails)
     //alert(JSON.stringify(Tab2data))
+   // console.log(JSON.stringify(Tab2data))
     jQuery.ajax({
 
         type: "POST",
@@ -1152,7 +1153,8 @@ function ConfigureBidInsPefaTab2() {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+               // fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('spandanger', '');
             }
             jQuery.unblockUI();
             return false;
@@ -1498,7 +1500,8 @@ function InsUpdProductSevices() {
 
             });
             
-            if ($("#ddlAuctiontype option:selected").val() != '81' || $("#ddlAuctiontype option:selected").val() != 83) {
+            if ($("#ddlAuctiontype option:selected").val() != '81' && $("#ddlAuctiontype option:selected").val() != 83) {
+               
                 _BidDuration = (((removeThousandSeperator($("#txtCeilingPrice").val()) - removeThousandSeperator($("#txtStartingPrice").val())) / removeThousandSeperator($("#txtPriceReductionAmount").val())) * $("#txtPriceReductionFrequency").val()) + parseInt($("#txtPriceReductionFrequency").val());
                 $("#txtBidDuration").val(parseInt(_BidDuration));
                 $("#txtBidDurationPrev").text(parseInt(_BidDuration))
@@ -1822,10 +1825,8 @@ function InsUpdProductSevices() {
                 }
 
                 else {
-
-                    ParametersQuery()
-
-                }
+                     ParametersQuery()
+                 }
 
             }
 
