@@ -847,79 +847,95 @@ function validatePanNumber(pan) {
 }
 function fnfetchfoundVendors() {
     
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-           
-            if ($('#txtUI').val().length == "15" || $('#txtUI').val().length == "11") {
-                $('#divVendorForm').removeClass('hide')
-                $('#div_tableVendor').removeClass('hide');
-            }
+    var UniqueId = "";
+    if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
+        //UINo = $('#txtUI').val()
+        if ($('#ddlUI').val().toLowerCase() == "servicetaxno") {
+            UniqueId = "GST No."
+        }
+        else {
+            UniqueId = "PE Vendor Code"
+        }
+        jQuery('#spanerterr').text('Please Enter ' + UniqueId+' then Proceed to Search.')
+        jQuery('#divalerterr').slideDown('show');
+        App.scrollTo(jQuery('#divalerterr'), -200);
+        $('#ddlUI').addClass('has-error')
+    }
+    else {
+        jQuery.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
 
-            $('#tblVendorFoundDetails').empty();
-            var addr1 = "";
-            var addr2 = "";
-            if (data.length>0) {
-                $('#tblVendorFoundDetails').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th></th></tr></thead><tbody>")
-                for (var i = 0; i < data.length; i++) {
-                   
-                    addr1 = data[i].address1.replace(/\n/g, " ");
-                  
-                    addr2 = data[i].address2.replace(/\n/g, " ");
-                   
-                    if (data[i].buttonName == "Extend") {
-                        $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                        
-                    }
-                    else {
-                        $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                       
-                    }
-                   
+                if ($('#txtUI').val().length == "15" || $('#txtUI').val().length == "11") {
+                    $('#divVendorForm').removeClass('hide')
+                    $('#div_tableVendor').removeClass('hide');
                 }
-            }
-            else {
-                
-                
-                if ($('#ddlUI').val() == "PanNo") {
-                    $('#txtPanNo').val($('#txtUI').val().toUpperCase())
-                    $('#txtPanNo').attr('disabled', 'disabled')
+
+                $('#tblVendorFoundDetails').empty();
+                var addr1 = "";
+                var addr2 = "";
+                if (data.length > 0) {
+                    $('#tblVendorFoundDetails').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th></th></tr></thead><tbody>")
+                    for (var i = 0; i < data.length; i++) {
+
+                        addr1 = data[i].address1.replace(/\n/g, " ");
+
+                        addr2 = data[i].address2.replace(/\n/g, " ");
+
+                        if (data[i].buttonName == "Extend") {
+                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
+                        }
+                        else {
+                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
+                        }
+
+                    }
                 }
                 else {
-                    var pan = $('#txtUI').val().substr(2, 10); //11
-                    $('#txtPanNo').val(pan.toUpperCase());
-                    $('#txtTINNo').val($('#txtUI').val().toUpperCase())
-                    $('#txtPanNo').attr('disabled', 'disabled')
-                    $('#txtTINNo').attr('disabled', 'disabled')
+
+
+                    if ($('#ddlUI').val() == "PanNo") {
+                        $('#txtPanNo').val($('#txtUI').val().toUpperCase())
+                        $('#txtPanNo').attr('disabled', 'disabled')
+                    }
+                    else {
+                        var pan = $('#txtUI').val().substr(2, 10); //11
+                        $('#txtPanNo').val(pan.toUpperCase());
+                        $('#txtTINNo').val($('#txtUI').val().toUpperCase())
+                        $('#txtPanNo').attr('disabled', 'disabled')
+                        $('#txtTINNo').attr('disabled', 'disabled')
+                    }
+
                 }
-             
-            }
-        },
-        error: function (xhr, status, error) {
+            },
+            error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spanerterr', '');
+                }
+                jQuery.unblockUI();
+                return false;
             }
-            else {
-                fnErrorMessageText('spanerterr', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-       
-    })
 
+        })
+
+        
+    }
     setTimeout(function () {
         jQuery('#divalerterr').css('display', 'none');
     }, 5000);
-    
 }
 function AddVendor() {
     clearform();

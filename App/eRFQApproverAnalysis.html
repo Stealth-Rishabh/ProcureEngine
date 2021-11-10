@@ -284,7 +284,7 @@
                                                                             </label>
                                                                         </div>
                                                                     </div>
-                                                                   
+
                                                                     <div class="form-group Input-group">
                                                                         <label class="col-md-4 control-label">
                                                                             Remarks :
@@ -310,7 +310,7 @@
                                                     <div class="col-md-6" id="frmdivforward" style="display:none; height: 250px; overflow-y:scroll;">
                                                         <form action="#" id="form1" class="form-horizontal">
                                                             <div class="form-body">
-                                                                
+
                                                                 <div class="table-scrollable" style="overflow: auto">
                                                                     <table class="table table-bordered" id="tblremarksforward">
                                                                         <thead>
@@ -393,7 +393,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
-                                                       
+
                                                         <form action="#" id="form2" class="form-horizontal">
 
                                                             <div class="form-body">
@@ -475,7 +475,7 @@
                                                             <div class="form-body">
 
 
-                                                                
+
                                                                 <div class="table-scrollable" style="overflow: auto">
                                                                     <table class="table table-bordered" id="tblremarksawared">
                                                                         <thead>
@@ -546,7 +546,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6" style=" display:none;height: 250px; overflow-y:scroll;" id="frmdivapprove">
-                                                        
+
                                                         <form action="#" id="form2" class="form-horizontal">
 
                                                             <div class="form-body">
@@ -597,7 +597,7 @@
 
                                     </div>
                                 </div>
-                               
+
                             </div>
 
                         </div>
@@ -638,7 +638,77 @@
             </div>
         </div>
     </div>
+    <div id="RaiseQuery" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Raise Query
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form" id="frmMapApprover">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorApp" style='display: none;'>
+                                <span id=""> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
+                                <span id="spandanger"> </span>
+                            </div>
+                            <input type="hidden" id="hdnvendorid" value="0"/>
+                            <div class="form-group">
+                                
+                                <div class="col-md-12">
+                                    <div class="inputgroup">
+                                        <div class="col-md-2">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="inputgroup">
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="txtquestions" maxlength="1000" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>
+                                        <!--<div class="col-md-3">
+                                            <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>-->
+                                    </div>
 
+                                    <div class="inputgroup">
+                                        <div class="col-md-1">
+                                            <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divapprover">
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover" id="tblquestions"></table>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-offset-8 col-md-12">
+                                            <button type="button" class="btn green" id="btnTechquery" disabled onclick="submitTechnicalQuery()"> Submit Query</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="page-footer">
         <div class="page-footer-inner">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
@@ -705,7 +775,7 @@
             }
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
 
-            
+
             validateAppsubmitData();
             $('#drpVendors').val('');
 
@@ -716,7 +786,7 @@
 
         });
     </script>
-   
+
 
     <script type="text/javascript">
         $("#btnExport").click(function (e) {

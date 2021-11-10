@@ -603,24 +603,39 @@ function fetchrfqcomprative() {
                    
                 }
                 //// ***************** END  Answer Question Row
+
                 // Technical Approver Row
                 if (AppType != 'C') {
-                    strQ += " <tr><td Colspan=2><b>Technical Approval</b></td>";
+                    strQ += "<tr><td><b>Technical Approval</b></td>";
+                    if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+                        strQ += "<td>After All RFQ Responses</td>"
+                    }
+                    else if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "rfq") {
+                        strQ += "<td>With Indivisual RFQ Response</td>"
+                    }
+                    else {
+                        strQ += "<td>Not Required</td>"
+                    }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-
-                        strQ += "<td><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  checked/> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
-
+                        //strQ += "<td style='text-align:center;'><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  /> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
+                        strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID +')"   /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
+                        
                     }
                     strQ += "</tr>"
                 }
+
+                strQ += "<tr><td colspan=2></td>";
+                for (var k = 0; k < data[0].vendorNames.length; k++) {
+                    strQ += '<td style="text-align:center;"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID+')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a></td>'
+                }
+                strQ += "</tr>";
+
                 //For Blank Row after question table 
                 strQ += "<tr>";
                
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
-
-                    t = k;
-
+                     t = k;
                 }
                 strQ += "<td colspan=" + (t + 2) + ">&nbsp;</td>";
                
@@ -700,15 +715,7 @@ function fetchrfqcomprative() {
                
                 strQ += "</tr>";
                
-
-
-
-                
-
-
                 jQuery('#tblRFQComprative').append(str);
-               
-
                 jQuery('#tblRFQComprativeQ').append(strQ);
                 
             }
@@ -739,7 +746,155 @@ function fetchrfqcomprative() {
     jQuery.unblockUI();
 
 }
+function check(vendorid) {
+   
+    $('[name=AppRequired' + vendorid+']').on('change', function () {
+        var $this = $(this);
+        $this.siblings('[value=' + this.value + ']').prop('checked', true)
+        $this.siblings('[value!=' + this.value + ']').prop('checked', false)
+    });
+    
+}
+function fnRaiseQuery(vendorid) {
+    
+    $('#hdnvendorid').val(vendorid)
+    GetQuestions(vendorid);
+}
+function GetQuestions(vendorid) {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + $('#hdnRfqID').val()+ "&VendorID=" + vendorid + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            jQuery("#tblquestions").empty();
+            
+            if (data.length > 0) {
+                jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:54.9%!important'>Questions</th><th style='width:5%!important'></th></tr></thead>");
+                
+                for (var i = 0; i < data.length; i++) {
+                    str = '<tr id=trquesid' + (i + 1) + '><td>' + data[i].question + '</td>';
+                    str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletequesrow(trquesid' + (i + 1) + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                    jQuery('#tblquestions').append(str);
 
+                    
+                }
+            }
+            else {
+                //jQuery('#tblquestions').append("<tr><td>No Questions !!</td></tr>")
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    })
+}
+$("#RaiseQuery").on("hidden.bs.modal", function () {
+    jQuery("#txtquestions").val('')
+    $('#hdnvendorid').val('0')
+    $('#tblquestions').empty();
+    
+});
+var rowques = 0;
+function addquestions() {
+    if (jQuery("#txtquestions").val() == "") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Questions');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+   
+    else {
+        rowques = rowques + 1;
+        if (!jQuery("#tblquestions thead").length) {
+            jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:54.9%!important'>Questions</th><th style='width:5%!important'></th></tr></thead>");
+        }
+        var str = '<tr id=trquesid' + rowques + ' ><td>' + jQuery("#txtquestions").val() + '</td>';
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deletequesrow(trquesid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblquestions').append(str);
+        jQuery("#txtquestions").val('')
+        if (jQuery('#txtquestions tr').length == 1) {
+            jQuery('#btnTechquery').attr("disabled", "disabled");
+        }
+        else {
+            jQuery('#btnTechquery').removeAttr("disabled");
+        }
+    }
+}
+function deletequesrow(rowid) {
+    rowques = rowques - 1;
+    $('#' + rowid.id).remove();
+    if (jQuery('#txtquestions >tbody >tr').length == 1) {
+        jQuery('#btnTechquery').attr("disabled", "disabled");
+    }
+    else {
+        jQuery('#btnTechquery').removeAttr("disabled");
+    }
+}
+function submitTechnicalQuery() {
+    var quesquery = "";
+    $("#tblquestions> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '#';
+
+    });
+    var data = {
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "QuesString": quesquery,
+        "UserID": sessionStorage.getItem('UserID'),
+        "VendorID": parseInt($('#hdnvendorid').val()),
+        "PendingOn":"V"
+    }
+  
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eInsQueryTovendorApproversforAllTechnical",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            jQuery('#btnTechquery').attr("disabled", "disabled");
+            setTimeout(function () {
+                $("#RaiseQuery").modal('hide');
+                    //fetchrfqcomprative();
+                }, 1000);
+           
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
 function RFQFetchTotalPriceForReport(VendorID,Counter) {
    
 

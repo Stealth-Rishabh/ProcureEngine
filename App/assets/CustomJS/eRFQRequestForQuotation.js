@@ -97,6 +97,9 @@ var FormWizard = function () {
                     file1: {
                         required: true
                     },
+                    drp_TechnicalApp: {
+                        required: true
+                    },
                   
                     //Second Tab
                     
@@ -503,16 +506,41 @@ function InsUpdRFQDEtailTab1() {
     }
     TermsConditionFileName = TermsConditionFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
 
-   
-
-    var approvers = '';
-    var rowCount = jQuery('#tblapprovers tr').length;
-    if (rowCount > 1) {
-        $("#tblapprovers tr:gt(0)").each(function () {
+    var approvers = [];
+    var rowCount = jQuery('#tblapprovers >tbody >tr').length;
+    if (rowCount >= 1) {
+        jQuery('#tblapprovers >tbody >tr').each(function () {
             var this_row = $(this);
-            approvers = approvers + $.trim(this_row.find('td:eq(5)').html()) + '~' + $.trim(this_row.find('td:eq(4)').html()) + '#';
+            //approvers = approvers + $.trim(this_row.find('td:eq(5)').html()) + '~' + $.trim(this_row.find('td:eq(4)').html()) + '#';
+            var app = {
+                "UserID": parseInt($.trim(this_row.find('td:eq(3)').html())),
+                "ApproverType": 'C',
+                "AdminSrNo": parseInt($.trim(this_row.find('td:eq(2)').html())),
+                "ShowQuotedPrice": 'N'
+            };
+            approvers.push(app)
         })
     }
+    var rowCounttech = jQuery('#tblapproverstech >tbody >tr').length;
+    
+    var showP = 'Y';
+    if (rowCounttech >= 1) {
+        $("#tblapproverstech >tbody >tr").each(function () {
+            var this_row = $(this);
+            showP = 'Y';
+            if (!$("#chkshowp" + $.trim(this_row.find('td:eq(3)').html())).is(":checked")) {
+                showP = 'N';
+            }
+            var app = {
+                "UserID": parseInt($.trim(this_row.find('td:eq(3)').html())),
+                "ApproverType": 'T',
+                "AdminSrNo": parseInt($.trim(this_row.find('td:eq(2)').html())),
+                "ShowQuotedPrice": showP
+            };
+            approvers.push(app)
+        })
+    }
+   
     var Tab1Data = {
       
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -526,10 +554,12 @@ function InsUpdRFQDEtailTab1() {
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
-        "RFQApprovers": approvers
+        "RFQApprovers": approvers,
+        "TechnicalApproval": $("#drp_TechnicalApp").val()
+       
 
     }; 
-    //console.log(JSON.stringify(Tab1Data))
+    console.log(JSON.stringify(Tab1Data))
     //alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
@@ -676,9 +706,10 @@ function fnGetApprovers() {
         success: function (data) {
             var str = "";
             var strP = "";
-            var count = 0;
-            var countT = 0;
-            rowApp = 0;
+            var strtech = "";
+            var strPtech = "";
+          
+           commApp = 0; TechApp = 0; 
             jQuery("#tblapprovers").empty();
             jQuery("#tblapproversPrev").empty();
             if (data[0].approvers.length > 0) {
@@ -689,40 +720,63 @@ function fnGetApprovers() {
                 else {
                     $('#Addbtn1').removeAttr('disabled')
                 }
-                var approvertype = "";
-                $('#wrap_scrollerPrevApp').show();
-                jQuery('#tblapprovers').append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:20%!important'>ApproverType</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                jQuery('#tblapproversPrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:20%!important'>ApproverType</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+               
+                
+                jQuery('#tblapprovers').append("<thead><tr><th colspan=4  style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+                jQuery('#tblapproversPrev').append("<thead><tr><th colspan=2 style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
 
+                jQuery('#tblapproverstech').append("<thead><th colspan=5 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+                jQuery('#tblapproversPrevtech').append("<thead><th colspan=3 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+               
                 for (var i = 0; i < data[0].approvers.length; i++) {
-                    rowApp = rowApp + 1;
+                   
                     if (data[0].approvers[i].approverType == "C") {
-                        approvertype = "Commercial";
+                       
+                        commApp = commApp + 1;
+                        str = '<tr id=trAppid' + commApp + '><td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')"><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                        str += "<td>" + data[0].approvers[i].userName + "</td>";
+                        str += "<td>" + commApp + "</td>";
+                        str += "<td class=hide>" + data[0].approvers[i].userID + "</td></tr>";
+                        jQuery('#tblapprovers').append(str);
 
+                        $('#wrap_scrollerPrevApp').show();
+                        strP = "<tr id=trAppidPrev" + commApp + "><td>" + data[0].approvers[i].userName + "</td>";
+                        strP += "<td>" + commApp + "</td></tr>";
+                        jQuery('#tblapproversPrev').append(strP);
                     }
                     else {
-                        approvertype = "Technical";
+
+                       
+                        TechApp = TechApp + 1;
+                        
+                        strtech = '<tr id=trAppidtech' + TechApp + '><td><button type=button class="btn btn-xs btn-danger" id=Removebtntech' + i + ' onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')"><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                        strtech += "<td>" + data[0].approvers[i].userName + "</td>";
+                        strtech += "<td>" + TechApp + "</td>";
+                        strtech += "<td class=hide>" + data[0].approvers[i].userID + "</td>";
+                        //str += "<td>" + data[0].approvers[i].showQuotedPrice +"</td>";
+                        strtech += '<td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span id=\'spancheckedtech\' class=checked><input type=\'checkbox\'   id=\'chkshowp' + data[0].approvers[i].userID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this, ' + TechApp+')" /></span></div ></td></tr>';
+                        jQuery('#tblapproverstech').append(strtech);
+
+                        $('#wrap_scrollerPrevApptech').show();
+                        strPtech = "<tr id=trAppidPrevtech" + TechApp + "><td>" + data[0].approvers[i].userName + "</td>";
+                        strPtech += "<td>" + TechApp + "</td>";
+                        strPtech += "<td id=tdshowp" + TechApp + "></td></tr>";
+
+                        jQuery('#tblapproversPrevtech').append(strPtech);
+
+                        if (data[0].approvers[i].showQuotedPrice == "Y") {
+                            $('#tdshowp' + TechApp).html('Yes')
+                            $('#chkshowp' + data[0].approvers[i].userID).attr('checked')
+                            $('#chkshowp'+ data[0].approvers[i].userID).closest("span#spancheckedtech").addClass("checked")
+                        }
+                        else {
+                            $('#tdshowp' + TechApp).html('No')
+                            $('#chkshowp' + data[0].approvers[i].userID).removeAttr('checked')
+                            $('#chkshowp' + data[0].approvers[i].userID).closest("span#spancheckedtech").removeClass("checked")
+                        }
 
                     }
-                   
-                    str = '<tr id=trAppid' + (i + 1) + '><td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(trAppid' + (i + 1) + ',trAppidPrev' + (i + 1) + ')"><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
-                    str += "<td>" + data[0].approvers[i].userName + "</td>";
-                    str += "<td>" + data[0].approvers[i].emailID + "</td>";
-                    str += "<td>" + approvertype + "</td>";
-                    str += "<td>" + data[0].approvers[i].adminSrNo + "</td>";
-                    str += "<td class=hide>" + data[0].approvers[i].userID + "</td></tr>";
-                    jQuery('#tblapprovers').append(str);
-
-                   
-                    strP = "<tr id=trAppidPrev" + (i + 1) + "><td>" + data[0].approvers[i].userName + "</td>";
-                    strP += "<td>" + data[0].approvers[i].emailID + "</td>";
-                    strP += "<td>" + approvertype + "</td>";
-                    strP += "<td>" + data[0].approvers[i].adminSrNo + "</td>";
-                    strP += "<td class=hide>" + data[0].approvers[i].userID + "</td></tr>";
-                    jQuery('#tblapproversPrev').append(strP);
                     
-                   
-
                 }
             }
             else {
@@ -942,6 +996,7 @@ function fnsaveAttachmentsquestions() {
     $("#tblquestions> tbody > tr").each(function (index) {
         var this_row = $(this);
         quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '#';
+        
     });
     var data = {
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1255,10 +1310,13 @@ jQuery("#txtApprover").typeahead({
         var data = allUsers;
         usernames = [];
         map = {};
-        var username = "";
+        var uname = "";
         jQuery.each(data, function (i, username) {
-            map[username.userName] = username;
-            usernames.push(username.userName);
+           // map[username.userName] = username;
+           // usernames.push(username.userName);
+            uname = username.userName + ' (' + username.emailID + ')'
+            map[uname] = username;
+            usernames.push(uname);
         });
 
         process(usernames);
@@ -1268,8 +1326,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
-           
-            fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
+           // fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver');
@@ -1279,15 +1336,76 @@ jQuery("#txtApprover").typeahead({
     }
 
 });
-var rowApp = 0;
-function fnApproversQuery(EmailID, UserID, UserName) {
-    var status = "true";
-    $("#tblapprovers tr:gt(0)").each(function () {
-        var this_row = $(this);
-        if ($.trim(this_row.find('td:eq(5)').html()) == sessionStorage.getItem('hdnApproverid')) {
-            status = "false"
+function fnapptype() {
+    jQuery("#txtApprover").val('')
+    sessionStorage.setItem('hdnApproverid', '0');
+}
+function fnTocheckAproverMapp() {
+    jQuery("#txtApprover").val('')
+    sessionStorage.setItem('hdnApproverid','0');
+    if ($('#drp_TechnicalApp').val() == "RFQ" || $('#drp_TechnicalApp').val() == "AfterRFQ") {
+        $('#ddlapprovertype').val('T');
+        $('#ddlapprovertype').removeAttr('disabled');
+        
+    }
+    else {
+        $('#ddlapprovertype').val('C');
+        $('#ddlapprovertype').attr('disabled', 'disabled');
+        if (jQuery("#tblapproversPrevtech thead").length) {
+            bootbox.dialog({
+                message: "By changing Technical Approval as Not Required,  Technical Approvers would be delete. Do you want to continue?",
+                // title: "Custom title",
+                buttons: {
+                    confirm: {
+                        label: "Yes",
+                        className: "btn-success",
+                        callback: function () {
+                            deleteTechnicalApprovers();
+                        }
+                    },
+                    cancel: {
+                        label: "No",
+                        className: "btn-warning",
+                        callback: function () {
+                            $('#drp_TechnicalApp').val('')
+                            //$('#form_wizard_1').bootstrapWizard('previous');
+                        }
+                    }
+                }
+            });
         }
-    });
+    }
+}
+function deleteTechnicalApprovers() {
+    TechApp = 0;
+    jQuery("#tblapproverstech").empty();
+    jQuery("#tblapproversPrevtech").empty();
+}
+
+var commApp = 0;
+var TechApp = 0;
+function fnApproversQuery() {
+    var status = "true";
+    var UserID = sessionStorage.getItem('hdnApproverid');
+    var UserName = jQuery("#txtApprover").val();
+    if ($('#ddlapprovertype').val() == "C") {
+        $("#tblapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            if ($.trim(this_row.find('td:eq(3)').html()) == sessionStorage.getItem('hdnApproverid')) {// && $('#ddlapprovertype').val() == $.trim(this_row.find('td:eq(7)').html())) {
+                status = "false"
+            }
+        });
+    }
+    else {
+        $("#tblapproverstech tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            if ($.trim(this_row.find('td:eq(3)').html()) == sessionStorage.getItem('hdnApproverid')) {
+                status = "false"
+            }
+        });
+    }
 
     if (UserID == "0" || jQuery("#txtApprover").val() == "") {
         $('.alert-danger').show();
@@ -1298,49 +1416,111 @@ function fnApproversQuery(EmailID, UserID, UserName) {
     }
     else if (status == "false") {
         $('.alert-danger').show();
-        $('#spandanger').html('Approver is already mapped for this Reverse Auction.');
+        $('#spandanger').html('Approver is already mapped for ' + $('#ddlapprovertype option:selected').text()+' RFQ.');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
     }
     else {
-        rowApp = rowApp + 1;
-        if (!jQuery("#tblapprovers thead").length) {
-            jQuery("#tblapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Approver Type</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ',trAppidPrev' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>Commercial</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
+        
+        if ($('#ddlapprovertype').val() == "C") {
+            commApp = commApp + 1;
+            
+            if (!jQuery("#tblapprovers thead").length) {
+                jQuery("#tblapprovers").append("<thead><tr><th colspan=4  style='text-align:center;' class='bold'>Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            }
+            else {
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            }
+
+            $('#wrap_scrollerPrevApp').show();
+
+            if (!jQuery("#tblapproversPrev thead").length) {
+
+                jQuery("#tblapproversPrev").append("<thead><tr><th colspan=2  style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+            }
+            else {
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+            }
         }
         else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ',trAppidPrev' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>Commercial</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
-        }
+            TechApp = TechApp + 1;
+            jQuery("#tblapproverstech").removeClass('hide')
+            jQuery("#tblapproversPrevtech").removeClass('hide')
+            if (!jQuery("#tblapproverstech thead").length) {
+                jQuery("#tblapproverstech").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechApp + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' class=checked><input type=\'checkbox\' checked  id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp+')" /></span></div></td></tr>');
+            }
+            else {
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechApp + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' class=checked><input type=\'checkbox\' checked  id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp+')" /></span></div></td></tr>');
+            }
 
-        $('#wrap_scrollerPrevApp').show();
+            $('#wrap_scrollerPrevApptech').show();
 
-        if (!jQuery("#tblapproversPrev thead").length) {
+            if (!jQuery("#tblapproversPrevtech thead").length) {
 
-            jQuery("#tblapproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Approver Type</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>Commercial</td><td>' + rowApp + '</td></tr>');
+                jQuery("#tblapproversPrevtech").append("<thead><tr><th colspan=3  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold'>Show Price</th></tr></thead>");
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechApp + '</td><td id=tdshowp' + TechApp +'></td></tr>');
+            }
+            else {
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechApp + '</td><td id=tdshowp' + TechApp+'></td></tr>');
+            }
         }
-        else {
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>Commercial</td><td>' + rowApp + '</td></tr>');
-        }
+        jQuery("#txtApprover").val('');
+        sessionStorage.setItem('hdnApproverid','0')
+        
     }
 }
-function deleteApprow(rowid, rowidPrev) {
-
-    rowApp = rowApp - 1;
+function deleteApprow(rowid, rowidPrev, apptype) {
+    var i = 1;
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
-    var rowCount = jQuery('#tblapprovers tr').length;
-    var i = 1;
-    if (rowCount > 1) {
-        $("#tblapprovers tr:gt(0)").each(function () {
-            var this_row = $(this);
-            $.trim(this_row.find('td:eq(4)').html(i));
-            i++;
-        });
+    
+    if (apptype == "C")
+    {
+        commApp = commApp - 1;
+        var rowCount = jQuery('#tblapprovers tr').length;
+        if (rowCount > 1) {
+            i = 0;
+            $("#tblapprovers tr:gt(0)").each(function () {
+                var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(i));
+                    i++;
+              });
+        }
     }
+    else {
+        TechApp = TechApp - 1;
+        var rowCount = jQuery('#tblapproverstech tr').length;
+        if (rowCount > 1) {
+            i = 0;
+            $("#tblapproverstech tr:gt(0)").each(function () {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(2)').html(i));
+                i++;
+            });
+        }
+    }
+  
 }
+function Checktechapp(event,rowid) {
+    
+    if ($(event).closest("span#spancheckedtech").attr('class') == 'checked') {
+        $(event).closest("span#spancheckedtech").removeClass("checked")
+        $(event).removeAttr('checked')
+        $('#tdshowp' + rowid).html('No')
+    }
 
+    else {
+       
+        $(event).closest("span#spancheckedtech").addClass("checked")
+        $(event).attr('checked')
+        $('#tdshowp' + rowid).html('Yes')
+    }
+   
+}
 
 function fetchRFIParameteronload() {
    
@@ -1909,8 +2089,6 @@ function fnsubmitRFQ() {
     });   
 }
 
-
-
 var vCount = 0;
 $("#chkAll").click(function() {
 
@@ -2064,6 +2242,20 @@ function fetchReguestforQuotationDetails() {
             jQuery('#txtrfqdescription').val(RFQData[0].general[0].rfqDescription)
            
             jQuery('#txtConversionRate').val(RFQData[0].general[0].rfqConversionRate);
+            jQuery('#drp_TechnicalApp').val(RFQData[0].general[0].technicalApproval);
+            
+                if (RFQData[0].general[0].technicalApproval == "RFQ" || RFQData[0].general[0].technicalApproval == "AfterRFQ") {
+                    $('#ddlapprovertype').val('T');
+                    $('#ddlapprovertype').removeAttr('disabled');
+                    jQuery("#tblapproverstech").removeClass('hide')
+                    jQuery("#tblapproversPrevtech").removeClass('hide')
+                }
+                else {
+                    $('#ddlapprovertype').val('C');
+                    $('#ddlapprovertype').attr('disabled');
+                    $('#tblapproverstech').addClass('hide')
+                    jQuery("#tblapproversPrevtech").addClass('hide')
+                }
             jQuery('#txtRFQReference').val(RFQData[0].general[0].rfqReference)
             jQuery('#txtstartdatettime').val(RFQData[0].general[0].rfqStartDate)
             jQuery('#txtenddatettime').val(RFQData[0].general[0].rfqEndDate)
@@ -2227,6 +2419,7 @@ function fetchPSBidDetailsForPreview() {
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#lblConversionRatePrev').html($('#txtConversionRate').val())
     jQuery("#txtRFQReferencePrev").html($('#txtRFQReference').val());
+    jQuery("#lbltechnicalApproval").html($('#drp_TechnicalApp option:selected').text());
 
     if ($('#attach-file').html() != '' && ($('#file1').val() == '')) {
         $('#filepthtermsPrev').html($('#attach-file').html())
@@ -2591,8 +2784,6 @@ function fnSeteRFQparameterTable() {
     }
 }
 
-
-
 $("#btninstructionexcel").click(function() {
     $("#instructionsDiv").show();
     $("#instructionSpan").show();
@@ -2807,3 +2998,4 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
 }
+

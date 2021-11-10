@@ -31,6 +31,7 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
 
+
     <link rel="shortcut icon" href="../favicon.ico" />
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -125,7 +126,7 @@
                 <!-- END PAGE HEADER-->
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="portlet box green-haze">
+                        <div class="portlet box green-haze" id="form_wizard_1">
                             <div class="portlet-title">
                                 <div class="caption">
                                     <i class="fa fa-gift"></i>Approver Master
@@ -137,7 +138,7 @@
                             </div>
                             <div class="portlet-body">
                                 <div class="tabbable-custom nav-justified" id="tabs">
-                                    <ul class="nav nav-tabs nav-justified">
+                                    <!--<ul class="nav nav-tabs nav-justified">
                                         <li id="liApprover" class="active">
                                             <a href="#tab_1_1_1" data-toggle="tab" aria-expanded="true"> Approver Master </a>
                                         </li>
@@ -147,7 +148,30 @@
                                         <li id="liPreview" class="" style="display:none;">
                                             <a href="#tab_1_1_3" data-toggle="tab" aria-expanded="false"> Preview </a>
                                         </li>
+                                    </ul>-->
+                                    <ul class="nav nav-pills nav-justified steps">
+                                        <li id="liApprover" class="active">
+                                            <a href="#tab_1_1_1" data-toggle="tab" class="step">
+                                                <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>Approver Details</span>
+                                            </a>
+                                        </li>
+                                        <li id="liSeq" style="display:none">
+                                            <a href="#tab_1_1_2" data-toggle="tab" class="step">
+                                                <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Approver Sequence</span>
+                                            </a>
+                                        </li>
+                                        <li id="liPreview" style="display:none">
+                                            <a href="#tab_1_1_3" data-toggle="tab" class="step">
+                                                <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Preview</span>
+                                            </a>
+                                        </li>
+
+
                                     </ul>
+                                    <div id="bar" class="progress progress-striped" role="progressbar">
+                                        <div class="progress-bar progress-bar-success">
+                                        </div>
+                                    </div>
                                     <div class="tab-content">
                                         <div class="tab-pane form active" id="tab_1_1_1">
                                             <form class="form-horizontal" role="form">
@@ -230,17 +254,17 @@
                                                             <button type="button" onclick="onSubmitbtnmaster()" id="submitbtnmaster" class="btn yellow">
                                                                 Next
                                                             </button>
-                                                            <button type="button" onclick="ClearControl();" id="clear-btn" class="btn green">
+                                                            <!--<button type="button" onclick="ClearControl();" id="clear-btn" class="btn green">
                                                                 Clear
-                                                            </button>
+                                                            </button>-->
                                                         </div>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
 
-                                        <div class="tab-pane" id="tab_1_1_2" style="display:none;">
-                                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <div class="tab-pane" id="tab_1_1_2" style="display:none">
+                                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
 
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading" role="tab" id="headingOne">
@@ -261,7 +285,9 @@
                                                                             Approver<span class="required">*</span>
                                                                         </label>
                                                                         <div class="col-12 col-md-4">
-                                                                            <select id="ddlWBApprover" class="form-control"></select>
+                                                                            <select id="ddlWBApprover" class="form-control hide"></select>
+                                                                            <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtApprover" />
                                                                         </div>
                                                                         <label class="col-12 col-md-1 control-label clsHide">
                                                                             Seq<span class="required">*</span>
@@ -312,7 +338,9 @@
                                                                             Approver<span class="required">*</span>
                                                                         </label>
                                                                         <div class="col-12 col-md-4">
-                                                                            <select id="ddlOBApprover" class="form-control"></select>
+                                                                            <select id="ddlOBApprover" class="form-control hide"></select>
+                                                                            <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtOBApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtOBApprover" />
                                                                         </div>
                                                                         <label class="col-12 col-md-1 control-label clsHide">
                                                                             Seq<span class="required">*</span>
@@ -325,11 +353,11 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="col-12 col-md-6 control-label">
-                                                                            <input type="checkbox" checked id="chkWBCopy" name="chkWBCopy" class="form-control JustifyCenter ">
+                                                                        <label class="input-group col-12 col-md-6 control-label">
+                                                                            <input type="checkbox" id="chkWBCopy" name="chkWBCopy" class="form-control JustifyCenter ">
                                                                             Click for Same as WB
                                                                         </label>
-                                                                        <label class="col-12 col-md-6 control-label">
+                                                                        <label class="col-12 col-md-3 control-label">
 
 
 
@@ -371,7 +399,9 @@
                                                                             Approver<span class="required">*</span>
                                                                         </label>
                                                                         <div class="col-12 col-md-4">
-                                                                            <select id="ddlNBApprover" class="form-control"></select>
+                                                                            <select id="ddlNBApprover" class="form-control hide"></select>
+                                                                            <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtNBApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtNBApprover" />
                                                                         </div>
                                                                         <label class="col-12 col-md-1 control-label clsHide">
                                                                             Seq<span class="required">*</span>
@@ -385,7 +415,7 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="col-12 col-md-6 control-label">
-                                                                            <input type="checkbox" checked id="chkOBCopy" name="chkOBCopy" class="form-control JustifyCenter ">
+                                                                            <input type="checkbox" id="chkOBCopy" name="chkOBCopy" class="form-control JustifyCenter ">
                                                                             Click for Same as OB
                                                                         </label>
                                                                         <label class="col-12 col-md-6 control-label">
@@ -415,8 +445,8 @@
                                             <div class="form-actions fluid">
                                                 <div class="row">
                                                     <div class="col-12 col-md-offset-4">
-                                                        <button type="button" onclick="onSubmitbtnmaster()" id="submitbtnmaster" class="btn yellow">
-                                                            Save
+                                                        <button type="button" onclick="PreviewTab();" id="btnPreview" class="btn yellow">
+                                                            Preview
                                                         </button>
                                                         <!--<button type="button" onclick="ClearControl();" id="clear-btn" class="btn green">
                                                             Clear
@@ -425,9 +455,109 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab_1_1_3">
+                                        <div class="tab-pane" id="tab_1_1_3" style="display:none">
+                                            <div class="panel-group" id="accordionPreview" role="tablist" aria-multiselectable="false">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="detailheading">
+                                                        <h4 class="panel-title">
+                                                            <a role="button" data-toggle="collapse" data-parent="#accordionPreview" href="#collapseDetail" aria-expanded="true" aria-controls="collapseDetail">
+                                                                <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                Approver Master
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseDetail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="detailheading">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="inputgroup">
+                                                                    <label class="col-md-3">Purchase Org.</label>
+                                                                    <label class="col-md-3"></label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingOnepreview">
+                                                        <h4 class="panel-title">
+                                                            <a role="button" data-toggle="collapse" data-parent="#accordionPreview" href="#collapseOnePreview" aria-expanded="true" aria-controls="collapseOnePreview">
+                                                                <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                Within Budget (WB) Preview
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseOnePreview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnepreview">
+                                                        <div class="panel-body">
+
+                                                            <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
+
+                                                                <table id="tblWBPreview" class="table table-striped table-bordered table-hover">
+                                                                </table>
 
 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingTwoPreview">
+                                                        <h4 class="panel-title">
+
+                                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionPreview" href="#collapseTwoPreview" aria-expanded="false" aria-controls="collapseTwoPreview">
+                                                                <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                Outside Budget (OB) Preview
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseTwoPreview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoPreview">
+                                                        <div class="panel-body">
+
+                                                            <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
+
+                                                                <table id="tblOBpreview" class="table table-striped table-bordered table-hover">
+                                                                </table>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingThreepreview">
+                                                        <h4 class="panel-title">
+                                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionPreview" href="#collapseThreepreview" aria-expanded="false" aria-controls="collapseThreepreview">
+                                                                <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                Not Budgeted (NB) Preview
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseThreepreview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreepreview">
+                                                        <div class="panel-body">
+
+                                                            <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
+
+                                                                <table id="tblNBPreview" class="table table-striped table-bordered table-hover">
+                                                                </table>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions fluid">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-offset-4">
+                                                        <button type="button" id="btnComplete" class="btn yellow">
+                                                            Done
+                                                        </button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -597,10 +727,12 @@
     <script src="assets/scripts/custom/components-pickers.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
-    <script src="assets/CustomJS/Common.js"></script>
-    <script src="assets/CustomJS/Constant.js"></script>
+
+
     <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/Auction.js"></script>
+    <script src="assets/CustomJS/Constant.js"></script>
     <script src="assets/CustomJS/ApproverMaster.js"></script>
     <script type="text/javascript">
 
