@@ -1351,7 +1351,7 @@ function fnTocheckAproverMapp() {
     else {
         $('#ddlapprovertype').val('C');
         $('#ddlapprovertype').attr('disabled', 'disabled');
-        if (jQuery("#tblapproversPrevtech thead").length) {
+        if (jQuery("#tblapproverstech thead").length) {
             bootbox.dialog({
                 message: "By changing Technical Approval as Not Required,  Technical Approvers would be delete. Do you want to continue?",
                 // title: "Custom title",

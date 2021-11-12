@@ -13,7 +13,8 @@ $(document).ready(function () {
         BidID = getUrlVarsURL(decryptedstring)["BidID"];
         BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
         BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
-        fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
+        sessionStorage.setItem('hdnbidtypeid', BidTypeID)
+        fetchBidSummaryDetails(BidID, BidForID)
         fetchBidTime()
         
     }
@@ -88,9 +89,10 @@ function startTimer(duration, display) {
 
 
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-           
+            
             if (BidTypeID = 6 && BidForID == 82) {
-                fetchBidSummaryDetails(BidID, BidTypeID, BidForID);
+                
+                fetchBidSummaryDetails(BidID, BidForID);
             }
             else {
                

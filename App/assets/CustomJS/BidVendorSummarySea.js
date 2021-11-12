@@ -192,9 +192,9 @@ function fetchBidSummary(BidID) {
                 BidID = data[0].bidID
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID
-              
-
-                fetchBidSummaryDetails(BidID, BidTypeID, BidForID);
+                sessionStorage.setItem('hdnbidtypeid', BidTypeID)
+               
+                fetchBidSummaryDetails(BidID, BidForID);
             }
             else {
 
@@ -263,13 +263,13 @@ function fnTimeUpdate() {
     })
 }
 
-function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
-    sessionStorage.setItem('hdnbidtypeid', BidTypeID)
-    
+function fetchBidSummaryDetails(BidID, BidForID) {
+    //sessionStorage.setItem('hdnbidtypeid', BidTypeID)
+    var BidTypeID = sessionStorage.getItem('hdnbidtypeid')
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) ,
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID  + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -369,15 +369,15 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         }
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
-                            
+                           
                             if (PEfaBidForId == 81 || PEfaBidForId == 83) {
                                 var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
-                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP'+i+' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity'+i+' >' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec'+i+' >' + (minimuminc) + '</td>';
+                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP'+i+' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity'+i+' >' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec'+i+' >' + (minimuminc) + '</td>';
 
                             }
                             else {
                                 var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style=:text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
-                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style=text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right" id=TP' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
+                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style=text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
                             }
                             c = c + 1;
 
@@ -440,7 +440,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
 
                         str += "</tr>";
-                        strsumm += "<td class=hide id=TP" + i + ">" + data[i].targetPrice + "</td><td class=hide id=lastinvoice" + i + ">" + data[i].lastInvoicePrice + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=psid" + data[i].psid + ">" + data[i].psid + "</td></tr>";
+                        strsumm += "<td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=psid" + data[i].psid + ">" + data[i].psid + "</td></tr>";
                         jQuery('#tblBidSummary > tbody').append(str);
                         jQuery('#tblbidsummarypercentagewise > tbody').append(strsumm);
                         if (data[i].srNo == 'H1') {
@@ -550,12 +550,12 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                                     var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"   data-placement="left"></a></td><td id=Sname' + i + ' ><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td>' + data[i].closingTime + '</td>';
                                 }
                                 else {
-                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  data-trigger="hover"  data-content="Expand/Collapse"></a></td><td id=Sname' + i + ' ><a  href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td>' + data[i].closingTime + '</td>';
+                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  data-trigger="hover"  data-content="Expand/Collapse"></a></td><td id=Sname' + i + ' ><a  href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td>' + data[i].closingTime + '</td>';
                                 }
 
                             }
                             else {
-                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;"  onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';// btn - icon - only
+                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;"  onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';// btn - icon - only
                             }
                             c = c + 1;
                             //$('#i_expandcollapse' + i).popover("show")
@@ -595,8 +595,8 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                             strsumm += "<td id=PerCP" + i + " >" + Percentreductionceiling + "</td>";
                         }
 
-                        str += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + data[i].targetPrice + "</td><td class=hide id=lastinvoice" + i + ">" + data[i].lastInvoicePrice + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=seid" + i + ">" + data[i].seId + "</td></tr>";
-                        strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + data[i].targetPrice + "</td><td class=hide id=lastinvoice" + i + ">" + data[i].lastInvoicePrice + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=seid" + i + ">" + data[i].seId + "</td></tr>";
+                        str += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=seid" + i + ">" + data[i].seId + "</td></tr>";
+                        strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=seid" + i + ">" + data[i].seId + "</td></tr>";
 
                         jQuery('#tblBidSummary').append(str);
                         jQuery('#tblbidsummarypercentagewise').append(strsumm);
@@ -841,25 +841,28 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                 }
             }
             else {
+               
                 for (var i = 0; i < data.length; i++) {
 
                     TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+
                    
                     if (TotalBidValue != 0) {
                         if ($('#TP' + i).html() != 0) {
-                            Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
+                            Percentreduction = parseFloat(parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100-100).toFixed(2) + ' %'
                         }
                         else {
                             Percentreduction = 'Not Specified';
                         }
+                       
                         if ($('#lastinvoice' + i).html() != 0) {
-                            Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100).toFixed(2) + ' %'
+                            Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100-100).toFixed(2) + ' %'
                         }
                         else {
                             Percentreductioninvoice = 'Not Specified';
                         }
-                        Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
+                        Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100-100).toFixed(2) + ' %'
                     }
                     else {
 
@@ -889,13 +892,12 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                     $('#PerTP' + i).html(Percentreduction)
                     $('#PerLIP' + i).html(Percentreductioninvoice)
                     $('#PerCP' + i).html(Percentreductionceiling)
-
+                   
                     if (data[i].srNo == 'H1') {
-                        $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7;color: #31708f;');
-
+                        $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7!important;color: #31708f!important;');
                     }
                     if (data[i].srNo == 'H1') {
-                        $('#low_str' + i).css({
+                        $('#low' + i).css({
                             'background-color': '#dff0d8',
                             'font-weight': 'bold',
                             'color': '#3c763d'

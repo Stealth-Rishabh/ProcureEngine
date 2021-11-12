@@ -1764,7 +1764,7 @@ function saveBidSurrogate() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" +  + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
