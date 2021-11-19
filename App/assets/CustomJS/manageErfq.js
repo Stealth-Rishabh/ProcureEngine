@@ -608,8 +608,18 @@ function editRow(divName, RFQParameterId, rowid) {
 
 }
 function InsUpdProductSevices() {
-
-    
+    var TP = 0;
+    var unitrate = 0;
+    var povalue = 0;
+    if (removeThousandSeperator($('#txttargetprice').val()) != null && removeThousandSeperator($('#txttargetprice').val()) != "") {
+        TP = removeThousandSeperator($('#txttargetprice').val());
+    }
+    if (removeThousandSeperator($('#txtunitrate').val()) != null && removeThousandSeperator($('#txtunitrate').val()) != "") {
+        unitrate = removeThousandSeperator($('#txtunitrate').val());
+    }
+    if (removeThousandSeperator($('#txtpovalue').val()) != null && removeThousandSeperator($('#txtpovalue').val()) != "") {
+        povalue = removeThousandSeperator($('#txtpovalue').val());
+    }
   
         jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
        
@@ -619,7 +629,7 @@ function InsUpdProductSevices() {
                 "RFQParameterId": parseInt(sessionStorage.getItem('CurrentRFQParameterId')),
                 "RFQId": parseInt(sessionStorage.getItem('hdnrfqid')),
                 "RFQShortName": $('#txtshortname').val(),
-                "RFQTargetPrice": parseFloat(removeThousandSeperator($('#txttargetprice').val())),
+                "RFQTargetPrice": parseFloat(TP),
                 "RFQItemCode": $('#txtItemCode').val(),
                 "RFQuantity": parseFloat(removeThousandSeperator($('#txtquantitiy').val())),
                 "RFQUomId": $('#dropuom').val(),
@@ -628,14 +638,14 @@ function InsUpdProductSevices() {
                 "TAT": parseFloat($("#txttat").val()),
                 "RFQDelivery": $("#txtedelivery").val(),
                 "RFQPoNo": $("#txtPono").val(),
-                "RFQUnitRate": parseFloat(removeThousandSeperator($("#txtunitrate").val())),
+                "RFQUnitRate": parseFloat(unitrate),
                 "RFQVendorName": $("#txtvendorname").val(),
                 "RFQPODate": $("#txtPODate").val(),
-                "RFQPOValue": parseFloat(removeThousandSeperator($("#txtpovalue").val())),
+                "RFQPOValue": parseFloat(povalue),
                 "UserId": sessionStorage.getItem('UserID'),
               
             }
-         
+            //console.log(JSON.stringify(data))
             jQuery.ajax({
                 url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsUpdRFQParameter",
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -778,7 +788,7 @@ function confirmEditEventAction(eventType) {
 }
 var allUOM = '';
 function FetchUOM(CustomerID) {
-
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -787,6 +797,7 @@ function FetchUOM(CustomerID) {
         cache: false,
         dataType: "json",
         success: function (data) {
+           
             jQuery("#txtUOM").empty();
             if (data.length > 0) {
                 allUOM = data;
@@ -823,8 +834,8 @@ jQuery("#txtUOM").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            map[username.uOM] = username;
-            usernames.push(username.uOM);
+            map[username.uom] = username;
+            usernames.push(username.uom);
         });
 
         process(usernames);
@@ -832,9 +843,8 @@ jQuery("#txtUOM").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        if (map[item].uOM != "") {
-            $('#dropuom').val(map[item].uOM)
-
+        if (map[item].uom != "") {
+            $('#dropuom').val(map[item].uom)
         }
         else {
             gritternotification('Please select UOM  properly!!!');
@@ -1764,7 +1774,7 @@ function saveBidSurrogate() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" +  + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }

@@ -127,12 +127,12 @@ function validatepassword() {
             },
             error: function (xhr, status, error) {
                 sessionStorage.setItem("Token", '')
-                jQuery("#txtpassword").val('')
-                var myObj = JSON.parse(xhr.responseText);
+                erroropenbid.show();
+                $('#erropenbid').html('Invalid password . Please Check your Password and try again.');
+                erroropenbid.fadeOut(3000);
+                App.scrollTo(erroropenbid, -200);
+                jQuery("#txtpassword").val('');
                 jQuery.unblockUI();
-                bootbox.alert(myObj.error + ' <br>' + myObj.error_description, function () {
-                });
-                sessionStorage.clear();
             }
         });
        

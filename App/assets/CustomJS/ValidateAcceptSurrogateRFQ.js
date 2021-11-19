@@ -94,11 +94,13 @@ function validatepassword() {
             },
             error: function (xhr, status, error) {
                 sessionStorage.setItem("Token", '')
-                var myObj = JSON.parse(xhr.responseText);
-                jQuery("#txtpassword").val('')
+                successopenbid.hide();
+                erroropenbid.show();
+                $('#erropenbid').html('Invalid password . Please Check your Password and try again.');
+                erroropenbid.fadeOut(3000);
+                App.scrollTo(erroropenbid, -200);
+                jQuery("#txtpassword").val('');
                 jQuery.unblockUI();
-                bootbox.alert(myObj.error + ' <br>' + myObj.error_description, function () {
-                });
                
             }
         });
@@ -121,11 +123,12 @@ function validatepassword() {
             success: function (data) {
 
                 if (data[0].flagStatus == "1") {
-                    fetchReguestforQuotationDetailseRFQ();
+                    fetchReguestforQuotationDetailseRFQ(); 
                     sessionStorage.setItem("VendorId", data[0].vendorID)
                     sessionStorage.setItem('RFQVersionId', data[0].version)
                     sessionStorage.setItem("UserType", "V")
                     sessionStorage.setItem("UserID", data[0].userID)
+                    sessionStorage.setItem("EmailID", data[0].emailId)
                     sessionStorage.setItem("UserName", data[0].vendorName)
                     sessionStorage.setItem("RFQID", RFQID)
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")

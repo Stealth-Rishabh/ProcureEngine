@@ -166,7 +166,7 @@ function clone(BidId) {
             if (parseInt(data) > 0) {
                 jQuery('#divalerterror').hide();
                 msgForClonedBid(parseInt(data), +$("#ddlBidType").val());
-                fileUploader(parseInt(data))
+               // fileUploader(parseInt(data))
                 fetchBidDetailsForCloning();
             }  else {
                 jQuery('#divalertsucess').hide();
