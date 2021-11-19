@@ -154,16 +154,19 @@
                                                     <select class="form-control" id="ddlrfqVersion" name="ddlrfqVersion" style="margin: 0 auto;"></select>
                                                 </div>
                                                 <div class="col-md-4" style="text-align: left">
-                                                    <button type="submit" id="btnrfirfq" class="btn yellow" > Go</button>
+                                                    <button type="submit" id="btnrfirfq" class="btn yellow"> Go</button>
                                                     <button class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="left" data-original-title="Export to Excel">
                                                         Export
                                                     </button>
-                                                    <input type="hidden" id="hdnUserID"/>
+                                                    <input type="hidden" id="hdnUserID" />
                                                     <button class="btn green tooltips display-none" type="button" id="btnPDF" data-placement="left" data-original-title="Export to PDF">
                                                         PDF
                                                     </button>
-                                                    <button type="button" class="btn red display-none" id="cancl_btn" >
-                                                        Cancel RFQ
+                                                    <button type="button" class="btn red display-none" id="cancl_btn">
+                                                        Cancel
+                                                    </button>
+                                                    <button type="button" class="btn blue display-none" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                                        Download
                                                     </button>
                                                 </div>
                                             </div>
@@ -446,7 +449,7 @@
                                        <div class="col-md-8">
                                           
                                            <div class="input-group date form_datetime form_datetime bs-datetime">
-                                               <input type="text" size="16" class="form-control" id="txtextendDate" name="txtextendDate" autocomplete="off">
+                                               <input type="text" size="16" class="form-control" id="txtextendDate" name="txtextendDate" readonly autocomplete="off">
                                                <span class="input-group-btn">
                                                    <button class="btn default date-set" type="button">
                                                        <i class="fa fa-calendar"></i>
@@ -461,9 +464,8 @@
                                      Remarks:
                                  </label>
                                  <div class="col-md-8">
-
-                                     <textarea id="txtReInviteRemarks" name="txtReInviteRemarks" class="form-control" rows="4" tabindex='2' ></textarea>
-</div>
+                                    <textarea id="txtReInviteRemarks" name="txtReInviteRemarks" class="form-control" rows="4" tabindex='2' ></textarea>
+                                </div>
                              </div>
                                <div class="form-actions fluid">
                                         <div class="col-md-offset-3 col-md-6" style="text-align: center">
@@ -476,10 +478,8 @@
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
-                         </form>
-                                        
-                        
-                        
+                          </form>
+                           
                 </div>
             </div>
         </div>

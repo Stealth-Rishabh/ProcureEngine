@@ -766,12 +766,10 @@ var FormWizard = function () {
 
                         }
                         else if ($("#txtBidDuration").val() == '0' && ($("#ddlAuctiontype option:selected").val() == "81" || $("#ddlAuctiontype option:selected").val()=="83")) {
-                            $('#form_wizard_1').bootstrapWizard('previous');
                             $(".alert-danger").find("span").html('').html('Bid Duration can not be zero.')
                             Metronic.scrollTo(error, -200);
                             $(".alert-danger").show();
                             $(".alert-danger").fadeOut(5000);
-
                             return false;
                         }
                         else {

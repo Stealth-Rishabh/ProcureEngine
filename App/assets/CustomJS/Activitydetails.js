@@ -226,7 +226,7 @@ function fetchDashboardData() {
                     }
                     str += "</div></div></div></div>";
 
-                    str += "<div class='col2' style='width: 80px !important; margin-left:-80px !important;'>";
+                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
 
                     str += "<div class='date'><span class='label label-sm label-info'>" + BidData[0].pendingActivity[i].receiptDt + "</span></div></div>";
                     str += "</li>";
@@ -313,7 +313,7 @@ function fetchDashboardData() {
                     str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
                     str += "</div></div></div></div>";
                     str += "<div class='col2' style='width: 105px !important; margin-left:-105px !important;'>";
-                    str += "<div class='date'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
+                    str += "<div class='date1'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
                     str += "</a></li>";
                     jQuery('#ulList').append(str);
 
