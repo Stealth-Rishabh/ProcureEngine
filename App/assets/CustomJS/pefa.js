@@ -766,12 +766,10 @@ var FormWizard = function () {
 
                         }
                         else if ($("#txtBidDuration").val() == '0' && ($("#ddlAuctiontype option:selected").val() == "81" || $("#ddlAuctiontype option:selected").val()=="83")) {
-                            $('#form_wizard_1').bootstrapWizard('previous');
                             $(".alert-danger").find("span").html('').html('Bid Duration can not be zero.')
                             Metronic.scrollTo(error, -200);
                             $(".alert-danger").show();
                             $(".alert-danger").fadeOut(5000);
-
                             return false;
                         }
                         else {
@@ -1124,6 +1122,7 @@ function ConfigureBidInsPefaTab2() {
     };
     //console.log(PriceDetails)
     //alert(JSON.stringify(Tab2data))
+   // console.log(JSON.stringify(Tab2data))
     jQuery.ajax({
 
         type: "POST",
@@ -1152,7 +1151,8 @@ function ConfigureBidInsPefaTab2() {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+               // fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('spandanger', '');
             }
             jQuery.unblockUI();
             return false;
@@ -1431,7 +1431,7 @@ function InsUpdProductSevices() {
             
             $("#" + this_row).find("td:eq(14)").text($("#txtPriceReductionFrequency").val())
             $("#" + this_row).find("td:eq(15)").text(thousands_separators($("#txtPriceReductionAmount").val()))
-            if ($("#ddlAuctiontype option:selected").val() != '81' && $("#ddlAuctiontype option:selected").val() != 83) {
+            if ($("#ddlAuctiontype option:selected").val() != '81' && $("#ddlAuctiontype option:selected").val() != '83') {
                 $("#" + this_row).find("td:eq(16)").text($("#showhlprice").val())
                 $("#" + this_row).find("td:eq(17)").text($("#showstartprice").val())
                 $("#" + this_row).find("td:eq(13)").text(thousands_separators($("#txtStartingPrice").val()))
@@ -1472,7 +1472,7 @@ function InsUpdProductSevices() {
           
             $("#" + this_row_Prev).find("td:eq(13)").text($("#txtPriceReductionFrequency").val())
             $("#" + this_row_Prev).find("td:eq(14)").text(thousands_separators($("#txtPriceReductionAmount").val()))
-            if ($("#ddlAuctiontype option:selected").val() != '81' || $("#ddlAuctiontype option:selected").val() != 83) {
+            if ($("#ddlAuctiontype option:selected").val() != '81' && $("#ddlAuctiontype option:selected").val() != 83) {
                 $("#" + this_row_Prev).find("td:eq(15)").text($("#showhlprice").val())
                 $("#" + this_row_Prev).find("td:eq(16)").text(($("#showstartprice").val()))
                 $("#" + this_row_Prev).find("td:eq(12)").text(thousands_separators($("#txtStartingPrice").val()))
@@ -1498,7 +1498,8 @@ function InsUpdProductSevices() {
 
             });
             
-            if ($("#ddlAuctiontype option:selected").val() != '81' || $("#ddlAuctiontype option:selected").val() != 83) {
+            if ($("#ddlAuctiontype option:selected").val() != '81' && $("#ddlAuctiontype option:selected").val() != 83) {
+               
                 _BidDuration = (((removeThousandSeperator($("#txtCeilingPrice").val()) - removeThousandSeperator($("#txtStartingPrice").val())) / removeThousandSeperator($("#txtPriceReductionAmount").val())) * $("#txtPriceReductionFrequency").val()) + parseInt($("#txtPriceReductionFrequency").val());
                 $("#txtBidDuration").val(parseInt(_BidDuration));
                 $("#txtBidDurationPrev").text(parseInt(_BidDuration))
@@ -1822,10 +1823,8 @@ function InsUpdProductSevices() {
                 }
 
                 else {
-
-                    ParametersQuery()
-
-                }
+                     ParametersQuery()
+                 }
 
             }
 

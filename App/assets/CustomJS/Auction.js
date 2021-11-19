@@ -894,7 +894,7 @@ function fnDownloadAttachments(filename, foldername) {
             downloadwindow.focus();
         },
         error: function () {
-            $(".alert-danger").find("span").html('').html(filename + " Couldn't download successfully from Azure");
+            $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
             Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
             $(".alert-danger").fadeOut(5000);

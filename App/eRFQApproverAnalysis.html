@@ -118,12 +118,7 @@
                             </div>
                             <div id="entryForm" class="portlet-body form" style="display:none">
                                 <form action="#" class="form-horizontal" id="RFIRFQREport">
-                                    <div class="alert alert-danger display-hide text-center">
-                                        <span id="error"></span>
-                                    </div>
-                                    <div class="alert alert-success display-hide">
-                                        <span id="success"></span>
-                                    </div>
+                                   
 
                                     <div class="portlet-body " id="displayTable">
                                         <div class="row">
@@ -235,6 +230,12 @@
                             </div>
                         </div>
                         <div class="col-md-12 display-none" id="displayComparativetabs">
+                            <div class="alert alert-danger display-hide text-center">
+                                <span id="error"></span>
+                            </div>
+                            <div class="alert alert-success display-hide">
+                                <span id="success"></span>
+                            </div>
                             <div class="tabbable-line boxless tabbable-reversed">
                                 <ul class="nav nav-tabs">
                                     <li class="active">
@@ -284,13 +285,13 @@
                                                                             </label>
                                                                         </div>
                                                                     </div>
-                                                                   
+
                                                                     <div class="form-group Input-group">
                                                                         <label class="col-md-4 control-label">
                                                                             Remarks :
                                                                         </label>
                                                                         <div class="col-md-6">
-                                                                            <textarea id="txtbidspecification" name="txtbidspecification" class="form-control" rows="4" maxlength="800"></textarea>
+                                                                            <textarea id="txtfwdToCommApproverrem" name="txtfwdToCommApproverrem" class="form-control" rows="4" maxlength="800"></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -310,7 +311,7 @@
                                                     <div class="col-md-6" id="frmdivforward" style="display:none; height: 250px; overflow-y:scroll;">
                                                         <form action="#" id="form1" class="form-horizontal">
                                                             <div class="form-body">
-                                                                
+
                                                                 <div class="table-scrollable" style="overflow: auto">
                                                                     <table class="table table-bordered" id="tblremarksforward">
                                                                         <thead>
@@ -380,10 +381,10 @@
                                                                 <div class="form-group" style="padding: 10px 5px;">
                                                                     <div class="col-md-offset-1 col-md-12" style="text-align: center">
                                                                         <!--<button id="btnExportToExcel1" type="button" class="btn blue">
-                                                                            Export To Excel
-                                                                        </button>-->
+                                                    Export To Excel
+                                                </button>-->
 
-                                                                        <button id="btnSubmitApp" type="submit" class="btn green">
+                                                                        <button id="btnSubmitAppcomm" type="submit" class="btn green">
                                                                             Submit
                                                                         </button>
 
@@ -393,7 +394,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
-                                                       
+
                                                         <form action="#" id="form2" class="form-horizontal">
 
                                                             <div class="form-body">
@@ -475,7 +476,7 @@
                                                             <div class="form-body">
 
 
-                                                                
+
                                                                 <div class="table-scrollable" style="overflow: auto">
                                                                     <table class="table table-bordered" id="tblremarksawared">
                                                                         <thead>
@@ -533,11 +534,9 @@
                                                                 </div>
                                                                 <div class="form-group" style="padding: 10px 5px;">
                                                                     <div class="col-md-offset-1 col-md-12" style="text-align: center">
-
-
                                                                         <button id="btnSubmitApp" type="submit" class="btn green">
                                                                             Submit
-                                                                        </button>
+                                                                        </button><!--&nbsp; <span class="help-block hide" style="color:red" id="btnmsz">Vendor's Query response in Pending</span>-->
 
 
                                                                     </div>
@@ -546,7 +545,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6" style=" display:none;height: 250px; overflow-y:scroll;" id="frmdivapprove">
-                                                        
+
                                                         <form action="#" id="form2" class="form-horizontal">
 
                                                             <div class="form-body">
@@ -597,7 +596,7 @@
 
                                     </div>
                                 </div>
-                               
+
                             </div>
 
                         </div>
@@ -638,7 +637,77 @@
             </div>
         </div>
     </div>
+    <div id="RaiseQuery" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Raise Query
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form" id="frmMapApprover">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorApp" style='display: none;'>
+                                <span id="spandanger"> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
+                                <span id=""> </span>
+                            </div>
+                            <input type="hidden" id="hdnvendorid" value="0"/>
+                            <div class="form-group">
+                                
+                                <div class="col-md-12">
+                                    <div class="inputgroup">
+                                        <div class="col-md-2">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="inputgroup">
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="txtquestions" maxlength="1000" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>
+                                        <!--<div class="col-md-3">
+                                            <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                        </div>-->
+                                    </div>
 
+                                    <div class="inputgroup">
+                                        <div class="col-md-1">
+                                            <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divapprover">
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover" id="tblquestions"></table>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-offset-4">
+                                        <button type="button" class="btn green" id="btnTechquery" disabled onclick="submitTechnicalQuery()"> Submit Query</button>
+                                        <button type="button" class="btn red" id="btnwithdraw"  onclick="fnquerywithdaw()">Query withdraw</button>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="page-footer">
         <div class="page-footer-inner">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
@@ -705,7 +774,7 @@
             }
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
 
-            
+
             validateAppsubmitData();
             $('#drpVendors').val('');
 
@@ -716,7 +785,7 @@
 
         });
     </script>
-   
+
 
     <script type="text/javascript">
         $("#btnExport").click(function (e) {

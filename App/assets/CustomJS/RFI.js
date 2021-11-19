@@ -590,7 +590,7 @@ function RFIConfigureTab1() {
         AttachementFileName = $.trim(jQuery('#attach-file').html());
     } else {
         
-        AttachementFileName = 'Vickrant'//jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
+        AttachementFileName = 'Print 1'
     }
 
     var _categories = $("#ddlCategoryMultiple").val();
@@ -614,19 +614,18 @@ function RFIConfigureTab1() {
             queryAttachment += " insert into RFIAttachment(RFIID,RFIAttachment,RFIAttachmentDescription)values(" +
             '##RFIID##' + ",'" + AttachementFileName + "','" + $.trim($(this).find('input[type=text]').val()) + "')";
         }
-        
-        
+       
     });
 
     var Tab1Data = {
 
-        "RFIID": sessionStorage.getItem('CurrentRFIID'),
+        "VQID": sessionStorage.getItem('CurrentRFIID'),
         "CustomerID": sessionStorage.getItem('CustomerID'),
-        "RFISubject": jQuery("#txtrfiSubject").val(),
-        "RFIDeadline": jQuery("#txtrfideadline").val(),
-        "RFIDescription": jQuery("#txtrfidescription").val(),
-        "RFIAttachment": 'NA',
-        "RFIAttachmentDescription": 'NA',        
+        "VQSubject": jQuery("#txtrfiSubject").val(),
+        "VQDeadline": jQuery("#txtrfideadline").val(),
+        "VQDescription": jQuery("#txtrfidescription").val(),
+        "VQAttachment": 'NA',
+        "VQAttachmentDescription": 'NA',
         "UserId": sessionStorage.getItem('UserID'),
         "AttachmentQuery": queryAttachment,
         "ProductCatQuery": queryCategories
@@ -638,30 +637,27 @@ function RFIConfigureTab1() {
         type: "POST",
 
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RfiConfigureTab1",      
+        url: sessionStorage.getItem("APIPath") + "RFIMaster/VQConfigureTab1",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         crossDomain: true,
 
         async: false,
-
         data: JSON.stringify(Tab1Data),
-
         dataType: "json",
 
         success: function (data) {
-            sessionStorage.setItem('CurrentRFIID', data[0].RFIID);
+            sessionStorage.setItem('CurrentRFIID', data[0].VQID);
             $("#tblAttachmentsElem> li").each(function (index) {                 
                 if ($(this).find('input[type=file]').val() != '') {
-                    
-                    fileUploader(sessionStorage.getItem('CurrentRFIID'), $(this).find('input[type=file]').prop("files")[0]);
+                   fileUploader(sessionStorage.getItem('CurrentRFIID'), $(this).find('input[type=file]').prop("files")[0]);
                 }
             });
             
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 

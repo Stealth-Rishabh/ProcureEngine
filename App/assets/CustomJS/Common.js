@@ -4,6 +4,11 @@ var UserID = sessionStorage.getItem('UserID');
 var Mainurl = sessionStorage.getItem('MainUrl');
 var CurrentCustomer = sessionStorage.getItem("CustomerID");
 var LoadingMessage = '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>';
+var DefaultCurrency = sessionStorage.getItem("DefaultCurrency");
+$('.MaxLength').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
 CommonGenricAjax = function (url, type, data, async, token) {
     return $.ajax({
         url: apiURL + url,
@@ -87,4 +92,12 @@ function SearchInGridview(tableName,value) {
         }
 
     });
+}
+function onlyNumberKey(evt) {
+
+    // Only ASCII character in that range allowed
+    var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+    return true;
 }

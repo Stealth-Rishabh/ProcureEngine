@@ -7,6 +7,8 @@ if (window.location.search) {
     var AppType = getUrlVarsURL(decryptedstring)["AppType"];
     var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
+    var VID = getUrlVarsURL(decryptedstring)["VID"];
+    
     $('#hdnRfqID').val(RFQID);
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     setTimeout(function () {
@@ -127,11 +129,17 @@ function getSummary(vendorid, version) {
 }
 
 function fetchrfqcomprative() {
+    var url = '';
    
+    if (VID != undefined && VID!='' && VID!=null ) {
+        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
+    }
+    else {
+        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99"
+    }
    
-        
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -184,19 +192,23 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Select"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     
-                    if (data[0].vendorNames[i].seqNo != 0) {
+                    //** Get Query/Response for Technical Approval if any?
+                    GetQuestions(data[0].vendorNames[i].vendorID) 
+                   
+                        if (data[0].vendorNames[i].seqNo != 0) {
 
-                        strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
-                        strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
-                        jQuery("#drpVendors").append(jQuery("<option ></option>").val(data[0].vendorNames[i].vendorID).html(data[0].vendorNames[i].vName));
+                            strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
+                            strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
+                            jQuery("#drpVendors").append(jQuery("<option ></option>").val(data[0].vendorNames[i].vendorID).html(data[0].vendorNames[i].vName));
 
-                    }
-                    else {
-                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                        strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
-                       
+                        }
+                        else {
+                            strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                            strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
 
-                    }
+
+                        }
+                   
                 }
                 strHead += "<th>Line-wise Lowest Quote</th><th colspan='5' style='text-align:center;'>Last PO Details</th><th>Delivery Location</th>";
                 strHead += "</tr>"
@@ -260,7 +272,7 @@ function fetchrfqcomprative() {
                                         str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td>";
                                     }
                                     if (ShowPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        str += "<td class='text-right'>Quoted</td><td class='text-right'>Quoted</td><td class='VendorPriceNoTax text-right'>Quoted</td><td class='VendorPriceWithTax  text-right' >Quoted</td>";
+                                        str += "<td class='text-right'>Quoted</td><td class='VendorPriceNoTax text-right'>Quoted</td><td class='VendorPriceWithTax  text-right' >Quoted</td>";
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
@@ -295,8 +307,14 @@ function fetchrfqcomprative() {
                             }
 
                         }
-                        totallowestValue = totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue)
-                        str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                        if (ShowPrice == 'Y') {
+                            totallowestValue = thousands_separators(totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue))
+                            str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                        }
+                        else {
+                            totallowestValue = 'Quoted'
+                            str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                        }
                         str += "</tr>"
                         jQuery('#tblRFQComprativetest').append(str);
 
@@ -318,7 +336,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
-                str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=6>&nbsp;</td></tr>";
+                str += "<td class=text-right>" + totallowestValue + "</td><td colspan=6>&nbsp;</td></tr>";
                
 
                 //For Loading Factor
@@ -330,7 +348,12 @@ function fetchrfqcomprative() {
 
                             var p = thousands_separators(data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST);
                             if (p != 0) {
-                                str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                if (ShowPrice == 'Y') {
+                                    str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                }
+                                else{
+                                    str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">Quoted</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>Quoted</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                }
                                 
                             }
                             else {
@@ -375,13 +398,18 @@ function fetchrfqcomprative() {
                     for (var k = 0; k < data[0].lStatus.length; k++) {
 
                         if (data[0].lStatus[k].vendorID == data[0].vendorNames[l].vendorID) {
-                            if (data[0].lStatus[k].status != 'N/A') {
-                                str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
-                               
+                            if (ShowPrice == "Y") {
+                                if (data[0].lStatus[k].status != 'N/A') {
+                                    str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
+
+                                }
+                                else {
+                                    str += "<td colspan=3 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
+
+                                }
                             }
                             else {
-                                str += "<td colspan=3 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
-                                
+                                str += "<td colspan=3 style='text-align:center;color: black!important;'>Quoted</td>";
                             }
 
                         }
@@ -395,8 +423,14 @@ function fetchrfqcomprative() {
                 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
-                        RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
-                        str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
+                        if (ShowPrice == 'Y') {
+                            RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
+                            str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
+                        }
+                        else {
+                            
+                            str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td>";
+                        }
                         
                     }
                     else {
@@ -603,24 +637,39 @@ function fetchrfqcomprative() {
                    
                 }
                 //// ***************** END  Answer Question Row
+
                 // Technical Approver Row
                 if (AppType != 'C') {
-                    strQ += " <tr><td Colspan=2><b>Technical Approval</b></td>";
+                    strQ += "<tr><td><b>Technical Approval</b></td>";
+                    if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+                        strQ += "<td>After All RFQ Responses</td>"
+                    }
+                    else if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "rfq") {
+                        strQ += "<td>With Indivisual RFQ Response</td>"
+                    }
+                    else {
+                        strQ += "<td>Not Required</td>"
+                    }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-
-                        strQ += "<td><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  checked/> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
-
+                        //strQ += "<td style='text-align:center;'><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  /> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
+                        strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID +')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
+                        
                     }
                     strQ += "</tr>"
                 }
+
+                strQ += "<tr><td colspan=2></td>";
+                for (var k = 0; k < data[0].vendorNames.length; k++) {
+                    strQ += '<td style="text-align:center;"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery' + data[0].vendorNames[k].vendorID + '  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID + ')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a>&nbsp; <span id=querycount' + data[0].vendorNames[k].vendorID+' ></span></td>'
+                }
+                strQ += "</tr>";
+
                 //For Blank Row after question table 
                 strQ += "<tr>";
                
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
-
-                    t = k;
-
+                     t = k;
                 }
                 strQ += "<td colspan=" + (t + 2) + ">&nbsp;</td>";
                
@@ -700,15 +749,7 @@ function fetchrfqcomprative() {
                
                 strQ += "</tr>";
                
-
-
-
-                
-
-
                 jQuery('#tblRFQComprative').append(str);
-               
-
                 jQuery('#tblRFQComprativeQ').append(strQ);
                 
             }
@@ -739,7 +780,322 @@ function fetchrfqcomprative() {
     jQuery.unblockUI();
 
 }
+function check(vendorid) {
+   
+    $('[name=AppRequired' + vendorid+']').on('change', function () {
+        var $this = $(this);
+        $this.siblings('[value=' + this.value + ']').prop('checked', true)
+        $this.siblings('[value!=' + this.value + ']').prop('checked', false)
+    });
+    
+}
+function fnRaiseQuery(vendorid) {
+    $('#hdnvendorid').val(vendorid)
+    GetQuestions(vendorid);
+    //sessionStorage.setItem('hdnqueryselectedvID', vendorid)
+}
+var queslength = 0;
+var PendingOn = 'A';
+sessionStorage.setItem('HeaderID', 0)
+function GetQuestions(vendorid) {
+   
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + $('#hdnRfqID').val()+ "&VendorID=" + vendorid + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            jQuery("#tblquestions").empty();
+            var attach = 'No Attachment';
+           
+           
+            $('#querycount' + vendorid).text("Response Pending ("+ data.length+")")
+            if (data.length > 0) {
+                queslength = data.length;
+                sessionStorage.setItem('HeaderID', data[0].headerid)
+                $('#btnTechquery').attr('disabled','disabled')
+                jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
+                    for (var i = 0; i < data.length; i++) {
+                        rowques = rowques + 1;
+                        attach = '';
+                    if (data[i].attachment != '') {
+                         attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
+                    }
+                   
+                    str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id+'</td><td>' + data[i].question + '</td>';
+                    str += '<td id=answer'+i+'>' + data[i].answer + '</td>';
+                    str += '<td>' + attach + '</td>';
+                    str += '<td>' + data[i].createdBy + '</td>';
+                    str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletequesrow(trquesid' + (i + 1) + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                    jQuery('#tblquestions').append(str);
+                   
+                    if ($('#answer' + i).text() != "" || data[0].pendingOn.toLowerCase() =="v") {
+                        $('#Removebtn' + i).hide();
+                        $('#btnTechquery').text("Additional Query")
+                    }
+                    else {
+                        $('#Removebtn' + i).show();
+                    }
+                        PendingOn = data[i].pendingOn;
+                        if (data[0].pendingOn.toLowerCase() != "v" && data[0].pendingOn.toLowerCase()!='x' ) {
+                            $('#btn_raisequery' + vendorid).text('Reponse Recieved')
+                            $('#btn_raisequery' + vendorid).removeClass('yellow').addClass('green')
+                            $('#querycount' + vendorid).hide();
+                            //$('#btnmsz').removeClass('hide')
+                        }
+                        if (data[0].pendingOn.toLowerCase() == "x") {
+                            $('#btn_raisequery' + vendorid).text('Withdraw')
+                            $('#btn_raisequery' + vendorid).removeClass('green').removeClass('yellow').addClass('red')
+                            $('#querycount' + vendorid).hide();
+                        }
+                    
+                }
+                if (PendingOn.toLowerCase() == "v") {
+                    jQuery('#btnSubmitApp').attr("disabled", 'disabled');
+                    $('#btnSubmitApp').removeClass('green').addClass('default')
+                    $('#btnwithdraw').show()
+                 }
+                else {
+                    $('#btnwithdraw').hide()
+                }
+            }
+            else {
+                $('#btnwithdraw').hide()
+                //jQuery('#tblquestions').append("<tr><td>No Questions !!</td></tr>")
+            }
+        },
+        error: function (xhr, status, error) {
 
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    })
+}
+function DownloadFileVendor(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/' + $('#hdnvendorid').val() + '/TechQuery');
+}
+$("#RaiseQuery").on("hidden.bs.modal", function () {
+    jQuery("#txtquestions").val('')
+    $('#hdnvendorid').val('0')
+    $('#tblquestions').empty();
+    $('#btnTechquery').attr('disabled', 'disabled')
+    queslength = 0;
+    PendingOn='A'
+});
+var rowques = 0;
+function addquestions() {
+    if (jQuery("#txtquestions").val() == "") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Questions');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+   
+    else {
+        rowques = rowques + 1;
+        if (!jQuery("#tblquestions thead").length) {
+            jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important' colspan=4>Questions</th><th style='width:5%!important'></th></tr></thead>");
+        }
+        var str = '<tr id=trquesid' + rowques + '><td class=hide>0</td><td colspan=4>' + jQuery("#txtquestions").val() + '</td>';
+        str += '<td style="width:5%!important"><button type=button id=Removebtn' + rowques + ' class="btn btn-xs btn-danger"  onclick="deletequesrow(trquesid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblquestions').append(str);
+        jQuery("#txtquestions").val('')
+       
+        if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
+            $('#btnTechquery').attr('disabled', 'disabled')
+           // $('#btnwithdraw').hide()
+        }
+        else {
+            $('#btnTechquery').removeAttr('disabled')
+            //$('#btnwithdraw').show()
+        }
+    }
+}
+function deletequesrow(rowid) {
+    rowques = rowques - 1;
+    $('#' + rowid.id).remove();
+   
+    if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0 ) {
+        $('#btnTechquery').attr('disabled', 'disabled')
+       // $('#btnwithdraw').hide()
+    }
+    else {
+       // $('#btnTechquery').removeAttr('disabled')
+    }
+}
+function submitTechnicalQuery() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+    var quesquery = "";
+   
+    if ($("#tblquestions> tbody > tr").length > 0) {
+        if ($('#txtquestions').val() == "") {
+            $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
+            $("#tblquestions> tbody > tr").each(function (index) {
+                var this_row = $(this);
+                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
+                if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
+                    quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
+                }
+
+            });
+            var data = {
+                "RFQID": parseInt($('#hdnRfqID').val()),
+                "QuesString": quesquery,
+                "UserID": sessionStorage.getItem('UserID'),
+                "VendorID": parseInt($('#hdnvendorid').val()),
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+                "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
+                "PendingOn": "V"
+            }
+            console.log(JSON.stringify(data))
+            jQuery.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRFQApproval/eInsQueryTovendorApproversforAllTechnical",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                crossDomain: true,
+                async: false,
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+
+                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .", function () {
+                        setTimeout(function () {
+                            $('#btnTechquery').attr('disabled', 'disabled')
+                            $('#btnSubmitApp').attr('disabled', 'disabled')
+                            $('#btnSubmitApp').removeClass('green').addClass('default')
+                            $('#btnwithdraw').show()
+                            //$('#btnmsz').removeClass('hide')
+                            $("#RaiseQuery").modal('hide');
+
+                            jQuery.unblockUI();
+                        }, 1000);
+                    });
+                    return;
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('spandanger', '');
+                    }
+                    jQuery.unblockUI();
+                    return false;
+
+                }
+
+            });
+        }
+        else {
+            $('.alert-danger').show();
+            $('#spandanger').html('Your Query is not added. Please do press "+" button after add Query.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            jQuery.unblockUI();
+            return false;
+        }
+    }
+    else{
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter atleast one Query');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        jQuery.unblockUI();
+        return false;
+    }
+
+}
+function fnquerywithdaw() {
+    bootbox.dialog({
+        message: "Do you want to withdraw query from vendor, Click Yes for  Continue ",
+        // title: "Custom title",
+        buttons: {
+            confirm: {
+                label: "Yes",
+                className: "btn-success",
+                callback: function () {
+                    withdrawquery();
+                }
+            },
+            cancel: {
+                label: "No",
+                className: "btn-warning",
+                callback: function () {
+                    return true;
+
+                }
+            }
+        }
+    });
+}
+function withdrawquery() {
+    var data = {
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "QuesString": '',
+        "UserID": sessionStorage.getItem('UserID'),
+        "VendorID": parseInt($('#hdnvendorid').val()),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
+        "PendingOn": "X"
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eInsQueryTovendorApproversforAllTechnical",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+
+            bootbox.alert("Query withdraw from vendor successfully .", function () {
+                setTimeout(function () {
+                    $('#btnSubmitApp').removeAttr('disabled')
+                    $('#btnSubmitApp').addClass('green').removeClass('default')
+                    
+                    $("#RaiseQuery").modal('hide');
+
+                    jQuery.unblockUI();
+                }, 1000);
+            });
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+       
+}
 function RFQFetchTotalPriceForReport(VendorID,Counter) {
    
 
@@ -1339,65 +1695,84 @@ function fnFWDeRFQ()
 function ApprovalApp() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
+    var chkstatus = 'T';
     for (var i = 0; i < Vendor.length; i++) {
-      
-        if ($("#AppYes" + Vendor[i].vendorID).is(":checked")) {
-            checkedval = $("#AppYes" + Vendor[i].vendorID).val()
+        if (! $('input[name=AppRequired' + Vendor[i].vendorID+']').is(':checked')) {
+            chkstatus='F'
         }
-        else {
-            checkedval = $("#AppNo" + Vendor[i].vendorID).val()
-           
-        }
-         approvalstatus = approvalstatus + Vendor[i].vendorID + '~' + checkedval + '#';
-    }
-    
-  
-    var approvalbyapp = {
-        "RFQID": parseInt(RFQID),
-        "FromUserId": sessionStorage.getItem("UserID"),
-        "ActivityDescription": jQuery("#RFQSubject").text(),
-        "Remarks": jQuery("#txtRemarksApp").val(),
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "ApprovalStatus": approvalstatus
        
-    };
-   // alert(JSON.stringify(approvalbyapp))
-   
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        cache: false,
-        data: JSON.stringify(approvalbyapp),
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-          
-            //if (parseInt(data) > 0) {
+    }
+    var VID = 0;
+    if (chkstatus == "T") {
+        for (var i = 0; i < Vendor.length; i++) {
+            if ($("#AppYes" + Vendor[i].vendorID).is(":checked")) {
+                checkedval = $("#AppYes" + Vendor[i].vendorID).val()
+            }
+            else {
+                checkedval = $("#AppNo" + Vendor[i].vendorID).val()
+
+            }
+            approvalstatus = approvalstatus + Vendor[i].vendorID + '~' + checkedval + '#';
+            VID=Vendor[i].vendorID
+        }
+        
+       
+        var approvalbyapp = {
+            "RFQID": parseInt(RFQID),
+            "FromUserId": sessionStorage.getItem("UserID"),
+            "ActivityDescription": jQuery("#RFQSubject").text(),
+            "Remarks": jQuery("#txtRemarksApp").val(),
+            "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+            "ApprovalStatus": approvalstatus,
+            "VendorID": parseInt(VID)
+
+        };
+       // alert(parseInt(VID))
+        // alert(JSON.stringify(approvalbyapp))
+        //console.log(JSON.stringify(approvalbyapp))
+
+        jQuery.ajax({
+            contentType: "application/json; charset=utf-8",
+             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(approvalbyapp),
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
+
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
                     return false;
                 });
-            //}
-           
+               
+            },
+            error: function (xhr, status, error) {
 
-        },
-        error: function (xhr, status, error) {
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+                return false;
 
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
             }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-            
-        }
 
-    });
+        });
+    }
+    else {
+       
+        $('.alert-danger').show();
+        $('#error').text('Please Approve/Reject checkbox for all vendors.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        jQuery.unblockUI();
+        
+    }
 }
 
 

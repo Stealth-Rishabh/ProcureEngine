@@ -987,7 +987,7 @@ function fileDeletefromdb(srno, deletionFor) {
                 "UserEmail": sessionStorage.getItem('EmailID'),
                 "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
             }
-           
+       // console.log(JSON.stringify(Tab2data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1410,7 +1410,7 @@ function DownloadFileVendor(aID) {
                     "PricewithoutGST": parseFloat(PricewithoutGST),
                     "PriceBasic":parseFloat(basicprice)
                 };
-              // console.log(JSON.stringify(Tab2data))
+               //console.log(JSON.stringify(Tab2data))
                 
                 jQuery.ajax({
 
@@ -1424,7 +1424,7 @@ function DownloadFileVendor(aID) {
                     dataType: "json",
                     success: function (data) {
                        
-                     if (parseInt(data) > 0) {
+                    
                             $("#" + $('#texttblidwithGST').val()).val(Price);
                             $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
                           
@@ -1434,7 +1434,7 @@ function DownloadFileVendor(aID) {
                                 $('#responsive').modal('hide');
                             }
 
-                        }
+                       
                      },
                     error: function (xhr, status, error) {
 
@@ -1595,8 +1595,8 @@ function DownloadFileVendor(aID) {
             "PricewithoutGST": parseFloat(PricewithoutGST),
             "PriceBasic": parseFloat(basicprice)
         };
-        //console.log(JSON.stringify(Tab2data))
-      //alert(JSON.stringify(Tab2data))
+       // console.log(JSON.stringify(Tab2data))
+       //alert(JSON.stringify(Tab2data))
         jQuery.ajax({
 
            type: "POST",
@@ -1608,11 +1608,9 @@ function DownloadFileVendor(aID) {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
+                   fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    $('#responsive').modal('hide'); 
                
-                if (parseInt(data) > 0) {
-                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                    $('#responsive').modal('hide');
-                }
             },
             error: function (xhr, status, error) {
 

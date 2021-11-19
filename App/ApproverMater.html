@@ -1,0 +1,914 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <style>
+        input#file-excelparameter {
+            position: fixed;
+            top: -120px;
+        }
+    </style>
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
+
+            </div>
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+    </div>
+    <div class="page-container" style="display:none">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler hidden-phone">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">
+                                    Modal title
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                Widget settings form goes here
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn yellow">
+                                    Save changes
+                                </button>
+                                <button type="button" class="btn default" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+                        <li><a href="#">Approver Master</a> <i class="fa fa-angle-right"></i></li>
+                        <!--<li><a href="#">Reverse Auction</a> </li>-->
+                    </ul>
+                    <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box blue-hoki" id="form_wizard_1">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-gift"></i>CONFIGURE - APPROVER MASTER & SEQUENCE
+                                </div>
+                                <div class="tools hidden-xs">
+
+                                    <a href="javascript:;" class="collapse hidden-xs"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+
+                                <form action="#" class="form-horizontal" id="submit_form" method="POST">
+                                    <div class="form-wizard">
+                                        <div class="form-body">
+                                            <div class="form-group col-md-12">
+
+                                                <label class="col-md-3  control-label">
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    Select Approval Matrix to edit
+                                                </label>
+                                                <div class="col-md-9">
+
+                                                    <input type="hidden" value="0" id="ddlbid" />
+                                                    <input type="text" class="form-control MaxLength" id="txtDetails" name="txtDetails"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" placeholder="Approver Details" />
+
+                                                </div>
+
+                                            </div>
+                                            <ul class="nav nav-pills nav-justified steps">
+                                                <li>
+                                                    <a href="#tab1" data-toggle="tab" class="step">
+                                                        <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>Approver Detail</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab2" data-toggle="tab" class="step">
+                                                        <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Approver Sequence</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab3" data-toggle="tab" class="step active">
+                                                        <span class="number">3 </span>
+                                                        <span class="desc"><i class="fa fa-check"></i>Preview </span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                                <div class="progress-bar progress-bar-success">
+                                                </div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="alert alert-success" style='display: none;'>
+                                                    <span id="spansuccess1"> </span>
+                                                </div>
+                                                <div class="alert alert-danger" style='display: none; '>
+                                                    <span id="spandanger"> </span>
+                                                </div>
+                                                <div class="tab-pane active" id="tab1">
+                                                    <input type="hidden" id="hdnNfaApproverID" value="0">
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-12 col-md-2 control-label">
+                                                                Purchase Org.<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="inputgroup">
+
+                                                                <label class="col-12 col-md-8">
+                                                                    <!--<select id="ddlPurchaseOrg" class="form-control"></select>-->
+                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
+                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-12 col-md-2">
+                                                                <!--style=" padding-left:0px !important; "-->
+                                                                <a href="#SubCategory" class="btn blue" id="addNewOrg" data-toggle="modal"><i class="fa fa-plus"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-12 col-md-2 control-label">
+                                                                Purchase Group<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="inputgroup">
+
+                                                                <label class="col-10 col-md-8">
+                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="ddlPurchasegroup"
+                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchasegroup" />
+
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="col-12 col-md-2">
+                                                                <!--style=" padding-left:0px !important; "-->
+                                                                <a href="#PurchaseGroup" class="btn blue" id="addNewGroup" data-toggle="modal"><i class="fa fa-plus"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-12 col-md-2 control-label">
+                                                                Approvel Type<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-10 col-md-2">
+                                                                <select id="ddlApproveltype" class="form-control">
+                                                                    <option value="P">Parallel</option>
+                                                                    <option value="S">Sequential</option>
+                                                                    <option value="M">Mixed</option>
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-2 control-label">
+                                                                Currency<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-2">
+                                                                <select class="form-control" disabled id="dropCurrency" name="dropCurrency"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+
+
+                                                            <label class="col-12 col-md-2 control-label">
+                                                                Amount From<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-12 col-md-2">
+                                                                <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="form-control MaxLength" maxlength="18" />
+                                                            </div>
+                                                            <label class="col-12 col-md-2 control-label">
+                                                                Amount To<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-12 col-md-2">
+                                                                <input type="text" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="form-control MaxLength" maxlength="18" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-12 col-md-6 control-label">
+                                                            <input type="checkbox" checked id="chkIsActive" name="chkIsActive" class="form-control JustifyCenter ">
+                                                            IsActive
+                                                        </label>
+                                                        <label class="col-12 col-md-6 control-label">
+                                                        </label>
+
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="tab-pane" id="tab2">
+                                                    <div class="alert alert-block alert-danger" id="errordivSeq" style="display: none">
+                                                        <span id="errorSeq"></span>
+                                                    </div>
+                                                    <div class="alert alert-success" id="successdivSeq" style="display: none">
+                                                        <span id="successSeq"></span>
+                                                    </div>
+                                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading" role="tab" id="headingOne">
+                                                                <h4 class="panel-title">
+                                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                        Within Budget (WB)
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                                <div class="panel-body">
+
+                                                                    <input type="hidden" id="hdnWBSeqID" value="-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-12 col-md-3 control-label">
+                                                                            Approver<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-4">
+
+                                                                            <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Select Approver" id="txtApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtApprover" />
+                                                                        </div>
+                                                                        <label class="col-12 col-md-1 control-label clsHide">
+                                                                            Seq<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-2 clsHide">
+                                                                            <input type="text" autocomplete="off" onkeypress="return onlyNumberKey(event);" id="txtWBSeq" class="form-control MaxLength txtInputs" maxlength="3" />
+                                                                        </div>
+                                                                        <div class="col-12 col-md-2">
+                                                                            <a class="btn blue" id="btnWbAdd" onclick="AddWBApprovers();"><i class="fa fa-plus"></i></a>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <div class="form-group">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">&nbsp;</div>
+                                                                            <div class="col-md-9">
+                                                                                <div class="table-scrollable">
+
+                                                                                    <table id="tblWBApproverSeq" class="table table-striped table-bordered table-hover">
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-1">&nbsp;</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                                <h4 class="panel-title">
+
+                                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                        Outside Budget (OB)
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                                <div class="panel-body">
+
+
+                                                                    <input type="hidden" id="hdnOBSeqID" value="-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-12 col-md-3 control-label">
+                                                                            Approver<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-4">
+
+                                                                            <input type="text" class="form-control pull-right MaxLength" onkeyup="replaceQuoutesFromString(this)" maxlength="100" placeholder="Select Approver" id="txtOBApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtOBApprover" />
+                                                                        </div>
+                                                                        <label class="col-12 col-md-1 control-label clsHide">
+                                                                            Seq<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-2 clsHide">
+                                                                            <input type="text" autocomplete="off" onkeypress="return onlyNumberKey(event);" id="txtOBSeq" class="form-control MaxLength" maxlength="3" />
+                                                                        </div>
+                                                                        <div class="col-12 col-md-2">
+                                                                            <a class="btn blue" id="btnOBAdd" onclick="AddOBApprovers();"><i class="fa fa-plus"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="input-group col-12 col-md-6 control-label">
+                                                                            <input type="checkbox" id="chkWBCopy" name="chkWBCopy" class="form-control JustifyCenter ">
+                                                                            Click for Same as WB
+                                                                        </label>
+                                                                        <label class="col-12 col-md-3 control-label">
+
+
+
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2"></div>
+                                                                            <div class="col-md-9">
+                                                                                <div class="table-scrollable">
+
+                                                                                    <table id="tblOBApproverSeq" class="table table-striped table-bordered table-hover">
+                                                                                    </table>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-1"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading" role="tab" id="headingThree">
+                                                                <h4 class="panel-title">
+                                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                        Not Budgeted (NB)
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                                <div class="panel-body">
+
+                                                                    <input type="hidden" id="hdnNBSeqID" value="-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-12 col-md-3 control-label">
+                                                                            Approver<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-4">
+
+                                                                            <input type="text" class="form-control pull-right MaxLength" onkeyup="replaceQuoutesFromString(this)" maxlength="100" placeholder="Select Approver" id="txtNBApprover"
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtNBApprover" />
+                                                                        </div>
+                                                                        <label class="col-12 col-md-1 control-label clsHide">
+                                                                            Seq<span class="required">*</span>
+                                                                        </label>
+                                                                        <div class="col-12 col-md-2 clsHide">
+                                                                            <input type="text" autocomplete="off" onkeypress="return onlyNumberKey(event);" id="txtNBSeq" class="form-control MaxLength" maxlength="3" />
+                                                                        </div>
+                                                                        <div class="col-12 col-md-2">
+                                                                            <a class="btn blue" id="btnNBAdd" onclick="AddNBApprovers();"><i class="fa fa-plus"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-12 col-md-6 control-label">
+                                                                            <input type="checkbox" id="chkOBCopy" name="chkOBCopy" class="form-control JustifyCenter ">
+                                                                            Click for Same as OB
+                                                                        </label>
+                                                                        <label class="col-12 col-md-6 control-label">
+
+
+
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">&nbsp;</div>
+                                                                            <div class="col-md-9">
+                                                                                <div class="table-scrollable">
+
+                                                                                    <table id="tblNBApproverSeq" class="table table-striped table-bordered table-hover">
+                                                                                    </table>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-1">&nbsp;</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="tab3">
+                                                    <h3 class="form-section">Approver Master Details</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="col-12 col-md-2 control-label">Purchase Organization :</label>
+                                                                <div class="col-12 col-md-2">
+                                                                    <p class="form-control-static" id="lblPurchaseOrg">
+
+                                                                    </p>
+                                                                </div>
+                                                                <label class="col-12 col-md-2 control-label">Purchase Group :</label>
+                                                                <div class="col-12 col-md-6">
+                                                                    <p class="form-control-static" id="lblPurchaseGroup">
+
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="col-12 col-md-2 control-label">Approvel Type :</label>
+                                                                <div class="col-12 col-md-2">
+                                                                    <p class="form-control-static" id="lblApproveltype">
+
+                                                                    </p>
+                                                                </div>
+                                                                <label class="col-12 col-md-2 control-label ">Amount From :</label>
+                                                                <div class="col-12 col-md-2">
+                                                                    <p class="form-control-static" id="lblAmountFrom">
+
+                                                                    </p>
+                                                                </div>
+                                                                <label class="col-12 col-md-2 control-label">Amount To :</label>
+                                                                <div class="col-12 col-md-2">
+                                                                    <p class="form-control-static" id="lblAmountTo">
+
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+                                                    <!--<div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+                                                    <h3 class="form-section">Within Budget (WB) Approvers</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-9">
+                                                                    <table id="tblWBPreview" class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="form-section">Outside Budget (OB) Approvers</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-9">
+                                                                    <table id="tblOBpreview" class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="form-section">Not Budgeted (NB) Approvers</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-9">
+                                                                    <table id="tblNBPreview" class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-5 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous">
+                                                        <i class="m-icon-swapleft">
+                                                        </i>Back
+                                                    </a><a href="javascript:;" class="btn btn-success button-next">
+                                                        Save and Continue <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a><a href="javascript:;" class="btn green button-submit">
+                                                        Submit
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+                <!--Model popup Start-->
+                <div id="SubCategory" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Purchase Org.
+                                </div>
+                                <div class="tools">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="alert alert-danger display-hide" id="errordiv1">
+                                    <button class="close" data-close="alert"></button>
+                                    <span id="errormsg"></span>
+                                </div>
+                                <div class="alert alert-success display-hide" id="successdiv1">
+                                    <button class="close" data-close="alert"></button>
+                                    <span id="successmsg"></span>
+                                </div>
+                                <form id="PurchaseOrg" class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <input type="hidden" value="0" id="hdnmodelOrgID" />
+                                            <label class="control-label col-md-4">
+                                                Purchase Org.
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" id="txtmodelPurchaseOrg" name="txtmodelPurchaseOrg" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" class="form-control MaxLength" maxlength="250" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4  control-label" style="padding-top: 0px !important;">IsActive</label>
+                                            <div class="col-md-8">
+                                                <input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions fluid">
+                                            <button type="button" onclick="onSave();" id="btn-org" class="btn blue col-lg-offset-5">
+                                                Add
+                                            </button>
+                                            <button type="button" class="btn green" onclick="onClear()">
+                                                Clear
+                                            </button>
+                                        </div>
+                                        <br />
+                                        <div class="input-icon" id="searchsubcat">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" id="searchPop-up" placeholder="Search" class="form-control  input-circle" />
+                                        </div><br />
+                                        <div class="table-scrollable">
+                                            <div class="scroller" style="height:200px;" data-always-visible="1" data-rail-visible="0">
+                                                <table class="table table-striped table-bordered table-hover" id="tblmodelPurchaseOrg"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="PurchaseGroup" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Purchase Group
+                                </div>
+                                <div class="tools">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="alert alert-danger display-hide" id="errordiv2">
+                                    <button class="close" data-close="alert"></button>
+                                    <span id="errormsg1"></span>
+                                </div>
+                                <div class="alert alert-success display-hide" id="successdiv2">
+                                    <button class="close" data-close="alert"></button>
+                                    <span id="successmsg1"></span>
+                                </div>
+                                <form id="PurchaseGroupData" class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <input type="hidden" value="0" id="hdnmodelGroupID" />
+                                            <label class="control-label col-md-4">
+                                                Purchase Org.
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select id="ddlModelOrg" class="form-control"></select>
+                                                <!--<input type="text" id="txtmodelPurchaseOrg" maxlength="256" class="form-control" />-->
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="inputgroup">
+                                                <label class="control-label col-md-4">
+                                                    Purchase Group
+                                                </label>
+                                                <div class="inputgroup">
+                                                    <label class="col-md-8">
+                                                        <input type="text" id="txtModelPurchaseGroup" onkeyup="replaceQuoutesFromString(this)" maxlength="256" class="form-control MaxLength" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4  control-label" style="padding-top: 0px !important;">IsActive</label>
+                                            <div class="col-md-8">
+                                                <input type="checkbox" name="chkGroupActive" id="chkGroupActive" class="form-control" checked>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions fluid">
+                                            <button type="button" onclick="onGroupSaveClick();" id="btn-group" class="btn blue col-lg-offset-5">
+                                                Add
+                                            </button>
+                                            <button type="button" class="btn green" onclick="ClearControl()">
+                                                Clear
+                                            </button>
+                                        </div>
+                                        <br />
+                                        <div class="input-icon" id="searchGroup">
+                                            <i class="fa fa-search"></i>
+                                            <input type="text" id="searchPopGrp-up" placeholder="Search" class="form-control input-circle" />
+                                        </div><br />
+                                        <div class="table-scrollable">
+                                            <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
+                                                <table class="table table-striped table-bordered table-hover" id="tblmodelPurchaseGroup"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Model End-->
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+
+
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+
+                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
+
+                        <p class="ppolicy-text">
+                            Using this page user can configure bids related to Sea export shipments and invite vendors to participate on specified date and time.<br />
+                            There are four steps to complete this process. You may complete one step at a time by using “Save &amp; Continue” feature and fill other details later by clicking activity displayed as “Saved as Draft” in pending activities. All the mandatory information is marked with * sign.
+                        </p>
+                        <p class="ppolicy-text">Details required at every step are given below: </p>
+                        <p class="ppolicy-text"><b>Step -1: "Bid Details"–</b>In this step user needs to fill all generic information related to product & services Bid. Individual columns with their relevance are given below</p>
+                        <ul>
+                            <li><b>Bid Subject:</b> Meaningful short subject for the bid.This is used as a subject for all related email notifications & reports.</li>
+                            <li><b>Bid Description: </b>Detailed information about the bid.</li>
+
+                            <li><b>Bid Date: </b>Date when the bid will be started.</li>
+                            <li><b>Bid Start Time: </b>Time when the bid will start and vendors may start participating.</li>
+                            <li><b>Currency:</b> Currency in which amount should be quoted. e.g. INR (Indian rupees).</li>
+                            <li><b>Current Conversion Factor: </b>Conversion rate of currency at the time of bid configuration.</li>
+                            <li><b>Terms and conditions	: </b>PDF file which includes all terms and conditions for the bid. </li>
+                            <li><b>Attachments: </b>You can upload supporting document related to bid (This field is optional).</li>
+                            <li><b>Bid Closing Type: </b>Depending on requirements youcan select one of the Stagger: At item level or all item in one go.</li>
+                            <li><b>Bid Duration(In minutes): </b>Minutes given to vendors for participating/quoting price.</li>
+                            <li><b>Approvers:</b> Select name of approvers who will approve bid.</li>
+                        </ul><br />
+
+                        <p class="ppolicy-text">Once all mandatory details are filled click on Save and Continue to move to next step.</p><br />
+
+                        <p class="ppolicy-text"><b>Step-2: "Setup Bid Parameters"–</b>In this step user needs to fill destination port details against which vendors will be quoting prices/rates. Individual columns with their relevance are given below.</p>
+                        <ul>
+                            <li><b>Item/Product/Service: </b>Specify Item/Product/Service which would be visible at the time of bid participation.</li>
+                            <li><b>Remarks: </b>Details if any</li>
+                            <li><b>Quantity: </b>Specify number of containers required.</li>
+                            <li><b>Target Price: </b>which we expect to reach as a result of bidding process.</li>
+                            <li><b>Last Invoice Rate: </b>Unit rate from recent order.</li>
+                            <li><b>Ceiling/MAX. Price: </b>Enter the MAX price for bid above which vendors will not be able to quote. You may select whether bid start price would be visible to participant or not.</li>
+                            <li><b>Minimum Decrement: </b>You can define the minimum decrement in price during bid and whether the decrement would be calculated on quoted price or percentage of quoted price.</li>
+                            <li><b>Bid Duration (In Minute): </b>This column appears only when bid closing type is “Stagger: At item level” selected and should be filled with bid time allotted to particular item.</li>
+                            <li><b>Decrement on: </b>You can define the decrement in price would be based on Price or percentage.</li>
+                        </ul><br />
+                        <p class="ppolicy-text"><b>Step-3: Invite Participants–</b>User can select participants whom he wants to send invite to participate in bid. User can search from the list by typing participants name in search text box or he can check select all in case he wants to invite all available vendors.</p>
+                        <p class="ppolicy-text"><b>Step-4: Review & Submit-</b>When clicked on “Submit” button in previous step system will show summary of all entered information for review before inviting vendors to participate. Clicking submit on this page, sends email alert having login id, password and bid specific details to selected vendors, their companies and approvers involved post bid closer.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <!--<script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>-->
+    <!--<script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>-->
+    <!--<script src="assets/admin/pages/scripts/components-pickers.js"></script>-->
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <!--<script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>-->
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <!--<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>-->
+
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+
+    <script src="assets/CustomJS/Common.js"></script>
+    <script type="text/javascript" src="assets/CustomJS/nfaApprovermaster.js"></script>
+    <!--<script src="assets/CustomJS/Constant.js"></script>-->
+
+    <script>
+        jQuery(document).ready(function () {
+            $('[data-toggle="popover"]').popover({})
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+
+
+            Metronic.init();
+            Layout.init();
+            FormWizard.init();
+            // ComponentsPickers.init();
+            setCommonData();
+
+            fetchMenuItemsFromSession(1, 56);
+            FetchCurrency("0");
+            //BindApprovers();
+            // fetchBidTypeMapping();
+            // fetchRegisterUser();
+
+
+        });
+
+    </script>
+</body>
+
+</html>
