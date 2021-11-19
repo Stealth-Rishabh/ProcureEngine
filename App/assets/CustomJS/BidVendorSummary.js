@@ -86,6 +86,7 @@ jQuery("#ddlBidtype").change(function () {
         $('#opntionRFQ').addClass('hide')
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(RA)"));
+        jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
     }
     else {
         $('#opntionRFQ').removeClass('hide')
@@ -797,7 +798,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
 
 
-            if (jQuery("#ddlBidFor option:selected").val() == "81") {
+            if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
 
                 PriceFor = 'H1 Price';
                 var savinfstart = stringDivider("Total Saving wrt SP", 12, "<br/>\n");
@@ -869,7 +870,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].initialQuote) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
 
-                    if (jQuery("#ddlBidFor option:selected").val() == "81") {
+                    if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].lastInvoicePrice != 0) {
 
                             str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].Quantity).round(2)) + "</td>"
@@ -1009,7 +1010,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
 
-            if (jQuery("#ddlBidFor option:selected").val() == "81") {
+            if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
 
                 var BidFinal = stringDivider("Bid Value as per H1", 15, "<br/>\n");
                 var BidSP = stringDivider("Bid Value at Start Price(SP)", 15, "<br/>\n");
@@ -1044,7 +1045,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].bidValueAsStartPrice) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].bidValueAsTargetPrice) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].bidValueAsPrice) + "</td>";
-                    if (jQuery("#ddlBidFor option:selected").val() == "81") {
+                    if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].bidValueAsLIP != 0) {
 
                             str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsLIP).round(2)) + "</td>"

@@ -770,7 +770,6 @@ var FormWizard = function () {
                             Metronic.scrollTo(error, -200);
                             $(".alert-danger").show();
                             $(".alert-danger").fadeOut(5000);
-
                             return false;
                         }
                         else {

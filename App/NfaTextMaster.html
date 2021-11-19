@@ -149,8 +149,8 @@
                                                 Param Text <span class="required"> *</span>
                                             </label>
                                             <div class="col-12 col-sm-10">
-                                                <textarea rows="5" cols="7" id="txtParamText" class="form-control" rows="6"
-                                                          autocomplete="off" maxlength="1000" placeholder="Only 1000 character(s) allowed"></textarea>
+                                                <textarea rows="5" cols="7" id="txtParamText" class="form-control MaxLength" rows="6"
+                                                          autocomplete="off" maxlength="1000" onkeyup="replaceQuoutesFromString(this)" placeholder="Only 1000 character(s) allowed"></textarea>
 
 
                                                 <label class="control-label">
@@ -267,7 +267,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <!--<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>-->
     <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
     <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
     <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
@@ -276,7 +276,8 @@
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/scripts/custom/components-pickers.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <!--<script src="assets/scripts/custom/components-pickers.js"></script>-->
     <script src="assets/scripts/aes.js"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <script src="assets/CustomJS/Common.js"></script>

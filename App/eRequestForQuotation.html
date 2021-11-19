@@ -22,7 +22,7 @@
     <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -174,7 +174,7 @@
                                                         <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Additional Details</span>
                                                     </a>
                                                 </li>
-                                               
+
                                                 <li>
                                                     <a href="#tab4" data-toggle="tab" class="step active">
                                                         <span class="number">4 </span>
@@ -202,12 +202,12 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                    maxlength="100"  autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                                       maxlength="100" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
 
-                                                     
-                                                     
+
+
                                                         <div class="inputgroup">
                                                             <label class="col-md-2 control-label">
                                                                 Reference No
@@ -215,7 +215,7 @@
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control"
                                                                        placeholder="Enter Reference Number(If any)" id="txtRFQReference"
-                                                                    maxlength="15" autocomplete="off"  name="txtRFQReference" tabindex='7'>
+                                                                       maxlength="15" autocomplete="off" name="txtRFQReference" tabindex='7'>
                                                             </div>
 
                                                         </div>
@@ -231,7 +231,7 @@
                                                                 <div class="input-group date form_datetime form_datetime bs-datetime ">
                                                                     <input type="text" size="16" class="form-control" id="txtstartdatettime" name="txtstartdatettime" placeholder="If required" autocomplete="off" disabled>
                                                                     <span class="input-group-btn">
-                                                                        <button class="btn default date-set" type="button">
+                                                                        <button class="btn default date-set" type="button" id="btncal">
                                                                             <i class="fa fa-calendar"></i>
                                                                         </button>
                                                                     </span>
@@ -301,16 +301,20 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="inputgroup display-none">
-                                                            <label class="control-label col-md-3">
-                                                                Attachment
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-2">
+                                                                Technical Approval
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="file" class="form-control" id="file2" name="file2" tabindex='7' onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="attach-file2" targt="_blank" style="text-decoration: none !important;float:left;"></a>
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','attach-file2','1','attach-file2','0')">
-                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
-                                                                </span>
+                                                                <select class="form-control" id="drp_TechnicalApp" name="drp_TechnicalApp" onchange="fnTocheckAproverMapp()">
+                                                                    <option value="">Select</option>
+                                                                    <option value="NA" selected>Not Required</option>
+                                                                    <option value="RFQ">With individual RFQ Response</option>
+                                                                    <option value="AfterRFQ">After All RFQ Responses</option>
+
+
+
+                                                                </select>
                                                             </div>
                                                         </div>
 
@@ -322,46 +326,52 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <select class="form-control" id="ddlapprovertype" name="ddlapprovertype" disabled>
-                                                                    <option value="" >Select Approver Type</option>
+                                                                    <option value="">Select Approver Type</option>
                                                                     <option value="C" selected>Commercial</option>
                                                                     <option value="T">Technical</option>
+
 
                                                                 </select>
                                                             </div>
                                                             <div class="inputgroup">
-                                                                
-                                                                    <label class="col-md-4 ">
-                                                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
-                                                                               data-provide="typeahead" autocomplete="off" name="txtApprover" />
-                                                                    </label>
-                                                                   
-</div>
-                                                            <!--<div class="inputgroup">
-                                                                <div class="col-md-1 pull-right">
-                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                </div></div>-->
-                                                            <div class="inputgroup">
-                                                                <div class="col-md-3">&nbsp;</div>
-                                                                <div class="col-md-9">
-                                                                    <div class="table-scrollable">
-                                                                        <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
 
-                                                                                </div>
-                                                                    </div>
-                                                                  
-
-                                                          </div>
-
-
+                                                                <label class="col-md-4 ">
+                                                                    <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
+                                                                           data-provide="typeahead" autocomplete="off" name="txtApprover" />
+                                                                </label>
 
                                                             </div>
+                                                            <div class="inputgroup">
+                                                                <div class="col-md-1 pull-right">
+                                                                    <button type="button" id="Addbtn1" onclick="fnApproversQuery()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                </div></div>
+                                                            <div class="inputgroup">
+                                                                <div class="col-md-3">&nbsp;</div>
+                                                                <div class="col-md-4">
+                                                                   
+                                                                        <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+
+                                                                    
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    
+                                                                        <table class="table table-striped table-bordered table-hover" id="tblapproverstech"></table>
+
+                                                                   
+                                                                </div>
+
+                                                            </div>
+
+
+
+                                                        </div>
 
                                                     </div>
 
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
-                                                       
+
                                                         <label class="control-label col-md-2">
                                                             Item/Service Name  <span class="required">
                                                                 *
@@ -375,7 +385,7 @@
 
                                                         <label class="control-label col-md-2">
                                                             Item Code  <span class="required">
-                                                                
+
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
@@ -403,8 +413,8 @@
                                                         </label>
                                                         <div class="col-md-4">
                                                             <input type="text" id="txtItemRemarks" name="txtItemRemarks"
-                                                                   class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" autocomplete="off"  />
-                                                                   
+                                                                   class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" autocomplete="off" />
+
                                                         </div>
                                                         <label class="control-label col-md-2">
                                                             Quantity  <span class="required">
@@ -413,11 +423,11 @@
                                                         </label>
                                                         <div class="col-md-2 xyz">
                                                             <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" />
-                                                                   
+
 
                                                         </div>
                                                         <div class="col-md-2 xyz">
-                                                            
+
                                                             <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
                                                                    data-provide="typeahead" autocomplete="off" name="txtUOM" />
                                                         </div>
@@ -432,8 +442,8 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control text-right" id="txttargetprice"
-                                                                   name="txttargetprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
-                                                                  
+                                                                   name="txttargetprice" autocomplete="off" onkeyup="thousands_separators_input(this)" />
+
                                                         </div>
                                                         <label class="control-label  col-md-2">
                                                             Turn around time (In Days)
@@ -441,50 +451,50 @@
                                                         <div class="col-md-4 xyz">
                                                             <input type="text" id="txttat" maxlength="4" name="txttat" class="form-control" autocomplete="off" placeholder="Turn around time (In Days)" />
                                                         </div>
-                                                      
+
                                                     </div>
-                                                   
+
 
 
                                                     <div class="form-group">
-                                                     <label class="control-label col-md-2">
+                                                        <label class="control-label col-md-2">
                                                             Delivery Location <span class="required">* </span>
-                                                      </label>
+                                                        </label>
                                                         <div class="col-md-4 xyz">
-                                                            <input type="text" class="form-control" maxlength="100" id="txtedelivery"  name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                            <input type="text" class="form-control" maxlength="100" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                         </div>
 
                                                     </div>
                                                     <h4 class="form-section">Last PO Details (Optional)</h4>
-                                                  
+
                                                     <div class="col-md-12">
 
                                                         <div class="col-md-3 xyz">
-                                                           
+
                                                             <label class="control-label">PO Number</label>
                                                             <input type="text" id="txtPono" autocomplete="off" name="txtPono" class="form-control" placeholder="PO Number" maxlength="20" onkeyup="replaceQuoutesFromString(this)">
 
-                                                         
+
                                                         </div>
                                                         <div class="col-md-3 xyz">
-                                                           
+
                                                             <label class="control-label">Vendor Name</label>
                                                             <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" autocomplete="off" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
 
-                                                         
+
                                                         </div>
-                                                       
+
                                                         <div class="col-md-2 xyz">
-                                                          
+
                                                             <label class="control-label">Unit Rate</label>
 
-                                                            <input type="tel" id="txtunitrate" name="txtunitrate" class="form-control text-right" placeholder="Unit Rate" autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
+                                                            <input type="tel" id="txtunitrate" name="txtunitrate" class="form-control text-right" placeholder="Unit Rate" autocomplete="off" onkeyup="thousands_separators_input(this)" />
 
-                                                           
+
                                                         </div>
-                                                       
+
                                                         <div class="col-md-2 xyz">
-                                                           
+
                                                             <label class="control-label">PO Date</label>
                                                             <div class="input-group date date-picker" data-date-format="mm/dd/yyyy"
                                                                  data-date-end-date="0d">
@@ -497,16 +507,16 @@
                                                                 <div id="daterr"></div>
                                                             </div>
 
-                                                           
+
                                                         </div>
                                                         <!--/span-->
                                                         <div class="col-md-2 xyz">
-                                                           
+
                                                             <label class="control-label">PO Value</label>
 
-                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control text-right" placeholder="PO Value" onkeyup="thousands_separators_input(this)" autocomplete="off" /> <!----> 
+                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control text-right" placeholder="PO Value" onkeyup="thousands_separators_input(this)" autocomplete="off" /> <!---->
 
-                                                          
+
                                                         </div>
                                                     </div>
                                                     <div class="form-group"></div>
@@ -539,41 +549,41 @@
                                                             </div>
                                                             <div id=collapse1 class="panel-collapse collapse">
                                                                 <div class="panel-body">
-                                                                  
-
-                                                                        <div class="col-md-12">
-
-                                                                           
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-2">
-                                                                                        <select class="form-control" onchange="fnGetTermsCondition()" id="ddlConditiontype" name="ddlConditiontype">
-                                                                                            <option value="D" selected>Domestic</option>
-                                                                                           
-
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-9">
-                                                                                        <table class="table table-striped table-bordered table-hover" id="tblTermsCondition"></table>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-1">
-                                                                                        <input type="button" id="btnS" value="Save" class="btn btn-primary" onclick="fnsavetermscondition('Y')" />
-                                                                                    </div>
-                                                                                </div>
-                                                                               
 
 
+                                                                    <div class="col-md-12">
+
+
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">
+                                                                                <select class="form-control" onchange="fnGetTermsCondition()" id="ddlConditiontype" name="ddlConditiontype">
+                                                                                    <option value="D" selected>Domestic</option>
+
+
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-9">
+                                                                                <table class="table table-striped table-bordered table-hover" id="tblTermsCondition"></table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                <input type="button" id="btnS" value="Save" class="btn btn-primary" onclick="fnsavetermscondition('Y')" />
                                                                             </div>
                                                                         </div>
 
-                                                                   
 
+
+                                                                    </div>
                                                                 </div>
 
-                                                          
+
+
+                                                            </div>
+
+
                                                         </div>
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
@@ -583,43 +593,43 @@
                                                             </div>
                                                             <div id=collapse class="panel-collapse collapse">
                                                                 <div class="panel-body">
-                                                                    
-                                                                            <div class="col-md-12">
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-2">
-                                                                                        &nbsp;
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-4">
-                                                                                        <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-4">
-                                                                                        <span style="width:390px!important" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
-                                                                                    </div>
-                                                                                </div>
-                                                                              
-                                                                                    <div class="col-md-1">
-                                                                                        <button type="button" id="Addbtn1" onclick="addmoreattachments(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                                    </div>
-                                                                               
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">
+                                                                                &nbsp;
                                                                             </div>
-                                                                            <div class="clearfix">&nbsp;</div>
-                                                                            <div class="col-md-12">
-                                                                                <div class="col-md-2">
-                                                                                    &nbsp;
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-4">
+                                                                                <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-4">
+                                                                                <span style="width:390px!important" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                            </div>
+                                                                        </div>
 
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-9">
+                                                                        <div class="col-md-1">
+                                                                            <button type="button" id="Addbtn1" onclick="addmoreattachments(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                        </div>
 
-                                                                                        <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
+                                                                    </div>
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-2">
+                                                                            &nbsp;
 
-                                                                                    </div>
-                                                                                </div>
-                                                                            
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-9">
+
+                                                                                <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
+
+                                                                            </div>
+                                                                        </div>
+
 
                                                                     </div>
 
@@ -635,130 +645,130 @@
                                                             </div>
                                                             <div id=collapse2 class="panel-collapse collapse">
                                                                 <div class="panel-body">
-                                                                   
-                                                                            <div class="col-md-12">
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-2">
-                                                                                        &nbsp;
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-6">
-                                                                                        <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                    </div>
-                                                                                    <div class="col-md-3">
-                                                                                        <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                    </div>
-                                                                                </div>
 
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-1">
-                                                                                        <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                                    </div>
-                                                                                </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">
+                                                                                &nbsp;
                                                                             </div>
-                                                                            <div class="clearfix">&nbsp;</div>
-                                                                            <div class="col-md-12">
-                                                                                <div class="col-md-2">
-                                                                                    &nbsp;
-
-                                                                                </div>
-                                                                                <div class="inputgroup">
-                                                                                    <div class="col-md-10">
-
-                                                                                        <table class="table table-striped table-bordered table-hover" id="tblquestions"></table>
-
-                                                                                    </div>
-                                                                                </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-6">
+                                                                                <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
+                                                                            <div class="col-md-3">
+                                                                                <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                            </div>
+                                                                        </div>
 
-
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-2">
+                                                                            &nbsp;
+
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-10">
+
+                                                                                <table class="table table-striped table-bordered table-hover" id="tblquestions"></table>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
                                                 </div>
-                                               
-                                               
+
+
                                                 <div class="tab-pane" id="tab4">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="col-md-6">
-                                                                                <div class="row">
-                                                                                   
-                                                                                        <div class="col-md-8">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+
+                                                                    <div class="col-md-8">
 
 
-                                                                                            <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
-                                                                                                   data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
-                                                                                            <input type="text" autocomplete="off" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
+                                                                        <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
+                                                                               data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                        <input type="text" autocomplete="off" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                    <!--#a1b2bd-->
+                                                                    <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
+                                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                            <thead class="flip-content">
+                                                                                <tr>
+                                                                                    <th width="20%">
+                                                                                        <div class="col-md-10 checkbox-list">
+                                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
+                                                                                            </label>
                                                                                         </div>
-                                                                                        <div class="col-md-2">
-                                                                                            <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
-                                                                                        </div>
-                                                                                   
-                                                                                </div>
-                                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
-                                                                                    <!--#a1b2bd-->
-                                                                                    <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
-                                                                                            <thead class="flip-content">
-                                                                                                <tr>
-                                                                                                    <th width="20%">
-                                                                                                        <div class="col-md-10 checkbox-list">
-                                                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
-                                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                    </th>
-                                                                                                    <th width="100%">
-                                                                                                        Vendors
-                                                                                                    </th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody></tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <input type="hidden" id="hdnweightageIndex" value="0" />
-                                                                                <div class="table-scrollable">
-                                                                                    <table id="selectedvendorlists" class="table table-bordered display-none">
-                                                                                        <thead>
-                                                                                            <tr>
-                                                                                                <th>Vendors</th>
-                                                                                                <th>Actions</th>
-                                                                                            </tr>
-                                                                                        </thead>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                                    </th>
+                                                                                    <th width="100%">
+                                                                                        Vendors
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody></tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
-                                             </div>
-                                    </div>
-                                                        <div class="form-actions">
-                                                            <div class="row">
-                                                                <div class="col-md-offset-5 col-md-9">
-                                                                    <a href="javascript:;" class="btn default button-previous">
-                                                                        <i class="m-icon-swapleft">
-                                                                        </i>Back
-                                                                    </a><a href="javascript:;" class="btn yellow button-next">
-                                                                        Save And Continue <i class="m-icon-swapright m-icon-white">
-                                                                        </i>
-                                                                    </a><a href="javascript:;" class="btn green button-submit">
-                                                                        Preview
-                                                                       
-                                                                    </a>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="hidden" id="hdnweightageIndex" value="0" />
+                                                                <div class="table-scrollable">
+                                                                    <table id="selectedvendorlists" class="table table-bordered display-none">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Vendors</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-</form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-5 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous">
+                                                        <i class="m-icon-swapleft">
+                                                        </i>Back
+                                                    </a><a href="javascript:;" class="btn yellow button-next">
+                                                        Save And Continue <i class="m-icon-swapright m-icon-white">
+                                                        </i>
+                                                    </a><a href="javascript:;" class="btn green button-submit">
+                                                        Preview
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <!-- Preview div -->
@@ -777,128 +787,142 @@
                                         <h3 class="form-section">RFQ Details</h3>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                
-                                                    <label class="col-md-4 control-label">
-                                                        RFQ Subject:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <p class="form-control-static" id="lblRfqsubject">
 
-                                                        </p>
-                                                    
+                                                <label class="col-md-4 control-label">
+                                                    RFQ Subject:
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblRfqsubject">
+
+                                                    </p>
+
 
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                               
-                                                    <label class="control-label col-md-4">Reference Number:</label>
-                                                    <div class="col-md-8">
-                                                        <p class="form-control-static" id="txtRFQReferencePrev"></p>
-                                                    </div>
-                                              
+
+                                                <label class="control-label col-md-4">Reference Number:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="txtRFQReferencePrev"></p>
+                                                </div>
+
                                             </div>
-                                           
+
                                         </div>
                                         <!--/row-->
                                         <div class="row">
                                             <div class="col-md-6">
-      
-            <label class="col-md-4 control-label">RFQ StartDate:</label>
-            <div class="col-md-8">
-                <p class="form-control-static" id="lblrfqstartdate">
 
-                </p>
-            </div>
-       
-    </div>
+                                                <label class="col-md-4 control-label">RFQ StartDate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblrfqstartdate">
+
+                                                    </p>
+                                                </div>
+
+                                            </div>
                                             <div class="col-md-6">
-                                               
-                                                    <label class="col-md-4 control-label">RFQ EndDate:</label>
-                                                    <div class="col-md-8">
-                                                        <p class="form-control-static" id="lblrfqenddate">
 
-                                                        </p>
-                                                    </div>
-                                                
-                                            </div>
+                                                <label class="col-md-4 control-label">RFQ EndDate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblrfqenddate">
 
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                   
-                                                        <label class="control-label col-md-2">RFQ Description:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static" id="lblrfqdescription">
-
-                                                            </p>
-                                                        </div>
-                                                   
+                                                    </p>
                                                 </div>
-                                             
 
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                   
-                                                        <label class="control-label col-md-4">Currency:</label>
-                                                        <div class="col-md-8">
-                                                            <p class="form-control-static" id="dropCurrencyPrev">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
 
-                                                            </p>
-                                                       
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                   
-                                                        <label class="control-label col-md-4">Conversion Rate:</label>
-                                                        <div class="col-md-8">
-                                                            <p class="form-control-static" id="lblConversionRatePrev">
+                                                <label class="control-label col-md-2">RFQ Description:</label>
+                                                <div class="col-md-9">
+                                                    <p class="form-control-static" id="lblrfqdescription">
 
-                                                            </p>
-                                                        </div>
-                                                   
+                                                    </p>
                                                 </div>
-                                                <!--/span-->
+
                                             </div>
-                                           
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                  
-                                                        <label class="control-label col-md-4">Term & Condition:</label>
-                                                        <div class="col-md-8">
-                                                            <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;" onclick="DownloadFile(this)">
-                                                            </a>
-                                                        </div>
-                                                   
+
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <label class="control-label col-md-4">Currency:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="dropCurrencyPrev">
+
+                                                    </p>
+
                                                 </div>
-                                               
                                             </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+
+                                                <label class="control-label col-md-4">Conversion Rate:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lblConversionRatePrev">
+
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <label class="control-label col-md-4">Term & Condition:</label>
+                                                <div class="col-md-8">
+                                                    <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;" onclick="DownloadFile(this)">
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <label class="control-label col-md-4">Technical Approval:</label>
+                                                <div class="col-md-8">
+                                                    <p class="form-control-static" id="lbltechnicalApproval">
+
+                                                    </p>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-md-3">
                                                 <div class="display-none" id="wrap_scrollerPrevApp">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblapproversPrev"></table>
                                                 </div>
                                             </div>
-                                        </div>
-                                       
-                                            <!--/row-->
-                                            <h3 class="form-section">RFQ parameter details</h3>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="display-none" id="wrap_scrollerPrev">
-                                                        <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
-                                                    </div>
+                                            <div class="col-md-6">
+                                                <div class="display-none" id="wrap_scrollerPrevApptech">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblapproversPrevtech"></table>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <!--/row-->
+                                        <h3 class="form-section">RFQ parameter details</h3>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="display-none" id="wrap_scrollerPrev">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <h3 class="form-section">Terms & Condition</h3>
                                         <div class="row">
                                             <div class="col-md-7">
                                                 <div class="table-scrollable">
                                                     <table id="tbltermsconditionprev" class="table table-bordered">
-                                                        
                                                     </table>
                                                 </div>
                                             </div>
@@ -908,7 +932,6 @@
                                             <div class="col-md-7">
                                                 <div class="table-scrollable">
                                                     <table id="tblAttachmentsPrev" class="table table-bordered">
-                                                        
                                                     </table>
                                                 </div>
                                             </div>
@@ -921,23 +944,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                                      
-                                            <h3 class="form-section">Participants details</h3>
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                    <div class="table-scrollable">
-                                                        <table id="selectedvendorlistsPrev" class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Vendors</th>
 
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
-                                                    </div>
+                                        <h3 class="form-section">Participants details</h3>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="table-scrollable">
+                                                    <table id="selectedvendorlistsPrev" class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Vendors</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                     <div class="form-actions">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -974,7 +997,7 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    
+
     <div id="RfqParameterexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -1062,7 +1085,7 @@
                                                         <li>Remarks</li>
                                                         <li>Quantity</li>
                                                         <li>UOM</li>
-                                                       
+
                                                         <li>TAT</li>
                                                         <li>DeliveryLocation</li>
                                                         <li>PoNo</li>
@@ -1079,11 +1102,12 @@
                                                         2. Please enter <b>UOM</b> from given below:
                                                     </label><br /><br />
                                                     <div class="scroller" style="height: 250px; display: block !important; " data-always-visible="1" data-rail-visible="0" id="scrolrUOM">
-                                                        <div id="ULUOM_instructions"></div></div>
-                                                      
-                                                        <div class='clearfix'></div>
-                                                        <br />
+                                                        <div id="ULUOM_instructions"></div>
                                                     </div>
+
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
                                             </div>
                                             3. Please ensure Target price and Quantity and TAT should be in numbers only.
                                         </span>
@@ -1218,7 +1242,7 @@
                             </div>
                             <div class="form-body">
                                 <div class="form-group">
-                                  
+
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
@@ -1226,7 +1250,7 @@
 
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
@@ -1234,10 +1258,10 @@
 
                                         </div>
                                     </div>
-                                  
+
 
                                     <div class="col-lg-1 col-lg-offset-2 " style="margin-top:4px;">
-                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor"  onclick="fnfetchCatVendors()">Go</button>
+                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
                                     </div>
                                 </div>
 
@@ -1292,7 +1316,7 @@
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    
+
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
@@ -1307,15 +1331,15 @@
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
     <script src="assets/CustomJS/eRFQRequestForQuotation.js"></script>
     <script>
-      
+
         jQuery(document).ready(function () {
             var date = new Date();
             date.setDate(date.getDate() - 1);
 
             $('#txtPODate').datepicker({ startDate: "-1d" });
-         
+
             Pageloaded()
-            
+
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
@@ -1337,7 +1361,7 @@
             if (window.location.search) {
                 var param = getUrlVars()["param"]
                 var decryptedstring = fndecrypt(param)
-                 _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+                _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
             }
 
             if (_RFQid == null)
@@ -1350,18 +1374,18 @@
                 GetQuestions();
                 fetchReguestforQuotationDetails();
                 fetchRFIParameteronload();
-               
+
             }
             FormWizard.init();
             ComponentsPickers.init();
             setCommonData();
             fnGetTermsCondition();
             fetchMenuItemsFromSession(1, 24);
-           
+
             FetchCurrency('0');
-          
+
             FetchUOM(sessionStorage.getItem("CustomerID"));
-          
+
             fetchRegisterUser('1');
             fetchVendorGroup('M', 0);
             fetchParticipantsVender();// fetch all vendors for advance search
@@ -1372,7 +1396,7 @@
             $('#txtConversionRate').val(1);
             fnfillInstructionExcel();
         }, 2000);
-        
+
         document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
             document.getElementById('file-excelparameter').click();
         });

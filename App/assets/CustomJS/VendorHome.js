@@ -197,6 +197,7 @@ function fetchPendingBid() {
             jQuery('#lblClosedRFXCount').text(data[0].rFxcnt[0].closedRFx)
             jQuery('#lblpendingPO').text(data[0].poPending.noofBid)
             jQuery('#lblAcceptedPO').text(data[0].poAccepted.noofBid)
+            jQuery('#lblOpnquery').text(data[0].openQuery.noofBid)
             $('#totalrecord').text('');
             jQuery("#UlPendingActivity").empty();
             
@@ -243,6 +244,9 @@ function fetchPendingBid() {
                     }
                     else if (data[0].pendingActivity[i].bidTypeName == 'PO') {
                         $('#icon' + i).addClass('fa fa-file');
+                    }
+                    else if (data[0].pendingActivity[i].bidTypeName == 'Technical Query') {
+                        $('#icon' + i).addClass('fa fa-question');
                     }
                 }
             }
@@ -336,6 +340,9 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
         }, 600);
     }
     else if (bidtype == 'PO') {
+        window.location = linkurl;
+    }
+    else if (bidtype == 'Query') {
         window.location = linkurl;
     }
     else {
@@ -696,6 +703,45 @@ function fetchBidDataDashboard(requesttype) {
 
                     }
                 }
+                else if (requesttype == 'OpenQuery') {
+                    for (var i = 0; i < BidData.length; i++) {
+
+                        str = "<li><a href=" + BidData[i].linkURL + ">";
+                        str += "<div class='col1'><div class='cont'>";
+                        str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
+                        str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
+                        str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
+                        
+                        str += "</div></div></div></div>";
+                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+
+                        str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
+
+                        str += "</a></li>";
+                        jQuery('#UlPendingActivity').append(str);
+
+                        if (BidData[i].bidTypeName == 'VQ') {
+                            jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
+                        } else if (BidData[i].bidTypeName == 'RFI') {
+                            jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
+                        } else if (BidData[i].bidTypeName == 'RFQ') {
+                            $('#iconbidd' + i).addClass('icon-envelope');
+                        }
+                        else if (BidData[i].bidTypeName == 'Forward Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-forward');
+                        }
+                        else if (BidData[i].bidTypeName == 'Reverse Auction') {
+
+                            $('#iconbidd' + i).addClass('fa fa-gavel');
+                        }
+                        else if (BidData[i].bidTypeName == 'PO') {
+                            $('#iconbidd' + i).addClass('fa fa-file');
+                        }
+                        else if (BidData[i].bidTypeName == 'Technical Query') {
+                           $('#iconbidd' + i).addClass('fa fa-question');
+                        }
+                    }
+                }
                 else if (requesttype == 'CloseRFX') {
                     for (var i = 0; i < BidData.length; i++) {
 
@@ -809,6 +855,11 @@ function fetchBidDataDashboard(requesttype) {
                 jQuery("#iconclass").addClass('fa fa-check-square-o');
                 jQuery("#spanPanelCaption").text("Pending PO's");
                 jQuery("#div_portlet").addClass('portlet box yellow-casablanca');
+            }
+            else if (requesttype == 'OpenQuery') {
+                jQuery("#iconclass").addClass('fa fa-trophy');
+                jQuery("#spanPanelCaption").text("Open Technical Query");
+                jQuery("#div_portlet").addClass('portlet box red-pink');
             }
             else {
                 jQuery("#iconclass").addClass('fa fa-check-square-o');

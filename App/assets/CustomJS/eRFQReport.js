@@ -247,6 +247,59 @@ function DownloadFileVendor(aID) {
     }
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + sessionStorage.getItem('hddnVendorId') + '/' + version);
 }
+function GetQuestions() {
+   
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('hddnVendorId') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            jQuery("#tblRFQtechqueryPrev").empty();
+            jQuery("#tblRFQtechquery").empty();
+
+            if (data.length > 0) {
+               
+                $('#h3techquery').removeClass('hide')
+                $('#tblRFQtechquery').removeClass('hide')
+                jQuery('#tblRFQtechqueryPrev').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:40%!important'>Questions</th><th style='width:40%!important'>Answer</th><th style='width:10%!important'>Created By</th><th style='width:10%!important'>Attachment</th></tr></thead>");
+                jQuery('#tblRFQtechquery').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:40%!important'>Questions</th><th style='width:40%!important'>Answer</th><th style='width:10%!important'>Created By</th><th style='width:20%!important'>Attachment</th></tr></thead>");
+                
+                for (var i = 0; i < data.length; i++) {
+
+                    str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td>';
+                    str += '<td>' + data[i].answer + ' </td>';
+                    str += '<td>' + data[i].createdBy + ' </td>';
+                    str += "<td></td>";
+                    jQuery('#tblRFQtechqueryPrev').append(str);
+                    jQuery('#tblRFQtechquery').append(str);
+                    
+                }
+            }
+            else {
+                
+                $('#h3techquery').addClass('hide')
+                $('#tblRFQtechquery').addClass('hide')
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    })
+}
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {
         var p = width
