@@ -2378,7 +2378,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
     var BidData = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
-        "BidTypeID": 1,
+        "BidTypeID": 6,
         "UserId": sessionStorage.getItem('UserID'),
         "RFQRFIID": 0,
         "RFIRFQType": deletionFor

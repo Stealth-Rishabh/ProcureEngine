@@ -307,15 +307,16 @@ function BindPurchaseOrg() {
 
 
 function bindPurchaseGroupDDL(orgID) {
-
+    
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt(orgID);
+    
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-
+       
         if (res.result.length > 0) {
 
             Groupdata = res.result;
-
+          
         }
     });
     GetNFAPARAM.error(function (error) {
@@ -1213,17 +1214,16 @@ function CreateSeqData() {
 function SaveApproverSeqData(objSeqData) {
 
     var url = "NFA/InsertUpdateMultipleSeq?customerid=" + parseInt(CurrentCustomer) + "&nfaApproverid=" + nfaApproverIDX;
-
-
+    console.log(JSON.stringify(objSeqData))
 
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(objSeqData));
     callAPI.success(function (res) {
-
     });
+
     callAPI.error(function (error) {
         console.log(error);
-
     });
+
 };
 
 function BindApproverSeqpreview() {
@@ -1631,17 +1631,20 @@ var FormWizard = function () {
                             $('.alert-danger').fadeOut(5000);
                             return false;
                         }
-                        CheckDuplicate();
-                        if (verifyApproverMatrix == "1") {
-                            $('.alert-danger').show();
-                            $('#spandanger').html('Approver Matrix details already exist');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(5000);
-                            return false;
-                        }
-                        else {
-                            SaveApproverMaster();
-                        }
+                      
+                        
+                            CheckDuplicate();
+                            if (verifyApproverMatrix == "1" && nfaEditedID=='0') {
+                                $('.alert-danger').show();
+                                $('#spandanger').html('Approver Matrix details already exist');
+                                Metronic.scrollTo($(".alert-danger"), -200);
+                                $('.alert-danger').fadeOut(5000);
+                                return false;
+                            }
+                            else {
+                                SaveApproverMaster();
+                            }
+                       
                         if (nfaEditedID != 0) {
                             BindApproverSeqOnEdit();
                         }
@@ -1649,9 +1652,10 @@ var FormWizard = function () {
                         //   BindApprovers();
                         var PreviewHtml = "Preview <i class='fa fa-eye' aria-hidden='true'></i>";
                         $(".button-next").html(PreviewHtml);
-                    } else if (index == 2) {
+                    }
+                    else if (index == 2) {
                         if ($('#tblWBApproverSeq >tbody >tr').length == 0) {
-                            $('#errorSeq').html('You have Some error. Please Check Below!')
+                            $('#errorSeq').html('Please Select Within Budgeted Approvers')
                             $('#errordivSeq').show();
                             Metronic.scrollTo($('errordivSeq'), -200);
                             $('#errordivSeq').fadeOut(5000);
@@ -1661,7 +1665,7 @@ var FormWizard = function () {
 
                         }
                         if ($('#tblOBApproverSeq >tbody >tr').length == 0) {
-                            $('#errorSeq').html('You have Some error. Please Check Below!')
+                            $('#errorSeq').html('Please Select Outside Budgeted Approvers')
                             $('#errordivSeq').show();
                             Metronic.scrollTo($('errordivSeq'), -200);
                             $('#errordivSeq').fadeOut(5000);
@@ -1671,7 +1675,7 @@ var FormWizard = function () {
 
                         }
                         if ($('#tblNBApproverSeq >tbody >tr').length == 0) {
-                            $('#errorSeq').html('You have Some error. Please Check Below!')
+                            $('#errorSeq').html('Please Select Not Budgeted Approvers')
                             $('#errordivSeq').show();
                             Metronic.scrollTo($('errordivSeq'), -200);
                             $('#errordivSeq').fadeOut(5000);
@@ -1683,28 +1687,7 @@ var FormWizard = function () {
                         else {
                             onPreviewClick();
                         }
-                        //else {
-                        //    FlagForCheckShowPrice = 'N';
-                        //    $("#tblServicesProduct tr:gt(0)").each(function () {
-                        //        var this_row = $(this);
-                        //        if ($.trim(this_row.find('td:eq(15)').html()) == "Y") {
-                        //            FlagForCheckShowPrice = 'Y';
-                        //            return false;
-                        //        }
-
-                        //    })
-
-                        //    if (FlagForCheckShowPrice == "Y") {
-                        //        $('.lambdafactor').attr("disabled", "disabled");
-                        //    }
-                        //    else {
-                        //        $('.lambdafactor').removeAttr("disabled", "disabled");
-                        //    }
-
-                        //    fnfetchRFQVendor();
-                        //    // }
-                        //    ConfigureBidForSeaExportTab2()
-                        //}
+                        
                     }
                     handleTitle(tab, navigation, index);
 

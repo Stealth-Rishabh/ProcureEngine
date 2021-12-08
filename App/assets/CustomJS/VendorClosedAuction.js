@@ -46,7 +46,7 @@ function fetchBidHeaderDetails() {
                 else {
                     $('#tblParticipantsService').addClass('hide');
                     $('#tblParticipantsVender').removeClass('hide');
-                    if (data[0].bidForID == 81) {
+                    if (data[0].bidForID == 81 || data[0].bidForID == 83) {
                         fetchBidSummaryVendorScrap();
                     }
                     else{

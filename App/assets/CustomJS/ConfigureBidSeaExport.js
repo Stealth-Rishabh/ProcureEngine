@@ -1134,7 +1134,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
     var BidData = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
-        "BidTypeID": 1,
+        "BidTypeID": 7,
         "UserId": sessionStorage.getItem('UserID'),
         "RFQRFIID": 0,
         "RFIRFQType": deletionFor
@@ -2862,7 +2862,7 @@ function fnSeteRFQparameterTable() {
 function fetchRFIRFQSubjectforReport(subjectFor) {
 
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,

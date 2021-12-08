@@ -9,7 +9,12 @@ function Pageloaded() {
     if (_bidTypeId == 6) {
         $("#ddlBidType").val(_bidTypeId)
         $(".ddlBidType").html('Forward Auction');
-    } else {
+    }
+    if (_bidTypeId == 8) {
+        $("#ddlBidType").val(_bidTypeId)
+        $(".ddlBidType").html('Coal Auction');
+    }
+    else {
         $("#ddlBidType").val(_bidTypeId)
         $(".ddlBidType").html('Reverse Auction');
     }
@@ -245,6 +250,10 @@ function msgForClonedBid(bidId, bidTypeId) {
            // urlLink = 'eRA.html?BidID=' + bidId;
             break;
         case 8:
+            urlLink = 'configureBidCoalExport.html?param=' + encrypdata;
+            // urlLink = 'eRA.html?BidID=' + bidId;
+            break;
+        case 9:
             urlLink = '';
 
         default:            

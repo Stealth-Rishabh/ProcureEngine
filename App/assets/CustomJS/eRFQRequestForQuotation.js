@@ -670,7 +670,7 @@ function InsUpdRFQDEtailTab2() {
         
     };
 
-    //console.log(JSON.stringify(Tab2data))
+    console.log(JSON.stringify(Tab2data))
    
     jQuery.ajax({
 
@@ -733,7 +733,7 @@ function fnGetTermsCondition() {
                 for (var i = 0; i < data.length; i++) {
                     
                     var str = "<tr id=tr" + i + "><td class=hide>"+data[i].id+"</td><td class=hide>"+data[i].level+"</td>";
-                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\"><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
                     str += "<td>" + data[i].name + "</td>";
                    
                    
@@ -775,9 +775,7 @@ function fnGetTermsCondition() {
 
                             $("#spancheckedTerms" + data[i].id).addClass("checked");
                             $("#chkTerms"+ data[i].id).attr("disabled", "disabled");
-                         
-
-                        }
+                       }
                       
                 }
             }
@@ -2545,6 +2543,7 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
+   
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -2623,9 +2622,9 @@ function printDataparameter(result) {
     var pono = ''
     var podate = ''
     var povendorname = ''
-    var itemcode = '';var st='true'
+    var itemcode = ''; var st = 'true'; var podatejv;
     for (i = 0; i < loopcount; i++) {
-        itemcode = '', povendorname = '', podate = '', pono = '', povalue = 0, unitrate = 0, TAT = 0, targetPrice = 0;
+        itemcode = '', povendorname = '', podate = '', pono = '', povalue = 0, unitrate = 0, TAT = 0, targetPrice = 0; podatejv = '';
         if ($.trim(result[i].TAT) == '') {
             TAT = 0;
         }
@@ -2652,21 +2651,23 @@ function printDataparameter(result) {
         }
         if ($.trim(result[i].PoDate) != '') {
             podate = $.trim(result[i].PoDate);
-            var podatejv = '';//new Date(podate)
+           // podatejv = new Date(podate);
         }
-    
-        
-     //podate=new Date($.trim(result[i].PoDate) + ' 00:00')
-           
-        
+        //var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+        //var formats = [
+        //    moment.ISO_8601,
+        //    "MM/DD/YYYY  :)  HH*mm*ss"
+        //];
+       
+       // alert(moment(podatejv, formats, true).isValid())
+      
      if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
-           
-        }
+     }
      if ($.trim(result[i].PoVendorName) != '') {
             povendorname = $.trim(result[i].PoVendorName);
             
-        }
+      }
         if ($.trim(result[i].ItemCode) != '' ) {
             itemcode = $.trim(result[i].ItemCode);
            
@@ -2683,7 +2684,7 @@ function printDataparameter(result) {
             $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
-            }
+       }
             
         else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
@@ -2737,17 +2738,13 @@ function printDataparameter(result) {
             return false;
 
     }
-        else if (podate != '') {
-         
-            if (podatejv == "Invalid Date") {
+        //else if (isNaN(podatejv.getMonth()) && podate != '') {
                
-                $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
-                $("#file-excelparameter").val('');
-                return false;
-            }
-            
-        }
+        //        $("#error-excelparameter").show();
+        //        $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
+        //        $("#file-excelparameter").val('');
+        //        return false;
+        //}
         else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Delivery Location can not be blank or length should be 100 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2842,6 +2839,45 @@ function printDataparameter(result) {
          }
     
     
+}
+function isDate(ExpiryDate) {
+    var objDate,  // date object initialized from the ExpiryDate string 
+        mSeconds, // ExpiryDate in milliseconds 
+        day,      // day 
+        month,    // month 
+        year;     // year 
+    // date length should be 10 characters (no more no less) 
+    if (ExpiryDate.length !== 10) {
+        return false;
+    }
+    // third and sixth character should be '/' 
+    if (ExpiryDate.substring(2, 3) !== '/' || ExpiryDate.substring(5, 6) !== '/') {
+        return false;
+    }
+    // extract month, day and year from the ExpiryDate (expected format is mm/dd/yyyy) 
+    // subtraction will cast variables to integer implicitly (needed 
+    // for !== comparing) 
+    month = ExpiryDate.substring(0, 2) - 1; // because months in JS start from 0 
+    day = ExpiryDate.substring(3, 5) - 0;
+    year = ExpiryDate.substring(6, 10) - 0;
+    // test year range 
+    if (year < 1000 || year > 3000) {
+        return false;
+    }
+    // convert ExpiryDate to milliseconds 
+    mSeconds = (new Date(year, month, day)).getTime();
+    // initialize Date() object from calculated milliseconds 
+    objDate = new Date();
+    objDate.setTime(mSeconds);
+    // compare input date and parts from Date() object 
+    // if difference exists then date isn't valid 
+    if (objDate.getFullYear() !== year ||
+        objDate.getMonth() !== month ||
+        objDate.getDate() !== day) {
+        return false;
+    }
+    // otherwise return true 
+    return true;
 }
 function fnSeteRFQparameterTable() {
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;

@@ -2,7 +2,7 @@
 //$("#bid").toggleClass("page-header-fixed page-quick-sidebar-over-content").toggleClass("page-header-fixed page-quick-sidebar-over-content page-sidebar-closed");
 function logoutFunction() {
     sessionStorage.clear();
-    //sessionStorage.setItem("APIPath", 'http://localhost:2513/api/');
+    sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 function error401Messagebox(error) {
@@ -215,8 +215,24 @@ $('#logOut_btn').click(function() {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
-    var size = $('#' + fileid.id)[0].files[0].size;
 
+    var ftype= $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
+    //var ftype = jQuery('#file1')[0].files[0].type; // get file type
+    //ftype = ftype.split('/')[1];
+    var size = $('#' + fileid.id)[0].files[0].size;
+   
+    switch (ftype.toLowerCase()) {
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':
+            break;
+        default:
+            jQuery(".alert-success").hide();
+            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx");
+            jQuery(".alert-danger").show();
+            jQuery(".alert-danger").fadeOut(5000);
+            Metronic.scrollTo($('.alert-danger'), -200);
+            $('#' + fileid.id).val('')
+            return false
+        }
     //if (size > 5242880)// checks the file more than 5 MB
     //{
     if (size > 7340032) {
@@ -226,7 +242,7 @@ function checkfilesize(fileid) {
         Metronic.scrollTo($('.alert-danger'), -200);
         $('.alert-danger').fadeOut(5000);
         $('#' + fileid.id).val('')
-
+        return false;
     }
 }
 
@@ -243,6 +259,8 @@ function checkfilesizeMultiple(fileElem) {
 
     }
 }
+
+
 function thousands_Sep_Text(num) {
     var num_parts = num.toString().split(".");
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

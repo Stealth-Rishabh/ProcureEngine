@@ -68,7 +68,9 @@ function FormValidate() {
     sessionStorage.removeItem("price")
     sessionStorage.removeItem("subtime")
     sessionStorage.removeItem("psid")
+    sessionStorage.removeItem("caid")
     sessionStorage.removeItem("psheaderid")
+    sessionStorage.removeItem("caheaderid")
     sessionStorage.removeItem("PriceSea")
     sessionStorage.removeItem("ExworkSea")
     sessionStorage.removeItem("SubmissionTymSea")
@@ -127,6 +129,9 @@ function FormValidate() {
             else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
                 deletePEFAquote();
             }
+            else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+                deleteCoalquote();
+            }
 
         }
     });
@@ -149,8 +154,7 @@ function fetchUserBids() {
         success: function (data) {
             if (data.length > 0) {
                  sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
-
-            }
+             }
             else {
                 error1.show();
                 $('#spandanger').html('No pending bids for which you can invite vendors.!');
@@ -194,7 +198,7 @@ jQuery("#txtbid").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        if (map[item].BidId != "0") {
+        if (map[item].bidId != "0") {
             jQuery("#eventUpdateStatusTab5").show();
 
             hdnSeId = 0;
@@ -259,9 +263,7 @@ function fetchvendors(bidid) {
                 $('#spandanger').html('Bid not mapped');
                 error1.fadeOut(3000);
                 App.scrollTo(error1, -200);
-
-            }
-
+              }
             jQuery.unblockUI();
 
         },
@@ -289,6 +291,9 @@ function fetchparticationQuotes() {
     else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         url = APIPath + "RemoveParticipatedQuotedPrices/fetchPEFAQuotedPrices/?BidID=" + $('#ddlbid').val() + "&VendorID=" + $('#ddlvendors').val();
     }
+    else {
+        url = APIPath + "RemoveParticipatedQuotedPrices/fetchCAQuotedPrices/?BidID=" + $('#ddlbid').val() + "&VendorID=" + $('#ddlvendors').val();
+    }
    
     // alert(url)
     jQuery.ajax({
@@ -315,7 +320,17 @@ function fetchparticationQuotes() {
                         $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].psHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
-                
+               else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+                    $('#tbllbl').removeClass('display-none')
+                    $('#tbldiv').removeClass('col-lg-12')
+                    $('#tbldiv').addClass('col-lg-10')
+                    $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
+                    for (var i = 0; i < data.length; i++) {
+
+                        shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
+                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationCA(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].caid + '\',\'' + data[i].caHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                    }
+                }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
                     $('#tbllbl').removeClass('display-none')
                     $('#tbldiv').removeClass('col-lg-12')
@@ -359,7 +374,15 @@ function removeQuotationPS(shname, price, subtime, psid, psheaderid) {
     sessionStorage.setItem("psid", psid)
     sessionStorage.setItem("psheaderid", psheaderid)
 }
-
+function removeQuotationCA(shname, price, subtime, caid, caheaderid) {
+   
+    $('#deletepopup').modal('show')
+    sessionStorage.setItem("shname", shname)
+    sessionStorage.setItem("price", price)
+    sessionStorage.setItem("subtime", subtime)
+    sessionStorage.setItem("caid", caid)
+    sessionStorage.setItem("caheaderid", caheaderid)
+}
 function deletePEFAquote() {
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -509,7 +532,80 @@ function deletePSquote() {
         }
     })
 }
+function deleteCoalquote() {
+    var AttachementFileName = '';
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    if ($('#filepthattach').html != '') {
+        AttachementFileName = jQuery('#fileToUpload').html();
+    }
+    AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
+    var QuoteProduct = {
+        "VendorID": parseInt($('#ddlvendors').val()),
+        "BidID": parseInt($('#ddlbid').val()),
+        "ShortName": sessionStorage.getItem("shname"),
+        "QuotedPrice": parseFloat(sessionStorage.getItem("price")),
+        "SubmissionTime": sessionStorage.getItem("subtime"),
+        "CAID": parseInt(sessionStorage.getItem("caid")),
+        "CAHeaderID": parseInt(sessionStorage.getItem("caheaderid")),
+        "Remarks": $('#txtremarks').val(),
+        "Attachment": AttachementFileName,
+        "UserID": sessionStorage.getItem("UserID")
 
+    }
+    console.log(JSON.stringify(QuoteProduct))
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveCAQuote/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(QuoteProduct),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+
+            if (data == "1") {
+                //** Upload Files on Azure PortalDocs folder
+                if ($('#fileToUpload').val() != '') {
+                    fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+                }
+
+                success1.show();
+                $('#spansuccess1').html("Quoted Price deleted Successfully..");
+                success1.fadeOut(6000);
+                App.scrollTo(success1, -200);
+                fetchparticationQuotes()
+                $('#deletepopup').modal('hide')
+                $('#txtremarks').val('')
+                $('#fileToUpload').val('')
+
+
+            }
+            else if (data == "99") {
+                $('#deletepopup').modal('hide')
+                bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+            }
+            else {
+                error2.show();
+                $('#err').html('You have some error.Please try agian.');
+                error2.fadeOut(3000);
+                App.scrollTo(error2, -200);
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    })
+}
 
 
 $('#deletepopup').on('hidden.bs.modal', function () {
@@ -954,11 +1050,13 @@ function fetchallexportdetails() {
    
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val() + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken');
-    }
+    } 
     if (sessionStorage.getItem("hdnbidtypeid") == 7) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val() + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken');
     }
-
+    if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+    }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -984,7 +1082,7 @@ function fetchallexportdetails() {
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
             jQuery('#txtConversionRatePrevtab_0').html(BidData[0].bidDetails[0].conversionRate)
-            if (sessionStorage.getItem("hdnbidtypeid") == 7) {
+            if (sessionStorage.getItem("hdnbidtypeid") == 7 || sessionStorage.getItem("hdnbidtypeid") == 8) {
                 if (BidData[0].bidDetails[0].showRankToVendor == "Y") {
                     jQuery('#showL1l2').text("As L1, L2, L3 etc.")
                 }
@@ -1105,7 +1203,7 @@ function fetchallexportdetails() {
 
             jQuery("#tblServicesProductPrev").empty();
             jQuery("#tblServicesProductPrevtab_0").empty();
-            if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+            if (sessionStorage.getItem('hdnbidtypeid') == 7 ) {
                 if (BidData[0].bidSeaExportDetails.length > 0) {
 
                     $('#wrap_scrollerPrev').show();
@@ -1182,7 +1280,78 @@ function fetchallexportdetails() {
 
                 }
             }
+            if (sessionStorage.getItem('hdnbidtypeid') == 8) {
+                if (BidData[0].bidCoalDetails.length > 0) {
 
+                    $('#wrap_scrollerPrev').show();
+                    $('#wrap_scrollerPrevtab_0').show();
+
+                    if ($('#hdnClosingval').val() == "S") {
+                        $(".staggered-item").show();
+
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                    }
+                    else {
+                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                    }
+
+                    for (var i = 0; i < BidData[0].bidCoalDetails.length; i++) {
+
+
+                        var decrementon = ''
+
+                        if (BidData[0].bidCoalDetails[i].decreamentOn == 'A')
+                            decrementon = 'Amount'
+                        else
+                            decrementon = '%age'
+
+
+                        if ($('#hdnClosingval').val() == "S") {
+
+                            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td>' + BidData[0].bidCoalDetails[i].destinationPort + '</td><td>' + BidData[0].bidCoalDetails[i].remarks + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].targetprice + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].gst + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].quantity + '</td><td>' + BidData[0].bidCoalDetails[i].uom + '</td><td class=text-right>' + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + '</td><td class=hide>' + BidData[0].bidCoalDetails[i].MaskVendor + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].minimumDecreament + '</td><td>' + decrementon + '</td><td class=hide>' + BidData[0].bidCoalDetails[i].decreamentOn + '</td><td class=text-right>' + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].itemBidDuration + '</td><td>' + BidData[0].bidCoalDetails[i].maskL1Price + '</td><td>' + BidData[0].bidCoalDetails[i].showStartPrice + '</td><td class=text-right>' + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + '</td><td>' + BidData[0].bidCoalDetails[i].poNo + '</td><td>' + BidData[0].bidCoalDetails[i].poVendorName + '</td><td>' + BidData[0].bidCoalDetails[i].poDate + '</td><td class=text-right>' + BidData[0].bidCoalDetails[i].poValue + '</td><td>' + BidData[0].bidCoalDetails[i].itemClosingTime + '</td><td><div class="pull-left"> <div id=spinner' + i + ' class="pull-left"><div class="input-group" style="width:110px;"><div class="spinner-buttons input-group-btn"><button type="button" class="btn spinner-down red btn-sm"><i class="fa fa-minus"></i></button> </div><input type=text class="spinner-input form-control input-sm" id=txtitemBidDuration' + i + ' maxlength="3" readonly><div class="spinner-buttons input-group-btn "><button type="button" class="btn spinner-up blue btn-sm"><i class="fa fa-plus"></i></button></div></div></div><button id="btnextendA" type="button" class="btn green btn-sm" onclick="fnTimeUpdateS(\'' + i + '\',\'' + BidData[0].bidCoalDetails[i].coalID + '\')">Go</button><div class="col-md-12"><p class="form-control-static" id=extendedDuration' + i + ' style="color:#3c763d; font-weight: 600; display: none;">Time&nbsp;Extended&nbsp;Successfully</p></div></td></tr>');
+                            $('#spinner' + i).spinner({ value: 0, step: 1, min: 0, max: 999 }); //BidData[0].bidSeaExportDetails[i].ItemBidDuration
+
+                            if (BidData[0].bidDetails[0].bidForID == "81" || BidData[0].bidDetails[0].bidForID == "1") {
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidCoalDetails[i].destinationPort + "</td><td>" + BidData[0].bidCoalDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].gst + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + "</td><td>" + BidData[0].bidCoalDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartpriceCA(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidCoalDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].coalID + "</td><td>" + BidData[0].bidCoalDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\') class=pencilHLP ><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidCoalDetails[i].poNo + "</td><td>" + BidData[0].bidCoalDetails[i].poVendorName + "</td><td>" + BidData[0].bidCoalDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + "</td></tr>");
+                            }
+                            else {
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidCoalDetails[i].destinationPort + "</td><td>" + BidData[0].bidCoalDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].gst + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + "</td><td>" + BidData[0].bidCoalDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartpriceCA(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidCoalDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].coalID + "</td><td>" + BidData[0].bidCoalDetails[i].maskL1Price + "</td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidCoalDetails[i].poNo + "</td><td>" + BidData[0].bidCoalDetails[i].poVendorName + "</td><td>" + BidData[0].bidCoalDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + "</td></tr>");
+                            }
+
+                        }
+                        else {
+
+                            jQuery("#tblServicesProductPrev").append("<tr id=tridPrev" + i + "><td>" + (i + 1) + "</td><td>" + BidData[0].bidCoalDetails[i].destinationPort + "</td><td>" + BidData[0].bidCoalDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].gst + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + "</td><td>" + BidData[0].bidCoalDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].minimumDecreament + "</td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + '</td><td>' + BidData[0].bidCoalDetails[i].maskL1Price + '</td><td>' + BidData[0].bidCoalDetails[i].showStartPrice + '</td><td class=text-right>' + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + '</td><td>' + BidData[0].bidCoalDetails[i].poNo + '</td><td>' + BidData[0].bidCoalDetails[i].poVendorName + '</td><td>' + BidData[0].bidCoalDetails[i].poDate + '</td><td class=text-right>' + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + '</td></tr>');
+                            if (BidData[0].bidDetails[0].bidForID == "81" || BidData[0].bidDetails[0].bidForID == "1") {
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td style='width:150px !important;'><a class='isDisabledClass' onclick=editValues('\divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidCoalDetails[i].destinationPort + "</td><td>" + BidData[0].bidCoalDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].gst + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + "</td><td>" + BidData[0].bidCoalDetails[i].uom + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].ceilingPrice + " <a class='changeMinDecreament ml-1' onclick=editbidstartpriceCA(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].coalID + "</td><td>" + BidData[0].bidCoalDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\') class=pencilHLP ><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidCoalDetails[i].poNo + "</td><td>" + BidData[0].bidCoalDetails[i].poVendorName + "</td><td>" + BidData[0].bidCoalDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + "</td></tr>");
+                            }
+                            else {
+                                jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td style='width:150px !important;'><a class='isDisabledClass' onclick=editValues('\divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidCoalDetails[i].destinationPort + "</td><td>" + BidData[0].bidCoalDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].targetprice + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].gst + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].quantity + "</td><td>" + BidData[0].bidCoalDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartpriceCA(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidCoalDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].decreamentOn + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].lastInvoicePrice + "</td><td class=hide>" + BidData[0].bidCoalDetails[i].coalID + "</td><td>" + BidData[0].bidCoalDetails[i].maskL1Price + "</td><td>" + BidData[0].bidCoalDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidCoalDetails[i].coalID + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + BidData[0].bidCoalDetails[i].poUnitRate + "</td><td>" + BidData[0].bidCoalDetails[i].poNo + "</td><td>" + BidData[0].bidCoalDetails[i].poVendorName + "</td><td>" + BidData[0].bidCoalDetails[i].poDate + "</td><td class=text-right>" + BidData[0].bidCoalDetails[i].poValue + "</td></tr>");
+                            }
+                        }
+
+                    }
+                    jQuery('#selectedvendorlistsPrev> tbody').empty()
+                    jQuery('#selectedvendorlistsPrevtab_0> tbody').empty()
+                    FlagForCheckShowPrice = 'N';
+                    for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
+
+                        jQuery('#selectedvendorlistsPrev').append('<tr ><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>');
+                        jQuery('#selectedvendorlistsPrevtab_0').append('<tr ><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
+                        $('#thloadingfactor').hide();
+                    }
+
+                    jQuery('#tblparicipantslists> tbody').empty()
+                    for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
+                        jQuery('#tblparicipantslists').append('<tr ><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td class=hide>' + BidData[0].bidVendorDetails[i].emailID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
+                    }
+
+                    
+
+                }
+            }
             if (sessionStorage.getItem('hdnbidtypeid') == 6) {
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
                 if (BidData[0].bidScrapSalesDetails.length > 0) {
@@ -1386,7 +1555,7 @@ function DateandtimevalidateForBidOpen(ismailsend) {
     var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
     selectedtime = new Date(selectedtime + ' ' + convertTo24Hour($("#txtbidTime").val().toLowerCase()));
 
-    if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "") {
+    if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
 
         erroropenbid.show();
         $('#erropenbid').html('Please fill all Details');
@@ -1516,7 +1685,7 @@ function editValues(divName, rowid) {
     if (divName == 'divbidShowL1L2') {
         $("#" + divName).show();
 
-        if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+        if (sessionStorage.getItem('hdnbidtypeid') == 7 || sessionStorage.getItem('hdnbidtypeid') == 8) {
             $('#div_RArank').removeClass('hide')
             $('#div_FArank').addClass('hide')
             $("#drpshowL1L2").val(jQuery("#showL1l2").text() == 'As L1, L2, L3 etc.' ? 'Y' : 'N');
@@ -1569,6 +1738,47 @@ function editValues(divName, rowid) {
             $('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
             $('#txtlastinvoiceprice').val($("#" + rowid).find("td:eq(12)").text())
             $('#txtitembidduration').val($("#" + rowid).find("td:eq(13)").text())
+            $('#divGST').hide()
+            $('#lblGST').hide()
+
+        }
+        if (sessionStorage.getItem('hdnbidtypeid') == 8) {
+            $('#lblshowprice').html("Show L1 Price")
+            $(".RaAuctionFields").show();
+            $(".faEngilshAuctionFields").hide();
+            $(".fadutchAuctionFields").hide();
+            $("#" + divName).show();
+            $('#rowid').val(rowid.id);
+            $('#divGST').show()
+            $('#lblGST').show()
+            $('#txtdestinationPort').val($("#" + rowid).find("td:eq(2)").text())
+            $('#txtbiddescriptionP').val($("#" + rowid).find("td:eq(3)").text())
+
+            $('#txttargetprice').val($("#" + rowid).find("td:eq(4)").text())
+            $('#txtGST').val($("#" + rowid).find("td:eq(5)").text())
+            $('#txtquantitiy').val($("#" + rowid).find("td:eq(6)").text())
+            $('#dropuom').val($("#" + rowid).find("td:eq(7)").text())
+            $('#txtUOM').val($("#" + rowid).find("td:eq(7)").text())
+            $('#txtCeilingPrice').val($("#" + rowid).find("td:eq(8)").text())
+            $('#checkmaskvendor').val($("#" + rowid).find("td:eq(9)").text())
+
+            if ($('#hdnClosingval').val() == 'A') {
+
+                hdnSeId = $("#" + rowid).find("td:eq(14)").text()
+
+                $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
+                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+            } else {
+                hdnSeId = $("#" + rowid).find("td:eq(16)").text()
+
+                $('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
+                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
+            }
+            $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(10)").text())
+            $("#txtselectedCurrency").val($("#dropCurrencyPrevtab_0").html());
+            $('#drpdecreamenton').val($("#" + rowid).find("td:eq(12)").text())
+            $('#txtlastinvoiceprice').val($("#" + rowid).find("td:eq(13)").text())
+            $('#txtitembidduration').val($("#" + rowid).find("td:eq(14)").text())
 
 
         }
@@ -1577,8 +1787,8 @@ function editValues(divName, rowid) {
             $(".faEngilshAuctionFields").show();
             $("#" + divName).show();
             $('#rowid').val(rowid.id);
-           
-
+            $('#divGST').hide()
+            $('#lblGST').hide()
             $('#txtshortname').val($("#" + rowid).find("td:eq(2)").text())
 
             $('#txttargetprice').val($("#" + rowid).find("td:eq(3)").text())
@@ -1798,7 +2008,7 @@ function editrowfields() {
         _Totalbiddurationfordutch = (((removeThousandSeperator($("#txtCeilingPrice").val()) - removeThousandSeperator($("#txtminimumdecreament").val())) / removeThousandSeperator($("#txtpriceincreamentamount").val())) * $("#txtpricefrequency").val()) + parseInt($("#txtpricefrequency").val());
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 7) {
-         //,ClosingTime=' + $("#").val() + ',Extension=' + $("#").val() + ',NoofExtension=' + $("#").val() + ',ItemStatus=' + $("#").val(0);
+       
         Data = {
             "ItemBidDuration": parseInt(itemduration),
             "DestinationPort": $('#txtdestinationPort').val(),
@@ -1822,10 +2032,39 @@ function editrowfields() {
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
             "BidClosingType": $('#hdnClosingval').val(),
             "SeId": parseInt(hdnSeId),
-
+            "GST":0
         }
         
-     }
+    }
+   else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+        
+        Data = {
+            "ItemBidDuration": parseInt(itemduration),
+            "DestinationPort": $('#txtdestinationPort').val(),
+            "Targetprice": parseFloat(removeThousandSeperator(targetprice)),
+            "Quantity": parseFloat(removeThousandSeperator($("#txtquantitiy").val())),
+            "UOM": $('#dropuom').val(),
+            "LastInvoicePrice": parseFloat(removeThousandSeperator(lastinvoice)),
+            "Remarks": $('#txtbiddescriptionP').val(),
+            "CeilingPrice": parseFloat(removeThousandSeperator($('#txtCeilingPrice').val())),
+            "MaskVendor": $('#checkmaskvendor option:selected').val(),
+            "MinimumDecreament": parseFloat(removeThousandSeperator($('#txtminimumdecreament').val())),
+            "DecreamentOn": $('#drpdecreamenton option:selected').val(),
+            "SelectedCurrency": $('#txtselectedCurrency').val(),
+            "MaskL1Price": $('#checkL1Price').val(),
+            "ShowStartPrice": $('#checkshowstartPrice').val(),
+            "StartingPrice": parseFloat(startingprice),
+            "PriceReductionFrequency": parseFloat(pricereducfeq),
+            "PriceReductionAmount": parseFloat(pricereductionamount),
+            "_Totalbiddurationfordutch": 0,
+            "BidID": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
+            "BidClosingType": $('#hdnClosingval').val(),
+            "SeId": parseInt(hdnSeId),
+            "GST": parseFloat($('#txtGST').val())
+        }
+
+    }
     else {
        
         Data = {
@@ -1851,10 +2090,11 @@ function editrowfields() {
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
             "BidClosingType": $('#hdnClosingval').val(),
             "SeId": parseInt(hdnSeId),
+            "GST":0
 
         }
     }
-    console.log(JSON.stringify(Data))
+    
     
     if (Data != '' || Data != null) {
 
@@ -2122,6 +2362,15 @@ function editShowL1Price(seId, rowid) {
         }
 
     }
+   else if (sessionStorage.getItem('hdnbidtypeid') == 8) {
+        if ($('#hdnClosingval').val() == "S") {
+            var flag = $("#" + rowid).find("td:eq(17)").text().trim()
+        }
+        else {
+            var flag = $("#" + rowid).find("td:eq(15)").text().trim()
+        }
+
+    }
     else {
         if ($('#hdnauctiontype').val() == 81 || $('#hdnauctiontype').val() == 83) {
             var flag = $("#" + rowid).find("td:eq(15)").text().trim()
@@ -2146,6 +2395,15 @@ function editShowStartPrice(seId, rowid) {
         }
 
     }
+   else if (sessionStorage.getItem('hdnbidtypeid') == 8) {
+        if ($('#hdnClosingval').val() == "S") {
+            var flag = $("#" + rowid).find("td:eq(18)").text().trim()
+        }
+        else {
+            var flag = $("#" + rowid).find("td:eq(16)").text().trim()
+        }
+
+    }
     else {
         if ($('#hdnauctiontype').val() == 81 || $('#hdnauctiontype').val() == 83) {
             var flag = $("#" + rowid).find("td:eq(16)").text().trim()
@@ -2166,12 +2424,104 @@ function editbidstartpriceFA(psid, rowid) {
     $("#txtbidstartpricetab_0").val($.trim($("#" + rowid).find("td:eq(6)").text()))
     $("#editbidstartprice").modal('show');
 }
-function editMinDecreament(seId, rowid) {
-    $("#hddnSeIdForMinDecreament").val(seId);
-    $('#drpdecreamentontab_0').val($("#" + rowid).find("td:eq(11)").text())
-    $("#txtminimumdecreamenttab_0").val($.trim($("#" + rowid).find("td:eq(9)").text()))
-    $("#editMinDecreamentModal").modal('show');
+function editbidstartpriceCA(caid, rowid) {
+   
+    $("#hddnbidstartprice").val(caid);
+    $("#txtbidstartpricetab_0").val($.trim($("#" + rowid).find("td:eq(8)").text()))
+    $("#editbidstartprice").modal('show');
 }
+
+function editMinDecreament(seId, rowid) {
+    if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+        $("#hddnSeIdForMinDecreament").val(seId);
+        $('#drpdecreamentontab_0').val($("#" + rowid).find("td:eq(11)").text())
+        $("#txtminimumdecreamenttab_0").val($.trim($("#" + rowid).find("td:eq(9)").text()))
+        $("#editMinDecreamentModal").modal('show');
+        $('#drpdecreamentontab_0').show()
+    }
+    else {
+        $("#hddnSeIdForMinDecreament").val(seId);
+        $('#drpdecreamentontab_0').val($("#" + rowid).find("td:eq(12)").text())
+        $("#txtminimumdecreamenttab_0").val($.trim($("#" + rowid).find("td:eq(10)").text()))
+        $("#editMinDecreamentModal").modal('show');
+        $('#drpdecreamentontab_0').hide()
+    }
+}
+
+var error = $('#msgErrorEditEvent');
+function updMinDecreament() {
+
+    if ((parseInt($('#txtminimumdecreamenttab_0').val()) > parseInt(20) && $("#drpdecreamentontab_0 option:selected").val() == "P")) {
+
+        error.find("span").html('Minimum decrement should be less than 20%.');
+        error.show();
+        Metronic.scrollTo(error, -200);
+        error.fadeOut(3000);
+        return false;
+
+    }
+    var URL = '';
+    if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+        var Data = {
+            "QueryString": removeThousandSeperator($("#txtminimumdecreamenttab_0").val()),
+            "QueryStringDT": 'NA',
+            "valType": "BMD",
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hddnSeIdForMinDecreament").val()),
+            "DecreamentOn": $("#drpdecreamentontab_0 option:selected").val()
+
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
+    }
+    else {
+        var Data = {
+            "QueryString": removeThousandSeperator($("#txtminimumdecreamenttab_0").val()),
+            "QueryStringDT": 'NA',
+            "valType": "BMD",
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "CAID": parseInt($("#hddnSeIdForMinDecreament").val()),
+            "DecreamentOn": $("#drpdecreamentontab_0 option:selected").val()
+
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
+    }
+   // console.log(JSON.stringify(Data))
+    if (Data != '' || Data != null) {
+        // alert(JSON.stringify(Data))
+        jQuery.ajax({
+            url: URL,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            data: JSON.stringify(Data),
+            contentType: "application/json; charset=utf-8",
+            success: function (data, status, jqXHR) {
+
+                if (isBidEventChanged == true) {
+                    $("#btnuserConfirmation").show();
+                }
+                fetchallexportdetails();
+                $("#editMinDecreamentModal").modal("hide")
+
+                jQuery.unblockUI();
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+        });
+    }
+}
+
 function editincreament(psid, rowid) {
    
     $("#hddnPSForMinIncreament").val(psid);
@@ -2239,107 +2589,65 @@ function updMinIncreament() {
     }
 }
 
-var error = $('#msgErrorEditEvent');
-
-function updMinDecreament() {
-
-    if ((parseInt($('#txtminimumdecreamenttab_0').val()) > parseInt(20) && $("#drpdecreamentontab_0 option:selected").val() == "P")) {
-
-        error.find("span").html('Minimum decrement should be less than 20%.');
-        error.show();
-        Metronic.scrollTo(error, -200);
-        error.fadeOut(3000);
-        return false;
-
-    }
-    var Data = {
-        "QueryString": removeThousandSeperator($("#txtminimumdecreamenttab_0").val()),
-        "QueryStringDT": 'NA',
-        "valType": "BMD",
-        "BidId": parseInt(sessionStorage.getItem('hdnbid')),
-        "BidClosingType": 'NA',
-        "SeId": parseInt($("#hddnSeIdForMinDecreament").val()),
-        "DecreamentOn": $("#drpdecreamentontab_0 option:selected").val()
-
-    }
-
-    if (Data != '' || Data != null) {
-        // alert(JSON.stringify(Data))
-        jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            type: "POST",
-            data: JSON.stringify(Data),
-            contentType: "application/json; charset=utf-8",
-            success: function (data, status, jqXHR) {
-
-               //if (data == "1") {
-
-                    if (isBidEventChanged == true) {
-                        $("#btnuserConfirmation").show();
-                    }
-                    fetchallexportdetails();
-                    $("#editMinDecreamentModal").modal("hide")
-
-                //} 
-
-                jQuery.unblockUI();
-            },
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('spandanger', '');
-                }
-                jQuery.unblockUI();
-                return false;
-            }
-        });
-    }
-}
 var error2 = $('#msgErrorL1');
 function UpdShowL1Price() {
+    var URL = '';
     if (sessionStorage.getItem('hdnbidtypeid') == 7) {
         var valtype = "RAL1";
+        var Data = {
+            "QueryString": $("#maskL1Pricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hdnshowL1Price").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
+    }
+    else if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+        var valtype = "FAL1";
+        var Data = {
+            "QueryString": $("#maskL1Pricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hdnshowL1Price").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
-        var valtype = "FAL1";
+        var valtype = "CAL1";
+        var Data = {
+            "QueryString": $("#maskL1Pricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "CAID": parseInt($("#hdnshowL1Price").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
-    var Data = {
-        "QueryString": $("#maskL1Pricetab_0").val(),
-        "QueryStringDT": 'NA',
-        "valType": valtype,
-        "BidId": parseInt(sessionStorage.getItem('hdnbid')),
-        "BidClosingType": 'NA',
-        "SeId": parseInt($("#hdnshowL1Price").val()),
-        "DecreamentOn": ''
-
-    }
-
+   
+    
     if (Data != '' || Data != null) {
         //   alert(JSON.stringify(Data))
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/",
+            url: URL,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-               // if (data == "1") {
 
                     if (isBidEventChanged == true) {
                         $("#btnuserConfirmation").show();
                     }
                     fetchallexportdetails();
                     $("#editshowL1PriceModal").modal("hide")
-
-                //} else {
-
-                //}
 
                 jQuery.unblockUI();
             },
@@ -2361,34 +2669,58 @@ function UpdShowL1Price() {
 
 var errorStart = $('#msgErrorStart');
 function UpdShowStartPrice() {
+    var URL = '';
     if (sessionStorage.getItem('hdnbidtypeid') == 7) {
         var valtype = "RAStartP";
+        var Data = {
+            "QueryString": $("#maskStartPricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hdnshowStartPrice").val()),
+            "DecreamentOn": ''
+
+        }
+
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
+    }
+    else if (sessionStorage.getItem('hdnbidtypeid') == 6) {
+        var valtype = "FAStartP";
+        var Data = {
+            "QueryString": $("#maskStartPricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hdnshowStartPrice").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
-        var valtype = "FAStartP";
+        var valtype = "CAStartP";
+        var Data = {
+            "QueryString": $("#maskStartPricetab_0").val(),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "CAID": parseInt($("#hdnshowStartPrice").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
-    var Data = {
-        "QueryString": $("#maskStartPricetab_0").val(),
-        "QueryStringDT": 'NA',
-        "valType": valtype,
-        "BidId": parseInt(sessionStorage.getItem('hdnbid')),
-        "BidClosingType": 'NA',
-        "SeId": parseInt($("#hdnshowStartPrice").val()),
-        "DecreamentOn": ''
-
-    }
-
+    
     if (Data != '' || Data != null) {
-        //   alert(JSON.stringify(Data))
+        
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/",
+            url: URL,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-               // if (data == 1) {
 
                     if (isBidEventChanged == true) {
                         $("#btnuserConfirmation").show();
@@ -2396,8 +2728,6 @@ function UpdShowStartPrice() {
                     fetchallexportdetails();
                     $("#editshowStartPriceModal").modal("hide")
 
-                //} 
-
                 jQuery.unblockUI();
             },
             error: function (xhr, status, error) {
@@ -2415,45 +2745,68 @@ function UpdShowStartPrice() {
         });
     }
 }
+
 var errorStart = $('#msgErrorStart');
 var errorBSP = $('#msgErrorEditEventBP');
 function updBidStartPrice() {
+    var URL = '';
     if (sessionStorage.getItem('hdnbidtypeid') == 7) {
         var valtype = "BSPRA";
+        var Data = {
+            "QueryString": removeThousandSeperator($("#txtbidstartpricetab_0").val()),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hddnbidstartprice").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
+    }
+    else if (sessionStorage.getItem('hdnbidtypeid') == 6) {
+        var valtype = "BSPFA";
+        var Data = {
+            "QueryString": removeThousandSeperator($("#txtbidstartpricetab_0").val()),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "SeId": parseInt($("#hddnbidstartprice").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
-        var valtype = "BSPFA";
+        var valtype = "BSPCA";
+        var Data = {
+            "QueryString": removeThousandSeperator($("#txtbidstartpricetab_0").val()),
+            "QueryStringDT": 'NA',
+            "valType": valtype,
+            "BidId": parseInt(sessionStorage.getItem('hdnbid')),
+            "BidClosingType": 'NA',
+            "CAID": parseInt($("#hddnbidstartprice").val()),
+            "DecreamentOn": ''
+        }
+        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
-
-    var Data = {
-        "QueryString": removeThousandSeperator($("#txtbidstartpricetab_0").val()),
-        "QueryStringDT": 'NA',
-        "valType": valtype,
-        "BidId": parseInt(sessionStorage.getItem('hdnbid')),
-        "BidClosingType": 'NA',
-        "SeId": parseInt($("#hddnbidstartprice").val()),
-        "DecreamentOn": ''
-    }
-
+    
+    
+    console.log(JSON.stringify(Data))
     if (Data != '' || Data != null) {
         // alert(JSON.stringify(Data))
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/",
+            url: URL,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
 
-               // if (data == "1") {
                     if (isBidEventChanged == true) {
                         $("#btnuserConfirmation").show();
                     }
                     fetchallexportdetails();
                     $("#editbidstartprice").modal("hide")
-
-                //}
-               
 
                 jQuery.unblockUI();
             },
@@ -2472,6 +2825,7 @@ function updBidStartPrice() {
         });
     }
 }
+
 var errorsurrogate = $('#errorsurro');
 var succsurrogate = $('#successsurro');
 function saveBidSurrogate() {
@@ -2481,6 +2835,7 @@ function saveBidSurrogate() {
         $('#spnerrorsurr').html('Please Fill name.');
         App.scrollTo(errorsurrogate, -200);
         errorsurrogate.fadeOut(4000);
+        jQuery.unblockUI();
         return false;
 
     }
@@ -2489,6 +2844,7 @@ function saveBidSurrogate() {
         errorsurrogate.show();
         App.scrollTo(errorsurrogate, -200);
         errorsurrogate.fadeOut(4000);
+        jQuery.unblockUI();
         return false;
 
     }
@@ -2497,6 +2853,25 @@ function saveBidSurrogate() {
         errorsurrogate.show();
         App.scrollTo(errorsurrogate, -200);
         errorsurrogate.fadeOut(4000);
+        jQuery.unblockUI();
+        return false;
+
+    }
+    if (sessionStorage.getItem("hdnselectedvendor") == '' || sessionStorage.getItem("hdnselectedvendor") == "0") {
+        $('#spnerrorsurr').html('Please Select Vendor');
+        errorsurrogate.show();
+        App.scrollTo(errorsurrogate, -200);
+        errorsurrogate.fadeOut(4000);
+        jQuery.unblockUI();
+        return false;
+
+    }
+    if (sessionStorage.getItem("hdnbid") == '' || sessionStorage.getItem("hdnbid") == "0") {
+        $('#spnerrorsurr').html('Please Select Bid');
+        errorsurrogate.show();
+        App.scrollTo(errorsurrogate, -200);
+        errorsurrogate.fadeOut(4000);
+        jQuery.unblockUI();
         return false;
 
     }
@@ -2630,6 +3005,9 @@ function submitprebidprice() {
     if (sessionStorage.getItem("hdnbidtypeid") == 7) {
         fnsubmitRAPrePrices()
     }
+    if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+        fnsubmitCAPrePrices()
+    }
     else {
         fnsubmitFAPrePrices()
     }
@@ -2653,10 +3031,10 @@ function fnsubmitRAPrePrices() {
            // singleQuery = singleQuery + sessionStorage.getItem('hdnbid') + ",[PE].FN_Now()," + $.trim(this_row.find('td:eq(0)').html()) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + removeThousandSeperator(quote) + ")";
 
             HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdSeaExport ';
-            HeaderQuery = HeaderQuery + $.trim(this_row.find('td:eq(0)').html()) + "," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "'," + $.trim(this_row.find('td:eq(0)').html()) + "," + removeThousandSeperator(quote) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + $.trim(this_row.find('td:eq(2)').html()) + ",'M' ; "
+            HeaderQuery = HeaderQuery + $.trim(this_row.find('td:eq(0)').html()) + "," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "'," + $.trim(this_row.find('td:eq(0)').html()) + "," + removeThousandSeperator(quote) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + $.trim(this_row.find('td:eq(2)').html()) + ",'N' ; "
         }
     })
-   
+  
     var Data = {
         "DetailQuery": DetailQuery,
         "HeaderDetails": HeaderQuery,
@@ -2665,7 +3043,7 @@ function fnsubmitRAPrePrices() {
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
     };
    // alert(JSON.stringify(Data))
-   
+    console.log(JSON.stringify(Data))
  jQuery.ajax({
 
         type: "POST",
@@ -2685,6 +3063,68 @@ function fnsubmitRAPrePrices() {
                 fetchItemsforPreBidPrices(sessionStorage.getItem('hdnbid'), sessionStorage.getItem("hdnbidtypeid") ,sessionStorage.getItem('hdbbidForID'));
            // }
             
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
+function fnsubmitCAPrePrices() {
+
+    var DetailQuery = "";
+   
+    var quote = 0;
+    HeaderQuery = '';
+    $("#tblprebidvendors tr:gt(0)").each(function () {
+        var this_row = $(this);
+        quote = $.trim(this_row.find('td:eq(5) input[type="tel"]').val())
+
+        if (quote != "" && quote != "0") {
+
+           // singleQuery = "";
+            // singleQuery = $.trim(this_row.find('td:eq(1)').html()) + '~' + removeThousandSeperator(quote);
+            HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdCoalExport ';
+            HeaderQuery = HeaderQuery + $.trim(this_row.find('td:eq(0)').html()) + "," + sessionStorage.getItem('hdnbid') + "," + $.trim(this_row.find('td:eq(0)').html()) + "," + removeThousandSeperator(quote) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + $.trim(this_row.find('td:eq(2)').html()) +",0,0,0 ; "
+        }
+    })
+    console.log(HeaderQuery)
+    var Data = {
+        "DetailQuery": DetailQuery,
+        "HeaderDetails": HeaderQuery,
+        "BidID": parseInt(sessionStorage.getItem('hdnbid')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
+    };
+    // alert(JSON.stringify(Data))
+
+    jQuery.ajax({
+
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorParticipation/insPreBidPricing/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Data),
+        dataType: "json",
+        success: function (data) {
+
+            //if (data == "1") {
+            successprebid.show();
+            $('#succpreprice').html('Pre-Bid Prices updated successfully..');
+            successprebid.fadeOut(5000);
+            fetchItemsforPreBidPrices(sessionStorage.getItem('hdnbid'), sessionStorage.getItem("hdnbidtypeid"), sessionStorage.getItem('hdbbidForID'));
+            // }
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {

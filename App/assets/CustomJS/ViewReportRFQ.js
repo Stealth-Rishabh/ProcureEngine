@@ -109,6 +109,26 @@ function fetchrfqcomprative(RFQID) {
                 strHead += "</tr>"
                 strHeadQ += "<th>Our Requirement</th>"
                 strHeadQ += "</tr>"
+
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                for (var i = 0; i < data[0].vendorNames.length; i++) {
+
+                    if (data[0].vendorNames[i].rfqStatus == 'C') {
+
+                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].responseSubmitDT + "</th>";
+                    }
+                    else if (data[0].vendorNames[i].rfqStatus == 'I') {
+
+                        strHead += "<th colspan='4' style='text-align:center;'>Not Started</th>";
+                    }
+                    else {
+                        strHead += "<th colspan='4' style='text-align:center;'>Not Started</th>";
+                       
+                    }
+                }
+                strHead += "<th colspan=7>&nbsp;</th>";
+                strHead += "</tr>"
+               
                 
 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
@@ -346,8 +366,6 @@ function fetchrfqcomprative(RFQID) {
                         if (flag1 == 'T') {
 
                             str += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
-                            
-
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
                                 
                                 if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
@@ -377,7 +395,7 @@ function fetchrfqcomprative(RFQID) {
                                 }
                             }
                             str += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
-                           str += " </tr>";
+                            str += " </tr>";
                             jQuery('#tblRFQComprativetest').append(str);
                         }
                     }
@@ -404,7 +422,6 @@ function fetchrfqcomprative(RFQID) {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td>";
-               
                 str += " </tr>";
                 
 
@@ -485,8 +502,6 @@ function fetchrfqcomprative(RFQID) {
                 // ***************** END  Answer Question Row
                
                 // ***************** Start  Technical Approver Row**********************
-               
-
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
@@ -503,9 +518,7 @@ function fetchrfqcomprative(RFQID) {
 
                         if (flag3 == 'T') {
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
-                           
-
+                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td>";
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
 
                                 if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
@@ -520,12 +533,12 @@ function fetchrfqcomprative(RFQID) {
                                             }
                                             else if (data[0].approverStatus[s].status == 'Rejected') {
                                                 strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
-                                               
+                                                
 
                                             }
                                             else if (data[0].approverStatus[s].status == 'Pending') {
                                                 strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
-                                               
+                                                
 
                                             }
 
@@ -535,7 +548,8 @@ function fetchrfqcomprative(RFQID) {
                             }
 
 
-                            strQ += " </tr>";
+                            strQ += "<td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
+                           
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
                         }

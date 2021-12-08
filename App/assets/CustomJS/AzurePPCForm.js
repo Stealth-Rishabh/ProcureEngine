@@ -105,7 +105,6 @@ function frmAzurePPCForm() {
     var i = 0;
     var BiddingVendorQuery = '';
     $("#tblvendors> tbody > tr").each(function (index) {
-       
         BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
     });
    
@@ -115,6 +114,7 @@ function frmAzurePPCForm() {
     var Data = {
         "PPCID": parseInt($('#hdnPPCID').val()),
         "RFQID": parseInt(RFQID),
+        "BidID":0,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "Introduction": jQuery('#txtintroduction').val(),
         "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
@@ -238,7 +238,7 @@ function fetchAzPPcFormDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID,
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID +"&BidID=0" ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -509,7 +509,7 @@ function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID,
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID +"&BidID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

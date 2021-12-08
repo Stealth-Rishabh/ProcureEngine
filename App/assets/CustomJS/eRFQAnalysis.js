@@ -689,12 +689,12 @@ function fetchrfqcomprative() {
                 ////////// ***************** Start  Define Technical  Approver Row**********************
                   strQ += " <tr><td><b>Technical Approval Required</b></td>";
                 
-                t = 0;
-                for (var k = 1; k <= data[0].vendorNames.length; k++) {
+                    t = 0;
+                    for (var k = 1; k <= data[0].vendorNames.length; k++) {
 
-                    t = k;
+                        t = k;
 
-                }
+                    }
                
                 if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                     strQ += "<td>After All RFQ Responses</td>"
@@ -904,7 +904,7 @@ function fetchrfqcomprative() {
                     $('#btn_techmapaaprover').removeAttr('disabled')
                     $('#btn_techmapaaprover').text('Technical Approval')
                 }
-                if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() != "rfq") { //|| allvendorresponse=='N'
+               else if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() != "rfq") { //|| allvendorresponse=='N'
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
                     $('#btn_commercial').show();
@@ -944,32 +944,7 @@ function fetchrfqcomprative() {
     jQuery.unblockUI();
 
 }
-var support = (function () {
-    if (!window.DOMParser) return false;
-    var parser = new DOMParser();
-    try {
-        parser.parseFromString('x', 'text/html');
-    } catch (err) {
-        return false;
-    }
-    return true;
-})();
 
-var textToHTML = function (str) {
-
-    // check for DOMParser support
-    if (support) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(str, 'text/html');
-        return doc.body.innerHTML;
-    }
-
-    // Otherwise, create div and append HTML
-    var dom = document.createElement('div');
-    dom.innerHTML = str;
-    return dom;
-
-};
 function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
@@ -1051,7 +1026,7 @@ function fnDownloadZip() {
             a.style.display = 'none';
             a.href = url;
             // the filename you want
-            a.download = 'test.zip';
+            a.download = 'Download.zip';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -1168,24 +1143,33 @@ function editwithgstlambdafactor(pricewithgst,rowid,vendorid) {
     $("#hdnvendorid").val(vendorid);
 }
 function updloadingfactor() {
-    var Data = {
-        "RFQID": $('#hdnRfqID').val(),
-        "VersionID": sessionStorage.getItem("RFQVersionId"),
-        "VendorID":  $("#hdnvendorid").val(),
-        "LoadingFactor": removeThousandSeperator($("#txtloadingfactor").val()),
-        "LoadingFactorReason": $("#txtloadingfactorreason").val()
+    if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
+        $('.alert-danger').show();
+        $('#msgErrorL1').html('Please Enter Loading factor');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        $("#txtloadingfactor").val('')
+        return false;
     }
-   // alert(JSON.stringify(Data))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(Data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-           
-            //if (data[0].LoadingFactor > 0) {
-               
+    else {
+        var Data = {
+            "RFQID": parseInt($('#hdnRfqID').val()),
+            "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
+            "VendorID": parseInt($("#hdnvendorid").val()),
+            "LoadingFactor": parseFloat(removeThousandSeperator($("#txtloadingfactor").val())),
+            "LoadingFactorReason": $("#txtloadingfactorreason").val()
+        }
+        // alert(JSON.stringify(Data))
+        jQuery.ajax({
+            url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            data: JSON.stringify(Data),
+            contentType: "application/json; charset=utf-8",
+            success: function (data, status, jqXHR) {
+
+                //if (data[0].LoadingFactor > 0) {
+
                 var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
                 $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
                 $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
@@ -1196,23 +1180,24 @@ function updloadingfactor() {
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
-                },1000)
-           // }
-        },
-        error: function (xhr, status, error) {
+                }, 1000)
+                // }
+            },
+            error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spnerror', '');
+                }
+                jQuery.unblockUI();
+                return false;
+
             }
-            else {
-                fnErrorMessageText('spnerror', '');
-            }
-            jQuery.unblockUI();
-            return false;
-           
-        }
-    })
+        })
+    }
 }
 $("#editloadingfactor").on("hidden.bs.modal", function () {
     $("#txtloadingfactor").val('')
