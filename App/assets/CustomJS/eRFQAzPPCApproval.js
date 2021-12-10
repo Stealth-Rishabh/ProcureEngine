@@ -66,8 +66,8 @@ function stringDivider(str, width, spaceReplacer) {
 }
 function getSummary(vendorid, version) {
 
-    window.open("eRFQReport.html?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=99&RFQVersionTxt=Final%20Version", "_blank")
-
+    var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=99&RFQVersionTxt=Final%20Version");
+    window.open("eRFQReport.html?param=" + encrypdata, "_blank")
 }
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
@@ -565,25 +565,40 @@ function fetchrfqcomprative() {
                 }
                 else {
                     strQ += "<tr>";
-                    strExcelQ += " <tr><td>&nbsp;</td>";
-                    t = 0;
+                     t = 0;
                     for (var k = 1; k <= data[0].vendorNames.length; k++) {
 
                         t = k;
 
                     }
                     strQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
-                    strExcelQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
                     strQ += "</tr>";
-                    strExcelQ += "</tr>";
+                    
                 }
                 // ***************** END  Answer Question Row
                 // ***************** Start  Define Technical  Approver Row**********************
                 strQ += " <tr><td><b>Technical Approval Required</b></td>";
                 
-                strQ += "<td colspan=4><input style='width:16px!important;height:16px!important;' onclick='fncheckradiotext()' type='radio' name=AppRequired id=AppYes class='md-radio'  value='Y' checked disabled/> &nbsp;<span for=AppYes>Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired id=AppNo   onclick='fncheckradiotext()' disabled /> &nbsp;<span for=AppNo >No</span></td>"
-                
-                strQ += "</tr>"
+                t = 0;
+                for (var k = 1; k <= data[0].vendorNames.length; k++) {
+
+                    t = k;
+
+                }
+
+                if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+                    strQ += "<td>After All RFQ Responses</td>"
+                    strQ += '<td colspan=' + (t + 2) + '><a href="javascript:;" class="btn btn-xs yellow" id=btn_techmapaaprover onclick="fnForwardforAllvendorTechnical()"> Technical Approval</a></td>';
+
+                }
+                else if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "rfq") {
+                    strQ += "<td colspan=" + (t + 2) + ">With individual RFQ Response</td>"
+                }
+                else {
+                    strQ += "<td colspan=" + (t + 2) + ">Not Required</td>"
+                }
+
+                strQ += "</tr>";
                 //// ***************** END  Define Technical  Row **********************
                 //// ***************** Start  Technical Approver Row**********************
                 

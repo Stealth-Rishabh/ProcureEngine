@@ -771,6 +771,7 @@ function fetchrfqcomprative() {
 
                 if ($("#ddlrfqVersion option:selected").val() != 99) {
                     //For ReInvite Row
+
                     str += "<tr id='reinvitationTR'><td colspan=5><b>Re-Invitation Row</b></td>";
                     var maxValue = -1;
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -780,24 +781,25 @@ function fetchrfqcomprative() {
                             if (maxValue < thisVal && thisVal != 99) {
                                 maxValue = thisVal;
                             }
-                           
+
                             if ($("#ddlrfqVersion option:selected").val() == maxValue) {
                                 reInvited = 'Y'
                             }
                         });
 
                         if (maxValue == $("#ddlrfqVersion option:selected").val()) {
-                          
+
                             $("#btn-reInvite").attr('disabled', false)
                             $("#btn-reInvite").removeClass('hide')
-                            str += "<td colspan='4' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].VendorNames[k].VendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
+                            str += "<td colspan='4' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].vendorNames[k].vendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
 
 
                         }
                         else {
-                           
+
                             $("#btn-reInvite").attr('disabled', true);
                             $("#btn-reInvite").addClass('hide')
+
                             str += "<td colspan=4>&nbsp;</td>";
                         }
 

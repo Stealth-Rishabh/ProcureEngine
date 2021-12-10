@@ -1277,7 +1277,8 @@ function FetchMatrixApprovers() {
 
 function BindApprovers(amount, groupId, orgid, budgetType) {
 
-    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType;
+    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
+   
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
     $("#tblApproversPrev").empty();
@@ -1368,7 +1369,7 @@ function SaveApproversConfirmation() {
     var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(approversData));
     SubmitData.success(function (res) {
         SaveActivityDetails(lstActivityData);
-        UpdateFirstTabActivity();
+        //UpdateFirstTabActivity();
         if (res.status == "S") {
             if (confirm('Do you want to continue ')) {
                 window.location.href = "NFARequest.html";
@@ -1462,12 +1463,12 @@ function BindAttachmentsOfEdit() {
 
 
 function SaveFirstTabActivity() {
-    debugger;
+    
     objActivity = {
         FromUserId: UserID,
         ToUserId: UserID,
         ActivityDescription: $("#txtTitle").val(),
-        LinkURL: "N",
+      /*  LinkURL: "N",*/
         NfaIdx: parseInt(idx)
     }
     var url = "NFA/InsertFirstTabActivity";
@@ -1483,12 +1484,12 @@ function SaveFirstTabActivity() {
 }
 
 function UpdateFirstTabActivity() {
-    debugger;
+   
     objActivity = {
         FromUserId: UserID,
         ToUserId: UserID,
         ActivityDescription: $("#txtTitle").val(),
-        LinkURL: "Y",
+       /* LinkURL: "Y",*/
         NfaIdx: parseInt(idx)
     }
     var url = "NFA/InsertFirstTabActivity";
@@ -1519,8 +1520,8 @@ function SaveActivityDetails(data) {
     });
 
     console.log(aquaticCreatures);
-    var url = "NFA/InsUpdateActivityDetails";
-
+    var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
+    
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
     SaveActivityDetails.success(function (res) {
         lstActivityData = [];

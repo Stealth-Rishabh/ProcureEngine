@@ -127,7 +127,7 @@ function frmAzurePPCForm() {
         "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
-        "EnquiryIssuedOn": jQuery('#RFQConfigueron').val(),
+        "EnquiryIssuedOn": jQuery('#RFQConfigueron').text(),
         "EnquiryIssuedthrogh": EnquiryIssuedthrogh,
         "RecomOrderLowPriceOffer": LowestPriceOffer,
         "RecomRepeatOrder": repeatorder,
@@ -171,6 +171,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
+                                
                                 if ($('#hdnPPCID').val() == "0") {
                                     fnSendActivitytoCommercialForPPCApp();
                                     var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + RFQSubject)
@@ -199,7 +200,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
-                               
+                                
                                 window.close();
                                
                             }

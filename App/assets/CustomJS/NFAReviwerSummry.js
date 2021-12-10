@@ -128,18 +128,11 @@ function BindSaveparams() {
             if (res.result.length > 0) {
                 $("#tblNFAOverviewParam").append("<thead><tr><th class='bold' style='width:50%!important'>Param text</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-
-
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
+                     $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
 
                 });
-
-
-
-
             }
-
-        }
+         }
         else {
             $("#tblNFAOverviewParam").hide();
         }
@@ -292,3 +285,116 @@ jQuery("#txtApprover").typeahead({
     }
 
 });
+function FetchRecomendedVendor() {
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            $('#tblremarksapprover').empty()
+            if (data.length > 0) {
+                $('#divforapprovalprocess').show()
+                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th class=hide id=thapprover>Recommended Vendor</th><th>Completion DT</th></tr>')
+                if (AppStatus == 'Reverted') {
+                    jQuery("#lblrevertedComment").text(data[0].remarks);
+                    jQuery("#RevertComment").show();
+                    $('#frmdivremarksforward').removeClass('col-md-12');
+                    $('#frmdivremarksforward').addClass('col-md-6');
+                    $('#frmdivforward').show();
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].vendorName != "") {
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#thforward').removeClass('hide')
+                        }
+                        else {
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#thforward').addClass('hide')
+                        }
+
+
+                    }
+                }
+                $('#frmdivremarksapprover').removeClass('col-md-12');
+                $('#frmdivremarksapprover').addClass('col-md-6');
+                for (var i = 0; i < data.length; i++) {
+                    
+                    if (data[i].vendorName != "") {
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#thapprover').removeClass('hide')
+                    }
+                    
+                    else {
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#thapprover').addClass('hide')
+                    }
+                }
+                $('#frmdivapprove').show()
+            }
+            else {
+                $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
+            }
+            
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}
+function ApprovalApp() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+    var approvalbyapp = {
+        "NFAID": parseInt(BidID),
+        "FromUserId": sessionStorage.getItem("UserID"),
+        "ActivityDescription": jQuery("#lblbidSubject").text(),
+        "Remarks": jQuery("#txtRemarksApp").val(),
+        "Action": jQuery("#ddlActionType option:selected").val(),
+        "ForwardedBy": "Approver",
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
+    };
+
+    //alert(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "NFA/ApproveRejectNFA",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        cache: false,
+        data: JSON.stringify(approvalbyapp),
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            bootbox.alert("Transaction Successful..", function () {
+                window.location = "index.html";
+                return false;
+            });
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}

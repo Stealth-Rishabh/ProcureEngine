@@ -2738,13 +2738,13 @@ function printDataparameter(result) {
             return false;
 
     }
-        //else if (isNaN(podatejv.getMonth()) && podate != '') {
+        else if (!moment(podate, 'MM/DD/YYYY', true).isValid() && podate!='') {
                
-        //        $("#error-excelparameter").show();
-        //        $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
-        //        $("#file-excelparameter").val('');
-        //        return false;
-        //}
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
+                $("#file-excelparameter").val('');
+                return false;
+        }
         else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Delivery Location can not be blank or length should be 100 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
