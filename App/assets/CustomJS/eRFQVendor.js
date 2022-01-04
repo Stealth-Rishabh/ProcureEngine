@@ -1257,12 +1257,13 @@ function fnRegreteRFQ() {
                 var totalammwithGST = 0;
               
                 if (data.length > 0) {
-                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th></tr></thead>");
-                    jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th></tr></thead>");
+                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
+                    jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                    
                     $('#txtvendorremarks').val(data[0].vendorRemarks);
                    for (var i = 0; i < data.length; i++)
-                    {
+                   {
+                       
                         description = stringDivider(data[i].rfqDescription, 40, "<br/>\n");
                         var detailsdesc = (data[i].rfqDescription).replace(/(\r\n|\n|\r)/gm, "");
                         detailsdesc = detailsdesc.replace(/'/g, '');
@@ -1270,23 +1271,26 @@ function fnRegreteRFQ() {
 
                         totalammwithoutGST = totalammwithoutGST + (data[i].rfqPriceWithoutGST * data[i].rfQuantity);
                         totalammwithGST = totalammwithGST + (data[i].rfqVendorPricewithTax * data[i].rfQuantity);
-
+                     
                         if (data[i].rfqVendorPricewithTax > 0 && data[i].rfqVendorPrice > 0) {
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal"  data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td></tr>').appendTo("#tblServicesProduct");
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td></tr>').appendTo("#tblRFQPrev");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal"  data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td><td><textarea name=vendoritemrem rows=2 class="form-control" maxlength=100  autocomplete=off id=vendoritemrem' + i + ' value=' + data[i].vendorITemRemarks +' >' + data[i].vendorItemRemarks + '</textarea></td></tr>').appendTo("#tblServicesProduct");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
 
                         }
                         else {
                            
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button"  class="btn default btn-xs red-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off /></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off /></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td></tr>').appendTo("#tblServicesProduct");
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td></tr>').appendTo("#tblRFQPrev");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button"  class="btn default btn-xs red-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off /></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off /></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td><td><textarea name=comm rows=2 class="form-control" maxlength=100  autocomplete=off id=vendoritemrem' + i + ' value=' + data[i].vendorItemRemarks +'  >' + data[i].vendorItemRemarks + '</textarea></td></tr>').appendTo("#tblServicesProduct");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(2)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(2)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
 
                         }
-                        
-                       
+                       $('#vendoritemrem' + i).maxlength({
+                           limitReachedClass: "label label-danger",
+                           alwaysShow: true
+                       });
+                       $('#vendoritemrem' + i).val(data[i].vendorItemRemarks)
                    }
-                   jQuery('<tr><td colspan=7><b>Total</b></td><td class="text-right">' + thousands_separators(totalammwithoutGST.round(2)) + '</td><td class="text-right">' + thousands_separators(totalammwithGST) + '</td><td>&nbsp;</td></tr>').appendTo("#tblServicesProduct");
-                   jQuery('<tr><td colspan=5><b>Total</b></td><td class="text-right">' + thousands_separators(totalammwithoutGST.round(2)) + '</td><td class="text-right">' + thousands_separators(totalammwithGST) + '</td><td>&nbsp;</td></tr>').appendTo("#tblRFQPrev");
+                    jQuery('<tr><td colspan=7><b>Total</b></td><td class="text-right">' + thousands_separators(totalammwithoutGST.round(2)) + '</td><td class="text-right">' + thousands_separators(totalammwithGST.round(2)) + '</td><td>&nbsp;</td></tr>').appendTo("#tblServicesProduct");
+                    jQuery('<tr><td colspan=5><b>Total</b></td><td class="text-right">' + thousands_separators(totalammwithoutGST.round(2)) + '</td><td class="text-right">' + thousands_separators(totalammwithGST.round(2)) + '</td><td>&nbsp;</td></tr>').appendTo("#tblRFQPrev");
                    
                 }
 
@@ -1345,7 +1349,7 @@ function DownloadFileVendor(aID) {
     })
     var Price = 0;
     var PricewithoutGST = 0;
-    var basicprice = 0;
+var basicprice = 0; var PricewithoutGSTDiscount = 0;
     
     function RFQinsertItemsTC(issubmitbuttonclick) {
         
@@ -1353,27 +1357,31 @@ function DownloadFileVendor(aID) {
         PricewithoutGST = 0.0;
         PriceGSTOnly = 0.0;
         basicprice = 0;
+        PricewithoutGSTDiscount = 0.0;
 
         basicprice = removeThousandSeperator($('#txtbasicPrice').val());
 
             $('#loader-msg').html('Processing. Please Wait...!');
             $('.progress-form').show();
             PriceDetails = [];
-           
             if (jQuery('#tblRFQParameterComponet  tr').length > 0) {
-               
-
-                $("#tblRFQParameterComponet tr:gt(0)").each(function () {
+               $("#tblRFQParameterComponet tr:gt(0)").each(function () {
                     var this_row = $(this);
-                    if ($.trim(this_row.find('td:eq(3)').html()) != "GST")
+                    if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "gst" && $.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "discount")
                     {
                         
                         PricewithoutGST = PricewithoutGST + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
                     }
-                    if ($.trim(this_row.find('td:eq(3)').html()) == "GST") {
+                    if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "gst") {
 
                         PriceGSTOnly = (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val()))/ 100);
                     }
+                    if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "discount") {
+
+                      
+                        PricewithoutGSTDiscount = PricewithoutGSTDiscount + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
+                    }
+                    
                     Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
                     var Pdetails = {
                         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
@@ -1388,7 +1396,8 @@ function DownloadFileVendor(aID) {
                         "RFQVendorPrice":0,
                         "RFQTCID": parseInt($.trim(this_row.find('td:eq(2)').html())),
                         "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-                        "FinalStatus": 'N'
+                        "FinalStatus": 'N',
+                        "VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
                        
                     };
                     PriceDetails.push(Pdetails)
@@ -1396,7 +1405,8 @@ function DownloadFileVendor(aID) {
 
                 });
                
-                PricewithoutGST = (removeThousandSeperator(basicprice) * (PricewithoutGST + 1));
+                //PricewithoutGST = (removeThousandSeperator(basicprice) * (PricewithoutGST + 1));
+                PricewithoutGST = ((removeThousandSeperator(basicprice) * (PricewithoutGST + 1))) * (1 - PricewithoutGSTDiscount);
                 Price = (removeThousandSeperator(PricewithoutGST) * (PriceGSTOnly+1));
                
                
@@ -1411,7 +1421,7 @@ function DownloadFileVendor(aID) {
                     "PriceBasic":parseFloat(basicprice)
                 };
                //console.log(JSON.stringify(Tab2data))
-                
+               // alert(JSON.stringify(Tab2data))
                 jQuery.ajax({
 
                     type: "POST",
@@ -1472,7 +1482,8 @@ function DownloadFileVendor(aID) {
                 "RFQVendorPrice": parseFloat($.trim(this_row.find('td:eq(13)').html())),
                 "RFQTCID": 0,
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-                "FinalStatus": 'N'
+                "FinalStatus": 'N',
+                "VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
 
             };
             
@@ -1491,7 +1502,7 @@ function DownloadFileVendor(aID) {
              };
              commercialterms.push(comm)
          });
-      
+        
             var Tab2data = {
                 "PriceDetails": PriceDetails,
                 "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1500,8 +1511,8 @@ function DownloadFileVendor(aID) {
                 "CommercialTerms": commercialterms,
                 "VendorRemarks": $('#txtvendorremarks').val()
         };
-        //console.log(JSON.stringify(Tab2data))
-        
+       // console.log(JSON.stringify(Tab2data))
+        //alert(JSON.stringify(Tab2data))
             jQuery.ajax({
 
                 type: "POST",

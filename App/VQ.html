@@ -216,10 +216,10 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-3">Item/Service Category</label>
+                                                        <label class="control-label col-md-3">Item/Service Category<span class="required">*</span></label>
                                                         <div class="col-md-9">
                                                            
-                                                            <select class="form-control" id="ddlCategoryMultiple" tabindex="4" multiple></select>
+                                                            <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4" multiple></select>
                                                         </div>
                                                     </div>
                                                    
@@ -228,22 +228,22 @@
                                                                <li>
                                                                <div class="inputgroup">
                                                                    <label class="control-label col-md-3">
-                                                                       Attachment
+                                                                       Attachment<span class="required">*</span>
                                                                    </label>
                                                                    <div class="col-md-4">
                                                                        <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />
                                                                    </div>
                                                                    <div class="col-md-3">
-                                                                       <input type="file" class="form-control" tabindex="5"
-                                                                              onchange="checkfilesizeMultiple(this)"
-                                                                               /><!-- id="file2" name="file2"-->
+                                                                       <input type="file" class="form-control" tabindex="5" id="file1"
+                                                                              onchange="checkfilesizeMultiple(this)" />
+                                                                              
                                                                        <span class="help-block"><a id="attach-file1" href="javascript:;" style="text-decoration: none !important;"></a></span>
-                                                                       <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                       <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file1','filepthattach','Otherattachment')">
                                                                            <i class='fa fa-times-circle-o' id='icon2'></i>
                                                                        </span>
                                                                    </div>
                                                                    <div class="col-md-2" style=" padding-left:0px !important; ">
-                                                                       <a href="javascript:void(0);" class="btn blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>
+                                                                       <a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>
                                                                    </div>
                                                                </div>
                                                            </li>
@@ -418,10 +418,10 @@
                                             <!--/row-->
                                             <!--/row-->
                                             <div class="row">
-                                                 <div class="col-md-6">
+                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Attachment:</label>
-                                                        <div class="col-md-8">
+                                                        <label class="control-label col-md-2">Attachment:</label>
+                                                        <div class="col-md-10">
                                                             <ul style="list-style:none; display:grid;padding-left:0px;" id="tblAttachmentsElemPrev"></ul>
                                                         </div>
                                                     </div>
@@ -724,7 +724,7 @@
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
     
-    <script src="assets/CustomJS/RFI.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VQ.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
 		 Pageloaded()
@@ -749,28 +749,36 @@
             
             Metronic.init();
             Layout.init();
-				
-                $('#dropbidType').select2({
-                    placeholder: "Select Bid Type",
-                    allowClear: true
-                });
-                var _RFIID;
+           
+            //$('#ddlCategoryMultiple').select2({
+            //        placeholder: "Select Category",
+            //        allowClear: true
+            //    });
+                var _VQID;
                 if (window.location.search) {
                     var param = getUrlVars()["param"]
                     var decryptedstring = fndecrypt(param)
-                     _RFIID = getUrlVarsURL(decryptedstring)["RFIID"];
-                }
-            if (_RFIID == null){
-               sessionStorage.setItem('CurrentRFIID', 0)
+                   _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+                 }
+           
+            if (_VQID == null || _VQID == undefined)
+            {
+               sessionStorage.setItem('CurrentVQID', 0)
                fetchRFIQuestions('VQL');
-			   }
-           else {
-                sessionStorage.setItem('CurrentRFIID', _RFIID)
-				fetchRFIDetails();
+			}
+            else {
+                
+                sessionStorage.setItem('CurrentVQID', _VQID)
+                //setTimeout(function () {
+                //    fetchRFIDetails();
+                //},4000)
+				
 				fetchRFIDetailsForTab2('VQL');
             }
+            //setTimeout(function () {
+                fetchCategorymaster();
+              //   }, 4000)
             fetchVendorDetail();
-            fetchCategorymaster()
             FormWizard.init();
 			FormValidate();
             ComponentsPickers.init();
@@ -778,12 +786,7 @@
             fetchMenuItemsFromSession(1, 25);
             //ComponentsDropdowns.init();
         });
-        jQuery('#btnpush').click(function (e) {
-            jQuery('#approverList > option:selected').appendTo('#mapedapprover');
-        });
-        jQuery('#btnpull').click(function (e) {
-            jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
-        });
+       
 
     </script>
 </body>

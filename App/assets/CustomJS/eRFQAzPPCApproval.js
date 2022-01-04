@@ -581,11 +581,9 @@ function fetchrfqcomprative() {
                 
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
-
-                    t = k;
+                     t = k;
 
                 }
-
                 if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                     strQ += "<td>After All RFQ Responses</td>"
                     strQ += '<td colspan=' + (t + 2) + '><a href="javascript:;" class="btn btn-xs yellow" id=btn_techmapaaprover onclick="fnForwardforAllvendorTechnical()"> Technical Approval</a></td>';
@@ -618,8 +616,8 @@ function fetchrfqcomprative() {
 
                         if (flag3 == 'T') {
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
-                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
+                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") +"</td>";
+                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") +"</td>";
 
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
 
@@ -1541,7 +1539,7 @@ function fnFWDeRFQ() {
     var Approvers = {
         "ApproverType": "P",
         "FromUserId": sessionStorage.getItem('UserID'),
-        "Remarks": $('#txtfwdToCommApproverrem').val(),
+        "Remarks": $('#txtbidspecification').val(),
         "RFQID": parseInt(RFQID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Forward",

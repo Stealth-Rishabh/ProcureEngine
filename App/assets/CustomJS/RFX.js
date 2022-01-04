@@ -386,11 +386,12 @@ function fileUploader(RFXID,fileObj) {
 
 
 function fetchRFXDetails() {
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced ='', _selectedCat=new Array();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('CurrentRFXID') + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('CurrentRFXID') ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -399,27 +400,26 @@ function fetchRFXDetails() {
         success: function (BidData) {
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
-           
-            jQuery('#txtRFXSubject').val(BidData[0].RFXMaster[0].RFXSubject)
-            jQuery('#txtRFXdeadline').val(BidData[0].RFXMaster[0].RFXDeadline)
-            jQuery('#txtRFXdescription').val(BidData[0].RFXMaster[0].RFXDescription)
-            jQuery('#txtattachdescription').val(BidData[0].RFXMaster[0].RFXAttachmentDescription)
-            jQuery('#txtReferenceDetails').val(BidData[0].RFXMaster[0].RFXReference)
+            jQuery('#txtRFXSubject').val(BidData[0].rfxMaster[0].rfxSubject)
+            jQuery('#txtRFXdeadline').val(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#txtRFXdescription').val(BidData[0].rfxMaster[0].rfxDescription)
+            jQuery('#txtattachdescription').val(BidData[0].rfxMaster[0].rfxAttachmentDescription)
+            jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
             $("#cancelBidBtn").show();
-            jQuery('#attach-file').attr('href', 'PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced).html(BidData[0].RFXMaster[0].RFXAttachment)
+            jQuery('#attach-file').attr('href', 'PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced).html(BidData[0].rfxMaster[0].rfxAttachment)
             
-            if (BidData[0].RFXAttachment.length > 0) {
+            if (BidData[0].rfxAttachment.length > 0) {
                 $("#tblAttachmentsElem").empty();
-                for (var i = 0; i < BidData[0].RFXAttachment.length; i++) {
-                    replaced = BidData[0].RFXAttachment[i].RFXAttachment.replace(/\s/g, "%20")
+                for (var i = 0; i < BidData[0].rfxAttachment.length; i++) {
+                    replaced = BidData[0].rfxAttachment[i].rfxAttachment.replace(/\s/g, "%20")
                     $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
                         '<label class="control-label col-md-3">Attachment</label>' +
                         '<div class="col-md-4">' +
-                        '<input type="text" class="form-control" placeholder="Attachment Description" tabindex="5" name="txtattachdescription" autocomplete="off" value=' + BidData[0].RFXAttachment[i].RFXAttachmentDescription.replace(/\s/g, "&nbsp;") + ' />' +
+                        '<input type="text" class="form-control" placeholder="Attachment Description" tabindex="5" name="txtattachdescription" autocomplete="off" value=' + BidData[0].rfxAttachment[i].rfxAttachmentDescription.replace(/\s/g, "&nbsp;") + ' />' +
                         '</div>' +
                         '<div class="col-md-3">' +
                         '<input type="file" class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-                        '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' href=PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced + ' style="text-decoration: none !important;">' + BidData[0].RFXAttachment[i].RFXAttachment + '</a></span>' +
+                        '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' href=PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced + ' style="text-decoration: none !important;">' + BidData[0].rfxAttachment[i].rfxAttachment + '</a></span>' +
                        
                         '</div>' +
                         '<div class="col-md-2" style=" padding-left:0px !important; ">' +
@@ -430,9 +430,9 @@ function fetchRFXDetails() {
                 }
             }
 
-            if (BidData[0].RFXProductCat.length > 0) {
-                for (var i = 0; i < BidData[0].RFXProductCat.length; i++) {
-                    _selectedCat.push(BidData[0].RFXProductCat[i].CategoryID);
+            if (BidData[0].rfxProductCat.length > 0) {
+                for (var i = 0; i < BidData[0].rfxProductCat.length; i++) {
+                    _selectedCat.push(BidData[0].rfxProductCat[i].categoryID);
                 }
 
                 setTimeout(function () {
@@ -458,40 +458,37 @@ function fetchRFXDetails() {
 }
 
 function fetchRFXQuestions(applicableFor) {
+ 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var seqCount = 1;
+   
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
-
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RFIFetchQuestion/?applicableFor=" + applicableFor + "&customerId=" + sessionStorage.getItem('CustomerID'),
+        
+        url: sessionStorage.getItem("APIPath") + "VQMaster/RFIFetchQuestion/?applicableFor=" + applicableFor + "&customerId=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
-
         dataType: "json",
-
         success: function(data) {
-
             jQuery("#accordion1").empty();
-           
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
-                if (QuestionCategoryID != data[i].QuestionCategoryID) {
-                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].QuestionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].QuestionCategoryID + '\',\'' + data[i].QuestionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id=tblRFXquestions' + i + '><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Questions</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
-                    QuestionCategoryID = data[i].QuestionCategoryID;
+                if (QuestionCategoryID != data[i].questionCategoryID) {
+                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].questionCategoryID + '\',\'' + data[i].questionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id=tblRFXquestions' + i + '><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Questions</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
+                    QuestionCategoryID = data[i].questionCategoryID;
                     seqCount = seqCount + 1;
                     for (var j = 0; j < data.length; j++) {
-                        if (QuestionCategoryID == data[j].QuestionCategoryID && data[j].QuestionID > 0) {
-                            $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].QuestionID + '></td><td>' + data[j].QuestionDescription + '</td><td>' + data[j].QuestionSubCategory + '</td><td>' + data[j].Mandatory + '</td><td>' + data[j].Attachement + '</td></tr>');
+                        if (QuestionCategoryID == data[j].questionCategoryID && data[j].questionID > 0) {
+                            $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + '></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].Mandatory + '</td><td>' + data[j].Attachement + '</td></tr>');
                         }
                     }
 
                 }
 
 
-                if (data[i].QuestionSubCategory == '') {
+                if (data[i].questionSubCategory == '') {
                     $('#tblRFXquestions' + i).addClass('display-none');
                     $('#searchbox' + i).addClass('display-none');
                 }
@@ -528,21 +525,22 @@ function fetchRFXDetailsForTab2(applicableFor) {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
+          
             jQuery("#accordion1").empty();
             var QuestionsubCategoryID = '';
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
-                if (QuestionCategoryID != data[i].QuestionCategoryID) {
-                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].QuestionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].QuestionCategoryID + '\',\'' + data[i].QuestionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id="tblRFXquestions' + i + '"><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Question</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
-                    QuestionCategoryID = data[i].QuestionCategoryID;
+                if (QuestionCategoryID != data[i].questionCategoryID) {
+                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].QuestionCategoryID + '\',\'' + data[i].QuestionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id="tblRFXquestions' + i + '"><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Question</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
+                    QuestionCategoryID = data[i].questionCategoryID;
                     seqCount = seqCount + 1;
                     for (var j = 0; j < data.length; j++) {
-                        if (QuestionCategoryID == data[j].QuestionCategoryID && data[j].QuestionID !== 0) {
+                        if (QuestionCategoryID == data[j].questionCategoryID && data[j].questionID !== 0) {
                             if (data[j].Flag == 'Checked') {
-                                $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].QuestionID + ' checked></td><td>' + data[j].QuestionDescription + '</td><td>' + data[j].QuestionSubCategory + '</td><td>' + data[j].Mandatory + '</td><td>' + data[j].Attachement + '</td></tr>');
+                                $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + ' checked></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].mandatory + '</td><td>' + data[j].attachement + '</td></tr>');
                             } else {
-                                $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].QuestionID + '></td><td>' + data[j].QuestionDescription + '</td><td>' + data[j].QuestionSubCategory + '</td><td>' + data[j].Mandatory + '</td><td>' + data[j].Attachement + '</td></tr>');
+                                $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + '></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].mandatory + '</td><td>' + data[j].attachement + '</td></tr>');
 
                             }
                         }
@@ -551,7 +549,7 @@ function fetchRFXDetailsForTab2(applicableFor) {
                 }
 
 
-                if (data[i].QuestionSubCategory == '') {
+                if (data[i].questionSubCategory == '') {
                     $('#tblRFXquestions' + i).addClass('display-none');
                     $('#searchbox' + i).addClass('display-none');
                 }
@@ -582,14 +580,11 @@ function RFXConfigureTab1() {
         AttachementFileName = $.trim(jQuery('#attach-file').html());
     } else {
         
-        AttachementFileName = 'Vickrant'//jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
+        AttachementFileName = ''//jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
     }
 
     var _categories = $("#ddlCategoryMultiple option:selected").val();
-
-
-    
-        queryCategories += " insert into RFXProductCat(RFXID,CategoryID)values(" +
+     queryCategories += " insert into PE.RFXProductCat(RFXID,CategoryID)values(" +
             '##RFXID##' + "," + _categories + ")";
     
 
@@ -603,7 +598,7 @@ function RFXConfigureTab1() {
         }
 
         if (AttachementFileName != '') {
-            queryAttachment += " insert into RFXAttachment(RFXID,RFXAttachment,RFXAttachmentDescription)values(" +
+            queryAttachment += " insert into PE.RFXAttachment(RFXID,RFXAttachment,RFXAttachmentDescription)values(" +
             '##RFXID##' + ",'" + AttachementFileName + "','" + $.trim($(this).find('input[type=text]').val()) + "')";
         }
         
@@ -612,8 +607,8 @@ function RFXConfigureTab1() {
 
     var Tab1Data = {
 
-        "RFXID": sessionStorage.getItem('CurrentRFXID'),
-        "CustomerID": sessionStorage.getItem('CustomerID'),
+        "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFXSubject": jQuery("#txtRFXSubject").val(),
         "RFXDeadline": jQuery("#txtRFXdeadline").val(),
         "RFXDescription": jQuery("#txtRFXdescription").val(),
@@ -625,7 +620,7 @@ function RFXConfigureTab1() {
         "RFXReference": $("#txtReferenceDetails").val()
 
     };
-    //alert(JSON.stringify(Tab1Data))
+   
     jQuery.ajax({
 
         type: "POST",
@@ -642,7 +637,8 @@ function RFXConfigureTab1() {
         dataType: "json",
 
         success: function (data) {
-            sessionStorage.setItem('CurrentRFXID', data[0].RFXID);
+           
+            sessionStorage.setItem('CurrentRFXID', data[0].rfxid);
             $("#tblAttachmentsElem> li").each(function (index) {                 
                 if ($(this).find('input[type=file]').val() != '') {
                    
@@ -688,7 +684,7 @@ function ValidateQuestions() {
 }
 
 function RFXConfigureTab2() {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     var UsID = sessionStorage.getItem('UserID')
@@ -702,21 +698,19 @@ function RFXConfigureTab2() {
     });
 
     if (InsertQuery != '') {
-        InsertQuery = 'Insert into RFXQuestionMapping(RFXId,CustomerID,QuestionID,MappedBy,MappedOn)' + InsertQuery;
+        InsertQuery = 'Insert into PE.RFXQuestionMapping(RFXId,CustomerID,QuestionID,MappedBy,MappedOn)' + InsertQuery;
         InsertQuery = InsertQuery.substring(0, InsertQuery.length - 11);
     }
    
-    
-
     var Tab2Data = {
 
-        "RFXID": sessionStorage.getItem('CurrentRFXID'),
-        "CustomerID": sessionStorage.getItem('CustomerID'),        
+        "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
+        "CustomerID": parseInt( sessionStorage.getItem('CustomerID')),
         "UserId": sessionStorage.getItem('UserID'),
         "RFXQuestionMapping": InsertQuery
 
     };
-    //alert(JSON.stringify(Tab2Data))
+    console.log(JSON.stringify(Tab2Data))
     jQuery.ajax({
 
         type: "POST",
@@ -1059,9 +1053,9 @@ function FormValidate() {
 }
 
 function setCategory(CategoryID,CategoryDesc) {
-    $('#ddlquestCategory').val(CategoryDesc);
-    $('#hdnquestCatID').val(CategoryID);
-    $('#txtQuestCategory').val(CategoryDesc)
+    $('#ddlquestCategory').val(categoryDesc);
+    $('#hdnquestCatID').val(categoryID);
+    $('#txtQuestCategory').val(categoryDesc)
     fetchQuestionSubCategory(CategoryID)
     fetchqsubcategoryForAuto(CategoryID)
 }
@@ -1117,7 +1111,7 @@ function fetchQuestionSubCategory(questcategoryID) {
                     } else {
                         stats = 'Inactive'
                     }
-                    $('#tblsubcategory').append('<tr id=rowidID' + i + '><td class="hide">' + data[i].QuestionSubCategoryID + '</td><td class="hide">' + data[i].QuestionSubCategory + '</td><td class="hide">' + data[i].isActive + '</td><td>' + $('#ddlquestCategory').val() + '</td><td>' + data[i].QuestionSubCategory + '</td><td>' + stats + '</td><td><a href=javascript:; class="btn btn-xs blue" onclick="editSubcategory(\'rowidID' + i + '\')"><i class="fa fa-pencil"></i> Edit</a></td></tr>')
+                    $('#tblsubcategory').append('<tr id=rowidID' + i + '><td class="hide">' + data[i].questionSubCategoryID + '</td><td class="hide">' + data[i].questionSubCategory + '</td><td class="hide">' + data[i].isActive + '</td><td>' + $('#ddlquestCategory').val() + '</td><td>' + data[i].QuestionSubCategory + '</td><td>' + stats + '</td><td><a href=javascript:; class="btn btn-xs blue" onclick="editSubcategory(\'rowidID' + i + '\')"><i class="fa fa-pencil"></i> Edit</a></td></tr>')
 
                 }
             } else {
@@ -1635,7 +1629,7 @@ function fetchCategorymaster() {
             var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].CategoryID + ">" + data[i].CategoryName + "</option>");
+                    jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
                 jQuery("#ddlCategoryMultiple").trigger("change");
             }
@@ -1756,7 +1750,7 @@ function getCategoryWiseVendors(categoryID) {
 
         contentType: "application/json; charset=utf-8",
 
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?ByBidTypeID=7&CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
 
@@ -1767,8 +1761,8 @@ function getCategoryWiseVendors(categoryID) {
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
-                vName = data[i].VendorName;
-                var str = "<tr><td class='hide'>" + data[i].VendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].VendorID + "'\,\'" + data[i].emailid + "'\)\"; id=\"chkvender" + data[i].VendorID + "\" value=" + data[i].VendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].VendorName + " </td><td class='hide'>"+data[i].emailid+"</td></tr>";
+                vName = data[i].vendorName;
+                var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].emailid + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td><td class='hide'>"+data[i].emailid+"</td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
@@ -1970,7 +1964,7 @@ function RFXSubmitTempVendors() {
     
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function(index) {
-        InsertQuery = InsertQuery + " Insert into RFQRFIVendorDetails(RFQRFIId,EmailId,VendorId,LinkURL,DeadlineDT,RFIRFQStatus,EntryDT,Version) values('RFI-" + sessionStorage.getItem('CurrentRFXID') + "','" + $.trim($(this).find('td:eq(2)').html()) + "'," + $.trim($(this).find('td:eq(0)').html()) + ",'RFXVendor.html?RFXID=" + sessionStorage.getItem('CurrentRFXID') + "',CONVERT(DATE,'" + $("#txtRFXdeadline").val() + "',103),'N',getDate(),0) ";
+        InsertQuery = InsertQuery + " Insert into PE.RFQRFIVendorDetails(RFQRFIId,EmailId,VendorId,LinkURL,DeadlineDT,RFIRFQStatus,EntryDT,Version) values('RFI-" + sessionStorage.getItem('CurrentRFXID') + "','" + $.trim($(this).find('td:eq(2)').html()) + "'," + $.trim($(this).find('td:eq(0)').html()) + ",'RFXVendor.html?RFXID=" + sessionStorage.getItem('CurrentRFXID') + "',CONVERT(DATE,'" + $("#txtRFXdeadline").val() + "',103),'N',getDate(),0) ";
     });
 
     if (InsertQuery != '') {
@@ -1979,13 +1973,12 @@ function RFXSubmitTempVendors() {
     else {
         InsertQuery = "Print 1";
     }
-    
+    debugger;
     var TempVendors = {
         "VendorDetails": InsertQuery,
-        "RFXID": sessionStorage.getItem('CurrentRFXID')
-
+        "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID'))
     };
-    //alert(JSON.stringify(TempVendors))
+   
 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RFXMaster/ConfigureRFXTab3",
@@ -2028,9 +2021,9 @@ function RFXInsUpdConfigurationSubmit() {
     if (form.valid() == true) {
         
         var TempCompany = {
-            'RFXID': sessionStorage.getItem('CurrentRFXID'),
+            'RFXID': parseInt(sessionStorage.getItem('CurrentRFXID')),
             'SubjectRFX': $("#txtRFXSubject").val(),
-            'CustomerId': sessionStorage.getItem('CustomerID'),
+            'CustomerId': parseInt(sessionStorage.getItem('CustomerID')),
             'RFXDescription': $('#txtRFXdescription').val(),
             'RFXDeadline': $('#txtRFXdeadline').val(),
             'UserId': sessionStorage.getItem('UserID')

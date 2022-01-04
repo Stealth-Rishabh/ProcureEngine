@@ -209,7 +209,7 @@ function fetchBidSummaryVendorScrap() {
                         var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                         var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
                         var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                        jQuery("#tblParticipantsVender").append("<tr><td>"+(i+1)+"</td><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice"+i+">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td>" + thousands_separators(data[i].minimumIncreament) + " " + decreamentOn + "</td><td id=lastQuote" + i + ">" + thousands_separators(MqQuote) + "</td><td id=H1Price" + i + ">" + thousands_separators(data[i].h1Price) +"</td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id='btnsubmit'  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
+                        jQuery("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td>" + thousands_separators(data[i].minimumIncreament) + " " + decreamentOn + "</td><td id=lastQuote" + i + ">" + thousands_separators(MqQuote) + "</td><td id=H1Price" + i + ">" + thousands_separators(data[i].h1Price) + "</td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id=AllItembtn"+i+"  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
 
                         $('#spanamount' + i).addClass('hide spanclass');
                      
@@ -227,9 +227,20 @@ function fetchBidSummaryVendorScrap() {
                         if (data[i].showStartPrice == "N") {
                             $("#tdBidStartPrice" + i).html('Not Disclosed');
                         }
+                        
+                        if (data[i].itemBlockedRemarks != '') {
+                            // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
+                            $('#txtquote' + i).val("Restricted")
+                            $('#txtquote' + i).attr('disabled', 'disabled')
+                            $('#AllItembtn' + i).attr('disabled', 'disabled')
+                        }
+                        else {
+                            $('#txtquote' + i).val('')
+                            $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
+                        } 
                         count = count + 1;
                     }
-                    
+                   
                 } else {
                     jQuery("#tblParticipantsVender").append("<tr><td>Nothing Participation</td></tr>")
                 }
@@ -315,6 +326,17 @@ function fetchBidSummaryVendorScrapDutch() {
 
                                     jQuery('#lblstatus' + i).css('color', 'Red');
                                 }
+                                //if (data[i].itemBlockedRemarks != '') {
+                                   
+                                //   // $('#txtquote' + i).val("Restricted")
+                                //   // $('#txtquote' + i).attr('disabled', 'disabled')
+                                //    $('#btnsubmit').attr('disabled', 'disabled')
+                                //    $('#btnsubmit').text('Restricted')
+                                //}
+                                //else {
+                                //    //$('#txtquote' + i).val('')
+                                //    $('#btnsubmit').removeAttr('disabled', 'disabled')
+                                //}
                                 count = count + 1;
                             }
                         }
@@ -573,29 +595,29 @@ function InsUpdQuoteScrap(rowID) {
             valuejap = parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
         }
         else {
-            value = parseFloat(removeThousandSeperator($('#txtquote' + i).val())) - parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text()))
+            value = (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) - parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text()))).toFixed(2)
             //valuejap = parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
-            valuejap = parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat((parseFloat(Amount)))
+            valuejap = (parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat((parseFloat(Amount)))).toFixed(2)
         }
         
     }
     else {
         if (jQuery("#lastQuote" + i).text() == '') {
-            value = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())));
+            value = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())))).toFixed(2);
             v = parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
-            valuejap = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())));
+            valuejap = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())))).toFixed(2);
             vjap = parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
         }
         else {
-            value = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text())));
-            v = parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text()))+value
-            valuejap = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())));
-            vjap = parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat(removeThousandSeperator($('#txtquote' + i).val()));
+            value = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text())))).toFixed(2);
+            v = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text())) + value).toFixed(2)
+            valuejap = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())))).toFixed(2);
+            vjap = (parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat(removeThousandSeperator($('#txtquote' + i).val()))).toFixed(2);
         }
        
     }
    
-    var valdiff = parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))
+    var valdiff = (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))).toFixed(2)
     if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount is required in number only')

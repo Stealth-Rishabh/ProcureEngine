@@ -9,6 +9,19 @@ $('.MaxLength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+$(".thousandsep").inputmask({
+    alias: "decimal",
+    rightAlign: false,
+    groupSeparator: ",",
+    radixPoint: ".",
+    autoGroup: true,
+    integerDigits: 40,
+    digitsOptional: true,
+    allowPlus: false,
+    allowMinus: false,
+    'removeMaskOnSubmit': true
+
+});
 CommonGenricAjax = function (url, type, data, async, token) {
     return $.ajax({
         url: apiURL + url,

@@ -69,10 +69,10 @@ $('.button-submit').click(function () {
 
 function fetchRFIDetails() {
     var attachment = '', _txtCategories = [];
-    //alert(sessionStorage.getItem("APIPath") + "RFIMaster/fetchRFIPendingDetails/?UserID=" + sessionStorage.getItem('UserID') + "&RFIID=" + sessionStorage.getItem('CurrentRFIID'))
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/fetchRFIPendingDetails/?UserID=" + sessionStorage.getItem('UserID') + "&RFIID=" + sessionStorage.getItem('CurrentRFIID') ,
+        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + sessionStorage.getItem('UserID') + "&VQID=" + sessionStorage.getItem('CurrentVQID') ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -80,36 +80,36 @@ function fetchRFIDetails() {
         dataType: "json",
         success: function (BidData) {
            
-            attachment = BidData[0].rfiMaster[0].rfiAttachment.replace(/%20/g, " ");
+            attachment = BidData[0].vqMaster[0].vqAttachment.replace(/%20/g, " ");
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
-            jQuery('#lbl_configuredByVQ').html("VQ Configured By: " + BidData[0].rfiMaster[0].rfiConfiguredName);
+            jQuery('#lbl_configuredByVQ').html("VQ Configured By: " + BidData[0].vqMaster[0].vqConfiguredName);
            
-            jQuery('#txtrfiSubject').html(BidData[0].rfiMaster[0].rfiSubject)
-            jQuery('#txtrfidescription').html(BidData[0].rfiMaster[0].rfiDescription)
-            jQuery('#txtrfideadline').html(BidData[0].rfiMaster[0].rfiDeadline)
+            jQuery('#txtrfiSubject').html(BidData[0].vqMaster[0].vqSubject)
+            jQuery('#txtrfidescription').html(BidData[0].vqMaster[0].vqDescription)
+            jQuery('#txtrfideadline').html(BidData[0].vqMaster[0].vqDeadline)
             
-            if (BidData[0].rfiAttachment.length > 0) {
+            if (BidData[0].vqAttachment.length > 0) {
                 $("#tblAttachmentsElemPrev").empty();
-                for (var i = 0; i < BidData[0].rfiAttachment.length; i++) {
-                    attachment = BidData[0].rfiAttachment[i].rfiAttachment.replace(/\s/g, "%20")
-                    $("#tblAttachmentsElemPrev").append('<li><div class="col-md-8" style=padding-left:0px;>' +
-                        '<p class="form-control-static">' + BidData[0].rfiAttachment[i].rfiAttachmentDescription.replace(/\s/g, "&nbsp;") + '</p>' +
+                for (var i = 0; i < BidData[0].vqAttachment.length; i++) {
+                    attachment = BidData[0].vqAttachment[i].vqAttachment.replace(/\s/g, "%20")
+                    $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
+                        '<p class="form-control-static">' + BidData[0].vqAttachment[i].vqAttachmentDescription.replace(/\s/g, "&nbsp;") + '</p>' +
                         '</div>' +
-                        '<div class="col-md-4">' +
-                            '<p class="form-control-static"><a href=PortalDocs/RFI/' + sessionStorage.getItem("CurrentRFIID") + "/" + attachment + ' style="text-decoration: none !important;">' + attachment + '</a></p>' +
+                        '<div class="col-md-6">' +
+                            '<p class="form-control-static"><a href=PortalDocs/RFI/' + sessionStorage.getItem("CurrentVQID") + "/" + attachment + ' style="text-decoration: none !important;">' + attachment + '</a></p>' +
                         '</div></li>');
                 }
             }
 
 
 
-            if (BidData[0].rfiProductCat.length > 0) {
-                for (var i = 0; i < BidData[0].rfiProductCat.length; i++) {
-                    _txtCategories += BidData[0].rfiProductCat[i].categoryName + ', ';
+            if (BidData[0].vqProductCat.length > 0) {
+                for (var i = 0; i < BidData[0].vqProductCat.length; i++) {
+                    _txtCategories += BidData[0].vqProductCat[i].categoryName + ', ';
                 }
                 _txtCategories = _txtCategories.substring(0, _txtCategories.length - 2);
-                jQuery("#productCatPrev").html(_txtCategories);
+               jQuery("#productCatPrev").html(_txtCategories);
             }
         },
         error: function (xhr, status, error) {
@@ -140,7 +140,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
         contentType: "application/json; charset=utf-8",
 
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RFIFetchQuestionForVendors/?GetMsz=" + QuestionFor + "&Number=" + sessionStorage.getItem('CurrentRFIID') + "&VendorID=" + sessionStorage.getItem('VendorId'),
+        url: sessionStorage.getItem("APIPath") + "VQMaster/VQFetchQuestionForVendors/?GetMsz=" + QuestionFor + "&Number=" + sessionStorage.getItem('CurrentVQID') + "&VendorID=" + sessionStorage.getItem('VendorId'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
 
@@ -176,7 +176,7 @@ function fetchQuestionsForVendors(QuestionFor) {
                                     $("#tblcompanyInfo").append('<thead id=headID' + j + '><tr style="background-color: #DDD !important;"><th>' + data[j].questionDescription + '</th></tr></thead>');
                                     if (data[j].mandatory == "Y") {
                                         if (data[j].attachement == "Y") {
-                                            $("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach1 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            $("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach1 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></td></tr>');
@@ -185,7 +185,7 @@ function fetchQuestionsForVendors(QuestionFor) {
                                     } else {
 
                                         if (data[j].attachement == "Y") {
-                                            jQuery("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach1 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach1 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblcompanyInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].QuestionID + ' /><div class="col-md-9"><p class="form-control-static" id=textaraID' + j + ' name=textaraID' + j + '></p></div></td></tr>');
@@ -224,7 +224,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     if (data[j].mandatory == "Y") {
                                         if (data[j].attachement == "Y") {
-                                            jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div><div class="col-md-3"></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach2 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div><div class="col-md-3"></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach2 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div></td></tr>');
@@ -232,7 +232,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     } else {
                                         if (data[j].attachement == "Y") {
-                                            jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach2 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach2 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblfinanceInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=FtextaraID' + j + ' name=FtextaraID' + j + '></p></div></td></tr>');
@@ -270,7 +270,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     if (data[i].mandatory == "Y") {
                                         if (data[i].attachement == "Y") {
-                                            jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach3 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach3 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></td></tr>');
@@ -278,7 +278,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     } else {
                                         if (data[i].attachement == "Y") {
-                                            jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach3 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach3 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tblcompCapableInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=CtextaraID' + j + ' name=CtextaraID' + j + '></p></div></td></tr>');
@@ -313,7 +313,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     if (data[j].mandatory == "Y") {
                                         if (data[j].attachement == "Y") {
-                                            jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach4 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach4 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></td></tr>');
@@ -321,7 +321,7 @@ function fetchQuestionsForVendors(QuestionFor) {
 
                                     } else {
                                         if (data[j].attachement == "Y") {
-                                            jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach4 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
+                                            jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></div><div class="col-md-3"><span class="help-block"><a href="PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attach4 + '" style="text-decoration: none !important;">' + data[j].attachments + '</a></span></div></td></tr>');
 
                                         } else {
                                             jQuery("#tbltechnicalInfo > #headID" + j + "").append('<tr><td><input class="display-none" type="checkbox" value=' + data[j].questionID + ' /><div class="col-md-9"><p class="form-control-static" id=TtextaraID' + j + ' name=TtextaraID' + j + '></p></div></td></tr>');
@@ -361,7 +361,7 @@ function RFIFetchCompanyHeader(QuestionFor) {
 
         contentType: "application/json; charset=utf-8",
 
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RFIFetchCompanyInfo_VR/?IsSuccess=" + QuestionFor + "&RFIID=" + sessionStorage.getItem('CurrentRFIID') + "&VendorId=" + sessionStorage.getItem('VendorId'),
+        url: sessionStorage.getItem("APIPath") + "VQMaster/VQFetchCompanyInfo_VR/?IsSuccess=" + QuestionFor + "&VQID=" + sessionStorage.getItem('CurrentVQID') + "&VendorId=" + sessionStorage.getItem('VendorId'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
 
@@ -418,7 +418,7 @@ function RFIFetchFinanceHeader() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RFIFetchFinanceInfo_VR/?RFIID=" + sessionStorage.getItem('CurrentRFIID') + "&VendorId=" + sessionStorage.getItem('VendorId'),
+        url: sessionStorage.getItem("APIPath") + "VQMaster/VQFetchFinanceInfo_VR/?VQID=" + sessionStorage.getItem('CurrentVQID') + "&VendorId=" + sessionStorage.getItem('VendorId'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -444,8 +444,8 @@ function RFIFetchFinanceHeader() {
                     if (data[0].isPubliclyListed === 'Y') {                        
                         attachment1 = data[0].attachment1.replace(/%20/g, " ");
                         attachment2 = data[0].attachment2.replace(/%20/g, " ");
-                        $('#attach1').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attachment1 + '').html(data[0].attachment1);
-                        $('#attach2').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentRFIID') + '/' + sessionStorage.getItem('VendorId') + '/' + attachment2 + '').html(data[0].attachment2);
+                        $('#attach1').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attachment1 + '').html(data[0].attachment1);
+                        $('#attach2').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + sessionStorage.getItem('VendorId') + '/' + attachment2 + '').html(data[0].attachment2);
                         $('#attach-div').removeClass('display-none');
                     } else {
                         
@@ -505,7 +505,7 @@ function ApproveRFI(For) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var data = {
-        "RFIID": parseInt(sessionStorage.getItem('CurrentRFIID')),
+        "VQID": parseInt(sessionStorage.getItem('CurrentVQID')),
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         'UserId':sessionStorage.getItem('UserID'),
         'For': For,
@@ -515,7 +515,7 @@ function ApproveRFI(For) {
     }
     //alert(JSON.stringify(data))
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/RFIApproval_Reject",
+        url: sessionStorage.getItem("APIPath") + "VQMaster/VQApproval_Reject",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
         type: "POST",
@@ -526,7 +526,7 @@ function ApproveRFI(For) {
         contentType: "application/json",
         success: function (data) {
             
-                bootbox.alert("VQ Submited.", function () {
+                bootbox.alert("VQ Submitted.", function () {
                     window.location = sessionStorage.getItem("HomePage")
                     return false;
                 });

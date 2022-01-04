@@ -1,5 +1,6 @@
 ﻿var BidID = "";
 var ButtonType = '';
+var isPPCSubmit = 'N';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -348,7 +349,60 @@ var FormValidation = function () {
             }
 
         });
-    } 
+    }
+    var validateformAddApprover = function () {
+        var formApprover = $('#frmApprover');
+        formApprover.validate({
+
+            doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block help-block-error', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            rules: {
+               
+            },
+            
+            invalidHandler: function (event, validator) {
+            },
+
+            highlight: function (element) {
+                $(element).closest('.col-md-7').addClass('has-error');
+
+            },
+
+            unhighlight: function (element) {
+                $(element).closest('.col-md-7').removeClass('has-error');
+
+            },
+            errorPlacement: function (error, element) {
+
+            },
+            success: function (label) {
+            },
+            submitHandler: function (form) {
+                if (sessionStorage.getItem('hdnBidApproverID') != "0" && jQuery("#txtApproverBid").val() != "") {
+
+                    $('.alert-danger').show();
+                    $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    return false;
+                }
+                else if ($('#tblBidapprovers >tbody >tr').length == 0) {
+                    $('.alert-danger').show();
+                    $('#spandangerapp').html('Please Map Approver.');
+                    $('.alert-danger').fadeOut(5000);
+                    return false;
+
+                }
+                else {
+                    MapBidapprover();
+                }
+                
+            }
+
+        });
+    }
     var handleWysihtml5 = function () {
         if (!jQuery().wysihtml5) {
             return;
@@ -369,6 +423,7 @@ var FormValidation = function () {
             validateformCancelBid();
             validateformPPCForm();
             validateformPPCAPPForm();
+            validateformAddApprover();
         }
     };
 }();
@@ -487,7 +542,6 @@ function frmAzurePPCForm() {
 
                     }
                 });
-
             }
             else if (data == '2') {
                 $('#spansuccess1').html("Data Updated Successfull...");
@@ -549,6 +603,7 @@ function fetchAzPPcFormDetails() {
         success: function (data) {
 
             if (data[0].azureDetails.length > 0) {
+                isPPCSubmit = 'Y';
                 $('#tblvendors').empty();
                 //$('#tblvendors > thead').empty();
                 jQuery('#btnsubmit').text("Update");
@@ -858,81 +913,6 @@ function fnRemoveAttachment(POID, deletionfor) {
         }
     })
 }
-
-var allUsers
-function fetchRegisterUser() {
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-
-            if (data.length > 0) {
-                allUsers = data;
-            }
-            else {
-                allUsers = '';
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-
-
-    });
-}
-
-jQuery("#txtApprover").keyup(function () {
-    $('#hdnApproverID').val('0')
-
-});
-
-jQuery("#txtApprover").typeahead({
-    source: function (query, process) {
-        var data = allUsers;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.userName] = username;
-            usernames.push(username.userName);
-        });
-
-        process(usernames);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-        if (map[item].userID != "0") {
-            sessionStorage.setItem('hdnApproverid', map[item].userID);
-            $('#hdnApproverID').val(map[item].userID)
-            $('#hdnAppEmailIDID').val(map[item].emailID)
-
-        }
-        else {
-            gritternotification('Please select Approver  properly!!!');
-        }
-
-        return item;
-    }
-
-});
-
 var rowApp = 0;
 function addApprovers() {
     var status = "true"; var Apptype = ''
@@ -1073,11 +1053,9 @@ function MapApprover() {
 }
 
  function fnOpenPopupApprovers() {
-    fetchRegisterUser();
+    fetchRegisterUser('PPC');
     fnGetApprovers();
 }
-
-
 $("#MapppcApprover").on("hidden.bs.modal", function () {
     jQuery("#txtApprover").val('')
     $('#hdnApproverID').val('0')
@@ -1087,34 +1065,34 @@ function fnGetApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID,
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (BidData) {
+        success: function (data) {
             var str = "";
            
             jQuery("#tblapprovers").empty();
-            if (BidData[0].bidApproverDetails.length > 0) {
-                for (var i = 0; i < BidData[0].bidApproverDetails.length; i++) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
 
-                    if (BidData[0].bidApproverDetails[i].isApprover == "P") {
+                    if (data[i].isApprover == "P") {
                         rowApp = rowApp + 1;
                         if (rowApp == 1) {
                             jQuery('#tblapprovers').append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Role</th></thead><tbody>");
                         }
-                        str = "<tr id=trAppid" + rowApp + "><td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td>";
+                        str = "<tr id=trAppid" + rowApp + "><td class=hide>" + data[i].userID + "</td>";
                         str += '<td><button type="button" class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
-                        str += "<td>" + BidData[0].bidApproverDetails[i].userName + "</td>";
-                        str += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
-                        if (BidData[0].bidApproverDetails[i].isViewRights == "A") {
+                        str += "<td>" + data[i].approverName + "</td>";
+                        str += "<td>" + data[i].emailID + "</td>";
+                        if (data[i].isViewRights == "A") {
                             str += "<td>Approver</td>";
                         }
                         else {
                             str += "<td>Observer</td>";
                         }
-                        str += "<td class=hide>" + BidData[0].bidApproverDetails[i].isViewRights + "</td></tr>";
+                        str += "<td class=hide>" + data[i].isViewRights + "</td></tr>";
                         jQuery('#tblapprovers').append(str);
                     }
 
@@ -1149,3 +1127,4 @@ function fnGetApprovers() {
 
     })
 }
+

@@ -561,7 +561,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/RFIResponse.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VQResponse.js" type="text/javascript"></script>
 	
     <script>
         jQuery(document).ready(function () {
@@ -590,7 +590,7 @@
             });
             var param = getUrlVars()["param"];
             var decryptedstring = fndecrypt(param);
-            var _RFIID = getUrlVarsURL(decryptedstring)["RFIID"];
+            var _VQID = getUrlVarsURL(decryptedstring)["VQID"];
             var _VendorID = getUrlVarsURL(decryptedstring)["VendorID"];
             var _pageType = getUrlVarsURL(decryptedstring)["PageType"];
             var _finalStatus = getUrlVarsURL(decryptedstring)["FinalStatus"];
@@ -606,12 +606,13 @@
                 $("#spnFinalStatus").show().html("Status : "+_finalStatus);
             }
 
-            if (_RFIID == null){
-                sessionStorage.setItem('CurrentRFIID', 0)
+            if (_VQID == null){
+                sessionStorage.setItem('CurrentVQID', 0)
                 sessionStorage.setItem('VendorId', 0);
             }
-           else {
-                sessionStorage.setItem('CurrentRFIID', _RFIID)
+            else {
+              
+                sessionStorage.setItem('CurrentVQID', _VQID)
                 sessionStorage.setItem('VendorId', _VendorID)
 				fetchRFIDetails();
 				RFIFetchCompanyHeader('CompanyInfo')
@@ -628,12 +629,7 @@
 			Filltblfinancedetails()
 
         });
-        jQuery('#btnpush').click(function (e) {
-            jQuery('#approverList > option:selected').appendTo('#mapedapprover');
-        });
-        jQuery('#btnpull').click(function (e) {
-            jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
-        });
+        
 
     </script>
 	

@@ -238,7 +238,7 @@
                                                                 <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" name="txtattachdescription" autocomplete="off" readonly />
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <span class="help-block"><a id="attach-file" href="javascript:;" style="text-decoration: none !important;"></a></span>
+                                                                <span class="help-block"><a id="attach-file" href="javascript:;" style="text-decoration: none!important;"  onclick="DownloadFile(this)"></a></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -892,7 +892,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/RFIVendor.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VQVendor.js" type="text/javascript"></script>
     
     <script>
         jQuery(document).ready(function () {
@@ -921,15 +921,15 @@
             });
             var param = getUrlVars()["param"];
             var decryptedstring = fndecrypt(param);
-            var _RFIID = getUrlVarsURL(decryptedstring)["RFIID"];
+            var _VQID = getUrlVarsURL(decryptedstring)["VQID"];
             
-            if (_RFIID == null) {
-                sessionStorage.setItem('CurrentRFIID', 0)
+            if (_VQID == null) {
+                sessionStorage.setItem('CurrentVQID', 0)
 
             }
 
             else {
-                sessionStorage.setItem('CurrentRFIID', _RFIID)
+                sessionStorage.setItem('CurrentVQID', _VQID)
                 fetchRFIDetails();
                 RFIFetchCompanyHeader('CompanyInfo')
                 RFIFetchFinanceHeader();

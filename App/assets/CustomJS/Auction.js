@@ -381,7 +381,7 @@ function CancelBidDuringConfig() {
     else {
 
         _for = 'VQ';
-        _bidId = sessionStorage.getItem("CurrentRFIID");
+        _bidId = sessionStorage.getItem("CurrentVQID");
     }
     var Cancelbid = {
         "BidID": parseInt(_bidId),

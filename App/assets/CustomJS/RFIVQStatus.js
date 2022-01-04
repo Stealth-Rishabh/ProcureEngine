@@ -5,28 +5,25 @@ var rqid = getUrlVarsURL(decryptedstring)["RQID"];
 
 
 var rqtype;
-if (rqid.substring(0, 3) != 'RFQ' && rqid.substring(0, 3) != 'RFX') {
+if (rqid.substring(0, 3) != 'RFX') {
     rqtype = rqid.substring(0, 2);
 }
 else {
    rqtype = rqid.substring(0, 3);
 }
 
-var rfqRfiID;
-if (rqtype != 'RFQ' && rqtype != 'RFX') {
-    rfqRfiID = rqid.substring(3, 6);
+var vqRfiID;
+if (rqtype != 'RFX') {
+    vqRfiID = rqid.substring(3, 6);
    
 }
 else {
-    rfqRfiID = rqid.substring(4, 10);
+    vqRfiID = rqid.substring(4, 10);
     
 }
 
 function dynamicChanges() {
-    if (rqtype == 'RFQ') {
-        $('#portlet_caption').html('<i class="fa fa-reorder"></i> RFQ Invited Vendors');
-        $('#btn_cancl_rfirfq').html('Cancel RFQ');
-    } else if (rqtype == 'VQ') {
+     if (rqtype == 'VQ') {
         $('#portlet_caption').html('<i class="fa fa-reorder"></i> VQ Invited Vendors');
         $('#btn_cancl_rfirfq').html('Cancel VQ');
     } else if (rqtype == 'RFX') {
@@ -36,9 +33,9 @@ function dynamicChanges() {
 }
 
 function FetchInvitedVendorsForRFIRFQ() {
-    //alert(sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchInvitedVendorsForRFIRFQ/?RFIRFQID=" + $('#hddn_RQID_txt').val() + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'))
+   
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchInvitedVendorsForRFIRFQ/?RFIRFQID=" + $('#hddn_RQID_txt').val() + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchInvitedVendorsForRFIVQ/?RFIVQID=" + $('#hddn_RQID_txt').val() + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -49,27 +46,25 @@ function FetchInvitedVendorsForRFIRFQ() {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayTable').show();
                
-                if (rqtype == 'RFQ') {
-                    jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
-                } else if (rqtype == 'VQ') {
+                 if (rqtype == 'VQ') {
                     jQuery('#lbl_configuredBy').html("VQ Configured By: " + data[0].configuredByName);
                 } else if (rqtype == 'RFX') {
                     jQuery('#lbl_configuredBy').html("RFI Configured By: " + data[0].configuredByName);
                 }
-            
-                $('#rq_subject').html('<b>' + data[0].rQSubject + '</b>');
+               
+                $('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
                 $('#rq_deadline').html(data[0].deadline);
-                $('#rq_description').html(data[0].rQDescription);
+                $('#rq_description').html(data[0].rqDescription);
                 $("#deadlineModal").html(data[0].deadline);
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rQStatus + '</td><td>' + data[i].responseDTTime + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + data[i].responseDTTime + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
                 }
             }
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -83,32 +78,29 @@ function FetchInvitedVendorsForRFIRFQ() {
 function CancelRFIRFQ(MailPermit) {
     var Data = {
 
-        "RFIRFQID": $('#hddn_RQID_txt').val(),
+        "RFIVQID": $('#hddn_RQID_txt').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "MailParam": MailPermit,
-        "RQSubj": $('#rq_subject').html(),
+        "RQSubj": $('#rq_subject').text(),
         "RQDescription": $('#rq_description').html().replace(/'/g, " "),
         "RQDeadLin": $('#rq_deadline').html()
 
     };
-    //alert(JSON.stringify(Data))
-
+   // alert(JSON.stringify(Data))
+    //console.log(JSON.stringify(Data))
     jQuery.ajax({
 
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/cancelInvitedRFQRFI/",
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/cancelInvitedVQRFI/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         crossDomain: true,
 
         async: false,
-
         data: JSON.stringify(Data),
-
         dataType: "json",
-
-        success: function(data) {
+       success: function(data) {
         
         bootbox.alert(rqtype+" cancelled successfully.", function() {
         window.location = sessionStorage.getItem('HomePage');
@@ -239,43 +231,29 @@ function formValidation() {
 }
 
 function ExtendDuration() {
-    var BidData = '';
-    if (rqtype == 'RFQ') {
-        BidData = {
+   
+       var BidData = {
 
-            "RFQID": parseInt(rfqRfiID),
-            "RFIID": 0,
-            "RFQRFIID": $("#hddn_RQID_txt").val(),
+            "VQID": parseInt(vqRfiID),
+            "VQRFIID": $("#hddn_RQID_txt").val(),
             "ExtendedDate": $("#txtextendDate").val(),
             "ExtendedBy": sessionStorage.getItem('UserID')
+         }
 
-        }
-    } else {
-        BidData = {
-
-            "RFQID": 0,
-            "RFIID": parseInt(rfqRfiID),
-            "RFQRFIID": $("#hddn_RQID_txt").val(),
-            "ExtendedDate": $("#txtextendDate").val(),
-            "ExtendedBy": sessionStorage.getItem('UserID')
-
-        }
-    }
-
-  //  alert(JSON.stringify(BidData));
+   
 
     jQuery.ajax({
 
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/ExtendRFQRFIDeadline/",
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/ExtendVQRFIDeadline/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         crossDomain: true,
         async: false,
         data: JSON.stringify(BidData),
         dataType: "json",
         success: function(data) {
-            if (data == '1') {
+           
                 $("#extendDate").modal("hide");
                 $("#txtextendDate").val('');
                 bootbox.alert("Date extended successfully.", function() {
@@ -283,7 +261,7 @@ function ExtendDuration() {
                     
                 });
 
-            }
+           
         },
         error: function (xhr, status, error) {
 

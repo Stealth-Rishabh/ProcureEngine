@@ -347,6 +347,16 @@ function fetchBidSummaryVendorproduct() {
 
                             jQuery('#lblstatus' + i).css('color', 'Red');
                         }
+                        if (data[i].itemBlockedRemarks != '') {
+                            // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
+                            $('#txtquote' + i).val("Restricted")
+                            $('#txtquote' + i).attr('disabled', 'disabled')
+                            $('#itembtn' + i).attr('disabled', 'disabled')
+                        }
+                        else {
+                            $('#txtquote' + i).val('')
+                            $('#itembtn' + i).removeAttr('disabled', 'disabled')
+                        }
 
                         if (data[i].itemNoOfExtension > 0) {
                             jQuery('#itemleft' + i).css({

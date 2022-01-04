@@ -323,7 +323,12 @@ function fetchDashboardData() {
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbid" + i + "></i></div></div>";
                     str += "<div class='cont-col2'><div class='desc'>" + BidData[0].todayBidStatus[i].activityDescription + "&nbsp;&nbsp;";
-                    str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
+                    if (BidData[0].todayBidStatus[i].status == "C") {
+                        str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new query</span>";
+                    }
+                    else {
+                        str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
+                    }
                     str += "</div></div></div></div>";
                     str += "<div class='col2' style='width: 105px !important; margin-left:-105px !important;'>";
                     str += "<div class='date1'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";

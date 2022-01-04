@@ -156,7 +156,7 @@ var Login = function () {
     {
         url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl + "&MachineIP=1";
         }
-        alert(url);
+      
    
     jQuery.ajax({
         type: "GET",

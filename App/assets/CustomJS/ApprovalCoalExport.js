@@ -280,6 +280,60 @@ var FormValidation = function () {
             }
         });
     }
+    var validateformAddApprover = function () {
+        var formApprover = $('#frmApprover');
+        formApprover.validate({
+
+            doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block help-block-error', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            rules: {
+
+            },
+
+            invalidHandler: function (event, validator) {
+            },
+
+            highlight: function (element) {
+                $(element).closest('.col-md-7').addClass('has-error');
+
+            },
+
+            unhighlight: function (element) {
+                $(element).closest('.col-md-7').removeClass('has-error');
+
+            },
+            errorPlacement: function (error, element) {
+
+            },
+            success: function (label) {
+            },
+            submitHandler: function (form) {
+                
+                if (sessionStorage.getItem('hdnBidApproverID') != "0" && jQuery("#txtApproverBid").val() != "") {
+                 
+                    $('.alert-danger').show();
+                    $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    return false;
+                }
+                else if ($('#tblBidapprovers >tbody >tr').length == 0) {
+                    $('.alert-danger').show();
+                    $('#spandangerapp').html('Please Map Approver.');
+                    $('.alert-danger').fadeOut(5000);
+                    return false;
+
+                }
+                else {
+                    MapBidapprover();
+                }
+
+            }
+
+        });
+    }
     var handleWysihtml5 = function () {
         if (!jQuery().wysihtml5) {
             return;
@@ -298,6 +352,7 @@ var FormValidation = function () {
             validateAppsubmitData();
             validateformAwardedsubmit();
             validateformCancelBid();
+            validateformAddApprover();
         }
     };
 }();

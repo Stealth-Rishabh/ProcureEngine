@@ -1,16 +1,14 @@
 ﻿function fetchRFIRFQSubjectforReport(subjectFor) {
     if (subjectFor == 'RFI') {
-        $('#lblsbjct').html('Select VQ/RFI');
+        $('#lblsbjct').html('Select RFI');
     }
-    else if (subjectFor == 'RFQ') {
-        $('#lblsbjct').html('Select RFQ');
-    }
+   
     else {
-        $('#lblsbjct').html('Select VQ/RFI');
+        $('#lblsbjct').html('Select VQ');
     }
     
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFIRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchRfiVQSubjectForReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -40,8 +38,8 @@ jQuery("#txtrfirfqsubject").typeahead({
         map = {};
         var commonsubject = "";
         jQuery.each(jQuery.parseJSON(data), function (i, commonsubject) {
-            map[commonsubject.rfirfqSubject] = commonsubject;
-            Subject.push(commonsubject.rfirfqSubject);
+            map[commonsubject.rfivqSubject] = commonsubject;
+            Subject.push(commonsubject.rfivqSubject);
         });
 
         process(Subject);
@@ -50,9 +48,9 @@ jQuery("#txtrfirfqsubject").typeahead({
     minLength: 2,
     updater: function (item) {
 
-        if (map[item].rfiRfqID != '0') {
-
-            $('#hdnRfiRfqID').val(map[item].rfiRfqID);
+        if (map[item].rfivqid != '0') {
+          
+            $('#hdnRfiRfqID').val(map[item].rfivqid);
             FetchRfiRfqVendorsForReport()
          }
         else {
@@ -74,7 +72,7 @@ jQuery("#txtrfirfqsubject").keyup(function () {
 function FetchRfiRfqVendorsForReport() {
     
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchRfiRfqVendorsForReport/?SubjectFor=RFI&RFIRFQID=" + $('#hdnRfiRfqID').val() + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/FetchRfiVQVendorsForReport/?SubjectFor=RFI&RFIVQID=" + $('#hdnRfiRfqID').val() + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -187,7 +185,7 @@ function fetchRFIRFQReportDetails() {
     }
    
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFIRFQReportDetails/?ReportType=RFI&RFIRFQID=" + $('#hdnRfiRfqID').val() + "&VendorID=" + VendorID + "&Datefrom=" + dtfrom + "&Dateto=" + dtto + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFIVQReportDetails/?ReportType=RFI&RFIVQID=" + $('#hdnRfiRfqID').val() + "&VendorID=" + VendorID + "&Datefrom=" + dtfrom + "&Dateto=" + dtto + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -199,17 +197,15 @@ function fetchRFIRFQReportDetails() {
                 
 
                 for (var i = 0; i < data.length; i++) {
-                    var encrypdataVQ = fnencrypt("RFIID=" + data[i].rfiid + "&VendorID=" + data[i].vendorID + "&PageType=Report&FinalStatus=" + data[i].finalStatus);
+                    var encrypdataVQ = fnencrypt("VQID=" + data[i].rfiid + "&VendorID=" + data[i].vendorID + "&PageType=Report&FinalStatus=" + data[i].finalStatus);
                     var encrypdataRFI = fnencrypt('RFXID=' + data[i].rfiid + '&VendorID=' + data[i].vendorID + '&PageType=Report&FinalStatus=' + data[i].finalStatus);
                     if (data[i].rfiid != 0) {
-                        if (data[i].rFXType != 'RFX') {
-                            $('<tr><td><a href=RFIResponse.html?param='+encrypdataVQ+' style="text-decoration:none !important;">' + data[i].referenceNo + '</a></td><td>' + data[i].deadline + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].activityDescription + '</td><td>' + data[i].finalStatus + '</td></tr>').appendTo('#tblVendorSummary');
+                        if (data[i].rfxType == 'VQ') {
+                            $('<tr><td><a href=VQResponse.html?param='+encrypdataVQ+' style="text-decoration:none !important;">' + data[i].referenceNo + '</a></td><td>' + data[i].deadline + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].activityDescription + '</td><td>' + data[i].finalStatus + '</td></tr>').appendTo('#tblVendorSummary');
                         } else {
                             $('<tr><td><a href=RFXResponse.html?param=' + encrypdataRFI + ' style="text-decoration:none !important;">' + data[i].referenceNo + '</a></td><td>' + data[i].deadline + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].activityDescription + '</td><td>' + data[i].finalStatus + '</td></tr>').appendTo('#tblVendorSummary');
                         }
-                    } else {
-                        $('<tr><td><a href=RFQReport.html?RFQID=' + data[i].rfqid + '&VendorId=' + data[i].vendorID + ' style="text-decoration:none !important;">' + data[i].referenceNo + '</a></td><td>' + data[i].deadline + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].activityDescription + '</td></tr>').appendTo('#tblVendorSummary');
-                    }
+                    } 
                 }
 
             } else {

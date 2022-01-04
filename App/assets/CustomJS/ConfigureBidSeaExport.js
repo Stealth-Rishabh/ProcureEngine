@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
 
     });
 });
-$('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,#txtquantitiy,.maxlength').maxlength({
+$('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
@@ -583,7 +583,7 @@ var FormWizard = function () {
                     },
                     txtquantitiy: {
                         required:true,
-                        maxlength: 9,
+                        //maxlength: 9,
                         number: true,
                         notEqualTo: 0
                     },
@@ -1024,7 +1024,7 @@ function ConfigureBidForSeaExportTab1() {
         "ShowRankToVendor": $('#drpshowL1L2').val()
        };
    
-   // console.log(JSON.stringify(Tab1Data))
+    console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1269,7 +1269,7 @@ function ConfigureBidForSeaExportTab2() {
         };
        
         // alert(JSON.stringify(Tab2data))
-        // console.log(JSON.stringify(Tab2data))
+         console.log(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",

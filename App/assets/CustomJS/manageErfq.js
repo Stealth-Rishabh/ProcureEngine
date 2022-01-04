@@ -99,6 +99,64 @@ function formValidation() {
          
         }
     });
+    //Form Validation for Cancel Reason
+    var formaddcommapprover = $('#frmRFQApprover');
+    var errorapp = $('.alert-danger', formaddcommapprover);
+    var successapp = $('.alert-success', formaddcommapprover);
+    formaddcommapprover.validate({
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+
+        rules: {
+
+        },
+        messages: {
+
+        },
+
+        invalidHandler: function (event, validator) { //display error alert on form submit              
+        },
+
+        highlight: function (element) { // hightlight error inputs
+            $(element)
+                .closest('.col-md-10').addClass('has-error'); // set error class to the control group
+        },
+
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element)
+                .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
+        },
+
+        success: function (label) {
+            label
+                .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
+        },
+
+        submitHandler: function (form) {
+            if (sessionStorage.getItem('hdnRFQApproverID') != "0" && jQuery("#txtApproverRFQ").val() != "") {
+
+                $('.alert-danger').show();
+                $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                return false;
+            }
+            else if ($('#tblRFQapprovers >tbody >tr').length == 0) {
+                $('.alert-danger').show();
+                $('#spandangerapp').html('Please Map Approver.');
+                $('.alert-danger').fadeOut(5000);
+                return false;
+
+            }
+            else {
+                MapRFQapprover('manage');
+            }
+
+
+        }
+    });
 
 }
 
@@ -398,6 +456,12 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+            if (sessionStorage.getItem('CustomerID') == "32") {
+                $('#ctrladdapprovers').addClass('hide')
+            }
+            else {
+                $('#ctrladdapprovers').removeClass('hide')
+            }
             
             $("#ctrlFileTerms").attr('onclick', "editRow('divbidTermsFilePrevtab_0', '','')");
             jQuery('#mapedapproverPrevtab_0').html('');
@@ -430,6 +494,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 }
 
             }
+           
             if (RFQData[0].approvers.length > 0) {
                 var approvertype = "";
                 jQuery('#tblapprovers').empty();
@@ -494,6 +559,10 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (isrunnigRFQ == 'Y' || EndDT < currentdate) {
                 $("a.isDisabledClass").removeAttr("onclick");
                 $("button.isDisabledClass").removeAttr("onclick");
+            }
+            
+            if (RFQData[0].general[0].finalStatus.toLowerCase() != "not forwarded") {
+                $("a.ctrladdapprovers").removeAttr("onclick");
             }
         },
         error: function (xhr, status, error) {

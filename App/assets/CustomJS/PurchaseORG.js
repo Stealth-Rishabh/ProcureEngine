@@ -14,7 +14,10 @@ $(document).ready(function () {
 function onSave() {
     var str = $('#txtPurchaseOrg').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
-        alert('Special characters not allowed.');
+        $('.alert-danger').show();
+        $('#error').text('Special characters not allowed.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
         return false;
     }
     if (Validate()) {
@@ -67,7 +70,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseORGMaster').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><a href="#" onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseORGMaster').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
