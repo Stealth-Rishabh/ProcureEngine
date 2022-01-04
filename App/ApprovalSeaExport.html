@@ -32,6 +32,11 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+        @media (min-width: 992px) {
+            .modal-lg {
+                width: 1200px;
+            }
+        }
         .container {
             height: 95px;
             display: flex;
@@ -46,6 +51,10 @@
             tr.header {
                 cursor: pointer;
             }
+        
+    </style>
+    <style>
+
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
@@ -285,7 +294,9 @@
                                                     </div>
                                                     <div class="form-group" style="padding: 10px 5px;">
                                                         <div class="col-md-offset-4 col-md-12" style="text-align: center">
-
+                                                            <button id="btnPPCF" type="button" class="btn green-haze" data-toggle="modal" onclick="fetchAzPPcFormDetails()" href="#PPCForm">
+                                                                PPC Form
+                                                            </button>
                                                             <button id="btnExportToExcel" type="button" class="btn blue">
                                                                 Export To Excel
                                                             </button>
@@ -376,6 +387,12 @@
                                                     </div>
                                                     <div class="form-group" style="padding: 10px 5px;">
                                                         <div class="col-md-offset-4 col-md-12" style="text-align: center">
+                                                            <button id="btnPPCA" type="button" class="btn green-haze" data-toggle="modal" onclick="fetchAzPPcFormDetails()" href="#PPCForm">
+                                                                PPC Form
+                                                            </button>
+                                                            <button id="btn_mapaaprover" type="button" class="btn blue-dark" data-toggle="modal" href="#MapppcApprover" onclick="fnOpenPopupApprovers()">
+                                                                Map PPC Approver
+                                                            </button>
                                                             <button id="btnExportToExcel1" type="button" class="btn blue">
                                                                 Export To Excel
                                                             </button>
@@ -736,6 +753,534 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="MapppcApprover" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Map PPC Approver
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form" id="frmMapApprover">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorApp" style='display: none;'>
+                                <span id="spandanger"> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
+                                <span id=""> </span>
+                            </div>
+                            <div class="form-group">
+                                <input id="hdnApproverID" value="0" type="hidden" />
+                                <input id="hdnAppEmailIDID" value="0" type="hidden" />
+                                <div class="col-md-12">
+                                    <label class="control-label col-md-2">
+                                        Approver<span class="required"> *</span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
+                                               data-provide="typeahead" autocomplete="off" name="txtApprover" />
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Approver/Observer<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-3">
+                                        <select class="form-control" id="drp_isAppObs">
+                                            <option value="A">Approver</option>
+                                            <option value="O">Observer</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 pull-right">
+                                        <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" id="divapprover">
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-offset-8 col-md-9">
+                                            <button type="submit" class="btn green" id="btnPPCSubmit" disabled> Submit for PPC Approval</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="PPCForm" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>PPC Form
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <form action="#" id="frmPPcForm" class="form-horizontal" role="form">
+
+                            <div class="form-body">
+                                <div class="alert alert-success" id="successPPC" style='display: none;'>
+                                    <span id="spansuccess1"> </span>
+                                </div>
+                                <div class="alert alert-danger" id="diverroeppc" style='display: none; '>
+                                    <span id="spandanger"> </span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-2" style="text-align:left;padding-left:40px!important"><b>Enquiry Subject:</b></label>
+                                            <div class="col-md-10">
+                                                <label class="control-label" id="lblenquirysubject" style="text-align:right;"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Introduction</label>
+                                            <div class="col-md-9">
+                                                <textarea id="txtintroduction" name="txtintroduction" class="maxlength form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Introduction"></textarea>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Cost Benefit Analysis</label>
+                                            <div class="col-md-9">
+                                                <textarea id="txtcostbenefit" name="txtcostbenefit" class="maxlength form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Cost Benefit Analysis"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Budget Availabilty</label>
+                                            <div class="col-md-9">
+                                                <textarea id="txtbudgetavailbilty" name="txtbudgetavailbilty" class="maxlength form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Budget Availabilty"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Party to whom Work order is given</label>
+                                            <div class="col-md-9">
+                                                <textarea id="txtpartordergiven" name="txtpartordergiven" class="maxlength form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Party to whom Work order is given"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Justification for award of contract other than L1 </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtawardotherthanL1" name="txtawardotherthanL1" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Justification for award of contract other than L1"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Justification for Less than 3 Quotes</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtlessthan3quotes" name="txtlessthan3quotes" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="justification for Less than 3 Quotes"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Completion Schedule</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtcompletionsechdule" name="txtcompletionsechdule" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Completion Schedule"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Rational for spliting the order </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtsplitingmorethan01" name="txtsplitingmorethan01" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Rational for spliting the order in case of more than 01 vendor "></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Rational for issuing RFQ to vendors</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtrationalrfqvendor" name="txtrationalrfqvendor" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Rational for issuing RFQ to vendors "></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Enquiry not sent to these Vendors (with reasons) </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtenquirynotsent" name="txtenquirynotsent" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Enquiry not sent to these Eligible Vendors (with reasons) "></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">General Remarks</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtgemeralremarks" name="txtgemeralremarks" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="General Remarks "></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <h3 class="form-section">Bidding Details</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Enquiry Issued on :</label>
+                                            <div class="col-md-8">
+                                                <label id="RFQConfigueron" class="control-label"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Enquiry Issued through :</label>
+                                            <div class="col-md-9">
+
+                                                <div class="radio-list">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedP" checked /> ProcurEngine
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="optionenquiryissued" value="Email" id="optionenquiryissuedE" />Email
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="optionenquiryissued" value="Fax" id="optionenquiryissuedF" />Fax
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <table id="tblvendors" class="table table-bordered " border="0" cellpadding="1" cellspacing="1">
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--/row-->
+                                <h3 class="form-section">Recommendation</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Lowest Price Offer</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-list">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="LowestPriceOffer" value="Y" id="LowestPriceOfferY" /> Yes
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="LowestPriceOffer" value="N" id="LowestPriceOfferN" checked />No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Repeat Order</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-list">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="repeatorder" id="repeatorderY" value="Y" /> Yes
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="repeatorder" id="repeatorderN" value="N" checked />No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Supported enclosure(Please specify):</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtsupportedenclosure" name="txtsupportedenclosure" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Supported enclosure"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Comparatives statement of final  price</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="tctcomfinalprice" name="tctcomfinalprice" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Comparatives statement of final  price"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Quotations of the parties:</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtquotationparties" name="txtquotationparties" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Quotations of the parties"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <h3 class="form-section">Purchase Order/Work Order Details</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Order recommended on (Party):</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtorderrecparty" name="txtorderrecparty" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Order recommended on (Party)"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Purchase Order/Work Order Value </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtworkordervalue" name="txtworkordervalue" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Purchase Order/Work Order Value"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Internal Cost Estimate:</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtinternalcost" name="txtinternalcost" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Internal Cost Estimate"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Terms (Ex- works/ FOR/ FOB/ CIF) </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtterms" name="txtterms" class="maxlength  form-control"
+                                                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Terms (Ex- works/ FOR/ FOB/ CIF)"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Scope of Work	:</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtscopework" name="txtscopework" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Scope of Work"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Deliverables : </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtdeliverables" name="txtdeliverables" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Deliverables"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 ">Payment terms	:</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtpaymentterms" name="txtpaymentterms" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Payment terms"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Applicable taxes & duties and their applicability </label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtapplicabletax" name="txtapplicabletax" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Applicable taxes & duties and their applicability"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Whether LD applicable :</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtLDapplicable" name="txtLDapplicable" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether LD applicable"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Whether CPBG applicable</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtCPBGapplicable" name="txtCPBGapplicable" class="maxlength  form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether CPBG applicable"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">PR Details :</label>
+                                            <div class="col-md-9">
+
+                                                <textarea id="txtPRdetails" name="txtPRdetails" class="maxlength form-control"
+                                                          maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="PR Details"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-3">
+                                            <label class="control-label col-md-3">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <span class="btn blue" style="width:350px!important"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
+                                            &nbsp;<button type="button" id="Addbtn1" onclick="addmoreattachments()" class="btn green-haze"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
+                                    </div>
+                                </div>
+                                <input value="0" type="hidden" id="hdnPPCID" />
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-offset-5 col-md-9">
+                                                <button type="submit" class="btn green" id="btnsubmit">Submit</button>
+                                                <button type="button" class="btn yellow-crusta" onclick="fnclosepopupPPC()" id="btnClose">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
                 </div>
             </div>
         </div>

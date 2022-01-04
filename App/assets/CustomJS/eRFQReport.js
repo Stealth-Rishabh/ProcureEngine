@@ -93,8 +93,10 @@ function RFQFetchQuotedPriceReport() {
                     var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 12, "<br/>\n");
                     var totalamount = 0.0;
                     var bsicpercentageofGST = 0.0;
-                    //if (data[i].RFQBoq == 'Y ') {                       
-                    description = stringDivider(data[0].quotesDetails[i].rfqDescription, 45, "<br/>\n");
+                    //if (data[i].RFQBoq == 'Y ') {  
+                    if (data[0].quotesDetails[i].rfqDescription != '') {
+                        description = stringDivider(data[0].quotesDetails[i].rfqDescription, 45, "<br/>\n");
+                    }
 
                     if (i == 0) {
                         jQuery('#tblServicesProduct').append('<thead><tr style="background: grey; color:light black;"><th style="width:40%!important;">Short Name</th><th>Quantity</th><th>UOM</th><th>' + taxHRTextinc + '</th><th>' + taxHRTextEx + '</th><th>' + HRUnitRate + '</th><th>Description</th></tr></thead>');
@@ -117,8 +119,9 @@ function RFQFetchQuotedPriceReport() {
                     }
                     
                     for (var j = 0; j < data[0].quotesDetails.length; j++) {
-                       
-                        description = stringDivider(data[0].quotesDetails[j].rfqDescription, 45, "<br/>\n");  // for word wrap
+                        if (data[0].quotesDetails[i].rfqDescription != '') {
+                            description = stringDivider(data[0].quotesDetails[j].rfqDescription, 45, "<br/>\n");  // for word wrap
+                        }
                       
                         if (j == 0) {
                             if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {

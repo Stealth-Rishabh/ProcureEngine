@@ -135,6 +135,7 @@ function fnOpenLink(linkurl, isobserver) {
     window.location = linkurl;
 }
 function fnConfirmArchive(RFQID) {
+    
     bootbox.dialog({
         message: "Are you sure you want to Archive this activity ? ",
         buttons: {
@@ -231,7 +232,7 @@ function fetchDashboardData() {
                     str += "<div class='date'><span class='label label-sm label-info'>" + BidData[0].pendingActivity[i].receiptDt + "</span></div></div>";
                     str += "</li>";
                     jQuery('#UlPendingActivity').append(str);
-
+                   
                     if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
                         jQuery('#icon' + i).addClass('fa fa-question-circle');
                     } else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
@@ -248,6 +249,9 @@ function fetchDashboardData() {
                     }
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
                         $('#icon' + i).addClass('fa fa-gavel');
+                    }
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
+                        $('#icon' + i).addClass('fa fa-fire-extinguisher');
                     }
                 }
             }
@@ -290,7 +294,10 @@ function fetchDashboardData() {
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'Reverse Auction') {
                         $('#iconbid_all' + i).addClass('fa fa-gavel');
                     } else if (BidData[0].todayBidStatus[i].bidTypeName == 'Forward Auction') {
-                        $('#icon' + i).addClass('fa fa-forward');
+                        $('#iconbid_all' + i).addClass('fa fa-forward');
+                    }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
+                        $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
                     }
 
                 }
@@ -334,8 +341,10 @@ function fetchDashboardData() {
                         $('#iconbid' + i).addClass('fa fa-forward');
                     }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'Reverse Auction') {
-
                         $('#iconbid' + i).addClass('fa fa-gavel');
+                    }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
+                        $('#iconbid' + i).addClass('fa fa-fire-extinguisher');
                     }
 
                 }
@@ -427,6 +436,9 @@ function fetchBidDataDashboard(requesttype) {
 
                             $('#iconbidd' + i).addClass('fa fa-gavel');
                         }
+                        else if (BidData[i].bidTypeName == 'Coal Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');
+                        }
                     }
                 }
                 else {
@@ -464,6 +476,9 @@ function fetchBidDataDashboard(requesttype) {
                         else if (BidData[i].bidTypeName == 'Reverse Auction') {
 
                             $('#iconbidd' + i).addClass('fa fa-gavel');
+                        }
+                        else if (BidData[i].bidTypeName == 'Coal Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');
                         }
                     }
                 }

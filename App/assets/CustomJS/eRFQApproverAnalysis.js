@@ -130,14 +130,14 @@ function getSummary(vendorid, version) {
 
 function fetchrfqcomprative() {
     var url = '';
-   
+  
     if (VID != undefined && VID!='' && VID!=null ) {
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
     }
     else {
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99"
     }
-   
+    
     jQuery.ajax({
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -173,6 +173,7 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
           
+            
             if (AppType == "T" && FwdTo != 'Admin') {
                 ShowPrice = data[0].showPrice[0].showQuotedPrice;
                 sessionStorage.setItem('ShowPrice', ShowPrice);
@@ -638,6 +639,7 @@ function fetchrfqcomprative() {
                 }
                 //// ***************** END  Answer Question Row
 
+              
                 // Technical Approver Row
                 if (AppType != 'C') {
                     strQ += "<tr><td><b>Technical Approval</b></td>";

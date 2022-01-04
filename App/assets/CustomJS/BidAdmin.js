@@ -94,6 +94,9 @@ function startTimer(duration, display) {
                 
                 fetchBidSummaryDetails(BidID, BidForID);
             }
+            else if (BidTypeID = 8 ) {
+                    fetchBidSummaryDetails(BidID, BidForID);
+            }
             else {
                
                 fnBidRefreshOnTimerforAdmin(BidID, BidForID)

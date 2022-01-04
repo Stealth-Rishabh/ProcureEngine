@@ -1738,6 +1738,20 @@ function saveBidSurrogate() {
         return false;
 
     }
+    if (sessionStorage.getItem("hdnrfqid") == "" || sessionStorage.getItem("hdnrfqid") == "0") {
+        error1.find("span").html('Please Select RFQ');
+        error1.show();
+        App.scrollTo(error1, -200);
+        error1.fadeOut(4000);
+        return false;
+    }
+    if (sessionStorage.getItem("hdnselectedvendor") == "" || sessionStorage.getItem("hdnselectedvendor") == "0") {
+        error1.find("span").html('Please Select Vendor');
+        error1.show();
+        App.scrollTo(error1, -200);
+        error1.fadeOut(4000);
+        return false;
+    }
 
     var Data = {
         "Name": $("#bidSurrogateToName").val(),

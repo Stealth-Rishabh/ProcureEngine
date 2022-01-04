@@ -1280,16 +1280,13 @@ function BindApprovers(amount, groupId, orgid, budgetType) {
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType;
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-
-
-        $("#tblApproversPrev").empty();
+    $("#tblApproversPrev").empty();
         if (res.result != null) {
 
             if (res.result.length > 0) {
                 $("#errorApproverdivSeq").hide();
                 $("#tblApproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:5%!important'>Sequence</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-
 
                     $("#tblApproversPrev").append('<tr id=trNfaApprover' + value.idx + '><td>' + value.approverName + '</td><td>' + value.emailId + "<td>" + value.seq + "</td>" + '</td><td class=hide>' + value.idx + '</td></tr>');
 
@@ -1303,7 +1300,7 @@ function BindApprovers(amount, groupId, orgid, budgetType) {
 
 
                 Metronic.scrollTo($("#errorApproverdivSeq"), -200);
-                $('#errorApproverdivSeq').fadeOut(5000);
+                $('#errorApproverdivSeq').fadeOut(9000);
             }
         }
     });

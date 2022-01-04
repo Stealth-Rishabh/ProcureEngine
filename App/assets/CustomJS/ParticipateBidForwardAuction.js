@@ -564,15 +564,16 @@ function InsUpdQuoteScrap(rowID) {
     var v = 0;
     var valuejap = 0;
     var vjap = 0;
-
+    
     var Amount = $('#minimuminc' + i).text()
+    
     if ($('#incon' + i).text() == "A") {
         if (jQuery("#lastQuote" + i).text() == '') {
             value = parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
             valuejap = parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
         }
         else {
-            value = parseFloat(removeThousandSeperator($('#txtquote' + i).val()) + parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text())))
+            value = parseFloat(removeThousandSeperator($('#txtquote' + i).val())) - parseFloat(removeThousandSeperator(jQuery("#lastQuote" + i).text()))
             //valuejap = parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat(removeThousandSeperator($('#txtquote' + i).val()))
             valuejap = parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text())) + parseFloat((parseFloat(Amount)))
         }
@@ -593,7 +594,7 @@ function InsUpdQuoteScrap(rowID) {
         }
        
     }
-    
+   
     var valdiff = parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))
     if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
         $('#spanamount' + i).removeClass('hide')
@@ -610,7 +611,7 @@ function InsUpdQuoteScrap(rowID) {
     else if (jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {
       
         $('#spanamount' + i).removeClass('hide')
-        $('#spanamount' + index).text('Maximum bid amount = Current H1 Price + Min. Inc. Value of ' + Amount + " " + $('#lblcurrency').text() + ".")
+        $('#spanamount' + i).text('Maximum bid amount = Current H1 Price + Min. Inc. Value of ' + Amount + " " + $('#lblcurrency').text() + ".")
         return false
     }
    

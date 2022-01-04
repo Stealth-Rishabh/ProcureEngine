@@ -1283,6 +1283,15 @@
                     digits: true,
                     minlength: 10,
                     maxlength: 12
+                },
+                CountryID: {
+                    required: true,
+                },
+                StateID: {
+                    required: true,
+                },
+                CityID: {
+                    required: true,
                 }
             },
             errorElement: 'span',
@@ -1338,6 +1347,7 @@
             $('#CityID').val('')
             $('#UserName').val('')
             $('#MobileNo').val('')
+            $('#designation').val('')
             $('#UserEmail').val('')
             $('#briefRequirement').val('')
             setTimeout(function () {

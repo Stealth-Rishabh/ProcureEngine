@@ -362,16 +362,16 @@ var FormWizard = function () {
                        if (form.valid() == false) {
                             return false;
 
-                        }
-                         else if ($('#txtenddatettime').val() == ''){
-                            $('.alert-danger').show();
-                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('Please Enter RFQ END Date');
-                            Metronic.scrollTo($(".alert-danger"), -200);
+                       }
+                       else if ($('#txtenddatettime').val() == '') {
+                           $('.alert-danger').show();
+                           $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                           $('#spandanger').html('Please Enter RFQ END Date');
+                           Metronic.scrollTo($(".alert-danger"), -200);
                            $('.alert-danger').fadeOut(7000);
                            return false;
-                            
-                         }
+
+                       }
                            else if ($('#txtstartdatettime').val() != '' && StartDTdateonly < CurDateonly) {
                             $('.alert-danger').show();
                             $('#txtstartdatettime').closest('.inputgroup').addClass('has-error');
@@ -401,10 +401,18 @@ var FormWizard = function () {
                        }
                        else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
                                 $('.alert-danger').show();
-                                $('#spandanger').html('Please Map Approver.');
+                                $('#spandanger').html('Please  Map Commercial Approver.');
                                 Metronic.scrollTo($(".alert-danger"), -200);
                                 $('.alert-danger').fadeOut(5000);
                                 return false;
+
+                       }
+                       else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
+                           $('.alert-danger').show();
+                           $('#spandanger').html('Please Map Approver.');
+                           Metronic.scrollTo($(".alert-danger"), -200);
+                           $('.alert-danger').fadeOut(5000);
+                           return false;
 
                        }
                         else {
@@ -515,12 +523,26 @@ function InsUpdRFQDEtailTab1() {
     }
     TermsConditionFileName = TermsConditionFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
 
-   
-
-    var approvers = '';
-    var rowCount = jQuery('#tblapprovers tr').length;
-    if (rowCount > 1) {
-        $("#tblapprovers tr:gt(0)").each(function () {
+    var approvers = [];
+    var rowCount = jQuery('#tblapprovers >tbody >tr').length;
+    if (rowCount >= 1) {
+        jQuery('#tblapprovers >tbody >tr').each(function () {
+            var this_row = $(this);
+           
+            var app = {
+                "UserID": parseInt($.trim(this_row.find('td:eq(3)').html())),
+                "ApproverType": 'C',
+                "AdminSrNo": parseInt($.trim(this_row.find('td:eq(2)').html())),
+                "ShowQuotedPrice": 'N'
+            };
+            approvers.push(app)
+        })
+    }
+    var rowCounttech = jQuery('#tblapproverstech >tbody >tr').length;
+    
+    var showP = 'Y';
+    if (rowCounttech >= 1) {
+        $("#tblapproverstech >tbody >tr").each(function () {
             var this_row = $(this);
             showP = 'Y';
             
@@ -648,7 +670,7 @@ function InsUpdRFQDEtailTab2() {
         
     };
 
-    //console.log(JSON.stringify(Tab2data))
+    console.log(JSON.stringify(Tab2data))
    
     jQuery.ajax({
 
@@ -711,7 +733,7 @@ function fnGetTermsCondition() {
                 for (var i = 0; i < data.length; i++) {
                     
                     var str = "<tr id=tr" + i + "><td class=hide>"+data[i].id+"</td><td class=hide>"+data[i].level+"</td>";
-                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\"><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
                     str += "<td>" + data[i].name + "</td>";
                    
                    
@@ -753,9 +775,7 @@ function fnGetTermsCondition() {
 
                             $("#spancheckedTerms" + data[i].id).addClass("checked");
                             $("#chkTerms"+ data[i].id).attr("disabled", "disabled");
-                         
-
-                        }
+                       }
                       
                 }
             }
@@ -2019,8 +2039,24 @@ function RFQInviteVendorTab3() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
     var InsertQuery = '';
+
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
-        InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
+        if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "") {
+            InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
+        }
+        else {
+            $('.alert-danger').show();
+            $('#spandanger').html('Some Error in Vendor Selection.Please Select again');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $("#tblvendorlist> tbody > tr").each(function(index) {
+                $(this).find("span#spanchecked").removeClass("checked");
+                $('input[name="chkvender"]').prop('disabled', false);
+                jQuery('#selectedvendorlists> tbody').empty()
+                jQuery('#selectedvendorlistsPrev> tbody').empty()
+            });
+            $('.alert-danger').fadeOut(10000)
+            return false;
+        }
     });
 
     var Tab3data = {
@@ -2067,18 +2103,18 @@ function RFQInviteVendorTab3() {
 }
 function fnsubmitRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
-    var Tab3data = {
-        
-        "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
-        "UserID": sessionStorage.getItem('UserID'),
-        "subject": jQuery('#txtrfqSubject').val(),
-        "Deadline": jQuery('#txtenddatettime').val(),
-        "RFQDescription": jQuery('#txtrfqdescription').val(),
-        "CustomerID":parseInt(sessionStorage.getItem('CustomerID'))
-    };
-    console.log(JSON.stringify(Tab3data))
-    jQuery.ajax({
+    if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
+        var Tab3data = {
+
+            "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
+            "UserID": sessionStorage.getItem('UserID'),
+            "subject": jQuery('#txtrfqSubject').val(),
+            "Deadline": jQuery('#txtenddatettime').val(),
+            "RFQDescription": jQuery('#txtrfqdescription').val(),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        };
+        // console.log(JSON.stringify(Tab3data))
+        jQuery.ajax({
 
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -2447,6 +2483,7 @@ function fetchPSBidDetailsForPreview() {
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#lblConversionRatePrev').html($('#txtConversionRate').val())
     jQuery("#txtRFQReferencePrev").html($('#txtRFQReference').val());
+    jQuery("#lbltechnicalApproval").html($('#drp_TechnicalApp option:selected').text());
 
     if ($('#attach-file').html() != '' && ($('#file1').val() == '')) {
         $('#filepthtermsPrev').html($('#attach-file').html())
@@ -2506,6 +2543,7 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
+   
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -2536,6 +2574,37 @@ function handleFileparameter(e) {
         reader.readAsArrayBuffer(f);
     }
 }
+function isValidDate(str) {
+    var parts = str.split('/');
+    if (parts.length < 3)
+        return false;
+    else {
+        var day = parseInt(parts[0]);
+        var month = parseInt(parts[1]);
+        var year = parseInt(parts[2]);
+        if (isNaN(day) || isNaN(month) || isNaN(year)) {
+            return false;
+        }
+        if (day < 1 || year < 1)
+            return false;
+        if (month > 12 || month < 1)
+            return false;
+        if ((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && day > 31)
+            return false;
+        if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
+            return false;
+        if (month == 2) {
+            if (((year % 4) == 0 && (year % 100) != 0) || ((year % 400) == 0 && (year % 100) == 0)) {
+                if (day > 29)
+                    return false;
+            } else {
+                if (day > 28)
+                    return false;
+            }
+        }
+        return true;
+    }
+}
 var Rowcount = 0;
 function printDataparameter(result) {
     var loopcount = result.length; //getting the data length for loop.
@@ -2553,9 +2622,9 @@ function printDataparameter(result) {
     var pono = ''
     var podate = ''
     var povendorname = ''
-    var itemcode = '';var st='true'
+    var itemcode = ''; var st = 'true'; var podatejv;
     for (i = 0; i < loopcount; i++) {
-        itemcode = '', povendorname = '', podate = '', pono = '', povalue = 0, unitrate = 0, TAT = 0, targetPrice=0;
+        itemcode = '', povendorname = '', podate = '', pono = '', povalue = 0, unitrate = 0, TAT = 0, targetPrice = 0; podatejv = '';
         if ($.trim(result[i].TAT) == '') {
             TAT = 0;
         }
@@ -2582,16 +2651,23 @@ function printDataparameter(result) {
         }
         if ($.trim(result[i].PoDate) != '') {
             podate = $.trim(result[i].PoDate);
-            var podatejv = new Date(podate)
+           // podatejv = new Date(podate);
         }
+        //var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+        //var formats = [
+        //    moment.ISO_8601,
+        //    "MM/DD/YYYY  :)  HH*mm*ss"
+        //];
+       
+       // alert(moment(podatejv, formats, true).isValid())
+      
      if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
-           
-        }
+     }
      if ($.trim(result[i].PoVendorName) != '') {
             povendorname = $.trim(result[i].PoVendorName);
             
-        }
+      }
         if ($.trim(result[i].ItemCode) != '' ) {
             itemcode = $.trim(result[i].ItemCode);
            
@@ -2608,7 +2684,7 @@ function printDataparameter(result) {
             $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
-            }
+       }
             
         else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
@@ -2662,17 +2738,13 @@ function printDataparameter(result) {
             return false;
 
     }
-        else if (podate != '') {
-         
-            if (podatejv == "Invalid Date") {
+        //else if (isNaN(podatejv.getMonth()) && podate != '') {
                
-                $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
-                $("#file-excelparameter").val('');
-                return false;
-            }
-            
-        }
+        //        $("#error-excelparameter").show();
+        //        $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
+        //        $("#file-excelparameter").val('');
+        //        return false;
+        //}
         else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Delivery Location can not be blank or length should be 100 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2689,7 +2761,7 @@ function printDataparameter(result) {
        
         else {
             // if values are correct then creating a temp table
-          
+         
           $("<tr><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + targetPrice + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Description) + "</td><td>" + TAT + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].DeliveryLocation) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + unitrate + "</td><td>" + podate + "</td><td>" + povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
            
             var arr = $("#temptableForExcelDataparameter tr");
@@ -2768,6 +2840,45 @@ function printDataparameter(result) {
     
     
 }
+function isDate(ExpiryDate) {
+    var objDate,  // date object initialized from the ExpiryDate string 
+        mSeconds, // ExpiryDate in milliseconds 
+        day,      // day 
+        month,    // month 
+        year;     // year 
+    // date length should be 10 characters (no more no less) 
+    if (ExpiryDate.length !== 10) {
+        return false;
+    }
+    // third and sixth character should be '/' 
+    if (ExpiryDate.substring(2, 3) !== '/' || ExpiryDate.substring(5, 6) !== '/') {
+        return false;
+    }
+    // extract month, day and year from the ExpiryDate (expected format is mm/dd/yyyy) 
+    // subtraction will cast variables to integer implicitly (needed 
+    // for !== comparing) 
+    month = ExpiryDate.substring(0, 2) - 1; // because months in JS start from 0 
+    day = ExpiryDate.substring(3, 5) - 0;
+    year = ExpiryDate.substring(6, 10) - 0;
+    // test year range 
+    if (year < 1000 || year > 3000) {
+        return false;
+    }
+    // convert ExpiryDate to milliseconds 
+    mSeconds = (new Date(year, month, day)).getTime();
+    // initialize Date() object from calculated milliseconds 
+    objDate = new Date();
+    objDate.setTime(mSeconds);
+    // compare input date and parts from Date() object 
+    // if difference exists then date isn't valid 
+    if (objDate.getFullYear() !== year ||
+        objDate.getMonth() !== month ||
+        objDate.getDate() !== day) {
+        return false;
+    }
+    // otherwise return true 
+    return true;
+}
 function fnSeteRFQparameterTable() {
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
@@ -2820,8 +2931,6 @@ function fnSeteRFQparameterTable() {
         $("#errspan-excelparameter").html('No Items Found in Excel');
     }
 }
-
-
 
 $("#btninstructionexcel").click(function() {
     $("#instructionsDiv").show();
@@ -3037,3 +3146,4 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
 }
+

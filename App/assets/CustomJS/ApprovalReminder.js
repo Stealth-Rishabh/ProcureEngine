@@ -48,7 +48,7 @@ function FetchAllCustomer() {
 }
 function FetchAllpendingWith() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -62,7 +62,7 @@ function FetchAllpendingWith() {
             
             jQuery("#ddlPendingwith").empty();
             if (BidData.length > 0) {
-
+              
                 for (var i = 0; i < BidData.length; i++) {
                   
                     jQuery("#ddlPendingwith").append(jQuery("<option ></option>").val(BidData[i].toUserId).html(BidData[i].pendingOn));
@@ -200,6 +200,7 @@ function FetchViewAllPendingBids() {
     jQuery.unblockUI();
 }
 function FetchAllCloseBids() {
+    FetchAllpendingWith();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -407,7 +408,7 @@ function fnCloseBids() {
     }
     
    // alert(JSON.stringify(data))
-  // console.log(JSON.stringify(data))
+  console.log(JSON.stringify(data))
     jQuery.ajax({
         url: APIPath + "BidVendorSummary/SendReminderToPendingApprovers",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

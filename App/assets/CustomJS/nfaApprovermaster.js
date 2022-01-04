@@ -307,15 +307,16 @@ function BindPurchaseOrg() {
 
 
 function bindPurchaseGroupDDL(orgID) {
-
+    
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt(orgID);
+    
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-
+       
         if (res.result.length > 0) {
 
             Groupdata = res.result;
-
+          
         }
     });
     GetNFAPARAM.error(function (error) {
