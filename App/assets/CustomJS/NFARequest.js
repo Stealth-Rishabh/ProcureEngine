@@ -3,6 +3,7 @@ var success = $('.alert-success');
 var form = $('#submit_form');
 var NFAOverviewDetails = [];
 var idx = 0;
+var isReverted = 'N';
 var ApproverCtr = 0;
 
 var ApprSeqval = [];
@@ -10,6 +11,59 @@ var ApprSeqval = [];
 var lstActivityData = [];
 var objActivity = {};
 
+if (window.location.search) {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param)
+    idx = parseInt(getUrlVarsURL(decryptedstring)["nfaIdx"]);
+    isReverted = getUrlVarsURL(decryptedstring)["isReverted"];
+    if (isReverted == "Y") {
+        $('#divreverted').removeClass('hide')
+        FetchRecomendedVendor();
+    }
+    else {
+        $('#divreverted').addClass('hide')
+    }
+    setTimeout(function () {
+        GetOverviewmasterbyId(idx);
+    },1000)
+}
+function FetchRecomendedVendor() {
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            $('#tblremarksapprover').empty()
+
+            if (data.length > 0) {
+                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+                    for (var i = 0; i < data.length; i++) {
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    }
+            }
+            else {
+                $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}
 var FormWizard = function () {
 
     return {
@@ -135,96 +189,18 @@ var FormWizard = function () {
                 },
 
                 success: function (label) {
-
-                    //if (label.attr("for") == "gender" || label.attr("for") == "payment[]") {
-
-                    //    label
-
-                    //        .closest('.inputgroup').removeClass('has-error').addClass('has-success');
-
-                    //    label.remove();
-
-                    //} else {
-
-                    //    label
-
-                    //        .addClass('valid') // mark the current input as valid and display OK icon
-
-                    //        .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
-
-                    //}
-
-                    //if ($("#txtbidDate").closest('.inputgroup').attr('class') == 'inputgroup has-error') {
-
-                    //    $("#btncal").css("margin-top", "-22px");
-
-                    //}
-
-                    //else {
-
-                    //    $("#btncal").css("margin-top", "0px");
-
-                    //}
-
                 },
 
 
 
                 submitHandler: function (form) {
-
-                    error.hide();
+                     error.hide();
 
                 }
 
 
 
             });
-
-
-
-            var displayConfirm = function () {
-
-                //$('#tab4 .form-control-static', form).each(function () {
-
-                //    var input = $('[name="' + $(this).attr("data-display") + '"]', form);
-
-                //    if (input.is(":radio")) {
-
-                //        input = $('[name="' + $(this).attr("data-display") + '"]:checked', form);
-
-                //    }
-
-                //    if (input.is(":text") || input.is("textarea")) {
-
-                //        $(this).html(input.val());
-
-                //    } else if (input.is("select")) {
-
-                //        $(this).html(input.find('option:selected').text());
-
-                //    } else if (input.is(":radio") && input.is(":checked")) {
-
-                //        $(this).html(input.attr("data-title"));
-
-                //    } else if ($(this).attr("data-display") == 'payment') {
-
-                //        var payment = [];
-
-                //        $('[name="payment[]"]:checked').each(function () {
-
-                //            payment.push($(this).attr('data-title'));
-
-                //        });
-
-                //        $(this).html(payment.join("<br>"));
-
-                //    }
-
-                //});
-
-            }
-
-
 
             var handleTitle = function (tab, navigation, index) {
 
@@ -268,7 +244,7 @@ var FormWizard = function () {
 
                     $('#form_wizard_1').find('.button-submit').show();
 
-                    displayConfirm();
+                  
 
                 } else {
 
@@ -310,7 +286,7 @@ var FormWizard = function () {
 
                             form.validate();
                             $('.alert-danger').show();
-                            $('#spandanger').html('Please check highlighted fileds');
+                            $('#spandanger').html('Please Check Highlighted Fileds');
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(5000);
                             return false;
@@ -318,12 +294,12 @@ var FormWizard = function () {
                         }
                         if (ValidTeTab1()) {
                             $('.alert-danger').show();
-                            $('#spandanger').html('Please check highlighted fileds');
+                            $('#spandanger').html('Please Check Highlighted Fileds');
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(5000);
                             return false;
                         }
-                        Savedata();
+                        Savedata();//Save First Tab data
 
                         GetNfaOverviewParams();
                         //   BindApprovers();
@@ -335,7 +311,7 @@ var FormWizard = function () {
                             BindAttachmentsOfEdit();
 
                         }
-                        SaveFirstTabActivity();
+                        SaveFirstTabActivity();//Insert Activity in ActivityDetails Table
 
                     } else if (index == 2) {
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
@@ -440,11 +416,15 @@ function FetchCurrency(CurrencyID) {
             $("#dropCurrency").val(DefaultCurrency);
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText// eval("(" + + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
             jQuery.unblockUI();
+            
         }
 
     });
@@ -483,7 +463,8 @@ function GetOverviewmasterbyId(idx) {
             if (res.result.length > 0) {
                 $("#txtTitle").val(res.result[0].nfaSubject);
                 $("#txtNFADetail").val(res.result[0].nfaDescription);
-                sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);;
+               
+                sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);
                 sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].purchaseGroup);
 
                 $("#txtAmountFrom").val(res.result[0].nfaAmount);
@@ -574,17 +555,20 @@ $("#txtEventref").typeahead({
 });
 
 
-$("#txtNfaParamAns").on("change", function () {
+//$("#txtNfaParamAns").on("change", function () {
 
+   
+
+//});
+function fnaddQuestion() {
     fnApproversNBQuery(parseInt(sessionStorage.getItem("hdnParamIdx")), $("#txtNFAParam").val(), $("#txtNfaParamAns").val());
-
-});
+}
 
 function fnApproversNBQuery(rownum, question, remark) {
 
     if ($("#txtNfaParamAns").val() == "") {
         $('#errordivSeq').show();
-        $('#errorSeq').html('Please specify Remark for Param text');
+        $('#errorSeq').html('Please specify Response for Question');
         Metronic.scrollTo($("#errordivSeq"), -200);
         $('#errordivSeq').fadeOut(7000);
 
@@ -592,7 +576,7 @@ function fnApproversNBQuery(rownum, question, remark) {
     }
     if (rownum == "0" || jQuery("#txtNFAParam").val() == "") {
         $('#errordivSeq').show();
-        $('#errorSeq').html('Param text not selected. Please press + Button after selecting Approver');
+        $('#errorSeq').html('Question not selected. Please press + Button after selecting Approver');
         Metronic.scrollTo($("#errordivSeq"), -200);
         $('#errordivSeq').fadeOut(7000);
 
@@ -620,11 +604,11 @@ function fnApproversNBQuery(rownum, question, remark) {
     else {
         var rowApp = rownum;
         if (!jQuery("#tblNFAOverviewParam thead").length) {
-            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Approver</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(trNfaParam' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(trNfaParam' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
         }
 
         sessionStorage.setItem("hdnParamIdx", 0);
@@ -634,11 +618,9 @@ function fnApproversNBQuery(rownum, question, remark) {
     }
 }
 function deleteNFAParams(rowid) {
-
-    $('#' + rowid.id).remove();
-    // $('#' + rowidPrev.id).remove();
-
-}
+   
+    $('#trNfaParam' + rowid).remove();
+   }
 
 var rowAttach = 0;
 
@@ -684,37 +666,9 @@ function addmoreattachments() {
         jQuery('#tblAttachments').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'NFAOverview/' + parseInt(idx));
 
-        //** function to insert record in DB after file upload on Blob
-        //   fnsaveAttachmentsquestions();
-
-        //var arr = $("#tblAttachments tr");
-
-        //$.each(arr, function (i, item) {
-        //    var currIndex = $("#tblAttachments tr").eq(i);
-        //    var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
-
-        //    if (rowAttach == 1) {
-        //        //** Upload Files on Azure PortalDocs folder first Time
-        //        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-        //     }
-
-        //    $(this).nextAll().each(function (i, inItem) {
-        //        if (matchText == $(this).find("td:eq(1)").text().toLowerCase()) {
-        //            $(this).remove();
-        //        }
-        //        if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
-        //                //** Upload Files on Azure PortalDocs folder
-        //             fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-
-        //        }
-
-
-        //    });
-
-        //});
+        
         jQuery("#AttachDescription1").val('')
         jQuery('#fileToUpload1').val('')
-
 
     }
 };
@@ -1017,7 +971,7 @@ jQuery("#txtPurcOrg").typeahead({
             bindPurchaseGroupDDL(map[item].purchaseOrgID);
         }
         else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Purchase Group not selected. Please press + Button after selecting Approver!!!');
         }
 
         return item;
@@ -1127,7 +1081,7 @@ function Savedata() {
     var p_descript = $("#txtNFADetail").val();
     var p_org = sessionStorage.getItem('hdnPurchaseORGID');;
     var p_Group = sessionStorage.getItem('hdnPurchaseGroupID');
-    var p_amount = $("#txtAmountFrom").val();
+    var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName").val();
@@ -1155,10 +1109,12 @@ function Savedata() {
         UpdatedBy: UserID
     }
     overviewList.push(model);
-   // console.log(overviewList)
+    console.log(overviewList)
     var url = "NFA/InsUpdateNfaoverview";
 
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
+    //alert(JSON.stringify(overviewList))
+    console.log(JSON.stringify(overviewList))
     GetData.success(function (res) {
         if (res.result != null) {
            
@@ -1168,6 +1124,9 @@ function Savedata() {
                 console.log(idx);
             }
         }
+        if (idx == 0) {
+            fnErrorMessageText('spandanger', 'form_wizard_1');
+        } 
     });
     GetData.error(function (res) {
 
@@ -1213,16 +1172,11 @@ function BindSaveparams() {
         if (res != null) {
             $("#tblNFAOverviewParam").empty();
             if (res.result.length > 0) {
-                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Param text</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
+                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-
-
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(trNfaParam' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
+                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
 
                 });
-
-
-
 
             }
 
@@ -1268,7 +1222,7 @@ function Bindtab1DataforPreview() {
 }
 
 function FetchMatrixApprovers() {
-    var amount = $("#txtAmountFrom").val();
+    var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var groupId = sessionStorage.getItem("hdnPurchaseGroupID");
     var orgid = sessionStorage.getItem("hdnPurchaseORGID");
     budgetType = $("#ddlBudget option:selected").val();
@@ -1277,7 +1231,8 @@ function FetchMatrixApprovers() {
 
 function BindApprovers(amount, groupId, orgid, budgetType) {
 
-    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType;
+    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
+ 
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
     $("#tblApproversPrev").empty();
@@ -1316,19 +1271,18 @@ function SaveApproversConfirmation() {
     var _data = {};
 
 
-    var url = "NFA/InsUpdateOverViewApprovers?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
-    var isActive = $("#chkPrevIsActive").is(':checked');
-    if (isActive == false) {
+    var url = "NFA/InsUpdateOverViewApprovers?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx) + "&isReverted=" + isReverted;
+   // var isActive = $("#chkPrevIsActive").is(':checked');
+    //if (isActive == false) {
+
+    //    $("#errorApproverdivSeq").show();
+    //    $("#errorApproverSeq").html('Please Check confirmation checkbox for Approvers');
 
 
-        $("#errorApproverdivSeq").show();
-        $("#errorApproverSeq").html('Please Check confirmation checkbox for Approvers');
-
-
-        Metronic.scrollTo($("#errorApproverdivSeq"), -200);
-        $('#errorApproverdivSeq').fadeOut(5000);
-        return false;
-    }
+    //    Metronic.scrollTo($("#errorApproverdivSeq"), -200);
+    //    $('#errorApproverdivSeq').fadeOut(5000);
+    //    return false;
+    //}
     $("#tblApproversPrev tr:gt(0)").each(function () {
         var this_row = $(this);
 
@@ -1351,8 +1305,8 @@ function SaveApproversConfirmation() {
             ToUserId: $.trim(this_row.find('td:eq(3)').html()),
             ActivityDescription: $("#txtTitle").val(),
             Status: "N",
-            LinkURL: "NFAApproverReq.html?nfaIdx=" + parseInt(idx),
-            Remarks: $("#txtRemark").val(),
+            LinkURL: "NFAApproverReq.html?App=Y&nfaIdx=" + parseInt(idx),
+            Remarks: '',
             ActionType: "",
             NfaIdx: parseInt(idx),
             apprSeq: parseInt($.trim(this_row.find('td:eq(2)').html())),
@@ -1368,15 +1322,34 @@ function SaveApproversConfirmation() {
     var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(approversData));
     SubmitData.success(function (res) {
         SaveActivityDetails(lstActivityData);
-        UpdateFirstTabActivity();
+        //UpdateFirstTabActivity();
         if (res.status == "S") {
-            if (confirm('Do you want to continue ')) {
-                window.location.href = "NFARequest.html";
-            } else {
-                window.location.href = "index.html";
-            }
+            bootbox.dialog({
+                message: "Do you want to continue?",
+                // title: "Custom title",
+                buttons: {
+                    confirm: {
+                        label: "Yes",
+                        className: "btn-success",
+                        callback: function () {
+                            bootbox.alert("NFA Request Submitted Successfully.", function () {
+                                window.location.href = "NFARequest.html";
+                                return false;
+                            });
+                            
+                        }
+                    },
+                    cancel: {
+                        label: "No",
+                        className: "btn-default",
+                        callback: function () {
+                            window.location.href = "index.html";
+                        }
+                    }
+                }
+            });
         }
-        else {
+            else {
             alert("Error: " + res.error);
         }
 
@@ -1462,12 +1435,12 @@ function BindAttachmentsOfEdit() {
 
 
 function SaveFirstTabActivity() {
-    debugger;
+    
     objActivity = {
         FromUserId: UserID,
         ToUserId: UserID,
         ActivityDescription: $("#txtTitle").val(),
-        LinkURL: "N",
+      /*  LinkURL: "N",*/
         NfaIdx: parseInt(idx)
     }
     var url = "NFA/InsertFirstTabActivity";
@@ -1482,26 +1455,7 @@ function SaveFirstTabActivity() {
 
 }
 
-function UpdateFirstTabActivity() {
-    debugger;
-    objActivity = {
-        FromUserId: UserID,
-        ToUserId: UserID,
-        ActivityDescription: $("#txtTitle").val(),
-        LinkURL: "Y",
-        NfaIdx: parseInt(idx)
-    }
-    var url = "NFA/InsertFirstTabActivity";
 
-    var firstTab = callajaxReturnSuccess(url, "Post", JSON.stringify(objActivity));
-    firstTab.success(function (res) {
-
-    });
-    firstTab.error(function (error) {
-
-    });
-
-}
 
 
 Array.prototype.max = function () {
@@ -1519,8 +1473,8 @@ function SaveActivityDetails(data) {
     });
 
     console.log(aquaticCreatures);
-    var url = "NFA/InsUpdateActivityDetails";
-
+    var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
+    
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
     SaveActivityDetails.success(function (res) {
         lstActivityData = [];
@@ -1597,7 +1551,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>"; /*class='badge badge-pill badge-danger'*/
 
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><a href="#" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.nfaParamText + '</td><td>' + Status + '</td></tr>')
+                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><a class="btn  btn-xs btn-success" href="javascript:;"  onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.nfaParamText + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -1631,14 +1585,12 @@ function onEditClick(idx, checked) {
         $('#checkboxactive').parents('span').removeClass('checked');
 
     }
-
-
-    $(".submitbtnmaster").text("Modify");
+     $(".submitbtnmaster").text("Modify");
 
 };
 
 function SaveUpdate() {
-    debugger;
+   
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
     var paramtext = $("#txtParamText").val();
@@ -1680,3 +1632,24 @@ $("#searchPop-up").keyup(function () {
     var SearchTerm = $('#searchPop-up').val();
     SearchInGridview("tblFetchParamMaster", SearchTerm);
 });
+
+//function UpdateFirstTabActivity() {
+
+//    objActivity = {
+//        FromUserId: UserID,
+//        ToUserId: UserID,
+//        ActivityDescription: $("#txtTitle").val(),
+//        /* LinkURL: "Y",*/
+//        NfaIdx: parseInt(idx)
+//    }
+//    var url = "NFA/InsertFirstTabActivity";
+
+//    var firstTab = callajaxReturnSuccess(url, "Post", JSON.stringify(objActivity));
+//    firstTab.success(function (res) {
+
+//    });
+//    firstTab.error(function (error) {
+
+//    });
+
+//}

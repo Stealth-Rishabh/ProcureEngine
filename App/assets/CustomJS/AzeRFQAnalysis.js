@@ -1,23 +1,4 @@
 ﻿
-
-$(".thousandseparated").inputmask({
-    alias: "decimal",
-    rightAlign: false,
-    groupSeparator: ",",
-    radixPoint: ".",
-    autoGroup: true,
-    integerDigits: 40,
-    digitsOptional: true,
-    allowPlus: false,
-    allowMinus: false,
-    'removeMaskOnSubmit': true
-
-});
-$('#txtloadingfactorreason').maxlength({
-    limitReachedClass: "label label-danger",
-    alwaysShow: true
-});
-
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -29,7 +10,7 @@ if (window.location.search) {
     fetchReguestforQuotationDetails()
     FetchRFQVersion();
     fetchAttachments();
-    fetchApproverRemarks();
+    fetchApproverRemarks('P');
     fetchAzPPcFormDetails();
 }
 
@@ -39,82 +20,9 @@ function fnfillPPCForm() {
     window.open(url, '_blank');
    
 }
-function fetchRFIRFQSubjectforReport(subjectFor) {
 
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        async: false,
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-            sessionStorage.setItem('hdnRfqSubject', JSON.stringify(data));
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-            
-        }
-    });
-
-}
-
-jQuery("#txtrfirfqsubject").typeahead({
-    source: function (query, process) {
-        var data = sessionStorage.getItem('hdnRfqSubject');
-        Subject = [];
-        map = {};
-        var commonsubject = "";
-        jQuery.each(jQuery.parseJSON(data), function (i, commonsubject) {
-            map[commonsubject.rfqSubject] = commonsubject;
-            Subject.push(commonsubject.rfqSubject);
-        });
-
-        process(Subject);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-
-        if (map[item].rfqid != '0') {
-
-            $('#hdnRfqID').val(map[item].rfqid);
-            fetchReguestforQuotationDetails()
-            FetchRFQVersion();
-            fetchAttachments();
-            fetchApproverRemarks();
-           
-        }
-
-        return item;
-    }
-
-});
 
 sessionStorage.setItem("RFQVersionId", "0")
-
-
-function stringDivider(str, width, spaceReplacer) {
-    if (str.length > width) {
-        var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
-        if (p > 0) {
-            var left = str.substring(0, p);
-            var right = str.substring(p + 1);
-            return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
-        }
-    }
-    return str;
-}
 function getSummary(vendorid,version) {
     var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=" + $("#ddlrfqVersion option:selected").text().replace(' ', '%20'))
     window.open("eRFQReport.html?param=" + encrypdata, "_blank")
@@ -889,362 +797,6 @@ function fetchrfqcomprative() {
     jQuery.unblockUI();
 
 }
-function fetchAttachments() {
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data, status, jqXHR) {
-            // alert(data[0].Attachments.length)
-            jQuery("#tblAttachments").empty();
-
-            if (data[0].attachments.length > 0) {
-                jQuery("#tblAttachments").append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:50%!important'>Description</th><th style='width:50%!important'>Attachment</th></tr></thead>")
-
-                for (var i = 0; i < data[0].attachments.length; i++) {
-                    var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                    str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                    jQuery('#tblAttachments').append(str);
-
-                }
-            }
-            else {
-                jQuery('#tblAttachments').append("<tr><td>No Attachments</td></tr>");
-                
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-           
-        }
-    })
-} 
-function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val());
-}
-function fnDownloadZip() {
-    var prefix = 'eRFQ/' + $('#hdnRfqID').val()
-    /*
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix,
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        success: function (data) {
-            alert('success')
-            console.log(data)
-            // var downloadwindow = window.open(data, "_blank");
-            //downloadwindow.focus();
-        },
-
-        error: function () {
-            $(".alert-danger").find("span").html('').html(filename + " Couldn't download ZIP successfully from Azure");
-            Metronic.scrollTo(error, -200);
-            $(".alert-danger").show();
-            $(".alert-danger").fadeOut(5000);
-            jQuery.unblockUI();
-        }
-    })
-    */
-    fetch(sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix)
-        .then(resp => resp.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            // the filename you want
-            a.download = 'Download.zip';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            alert('your file has downloaded!'); // or you know, something with better UX...
-        })
-}
-
-
-function RFQFetchTotalPriceForReport(VendorID, Counter) {
-    
-
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-
-            $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
-            $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
-            $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-
-
-            $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            if ($("#ddlrfqVersion option:selected").val() == 99) {
-
-
-                $(".lambdafactor").addClass('hide');
-
-            }
-            else {
-                $(".lambdafactor").removeClass('hide');
-
-            }
-
-
-        }, error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-           
-        }
-    });
-}
-function RFQFetchL1Package(VendorID, Counter) {
-
-
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchL1Package/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-
-            $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-            $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
-            $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#withGSTL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#totL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-
-
-        }, error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-            
-        }
-    });
-}
-function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
-   
-    $("#editloadingfactor").modal('show');
-    $("#hdngstprice").val(pricewithgst);
-    $("#hdnvendorid").val(vendorid);
-}
-function updloadingfactor() {
-    if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
-        $('.alert-danger').show();
-        $('#msgErrorL1').html('Please Enter Loading factor');
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(7000);
-        $("#txtloadingfactor").val('')
-        return false;
-    }
-    else {
-        var Data = {
-            "RFQID": parseInt($('#hdnRfqID').val()),
-            "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
-            "VendorID": parseInt($("#hdnvendorid").val()),
-            "LoadingFactor": parseFloat(removeThousandSeperator($("#txtloadingfactor").val())),
-            "LoadingFactorReason": $("#txtloadingfactorreason").val()
-        }
-        //  alert(JSON.stringify(Data))
-        jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            type: "POST",
-            data: JSON.stringify(Data),
-            contentType: "application/json; charset=utf-8",
-            success: function (data, status, jqXHR) {
-
-                //if (data[0].LoadingFactor > 0) {
-
-                var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                $('#LFactorexcel' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                setTimeout(function () {
-                    $("#editloadingfactor").modal('hide');
-                    fetchrfqcomprative();
-                }, 1000)
-                // }
-            },
-            error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('error', '');
-                }
-                jQuery.unblockUI();
-                return false;
-
-            }
-        })
-    }
-}
-$("#editloadingfactor").on("hidden.bs.modal", function () {
-    $("#txtloadingfactor").val('')
-    $("#hdngstprice").val('');
-    $("#hdnvendorid").val('');
-    $("#txtloadingfactorreason").val('');
-    $('#hdnAppEmailIDID').val('')
-});
-var max = 0;
-function FetchRFQVersion() {
-    max = 0;
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQVersions/?RFQID=" + $('#hdnRfqID').val(),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlrfqVersion").empty();
-            if (data.length > 0) {
-                $('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
-              
-                max = data[0].rfqVersionId;
-                for (var i = 0; i <= data[0].rfqVersionId; i++) {
-                     $('#ddlrfqVersion').append(jQuery('<option ></option>').val(i).html((i + 1) + " Quote"));
-
-                }
-            }
-
-        }, error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-            
-        }
-    });
-
-}
-
-$("#ddlrfqVersion").change(function () {
-    $("#displayTable").hide();
-    $('#displayComparativetabs').hide();
-    $("#btnExport").hide();
-    $("#btnPDF").hide()
-    $("#btnDownloadFile").hide()
-});
-jQuery("#txtSearch").keyup(function () {
-    _this = this;
-    // Show only matching TR, hide rest of them
-    jQuery.each($("#tblRFQComprative tbody").find("tr"), function () {
-        console.log($(this).text());
-        if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
-            jQuery(this).hide();
-        else
-            jQuery(this).show();
-    });
-});
-var technicalapp = "";
-function fetchReguestforQuotationDetails() {
-    var attachment = '';
-    var termattach = '';
-
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (RFQData) {
-            var replaced1 = '';
-            $('#tbldetailsExcel > tbody').empty();
-            if (RFQData.length > 0) {
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
-                $('#Currency').html(RFQData[0].general[0].currencyNm)
-                jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
-                jQuery('#refno').html(RFQData[0].general[0].rfqReference)
-
-                jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-                jQuery('#RFQDeadline').html(RFQData[0].general[0].rfqEndDate)
-                jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
-
-                $('#hdnUserID').val(RFQData[0].general[0].userId)
-
-                if (RFQData[0].general[0].rfqTermandCondition != '') {
-                    replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
-                }
-
-                $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
-                TechnicalApproval = RFQData[0].general[0].technicalApproval;
-                $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
-
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-           
-        }
-    });
-
-}
 
 
 var form = $('#RFIRFQREport');
@@ -1414,352 +966,6 @@ function formvalidate() {
     });
 }
     
-var allUsers
-function fetchRegisterUser() {
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) ,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            if (data.length > 0) {
-                allUsers = data;
-            }
-            else {
-                allUsers = '';
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-
-}
-jQuery("#txtApprover").keyup(function () {
-    $('#hdnApproverID').val('0')
-    $('#hdnAppEmailIDID').val('')
-
-});
-
-jQuery("#txtApprover").typeahead({
-    source: function (query, process) {
-        var data = allUsers;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.userName] = username;
-            usernames.push(username.userName);
-        });
-
-        process(usernames);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-        if (map[item].userID != "0") {
-            sessionStorage.setItem('hdnApproverid', map[item].userID);
-            $('#hdnApproverID').val(map[item].userID)
-            $('#hdnAppEmailIDID').val(map[item].emailID)
-
-        }
-        else {
-            gritternotification('Please select Approver  properly!!!');
-        }
-
-        return item;
-    }
-
-});
-//var rowApp = 0;
-//function addApprovers() {
-//    var status = "true"; var Apptype = ''
-//    $("#tblapprovers tr:gt(0)").each(function () {
-//        var this_row = $(this);
-//        if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
-//            status = "false"
-//        }
-//    });
-//    if ($('#hdnApproverID').val() == "0" || jQuery("#txtApprover").val() == "") {
-//        $('.alert-danger').show();
-//        $('#spandanger').html('Please Select Approver Properly');
-//        Metronic.scrollTo($(".alert-danger"), -200);
-//        $('.alert-danger').fadeOut(7000);
-//        jQuery("#txtApprover").val('')
-//        jQuery("#hdnApproverID").val('0')
-//        return false;
-//    }
-//    else if (status == "false") {
-//        $('.alert-danger').show();
-//        $('#spandanger').html('Technical Approver is already mapped for this RFQ.');
-//        Metronic.scrollTo($(".alert-danger"), -200);
-//        $('.alert-danger').fadeOut(7000);
-//        jQuery("#txtApprover").val('')
-//        jQuery("#hdnApproverID").val('0')
-//        return false;
-//    }
-//    else {
-//        rowApp = rowApp + 1;
-//        if ($('#drp_ShowPrice').val() == "Y") {
-
-//            Apptype = 'Yes';
-//        }
-//        else {
-//            Apptype = 'No';
-//        }
-
-//        if (!jQuery("#tblapprovers thead").length) {
-//            jQuery("#tblapprovers").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Show Price</th><th class='bold' style='width:30%!important'>Sequence</th></thead>");
-//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
-//        }
-//        else {
-//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
-//        }
-
-//        if (jQuery('#tblapprovers tr').length == 1) {
-//            jQuery('#btnTechSubmit').attr("disabled", "disabled");
-//        }
-//        else {
-//            jQuery('#btnTechSubmit').removeAttr("disabled");
-//        }
-//        jQuery("#txtApprover").val('')
-//        jQuery("#drp_ShowPrice").val('N')
-//        jQuery("#hdnApproverID").val('0')
-
-//    }
-//}
-//function deleteApprow(approwid) {
-//    rowApp = rowApp - 1;
-//    $('#' + approwid.id).remove()
-
-//    if (jQuery('#tblapprovers tr').length == 1) {
-//        jQuery('#btnTechSubmit').attr("disabled", "disabled");
-//    }
-//    else {
-//        jQuery('#btnTechSubmit').removeAttr("disabled");
-//    }
-//}
-function fnForwardforAllvendorTechnical() {
-    bootbox.dialog({
-        message: "Do you want to forward response to Technical Approver, Click Yes for  Continue ",
-        // title: "Custom title",
-        buttons: {
-            confirm: {
-                label: "Yes",
-                className: "btn-success",
-                callback: function () {
-                    MapApprover();
-                }
-            },
-            cancel: {
-                label: "No",
-                className: "btn-warning",
-                callback: function () {
-                    return true;
-
-                }
-            }
-        }
-    });
-}
-function MapApprover() {
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-    var Approvers = {
-        "ApproverType": "T",
-        "Approvers": '',
-        "RFQID": parseInt($('#hdnRfqID').val()),
-        "CreatedBy": sessionStorage.getItem('UserID'),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-    }
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQTechInsApprover",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Approvers),
-        dataType: "json",
-        success: function (data) {
-            jQuery('#btn_techmapaaprover').attr("disabled", "disabled");
-            $('.alert-success').show();
-            $('#success').html('Approver mapped successfully!');
-            Metronic.scrollTo($('alert-success'), -200);
-            $('.alert-success').fadeOut(7000);
-            jQuery.unblockUI();
-            return true;
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-            
-        }
-
-    });
-
-}
-//function fnUpdateApproverFlag() {
-//    var Querystring = '';
-//    var checkedval = '';
-    
-//    if ($("#AppYes").is(":checked")) {
-//        checkedval = $("#AppYes").val()
-       
-//    }
-//    else {
-//        checkedval = $("#AppNo").val()
-        
-//    }
-
-//    Querystring = Querystring + "Update eRFQVendorDetails set IsApproverRequired='" + checkedval + "' where  RFQID=" + $('#hdnRfqID').val() + ";";//VendorID=" + Vendor[i].VendorID + " and
-//    var Attachments = {
-//        "RFQId": parseInt($('#hdnRfqID').val()),
-//        "QueryString": Querystring
-
-//    }
-//    // alert(JSON.stringify(Attachments))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "eRFQReport/eUpdateApproverRequiredNot",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        crossDomain: true,
-//        async: false,
-//        data: JSON.stringify(Attachments),
-//        dataType: "json",
-//        success: function (data) {
-//            return true;
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('error', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-            
-//        }
-//    });
-//}
-
-var str = '';
-function checkForSelectedVendors() {
-
-    //getting value for Checked Checheck boxes
-    $(".chkReinvitation:checked").each(function (x, i) {
-        str += $(this).val() + ',';
-
-    });
-
-    if (str == '') {
-        $("#error").html("PLease select atleast one vendor");
-        $(".alert-danger").show();
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $(".alert-danger").fadeOut(7000);
-        return false;
-
-    }
-    else {
-        $("#modalreInviteDate").modal("show");
-    }
-
-
-
-
-}
-
-function ReInviteVendorsForRFQ() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    str = str.substring(0, str.length - 1);
-    $('#SaveExsist').attr('disabled', 'disabled')
-    var data = {
-        "RFQID": parseInt($("#hdnRfqID").val()),
-        "VendorIDs": str,
-        "ExtendedDate": $("#txtextendDate").val(),
-        "RFQSubject": $("#RFQSubject").html(),
-        "UserID": sessionStorage.getItem("UserID"),
-        "ReInviteRemarks": $("#txtReInviteRemarks").val()
-
-    }
-    // alert(JSON.stringify(data))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_ReInviteVendor/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-           // if (data == '1') {
-                $("#modalreInviteDate").modal("hide");
-                bootbox.alert("Re-Invitation For RFQ sent successfully", function () {
-                    location.reload();
-                    $('#SaveExsist').removeAttr('disabled')
-                    jQuery.unblockUI();
-                });
-            //} else {
-            //    alert("Some Error")
-            //    $('#SaveExsist').removeAttr('disabled')
-            //    jQuery.unblockUI();
-            //}
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-                $('#SaveExsist').removeAttr('disabled')
-                $("#modalreInviteDate").modal("hide");
-            }
-            
-            jQuery.unblockUI();
-            return false;
-            
-        }
-        
-    });
-
-
-}
-
-$('#btnPDF').click(function () {
-    var encrypdata = fnencrypt("RFQID=" + $("#hdnRfqID").val() + "&FromPage=Analysis&BidID=" + 0 + "&Version=" + $('#ddlrfqVersion').val())
-    var url = "ViewReportRFQ.html?param=" + encrypdata;
-    var win = window.open(url, "_blank");
-     win.focus();
-   
-})
-
 function fetchAzPPcFormDetails() {
    // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
@@ -1838,7 +1044,6 @@ function fetchAzPPcFormDetails() {
                 }
             }
             else {
-                
                 if ($("#ddlrfqVersion option:selected").val() != 99) {
                     $('#btn_fillPPCForm').attr('disabled', 'disabled')
                 }
@@ -1878,141 +1083,121 @@ function DownloadFilePPC(aID) {
 function fnRemoveClassTab0() {
     $('#tab_0').removeClass('hide')
 }
-function fetchApproverRemarks() {
-   
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=P",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            
-            $('#tblCommercialApproval').empty()
-            $('#tblCommercialApprovalprev').empty()
-            if (data.length > 0) {
-                $('#tblCommercialApproval').removeClass('hide')
-                $('#tblCommercialApprovalprev').removeClass('hide')
-                $('#tblCommercialApproval').append('<tr><th>Action Taken By</th><th>Pending On</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblCommercialApprovalprev').append('<tr><th>Action Taken By</th><th>Pending On</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                for (var i = 0; i < data.length; i++) {
 
-                    $('#tblCommercialApproval').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
-                    $('#tblCommercialApprovalprev').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
-                }
-            }
-            else {
-                $('#tblCommercialApproval').addClass('hide')
-                $('#tblCommercialApprovalprev').addClass('hide')
-                $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
-                $('#tblapprovalprocessprev').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
-            }
-        },
-        error: function (xhr, status, error) {
+//var rowApp = 0;
+//function addApprovers() {
+//    var status = "true"; var Apptype = ''
+//    $("#tblapprovers tr:gt(0)").each(function () {
+//        var this_row = $(this);
+//        if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
+//            status = "false"
+//        }
+//    });
+//    if ($('#hdnApproverID').val() == "0" || jQuery("#txtApprover").val() == "") {
+//        $('.alert-danger').show();
+//        $('#spandanger').html('Please Select Approver Properly');
+//        Metronic.scrollTo($(".alert-danger"), -200);
+//        $('.alert-danger').fadeOut(7000);
+//        jQuery("#txtApprover").val('')
+//        jQuery("#hdnApproverID").val('0')
+//        return false;
+//    }
+//    else if (status == "false") {
+//        $('.alert-danger').show();
+//        $('#spandanger').html('Technical Approver is already mapped for this RFQ.');
+//        Metronic.scrollTo($(".alert-danger"), -200);
+//        $('.alert-danger').fadeOut(7000);
+//        jQuery("#txtApprover").val('')
+//        jQuery("#hdnApproverID").val('0')
+//        return false;
+//    }
+//    else {
+//        rowApp = rowApp + 1;
+//        if ($('#drp_ShowPrice').val() == "Y") {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
+//            Apptype = 'Yes';
+//        }
+//        else {
+//            Apptype = 'No';
+//        }
 
-            }
-            jQuery.unblockUI();
-            return false;
-           
-        }
-    })
-}
-jQuery("#cancl_btn").click(function () {
-    $('#modalcancelremarks').modal('show');
+//        if (!jQuery("#tblapprovers thead").length) {
+//            jQuery("#tblapprovers").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Show Price</th><th class='bold' style='width:30%!important'>Sequence</th></thead>");
+//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
+//        }
+//        else {
+//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
+//        }
 
-});
+//        if (jQuery('#tblapprovers tr').length == 1) {
+//            jQuery('#btnTechSubmit').attr("disabled", "disabled");
+//        }
+//        else {
+//            jQuery('#btnTechSubmit').removeAttr("disabled");
+//        }
+//        jQuery("#txtApprover").val('')
+//        jQuery("#drp_ShowPrice").val('N')
+//        jQuery("#hdnApproverID").val('0')
 
-function cancelBtnclick() {
-    bootbox.dialog({
-        message: "Are you sure want to cancel this bid?",
-        // title: "Custom title",
-        buttons: {
-            confirm: {
-                label: "Yes",
-                className: "btn-success",
-                callback: function () {
+//    }
+//}
+//function deleteApprow(approwid) {
+//    rowApp = rowApp - 1;
+//    $('#' + approwid.id).remove()
 
-                    bootbox.dialog({
-                        message: "Do you want to send cancellation email to participants for this bid?",
-                        // title: "Custom title",
-                        buttons: {
-                            confirm: {
-                                label: "Yes",
-                                className: "btn-success",
-                                callback: function () {
-                                    cancelRFQ('SendMail')
-                                }
-                            },
-                            cancel: {
-                                label: "No",
-                                className: "btn-default",
-                                callback: function () {
-                                    cancelRFQ('NoMail')
-                                }
-                            }
-                        }
-                    });
-                }
-            },
-            cancel: {
-                label: "No",
-                className: "btn-default",
-                callback: function () {
+//    if (jQuery('#tblapprovers tr').length == 1) {
+//        jQuery('#btnTechSubmit').attr("disabled", "disabled");
+//    }
+//    else {
+//        jQuery('#btnTechSubmit').removeAttr("disabled");
+//    }
+//}
 
-                }
-            }
-        }
-    });
+//function fnUpdateApproverFlag() {
+//    var Querystring = '';
+//    var checkedval = '';
 
-}
-function cancelRFQ(mailparam) {
-    var Cancelbid = {
-        "BidID": parseInt($("#hdnRfqID").val()),
-        "For": 'eRFQ',
-        "Remarks": $('#txtRemarks').val(),
-        "SendMail": mailparam,
-        "UserID": sessionStorage.getItem('UserID')
-    };
-   // alert(JSON.stringify(Cancelbid))
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        cache: false,
-        data: JSON.stringify(Cancelbid),
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
+//    if ($("#AppYes").is(":checked")) {
+//        checkedval = $("#AppYes").val()
 
-            if (data == '1') {
-                bootbox.alert("RFQ Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-        },
-        error: function (xhr, status, error) {
+//    }
+//    else {
+//        checkedval = $("#AppNo").val()
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
+//    }
 
-            }
-            jQuery.unblockUI();
-        }
-    });
-}
+//    Querystring = Querystring + "Update eRFQVendorDetails set IsApproverRequired='" + checkedval + "' where  RFQID=" + $('#hdnRfqID').val() + ";";//VendorID=" + Vendor[i].VendorID + " and
+//    var Attachments = {
+//        "RFQId": parseInt($('#hdnRfqID').val()),
+//        "QueryString": Querystring
+
+//    }
+//    // alert(JSON.stringify(Attachments))
+//    jQuery.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: sessionStorage.getItem("APIPath") + "eRFQReport/eUpdateApproverRequiredNot",
+//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+//        crossDomain: true,
+//        async: false,
+//        data: JSON.stringify(Attachments),
+//        dataType: "json",
+//        success: function (data) {
+//            return true;
+//        },
+//        error: function (xhr, status, error) {
+
+//            var err = eval("(" + xhr.responseText + ")");
+//            if (xhr.status == 401) {
+//                error401Messagebox(err.Message);
+//            }
+//            else {
+//                fnErrorMessageText('error', '');
+//            }
+//            jQuery.unblockUI();
+//            return false;
+
+//        }
+//    });
+//}

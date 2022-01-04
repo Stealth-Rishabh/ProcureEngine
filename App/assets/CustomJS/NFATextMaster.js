@@ -6,7 +6,10 @@
 function onSave() {
     var str = $('#txtParamText').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
-        alert('Special characters not allowed.');
+        $('.alert-danger').show();
+        $('#error').text('Special characters not allowed.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
         return false;
     }
     if (Validate()) {
@@ -24,7 +27,7 @@ function Validate() {
     var nfaText = false;
     if ($("#txtParamText").val() == "") {
         $("#txtParamText").css("border-color", "red");
-        $("#error").text("Param text is required");
+        $("#error").text("Question is required");
         $("#errordiv").show();
         nfaText = true;
     }
@@ -49,7 +52,7 @@ function BindData() {
 
         if (res.result.length > 0) {
             $('#searchmaster').show();
-            $('#tblFetchParamMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Param Text</th><th>Status</th></tr></thead>');
+            $('#tblFetchParamMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Question</th><th>Status</th></tr></thead>');
             
             $.each(res.result, function (key, value) {
                 if (value.isActive == true)
@@ -57,7 +60,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>"; /*class='badge badge-pill badge-danger'*/
 
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><a href="#" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.nfaParamText + '</td><td>' + Status + '</td></tr>')
+                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.nfaParamText + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {

@@ -149,7 +149,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails":BiddingVendorQuery
        
     };
-     //alert(JSON.stringify(Data))
+    // alert(JSON.stringify(Data))
     //console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -173,12 +173,12 @@ function frmAzurePPCForm() {
                             callback: function () {
                                 
                                 if ($('#hdnPPCID').val() == "0") {
-                                    fnSendActivitytoCommercialForPPCApp();
+                                   // fnSendActivitytoCommercialForPPCApp();
                                     var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + RFQSubject)
                                     var encrypdataAp = fnencrypt("RFQID=" + RFQID + '&AppType=E')
                                     setTimeout(function () {
                                         window.location = "AzeRFQAnalysis.html?param=" + encrypdataAZ;
-                                    }, 1000);
+                                    },1000)
                                 }
                                 else {
                                     window.location = "eRFQAzPPCApproval.html?param=" + encrypdataAp
@@ -409,8 +409,7 @@ function fnSendActivitytoCommercialForPPCApp() {
         "IsApproverObserver": '',
         "PPCApprovers":''
     }
-     //alert(JSON.stringify(Data))
-    // console.log(JSON.stringify(Data))
+    //alert(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -418,10 +417,12 @@ function fnSendActivitytoCommercialForPPCApp() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-          // alert(data[0].OutPut)
+            return;
         },
+        
         error: function (xhr, status, error) {
-        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
         if (xhr.status == 401) {
             error401Messagebox(err.Message);
         }

@@ -2,7 +2,7 @@
 //$("#bid").toggleClass("page-header-fixed page-quick-sidebar-over-content").toggleClass("page-header-fixed page-quick-sidebar-over-content page-sidebar-closed");
 function logoutFunction() {
     sessionStorage.clear();
-    //sessionStorage.setItem("APIPath", 'http://localhost:2513/api/');
+    sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 function error401Messagebox(error) {
@@ -381,7 +381,7 @@ function CancelBidDuringConfig() {
     else {
 
         _for = 'VQ';
-        _bidId = sessionStorage.getItem("CurrentRFIID");
+        _bidId = sessionStorage.getItem("CurrentVQID");
     }
     var Cancelbid = {
         "BidID": parseInt(_bidId),

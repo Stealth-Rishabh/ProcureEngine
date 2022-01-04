@@ -137,7 +137,7 @@ function fetchBidSummaryVendorproduct() {
                         var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                        
                        
-                        jQuery("#Coalitems").append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><table class="table table-bordered" id=tblParticipantsService' + i + ' ></table></h4></div><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes'+i+'></table></div></div></div<>');
+                        jQuery("#Coalitems").append('<table class="table table-bordered" id=tblParticipantsService' + i + ' ></table><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes'+i+'></table></div>');
                         jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th></thead>");
                         jQuery("#tblParticipantsService" + i).append("<tr><td> " + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].gst + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " </td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " </td><td id=initialquote" + i + ">" + thousands_separators(IQuote) + "</td><td id=lastQuote" + i + " class='bold' style='color:Blue;'>" + thousands_separators(LqQuote) + "</td><td  id=L1Price" + i + ">" + thousands_separators(data[i].l1Quote) + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
                      
@@ -161,7 +161,16 @@ function fetchBidSummaryVendorproduct() {
                         if (data[i].showStartPrice == 'N') {
                             $("#ceilingprice" + i).html('Not Disclosed');
                         }
-
+                        if (data[i].itemBlockedRemarks != '') {
+                            // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
+                            $('#txtquote' + i).val("Restricted")
+                            $('#txtquote' + i).attr('disabled', 'disabled')
+                            $('#AllItembtn' + i).attr('disabled', 'disabled')
+                        }
+                        else {
+                            $('#txtquote' + i).val('')
+                            $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
+                        }
                         if (data[i].loQuotedPrice == 'L1') {
                             jQuery('#lblstatus' + i).css({
                                 'color': 'Blue',
@@ -451,30 +460,32 @@ function InsUpdQuoteSeaExport(index) {
     var vjap = 0;
 
     var Amount = $('#minimumdec' + index).text()
+    
     if ($('#decon' + index).text() == "A") {
         if (jQuery("#lastQuote" + index).text() == '') {
             value = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
             valuejap = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
         }
         else {
-            value = parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
-            valuejap = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
+            
+            value = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3)
+            valuejap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3)
         }
 
     }
     else {
         if (jQuery("#lastQuote" + index).text() == '') {
-            value = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + index).val())));
+            value = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + index).val())))).toFixed(3);
             v = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
-            valuejap = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + index).val())));
+            valuejap = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#txtquote" + index).val())))).toFixed(3);
             vjap = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
         }
         else {
-            value = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())));
-            v = parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()));
+            value = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())))).toFixed(3);
+            v = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3);
 
-            valuejap = (parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())));
-            vjap = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()));
+            valuejap = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())))).toFixed(3);
+            vjap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3);
         }
     }
 
@@ -499,14 +510,14 @@ function InsUpdQuoteSeaExport(index) {
     //    $('#spanamount' + index).text('Amount is required in number only')
     //    return false
     //}
-
+   
      if (parseFloat(removeThousandSeperator($('#ceilingprice' + index).text())) < parseFloat(removeThousandSeperator($('#txtquote' + index).val()))) {
        
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Amount should be less than Bid start price')
         return false
     }
-    else if (value < parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "81") {
+    else if (value <= parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "81") {
         
        $('#spanamount' + index).removeClass('hide')
        $('#spanamount' + index).text('Maximum Bid  = Your last quote minus minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text())

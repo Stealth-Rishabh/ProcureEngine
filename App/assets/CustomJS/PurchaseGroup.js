@@ -10,7 +10,10 @@ $(document).ready(function () {
 function onGroupSaveClick() {
     var str = $('#txtPurchaseGroup').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
-        alert('Special characters not allowed.');
+        $("#errormsg").text("Special characters not allowed.");
+        $("#errordiv1").show();
+        $("#errordiv1").fadeOut(5000)
+      
         return false;
     }
     if (ValidatePurchaseGroup()) {
@@ -95,7 +98,7 @@ function bindPurchaseGroupData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><a href="#" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.groupName + '</td><td>' + value.orgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.groupName + '</td><td>' + value.orgName + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -201,7 +204,10 @@ $("#searchPop-up").keyup(function () {
 function onSave() {
     var str = $('#txtPurchaseOrg').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
-        alert('Special characters not allowed.');
+        $('.alert-danger').show();
+        $('#error').text('Special characters not allowed.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
         return false;
     }
     if (Validate()) {
@@ -224,7 +230,7 @@ function BindData() {
 
         if (res.result.length > 0) {
             $('#searchPop-up').show();
-            $('#tblmodelPurchaseOrg').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Purchase Org.</th><th>Status</th></tr></thead>');
+            $('#tblmodelPurchaseOrg').append('<thead><tr><th style="width:10%!important">Sr#</th><th style="width:10%!important">Actions</th><th>Purchase Org.</th><th>Status</th></tr></thead>');
 
             $.each(res.result, function (key, value) {
                 console.log(value);
@@ -233,7 +239,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblmodelPurchaseOrg').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><a href="#" onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></a></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblmodelPurchaseOrg').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;"  onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -255,6 +261,7 @@ function Validate() {
         $("#txtmodelPurchaseOrg").css("border-color", "red");
         $("#errormsg").text("Purchase Org is required");
         $("#errordiv1").show();
+        $("#errordiv1").fadeOut(5000)
         nfaText = true;
     }
     else {

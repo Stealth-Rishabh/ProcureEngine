@@ -292,8 +292,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding: 10px 5px;">
-                                                        <div class="col-md-offset-4 col-md-12" style="text-align: center">
+                                                    <div class="form-group" style="padding: 8px 5px;">
+                                                        <div class="col-md-offset-2 col-md-12" style="text-align: center">
                                                             <button id="btnPPCF" type="button" class="btn green-haze" data-toggle="modal" onclick="fetchAzPPcFormDetails()" href="#PPCForm">
                                                                 PPC Form
                                                             </button>
@@ -305,6 +305,9 @@
                                                             </button>
                                                             <button id="btnCancelbidAdmin" type="button" class="btn red">
                                                                 Cancel Bid
+                                                            </button>
+                                                            <button id="brnaddapprovers" type="button" class="btn yellow-saffron" data-toggle="modal" onclick="fnOpenPopupBidApprover()" href="#addapprovers">
+                                                                Add Approvers &nbsp;<i class="fa fa-user"></i>
                                                             </button>
                                                             <button id="btnbackAdmin" type="submit" class="btn yellow">
                                                                 Back
@@ -1248,7 +1251,7 @@
                                             <span class="btn blue" style="width:350px!important"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
                                             &nbsp;<button type="button" id="Addbtn1" onclick="addmoreattachments()" class="btn green-haze"><i class="fa fa-plus"></i></button>
                                         </div>
-                                        
+
 
                                     </div>
                                 </div>
@@ -1270,6 +1273,75 @@
                                             <div class="col-md-offset-5 col-md-9">
                                                 <button type="submit" class="btn green" id="btnsubmit">Submit</button>
                                                 <button type="button" class="btn yellow-crusta" onclick="fnclosepopupPPC()" id="btnClose">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addapprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Add Approvers
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="alert alert-success" id="successapp" style='display: none;'>
+                            <span id="spansuccessapp"> </span>
+                        </div>
+                        <div class="alert alert-danger" id="diverrorapp" style='display: none; '>
+                            <span id="spandangerapp"> </span>
+                        </div>
+                        <form action="#" id="frmApprover" class="form-horizontal" role="form">
+
+                            <div class="form-body">
+                                <input type="hidden" id="hdnBidApproverID" value="0" />
+                                <input type="hidden" id="hdnBidApproverEmailID" value="0" />
+                                <input type="hidden" id="hdnBidApproverusername" value="0" />
+
+                                <div class="row">
+                                    <label class="col-md-3 control-label">
+                                        Select Approvers
+                                    </label>
+                                    <label class="col-md-7">
+                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApproverBid"
+                                               data-provide="typeahead" autocomplete="off" name="txtApproverBid" />
+                                    </label>
+                                    <div class="col-md-1 ">
+                                        <button type="button" id="Addbtn1" onclick="addBidApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-hover" id="tblBidapprovers"></table>
+
+                                    </div></div>
+                                </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-offset-4 col-md-9">
+                                                <button type="submit" class="btn green" id="btnbidapproversubmit">Submit</button>
+                                                <button type="button" class="btn yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
 
                                             </div>
                                         </div>

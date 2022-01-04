@@ -364,23 +364,24 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
     
     jQuery.unblockUI();
 }
-function fetchRFIDetails() {
+function fetchVQDetails() {
     var attachment = ''
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFIID=" + sessionStorage.getItem('CurrentRFIID') + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('hddnRFQRFIID') ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
-            attachment = BidData[0].RFIMaster[0].RFIAttachment.replace(/\s/g, "%20")
            
-            jQuery('#RFISubject').val(BidData[0].RFIMaster[0].RFISubject)
-            jQuery('#RFIDeadline').val(BidData[0].RFIMaster[0].RFIDeadline)
-            jQuery('#RFIDescription').val(BidData[0].RFIMaster[0].RFIDescription)
+            attachment = BidData[0].vqMaster[0].vqAttachment.replace(/\s/g, "%20")
+           
+            jQuery('#RFISubject').text(BidData[0].vqMaster[0].vqSubject)
+            jQuery('#RFIDeadline').text(BidData[0].vqMaster[0].vqDeadline)
+            jQuery('#RFIDescription').text(BidData[0].vqMaster[0].vqDescription)
 
         },
         error: function (xhr, status, error) {
@@ -395,7 +396,7 @@ function fetchRFIDetails() {
     });
 
 }
-function fetchVQDetails(){
+function fetchRFIDetails(){
     var attachment = ''
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -498,30 +499,31 @@ function acceptBidTermsAuction() {
         }
     });
 }
-function acceptBidTermsRFIRFQ() {
+function acceptBidTermsRFIVQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorID = 0;
    
     vendorID = sessionStorage.getItem('VendorId');
-    
+   
     var acceptTerms = {
-        "RFQRFIID": _Bidtype+'-'+sessionStorage.getItem('hddnRFQRFIID'),
-        "VID": vendorID
+        "VQRFIID": _Bidtype + '-' + sessionStorage.getItem('hddnRFQRFIID'),
+        "VID": parseInt(vendorID)
     };
-    // alert(JSON.stringify(acceptTerms))
+    
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTermsRFIRFQ/",
+        url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTermsRFIVQ/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
-            if (data[0].IsSuccess == 'Y') {
-                window.location = data[0].URL
+           
+            if (data.isSuccess == 'Y') {
+                window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
+            alert('error')
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
            
             if (xhr.status == 401) {
@@ -1030,7 +1032,7 @@ function formvalidate() {
                     eRFQAcceptBidTerms();
 
                 } else {
-                    acceptBidTermsRFIRFQ();
+                    acceptBidTermsRFIVQ();
                 }
                
             }

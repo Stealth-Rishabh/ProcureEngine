@@ -241,6 +241,9 @@ function fetchDashboardData() {
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
                         $('#icon' + i).addClass('fa fa-envelope-o');
                     }
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'NFA') {
+                        $('#icon' + i).addClass('fa fa-edit');
+                    }
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
                         $('#icon' + i).addClass('fa fa-envelope-o');
                     }
@@ -284,6 +287,9 @@ function fetchDashboardData() {
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFQ') {
                         $('#iconbid_all' + i).addClass('fa fa-envelope-o');
                     }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'NFA') {
+                        $('#iconbid_all' + i).addClass('fa fa-edit');
+                    }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'eRFQ') {
                         $('#iconbid_all' + i).addClass('fa fa-envelope-o');
                     }
@@ -317,7 +323,12 @@ function fetchDashboardData() {
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbid" + i + "></i></div></div>";
                     str += "<div class='cont-col2'><div class='desc'>" + BidData[0].todayBidStatus[i].activityDescription + "&nbsp;&nbsp;";
-                    str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
+                    if (BidData[0].todayBidStatus[i].status == "C") {
+                        str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new query</span>";
+                    }
+                    else {
+                        str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
+                    }
                     str += "</div></div></div></div>";
                     str += "<div class='col2' style='width: 105px !important; margin-left:-105px !important;'>";
                     str += "<div class='date1'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
@@ -336,7 +347,9 @@ function fetchDashboardData() {
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'eRFQ') {
                         $('#iconbid' + i).addClass('fa fa-envelope-o');
                     }
-
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'NFA') {
+                        $('#iconbid' + i).addClass('fa fa-edit');
+                    }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'Forward Auction') {
                         $('#iconbid' + i).addClass('fa fa-forward');
                     }
@@ -439,6 +452,9 @@ function fetchBidDataDashboard(requesttype) {
                         else if (BidData[i].bidTypeName == 'Coal Auction') {
                             $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');
                         }
+                        else if (BidData[i].bidTypeName == 'NFA') {
+                            $('#iconbidd' + i).addClass('fa fa-edit');
+                        }
                     }
                 }
                 else {
@@ -476,6 +492,9 @@ function fetchBidDataDashboard(requesttype) {
                         else if (BidData[i].bidTypeName == 'Reverse Auction') {
 
                             $('#iconbidd' + i).addClass('fa fa-gavel');
+                        }
+                        else if (BidData[i].bidTypeName == 'NFA') {
+                            $('#iconbidd' + i).addClass('fa fa-edit');
                         }
                         else if (BidData[i].bidTypeName == 'Coal Auction') {
                             $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');

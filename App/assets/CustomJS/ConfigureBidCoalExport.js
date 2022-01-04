@@ -14,7 +14,7 @@ jQuery(document).ready(function () {
         'removeMaskOnSubmit': true
     });
 });
-$('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,#txtquantitiy,.maxlength').maxlength({
+$('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
@@ -512,7 +512,7 @@ var FormWizard = function () {
                     },
                     txtquantitiy: {
                         required:true,
-                        maxlength: 9,
+                        //maxlength: 9,
                         number: true,
                         notEqualTo: 0
                     },

@@ -39,6 +39,11 @@ else if (AppType == "C" && FwdTo == 'Admin' && AppStatus == 'Reverted') {
     jQuery("#divRemarksAwarded").hide();
     jQuery("#divRemarksForward").show();
 }
+else if (AppType == "NFA") {
+    $('#divRemarksAppComm').hide()
+    jQuery("#divRemarksAwarded").hide();
+    $('#divRemarksAppTech').hide()
+}
 else {
     $('#divRemarksAppComm').hide()
     $('#divRemarksAppTech').show()
@@ -130,8 +135,8 @@ function getSummary(vendorid, version) {
 
 function fetchrfqcomprative() {
     var url = '';
-  
-    if (VID != undefined && VID!='' && VID!=null ) {
+
+    if (VID != undefined && VID != '' && VID != null && VID.toLowerCase()!='nfa') {
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
     }
     else {
@@ -641,8 +646,9 @@ function fetchrfqcomprative() {
 
               
                 // Technical Approver Row
-                if (AppType != 'C') {
-                    strQ += "<tr><td><b>Technical Approval</b></td>";
+                strQ += "<tr><td><b>Technical Approval</b></td>";
+                if (AppType == 'T') {
+                   
                     if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                         strQ += "<td>After All RFQ Responses</td>"
                     }
@@ -654,21 +660,41 @@ function fetchrfqcomprative() {
                     }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
                         //strQ += "<td style='text-align:center;'><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  /> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
-                        strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID +')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
-                        
+                        strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
+
                     }
                     strQ += "</tr>"
-                }
 
-                strQ += "<tr><td colspan=2></td>";
-                for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    strQ += '<td style="text-align:center;"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery' + data[0].vendorNames[k].vendorID + '  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID + ')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a>&nbsp; <span id=querycount' + data[0].vendorNames[k].vendorID+' ></span></td>'
+
+                    strQ += "<tr><td colspan=2></td>";
+                    for (var k = 0; k < data[0].vendorNames.length; k++) {
+                        strQ += '<td style="text-align:center;"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery' + data[0].vendorNames[k].vendorID + '  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID + ')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a>&nbsp; <span id=querycount' + data[0].vendorNames[k].vendorID + ' ></span></td>'
+                    }
+                    strQ += "</tr>";
                 }
-                strQ += "</tr>";
+                else {
+                   
+                    t = 0;
+                    for (var k = 1; k <= data[0].vendorNames.length; k++) {
+                        t = k;
+                    }
+                    
+                    if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+                        strQ += "<td colspan=" + (t) + ">After All RFQ Responses</td>"
+                    }
+                    else if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "rfq") {
+                        strQ += "<td colspan=" + (t) + ">With Indivisual RFQ Response</td>"
+                    }
+                    else {
+                        strQ += "<td colspan=" + (t) + ">Not Required</td>"
+                    }
+                    strQ += "</tr>"
+
+                }
+                
 
                 //For Blank Row after question table 
                 strQ += "<tr>";
-               
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
                      t = k;
@@ -697,7 +723,7 @@ function fetchrfqcomprative() {
 
                         if (flag3 == 'T') {
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + data[0].approverStatus[p].remarks + "</td>";
+                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") +"</td>";
                            
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
 
