@@ -295,7 +295,7 @@ var FormWizard = function () {
 
                     error.hide();
                     var ulrlength = countWords($('#txturlextension').val());
-                    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                    var format = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]+/;
 
                    
                     if (index == 1) {
@@ -435,17 +435,6 @@ function fillCountryDropDown(dropdownID, countryid) {
         }
       });
 }
-$('#chkIsunlimitedbids').on('click', function (e) {//ifChanged
-   
-    if ($('#chkIsunlimitedbids').is(':checked')) {
-        $('#divunlimitedbids').addClass('hide')
-        $('#txtnobids').removeAttr('required');
-    }
-    else {
-        $('#divunlimitedbids').removeClass('hide')
-        $('#txtnobids').attr('required');
-    }
-})
 function fillStateDropDown(dropdownID, stateid) {
 
     var countryid = '0';
@@ -544,6 +533,7 @@ function fillCityDropDown(dropdownID, cityid) {
 
     });
 }
+
 function FetchCurrency(CurrencyID) {
     jQuery.ajax({
         type: "GET",
@@ -745,7 +735,7 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            alert(data.isSuccess)
+           
             if (data.isSuccess == '1') {
                 sessionStorage.setItem("hdnCustomerID", data.customerID)
                 sessionStorage.setItem("hdnAdminID", data.adminID)
@@ -756,6 +746,13 @@ function ins_updCustomer() {
                 fnFetchMenusonRoleBased();
                 return true;
                
+            }
+           else if (data.isSuccess == '2') {
+                error.hide();
+                success.hide();
+                fnFetchMenusonRoleBased();
+                return true;
+
             }
             else if (data.isSuccess == '-1') {
                 
@@ -1061,26 +1058,19 @@ function fileUploader(CustomerName) {
 
     formData.append("fileTerms", fileDataTerms);
     formData.append("AttachmentFor", "Customer");
-    formData.append("CustomerName", CustomerName);
+    formData.append("CustomerName", CustomerName.trim());
    
-     $.ajax({
+    $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',
-
         data: formData,
-
         processData: false,
-
         contentType: false,
-
         asyc: false,
-
         type: 'POST',
-
         success: function (data) {
             jQuery.unblockUI();
         },
-
         error: function () {
 
             bootbox.alert("Attachment error.");

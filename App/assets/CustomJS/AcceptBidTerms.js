@@ -48,9 +48,10 @@ function acceptBidTerms() {
 	
     var acceptTerms = {
         "BidID": sessionStorage.getItem('BidID'),
-        "VendorID": vendorID
+        "VendorID": vendorID,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   // alert(JSON.stringify(acceptTerms))
+   alert(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         type: "POST",
@@ -77,7 +78,8 @@ function acceptBidTermsRFIRFQ() {
    
     var acceptTerms = {
         "RFQRFIID": sessionStorage.getItem('RFQRFIId'),
-        "VID": vendorID
+        "VID": vendorID,
+         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
   
     jQuery.ajax({

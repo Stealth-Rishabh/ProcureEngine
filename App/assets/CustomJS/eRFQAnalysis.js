@@ -1157,7 +1157,8 @@ function fnSendActivityToCommercial() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Forward",
         "Action": 'Forward',
-        "Vendors": ''
+        "Vendors": '',
+        "AwardQuery": ''
     }
 
     jQuery.ajax({

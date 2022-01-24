@@ -403,7 +403,7 @@ function InsUpdRFQDEtailTab1() {
         "RFQApprovers": ''
 
     };
-    //alert(JSON.stringify(Tab1Data))
+   alert(JSON.stringify(Tab1Data))
    // console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
@@ -1271,7 +1271,7 @@ function resetpasswordForBidVendor() {
     else {
       
         jQuery.ajax({
-            url: APIPath + "eRFQReport/ResetPasswordeRFQ/?VendorEmail=" + sessionStorage.getItem("hdnselectedEmail") + "&RFQID=" + sessionStorage.getItem("hdnrfqid") + "&VendorID=" + sessionStorage.getItem("hdnselectedvendor") + "&UserId=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+            url: APIPath + "eRFQReport/ResetPasswordeRFQ/?VendorEmail=" + sessionStorage.getItem("hdnselectedEmail") + "&RFQID=" + sessionStorage.getItem("hdnrfqid") + "&VendorID=" + sessionStorage.getItem("hdnselectedvendor") + "&UserId=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&CustomerID=" + sessionStorage.getItem("CustomerID") ,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             data: "{}",
             type: "GET",
@@ -1391,7 +1391,8 @@ function openVendorsQuotes() {
             "QueryString": checkedValue,
             "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
             "VersionID": parseInt($('#ddlrfqVersion').val()),
-            "UserID": sessionStorage.getItem("UserID")
+            "UserID": sessionStorage.getItem("UserID"),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
         
         jQuery.ajax({
@@ -1514,9 +1515,10 @@ function sendremainderstoparicipants() {
         var data = {
             "QueryString": checkedValue,
             "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
-            "UserID": sessionStorage.getItem("UserID")
+            "UserID": sessionStorage.getItem("UserID"),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-     //    alert(JSON.stringify(data))
+       //  alert(JSON.stringify(data))
         jQuery.ajax({
             url: APIPath + "eRFQReport/SendRemainderToParticipanteRFQ",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1658,7 +1660,8 @@ function invitevendors() {
             "UserID": sessionStorage.getItem('UserID'),
             "subject": '',
             "Deadline": '',
-            "RFQDescription": ''
+            "RFQDescription": '',
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
     
         jQuery.ajax({
@@ -1829,9 +1832,10 @@ function saveBidSurrogate() {
         "Reason": $("#bidSurrogateReason").val(),
         "vendorEmailId": sessionStorage.getItem("hdnselectedEmail"),
         "vendorID": parseInt(sessionStorage.getItem("hdnselectedvendor")),
-        "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid')
+        "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-   // alert(JSON.stringify(Data))
+    alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         jQuery.ajax({

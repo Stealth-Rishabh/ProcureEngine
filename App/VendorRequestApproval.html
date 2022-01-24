@@ -1,0 +1,1538 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Sourcing Portal</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <meta content="" name="description" />
+
+    <meta content="" name="author" />
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
+          rel="stylesheet" type="text/css" />
+
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+
+
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
+          type="text/css" />
+
+   
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+
+
+</head>
+
+
+
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed  page-full-width">
+
+    <div class="page-header navbar navbar-fixed-top">
+
+        <div class="page-header-inner">
+
+            <div class="page-logo">
+
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+
+                </a>
+
+
+
+            </div>
+
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+
+            </a>
+
+            <div class="top-menu">
+
+                <!--<ul class="nav navbar-nav pull-right">
+
+                    <li class="dropdown dropdown-user">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+
+                           data-hover="dropdown" data-close-others="true">
+
+                            <img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />
+
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+
+                            </span><i class="fa fa-angle-down"></i>
+
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>-->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="clearfix">
+
+    </div>
+
+    <div class="page-container" style="display:none">
+
+        <!-- BEGIN SIDEBAR -->
+
+        <div class="page-sidebar-wrapper">
+
+            <div class="page-sidebar navbar-collapse collapse">
+
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+
+                    <li class="sidebar-toggler-wrapper">
+
+                        <div class="sidebar-toggler hidden-phone">
+
+                        </div>
+
+                    </li>
+
+                    <br />
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="page-content-wrapper">
+
+            <div class="page-content">
+
+                <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                                <h4 class="modal-title">
+
+                                    Modal title
+
+                                </h4>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                Widget settings form goes here
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn yellow">
+
+                                    Save changes
+
+                                </button>
+
+                                <button type="button" class="btn default" data-dismiss="modal">
+
+                                    Close
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page-bar">
+
+                    <ul class="page-breadcrumb">
+
+                        <li>
+
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+
+                            </i>
+
+                        </li>
+
+
+
+                        <li><a href="#">Vendor Registration</a> </li>
+
+                    </ul>
+
+                    <div class="page-toolbar">
+
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="portlet box blue-hoki" id="form_wizard_1">
+
+                            <div class="portlet-title">
+
+                                <div class="caption">
+
+                                    <i class="fa fa-gift"></i>Vendor Registration
+
+                                </div>
+                                <div class="actions" style="display:flex; align-items:center;"><button class="btn blue tooltips" style="margin-right:10px;" type="button" id="btnExport" onclick="window.print()" data-placement="left" data-original-title="Print"> Print </button> <a class="btn green button-approve" style="margin-right:10px;" onclick="ApproveRFI('A')"> <i class="fa fa-check" style="margin-top: 1px;"></i> Approve </a> <a href="#rejectionReason" class="btn red button-reject" style="margin-right:10px;" data-toggle="modal">  <i class="fa fa-times" style="margin-top: -1px;"></i> Reject </a> <a href="#parkReason" class="btn yellow button-reject" data-toggle="modal">  <i class="fa fa-times" style="margin-top: -2px;"></i> Park </a></div>
+
+                            </div>
+
+                            <div class="portlet-body form">
+
+                                <form action="#" class="form-horizontal" id="submit_form" method="POST">
+
+                                   
+
+                                    <div class="form-body">
+
+                                        <div class="tab-pane" id="tab1">
+
+                                            <div class="panel-group accordion" id="accordion1">
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading">
+
+                                                        <h4 class="panel-title">
+
+                                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">Company Details </a>
+
+                                                        </h4>
+
+                                                    </div>
+                                                    <div id="collapse0" class="panel-collapse collapse in">
+
+                                                        <div class="panel-body">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                GST Vendor Class
+
+                                                                            </label>
+
+                                                                            <div class="col-md-2">
+
+                                                                                <label class="control-label" style="text-align:left" id="gstvendorclass" name="gstvendorclass">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                GST No
+
+                                                                            </label>
+
+                                                                            <div class="col-md-4">
+
+                                                                                <label class="control-label" id="gstno" name="gstno">
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="control-label col-md-3" style="text-align:left">
+                                                                            Attach GST REG 06GST certificate
+                                                                        </label>
+
+                                                                        <div class="col-md-3">
+
+                                                                            <!--<label class="control-label" id="gstattach" name="gstattach">
+
+
+                                                                            </label> -->
+
+                                                                            <ul style="list-style:none; display:grid;padding-left:0px;" id="gstattach"></ul>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Nature of Establishment
+
+                                                                        </label>
+
+                                                                        <div class="col-md-3 sigleSelect">
+                                                                            <label class=" control-label" id="natureofest" name="natureofest">
+
+
+                                                                            </label>
+                                                                        </div>
+
+
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-2 control-label">
+
+                                                                                Select Vendor Type
+
+                                                                            </label>
+
+                                                                            <div class="col-md-2">
+
+                                                                                <label class="control-label" id="vendortype" name="vendortype">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Type of Product
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="typeofproduct" name="typeofproduct">
+
+
+
+                                                                            </label>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Product
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="product" name="product">
+
+
+
+                                                                            </label>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Title
+
+                                                                        </label>
+
+                                                                        <div class="col-md-2">
+
+                                                                            <label class="control-label" id="title" name="title">
+
+
+
+                                                                            </label>
+
+                                                                        </div>
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                Company Name
+
+                                                                            </label>
+
+                                                                            <div class="col-md-4">
+
+                                                                                <label class="control-label" id="companyname" name="companyname">
+
+
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Address 
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="address" name="address">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                Country
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="country" name="country">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                State
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="state" name="state">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            City
+
+                                                                        </label>
+
+                                                                        <div class="col-md-3">
+
+                                                                            <label class="control-label" id="city" name="city">
+
+
+
+                                                                            </label>
+
+                                                                        </div>
+
+
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                PIN Code
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="pincode" name="pincode">
+
+                                                                                    Supply vendor
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading">
+
+                                                        <h4 class="panel-title">
+
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">Accounting Details</a>
+
+                                                        </h4>
+
+                                                    </div>
+                                                    <div id="collapse1" class="panel-collapse collapse" seqno="2" style="height: 0px;">
+
+                                                        <div class="panel-body">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <!--<ul style="list-style:none; padding-left:inherit;" id="tblAttachmentsElem">
+
+                                                                        <li>-->
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="control-label col-md-3" style="text-align:left">
+
+                                                                                PAN
+
+                                                                            </label>
+
+                                                                            <div class="col-md-4">
+
+                                                                                <label class="control-label" id="panno" name="panno">
+
+
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                            <div class="col-md-3">
+                                                                                <label class="control-label" id="panfilename" name="panfilename">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+
+
+                                                                        </div>
+
+                                                                        <!--</li>
+
+                                                                        </ul>-->
+
+
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Type of TDS
+
+                                                                        </label>
+
+                                                                        <div class="col-md-3">
+
+                                                                            <label class="control-label" id="TDStype" name="TDStype">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                TAN No
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="tanno" name="tanno">
+
+
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+
+
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Payment Terms
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="paymentterms" name="paymentterms">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Name of Bank
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+                                                                            <label class="control-label" id="bankname" name="bankname">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Bank A/c No
+
+                                                                        </label>
+
+                                                                        <div class="col-md-3">
+
+                                                                            <label class="control-label" id="bankaccountno" name="bankaccountno">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                IFSC Code
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="ifsccode" name="ifsccode">
+
+
+
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Account Holder Name
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="accountholdername" name="accountholdername">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading">
+
+                                                        <h4 class="panel-title">
+
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">Contact details</a>
+
+                                                        </h4>
+
+                                                    </div>
+                                                    <div id="collapse2" class="panel-collapse collapse" seqno="3" style="height: 0px;">
+
+                                                        <div class="panel-body">
+
+                                                            <div class="row">
+
+
+                                                                <div class="col-lg-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Primary Contact Detail</h4>
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Name
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="primaryname" name="primaryname">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Mobile No
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="primarymobile" name="primarymobile">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Email ID
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="primaryemail" name="primaryemail">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Alternate Contact Detail</h4>
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Name
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="altname" name="altname">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Mobile No
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="altmobile" name="altmobile">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <div class="form-group">
+
+                                                                                <div class="col-lg-12">
+
+                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                        Email ID
+
+                                                                                    </label>
+
+                                                                                    <div class="col-md-9">
+
+                                                                                        <label class="control-label" id="altemail" name="altemail">
+
+
+
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading">
+
+                                                        <h4 class="panel-title">
+
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">Business Detail</a>
+
+                                                        </h4>
+
+                                                    </div>
+                                                    <div id="collapse3" class="panel-collapse collapse" seqno="4" style="height: 0px;">
+
+                                                        <div class="panel-body">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                                MSME
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="msme" name="msme">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                MSME Class
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="msmeclass" name="msmeclass">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            MSME Udyam No.
+
+                                                                        </label>
+
+                                                                        <div class="col-md-3">
+
+                                                                            <label class="control-label" id="msmeno" name="msmeno">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+
+
+                                                                        <div class="inputgroup">
+
+                                                                            <label class="col-md-3 control-label">
+
+                                                                                Attach MSME Udyam certificate
+
+                                                                            </label>
+
+                                                                            <div class="col-md-3">
+
+                                                                                <label class="control-label" id="msmeattach" name="msmeattach">
+
+
+
+                                                                                </label>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <div class="col-lg-11">
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            Last FY Turn Over (INR)
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="lastFY" name="lastFY">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+
+
+
+
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+
+                                                                            2nd Last FY Turn Over (INR)
+
+                                                                        </label>
+
+                                                                        <div class="col-md-9">
+
+                                                                            <label class="control-label" id="seclastFY" name="seclastFY">
+
+
+
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                          
+
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+                <!-- END PAGE CONTENT-->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="page-footer">
+
+        <div class="page-footer-inner">
+
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+
+
+
+        </div>
+
+        <div class="scroll-to-top">
+
+            <i class="icon-arrow-up"></i>
+
+        </div>
+
+    </div>
+
+
+    <div id="rejectionReason" class="modal fade" tabindex="-1" aria-hidden="true">
+        <!--bs-modal-lg in-->
+        <div class="modal-dialog">
+            <!--modal-lg-->
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-cogs"></i>Reject VR
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="alert alert-success" style='display: none;'>
+                        <span id="spansuccess"> </span>
+                    </div>
+                    <div class="alert alert-danger" style='display: none;'>
+                        <span id="spandanger"> </span>
+                    </div>
+                    <form class="form-horizontal" id="rejectionForm" role="form" action="#">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Rejection Reason</label>
+
+                                <div class="col-md-9">
+                                    <textarea class="form-control " id="txtrejectreason" name="txtrejectreason" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-actions fluid">
+                                    <div class="row">
+                                        <div class="col-md-offset-4 col-md-9">
+                                            <button type="submit" onclick="ApproveRFI('R')" class="btn blue">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="parkReason" class="modal fade" tabindex="-1" aria-hidden="true">
+        <!--bs-modal-lg in-->
+        <div class="modal-dialog">
+            <!--modal-lg-->
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-cogs"></i>Park VR
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="alert alert-success" style='display: none;'>
+                        <span id="spansuccess"> </span>
+                    </div>
+                    <div class="alert alert-danger" style='display: none;'>
+                        <span id="spandanger"> </span>
+                    </div>
+                    <form class="form-horizontal" id="rejectionForm" role="form" action="#">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Park Reason</label>
+
+                                <div class="col-md-9">
+                                    <textarea class="form-control " id="txtparkreason" name="txtparkreason" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-actions fluid">
+                                    <div class="row">
+                                        <div class="col-md-offset-4 col-md-9">
+                                            <button type="submit" onclick="ApproveRFI('P')" class="btn blue">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="portlet box blue">
+
+                <div class="portlet-title">
+
+                    <div class="caption">
+
+                        <i class="fa fa-reorder"></i>Help
+
+                    </div>
+
+                    <div class="tools">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                    </div>
+
+                </div>
+
+                <div class="portlet-body form">
+
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+
+                        <button class="close" data-close="alert"></button>
+
+                        <span id="errormsg"></span>
+
+                    </div>
+
+                    <div class="alert alert-success display-hide" id="successdiv1">
+
+                        <button class="close" data-close="alert"></button>
+
+                        <span id="successmsg"></span>
+
+                    </div>
+
+                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
+
+                        <p class="ppolicy-text">
+
+                            Using this page user can define VQ details and invite vendors to respond before specified deadline.<br />
+
+                            There are three steps to complete this process. All the mandatory information is marked with * sign.
+
+                        </p>
+
+                        <p class="ppolicy-text">Details required at every step are given below: </p>
+
+                        <p class="ppolicy-text"><b>Step -1: "VQ Details"–</b>In this step user needs to fill all generic information related to VQ.  Individual columns with their relevance are given below</p>
+
+                        <ul>
+
+                            <li><b>VQ Subject: </b>Meaningful short subject for the VQ. This is used as a subject for all related email notifications & reports.</li>
+
+                            <li><b>VQ Deadline: </b>Date before which response should reach to company representative.</li>
+
+                            <li><b>VQ description: </b>Detailed information about the VQ.</li>
+
+                            <li><b>Attachment: </b>You can give attachment description and upload related supporting document.</li>
+
+
+
+                        </ul><br />
+
+
+
+                        <p class="ppolicy-text">Once all mandatory details are filled click on Continue to move to next step.</p><br />
+
+
+
+                        <p class="ppolicy-text"><b>Step-2: "VQ Questions"–</b>In this step user needs to select relevant questions from following areas.</p>
+
+                        <ul style="list-style: none ;">
+
+                            <li><b>a. </b>Company Information</li>
+
+                            <li><b>b. </b>Financial Information</li>
+
+                            <li><b>c. </b>Company Capabilities</li>
+
+                            <li><b>d. </b>Technical Information</li>
+
+
+
+                        </ul><br />
+
+                        <p class="ppolicy-text">In every category user can select predefined questions or if required create a new question which can be grouped by using question subcategory. User can also mark questions as mandatory and can specify if supporting document is required.</p>
+
+                        <p class="ppolicy-text"><b>Step-3: "Invite Vendor"–</b>You can define company name,email,mobile no, contact person and then click on add button to add more vendors. Click on submit button once all vendors are added.</p>
+
+                        <p class="ppolicy-text">When clicked on “Submit” system will send email alert having login id, password and VQ specific details to selected vendors at their company’s email id.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+
+
+    <script src="assets/CustomJS/VQ.js" type="text/javascript"></script>
+
+    <script src="assets/CustomJS/VendorRegistrationRequest.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/VendorRegistrationView.js" type="text/javascript"></script>
+
+
+
+    <script>
+
+        jQuery(document).ready(function () {
+
+            Pageloaded()
+            debugger;
+            var param = getUrlVars()["param"];
+            var decryptedstring = fndecrypt(param);
+            var _tmpVendorID = getUrlVarsURL(decryptedstring)["tmpVendorID"];
+
+
+
+            if (_tmpVendorID == null) {
+                sessionStorage.setItem('tmpVendorID', 0)
+
+            } else {
+                sessionStorage.setItem('tmpVendorID', _tmpVendorID);
+                fetchVendorRegistrationDetails();
+            }
+
+            setInterval(function () { Pageloaded() }, 15000);
+
+            if (sessionStorage.getItem("UserType") == "E") {
+
+                $('.page-container').show();
+
+            }
+
+           
+
+            Metronic.init();
+
+            Layout.init();
+
+            var _VQID;
+            if (window.location.search) {
+                var param = getUrlVars()["param"]
+                 var decryptedstring = fndecrypt(param)
+                _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+
+            }
+
+            fetchVendorRegistrationDetails();
+            ComponentsPickers.init();
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

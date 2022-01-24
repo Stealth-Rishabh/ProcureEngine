@@ -3,31 +3,44 @@
     var decryptedstring = fndecrypt(param)
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
     var AppType = getUrlVarsURL(decryptedstring)["AppType"];
-    
+    var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
-
-if (AppType == "P" && AppStatus != 'Reverted') {
+   
+    if (AppType == "P" && AppStatus != 'Reverted' && AppStatus != 'Award') {
     $('#btn_fillPPCForm').hide(); 
     $('#btn_mapaaprover').hide();
     $('#divRemarksAppComm').show();
     $('#divRemarksForward').hide();
+    $('#divRemarksAwarded').hide();
 }
 else if (AppType == "P" && AppStatus == 'Reverted') {
     $('#btn_fillPPCForm').hide();
     $('#btn_mapaaprover').hide();
     $('#divRemarksAppComm').hide();
     $('#divRemarksForward').show();
+    $('#divRemarksAwarded').hide();
+
 }
 else if (AppType == "C" && AppStatus == 'Approved') {
     $('#btn_fillPPCForm').hide();
     $('#btn_mapaaprover').hide();
     $('#divRemarksAppComm').hide();
     $('#divRemarksForward').show();
+    $('#divRemarksAwarded').hide();
+}
+else if (AppStatus == "Award" && FwdTo == 'Admin') {
+    $('#btn_fillPPCForm').hide();
+    $('#btn_mapaaprover').hide();
+    $('#divRemarksAppComm').hide();
+    $('#divRemarksForward').hide();
+    $('#divRemarksAwarded').show();
 }
 else {
     $('#btn_fillPPCForm').show();
     $('#btn_mapaaprover').show();
     $('#divRemarksAppComm').hide();
+    $('#divRemarksAwarded').hide();
+
 }
 if (sessionStorage.getItem('IsObserver') == "Y") {
     $('#btn_fillPPCForm').hide();
@@ -51,19 +64,7 @@ if (sessionStorage.getItem('IsObserver') == "Y") {
 
 }
 
-function stringDivider(str, width, spaceReplacer) {
-    if (str.length > width) {
-        var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
-        if (p > 0) {
-            var left = str.substring(0, p);
-            var right = str.substring(p + 1);
-            return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
-        }
-    }
-    return str;
-}
+
 function getSummary(vendorid, version) {
 
     var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=99&RFQVersionTxt=Final%20Version");
@@ -131,6 +132,8 @@ function fetchrfqcomprative() {
 
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
+                jQuery("#drpVendors").empty();
+                jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
                     if (data[0].vendorNames[i].seqNo != 0) {
@@ -140,6 +143,7 @@ function fetchrfqcomprative() {
 
                         strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;' style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
                         strHeadExcelQ += "<th>" + data[0].vendorNames[i].VName; +"</th>";
+                        jQuery("#drpVendors").append(jQuery("<option ></option>").val(data[0].vendorNames[i].vendorID).html(data[0].vendorNames[i].vName));
 
                     }
                     else {
@@ -335,8 +339,6 @@ function fetchrfqcomprative() {
                             }
 
                         }
-
-
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
@@ -1108,6 +1110,9 @@ jQuery("#txtApprover").typeahead({
 
 });
 var formApprover = $('#frmMapApprover');
+var formAward = $('#formAwardedsubmit')
+var errorawd = $('.alert-danger', formAward);
+var successawd = $('.alert-success', formAward);
 function formvalidate() {
  // Map Approver Validation
     formApprover.validate({
@@ -1140,6 +1145,59 @@ function formvalidate() {
             MapApprover();
         }
 
+    });
+    formAward.validate({
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+
+        rules: {
+
+            txtRemarksAward: {
+                required: true,
+            },
+            drpVendors: {
+                required: false
+            }
+        },
+        messages: {
+
+            txtRemarksAward: {
+                required: "Please enter your comment"
+            },
+            drpVendors: {
+                required: "Please enter your Vendor"
+            }
+        },
+
+        invalidHandler: function (event, validator) { //display error alert on form submit              
+            successawd.hide();
+            errorawd.show();
+            $('#diverrordiv2').hide();
+
+        },
+
+        highlight: function (element) { // hightlight error inputs
+            $(element)
+                .closest('.Input-group,.xyz').addClass('has-error'); // set error class to the control group
+        },
+
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element)
+                .closest('.Input-group,.xyz').removeClass('has-error'); // set error class to the control group
+        },
+
+        success: function (label) {
+            label
+                .closest('.Input-group,.xyz').removeClass('has-error'); // set success class to the control group
+        },
+
+        submitHandler: function (form) {
+
+            //AwardCommeRFQ();
+
+        }
     });
 }
 var rowApp = 0;
@@ -1375,10 +1433,10 @@ function fetchApproverRemarks() {
             $('#tblremarksapprover').empty()
             $('#tblremarksawared').empty()
             if (data.length > 0) {
-                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Pending On</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblremarksawared').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblapprovalprocess').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>For</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblremarksawared').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblapprovalprocess').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
                 if (AppStatus == 'Reverted') {
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
@@ -1386,7 +1444,7 @@ function fetchApproverRemarks() {
                     $('#frmdivremarksforward').addClass('col-md-6');
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                     }
                 }
@@ -1394,14 +1452,14 @@ function fetchApproverRemarks() {
                 $('#frmdivremarksapprover').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
                 $('#frmdivapprove').show()
                 $('#frmdivremarksawarded').removeClass('col-md-12');
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
                 $('#frmdivawarded').show()
@@ -1543,7 +1601,8 @@ function fnFWDeRFQ() {
         "RFQID": parseInt(RFQID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Forward",
-        "Action": 'Forward'
+        "Action": 'Forward',
+        "AwardQuery": ''
     }
     // alert(JSON.stringify(Approvers))
     jQuery.ajax({
@@ -1590,11 +1649,12 @@ function ApprovalCommercialApp() {
         "RFQID": parseInt(RFQID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Approver",
-        "Action": $('#ddlActionType').val()
+        "Action": $('#ddlActionType').val(),
+        "AwardQuery":''
     };
 
      
-    //console.log(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQPPCApprove",
@@ -1626,5 +1686,174 @@ function ApprovalCommercialApp() {
         }
 
     });
+}
+
+///---*** aawrd RFQ
+
+var rowitems = 0
+function addmorevendorRemarks() {
+    var str = '';
+
+    
+    $('#drpVendors').rules('add', {
+        required: true,
+    });
+    $('#txtRemarksAward').rules('add', {
+        required: true,
+    });
+    if (formAward.valid() == true) {
+
+        $('#divtableaward').show()
+        rowitems = rowitems + 1;
+        if (!jQuery("#tblremarksvendorsawared thead").length) {
+            jQuery('#tblremarksvendorsawared').append("<thead><tr><th class='bold'>Vendor</th><th class='bold'>Remarks</th><th></th></tr></thead>");
+            str = '<tr id=tr' + rowitems + '><td id=vid' + rowitems + ' class=hide>' + $("#drpVendors").val() + '</td><td style="width:20%!important">' + jQuery("#drpVendors option:selected").text() + '</td>';
+        }
+        else {
+            str = '<tr id=tr' + rowitems + '><td id=vid' + rowitems + ' class=hide>' + $("#drpVendors").val() + '</td><td style="width:20%!important">' + jQuery("#drpVendors option:selected").text() + '</td>';
+        }
+        str += '<td style="width:60%!important">' + jQuery("#txtRemarksAward").val() + '</td><td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteitem(tr' + rowitems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblremarksvendorsawared').append(str);
+
+        var arr = $("#tblremarksvendorsawared tr");
+
+        $.each(arr, function (i, item) {
+            var currIndex = $("#tblremarksvendorsawared tr").eq(i);
+            var matchText = currIndex.find("td:eq(0)").text();
+
+            $(this).nextAll().each(function (i, inItem) {
+                if (matchText == $(this).find("td:eq(0)").text()) {
+                    $(this).remove();
+                    $('#diverrordiv2').show()
+                    $('#errordiv2').text('Supplier is already selected')
+                    $('#diverrordiv2').fadeOut(5000)
+                }
+
+            });
+        });
+        jQuery("#drpVendors").val('')
+        jQuery('#txtRemarksAward').val('')
+
+
+    }
+    else {
+
+        formAward.validate()
+        return false;
+    }
+}
+function deleteitem(rowid) {
+
+    rowitems = rowitems - 1;
+    $('#' + rowid.id).remove();
+
+    if ($('#tblremarksvendorsawared tr').length == 1) {
+        $('#divtableaward').hide()
+    }
+    else {
+        $('#divtableaward').show()
+    }
+}
+function AwardCommeRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var vendors = '';
+    var rowCount = jQuery('#tblremarksvendorsawared tr').length;
+
+
+    if (rowCount > 1) {
+        $('#drpVendors').rules('add', {
+            required: false,
+        });
+        $('#txtRemarksAward').rules('add', {
+            required: false,
+        });
+    }
+    else {
+        if ($('#txtRemarksAward').val() == "" || $('#txtRemarksAward').val() == null) {
+            formAward.validate()
+            $('#drpVendors').rules('add', {
+                required: false,
+            });
+            $('#txtRemarksAward').rules('add', {
+                required: true
+            });
+        }
+    }
+    if (rowCount > 1) {
+        $("#tblremarksvendorsawared tr:gt(0)").each(function () {
+            var this_row = $(this);
+            vendors = vendors + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '#';
+
+        })
+    }
+    if (formAward.valid() == true) {
+        if ($('#txtRemarksAward').val() != '' && $('#drpVendors').val() != '') {
+            $('#diverrordiv2').show()
+            $('#errordiv2').text('Your data is not inserted. Please do press "+" button after enter Remarks.')
+            $('#diverrordiv2').fadeOut(5000)
+            jQuery.unblockUI();
+
+        }
+        else {
+            var approvalbyapp = {
+                "ApproverType": "P",
+                "FromUserId": sessionStorage.getItem('UserID'),
+                "Remarks": $('#txtRemarksAppC').val(),
+                "RFQID": parseInt(RFQID),
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+                "ActionType": "Approver",
+                "Action": $('#ddlActionType').val(),
+                "AwardQuery": ''
+            };
+            var approvalbyapp = {
+                "ApproverType": "P",
+                "FromUserId": sessionStorage.getItem('UserID'),
+                "Remarks": $('#txtRemarksAward').val(),
+                "RFQID": parseInt(RFQID),
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+                "ActionType": "Award",
+                "Action": "Awarded",
+                "AwardQuery": vendors
+            };
+
+
+            jQuery.ajax({
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQPPCApprove",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(approvalbyapp),
+                crossDomain: true,
+                dataType: "json",
+                success: function () {
+                    bootbox.alert("Transaction Successful..", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('error', '');
+                    }
+                    jQuery.unblockUI();
+                    return false;
+
+                }
+
+            });
+        }
+    }
+    else {
+        formAward.validate()
+        jQuery.unblockUI();
+        return false;
+    }
 }
 

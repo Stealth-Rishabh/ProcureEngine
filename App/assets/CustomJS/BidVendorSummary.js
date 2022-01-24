@@ -85,8 +85,16 @@ jQuery("#ddlBidtype").change(function () {
     if (BidTypeID == 6) {
         $('#opntionRFQ').addClass('hide')
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
-        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(RA)"));
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(RA)"));
+        
+    }
+    else if (BidTypeID == 7) {
+        $('#opntionRFQ').addClass('hide')
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
+        jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(FA)"));
+       
     }
     else {
         $('#opntionRFQ').removeClass('hide')

@@ -65,6 +65,8 @@ jQuery("#txtrfirfqsubject").typeahead({
             $('#hdnRfqID').val(map[item].rfqid);
             fetchReguestforQuotationDetails()
             fetchRFQApproverStatus(map[item].rfqid);
+            fetchRFQPPCApproverStatus(map[item].rfqid);
+            FetchRFQVersion();
             FetchRFQVersion();
             fetchAttachments();
             fetchApproverRemarks('C');
@@ -162,12 +164,12 @@ function fetchApproverRemarks(Type) {
             if (data.length > 0) {
                 $('#tblCommercialApproval').removeClass('hide')
                 $('#tblCommercialApprovalprev').removeClass('hide')
-                $('#tblCommercialApproval').append('<tr><th>Action Taken By</th><th>Pending On</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblCommercialApprovalprev').append('<tr><th>Action Taken By</th><th>Pending On</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+                $('#tblCommercialApproval').append('<tr><th>Action</th><th>For</th><th>Remarks</th><th  class=hide>Action Type</th><th>Date</th></tr>')
+                $('#tblCommercialApprovalprev').append('<tr><th>Action</th><th>For</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblCommercialApproval').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
-                    $('#tblCommercialApprovalprev').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblCommercialApproval').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblCommercialApprovalprev').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
             }
@@ -228,7 +230,8 @@ function ReInviteVendorsForRFQ() {
         "ExtendedDate": $("#txtextendDate").val(),
         "RFQSubject": $("#RFQSubject").html(),
         "UserID": sessionStorage.getItem("UserID"),
-        "ReInviteRemarks": $("#txtReInviteRemarks").val()
+        "ReInviteRemarks": $("#txtReInviteRemarks").val(),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     }
     // alert(JSON.stringify(data))
@@ -1050,7 +1053,7 @@ function fnGetRFQApprovers(Type) {
         }
 
     })
-}
+} 
 function fnOpenPopupApprover(Type) {
     fnGetRFQApprovers(Type);
     if (Type == "Report") {
@@ -1137,6 +1140,117 @@ function fetchRFQApproverStatus(RFQID) {
                         jQuery('#divstatuscolor' + i).addClass('error');
                     }
                     if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40) {
+                        jQuery('#divstatuscolor' + i).addClass('done');
+                    }
+
+                    if (counterColor > 1) {
+                        if (status == 'Pending') {
+                            status = 'N/A'
+                            jQuery('#divPendingDate' + i).addClass('hide')
+                            c = c + 1;
+                            jQuery('#divstatus' + i).text(status);
+                            jQuery('#divstatuscolor' + i).removeClass('error')
+                            jQuery('#divstatuscolor' + i).addClass('font-yellow')
+                            jQuery('#divstatuscolor' + i).addClass('last')
+                            jQuery('#divstatus' + i).addClass('font-yellow')
+                            jQuery('#divapprovername' + i).addClass('font-yellow')
+
+                        }
+                    }
+
+                }
+            }
+
+            else {
+                $('#div_statusbar').addClass('hide');
+
+            }
+            jQuery.unblockUI();
+        },
+
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert(response.status + ' ' + response.statusText);
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+function fetchRFQPPCApproverStatus(RFQID) {
+
+    //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        processData: true,
+        dataType: "json",
+        success: function (data) {
+            var status = '';
+            var c = 0;
+            sessionStorage.setItem("LastApproverStaffCode", data[data.length - 1].approverStaffCode)
+            if (data.length > 0) {
+                $('#div_statusbar').removeClass('hide');
+                jQuery('#divappendstatusbar').empty();
+                var counterColor = 0;
+                for (var i = 0; i < data.length; i++) {
+
+                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
+                    jQuery('#divlevel' + i).text(data[i].level);
+                    jQuery('#divapprovername' + i).text(data[i].approverStaffName);
+                    jQuery('#divPendingDate' + i).text(data[i].pendingSince);
+
+                    if (data[i].statusCode == 10) {
+
+                        counterColor = counterColor + 1;
+                        status = 'Pending'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+
+                    }
+                    if (data[i].statusCode == 20) {
+                        //counterColor = counterColor + 1;
+                        status = 'Approved'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 30) {
+
+                        //counterColor = counterColor + 1;
+                        status = 'Forwarded to comm Approver'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 50) {
+
+                        //counterColor = counterColor + 1;
+                        status = 'Forwarded to PPC'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 40) {
+
+                        counterColor = counterColor + 1;
+                        status = 'Awarded'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 10) {
+                        jQuery('#divstatuscolor' + i).addClass('error');
+                    }
+                    if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40 || data[i].statusCode == 50) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
 

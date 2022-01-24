@@ -48,19 +48,7 @@ else {
     $('#divRemarksAppComm').hide()
     $('#divRemarksAppTech').show()
 }
-function stringDivider(str, width, spaceReplacer) {
-    if (str.length > width) {
-        var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
-        if (p > 0) {
-            var left = str.substring(0, p);
-            var right = str.substring(p + 1);
-            return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
-        }
-    }
-    return str;
-}
+
 var Vendor;
 function fetchApproverRemarks() {
     jQuery.ajax({
@@ -76,10 +64,10 @@ function fetchApproverRemarks() {
             $('#tblremarksapprover').empty()
             $('#tblremarksawared').empty()
             if (data.length > 0) {
-                 $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblremarksawared').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                $('#tblapprovalprocess').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+                 $('#tblremarksforward').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
+                $('#tblremarksapprover').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
+                $('#tblremarksawared').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
+                $('#tblapprovalprocess').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
                 if (AppStatus == 'Reverted') {
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
@@ -87,7 +75,7 @@ function fetchApproverRemarks() {
                     $('#frmdivremarksforward').addClass('col-md-6');
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
-                         $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
                            
                     }
                 }
@@ -95,14 +83,14 @@ function fetchApproverRemarks() {
                 $('#frmdivremarksapprover').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
                    
                 }
                 $('#frmdivapprove').show()
                 $('#frmdivremarksawarded').removeClass('col-md-12');
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
-                   $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
                         
                 }
                 $('#frmdivawarded').show()
@@ -195,7 +183,7 @@ function fetchrfqcomprative() {
                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 jQuery("#drpVendors").empty();
-                jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Select"));
+                jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     
                     //** Get Query/Response for Technical Approval if any?
@@ -1488,39 +1476,46 @@ function validateAppsubmitData() {
            
             txtRemarksAward: {
                 required: true,
+            },
+            drpVendors: {
+                required: false
             }
         },
         messages: {
            
             txtRemarksAward: {
                 required: "Please enter your comment"
+            },
+            drpVendors: {
+                required: "Please enter your Vendor"
             }
         },
 
         invalidHandler: function (event, validator) { //display error alert on form submit              
             successawd.hide();
             errorawd.show();
-            // App.scrollTo(error1, -300);
+            $('#diverrordiv2').hide();
+           
         },
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                    .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                    .closest('.Input-group,.xyz').addClass('has-error'); // set error class to the control group
         },
 
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
-                    .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                    .closest('.Input-group,.xyz').removeClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
             label
-                    .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                    .closest('.Input-group,.xyz').removeClass('has-error'); // set success class to the control group
         },
 
         submitHandler: function (form) {
 
-            AwardCommeRFQ();
+            //AwardCommeRFQ();
 
         }
     });
@@ -1581,7 +1576,8 @@ function ApprovalCommercialApp() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Approver",
         "Action": $('#ddlActionType').val(),
-        "Vendors": ''
+        "Vendors": '',
+        "AwardQuery": ''
     };
 
    
@@ -1617,59 +1613,162 @@ function ApprovalCommercialApp() {
 
     });
 }
+var rowitems = 0
+function addmorevendorRemarks() {
+    var str = '';
+
+    var form1 = $('#formAwardedsubmit')
+    $('#drpVendors').rules('add', {
+        required: true,
+    });
+    $('#txtRemarksAward').rules('add', {
+        required: true,
+    });
+    if (form1.valid() == true) {
+
+        $('#divtableaward').show()
+        rowitems = rowitems + 1;
+        if (!jQuery("#tblremarksvendorsawared thead").length) {
+            jQuery('#tblremarksvendorsawared').append("<thead><tr><th class='bold'>Vendor</th><th class='bold'>Remarks</th><th></th></tr></thead>");
+            str = '<tr id=tr' + rowitems + '><td id=vid' + rowitems + ' class=hide>' + $("#drpVendors").val() + '</td><td style="width:20%!important">' + jQuery("#drpVendors option:selected").text() + '</td>';
+        }
+        else {
+            str = '<tr id=tr' + rowitems + '><td id=vid' + rowitems + ' class=hide>' + $("#drpVendors").val() + '</td><td style="width:20%!important">' + jQuery("#drpVendors option:selected").text() + '</td>';
+        }
+        str += '<td style="width:60%!important">' + jQuery("#txtRemarksAward").val() + '</td><td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteitem(tr' + rowitems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblremarksvendorsawared').append(str);
+
+        var arr = $("#tblremarksvendorsawared tr");
+
+        $.each(arr, function (i, item) {
+            var currIndex = $("#tblremarksvendorsawared tr").eq(i);
+            var matchText = currIndex.find("td:eq(0)").text();
+
+            $(this).nextAll().each(function (i, inItem) {
+                if (matchText == $(this).find("td:eq(0)").text()) {
+                    $(this).remove();
+                    $('#diverrordiv2').show()
+                    $('#errordiv2').text('Supplier is already selected')
+                    $('#diverrordiv2').fadeOut(5000)
+                }
+
+            });
+        });
+        jQuery("#drpVendors").val('')
+        jQuery('#txtRemarksAward').val('')
+
+
+    }
+    else {
+
+        form1.validate()
+        return false;
+    }
+}
+function deleteitem(rowid) {
+
+    rowitems = rowitems - 1;
+    $('#' + rowid.id).remove();
+
+    if ($('#tblremarksvendorsawared tr').length == 1) {
+        $('#divtableaward').hide()
+    }
+    else {
+        $('#divtableaward').show()
+    }
+}
 function AwardCommeRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
-    var a = $('#drpVendors').val();
-    // alert(a)
-    if (a != '' && a != null) {
-        for (var i = 0; i < a.length; i++) {
-            vendors += a[i] + ',';
+    var rowCount = jQuery('#tblremarksvendorsawared tr').length;
+
+
+    if (rowCount > 1) {
+        $('#drpVendors').rules('add', {
+            required: false,
+        });
+        $('#txtRemarksAward').rules('add', {
+            required: false,
+        });
+    }
+    else {
+        if ($('#txtRemarksAward').val() == "" || $('#txtRemarksAward').val() == null) {
+            $('#formAwardedsubmit').validate()
+            $('#drpVendors').rules('add', {
+                required: false,
+            });
+            $('#txtRemarksAward').rules('add', {
+                required: true
+            });
         }
     }
-    var approvalbyapp = {
-        "ApproverType": "C",
-        "FromUserId": sessionStorage.getItem('UserID'),
-        "Remarks": $('#txtRemarksAward').val(),
-        "RFQID": parseInt(RFQID),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ActionType": "Award",
-        "Action": "Awarded",
-        "Vendors": vendors
-    };
+    if (rowCount > 1) {
+        $("#tblremarksvendorsawared tr:gt(0)").each(function () {
+            var this_row = $(this);
+            vendors = vendors + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '#';
 
-    
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        cache: false,
-        data: JSON.stringify(approvalbyapp),
-        crossDomain: true,
-        dataType: "json",
-        success: function () {
-            bootbox.alert("Transaction Successful..", function () {
-                window.location = "index.html";
-                return false;
+        })
+    }
+    if ($('#formAwardedsubmit').valid() == true) {
+        if ($('#txtRemarksAward').val() != '' && $('#drpVendors').val() != '') {
+            $('#diverrordiv2').show()
+            $('#errordiv2').text('Your data is not inserted. Please do press "+" button after enter Remarks.')
+            $('#diverrordiv2').fadeOut(5000)
+            jQuery.unblockUI();
+
+        }
+        else {
+            var approvalbyapp = {
+                "ApproverType": "C",
+                "FromUserId": sessionStorage.getItem('UserID'),
+                "Remarks": $('#txtRemarksAward').val(),
+                "RFQID": parseInt(RFQID),
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+                "ActionType": "Award",
+                "Action": "Awarded",
+                "Vendors": $('#drpVendors').val(),
+                "AwardQuery": vendors
+            };
+
+
+            jQuery.ajax({
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(approvalbyapp),
+                crossDomain: true,
+                dataType: "json",
+                success: function () {
+                    bootbox.alert("Transaction Successful..", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('error', '');
+                    }
+                    jQuery.unblockUI();
+                    return false;
+
+                }
+
             });
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
+        }
+       }
+    else {
+            $('#formAwardedsubmit').validate()
             jQuery.unblockUI();
             return false;
-           
         }
-
-    });
 }
 function fnFWDeRFQ()
 {
@@ -1682,7 +1781,8 @@ function fnFWDeRFQ()
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Forward",
         "Action": 'Forward',
-        "Vendors": ''
+        "Vendors": '',
+        "AwardQuery":''
     }
     
     jQuery.ajax({
@@ -1752,7 +1852,8 @@ function ApprovalApp() {
             "Remarks": jQuery("#txtRemarksApp").val(),
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
             "ApprovalStatus": approvalstatus,
-            "VendorID": parseInt(VID)
+            "VendorID": parseInt(VID),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
         };
        // alert(parseInt(VID))

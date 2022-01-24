@@ -457,6 +457,7 @@ function bindNFAOverViewMaster() {
 function GetOverviewmasterbyId(idx) {
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
+   
     GetData.success(function (res) {
         if (res.result != null) {
 
@@ -466,7 +467,7 @@ function GetOverviewmasterbyId(idx) {
                
                 sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);
                 sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].purchaseGroup);
-
+                sessionStorage.setItem('hdnConditionID', res.result[0].conditionID);
                 $("#txtAmountFrom").val(res.result[0].nfaAmount);
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
@@ -477,6 +478,7 @@ function GetOverviewmasterbyId(idx) {
                 sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
                 $("#txtPurcOrg").val(res.result[0].orgName);
                 $("#txtPurcGroup").val(res.result[0].groupName);
+                $("#ddlCondition").val(res.result[0].conditionName);
                 $("#txtRemark").val(res.result[0].remarks);
 
             }
@@ -554,6 +556,42 @@ $("#txtEventref").typeahead({
     }
 });
 
+
+jQuery("#ddlCondition").keyup(function () {
+    sessionStorage.setItem('hdnConditionID', '0');
+
+});
+sessionStorage.setItem('hdnConditionID', 0);
+
+jQuery("#ddlCondition").typeahead({
+    source: function (query, process) {
+
+        var data = conditionData;
+        usernames = [];
+        map = {};
+        var username = "";
+        jQuery.each(data, function (i, username) {
+            console.log(data);
+            map[username.conditionName] = username;
+            usernames.push(username.conditionName);
+        });
+        process(usernames);
+    },
+
+    minLength: 2,
+    updater: function (item) {
+
+        if (map[item].conditionID != "0") {
+            sessionStorage.setItem('hdnConditionID', map[item].conditionID);
+        }
+        else {
+            gritternotification('Condition Not selected!!!');
+        }
+
+        return item;
+    }
+
+});
 
 //$("#txtNfaParamAns").on("change", function () {
 
@@ -971,7 +1009,7 @@ jQuery("#txtPurcOrg").typeahead({
             bindPurchaseGroupDDL(map[item].purchaseOrgID);
         }
         else {
-            gritternotification('Purchase Group not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Purchase Group not selected. !!!');
         }
 
         return item;
@@ -1008,7 +1046,7 @@ jQuery("#txtPurcGroup").typeahead({
 
         }
         else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Please select Purchase Group!!!');
         }
 
         return item;
@@ -1081,6 +1119,7 @@ function Savedata() {
     var p_descript = $("#txtNFADetail").val();
     var p_org = sessionStorage.getItem('hdnPurchaseORGID');;
     var p_Group = sessionStorage.getItem('hdnPurchaseGroupID');
+    var p_conditionId = sessionStorage.getItem('hdnConditionID');
     var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
@@ -1105,23 +1144,24 @@ function Savedata() {
         Remarks: p_remark,
         PurchaseOrg: parseInt(p_org),
         PurchaseGroup: parseInt(p_Group),
+        conditionID: parseInt(p_conditionId),
         CreatedBy: UserID,
         UpdatedBy: UserID
     }
     overviewList.push(model);
-    console.log(overviewList)
+   // console.log(overviewList)
     var url = "NFA/InsUpdateNfaoverview";
 
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
     //alert(JSON.stringify(overviewList))
-    console.log(JSON.stringify(overviewList))
+   // console.log(JSON.stringify(overviewList))
     GetData.success(function (res) {
         if (res.result != null) {
            
             if (res.result.length > 0) {
 
                 idx = res.result[0].nfaID;
-                console.log(idx);
+               // console.log(idx);
             }
         }
         if (idx == 0) {
@@ -1216,6 +1256,7 @@ function Bindtab1DataforPreview() {
     $("#lblbudget").text($("#ddlBudget option:selected").text());
     $("#lblPurOrg").text($("#txtPurcOrg").val());
     $("#lblGroup").text($("#txtPurcGroup").val());
+    $("#lblCondition").text($("#ddlCondition").val());
     $("#lblEventType").text($("#ddlEventType option:selected").text());
     $("#lblEventId").text($("#txtEventref").val());
     $("#lblRemark").text($("#txtRemark").val());
@@ -1225,14 +1266,15 @@ function FetchMatrixApprovers() {
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var groupId = sessionStorage.getItem("hdnPurchaseGroupID");
     var orgid = sessionStorage.getItem("hdnPurchaseORGID");
+    var conId = sessionStorage.getItem("hdnConditionID");
     budgetType = $("#ddlBudget option:selected").val();
-    BindApprovers(amount, groupId, orgid, budgetType);
+    BindApprovers(amount, groupId, orgid, conId, budgetType);
 };
 
-function BindApprovers(amount, groupId, orgid, budgetType) {
-
-    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
- 
+function BindApprovers(amount, groupId, orgid, conId, budgetType) {
+    alert(sessionStorage.getItem("hdnConditionID"))
+    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
+    
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
     $("#tblApproversPrev").empty();
@@ -1467,12 +1509,12 @@ Array.prototype.min = function () {
 };
 
 function SaveActivityDetails(data) {
-    console.log(data);
+   // console.log(data);
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
 
-    console.log(aquaticCreatures);
+   // console.log(aquaticCreatures);
     var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
     
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
@@ -1632,6 +1674,24 @@ $("#searchPop-up").keyup(function () {
     var SearchTerm = $('#searchPop-up').val();
     SearchInGridview("tblFetchParamMaster", SearchTerm);
 });
+
+function bindConditionDDL() {
+
+    var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=Y";
+
+    var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
+    GetNFAPARAM.success(function (res) {
+        if (res.result != null) {
+            if (res.result.length > 0) {
+                conditionData = res.result;
+
+            }
+        }
+    });
+    GetNFAPARAM.error(function (error) {
+        console.log(error);
+    });
+};
 
 //function UpdateFirstTabActivity() {
 

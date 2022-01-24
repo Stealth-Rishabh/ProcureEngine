@@ -59,10 +59,10 @@ function FetchAllpendingWith() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+            jQuery("#tblVendorSummary").empty();
             jQuery("#ddlPendingwith").empty();
             if (BidData.length > 0) {
-              
+                jQuery("#ddlPendingwith").append(jQuery("<option ></option>").val(0).html('Select'));
                 for (var i = 0; i < BidData.length; i++) {
                   
                     jQuery("#ddlPendingwith").append(jQuery("<option ></option>").val(BidData[i].toUserId).html(BidData[i].pendingOn));
@@ -94,7 +94,7 @@ function FetchViewAllPendingBids() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=0",
+        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: '',
         cache: false,
@@ -200,7 +200,7 @@ function FetchViewAllPendingBids() {
     jQuery.unblockUI();
 }
 function FetchAllCloseBids() {
-    FetchAllpendingWith();
+   // FetchAllpendingWith();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -403,8 +403,8 @@ function fnCloseBids() {
         "QueryString": checkedBid,
         "UserID": sessionStorage.getItem("UserID"),
         "BidTypeID": jQuery("#ddleventtype").val(),
-        "ToUserID": parseInt(jQuery("#ddlPendingwith").val())
-
+        "ToUserID": parseInt(jQuery("#ddlPendingwith option:selected").val()),
+         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     
    // alert(JSON.stringify(data))

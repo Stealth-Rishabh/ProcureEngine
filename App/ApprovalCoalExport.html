@@ -437,6 +437,9 @@
                                                         <div class="alert alert-success" id="successdiv2" style="display: none">
                                                             <span>Transaction Successfull..</span>
                                                         </div>
+                                                        <div class="alert alert-danger" style='display:none;' id="diverrordiv2">
+                                                            <span id="errordiv2"> </span>
+                                                        </div>
                                                         <div class="form-group hide">
                                                             <label class="col-md-2 control-label">
                                                                 Last Comment
@@ -447,29 +450,31 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="col-md-2 control-label">
-                                                                Vendor
+                                                            <label class="col-md-1 control-label">
+                                                                Supplier
                                                             </label>
-                                                            <div class="col-md-10">
-                                                                <select class="form-control select2" id="drpVendors" name="drpVendors" multiple></select>
+                                                            <div class="col-md-5 xyz">
+                                                                <select class="form-control" id="drpVendors" name="drpVendors"></select>
+                                                            </div>
+                                                            <div class="col-md-5 xyz">
+                                                                <textarea id="txtRemarksAward" name="txtRemarksAward" onkeyup="replaceQuoutesFromString(this)" class="form-control" maxlength="250" rows="2"></textarea>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <button type="button" id="Addbtn1" onclick="addmorevendorRemarks(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="Input-group">
-                                                                <label class="col-md-2 control-label">
-                                                                    Remarks :
-                                                                </label>
-                                                                <div class="col-md-10">
-                                                                    <textarea id="txtRemarksAward" name="txtRemarksAward" class="form-control" maxlength="800" rows="4"></textarea>
-                                                                </div>
+                                                            <div class="table-scrollable" style="overflow: auto; display: none;" id="divtableaward">
+                                                                <table class="table table-bordered" id="tblremarksvendorsawared">
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group" style="padding: 10px 5px;">
-                                                        <div class="col-md-offset-4 col-md-12" style="text-align: center">
-                                                            <button id="btnSubmitAward" type="submit" class="btn green">
+                                                        <div class="col-md-offset-2 col-md-12" style="text-align: center">
+                                                            <button id="btnSubmitAward" type="button" class="btn green"  onclick="AwardBid()">
                                                                 Submit
-                                                            </button>
+                                                            </button>&nbsp;&nbsp;
                                                             <button id="btnCancelbidAward" type="submit" class="btn red">
                                                                 Cancel Bid
                                                             </button>

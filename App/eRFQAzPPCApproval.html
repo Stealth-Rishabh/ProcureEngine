@@ -407,7 +407,7 @@
                                                         </div>
                                                     </div>
 
-                                                   
+
                                                 </div>
                                                 <h3 class="form-section">Bidding Details</h3>
                                                 <div class="row">
@@ -674,7 +674,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
+
                                         </form>
                                         <div id="divRemarksForward" class="col-md-12" style="display: none;">
                                             <div class="row">
@@ -696,7 +696,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                               
+
                                                                 <div class="form-group Input-group">
                                                                     <label class="col-md-4 control-label">
                                                                         Remarks :
@@ -722,7 +722,7 @@
                                                 <div class="col-md-6" id="frmdivforward" style="display:none; height: 250px; overflow-y:scroll;">
                                                     <form action="#" id="form1" class="form-horizontal">
                                                         <div class="form-body">
-                                                           
+
                                                             <div class="table-scrollable" style="overflow: auto">
                                                                 <table class="table table-bordered" id="tblremarksforward">
                                                                     <thead>
@@ -754,7 +754,7 @@
                                                                 <div class="alert alert-success" id="successdiv" style="display: none">
                                                                     <span id="success">Transaction Successfull..</span>
                                                                 </div>
-                                                               
+
                                                                 <div class="form-group">
                                                                     <div class="Input-group">
                                                                         <label class="col-md-4 control-label">
@@ -783,7 +783,7 @@
                                                             </div>
                                                             <div class="form-group" style="padding: 10px 5px;">
                                                                 <div class="col-md-offset-1 col-md-12" style="text-align: center">
-                                                                   
+
                                                                     <button id="btnSubmitApp" type="submit" class="btn green">
                                                                         Submit
                                                                     </button>
@@ -794,7 +794,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
-                                                   
+
                                                     <form action="#" id="form2" class="form-horizontal">
 
                                                         <div class="form-body">
@@ -820,6 +820,85 @@
                                                 <!--</div>-->
                                             </div>
                                             <div style="clear: both;">
+                                            </div>
+
+                                        </div>
+                                        <div id="divRemarksAwarded" class="col-md-12" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-12" id="frmdivremarksawarded">
+                                                    <div id="Div3" class="portlet-body form">
+                                                        <form action="#" id="formAwardedsubmit" class="form-horizontal">
+                                                            <div class="form-body">
+                                                                <div class="alert alert-success" id="successdiv2" style="display: none">
+                                                                    <span>Transaction Successfull..</span>
+                                                                </div>
+                                                                <div class="alert alert-danger" style='display:none;' id="diverrordiv2">
+                                                                    <span id="errordiv2"> </span>
+                                                                </div>
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-2 control-label">
+                                                                        Last Comment
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <label class="control-label" id="lbllastcommentSeaAward">
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="col-md-1 control-label">
+                                                                        Supplier
+                                                                    </label>
+                                                                    <div class="col-md-5 xyz">
+                                                                        <select class="form-control" id="drpVendors" name="drpVendors"></select>
+                                                                    </div>
+                                                                    <div class="col-md-5 xyz">
+                                                                        <textarea id="txtRemarksAward" name="txtRemarksAward" onkeyup="replaceQuoutesFromString(this)" class="form-control" maxlength="250" rows="2"></textarea>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <button type="button" id="Addbtn1" onclick="addmorevendorRemarks(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="table-scrollable" style="overflow: auto; display: none;" id="divtableaward">
+                                                                        <table class="table table-bordered" id="tblremarksvendorsawared">
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" style="padding: 10px 5px;">
+                                                                <div class="col-md-12" style="text-align: center">
+                                                                    <button id="btnSubmitAward" type="button" class="btn green" onclick="AwardCommeRFQ()">
+                                                                        Submit
+                                                                    </button>
+
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" id="frmdivawarded" style="display:none; height: 250px; overflow-y:scroll;">
+                                                    <form action="#" id="form3" class="form-horizontal">
+                                                        <div class="form-body">
+
+
+
+                                                            <div class="table-scrollable" style="overflow: auto">
+                                                                <table class="table table-bordered" id="tblremarksawared">
+                                                                    <thead>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td colspan="15" style="text-align: center; color: Red">
+                                                                                No record's found
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <!--</div>-->
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
 
                                         </div>

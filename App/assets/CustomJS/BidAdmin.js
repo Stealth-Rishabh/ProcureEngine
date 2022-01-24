@@ -89,17 +89,13 @@ function startTimer(duration, display) {
 
 
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-            
-            if (BidTypeID = 6 && BidForID == 82) {
+           
+            if ((BidTypeID == 6 && BidForID == 82) || BidTypeID == 8 || (BidTypeID == 7 && BidForID == 82)) {
                 
                 fetchBidSummaryDetails(BidID, BidForID);
             }
-            else if (BidTypeID = 8 ) {
-                    fetchBidSummaryDetails(BidID, BidForID);
-            }
             else {
-               
-                fnBidRefreshOnTimerforAdmin(BidID, BidForID)
+               fnBidRefreshOnTimerforAdmin(BidID, BidForID)
             }
            
             fetchBidTime()

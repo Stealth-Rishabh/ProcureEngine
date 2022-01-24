@@ -53,7 +53,7 @@
                 <a class="navbar-brand" href="index.html" style="padding:4px !important;">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
                 </a>
-              
+
             </div>
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             </a>
@@ -62,7 +62,7 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                           
+
                             <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
                             </span><i class="fa fa-angle-down"></i>
                         </a>
@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-   
+
     <div class="clearfix">
     </div>
     <div class="page-container" style="display:none">
@@ -190,7 +190,7 @@
                                                             </label>
                                                             <div class="col-md-9 xyz">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject"
-                                                                      autocomplete="off"  name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" maxlength="100" />
+                                                                       autocomplete="off" name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" maxlength="100" />
                                                             </div>
                                                         </div>
 
@@ -205,7 +205,7 @@
                                                             </label>
                                                             <div class="col-md-9 xyz">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                        autocomplete="off"  rows="3" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                                          autocomplete="off" rows="3" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -260,8 +260,8 @@
                                                                 <input type="text" autocomplete="off" class="form-control" placeholder="Enter Current Conversion Factor" id="txtConversionRate"
                                                                        name="txtConversionRate" maxlength="7">
                                                             </div>
-                                                            </div>
-                                                           
+                                                        </div>
+
                                                     </div>
                                                     <div class="form-group">
                                                         <!--<form id="form">-->
@@ -299,9 +299,11 @@
                                                                 Auction Type: <span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3 xyz">
-                                                             <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="HideShowL1price()">
-                                                                  <option value="81">English</option>
+                                                                <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="hideshowDuration()">
+                                                                    <option value="81">English</option>
                                                                     <option value="83">Japanese</option>
+                                                                    <option value="82">Dutch(FA)</option>
+
                                                                 </select>
 
                                                             </div>
@@ -312,14 +314,14 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="ddlbidclosetype" name="ddlbidclosetype" onchange="showhideItemBidDuration();">
-                                                                    
+
                                                                     <option value="A">All items in one go</option>
                                                                     <option value="S">Stagger at: Item level</option>
-                                                                    
+
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup condition-based-validate">
@@ -340,7 +342,8 @@
                                                                     <option value="Y">As L1, L2, L3 etc.</option>
                                                                 </select>
                                                             </div>
-                                                            </div></div>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -357,24 +360,25 @@
                                                             </div>
                                                             <!--<div class="inputgroup">
                                                                 <div class="col-md-1 ">
-                                                                   
+
                                                                     <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                                 </div>
                                                             </div>-->
                                                         </div>
                                                     </div>
-                                                        <div class="form-group">
-                                                            <div class="inputgroup">
-                                                                <div class="col-md-3">&nbsp;</div>
-                                                                <div class="col-md-9">
-                                                                    <div class="table-scrollable">
-                                                                        <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
-                                                                    </div></div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <div class="col-md-3">&nbsp;</div>
+                                                            <div class="col-md-9">
+                                                                <div class="table-scrollable">
+                                                                    <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+                                                                </div>
+                                                            </div>
 
-                                                             </div>
                                                         </div>
+                                                    </div>
 
-                                                  
+
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
@@ -398,7 +402,7 @@
                                                                    autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="50" />
 
                                                         </div>
-                                                       
+
 
                                                     </div>
                                                     <div class="form-group hide">
@@ -408,11 +412,11 @@
                                                         </label>
                                                         <div class="col-md-10 xyz">
                                                             <textarea id="txtdescription" name="txtdescription" class="wysihtml5 form-control"
-                                                                     autocomplete="off"  rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                                      autocomplete="off" rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                     
+
 
                                                         <label class="control-label col-md-2">
                                                             Quantity  <span class="required">
@@ -420,12 +424,12 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-2 xyz">
-                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
-                                                                   
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+
 
                                                         </div>
                                                         <div class="col-md-2 xyz">
-                                                           
+
                                                             <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
                                                                    data-provide="typeahead" autocomplete="off" name="txtUOM" />
                                                             <input type="hidden" value="" id="dropuom" />
@@ -435,19 +439,19 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="text" id="txtbiddescriptionP" name="txtbiddescriptionP"
-                                                                  autocomplete="off" class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" />
+                                                                   autocomplete="off" class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" />
                                                         </div>
 
                                                     </div>
                                                     <div class="form-group">
-                                                       
-                                                        
+
+
                                                         <label class="control-label col-md-2">
                                                             Target Unit Price
                                                         </label>
                                                         <div class="col-md-3 xyz">
                                                             <input type="tel" class="form-control text-right" id="txttargetprice" name="txttargetprice"
-                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" />
 
                                                         </div>
                                                         <div class="col-md-1 xyz">
@@ -457,7 +461,7 @@
                                                             </select>
                                                         </div>
                                                         <label class="control-label col-md-2">
-                                                           Selected Currency
+                                                            Selected Currency
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="text" class="form-control" id="txtselectedCurrency" name="txtselectedCurrency" autocomplete="off" readonly />
@@ -468,45 +472,88 @@
                                                         </label>
                                                         <div class="col-md-4 hide">
                                                             <input type="tel" class="form-control" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
-                                                                   autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label  col-md-2">
+                                                        <label class="control-label col-md-2">
                                                             Bid Start Price<span class="required"> *</span>
                                                         </label>
-                                                        <div class="col-md-3 xyz">
+                                                        <div class="col-md-3 xyz" id="divBSP">
                                                             <input type="tel" class="form-control" id="txtCeilingPrice" name="txtCeilingPrice"
-                                                                    autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
                                                         </div>
-                                                        <div class="col-md-1 xyz">
+                                                        <div class="col-md-1 xyz for-nondutch-bid">
                                                             <select class="form-control no-space" id="checkshowstartprice" name="checkshowstartprice">
                                                                 <option value="Y">Show</option>
                                                                 <option value="N">Hide</option>
 
                                                             </select>
                                                         </div>
-                                                        <label class="control-label col-md-2">
-                                                            Minimum Decrement<span class="required"> *</span>
-                                                        </label>
-                                                        <div class="col-md-3 xyz">
-                                                            <input type="tel" class="form-control " id="txtminimumdecreament" name="txtminimumdecreament"
-                                                                   autocomplete="off"  /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                        <div class="for-nondutch-bid">
+                                                            <label class="control-label col-md-2">
+                                                                Minimum Decrement<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3 xyz">
+                                                                <input type="tel" class="form-control" id="txtminimumdecreament" name="txtminimumdecreament"
+                                                                       autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            </div>
+                                                            <div class="col-md-1 xyz">
+                                                                <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton">
+                                                                    <option value="A">Amount</option>
+                                                                    <option value="P">%age</option>
+                                                                </select>
+
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-1 xyz">
-                                                            <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton">
-                                                                <option value="A">Amount</option>
-                                                                <option value="P">%age</option>
+                                                        <div class="for-dutch-bid">
+                                                            <label class="control-label col-md-2">
+                                                                Floor/ Min. Price<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-4 xyz">
+                                                                <input type="tel" class="form-control" id="txtfloorPrice" name="txtfloorPrice"
+                                                                       autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
 
+                                                            </div>
 
-                                                            </select>
-                                                           
                                                         </div>
                                                     </div>
+                                                    <div class="form-group for-dutch-bid">
+                                                        <label class="control-label col-md-2">
+                                                            Price Decreament Amount <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-4 xyz">
+                                                            <input type="tel" class="form-control" id="txtPriceReductionAmount"
+                                                                   name="txtPriceReductionAmount" autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
 
-                                                    <div class="form-group">
-                                                     <div id="divItemBiduration">
+                                                        </div>
+                                                        <label class="control-label col-md-2">
+                                                            Price Decreament Frequency&nbsp;<span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-1">
+
+                                                            <div id="spinner4" class="xyz">
+                                                                <div class="input-group" style="width:120px;">
+                                                                    <div class="spinner-buttons input-group-btn">
+                                                                        <button type="button" class="btn spinner-up blue">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="text" class="spinner-input form-control" id="txtPriceReductionFrequency" name="txtPriceReductionFrequency" maxlength="3" readonly />
+                                                                    <div class="spinner-buttons input-group-btn">
+                                                                        <button type="button" class="btn spinner-down red">
+                                                                            <i class="fa fa-minus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <label class="col-md-1 control-label">(in&nbsp;minutes)</label>
+                                                    </div>
+                                                    <div class="form-group for-nondutch-bid">
+                                                        <div id="divItemBiduration">
                                                             <label class="control-label col-md-2">
                                                                 Bid Duration <span class="required">*</span>
                                                             </label>
@@ -531,25 +578,25 @@
                                                         </div>
                                                     </div>
                                                     <h4 class="form-section">Last PO Details (Optional)</h4>
-                                                   
+
                                                     <div class="form-group">
                                                         <div class="col-md-3 xyz">
-                                                            
+
                                                             <label class="control-label">PO Number</label>
                                                             <input type="text" id="txtPono" maxlength="20" name="txtPono" class="form-control maxlength" placeholder="PO Number" onkeyup="replaceQuoutesFromString(this)" autocomplete="off">
 
-                                                           
+
                                                         </div>
                                                         <div class="col-md-3 xyz">
-                                                           
-                                                            <label class="control-label">Vendor Name</label>
-                                                            <input type="text" id="txtvendorname" maxlength="100"  name="txtvendorname" class="form-control maxlength" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)" autocomplete="off">
 
-                                                          
+                                                            <label class="control-label">Vendor Name</label>
+                                                            <input type="text" id="txtvendorname" maxlength="100" name="txtvendorname" class="form-control maxlength" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)" autocomplete="off">
+
+
                                                         </div>
                                                         <!--/span-->
                                                         <div class="col-md-2 xyz">
-                                                           
+
                                                             <label class="control-label">Unit Rate</label>
 
                                                             <input type="tel" id="txtunitrate" name="txtunitrate" class="form-control" placeholder="Unit Rate" autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
@@ -557,7 +604,7 @@
                                                         </div>
 
                                                         <div class="col-md-2 xyz">
-                                                          
+
                                                             <label class="control-label">PO Date</label>
                                                             <div class="input-group date date-picker" data-date-format="mm/dd/yyyy"
                                                                  data-date-end-date="0d">
@@ -570,34 +617,34 @@
                                                                 <div id="daterr"></div>
                                                             </div>
 
-                                                         
+
                                                         </div>
-                                                       
+
                                                         <div class="col-md-2 xyz">
-                                                           
+
                                                             <label class="control-label">PO Value</label>
 
-                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control" placeholder="PO Value" autocomplete="off" onkeyup="thousands_separators_input(this)"  />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control" placeholder="PO Value" autocomplete="off" onkeyup="thousands_separators_input(this)" />  <!--onkeyup="thousands_separators_input(this)"-->
 
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                       
-                                                       
+
+
                                                         <div class="col-md-offset-9">
                                                             <input type="hidden" id="rowid" />
-                                                           
+
                                                             <input type="hidden" id="rowidPrev" />
-                                                            <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullData">Pull RFQ</button>
-                                                            <button type="button" class="btn btn-danger" data-toggle="modal" href="#RAexcel">Excel</button>
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullData" id="pullRFQ">Pull RFQ</button>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" href="#RAexcel" id="btnexcel">Excel</button>
                                                             <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdSeaExport()">Add</button>
                                                             <button type="button" class="btn btn-warning" onclick="resetfun()">Clear</button>
 
                                                         </div>
-                                                            
-                                                        </div>
 
-                                                   
+                                                    </div>
+
+
                                                     <div class="table-scrollable display-none" id="wrap_scroller">
                                                         <table class=" table table-striped table-bordered table-hover" width="100%" id="tblServicesProduct"></table>
                                                     </div>
@@ -613,7 +660,7 @@
                                                                             <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
                                                                                    data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
                                                                             <!--<input type="text" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch"></br>-->
-                                                                            <input type="text"  class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
+                                                                            <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                         </div>
                                                                         <div class="col-md-1">
                                                                             <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
@@ -629,7 +676,7 @@
                                                                                     <th width="20%">
                                                                                         <div class="col-md-10 checkbox-list">
                                                                                             <label class="checkbox-inline" style="margin-left: -16px;">
-                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll"  disabled/>All
+                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" disabled />All
                                                                                             </label>
                                                                                         </div>
                                                                                     </th>
@@ -650,7 +697,7 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>Vendors</th>
-                                                                                <th>Loading Factor - &lambda; (in %)</th>
+                                                                                <th class="THLoading">Loading Factor - &lambda; (in %)</th>
                                                                                 <th>Actions</th>
                                                                             </tr>
                                                                         </thead>
@@ -673,7 +720,7 @@
                                                         </i>
                                                     </a><a href="javascript:;" class="btn green button-submit">
                                                         Preview
-                                                       
+
                                                     </a>
                                                 </div>
                                             </div>
@@ -687,9 +734,9 @@
                         <div class="portlet box blue-hoki display-none" id="BidPreviewDiv">
                             <div class="portlet-title">
                                 <div class="caption">
-                                Bid Preview
+                                    Bid Preview
                                 </div>
-                               
+
                             </div>
                             <div class="portlet-body form">
 
@@ -708,7 +755,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
 
                                         </div>
                                         <!--/row-->
@@ -821,7 +868,7 @@
                                             </div>
                                             <!--/span-->
                                         </div>
-                                        
+
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
                                             <div class="col-md-7">
@@ -848,7 +895,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Vendors</th>
-                                                                <th>Loading Factor - &lambda; (in %)</th>
+                                                                <th class='THLoading'>Loading Factor - &lambda; (in %)</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -946,7 +993,7 @@
                                 </div>
 
                             </div>
-                            
+
                             <div class="clearfix"></div><br />
                             <div class="row">
                                 <div class="col-md-12">
@@ -959,7 +1006,7 @@
                                         <span id="succspan-excelparameter" class="text-center"></span><br />
                                         <div class="col-md-12 col-md-offset-5" id="btnyesno">
                                             <!--<button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>-->
-                                               <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
+                                            <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
                                             <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
                                         </div>
                                         <div class="clearfix"></div>
@@ -988,7 +1035,7 @@
                                                             <li>MinimumDecreament</li>
 
                                                         </ul>
-                                                        
+
                                                         <ul class='col-md-6 text-left'>
 
                                                             <li>DecreamentOn</li>
@@ -1006,7 +1053,7 @@
                                                         <!--<label class="col-md-12 text-left">
                                                             Skip this step if you have downloaded Excel Template
                                                         </label>-->
-                                                       
+
                                                         <br />
                                                     </div>
 
@@ -1014,71 +1061,72 @@
                                                     <div class="col-md-6">
                                                         <label class="col-md-12 text-left">  2. Please enter <b>UOM </b>as given below:</label><br /><br />
                                                         <div id="ULUOM_instructions"></div>
-                                                       
-                                                        <div class='clearfix'></div>
-                                                        <br />
-                                                    </div>
-                                                </div></div>
-                                                <div class="col-md-12">
-                                                    <div class="col-md-6">
-                                                        <label class="col-md-12 text-left">
-                                                            3. Select <b>HideTargetPrice (Y or N)</b> as under:
-</label><br /><br />
-                                                        <ul class='col-md-12 text-left'>
-                                                            <li>Y for Hide Target Price to all vendors</li>
-                                                            <li>N for Show Target Price to all vendors</li>
-                                                        </ul>
-                                                        <div class='clearfix'></div>
-                                                        <br />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="col-md-12 text-left">
-                                                            4. Select <b>DecreamentOn (A or P)</b> as given below:
-</label><br /><br />
-                                                        <ul class='col-md-12 text-left'>
-                                                            <li>A - to select bid decrement in Amount</li>
-                                                            <li>P - to select bid decrement in percentage</li>
-                                                        </ul>
-                                                        <div class='clearfix'></div>
-                                                        <br />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="col-md-6">
-                                                        <label class="col-md-12 text-left">
-                                                            5. Select <b>ShowL1Price (Y or N)</b> as given below:
-                                                        </label><br /><br />
-                                                        <ul class='col-md-12 text-left'>
-                                                            <li>N - for not showing ongoing L1 Price to all vendor</li>
-                                                            <li>Y - for showing ongoing L1 Price to all vendors</li>
-                                                        </ul>
-                                                        <div class='clearfix'></div>
-                                                        <br />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="col-md-12 text-left">
-                                                            6. Select <b>ShowStartPrice (Y or N)</b> as given below:
-</label><br /><br />
-                                                        <ul class='col-md-12 text-left'>
-                                                            <li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>
-                                                            <li>N for Hide</li>
-                                                        </ul>
-                                                        <div class='clearfix'></div>
-                                                        <br />
-                                                    </div>
 
+                                                        <div class='clearfix'></div>
+                                                        <br />
+                                                    </div>
                                                 </div>
-                                                </div>
-                                                7. Please ensure all <b>Prices</b> and <b>Quantity</b> are in Number format, and <b>Dates</b> in Date format.
                                             </div>
-                                  
-                                        <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        3. Select <b>HideTargetPrice (Y or N)</b> as under:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>Y for Hide Target Price to all vendors</li>
+                                                        <li>N for Show Target Price to all vendors</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        4. Select <b>DecreamentOn (A or P)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>A - to select bid decrement in Amount</li>
+                                                        <li>P - to select bid decrement in percentage</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        5. Select <b>ShowL1Price (Y or N)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>N - for not showing ongoing L1 Price to all vendor</li>
+                                                        <li>Y - for showing ongoing L1 Price to all vendors</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        6. Select <b>ShowStartPrice (Y or N)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>
+                                                        <li>N for Hide</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        7. Please ensure all <b>Prices</b> and <b>Quantity</b> are in Number format, and <b>Dates</b> in Date format.
+                                    </div>
+
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
                                     <!--</div>-->
-                            </div>
+                                </div>
                             </div>
 
-                          
-                           
+
+
 
                         </div>
                     </form>
@@ -1117,7 +1165,7 @@
         </table>
 
         <table class="table table-bordered" id="tblUOM"></table>
-       
+
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1202,7 +1250,7 @@
                             </div>
                             <div class="form-body">
                                 <div class="form-group">
-                                  
+
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
@@ -1210,7 +1258,7 @@
 
                                         </div>
                                     </div>
-                                  
+
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
@@ -1218,7 +1266,7 @@
 
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-lg-1 col-lg-offset-2 " style="margin-top:4px;">
                                         <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
                                     </div>
@@ -1251,7 +1299,7 @@
             </div>
         </div>
     </div>
-   
+
     <div id="viewvendorRFQprice" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="portlet box blue">
@@ -1266,18 +1314,18 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            
+
                             <div class="form-group">
-                                
+
                                 <div class="col-md-12">
                                     <table class="table table-striped table-bordered table-hover" id="tblServicesProductVendor"></table>
 
                                 </div>
 
                             </div>
-                            
+
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -1323,7 +1371,7 @@
                                     </div>
 
                                 </div>
-                               
+
                                 <div class="form-group">
                                     <div class="Controlgroup col-md-12">
                                         <div class="table-scrollable display-none">
@@ -1342,7 +1390,7 @@
                         </form>
 
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -1366,7 +1414,7 @@
                             Loading Factor <span class="required"> *</span>
                         </label>
                         <div class="col-md-4">
-                            <input type="tel" class="form-control" placeholder="Specify Weightage to Vendor" id="txtWeightageval" 
+                            <input type="tel" class="form-control" placeholder="Specify Weightage to Vendor" id="txtWeightageval"
                                    name="">
                         </div>
                         <div class="clearfix"></div>
@@ -1399,11 +1447,12 @@
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
     <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-  
+
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
 
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -1439,8 +1488,8 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
-          
-           
+
+
             Metronic.init();
             Layout.init();
             FormWizard.init();
@@ -1448,9 +1497,9 @@
             setCommonData();
 
             fetchMenuItemsFromSession(1, 30);
-           // fetchBidTypeMapping();
+            // fetchBidTypeMapping();
             FetchCurrency('0');
-           
+
             fetchRegisterUser();
             fetchBidType();//for search vendor
             FetchUOM(sessionStorage.getItem("CustomerID"));
@@ -1459,35 +1508,37 @@
                 $('#txtConversionRate').val(1);
                 fnfillInstructionExcel();
             }, 2000);
-           
+
             fetchParticipantsVender();// fetch all vendors for advance search
             fetchRFIRFQSubjectforReport('RFQ')
             fetchVendorGroup('M', 0); // used to fetch product category
-            showhideItemBidDuration();
-            var _BidID ;
+           
+            var _BidID;
             if (window.location.search) {
                 var param = getUrlVars()["param"]
                 var decryptedstring = fndecrypt(param);
                 _BidID = getUrlVarsURL(decryptedstring)["BidID"];
             }
-         
-            if (_BidID == null)
+
+            if (_BidID == null) {
                 sessionStorage.setItem('CurrentBidID', 0)
-           
-            else {
+                sessionStorage.setItem('_savedDraft', 'N')
+                showhideItemBidDuration();
+            }
+           else {
                 sessionStorage.setItem('CurrentBidID', _BidID)
-               
+                sessionStorage.setItem('_savedDraft', 'Y')
                 fetchSeaExportDetails();
             }
-           
+           // showhideItemBidDuration();
         });
-       
+
         document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
             document.getElementById('file-excelparameter').click();
         });
 
         $('#file-excelparameter').change(handleFileparameter);
-
+        $('#spinner4').spinner({ value: 0, step: 1, min: 1, max: 10 });
     </script>
 </body>
 

@@ -7,10 +7,12 @@ var nfaApproverIDX = 0;
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var orgData = [];
+var conditionData = [];
 var Groupdata = [];
 var form = $('#submit_form');
 var FlagForCheckShowPrice = "N";
 var objData = {};
+
 var ApproverSeqData = [];
 var Approvermasterdata = [];
 var allUsers = [];
@@ -25,6 +27,7 @@ $(document).ready(function () {
    
     bindApproverMaster();
     BindPurchaseOrg();
+    bindConditionDDL();
     fetchRegisterUser();
     jQuery.unblockUI();
     //  BindApprovers();
@@ -167,9 +170,10 @@ function GetApprovermasterbyId(idx) {
                 $("#txtAmountTo").val(removeThousandSeperator(res.result[0].amountTo));
                 $("#ddlPurchasegroup").val(res.result[0].groupName);
                 $("#ddlPurchaseOrg").val(res.result[0].orgName);
-
+                $("#ddlCondition").val(res.result[0].conditionName);
                 sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].groupID);
                 sessionStorage.setItem('hdnPurchaseORGID', res.result[0].orgID);
+                sessionStorage.setItem('hdnConditionID', res.result[0].conditionID);
                 ApproverType = res.result[0].approvalType;
                 var checked = res.result[0].isActive;
 
@@ -230,18 +234,55 @@ $("#txtDetails").typeahead({
             GetApprovermasterbyId(nfaApproverIDX);
         }
         else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Select Approval Matrix to edit!!!');
         }
 
         return item;
     }
 })
 
+
+jQuery("#ddlCondition").keyup(function () {
+    sessionStorage.setItem('hdnConditionID', '0');
+
+});
+sessionStorage.setItem('hdnConditionID', 0);
+
+jQuery("#ddlCondition").typeahead({
+    source: function (query, process) {
+       
+        var data = conditionData;
+        usernames = [];
+        map = {};
+        var username = "";
+        jQuery.each(data, function (i, username) {
+            console.log(data);
+            map[username.conditionName] = username;
+            usernames.push(username.conditionName);
+        });
+        process(usernames);
+    },
+   
+    minLength: 2,
+    updater: function (item) {
+       
+        if (map[item].conditionID != "0") {
+            sessionStorage.setItem('hdnConditionID', map[item].conditionID);
+        }
+        else {
+            gritternotification('Condition Not selected!!!');
+        }
+       
+        return item;
+    }
+
+});
+
 function CheckDuplicate() {
 
     var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
     var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');
-
+    var p_conditionId = sessionStorage.getItem('hdnConditionID');
     var amountFrom = $("#txtAmountFrom").val();
     var amountTo = $("#txtAmountTo").val();
 
@@ -250,6 +291,7 @@ function CheckDuplicate() {
         orgID: parseInt(p_orgId),
         cusID: parseInt(CurrentCustomer),
         groupID: parseInt(p_groupId),
+        conditionID: parseInt(p_conditionId),
         amountFrom: parseFloat(removeThousandSeperator(amountFrom)),
         amountTo: parseFloat(removeThousandSeperator(amountTo))
 
@@ -281,6 +323,7 @@ function BindPurchaseOrg() {
 
 
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+  
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlModelOrg").html('');
@@ -305,8 +348,6 @@ function BindPurchaseOrg() {
 
 };
 
-
-
 function bindPurchaseGroupDDL(orgID) {
     
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt(orgID);
@@ -325,6 +366,26 @@ function bindPurchaseGroupDDL(orgID) {
     });
 
 };
+
+function bindConditionDDL() {
+
+    var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=Y";
+  
+    var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
+    GetNFAPARAM.success(function (res) {
+        if (res.result != null) {
+            if (res.result.length > 0) {
+                conditionData = res.result;
+
+            }
+        }
+    });
+    GetNFAPARAM.error(function (error) {
+        console.log(error);
+    });
+};
+
+
 jQuery("#ddlPurchaseOrg").keyup(function () {
     sessionStorage.setItem('hdnPurchaseORGID', '0');
 
@@ -332,6 +393,7 @@ jQuery("#ddlPurchaseOrg").keyup(function () {
 sessionStorage.setItem('hdnPurchaseORGID', '0');
 jQuery("#ddlPurchaseOrg").typeahead({
     source: function (query, process) {
+       
         var data = orgData;
         usernames = [];
         map = {};
@@ -339,7 +401,6 @@ jQuery("#ddlPurchaseOrg").typeahead({
         jQuery.each(data, function (i, username) {
             // console.log(data);
             map[username.purchaseOrgName] = username;
-
             usernames.push(username.purchaseOrgName);
         });
 
@@ -349,13 +410,11 @@ jQuery("#ddlPurchaseOrg").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].purchaseOrgID != "0") {
-
-
             sessionStorage.setItem('hdnPurchaseORGID', map[item].purchaseOrgID);
             bindPurchaseGroupDDL(map[item].purchaseOrgID);
         }
         else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Purchase Group not selected!!!');
         }
 
         return item;
@@ -399,12 +458,14 @@ jQuery("#ddlPurchasegroup").typeahead({
     }
 
 });
-
 $("#ddlPurchaseOrg").on("keyup", function () {
     $("#ddlPurchaseOrg").css("border-color", "");
 });
 $("#ddlPurchasegroup").on("keyup", function () {
     $("#ddlPurchasegroup").css("border-color", "");
+});
+$("#ddlCondition").on("keyup", function () {
+    $("#ddlCondition").css("border-color", "");
 });
 $("#txtAmountFrom").on("keyup", function () {
     $("#txtAmountFrom").css("border-color", "");
@@ -440,7 +501,6 @@ $("#txtNBApprover").on("keyup", function () {
 $("#txtNBSeq").on("keyup", function () {
     $("#txtNBSeq").css("border-color", "");
 });
-
 
 function validateApproverMaster() {
     var v_org = false;
@@ -491,9 +551,10 @@ function validateApproverMaster() {
 
 };
 function SaveApproverMaster() {
-
+    
     var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
-    var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');;
+    var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');
+    var p_conditionID = sessionStorage.getItem('hdnConditionID');
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
     var isActive = $("#chkIsActive").is(':checked');
     var amountFrom = $("#txtAmountFrom").val();
@@ -504,6 +565,7 @@ function SaveApproverMaster() {
         orgID: parseInt(p_orgId),
         cusID: parseInt(CurrentCustomer),
         groupID: parseInt(p_groupId),
+        conditionID: parseInt(p_conditionID),
         IsActive: isActive,
         createdBy: UserID,
         updatedBy: UserID,
@@ -1216,7 +1278,7 @@ function CreateSeqData() {
 function SaveApproverSeqData(objSeqData) {
 
     var url = "NFA/InsertUpdateMultipleSeq?customerid=" + parseInt(CurrentCustomer) + "&nfaApproverid=" + nfaApproverIDX;
-    console.log(JSON.stringify(objSeqData))
+   
 
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(objSeqData));
     callAPI.success(function (res) {
@@ -1292,11 +1354,13 @@ function BindPreviewDetails() {
 
     var org = $("#ddlPurchaseOrg").val();
     var group = $("#ddlPurchasegroup").val();
+    var conditionName = $("#ddlCondition").val();
     var approvelType = $("#ddlApproveltype option:selected").text();
     var from = $("#txtAmountFrom").val();
     var to = $("#txtAmountTo").val();
     $("#lblPurchaseOrg").text(org);
     $("#lblPurchaseGroup").text(group);
+    $("#lblCondition").text(conditionName);
     $("#lblApproveltype").text(approvelType);
     $("#lblAmountFrom").text(from);
     $("#lblAmountTo").text(to);
@@ -1833,6 +1897,7 @@ function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblmodelPurchaseOrg").empty();
@@ -1842,7 +1907,7 @@ function BindData() {
             $('#tblmodelPurchaseOrg').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Purchase Org.</th><th>Status</th></tr></thead>');
 
             $.each(res.result, function (key, value) {
-                console.log(value);
+               
                 if (value.isActive == true)
                     Status = "<span>Active</span>";
                 else
@@ -1997,7 +2062,6 @@ $("#addNewGroup").click(function () {
     $('input:checkbox[name=chkGroupActive]').attr('checked', true);
     $('#chkGroupActive').parents('span').addClass('checked');
 });
-
 function onGroupSaveClick() {
     var str = $('#txtModelPurchaseGroup').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
@@ -2011,7 +2075,6 @@ function onGroupSaveClick() {
     SavePurchaseGroup();
 
 }
-
 function ValidatePurchaseGroup() {
     var groupName = false;
     var OrgID = false;
@@ -2041,7 +2104,6 @@ function ValidatePurchaseGroup() {
         return false;
 
 }
-
 function BindModelPurchaseOrg() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -2069,7 +2131,6 @@ function BindModelPurchaseOrg() {
     jQuery.unblockUI();
 
 };
-
 function bindPurchaseGroupData() {
 
     jQuery.blockUI({ message: LoadingMessage });
@@ -2103,7 +2164,6 @@ function bindPurchaseGroupData() {
     });
     jQuery.unblockUI();
 };
-
 function SavePurchaseGroup() {
     jQuery.blockUI({ message: LoadingMessage });
     var url = "NFA/InsertUpdatePurchaseGroup";
@@ -2146,7 +2206,6 @@ function ClearControl() {
     $("#txtModelPurchaseGroup").val('');
     $("#ddlModelOrg").val(0);
 }
-
 function onGroupEdit(rowid, checked, orgid) {
     var rowID = $('#' + rowid);
     if (checked == true) {
@@ -2172,6 +2231,7 @@ function onGroupEdit(rowid, checked, orgid) {
 
 
 };
+
 
 $("#searchPopGrp-up").keyup(function () {
     var SearchTerm = $('#searchPopGrp-up').val();

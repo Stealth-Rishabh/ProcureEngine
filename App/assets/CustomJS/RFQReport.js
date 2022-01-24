@@ -23,32 +23,35 @@ function fetchReguestforQuotationDetails() {
         success: function(RFQData) {
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
-                attachment = RFQData[0].RFQAttachment.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
-                termattach = RFQData[0].RFQTermandCondition.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
+                attachment = RFQData[0].rfqAttachment.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
+                termattach = RFQData[0].rfqTermandCondition.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
 
             } else {
                 attachment = attachment;
                 termattach = termattach;
             }
-            sessionStorage.setItem('CurrentrfiID', RFQData[0].RFQId)
-            jQuery('#RFQSubject').html(RFQData[0].RFQSubject)
-            jQuery('#lbl_ConfiguredBy').html("RFQ Configured By: " + RFQData[0].RFQConfigureByName)
+            sessionStorage.setItem('CurrentrfiID', RFQData[0].rfqid)
+            jQuery('#RFQSubject').html(RFQData[0].rfqSubject)
+            jQuery('#lbl_ConfiguredBy').html("RFQ Configured By: " + RFQData[0].rfqConfigureByName)
 
-            $('#Currency').html(RFQData[0].CurrencyNm)
-            jQuery('#RFQDescription').html(RFQData[0].RFQDescription)
-            jQuery('#RFQDeadline').html(RFQData[0].RFQDeadline)
-            jQuery('#ConversionRate').html(RFQData[0].RFQConversionRate)
-            $('#TermCondition').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + termattach + '').html(RFQData[0].RFQTermandCondition)
-            $('#Attachment').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + attachment + '').html(RFQData[0].RFQAttachment)
-            $('#tbldetails').append("<tr><td>" + RFQData[0].RFQSubject + "</td><td>" + RFQData[0].RFQDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].CurrencyNm + "</td><td>" + RFQData[0].RFQConversionRate + "</td><td>" + RFQData[0].RFQDeadline + "</td></tr>")
-            $('#tbldetailsExcel').append("<tr><td>" + RFQData[0].RFQSubject + "</td><td>" + RFQData[0].RFQDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].CurrencyNm + "</td><td>" + RFQData[0].RFQConversionRate + "</td><td>" + RFQData[0].RFQDeadline + "</td></tr>")
+            $('#Currency').html(RFQData[0].currencyNm)
+            jQuery('#RFQDescription').html(RFQData[0].rfqDescription)
+            jQuery('#RFQDeadline').html(RFQData[0].rfqDeadline)
+            jQuery('#ConversionRate').html(RFQData[0].rfqConversionRate)
+            $('#TermCondition').html(RFQData[0].rfqTermandCondition)
+            //$('#TermCondition').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + termattach + '').html(RFQData[0].rfqTermandCondition)
+           // $('#Attachment').attr('href', 'PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + attachment + '').html(RFQData[0].rfqAttachment)
+            $('#tbldetails').append("<tr><td>" + RFQData[0].rfqSubject + "</td><td>" + RFQData[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].currencyNm + "</td><td>" + RFQData[0].rfqConversionRate + "</td><td>" + RFQData[0].rfqDeadline + "</td></tr>")
+            $('#tbldetailsExcel').append("<tr><td>" + RFQData[0].rfqSubject + "</td><td>" + RFQData[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].currencyNm + "</td><td>" + RFQData[0].rfqConversionRate + "</td><td>" + RFQData[0].rfqDeadline + "</td></tr>")
 
 
         }
     });
 
 }
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'RFQ/' + sessionStorage.getItem('hddnRFQID'));
+}
 function RFQFetchQuotedPriceReport() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorattach = '';
@@ -62,7 +65,7 @@ function RFQFetchQuotedPriceReport() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
+          
            
             if (data.length > 0) {
                 var description = "";
@@ -71,12 +74,12 @@ function RFQFetchQuotedPriceReport() {
                 $('#divdomestic').show();
                 $('#btnExport').show();
               
-                $('#RFQVendorname').html(data[0].VendorName);
-                $('#tdVendorname').html(data[0].VendorName);
-                if (data[0].VendorRemarks != '') {
+                $('#RFQVendorname').html(data[0].vendorName);
+                $('#tdVendorname').html(data[0].vendorName);
+                if (data[0].vendorRemarks != '') {
                    
                     $('#tblvendorremarks').removeClass('hide')
-                    $('#vRemarks').text(data[0].VendorRemarks.replace(/<br>/g, '\n'))
+                    $('#vRemarks').text(data[0].vendorRemarks.replace(/<br>/g, '\n'))
                    
                 } 
                 else{
@@ -85,44 +88,45 @@ function RFQFetchQuotedPriceReport() {
                
                 for (var i = 0; i < data.length; i++) {
                    
-                    vendorattach = data[i].VendorAttachment.replace(/ /g, '%20');
+                    vendorattach = data[i].vendorAttachment.replace(/ /g, '%20');
                    
                     var taxHRTextinc = stringDivider("Total Amount (Inc. Taxes)", 12, "<br/>\n");
                     var taxHRTextEx = stringDivider("Total Amount (Ex. Taxes)", 12, "<br/>\n");
                     var HRUnitRate = stringDivider("Unit Rate (Ex. Taxes)", 12, "<br/>\n");
-                  
-                    if (data[i].RFQBoq == 'Y ') {                       
-                        description = stringDivider(data[i].RFQDescription, 45, "<br/>\n"); 
+                    
+                    if (data[i].rfqBoq == 'Y') {                       
+                        description = stringDivider(data[i].rfqDescription, 45, "<br/>\n"); 
                         if (i == 0) 
                         {
                             jQuery('#tblServicesProduct').append('<thead><tr style="background: grey; color:light black;"><th>Short Name</th><th>Quantity</th><th>UOM</th><th>' + HRUnitRate + '</th><th>' + taxHRTextEx + '</th><th>' + taxHRTextinc + '</th><th>TAT</th><th>Delivery Location</th><th>Attachment</th><th>Description</th><th>Remark</th></tr></thead>');
                             jQuery('#tblServicesProductforexcel').append('<thead><tr style="background: grey; color:light black;"><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Unit Rate (Ex. Taxes)</th><th>Total Amount (Inc. Taxes)</th><th>Total Amount (Inc. Taxes)</th><th>TAT</th><th>Delivery Location</th><th>Attachment</th><th>Description</th><th>Remark</th></tr></thead>');
                         }
                        
-                        jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;white-space:nowrap!important;"><td><b>' + data[i].RFQShortName + '&nbsp(BOQ Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQuantity) + '</b></td><td><b>' + data[i].RFQUomId + '</b></td><td class=text-right><b>' + thousands_separators(data[i].UnitRate) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQVendorPrice) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQVendorPriceWithTax) + '</b></td><td><b>' + data[i].TAT + '</td><td><b>' + data[i].RFQDelivery + '</b></td><td><b><a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</b></a></td><td><b>' + description + '</b></td><td><b>' + data[i].RFQRemark + '</b></td></tr></thead>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
-                        jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td><b>' + data[i].RFQShortName + ' (BOQ Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQuantity) + '</b></td><td><b>' + data[i].RFQUomId + '</b></td><td class=text-right><b>' + thousands_separators(data[i].UnitRate) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQVendorPrice) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].RFQVendorPriceWithTax) + '</b></td><td><b>' + data[i].TAT + '</td><td><b>' + data[i].RFQDelivery + '</b></td><td><b>' + data[i].VendorAttachment + '</b></td><td><b>' + data[i].RFQDescription + '</b></td><td><b>' + data[i].RFQRemark + '</b></td></tr></thead>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
+                        jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;white-space:nowrap!important;"><td><b>' + data[i].rfqShortName + '&nbsp(BOQ Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[i].rfQuantity) + '</b></td><td><b>' + data[i].rfqUomId + '</b></td><td class=text-right><b>' + thousands_separators(data[i].unitRate) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].rfqVendorPrice) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].rfqVendorPriceWithTax) + '</b></td><td><b>' + data[i].tat + '</td><td><b>' + data[i].rfqDelivery + '</b></td><td><b><a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].vendorAttachment + '</b></a></td><td><b>' + description + '</b></td><td><b>' + data[i].rfqRemark + '</b></td></tr></thead>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
+                        jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td><b>' + data[i].rfqShortName + ' (BOQ Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[i].rfQuantity) + '</b></td><td><b>' + data[i].rfqUomId + '</b></td><td class=text-right><b>' + thousands_separators(data[i].unitRate) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].rfqVendorPrice) + '</b></td><td class=text-right><b>' + thousands_separators(data[i].rfqVendorPriceWithTax) + '</b></td><td><b>' + data[i].tat + '</td><td><b>' + data[i].rfqDelivery + '</b></td><td><b>' + data[i].vendorAttachment + '</b></td><td><b>' + data[i].rfqDescription + '</b></td><td><b>' + data[i].rfqRemark + '</b></td></tr></thead>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
                       
                     for (var j = 0; j < data.length; j++) {
-                        description = stringDivider(data[j].RFQDescription, 45, "<br/>\n");  // for word wrap
-                        if (data[i].RFQParameterId == data[j].BOQparentId && data[j].SeqNo != 0) 
+                        description = stringDivider(data[j].rfqDescription, 45, "<br/>\n");  // for word wrap
+                        if (data[i].rfqParameterId == data[j].boQparentId && data[j].seqNo != 0)
                         {
                            
-                            jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].RFQShortName + '</td><td class=text-right>' + thousands_separators(data[j].RFQuantity) + '</td><td>' + data[j].RFQUomId + '</td><td  class=text-right>' + thousands_separators(data[j].UnitRate) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPriceWithTax) + '</td><td>' + '' + '</td><td>' + data[j].RFQDelivery + '</td><td>&nbsp;</td><td>' + description + '</td><td>' + data[j].RFQRemark + '</td></tr>');// <a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
-                            jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].RFQShortName + '</td><td class=text-right>' + thousands_separators(data[j].RFQuantity) + '</td><td>' + data[j].RFQUomId + '</td><td  class=text-right>' + thousands_separators(data[j].UnitRate) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPriceWithTax) + '</td><td>' + '' + '</td><td>' + data[j].RFQDelivery + '</td><td>' + data[i].VendorAttachment + '</td><td>' + data[i].RFQDescription + '</td><td>' + data[j].RFQRemark + '</td></tr>');
+                            jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].rfqShortName + '</td><td class=text-right>' + thousands_separators(data[j].rfQuantity) + '</td><td>' + data[j].rfqUomId + '</td><td  class=text-right>' + thousands_separators(data[j].unitRate) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPriceWithTax) + '</td><td>' + '' + '</td><td>' + data[j].rfqDelivery + '</td><td>&nbsp;</td><td>' + description + '</td><td>' + data[j].rfqRemark + '</td></tr>');// <a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
+                            jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].rfqShortName + '</td><td class=text-right>' + thousands_separators(data[j].rfQuantity) + '</td><td>' + data[j].rfqUomId + '</td><td  class=text-right>' + thousands_separators(data[j].unitRate) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPriceWithTax) + '</td><td>' + '' + '</td><td>' + data[j].rfqDelivery + '</td><td>' + data[i].vendorAttachment + '</td><td>' + data[i].rfqDescription + '</td><td>' + data[j].rfqRemark + '</td></tr>');
                            }
                         }
                     }
-                    else if (data[i].RFQBoq == 'N ') {
+                    else if (data[i].rfqBoq == 'N ') {
 
                         jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: grey; color:light black;"><th>Short Name (Without BOQ)</th><th>Quantity</th><th>UOM</th><th>' + HRUnitRate + '</th><th>' + taxHRTextEx + '</th><th>' + taxHRTextinc + '</th><th>TAT</th><th>Delivery Location</th><th>Attachment</th><th>Description</th><th>Remark</th></tr></thead>');
                         jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr style="background: grey; color:light black;"><th>Short Name (Without BOQ)</th><th>Quantity</th><th>UOM</th><th>Unit Rate (Ex. Taxes)</th><th>Total Amount (Inc. Taxes)</th><th>Total Amount (Inc. Taxes)</th><th>TAT</th><th>Delivery Location</th><th>Attachment</th><th>Description</th><th>Remark</th></tr></thead>');
                         
                         for (var j = 0; j < data.length; j++) {
-                            description = stringDivider(data[j].RFQDescription, 40, "<br/>\n");  // for word wrap
-                            if (data[j].BOQparentId == 0 && data[j].RFQBoq == 'N ' && data[j].RFQParameterId == data[i].RFQParameterId) {
+                            description = stringDivider(data[j].rfqDescription, 40, "<br/>\n");  // for word wrap
+                            
+                            if (data[j].boQparentId == 0 && data[j].rfqBoq == 'N ' && data[j].rfqParameterId == data[i].rfqParameterId) {
 
-                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].RFQShortName + '</td><td class=text-right>' + thousands_separators(data[j].RFQuantity) + '</td><td>' + data[j].RFQUomId + '</td><td class=text-right>' + thousands_separators(data[j].UnitRate) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPriceWithTax) + '</td><td>' + data[j].TAT + '</td><td>' + data[j].RFQDelivery + '</td><td><a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a></td><td>' + description + '</td><td>' + data[j].RFQRemark + '</td></tr>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
-                                jQuery("#tblServicesProductforexcel > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].RFQShortName + '</td><td class=text-right>' + thousands_separators(data[j].RFQuantity) + '</td><td>' + data[j].RFQUomId + '</td><td class=text-right>' + thousands_separators(data[j].UnitRate) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].RFQVendorPriceWithTax) + '</td><td>' + data[j].TAT + '</td><td>' + data[j].RFQDelivery + '</td><td>' + data[i].VendorAttachment + '</td><td>' + data[i].RFQDescription + '</td><td>' + data[j].RFQRemark + '</td></tr>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
+                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].rfqShortName + '</td><td class=text-right>' + thousands_separators(data[j].rfQuantity) + '</td><td>' + data[j].rfqUomId + '</td><td class=text-right>' + thousands_separators(data[j].unitRate) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPriceWithTax) + '</td><td>' + data[j].tat + '</td><td>' + data[j].rfqDelivery + '</td><td><a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].vendorAttachment + '</a></td><td>' + description + '</td><td>' + data[j].rfqRemark + '</td></tr>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
+                                jQuery("#tblServicesProductforexcel > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[j].rfqShortName + '</td><td class=text-right>' + thousands_separators(data[j].rfQuantity) + '</td><td>' + data[j].rfqUomId + '</td><td class=text-right>' + thousands_separators(data[j].unitRate) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPrice) + '</td><td class=text-right>' + thousands_separators(data[j].rfqVendorPriceWithTax) + '</td><td>' + data[j].tat + '</td><td>' + data[j].rfqDelivery + '</td><td>' + data[i].vendorAttachment + '</td><td>' + data[i].rfqDescription + '</td><td>' + data[j].rfqRemark + '</td></tr>'); //<a href=PortalDocs/RFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('hddnVendorId') + '/' + vendorattach + '>' + data[i].VendorAttachment + '</a>
                                
                                
                             }

@@ -79,7 +79,8 @@ function ChangePassword() {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
             "NewPassword": $("#nPassword").val(),
-            "UserType": sessionStorage.getItem("UserType")
+            "UserType": sessionStorage.getItem("UserType"),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
 
        
@@ -472,9 +473,11 @@ function acceptBidTermsAuction() {
     
     var acceptTerms = {
         "BidID": parseInt(sessionStorage.getItem('BidID')),
-        "VendorID": vendorID
+        "VendorID": vendorID,
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
-   // alert(JSON.stringify(acceptTerms))
+    //alert(JSON.stringify(acceptTerms))
+    console.log(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -487,7 +490,6 @@ function acceptBidTermsAuction() {
                 window.location = data.linkURL
             }
         },
-        
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             
@@ -507,7 +509,8 @@ function acceptBidTermsRFIVQ() {
    
     var acceptTerms = {
         "VQRFIID": _Bidtype + '-' + sessionStorage.getItem('hddnRFQRFIID'),
-        "VID": parseInt(vendorID)
+        "VID": parseInt(vendorID),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
     
     jQuery.ajax({
@@ -542,9 +545,10 @@ function eRFQAcceptBidTerms() {
     
     var acceptTerms = {
         "RFQID":  parseInt(sessionStorage.getItem('hddnRFQRFIID')),
-        "VID": parseInt(vendorID)
+        "VID": parseInt(vendorID),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   //  alert(JSON.stringify(acceptTerms))
+    alert(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQAcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

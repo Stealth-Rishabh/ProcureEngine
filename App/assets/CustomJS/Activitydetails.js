@@ -75,12 +75,14 @@ function ChangePassword() {
         jQuery.unblockUI();
         return;
     }
-    else {
+    else
+    {
         var data = {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
             "NewPassword": $("#nPassword").val(),
-            "UserType": sessionStorage.getItem("UserType")
+            "UserType": sessionStorage.getItem("UserType"),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
        // console.log(JSON.stringify(data))
         jQuery.ajax({
@@ -117,9 +119,6 @@ function ChangePassword() {
                 jQuery.unblockUI();
                 return false;
             }
-
-
-
         });
     }
 
@@ -166,7 +165,7 @@ function fnArchive(RFQID) {
     // alert(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/ArchiveObserverRFQ/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + Token); },
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
@@ -235,7 +234,11 @@ function fetchDashboardData() {
                    
                     if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
                         jQuery('#icon' + i).addClass('fa fa-question-circle');
-                    } else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
+                    }
+                   else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
+                        jQuery('#icon' + i).addClass('fa fa-question-circle');
+                    }
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
                         jQuery('#icon' + i).addClass('fa fa-envelope-o');
                     }
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
@@ -282,6 +285,9 @@ function fetchDashboardData() {
 
 
                     if (BidData[0].todayBidStatus[i].bidTypeName == 'VQ') {
+                        jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
+                    }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'VR') {
                         jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
                     }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFQ') {
@@ -336,6 +342,9 @@ function fetchDashboardData() {
                     jQuery('#ulList').append(str);
 
                     if (BidData[0].todayBidStatus[i].bidTypeName == 'VQ') {
+                        jQuery('#iconbid' + i).addClass('fa fa-question-circle');
+                    }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'VR') {
                         jQuery('#iconbid' + i).addClass('fa fa-question-circle');
                     }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFI') {
@@ -437,7 +446,11 @@ function fetchBidDataDashboard(requesttype) {
 
                         if (BidData[i].bidTypeName == 'VQ') {
                             jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
-                        } else if (BidData[i].bidTypeName == 'RFI') {
+                        }
+                        else if (BidData[i].bidTypeName == 'VR') {
+                            jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
+                        }
+                        else if (BidData[i].bidTypeName == 'RFI') {
                             jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
                         } else if (BidData[i].bidTypeName == 'RFQ') {
                             $('#iconbidd' + i).addClass('icon-envelope');

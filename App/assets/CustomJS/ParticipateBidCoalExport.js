@@ -128,8 +128,6 @@ function fetchBidSummaryVendorproduct() {
                     sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
                 if (data[0].bidClosingType == 'A') {
                    
-                    
-                    
                     for (var i = 0; i < data.length; i++) {
                        
                         var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
@@ -258,9 +256,10 @@ function onkeyNCV(index) {
 }
 var cess = 0;
 function calCostNCV(txtid, index) {
-    cess = 0;
+    cess = 0; 
     $('#spanmszL' + index).addClass('hide');
     $('#spanamount' + index).addClass('hide')
+    $('#spanmszA' + index).addClass('hide')
     $('#spanmszL' + index).text('')
     if ($('#' + txtid.id).val().indexOf(".") > -1 && ($('#' + txtid.id).val().split('.')[1].length > 2)) {
         $('#spanmszL' + index).text($('#' + txtid.id).val() + ' must three decimal places');

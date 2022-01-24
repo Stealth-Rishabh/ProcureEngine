@@ -1152,7 +1152,8 @@ function fnRegreteRFQ() {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "VendorID": parseInt(sessionStorage.getItem('VendorId')),
             "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-            "Remarks": $('#txtRemarks').val()
+            "Remarks": $('#txtRemarks').val(),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
       //  alert(JSON.stringify(RegretData))
         jQuery.ajax({

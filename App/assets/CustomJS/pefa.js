@@ -2448,7 +2448,7 @@ function Dateandtimevalidate(indexNo) {
                                     className: "btn-success",
                                     callback: function () {
 
-                                        deleteBidParameter('B');
+                                        deleteBidParameter('P');
                                     }
                                 },
                                 cancel: {
@@ -2788,7 +2788,7 @@ function getCategoryWiseVendors(categoryID) {
 
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise_PEV2/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",

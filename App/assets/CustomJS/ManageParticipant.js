@@ -214,7 +214,7 @@ function RegisterParticipants() {
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
         "AlternateEmailID": $('#txtAlternateeMailID').val()
-
+       
         
     };
    // alert(JSON.stringify(RegisterParticipants))

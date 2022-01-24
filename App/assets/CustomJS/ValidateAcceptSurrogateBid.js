@@ -1,16 +1,18 @@
 ﻿var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
+
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 var BIDTypeID = '';
-var BidClosingType='';
+var BidClosingType = '';
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
 function fetchBidHeaderDetails() {
    
     var url = '';
-  
-    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetailsForSurrogate/?BidID=" + BIDID;
+    
+    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetailsForSurrogate/?BidID=" + parseInt(BIDID);
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -21,6 +23,7 @@ function fetchBidHeaderDetails() {
         dataType: "json",
         success: function (data, status, jqXHR) {
             console.log("dataa > ", data)
+           
             if (data.length == 1) {
              
                 var datearray = data[0].bidDate.split("/");
@@ -98,7 +101,7 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   // sessionStorage.setItem("APIPath", 'http://www.support2educate.com/pev2/PEAPIV2/');
+    //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
     sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
     if (jQuery("#txtpassword").val() == "" ) {

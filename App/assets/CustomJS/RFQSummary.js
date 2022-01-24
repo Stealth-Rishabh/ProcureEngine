@@ -9,7 +9,7 @@ function fetchregisterusers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchAllregisteredusersRolebased/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -17,7 +17,7 @@ function fetchregisterusers() {
             jQuery("#ddlconfiguredby").empty();
             jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
             for (var i = 0; i < data.length; i++) {
-                jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].UserID).html(data[i].UserName));
+                jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
             }
         }
     });
@@ -105,11 +105,29 @@ function getSummary(RFQID, subject) {
 }
 var rfqdeadline = '';
 function fetchRFQVendorSummary() {
-   
+    var dtfrom = '', dtto = '', subject = 'X-X';
+    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
+        dtfrom = '1900/01/01';
+
+    }
+    else {
+        dtfrom = $("#txtFromDate").val()
+    }
+
+    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
+        dtto = '1900/01/01';
+
+    }
+    else {
+        dtto = $("#txtToDate").val()
+    }
+    if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
+        subject = jQuery("#txtbidsubject").val()
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/RFQOverviewReport/?FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val() + "&RFQSubject=" + jQuery("#txtbidsubject").val() + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/RFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data:'',
         cache: false,
@@ -123,18 +141,18 @@ function fetchRFQVendorSummary() {
             if (BidData.length > 0) {
                
                 for (var i = 0; i < BidData.length; i++) {
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].RFQID + "'\,\'" + encodeURIComponent(BidData[i].RFQSubject) + "'\) href='javascript:;' >" + BidData[i].RFQID + "</a></td>";
-                    str += "<td>" + BidData[i].RFQSubject + "</td>";
-                    str += "<td>" + BidData[i].RFQConfiguredBy + "</td>";
-                    var datearray = BidData[i].RFQDeadline.split("/");
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
+                    str += "<td>" + BidData[i].rfqSubject + "</td>";
+                    str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
+                    var datearray = BidData[i].rfqDeadline.split("/");
                   
                     rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
                     str += "<td>" + rfqdeadline + "</td>";
 
                   
-                    str += "<td>" + BidData[i].CurrencyName + "</td>";
-                    str += "<td>" + BidData[i].RFQStatus + "</td>";
+                    str += "<td>" + BidData[i].currencyName + "</td>";
+                    str += "<td>" + BidData[i].rfqStatus + "</td>";
 
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
@@ -205,11 +223,29 @@ function fetchRFQVendorSummary() {
 }
 
 function fetchBidVendorSummaryDetail() {
-    
+    var dtfrom = '', dtto = '', subject = 'X-X';
+    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
+        dtfrom = '1900/01/01';
+    }
+    else {
+        dtfrom = $("#txtFromDate").val()
+    }
+
+    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
+        dtto = '1900/01/01';
+
+    }
+    else {
+        dtto = $("#txtToDate").val()
+    }
+    if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
+        subject = jQuery("#txtbidsubject").val()
+    }
+    //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchAdminRFQSummaryDetailed/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchAdminRFQSummaryDetailed/?FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val() + "&RFQSubject=" + jQuery("#txtbidsubject").val() + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchAdminRFQSummaryDetailed/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: '',
         cache: false,
@@ -229,64 +265,38 @@ function fetchBidVendorSummaryDetail() {
                
                 for (var i = 0; i < BidData.length; i++) {
                    
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].RFQID + "'\,\'" + encodeURIComponent(BidData[i].RFQSubject) + "'\) href='javascript:;' >" + BidData[i].RFQID + "</a></td>";
-                    str += "<td>" + BidData[i].RFQSubject + "</td>";
-                    str += "<td>" + BidData[i].RFQConfiguredBy + "</td>";
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
+                    str += "<td>" + BidData[i].rfqSubject + "</td>";
+                    str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 
-                    var datearray = BidData[i].RFQDeadline.split("/");
+                    var datearray = BidData[i].rfqDeadline.split("/");
                   
                     rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
                     str += "<td>" + rfqdeadline + "</td>";
 
-                    var RFQShortName = BidData[i].RFQShortName.replace(/<br\s*\/?>/gi, ' '); //remove br
+                    var RFQShortName = BidData[i].rfqShortName.replace(/<br\s*\/?>/gi, ' '); //remove br
 
                     str += "<td>" + RFQShortName + "</td>";
-                    str += "<td class=text-right>" + thousands_separators(BidData[i].Quantity) + "</td>";
-                    str += "<td>" + BidData[i].UOM + "</td>";
-                    str += "<td>" + BidData[i].CurrencyName + "</td>";
-                    str += "<td>" + BidData[i].VendorName + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].quantity) + "</td>";
+                    str += "<td>" + BidData[i].uom + "</td>";
+                    str += "<td>" + BidData[i].currencyName + "</td>";
+                    str += "<td>" + BidData[i].vendorName + "</td>";
 
-                    if (BidData[i].RFQLastInvoicePrice != 0) {
-                        if (BidData[i].Role == "Administrator") {
-                            str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].RFQID + '\',\'' + BidData[i].RFQParameterID + '\',\'' + thousands_separators(BidData[i].RFQLastInvoicePrice) + '\',\'LIP\')"> ' + thousands_separators(BidData[i].RFQLastInvoicePrice) + '</a></td>';
-                        }
-                        else {
-                            str += "<td class=text-right>" + thousands_separators(BidData[i].RFQLastInvoicePrice) + "</td>";
-                        }
-                    }
-                    else
-                    {
-                        str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].RFQID + '\',\'' + BidData[i].RFQParameterID + '\',\'' + 0 + '\',\'LIP\')"> ' + 0 + '</a></td>';
-                    }
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].rfqLastInvoicePrice) + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].rfqTargetPrice) + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
+                    if (BidData[i].rfqLastInvoicePrice != 0) {
 
-               if (BidData[i].RFQTargetPrice != 0) {
-                        if (BidData[i].Role == "Administrator") {
-                            str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].RFQID + '\',\'' + BidData[i].RFQParameterID + '\',\'' + thousands_separators(BidData[i].RFQTargetPrice) + '\',\'TP\')"> ' + thousands_separators(BidData[i].RFQTargetPrice) + '</a></td>';
-                            
-                        }
-                        else {
-                            str += "<td class=text-right>" + thousands_separators(BidData[i].RFQTargetPrice) + "</td>";
-                        }
-                     }
-                    else {
-                        str += '<td class=text-right><a href="javascript:;" style="text-decoration:none" onclick="editLIP(\'' + BidData[i].RFQID + '\',\'' + BidData[i].RFQParameterID + '\',\'' + 0 + '\',\'TP\')"> ' + 0 + '</a></td>';
-                    }
-
-                   
-
-                    str += "<td class=text-right>" + thousands_separators(BidData[i].MinPrice) + "</td>";
-                    if (BidData[i].RFQLastInvoicePrice != 0) {
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].RFQLastInvoicePrice - BidData[i].MinPrice) * BidData[i].Quantity).round(2)) + "</td>"
+                        str += "<td class=text-right>" + thousands_separators(((BidData[i].rfqLastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
                     }
                     else {
 
                         str += '<td class=text-right>' + 0 + '</td>';
                     }
-                    if (BidData[i].RFQTargetPrice != 0) {
+                    if (BidData[i].rfqTargetPrice != 0) {
 
-                    str += "<td class=text-right>" + thousands_separators(((BidData[i].RFQTargetPrice - BidData[i].MinPrice) * BidData[i].Quantity).round(2)) + "</td>"
+                    str += "<td class=text-right>" + thousands_separators(((BidData[i].rfqTargetPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
                     }
                     else {
 
@@ -368,77 +378,33 @@ function fetchBidVendorSummaryDetail() {
         }
     });
 }
-function editLIP(rfqid, rfqparameterid, price, fieldName) {
 
-    if (fieldName == "TP") {
-        $('#lblfieldName').html("Target Price <span class='required'>*</span>")
-    }
-    else {
-        $('#lblfieldName').html("Last Invoice Price <span class='required'>*</span>")
-    }
-    $('#txtlastinvoiceprice').val(price)
-    $('#hddfieldName').val(fieldName);
-    $('#hddnBidID').val(rfqid);
-    $('#hddnItemID').val(rfqparameterid);
-
-    $("#editLastInvoiceprice").modal("show")
-}
-var error = $('#msgErrorEditEvent');
-function updlastinvoiceprice() {
-
-    if ($('#txtlastinvoiceprice').val() == "" || $('#txtlastinvoiceprice').val() == 0) {
-        error.find("span").html('Please Enter Last Invoice Price value.');
-        error.show();
-        Metronic.scrollTo(error, -200);
-        error.fadeOut(3000);
-        return false;
-
-    }
-    var Data = {
-        "BidTypeID": -1,//RFQ
-        "BidID": $('#hddnBidID').val(),
-        "ItemID": $("#hddnItemID").val(),
-        "LastInvoicePrice": removeThousandSeperator($('#txtlastinvoiceprice').val()),
-        "For": $('#hddfieldName').val()
-
-    }
-
-    //  alert(JSON.stringify(Data))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateLastInvoicePrice/",
-        type: "POST",
-        data: JSON.stringify(Data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-            if (data[0].Success == "1") {
-                fetchBidVendorSummaryDetail();
-                $("#editLastInvoiceprice").modal("hide")
-
-            }
-
-            jQuery.unblockUI();
-        },
-        error: function (result) {
-            jQuery.unblockUI();
-        }
-    });
-
-}
-$('#editLastInvoiceprice').on("hidden.bs.modal", function () {
-    $('#txtlastinvoiceprice').val('')
-    $('#hddnBidID').val(0),
-     $("#hddnItemID").val(0),
-
-     $('#hddfieldName').val('')
-})
 
 
 function fetchBidVendorSummarySummarization() {
-  
+    var dtfrom = '', dtto = '', subject = 'X-X';
+    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
+        dtfrom = '1900/01/01';
+
+    }
+    else {
+        dtfrom = $("#txtFromDate").val()
+    }
+
+    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
+        dtto = '1900/01/01';
+
+    }
+    else {
+        dtto = $("#txtToDate").val()
+    }
+    if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
+        subject = jQuery("#txtbidsubject").val()
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchAdminRFQSummaryfull/?FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val() + "&RFQSubject=" + jQuery("#txtbidsubject").val() + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchAdminRFQSummaryfull/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: '',
         cache: false,
@@ -458,31 +424,31 @@ function fetchBidVendorSummarySummarization() {
                
                 for (var i = 0; i < BidData.length; i++) {
 
-                    var str = "<tr><td><a onclick=getSummary(\'" + BidData[i].RFQID + "'\,\'" + encodeURIComponent(BidData[i].RFQSubject) + "'\) href='javascript:;' >" + BidData[i].RFQID + "</a></td>";
-                    str += "<td>" + BidData[i].RFQSubject + "</td>";
-                    str += "<td>" + BidData[i].RFQConfiguredBy + "</td>";
+                    var str = "<tr><td><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
+                    str += "<td>" + BidData[i].rfqSubject + "</td>";
+                    str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
                    
-                    var datearray = BidData[i].RFQDeadline.split("/");
+                    var datearray = BidData[i].rfqDeadline.split("/");
                   
                     rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
                     str += "<td>" + rfqdeadline + "</td>";
 
-                    str += "<td>" + BidData[i].CurrencyName + "</td>";
-                    str += "<td class=text-right>" + thousands_separators(BidData[i].RFQValueAsLastInvoicePrice) + "</td>";
-                    str += "<td class=text-right>" + thousands_separators(BidData[i].RFQValueAsTargetPrice) + "</td>";
-                    str += "<td class=text-right>" + thousands_separators(BidData[i].RFQValueAsMinPrice) + "</td>";
+                    str += "<td>" + BidData[i].currencyName + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsLastInvoicePrice) + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsTargetPrice) + "</td>";
+                    str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsMinPrice) + "</td>";
                     if (BidData[i].RFQValueAsLastInvoicePrice != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].RFQValueAsLastInvoicePrice - BidData[i].RFQValueAsMinPrice).round(2)) + "</td>";
+                        str += "<td class=text-right>" + thousands_separators((BidData[i].rfqValueAsLastInvoicePrice - BidData[i].rfqValueAsMinPrice).round(2)) + "</td>";
                     }
                     else {
 
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
-                    if (BidData[i].RFQValueAsTargetPrice != 0) {
+                    if (BidData[i].rfqValueAsTargetPrice != 0) {
                         
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].RFQValueAsTargetPrice - BidData[i].RFQValueAsMinPrice).round(2)) + "</td>";
+                        str += "<td class=text-right>" + thousands_separators((BidData[i].rfqValueAsTargetPrice - BidData[i].rfqValueAsMinPrice).round(2)) + "</td>";
                     }
                     else {
                         

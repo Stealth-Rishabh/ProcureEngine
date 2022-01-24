@@ -12,6 +12,7 @@ if (window.location.search) {
     fetchAttachments();
     fetchApproverRemarks('P');
     fetchAzPPcFormDetails();
+    fetchRFQPPCApproverStatus(RFQID);
 }
 
 function fnfillPPCForm() {

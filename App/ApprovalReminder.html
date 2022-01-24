@@ -132,16 +132,17 @@
                                                     <select class="form-control" id="ddlCustomer" name="ddlCustomer"></select>
                                                 </div>
                                             </div>
+
                                             <div class="Controlgroup col-md-3">
                                                 <label class="col-md-5 control-label">
                                                     Event Type
                                                 </label>
                                                 <div class="col-md-7">
-                                                    <select class="form-control" id="ddleventtype" name="ddleventtype" onchange="FetchAllCloseBids()">
+                                                    <select class="form-control" id="ddleventtype" name="ddleventtype" onchange="FetchAllpendingWith()">
                                                         <option value="RA">Reverse Auction</option>
                                                         <option value="FA">Forward & Dutch Auction</option>
                                                         <option value="eRFQ">eRFQ</option>
-                                                        
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -151,20 +152,20 @@
                                                 </label>
                                                 <div class="col-md-7">
                                                     <select class="form-control" id="ddlPendingwith" name="ddlPendingwith" onchange="FetchAllCloseBids()">
-                                                        <option value="0">Select</option>
+                                                       
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-1" >
+                                            <div class="col-md-1">
                                                 <button type="button" id="btnGo" class="btn btn-success " value="Go" onclick="FetchAllCloseBids()">Go</button>
-                                               
+
                                             </div>
                                             <div class="col-md-1">
                                                 <button type="button" id="btnviewAll" class="btn tooltips yellow " href="#viewAllpendingEvents" data-toggle="modal" data-placement="left" data-original-title="Click here to View All" onclick="FetchViewAllPendingBids()">View All</button>
-                                                </div>
-
                                             </div>
+
+                                        </div>
 
 
                                         <!--<div class="form-actions fluid">
@@ -344,9 +345,9 @@
             setTimeout(function () {
                 FetchAllpendingWith();
             }, 1000);
-            setTimeout(function () {
-                FetchAllCloseBids();
-            }, 2000);
+            //setTimeout(function () {
+            //    FetchAllCloseBids();
+            //}, 2000);
         });
     </script>
 

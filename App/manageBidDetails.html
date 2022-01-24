@@ -1039,7 +1039,7 @@
                                                                     <div class="row">
 
                                                                         <div class="col-md-11">
-                                                                            <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                            <!--<div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">-->
                                                                                 <div id="divprebid" class="portlet-body flip-scroll ">
                                                                                     <table align="left" id="tblprebidvendors" class="table table-bordered table-striped table-condensed flip-content">
 
@@ -1058,7 +1058,7 @@
                                                                                         <tbody></tbody>
                                                                                     </table>
                                                                                 </div>
-                                                                            </div>
+                                                                            <!--</div>-->
                                                                         </div>
                                                                         <div class="col-md-1">
 
@@ -1340,9 +1340,10 @@
                                     <label class="control-label  col-md-2 RaAuctionFields" id="BSPENG">
                                         Bid Start Price<span class="required"> *</span>
                                     </label>
-                                    <label class="control-label col-md-2 fadutchAuctionFields">
-                                        Ceiling/ Max price<span class="required"> *</span>
+                                    <label class="control-label col-md-2 fadutchAuctionFields" id="CElingFA">
+                                        Ceiling/ Max Price<span class="required"> *</span>
                                     </label>
+                                    
                                     <div class="col-md-2">
                                         <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
@@ -1353,13 +1354,13 @@
                                             <option value="Y">Yes</option>
                                         </select>
                                     </div>
-                                    <label class="control-label col-md-2 RaAuctionFields">
+                                    <label class="control-label col-md-2 RaAuctionFields" id="lblmindec">
                                         Minimum Decrement<span class="required"> *</span>
                                     </label>
                                     <label class="control-label col-md-2 faEngilshAuctionFields" id="lblforonltfaeng">
                                         Minimum&nbsp;Increment<span class="required">*</span>
                                     </label>
-                                    <label class="control-label col-md-2 fadutchAuctionFields">
+                                    <label class="control-label col-md-2 fadutchAuctionFields" id="lblcelingfloor">
                                         Starting Price<span class="required">*</span>
                                     </label>
                                     <div class="col-md-2">
@@ -1377,7 +1378,7 @@
                                 </div>
 
                                 <div class="form-group  fadutchAuctionFields">
-                                    <label class="control-label  col-md-2">
+                                    <label class="control-label  col-md-2" id="lblpricefrequency">
                                         Price Increament Frequency<span class="required"> *</span>
                                     </label>
 
@@ -1385,7 +1386,7 @@
                                         <input type="text" class="form-control" id="txtpricefrequency" name="txtpricefrequency" maxlength="3" number="true" autocomplete="off" />
 
                                     </div>
-                                    <label class="control-label  col-md-2">
+                                    <label class="control-label  col-md-2" id="lblpricedecamount">
                                         Price Increament Amount<span class="required"> *</span>
                                     </label>
 
