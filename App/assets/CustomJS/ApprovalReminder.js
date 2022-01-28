@@ -215,16 +215,17 @@ function FetchAllCloseBids() {
             jQuery("#tblVendorSummary").empty();
             if (BidData.length > 0) {
                 $('#divsubmitbutton').removeClass('hide');
-                jQuery('#tblVendorSummary').append("<thead><tr><th><label class='checkbox-inline checker'><input type='checkbox' id='chkAll' value='All' name='chkAll' onclick='fnheckAll()' /> All</label></th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
+                jQuery('#tblVendorSummary').append("<thead><tr><th><label class='checkbox-inline checker'><input type='checkbox' id='chkAll' value='All' name='chkAll' onclick='fnheckAll()' /> All</label></th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class=hide></th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
                 for (var i = 0; i < BidData.length; i++) {
                   
-                    var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\)\"; Onclick=\"Check(this)\"; id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
+                    var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\,\'" + BidData[i].toUserId + "'\)\"; Onclick=\"Check(this)\"; id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
                   
                     str += "<td class='text-left'>" + BidData[i].bidID + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
 
                    
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
+                    str += "<td class=hide id=pendingon"+i+">" + BidData[i].toUserId + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
                     str += "<td>" + BidData[i].pendingSince + "</td>";
                     str += "</tr>";
@@ -341,7 +342,8 @@ function fnheckAll() {
 
 
 }
-function Check(event, Bidid) {
+
+function Check(event, Bidid,pendingon) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
@@ -392,8 +394,12 @@ function fnCloseBids() {
     var temp = new Array();
     $("#tblVendorSummary> tbody > tr").each(function (index) {
         if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-          
-            checkedBid = checkedBid + $(this).find("#chkvender").val() + "#"
+            //if ($("#ddleventtype").val().toLowerCase() == "erfq") {
+                checkedBid = checkedBid + $(this).find("#chkvender").val() + '~' + $('#pendingon' + index).text() + "#"
+           // }
+           // else {
+                //checkedBid = checkedBid + $(this).find("#chkvender").val() + "#"
+           // }
         }
     });
    
@@ -404,7 +410,7 @@ function fnCloseBids() {
         "UserID": sessionStorage.getItem("UserID"),
         "BidTypeID": jQuery("#ddleventtype").val(),
         "ToUserID": parseInt(jQuery("#ddlPendingwith option:selected").val()),
-         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     
    // alert(JSON.stringify(data))

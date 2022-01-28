@@ -59,12 +59,20 @@ function FormValidate() {
    
     $("#registerForm").validate({
        
-        focusInvalid: false,
-        ignore: "",
+        //doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        //errorElement: 'span', //default input error message container
+        //errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
         rules: {
-            UserName: "required",
-            designation: "required",
-            CompanyName: "required",
+            UserName: {
+                required:true
+            },
+            designation:{
+                    required: true
+                },
+            CompanyName: {
+             required: true
+            },
             UserEmail: {
                 required: true,
                 email: true
@@ -94,22 +102,39 @@ function FormValidate() {
                 required: true
             }
         },
-        errorElement: 'span',
-        errorPlacement: function (error, element) {
-            //error.addClass('help-block');
-           // error.insertAfter(element);
+        invalidHandler: function (event, validator) { //display error alert on form submit   
+            
             $('#successdiv').hide()
+            $('#errordiv').show();
+            $('#errormsg').text("Please fill all mandatory fields.");
+            $('#errordiv').fadeOut(5000);
+            $('#successdivSupp').hide()
+
         },
+        //errorPlacement: function (error, element) {
+        //    //error.addClass('help-block');
+        //   // error.insertAfter(element);
+           
+        //},
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
-           // $(element).closest('.form-group').addClass('error');
+           
         },
         unhighlight: function (element) {
             $(element).closest('.form-group').removeClass('has-error');
            // $(element).closest('.form-group').removeClass('error');
         },
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error');
+            label.remove();
+        },
+
+        errorPlacement: function (error, element) {
+           // error.insertAfter(element); // for other inputs, just perform default behavior
+        },
+
         submitHandler: function (form) {
-           
+            $('#errordiv').hide();
             fnFormSubmit()
         }
     })
@@ -118,9 +143,15 @@ function FormValidate() {
         focusInvalid: false,
         ignore: "",
         rules: {
-            UserNameSupp: "required",
-            designationSupp: "required",
-            CompanyNameSupp: "required",
+            UserNameSupp: {
+                required: true
+            },
+            designationSupp: {
+                required: true
+            },
+            CompanyNameSupp: {
+                required: true
+            },
             UserEmailSupp: {
                 required: true,
                 email: true
@@ -154,21 +185,38 @@ function FormValidate() {
             }
         },
         errorElement: 'span',
-        errorPlacement: function (error, element) {
-           //error.addClass('help-block');
-           // error.insertAfter(element);
+        
+        invalidHandler: function (event, validator) { //display error alert on form submit   
+
+            $('#errordivSupp').show();
+            $('#errormsgSupp').text("Please fill all mandatory fields.");
+            $('#errordivSupp').fadeOut(5000);
             $('#successdivSupp').hide()
+
         },
+        //errorPlacement: function (error, element) {
+        //    //error.addClass('help-block');
+        //   // error.insertAfter(element);
+
+        //},
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
-            // $(element).closest('.form-group').addClass('error');
+
         },
         unhighlight: function (element) {
-             $(element).closest('.form-group').removeClass('has-error');
+            $(element).closest('.form-group').removeClass('has-error');
             // $(element).closest('.form-group').removeClass('error');
         },
-        submitHandler: function (form) {
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error');
+            label.remove();
+        },
 
+        errorPlacement: function (error, element) {
+            // error.insertAfter(element); // for other inputs, just perform default behavior
+        },
+        submitHandler: function (form) {
+            $('#errordivSupp').hide();
             fnFormSubmit()
         }
     })
@@ -176,6 +224,9 @@ function FormValidate() {
 $("#requestModal").on("hidden.bs.modal", function () {
     fnReset();
     $('.alert-success').hide();
+    $('.alert-danger').hide();
+    fnReset();
+    $(".form-group").removeClass("has-error");
 });
 function fnFormSubmit() {
     $('#modalLoaderparameter').show()
@@ -212,11 +263,13 @@ function fnFormSubmit() {
                 $('#modalLoaderparameter').hide();
                 $('.alert-success').show();
                 $('#successdiv,#successdivSupp').html("Thank you so much for contacting us.We shall contact you according to preffered Time slot mentioned.");
-                $('.alert-success').fadeOut(9000);
+                $('.alert-success').fadeOut(5000);
+                $('#errordiv,#errordivSupp').hide();
+                
                 fnReset();
                 setTimeout(function () {
                     $("#requestModal").modal("hide");
-                }, 10000)
+                }, 5000)
             }
         });
   }
