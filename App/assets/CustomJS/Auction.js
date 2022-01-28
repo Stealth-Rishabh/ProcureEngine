@@ -59,8 +59,6 @@ function gritternotification(msz) {
 
     return false;
 }
-
-
 function setCommonData() {
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
@@ -259,8 +257,6 @@ function checkfilesizeMultiple(fileElem) {
 
     }
 }
-
-
 function thousands_Sep_Text(num) {
     var num_parts = num.toString().split(".");
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -498,8 +494,6 @@ function getUrlVars() {
     }
     return vars;
 }
-
-
 
 function sendChatMsgs() {
   
@@ -768,8 +762,8 @@ function fetchvendor() {
                        
                     } else {
                         //$(".pulsate-regular-li").hide();
-                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
-                            + '<div class="media-status">'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID+'  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
+                            + '<div class="media-status"><span class="badge badge-empty badge-success"></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
@@ -799,7 +793,7 @@ function fetchvendor() {
         }
     });
 }
-
+/*<span class="badge badge-empty badge-warning"></span>*/
 function updateMsgReadFlag(bidId, vendorId, forUpdate) {
    
     var data = {

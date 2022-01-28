@@ -548,7 +548,7 @@ function eRFQAcceptBidTerms() {
         "VID": parseInt(vendorID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-    alert(JSON.stringify(acceptTerms))
+   // alert(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQAcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

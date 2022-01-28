@@ -64,8 +64,13 @@ jQuery("#txtrfirfqsubject").typeahead({
 
             $('#hdnRfqID').val(map[item].rfqid);
             fetchReguestforQuotationDetails()
-            fetchRFQApproverStatus(map[item].rfqid);
-            fetchRFQPPCApproverStatus(map[item].rfqid);
+           
+            if (sessionStorage.getItem('CustomerID') == "32") {
+                fetchRFQPPCApproverStatus(map[item].rfqid);
+            }
+            else {
+                fetchRFQApproverStatus(map[item].rfqid);
+            }
             FetchRFQVersion();
             FetchRFQVersion();
             fetchAttachments();
@@ -1240,6 +1245,13 @@ function fetchRFQPPCApproverStatus(RFQID) {
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
+                    if (data[i].statusCode == 60) {
+
+                        //counterColor = counterColor + 1;
+                        status = 'Pending on comm Approver after Revert'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
                     if (data[i].statusCode == 40) {
 
                         counterColor = counterColor + 1;
@@ -1247,17 +1259,17 @@ function fetchRFQPPCApproverStatus(RFQID) {
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
-                    if (data[i].statusCode == 10) {
+                    if (data[i].statusCode == 10 || data[i].statusCode == 60) {
                         jQuery('#divstatuscolor' + i).addClass('error');
                     }
                     if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40 || data[i].statusCode == 50) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
-
-                    if (counterColor > 1) {
+                    
+                    if (counterColor > 1 && data[i].pendingSince == '') {//
                         if (status == 'Pending') {
                             status = 'N/A'
-                            jQuery('#divPendingDate' + i).addClass('hide')
+                            $('#divPendingDate' + i).addClass('hide')
                             c = c + 1;
                             jQuery('#divstatus' + i).text(status);
                             jQuery('#divstatuscolor' + i).removeClass('error')

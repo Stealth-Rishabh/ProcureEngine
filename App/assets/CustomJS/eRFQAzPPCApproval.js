@@ -1433,10 +1433,10 @@ function fetchApproverRemarks() {
             $('#tblremarksapprover').empty()
             $('#tblremarksawared').empty()
             if (data.length > 0) {
-                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
-                $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>For</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
-                $('#tblremarksawared').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
-                $('#tblapprovalprocess').append('<tr><th>Action Taken By</th><th>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblremarksforward').append('<tr><th> Action</th><th>For</th><th class=hide>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblremarksapprover').append('<tr><th>Action</th><th>For</th><th class=hide>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblremarksawared').append('<tr><th>Action</th><th>For</th><th class=hide>Action Type</th><th>Remarks</th><th>Date</th></tr>')
+                $('#tblapprovalprocess').append('<tr><th>Action</th><th>For</th><th class=hide>Action Type</th><th>Remarks</th><th>Date</th></tr>')
                 if (AppStatus == 'Reverted') {
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
@@ -1444,7 +1444,7 @@ function fetchApproverRemarks() {
                     $('#frmdivremarksforward').addClass('col-md-6');
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                     }
                 }
@@ -1452,14 +1452,14 @@ function fetchApproverRemarks() {
                 $('#frmdivremarksapprover').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td class=hide>' + data[i].forwardedTo + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
                 $('#frmdivapprove').show()
                 $('#frmdivremarksawarded').removeClass('col-md-12');
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
                 $('#frmdivawarded').show()

@@ -139,15 +139,17 @@ var Login = function () {
     function validateUser() {
 
         sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       // sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+      //  sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
       //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-    
+      
     var LoginID = encodeURIComponent(jQuery("#username").val().trim());
     var Password = encodeURIComponent(jQuery("#password").val().trim());
     var LinkUrl = encodeURIComponent(window.location);
     var path = window.location.pathname;
     var url = '';
     var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+    //lastPart = 'vendor'
+
     if (lastPart.toLocaleLowerCase() == "vendor")
     {
         url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password + "&MachineIP=1";
@@ -155,9 +157,9 @@ var Login = function () {
     else
     {
         url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl + "&MachineIP=1";
-        }
+    }
+
       
-   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -362,7 +364,8 @@ function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
     var data = {
-        "EmailID": $("#txtemail").val()
+        "EmailID": $("#txtemail").val(),
+         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
    
     jQuery.ajax({
@@ -403,8 +406,6 @@ function resetfileds() {
     $('#divBid').hide()
 }
 
-
-
 function fetchMapCategory(categoryFor, vendorId) {
    
     jQuery.ajax({
@@ -443,9 +444,6 @@ function fetchMapCategory(categoryFor, vendorId) {
         }
     });
 }
-
-
-
 //get the IP addresses associated with an account
 function getIPs(callback) {
 
