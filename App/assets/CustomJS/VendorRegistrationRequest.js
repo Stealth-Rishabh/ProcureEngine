@@ -11,7 +11,7 @@ function fetchCategorymaster1() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID")+"&For=M&MappedBy=a&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -29,14 +29,14 @@ function fetchCategorymaster1() {
                 //debugger;
                 jQuery("#ddlTypeofProduct").trigger("change");
                 //alert(sessionStorage.getItem('CurrentVQID'));
-               
+
             }
             else {
                 jQuery("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
             }
             // jQuery.unblockUI();
         },
-        
+
         error: function (xhr, status, error) {
             console.log(url);
             var err = eval("(" + xhr.responseText + ")");
@@ -49,7 +49,7 @@ function fetchCategorymaster1() {
             return false;
             jQuery.unblockUI();
         }
-        
+
 
     });
 }
@@ -72,13 +72,13 @@ function fetchCountry() {
             var vlal = new Array();
             if (data.length > 0) {
                 // alert(data.length);
-                
+
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
                 }
                 jQuery("#ddlCountry").val('111').trigger("change");
                 //debugger;
-               
+
                 //if (countryid != '0') {
                 //    //jQuery("#ddlCountry").val(countryid);
                 //    jQuery("#ddlCountry").trigger("change");
@@ -111,7 +111,7 @@ function fetchCountry() {
 function fetchState() {
 
     var countryid = jQuery('#ddlCountry option:selected').val();
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -122,7 +122,7 @@ function fetchState() {
         cache: false,
         dataType: "json",
         success: function (data) {
-          
+
             jQuery("#ddlState").empty();
             var vlal = new Array();
             if (data.length > 0) {
@@ -139,7 +139,7 @@ function fetchState() {
             else {
                 jQuery("#ddlState").append('<tr><td>No state found..</td></tr>');
             }
-             jQuery.unblockUI();
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
             alert('hi')
@@ -175,14 +175,14 @@ function fetchCity() {
             jQuery("#ddlCity").empty();
             var vlal = new Array();
             if (data.length > 0) {
-                
+
                 jQuery("#ddlCity").append("<option value=0>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
-                
+
                 jQuery("#ddlCity").val('0').trigger("change");
-                
+
 
             }
             else {
@@ -213,8 +213,8 @@ function fetchProduct() {
     //debugger;
     jQuery.ajax({
         type: "GET",
-        contentType: "application/json; charset=utf-8", 			
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchProducts?CustomerID=" + sessionStorage.getItem('CustomerID') ,
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchProducts?CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -232,7 +232,7 @@ function fetchProduct() {
                 //debugger;
                 jQuery("#ddlProduct").trigger("change");
                 //alert(sessionStorage.getItem('CurrentVQID'));
-               
+
             }
             else {
                 jQuery("#ddlProduct").append('<tr><td>No products found..</td></tr>');
@@ -270,9 +270,10 @@ function fetchTDS() {
             //alert(data);
             jQuery("#ddlTds").empty();
             var vlal = new Array();
+
             if (data.length > 0) {
                 // alert(data.length);
-
+                jQuery("#ddlTds").append("<option value=0>Select Type of TDS</option>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlTds").append("<option value=" + data[i].tdsID + ">" + data[i].tds + "</option>");
                 }
@@ -319,7 +320,7 @@ function fetchPaymentTerms() {
             var vlal = new Array();
             if (data.length > 0) {
                 // alert(data.length);
-
+                jQuery("#ddPayTerms").append("<option value=0>Select Payment Terms</option>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
@@ -353,15 +354,15 @@ function getPan(pan) {
     //debugger;
     var pan = $('#txtGst').val().substr(2, 10); //11
     //console.log("pan", pan);
-    if ($('#txtGst').val().length==15) {
+    if ($('#txtGst').val().length == 15) {
         $('#txtPan').val(pan.toUpperCase());
         $('#txtGst').val($('#txtGst').val().toUpperCase())
         $('#txtPan').attr('disabled', 'disabled')
         //$('#txtGst').attr('disabled', 'disabled')
     }
-   
-   
-    
+
+
+
 }
 
 function fetchMsme() {
@@ -375,218 +376,59 @@ function fetchMsme() {
 
 function SubmitVendorRegistration() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
+    debugger;
     var selected = [];
     var selectedid = [];
     var selectedidss = '';
     var result = '';
-    var AttachementFileName = '';
-    var AttachementFileName2 = '';
-    var AttachementFileName3 = '';
+
     if ($("#ddlTypeofProduct").select2('data').length) {
         $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
             selectedid.push(item.id);
             selected.push(item.text);
             //jQuery("#ddlTypeofProduct").append(item.id).join('#');
-            $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#' );
-           result+=  selectedidss.concat( item.id, "#");
-            
+            $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
+            result += selectedidss.concat(item.id, "#");
+
         });
         straddedproduct = result.slice('#', -1);
-        console.log(straddedproduct);
-        console.log("selected", selected);
-        console.log("selectedid", selectedid);
 
-         //** gst Upload Files 
-        var ptTbll = '';
-        $("#tblAttachmentsElem> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-                ptTbl = $(this);
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbll.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a  id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
-                    '</div></li>');
-
-
-            } else {
-                ptTbl = $(this);
-                AttachementFileName = $(this).find('input[type=file]').val().split('\\').pop();
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + AttachementFileName + '</a></p>' +
-                    '</div></li>');
-
-
-            }
-        });
-
-        if ($('#attach-file').html() != '') {
-
-            AttachementFileName = $.trim(jQuery('#attach-file').html());
+        var msmetype = jQuery("#ddlMSMEClass option:selected").text().trim();
+        var gstclass = jQuery("#ddlGSTclass option:selected").text().trim();
+        var tds = jQuery("#ddlTds option:selected").val().trim();
+        var paymentterm = jQuery("#ddPayTerms option:selected").val().trim();
+        if (msmetype == 'Select') {
+            var msmeselectvalue = "";
         } else {
-
-            AttachementFileName = 'Print 1'
+            var msmeselectvalue = jQuery("#ddlMSMEClass option:selected").text().trim();
+        }
+        if (gstclass == 'Select') {
+            var gstclassvalue = "";
+        } else {
+            var gstclassvalue = jQuery("#ddlGSTclass option:selected").text().trim();
+        }
+        if (tds == 0) {
+            var tdsvalue = "";
+        } else {
+            var tdsvalue = jQuery("#ddlTds option:selected").text().trim();
+        }
+        if (paymentterm == 0) {
+            var paymenttermvalue = "";
+        } else {
+            var paymenttermvalue = parseInt(jQuery("#ddPayTerms").val());
         }
 
-        $("#tblAttachmentsElem> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
+        var gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+        gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
 
-                AttachementFileName = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
+        var panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+        panfilename = panfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
 
-                AttachementFileName = $(this).find('input[type=file]').val().split('\\').pop();
-            }
+        var msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
+        msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
 
-            
-
-        });
-
-        $("#tblAttachmentsElem> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-
-                AttachementFileName = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
-
-                AttachementFileName = $(this).find('input[type=file]').val().split('\\').pop();
-            }
-
-            
-
-        });
-
-        console.log("AttachementFileName", AttachementFileName);
-
-         //** pan Upload Files 
-        var ptTbll = '';
-        $("#tblAttachmentsElem2> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-                ptTbll = $(this);
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbll.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a  id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
-                    '</div></li>');
-
-
-            } else {
-                ptTbll = $(this);
-                AttachementFileName2 = $(this).find('input[type=file]').val().split('\\').pop();
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbll.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + AttachementFileName + '</a></p>' +
-                    '</div></li>');
-
-
-            }
-        });
-
-
-        if ($('#attach-file').html() != '') {
-
-            AttachementFileName2 = $.trim(jQuery('#attach-file').html());
-        } else {
-
-            AttachementFileName2 = 'Print 1'
-        }
-
-        $("#tblAttachmentsElem2> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-
-                AttachementFileName2 = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
-
-                AttachementFileName2 = $(this).find('input[type=file]').val().split('\\').pop();
-            }
-
-
-
-        });
-
-        $("#tblAttachmentsElem2> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-
-                AttachementFileName2 = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
-
-                AttachementFileName2 = $(this).find('input[type=file]').val().split('\\').pop();
-            }
-
-
-
-        });
-
-        console.log("AttachementFileName2", AttachementFileName2);
-
-          //** msme Upload Files 
-        var ptTblll = '';
-        $("#tblAttachmentsElem3> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-                ptTblll = $(this);
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbll.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a  id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
-                    '</div></li>');
-
-
-            } else {
-                ptTblll = $(this);
-                AttachementFileName3 = $(this).find('input[type=file]').val().split('\\').pop();
-                $("#tblAttachmentsElemPrev").append('<li><div class="col-md-6" style=padding-left:0px;>' +
-                    '<p class="form-control-static">' + ptTbll.find('input[type=text]').val() + '</p>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<p class="form-control-static"><a id=VQFilePrev' + (index + 1) + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + AttachementFileName + '</a></p>' +
-                    '</div></li>');
-
-
-            }
-        });
-
-
-        if ($('#attach-file').html() != '') {
-
-            AttachementFileName3 = $.trim(jQuery('#attach-file').html());
-        } else {
-
-            AttachementFileName3 = 'Print 1'
-        }
-
-        $("#tblAttachmentsElem3> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-
-                AttachementFileName3 = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
-
-                AttachementFileName3 = $(this).find('input[type=file]').val().split('\\').pop();
-            }
-
-
-
-        });
-
-        $("#tblAttachmentsElem3> li").each(function (index) {
-            if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
-
-                AttachementFileName3 = $.trim($('#attach-file' + (index + 1)).html());
-            } else {
-
-                AttachementFileName3 = $(this).find('input[type=file]').val().split('\\').pop();
-            }
-
-
-
-        });
-
-        console.log("AttachementFileName3", AttachementFileName3);
+        var checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
+        checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
 
         var VendorInfo = {
 
@@ -596,47 +438,52 @@ function SubmitVendorRegistration() {
             "vendorCatID": parseInt(jQuery("#ddlVendorType").val()),
             "vendorCatName": jQuery("#ddlVendorType option:selected").text().trim(),
             "product": jQuery("#txtProduct").val(),
-            "title": jQuery("#ddlTitle option:selected").text().trim(),
-            "vendorName": jQuery("#ddlCompanyName").val(),
-            "vendorAdd": jQuery("#txtAdd1").val(),
+            "vendorName": jQuery("#ddlCompanyName").val().trim(),
+            "vendorAdd": jQuery("#txtAdd1").val().trim(),
             "countryID": parseInt(jQuery("#ddlCountry").val()),
             "countryName": jQuery("#ddlCountry option:selected").text().trim(),
             "stateID": parseInt(jQuery("#ddlState").val()),
             "stateName": jQuery("#ddlState option:selected").text().trim(),
             "cityID": parseInt(jQuery("#ddlCity").val()),
             "cityName": jQuery("#ddlCity option:selected").text().trim(),
-            "pinCode": jQuery("#txtPin").val(),
-            "pAN": jQuery("#txtPan").val(),
-            "tAN": jQuery("#txtTan").val(),
-            "tDSTypeId": parseInt(jQuery("#ddlTds").val()),
-            "tDSTypeName": jQuery("#ddlTds option:selected").text().trim(),
-            "gSTClass": jQuery("#ddlGSTclass option:selected").text().trim(),
-            "gSTNo": jQuery("#txtGst").val(),
-            "payTermID": parseInt(jQuery("#ddPayTerms").val()),
-            "bankName": jQuery("#txtBank").val(),
-            "bankAccount": jQuery("#txtAcNo").val(),
-            "iFSCCode": jQuery("#txtIFSC").val(),
-            "accountName": jQuery("#txtAccountHolder").val(),
+            "pinCode": jQuery("#txtPin").val().trim(),
+            "pAN": jQuery("#txtPan").val().trim(),
+            "tAN": jQuery("#txtTan").val().trim(),
+            "tDSTypeId": parseInt(jQuery("#ddlTds option:selected").val().trim()),
+            "tDSTypeName": tdsvalue,
+            "gSTClass": gstclassvalue,
+            "gSTNo": jQuery("#txtGst").val().trim(),
+            "payTermID": paymenttermvalue,
+            "bankName": jQuery("#txtBank").val().trim(),
+            "bankAccount": jQuery("#txtAcNo").val().trim(),
+            "iFSCCode": jQuery("#txtIFSC").val().trim(),
+            "accountName": jQuery("#txtAccountHolder").val().trim(),
             "mSMECheck": jQuery("#ddlMSME option:selected").val(),
-            "mSMEType": jQuery("#ddlMSMEClass option:selected").text().trim(),
-            "mSMENo": jQuery("#txtUdyam").val(),
-            "previousTurnover": jQuery("#txtLastFiscal").val(),
-            "secondLastTurnover": jQuery("#txt2LastFiscal").val(), 
-            "contactName": jQuery("#txtContName").val(),
-            "contactEmailID": jQuery("#txtEmail").val(),
-            "mobile": jQuery("#txtMobile").val(),
-            "contactNameMD": jQuery("#txtContName2").val(),
-            "mobileMD": jQuery("#txtMobile2").val(),
-            "AltEmailID": jQuery("#txtEmail2").val(),
-            "gSTFile": AttachementFileName,
-            "pANFile": AttachementFileName2,
-            "mSMEFile": AttachementFileName3,
-            "productCat": straddedproduct,        
-      
-}
+            "mSMEType": msmeselectvalue,
+            "mSMENo": jQuery("#txtUdyam").val().trim(),
+            "previousTurnover": jQuery("#txtLastFiscal").val().trim(),
+            "secondLastTurnover": jQuery("#txt2LastFiscal").val().trim(),
+            "previousTurnoverYear": jQuery("#txtLastFiscalyear").val().trim(),
+            "secondLastTurnoverYear": jQuery("#txt2LastFiscalyear").val().trim(),
+            "contactName": jQuery("#txtContName").val().trim(),
+            "contactEmailID": jQuery("#txtEmail").val().trim(),
+            "mobile": jQuery("#txtMobile").val().trim(),
+            "contactNameMD": jQuery("#txtContName2").val().trim(),
+            "mobileMD": jQuery("#txtMobile2").val().trim(),
+            "AltEmailID": jQuery("#txtEmail2").val().trim(),
+            "gSTFile": gstfilename,
+            "pANFile": panfilename,
+            "mSMEFile": msmefilename,
+            "cancelledCheck": checkfilename,
+            "productCat": straddedproduct,
+            "currencyLastFY": jQuery("#currencyLastFiscal option:selected").val(),
+            "currencyLast2FY": jQuery("#currency2LastFiscal option:selected").val(),
+
+
+        }
     };
     console.log(JSON.stringify(VendorInfo))
-   // alert(JSON.stringify(VendorInfo));
+    alert(JSON.stringify(VendorInfo));
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -645,9 +492,33 @@ function SubmitVendorRegistration() {
         data: JSON.stringify(VendorInfo),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           
+            //alert(data[0].);
+            console.log(data.jsondata);
+            //return vendor id
+
+            if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data);
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data);
+
+            }
+
+            if ($('#filemsme').val() != '') {
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data);
+
+            }
+
+            if ($('#filecheck').val() != '') {
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + data);
+
+            }
+
+
             //sessionStorage.setItem('CurrentVQID', parseInt(data));
-            $("#tblAttachmentsElem> li").each(function (index) {
+            /*$("#tblAttachmentsElem> li").each(function (index) {
                 //** gst Upload Files on Azure PortalDocs folder
 
 
@@ -681,19 +552,19 @@ function SubmitVendorRegistration() {
 
                 }
 
-            });
+            }); */
             $('#divsuccvendor').show();
             $('#spansuccessvendor').text("Vendor Request Submitted successfully");
             $('#spansuccessvendor').fadeOut(6000);
             setTimeout(function () {
                 $("#registerParticipantModal").modal("hide");
                 jQuery.unblockUI();
-            },7000)
-           
-            
+            }, 7000)
+
+
         },
         error: function (xhr, status, error) {
-            
+
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -729,7 +600,7 @@ function fetchCategorymaster() {
                     jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
                 jQuery("#ddlCategoryMultiple").trigger("change");
-                
+
             }
             else {
                 jQuery("#ddlCategoryMultiple").append('<tr><td>No categories found..</td></tr>');
@@ -858,173 +729,179 @@ jQuery.validator.addMethod("ValidIFSC", function (value, element) {
 
 }, " Invalid IFSC Code");
 
+
 var formvendor = $('#submit_form');
 var successVendor = $('.alert-success', formvendor);
 var errorVendor = $('.alert-danger', formvendor);
 function FormValidate() {
-    
+
     //$('#divsuccvendor').hide();
     formvendor.validate({
 
-            doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-            errorElement: 'span', //default input error message container
-            errorClass: 'help-block help-block-error', // default input error message class
-            focusInvalid: false, // do not focus the last invalid input
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
         rules: {
-                txtemailverify: {
-                    required: true,
-                    email: true
-                },
-            
-                ddlNatureEstaiblishment: {
-                    required: true,
-                    notEqualTo:0
-
-                },
-                ddlVendorType: {
-                    required: true,
-                    notEqualTo: 0
-
-                },
-                ddlTypeofProduct: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                txtProduct: {
-                    required: true
-                
-                },
-                ddlTitle: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                ddlCompanyName: {
-                    required: true,
-                },
-                txtAdd1: {
-                    required: true,
-                },
-                ddlCountry: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                ddlState: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                ddlCity: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                txtPin: {
-                    required: true,
-                },
-                
-                tblAttachmentsElem: {
-                    required: true,
-                },
-                txtGst: {
-                    required: true,
-                    maxlength: 15,
-                },
-                txtPan: {
-                    required: true,
-                    ValidPAN: true
-                },
-                tblAttachmentsElem2: {
-                    required: true,
-                },
-                
-                txtBank: {
-                    required: true,
-                },
-                txtAcNo: {
-                    required: true,
-                },
-                txtIFSC: {
-                    required: true,
-                    ValidIFSC: true,
-                },
-                txtAccountHolder: {
-                    required: true,
-                },
-                txtContName: {
-                    required: true,
-                },
-                txtMobile: {
-                    required: true,
-                },
-                txtEmail: {
-                    required: true,
-                    email: true
-                },
-                ddlMSME: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                ddlMSMEClass: {
-                    required: true,
-                    notEqualTo: 0
-                },
-                txtUdyam: {
-                    required: true,
-                }
-            
+            txtemailverify: {
+                required: true,
+                email: true
             },
+
+            ddlNatureEstaiblishment: {
+                required: true,
+                notEqualTo: 0
+
+            },
+            ddlVendorType: {
+                required: true,
+                notEqualTo: 0
+
+            },
+            ddlTypeofProduct: {
+                required: true,
+
+            },
+            txtProduct: {
+                required: true
+
+            },
+            ddlTitle: {
+                required: true,
+                notEqualTo: 0
+            },
+            ddlCompanyName: {
+                required: true,
+            },
+            txtAdd1: {
+                required: true,
+            },
+            ddlCountry: {
+                required: true,
+                notEqualTo: 0
+            },
+            ddlState: {
+                required: true,
+
+            },
+            ddlCity: {
+                required: true,
+
+            },
+            txtPin: {
+                required: true,
+            },
+
+            tblAttachmentsElem: {
+                required: true,
+            },
+            txtGst: {
+                required: true,
+                maxlength: 15,
+            },
+            txtPan: {
+                required: true,
+                ValidPAN: true
+            },
+            tblAttachmentsElem2: {
+                required: true,
+            },
+
+            txtBank: {
+                required: true,
+            },
+            txtAcNo: {
+                required: true,
+            },
+            txtIFSC: {
+                required: true,
+                ValidIFSC: true,
+            },
+            txtAccountHolder: {
+                required: true,
+            },
+            txtContName: {
+                required: true,
+            },
+            txtMobile: {
+                required: true,
+            },
+            txtEmail: {
+                required: true,
+                email: true
+            },
+            ddlMSME: {
+                required: true,
+                notEqualTo: 0
+            },
+            ddlMSMEClass: {
+                required: true,
+                notEqualTo: 0
+            },
+            txtUdyam: {
+                required: true,
+            }
+
+        },
 
         invalidHandler: function (event, validator) {
-                errorVendor.hide()
-                successVendor.hide();
-            },
+            errorVendor.hide()
+            successVendor.hide();
+        },
 
-            highlight: function (element) {
-                $(element).closest('.xyz').addClass('has-error');
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
 
-            },
+        },
 
-            unhighlight: function (element) {
-                $(element).closest('.xyz').removeClass('has-error');
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
 
-            },
-            errorPlacement: function (error, element) {
+        },
+        errorPlacement: function (error, element) {
 
-            },
-            success: function (label) {
-            },
+        },
+        success: function (label) {
+        },
         submitHandler: function (form) {
-            if (jQuery("#btnverifyemail").text().toLowerCase() == 'proceed') {
+            debugger;
+            var id = document.activeElement.getAttribute('id');
+
+            if (id == "btnverifyemail") {
+                //alert("Proceed working");
                 validateEmail();
             } else {
+                //alert("Submit working");
                 SubmitVendorRegistration();
             }
-                
 
-            }
+        }
 
-        });
-    
+
+    });
+
 }
 
 function validateEmail() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     $('#modalLoaderparameter').removeClass('display-none')
     var emailId = jQuery("#txtemailverify").val().trim();
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/IsVendorExists?emailID=" + emailId ,
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/IsVendorExists?emailID=" + emailId,
         //beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
+
             if (data == '0') {
                 $('#txtemailverify,#txtEmail').attr('disabled', 'disabled');
                 $('#btnverifysubmit').removeClass('hide');
                 $('#txtEmail').val(emailId);
-                
+
             }
             else {
                 $('#diverrorvendor').show();
@@ -1060,7 +937,7 @@ $('#registerParticipantModal').on("hidden.bs.modal", function () {
     $('#btnverifysubmit').addClass('hide');
     $('#txtemailverify').val('');
     $('#modalLoaderparameter').addClass('display-none');
-    
+
     window.location = window.location.href.split('#')[0];
 })
 
