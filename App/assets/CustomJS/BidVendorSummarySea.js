@@ -1,4 +1,7 @@
-﻿var BidID = "";
+﻿"use strict";
+var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=ADMIN&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+
+var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
 var PEfaBidForId = 0;
@@ -395,7 +398,7 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BidID);
 }
 function fetchBidSummary(BidID) {
-
+    var tncAttachment, anyotherAttachment;
    
     jQuery.ajax({
         type: "GET",
@@ -1165,18 +1168,36 @@ function fnClickHeader(event, icon, flag) {
     //}
 
 }
-function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
-    var Url = "";
-  
-    if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
-       
-        Url= sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) 
+$('#SignalRid').text('Not Started');
+connection.start().then(function () {
+
+    $('#SignalRid').text('connection started');
+    // document.getElementById("sendButton").disabled = false;
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+connection.on("refreshChatUsers", function (UserId, flag) {
+    alert(UserId)
+    alert(flag)
+    if (flag == true) {
+
     }
-    else  if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+});
+
+
+connection.on("refreshColumnStatus", function (data) {
+    var Url = "";
+
+    if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
+
+        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    }
+    else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
+        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
     }
     else {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
     }
     jQuery.ajax({
         type: "GET",
@@ -1187,17 +1208,17 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-         
-            var TotalBidValue = ''; 
+
+            var TotalBidValue = '';
             var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
-           
+
             if (sessionStorage.getItem('hdnbidtypeid') == "7" && _bidClosingType == "A") {
-               
+
                 for (var i = 0; i < data.length; i++) {
-                  
+
                     TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-                   
+
                     if (TotalBidValue != 0) {
                         if ($('#TP' + i).html() != 0) {
                             Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
@@ -1211,7 +1232,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                         else {
                             Percentreductioninvoice = 'Not Specified';
                         }
-                         Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
+                        Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
                     }
                     else {
 
@@ -1219,15 +1240,15 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                         Percentreductionceiling = 'N/A';
                         Percentreductioninvoice = 'N/A';
                     }
-                  
-                     $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
+
+                    $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
                     $('#lowestquote' + i).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
-                
+
                     $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
                     $('#level' + i).html(data[i].srNo)
 
                     $('#CP' + i).html(thousands_separators(data[i].ceilingPrice))
-                   
+
                     $("#vname" + i).html(data[i].vendorName)
                     if (data[i].decreamentOn == "P") {
                         $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + ' %'
@@ -1235,43 +1256,43 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                     else {
                         $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + $('#selectedcurr' + i).html()
                     }
-                   
+
                     $('#PerTP' + i).html(Percentreduction)
                     $('#PerLIP' + i).html(Percentreductioninvoice)
                     $('#PerCP' + i).html(Percentreductionceiling)
-                    
+
                     if (data[i].srNo == 'L1') {
                         $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7;color: #31708f;');
-                       
+
                     }
                     if (data[i].srNo == 'L1') {
-                            $('#low_str' + i).css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })
+                        $('#low_str' + i).css({
+                            'background-color': '#dff0d8',
+                            'font-weight': 'bold',
+                            'color': '#3c763d'
+                        })
                     }
-                    
-                 }
+
+                }
             }
             else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
                 var rowcount = $("#tblbidsummarypercentagewise > tbody > tr").length;
                 for (var j = 0; j < rowcount; j++) {
                     if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                        if ($('#level' + j).html() == 'L1' ) {
+                        if ($('#level' + j).html() == 'L1') {
                             $('#low_str' + j).css({
                                 'background-color': '#dff0d8!important',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            
+
                         }
                         else {
                             $('#low_str' + j).removeAttr('style');
                         }
                     }
                     for (var i = 0; i < data.length; i++) {
-                       
+
                         if (data[i].itemStatus.toLowerCase() == 'open' || data[i].itemStatus.toLowerCase() == 'inactive') {
                             if ($('#seid' + j).html() == data[i].seId) {
 
@@ -1333,13 +1354,13 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                                     }
 
                                     if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
-                                            $('#low_str' + j).css({
-                                                'background-color': '#32C5D2!important',
-                                                'color': '#000000!important'
-                                            })
+                                        $('#low_str' + j).css({
+                                            'background-color': '#32C5D2!important',
+                                            'color': '#000000!important'
+                                        })
                                     }
 
-                                    
+
                                 }
                                 j = j + 1;
                             }
@@ -1348,28 +1369,28 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                 }
             }
             else {
-               
+
                 for (var i = 0; i < data.length; i++) {
 
                     TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
                     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
 
-                   
+
                     if (TotalBidValue != 0) {
                         if ($('#TP' + i).html() != 0) {
-                            Percentreduction = parseFloat(parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100-100).toFixed(2) + ' %'
+                            Percentreduction = parseFloat(parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100 - 100).toFixed(2) + ' %'
                         }
                         else {
                             Percentreduction = 'Not Specified';
                         }
-                       
+
                         if ($('#lastinvoice' + i).html() != 0) {
-                            Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100-100).toFixed(2) + ' %'
+                            Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100 - 100).toFixed(2) + ' %'
                         }
                         else {
                             Percentreductioninvoice = 'Not Specified';
                         }
-                        Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100-100).toFixed(2) + ' %'
+                        Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100 - 100).toFixed(2) + ' %'
                     }
                     else {
 
@@ -1399,7 +1420,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
                     $('#PerTP' + i).html(Percentreduction)
                     $('#PerLIP' + i).html(Percentreductioninvoice)
                     $('#PerCP' + i).html(Percentreductionceiling)
-                   
+
                     if (data[i].srNo == 'H1') {
                         $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7!important;color: #31708f!important;');
                     }
@@ -1415,7 +1436,7 @@ function fnBidRefreshOnTimerforAdmin(BidID, BidForID) {
             }
         }
     });
-}
+});
 
 $('#lnktotvalue').click(function () {
     if ($('#lnktotvalue').html() == "Detailed Report") {

@@ -14,26 +14,11 @@ $(document).ready(function () {
         BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
         BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
         sessionStorage.setItem('hdnbidtypeid', BidTypeID)
+        sessionStorage.setItem('BidID', BidID)
         fetchBidSummaryDetails(BidID, BidForID)
         fetchBidTime()
-        
     }
    
-   // debugger;
-    //connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + 'NotificationHub').build();
-    ////connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + 'BidLiveData').build();
-    //console.log(connection)
-    //connection.on("sendToUser", function (BidID) {
-    //    alert(BidID);
-    //});
-
-    //connection.start().then(function () {
-    //    alert("Step2")
-    //}).catch(function (err) {
-    //    console.log(err)
-    //});
-
-    
 });
 function fetchBidTime() {
     var display = document.querySelector('#lblTimeLeft');
@@ -49,7 +34,7 @@ function fetchBidTime() {
         dataType: "json",
         success: function (data, status, jqXHR) {
             
-            startTimer(data[0].timeLeft, display);
+                startTimer(data[0].timeLeft, display);
                 $('#tmleft').html($('#lblTimeLeft').text())
 			
         },
@@ -71,7 +56,7 @@ function startTimer(duration, display) {
    var  timer = duration;
     var hours, minutes, seconds;
     mytime = setInterval(function () {
-        fetchBidTime();
+        //fetchBidTime();
         hours = parseInt(timer / 3600, 10)
         minutes = parseInt(timer / 60, 10) - (hours * 60)
         seconds = parseInt(timer % 60, 10);
@@ -88,30 +73,25 @@ function startTimer(duration, display) {
         }
 
 
-        if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
+        //if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
            
-            if ((BidTypeID == 6 && BidForID == 82) || BidTypeID == 8 || (BidTypeID == 7 && BidForID == 82)) {
+            //if ((BidTypeID == 6 && BidForID == 82) || BidTypeID == 8 || (BidTypeID == 7 && BidForID == 82)) {
                 
-                fetchBidSummaryDetails(BidID, BidForID);
-            }
-            else {
-               fnBidRefreshOnTimerforAdmin(BidID, BidForID)
-            }
+            //    fetchBidSummaryDetails(BidID, BidForID);
+            //}
+            //else {
+            //   fnBidRefreshOnTimerforAdmin(BidID)
+            //}
            
-            fetchBidTime()
-            if (sessionStorage.getItem("UserType") == 'E') {
-                fetchUserChats($('#hddnVendorId').val(),'S');
-            } else {
-                fetchUserChats(sessionStorage.getItem('UserID'),'S');
-            }
-        }
-        
-        //connection.invoke(sessionStorage.getItem("APIPath") + "BidLiveData/GetRefreshRASummary/?BidID=" + BidID + "&UserID=..", UserID, BidID).catch(function (err) {
-        //    console.log(err.toString())
-        //    return //alert(err.toString());
+           // fetchBidTime()
 
-        //});
-       fetchBidTime();
+            //if (sessionStorage.getItem("UserType") == 'E') {
+            //    fetchUserChats($('#hddnVendorId').val(),'S');
+            //} else {
+            //    fetchUserChats(sessionStorage.getItem('UserID'),'S');
+            //}
+        //}
+        //fetchBidTime();
        setTimeout(function () {
             
             if (--timer <= 0) {
