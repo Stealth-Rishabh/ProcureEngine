@@ -1,6 +1,4 @@
-﻿"use strict";
-var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=ADMIN&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
-
+﻿
 var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
@@ -1168,276 +1166,379 @@ function fnClickHeader(event, icon, flag) {
     //}
 
 }
-$('#SignalRid').text('Not Started');
-connection.start().then(function () {
 
-    $('#SignalRid').text('connection started');
-    // document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
+///////////////////////----************************************signal R Start****************************************************
 
-connection.on("refreshChatUsers", function (UserId, flag) {
-    alert(UserId)
-    alert(flag)
+//$(window).load(function () {
+    var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+    $('#SignalRid').text('Not Started');
+    connection.start().then(function () {
+
+        $('#SignalRid').text('connection started');
+
+    }).catch(function (err) {
+        $('#SignalRid').text(err.toString());
+        // return console.error(err.toString());
+    });
+connection.on("refreshChatUsers", function (UserId, connectionId, flag) {
+
+    var StID = 'sticon' + UserId.trim()
     if (flag == true) {
-
-    }
-});
-
+            $("#hddnVendorConnection").val(connectionId);
+        $('#' + StID).removeClass('badge-info').addClass('badge-success')
+        $('#v' + data[i].userID).removeAttr('disabled')
+        }
+        else {
+        $('#' + StID).removeClass('badge-success').addClass('badge-default')
+        $('#v' + data[i].userID).attr('disabled', 'disabled')
+        $('#v' + userid).onclick = null;
+        }
+    });
 
 connection.on("refreshColumnStatus", function (data) {
-    var Url = "";
+        var Url = "";
 
-    if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
+        if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
 
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
-    }
-    else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
-    }
-    else {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
-    }
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: Url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data, status, jqXHR) {
+            Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        }
+        else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
+            Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        }
+        else {
+            Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        }
+        jQuery.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: Url,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
 
-            var TotalBidValue = '';
-            var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
+                var TotalBidValue = '';
+                var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
 
-            if (sessionStorage.getItem('hdnbidtypeid') == "7" && _bidClosingType == "A") {
+                if (sessionStorage.getItem('hdnbidtypeid') == "7" && _bidClosingType == "A") {
 
-                for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
 
-                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
-                    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                        TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
 
-                    if (TotalBidValue != 0) {
-                        if ($('#TP' + i).html() != 0) {
-                            Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
+                        if (TotalBidValue != 0) {
+                            if ($('#TP' + i).html() != 0) {
+                                Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100).toFixed(2) + ' %'
+                            }
+                            else {
+                                Percentreduction = 'Not Specified';
+                            }
+                            if ($('#lastinvoice' + i).html() != 0) {
+                                Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100).toFixed(2) + ' %'
+                            }
+                            else {
+                                Percentreductioninvoice = 'Not Specified';
+                            }
+                            Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
                         }
                         else {
-                            Percentreduction = 'Not Specified';
+
+                            Percentreduction = 'N/A';
+                            Percentreductionceiling = 'N/A';
+                            Percentreductioninvoice = 'N/A';
                         }
-                        if ($('#lastinvoice' + i).html() != 0) {
-                            Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100).toFixed(2) + ' %'
+
+                        $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
+                        $('#lowestquote' + i).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
+
+                        $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
+                        $('#level' + i).html(data[i].srNo)
+
+                        $('#CP' + i).html(thousands_separators(data[i].ceilingPrice))
+
+                        $("#vname" + i).html(data[i].vendorName)
+                        if (data[i].decreamentOn == "P") {
+                            $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + ' %'
                         }
                         else {
-                            Percentreductioninvoice = 'Not Specified';
+                            $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + $('#selectedcurr' + i).html()
                         }
-                        Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
-                    }
-                    else {
 
-                        Percentreduction = 'N/A';
-                        Percentreductionceiling = 'N/A';
-                        Percentreductioninvoice = 'N/A';
-                    }
+                        $('#PerTP' + i).html(Percentreduction)
+                        $('#PerLIP' + i).html(Percentreductioninvoice)
+                        $('#PerCP' + i).html(Percentreductionceiling)
 
-                    $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
-                    $('#lowestquote' + i).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
+                        if (data[i].srNo == 'L1') {
+                            $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7;color: #31708f;');
 
-                    $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
-                    $('#level' + i).html(data[i].srNo)
-
-                    $('#CP' + i).html(thousands_separators(data[i].ceilingPrice))
-
-                    $("#vname" + i).html(data[i].vendorName)
-                    if (data[i].decreamentOn == "P") {
-                        $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + ' %'
-                    }
-                    else {
-                        $('#Mindec' + i).html(thousands_separators(data[i].minimumDecreament)) + $('#selectedcurr' + i).html()
-                    }
-
-                    $('#PerTP' + i).html(Percentreduction)
-                    $('#PerLIP' + i).html(Percentreductioninvoice)
-                    $('#PerCP' + i).html(Percentreductionceiling)
-
-                    if (data[i].srNo == 'L1') {
-                        $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7;color: #31708f;');
-
-                    }
-                    if (data[i].srNo == 'L1') {
-                        $('#low_str' + i).css({
-                            'background-color': '#dff0d8',
-                            'font-weight': 'bold',
-                            'color': '#3c763d'
-                        })
-                    }
-
-                }
-            }
-            else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
-                var rowcount = $("#tblbidsummarypercentagewise > tbody > tr").length;
-                for (var j = 0; j < rowcount; j++) {
-                    if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                        if ($('#level' + j).html() == 'L1') {
-                            $('#low_str' + j).css({
-                                'background-color': '#dff0d8!important',
+                        }
+                        if (data[i].srNo == 'L1') {
+                            $('#low_str' + i).css({
+                                'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
+                        }
 
-                        }
-                        else {
-                            $('#low_str' + j).removeAttr('style');
-                        }
                     }
-                    for (var i = 0; i < data.length; i++) {
+                }
+                else if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "S") {
+                    var rowcount = $("#tblbidsummarypercentagewise > tbody > tr").length;
+                    for (var j = 0; j < rowcount; j++) {
+                        if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+                            if ($('#level' + j).html() == 'L1') {
+                                $('#low_str' + j).css({
+                                    'background-color': '#dff0d8!important',
+                                    'font-weight': 'bold',
+                                    'color': '#3c763d'
+                                })
 
-                        if (data[i].itemStatus.toLowerCase() == 'open' || data[i].itemStatus.toLowerCase() == 'inactive') {
-                            if ($('#seid' + j).html() == data[i].seId) {
+                            }
+                            else {
+                                $('#low_str' + j).removeAttr('style');
+                            }
+                        }
+                        for (var i = 0; i < data.length; i++) {
 
-                                TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + j).text())) * parseFloat(data[i].lQuote);
-                                TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-                                if (TotalBidValue != 0) {
-                                    if ($('#TP' + j).html() != 0) {
-                                        Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + j).html()) * 100).toFixed(2) + ' %'
+                            if (data[i].itemStatus.toLowerCase() == 'open' || data[i].itemStatus.toLowerCase() == 'inactive') {
+                                if ($('#seid' + j).html() == data[i].seId) {
+
+                                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + j).text())) * parseFloat(data[i].lQuote);
+                                    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                                    if (TotalBidValue != 0) {
+                                        if ($('#TP' + j).html() != 0) {
+                                            Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + j).html()) * 100).toFixed(2) + ' %'
+                                        }
+                                        else {
+                                            Percentreduction = 'Not Specified';
+                                        }
+                                        if ($('#lastinvoice' + j).html() != 0) {
+                                            Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / $('#lastinvoice' + j).html()) * 100).toFixed(2) + ' %'
+                                        }
+                                        else {
+                                            Percentreductioninvoice = 'Not Specified';
+                                        }
+                                        Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
                                     }
                                     else {
-                                        Percentreduction = 'Not Specified';
+
+                                        Percentreduction = 'N/A';
+                                        Percentreductionceiling = 'N/A';
+                                        Percentreductioninvoice = 'N/A';
                                     }
-                                    if ($('#lastinvoice' + j).html() != 0) {
-                                        Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / $('#lastinvoice' + j).html()) * 100).toFixed(2) + ' %'
+
+                                    $('#initialQuote' + j).html((data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)))
+                                    $('#lowestquote' + j).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
+
+                                    $('#bidvalue' + j).html(thousands_separators(TotalBidValue))
+                                    $('#level' + j).html(data[i].srNo)
+
+                                    $('#CP' + j).html(thousands_separators(data[i].ceilingPrice))
+                                    $('#vname' + j).html(data[i].vendorName)
+                                    if (data[i].decreamentOn == "P") {
+                                        $('#Mindec' + j).html(thousands_separators(data[i].minimumDecreament)) + ' %'
                                     }
                                     else {
-                                        Percentreductioninvoice = 'Not Specified';
-                                    }
-                                    Percentreductionceiling = parseFloat(100 - parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100).toFixed(2) + ' %'
-                                }
-                                else {
-
-                                    Percentreduction = 'N/A';
-                                    Percentreductionceiling = 'N/A';
-                                    Percentreductioninvoice = 'N/A';
-                                }
-
-                                $('#initialQuote' + j).html((data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)))
-                                $('#lowestquote' + j).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
-
-                                $('#bidvalue' + j).html(thousands_separators(TotalBidValue))
-                                $('#level' + j).html(data[i].srNo)
-
-                                $('#CP' + j).html(thousands_separators(data[i].ceilingPrice))
-                                $('#vname' + j).html(data[i].vendorName)
-                                if (data[i].decreamentOn == "P") {
-                                    $('#Mindec' + j).html(thousands_separators(data[i].minimumDecreament)) + ' %'
-                                }
-                                else {
-                                    $('#Mindec' + j).html(thousands_separators(data[i].minimumDecreament)) + $('#selectedcurr' + j).html()
-                                }
-
-                                $('#PerTP' + j).html(Percentreduction)
-                                $('#PerLIP' + j).html(Percentreductioninvoice)
-                                $('#PerCP' + j).html(Percentreductionceiling)
-
-                                if (data[i].srNo == 'L1') {
-                                    $('#PerTP' + j, '#PerLIP' + j, '#PerCP' + j).attr('style', 'background-color:#d9edf7;color: #31708f;');
-
-                                }
-                                if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                                    if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
-                                        $('#low_str' + j).css({
-                                            'background-color': '#dff0d8!important',
-                                            'font-weight': 'bold',
-                                            'color': '#3c763d'
-                                        })
-
+                                        $('#Mindec' + j).html(thousands_separators(data[i].minimumDecreament)) + $('#selectedcurr' + j).html()
                                     }
 
-                                    if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
-                                        $('#low_str' + j).css({
-                                            'background-color': '#32C5D2!important',
-                                            'color': '#000000!important'
-                                        })
+                                    $('#PerTP' + j).html(Percentreduction)
+                                    $('#PerLIP' + j).html(Percentreductioninvoice)
+                                    $('#PerCP' + j).html(Percentreductionceiling)
+
+                                    if (data[i].srNo == 'L1') {
+                                        $('#PerTP' + j, '#PerLIP' + j, '#PerCP' + j).attr('style', 'background-color:#d9edf7;color: #31708f;');
+
                                     }
+                                    if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+                                        if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
+                                            $('#low_str' + j).css({
+                                                'background-color': '#dff0d8!important',
+                                                'font-weight': 'bold',
+                                                'color': '#3c763d'
+                                            })
+
+                                        }
+
+                                        if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
+                                            $('#low_str' + j).css({
+                                                'background-color': '#32C5D2!important',
+                                                'color': '#000000!important'
+                                            })
+                                        }
 
 
+                                    }
+                                    j = j + 1;
                                 }
-                                j = j + 1;
                             }
                         }
                     }
                 }
-            }
-            else {
+                else {
 
-                for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
 
-                    TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
-                    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                        TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + i).html())) * parseFloat(data[i].lQuote);
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
 
 
-                    if (TotalBidValue != 0) {
-                        if ($('#TP' + i).html() != 0) {
-                            Percentreduction = parseFloat(parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100 - 100).toFixed(2) + ' %'
+                        if (TotalBidValue != 0) {
+                            if ($('#TP' + i).html() != 0) {
+                                Percentreduction = parseFloat(parseFloat(data[i].lQuote / $('#TP' + i).html()) * 100 - 100).toFixed(2) + ' %'
+                            }
+                            else {
+                                Percentreduction = 'Not Specified';
+                            }
+
+                            if ($('#lastinvoice' + i).html() != 0) {
+                                Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100 - 100).toFixed(2) + ' %'
+                            }
+                            else {
+                                Percentreductioninvoice = 'Not Specified';
+                            }
+                            Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100 - 100).toFixed(2) + ' %'
                         }
                         else {
-                            Percentreduction = 'Not Specified';
+
+                            Percentreduction = 'N/A';
+                            Percentreductionceiling = 'N/A';
+                            Percentreductioninvoice = 'N/A';
                         }
 
-                        if ($('#lastinvoice' + i).html() != 0) {
-                            Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / $('#lastinvoice' + i).html()) * 100 - 100).toFixed(2) + ' %'
+                        $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
+                        $('#lowestquote' + i).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
+
+                        $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
+                        $('#level' + i).html(data[i].srNo)
+
+                        $('#CP' + i).html(thousands_separators(data[i].ceilingPrice))
+
+                        $("#vname" + i).html(data[i].vendorName)
+                        if (data[i].increamentOn == "P") {
+
+                            $('#Mindec' + i).html(thousands_separators(data[i].minimumIncreament)) + ' %'
                         }
                         else {
-                            Percentreductioninvoice = 'Not Specified';
+                            $('#Mindec' + i).html(thousands_separators(data[i].minimumIncreament)) //+ $('#selectedcurr' + i).html()
                         }
-                        Percentreductionceiling = parseFloat(parseFloat(data[i].lQuote / (data[i].ceilingPrice)) * 100 - 100).toFixed(2) + ' %'
+
+
+                        $('#PerTP' + i).html(Percentreduction)
+                        $('#PerLIP' + i).html(Percentreductioninvoice)
+                        $('#PerCP' + i).html(Percentreductionceiling)
+
+                        if (data[i].srNo == 'H1') {
+                            $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7!important;color: #31708f!important;');
+                        }
+                        if (data[i].srNo == 'H1') {
+                            $('#low' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+                        }
+
                     }
-                    else {
-
-                        Percentreduction = 'N/A';
-                        Percentreductionceiling = 'N/A';
-                        Percentreductioninvoice = 'N/A';
-                    }
-
-                    $('#initialQuote' + i).html(data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice))
-                    $('#lowestquote' + i).html((data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)))
-
-                    $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
-                    $('#level' + i).html(data[i].srNo)
-
-                    $('#CP' + i).html(thousands_separators(data[i].ceilingPrice))
-
-                    $("#vname" + i).html(data[i].vendorName)
-                    if (data[i].increamentOn == "P") {
-
-                        $('#Mindec' + i).html(thousands_separators(data[i].minimumIncreament)) + ' %'
-                    }
-                    else {
-                        $('#Mindec' + i).html(thousands_separators(data[i].minimumIncreament)) //+ $('#selectedcurr' + i).html()
-                    }
-
-
-                    $('#PerTP' + i).html(Percentreduction)
-                    $('#PerLIP' + i).html(Percentreductioninvoice)
-                    $('#PerCP' + i).html(Percentreductionceiling)
-
-                    if (data[i].srNo == 'H1') {
-                        $('#PerTP' + i, '#PerLIP' + i, '#PerCP' + i).attr('style', 'background-color:#d9edf7!important;color: #31708f!important;');
-                    }
-                    if (data[i].srNo == 'H1') {
-                        $('#low' + i).css({
-                            'background-color': '#dff0d8',
-                            'font-weight': 'bold',
-                            'color': '#3c763d'
-                        })
-                    }
-
                 }
             }
-        }
+        });
     });
-});
 
+    /////****** Chat *****************
+connection.on("ReceiveMessage", function (objChatmsz) {
+            alert('hi')
+            toastr.clear();
+            if (sessionStorage.getItem("UserID") != objChatmsz.fromUserId) {
+                $("#chatList").append('<div class="post out">'
+                    + '<div class="message">'
+                    + '<span class="arrow"></span>'
+                    + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+                    + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
+                    + '<span class="body" style="color: #c3c3c3;">' + objChatmsz.chatMsg + '</span>'
+                    + '</div>'
+                    + '</div>');
+            }
+            // $(".pulsate-regular").css('animation', 'none');
+            //if (data[i].readFlag == 'N') {
+            //    if (i < 1 && sessionStorage.getItem("UserID") != data[i].fromUserId) {
+            //        $(".pulsate-regular").css('animation', 'pulse 2s infinite');
+            //        toastr.options = {
+            //            "closeButton": true,
+            //            "debug": false,
+            //            "positionClass": "toast-top-right",
+            //            "onclick": null,
+            //            "showDuration": "1000",
+            //            "hideDuration": "1000",
+            //            "timeOut": "2000",
+            //            "extendedTimeOut": "1000",
+            //            "showEasing": "swing",
+            //            "hideEasing": "linear",
+            //            "showMethod": "fadeIn",
+            //            "hideMethod": "fadeOut"
+            //        }
+            //        //$('#basic').modal('show');
+            //        // if (counter == 0) {
+            //        toastr.success('You have a new message.', 'New Message')
+            //        //}
+            //        //counter++;
+            //    }
+            //}
+
+        });
+ 
+//});
+function sendChatMsgs() {
+    
+    var data = {
+        "ChatMsg": jQuery("#txtChatMsg").val(),
+        "fromID": sessionStorage.getItem("UserID"),
+        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
+        "msgType": 'S',
+        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+    }
+    $("#chatList").append('<div class="post in">'
+        + '<div class="message">'
+        + '<span class="arrow"></span>'
+        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString()+'</span>'
+        + '<span class="body" style="color: #c3c3c3;">' + jQuery("#txtChatMsg").val() + '</span>'
+        + '</div>'
+        + '</div>');
+   
+    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnVendorConnection').val()).catch(function (err) {
+        return console.error(err.toString());
+    });
+    //jQuery.ajax({
+    //    url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
+    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+    //    type: "POST",
+    //    data: JSON.stringify(data),
+    //    contentType: "application/json; charset=utf-8",
+    //    success: function (data, status, jqXHR) {
+
+    //            jQuery("#txtChatMsg").val('');
+    //            if (sessionStorage.getItem("UserType") == 'E') {
+    //                fetchUserChats($('#hddnVendorId').val(),'S');
+    //            } else {
+    //                fetchUserChats(sessionStorage.getItem('UserID'),'S');
+    //            }
+
+    //    },
+
+    //    error: function (xhr, status, error) {
+
+    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+    //    if (xhr.status == 401) {
+    //        error401Messagebox(err.Message);
+    //    }
+    //    jQuery.unblockUI();
+    //}
+    //})
+}
+///////////////////////----************************************signal R End****************************************************
 $('#lnktotvalue').click(function () {
     if ($('#lnktotvalue').html() == "Detailed Report") {
         $('#divfordetailreport').hide()

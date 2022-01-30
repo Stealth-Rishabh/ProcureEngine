@@ -4,7 +4,21 @@
 //    alwaysShow: true
 //});
 
+jQuery(document).ready(function () {
+    $(".thousand").inputmask({
+        alias: "decimal",
+        rightAlign: false,
+        groupSeparator: ",",
+        radixPoint: ".",
+        autoGroup: true,
+        integerDigits: 40,
+        digitsOptional: true,
+        allowPlus: false,
+        allowMinus: false,
+        'removeMaskOnSubmit': true
 
+    });
+});
 
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -142,7 +156,7 @@ function fetchState() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            alert('hi')
+           
             var err = xhr.responseText;
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -210,7 +224,7 @@ function fetchCity() {
 function fetchProduct() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -220,24 +234,23 @@ function fetchProduct() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
+           
             jQuery("#ddlProduct").empty();
             var vlal = new Array();
             if (data.length > 0) {
-                // alert(data.length);
-
+               
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlProduct").append("<option value=" + data[i].productID + ">" + data[i].productName + "</option>");
                 }
-                //debugger;
+               
                 jQuery("#ddlProduct").trigger("change");
-                //alert(sessionStorage.getItem('CurrentVQID'));
+             
 
             }
             else {
                 jQuery("#ddlProduct").append('<tr><td>No products found..</td></tr>');
             }
-            // jQuery.unblockUI();
+           
         },
         error: function (xhr, status, error) {
 
@@ -267,25 +280,25 @@ function fetchTDS() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
+            
             jQuery("#ddlTds").empty();
             var vlal = new Array();
 
             if (data.length > 0) {
-                // alert(data.length);
+               
                 jQuery("#ddlTds").append("<option value=0>Select Type of TDS</option>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlTds").append("<option value=" + data[i].tdsID + ">" + data[i].tds + "</option>");
                 }
-                //debugger;
+                
                 jQuery("#ddlTds").trigger("change");
-                //alert(sessionStorage.getItem('CurrentVQID'));
+               
 
             }
             else {
                 jQuery("#ddlTds").append('<tr><td>No tds found..</td></tr>');
             }
-            // jQuery.unblockUI();
+            
         },
         error: function (xhr, status, error) {
 
@@ -315,24 +328,24 @@ function fetchPaymentTerms() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
+            
             jQuery("#ddPayTerms").empty();
             var vlal = new Array();
             if (data.length > 0) {
-                // alert(data.length);
+               
                 jQuery("#ddPayTerms").append("<option value=0>Select Payment Terms</option>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
                 //debugger;
                 jQuery("#ddPayTerms").trigger("change");
-                //alert(sessionStorage.getItem('CurrentVQID'));
+               
 
             }
             else {
                 jQuery("#ddPayTerms").append('<tr><td>No payment terms found..</td></tr>');
             }
-            // jQuery.unblockUI();
+            
         },
         error: function (xhr, status, error) {
 
@@ -351,9 +364,9 @@ function fetchPaymentTerms() {
 }
 
 function getPan(pan) {
-    //debugger;
+   
     var pan = $('#txtGst').val().substr(2, 10); //11
-    //console.log("pan", pan);
+    
     if ($('#txtGst').val().length == 15) {
         $('#txtPan').val(pan.toUpperCase());
         $('#txtGst').val($('#txtGst').val().toUpperCase())
@@ -483,7 +496,7 @@ function SubmitVendorRegistration() {
         }
     };
     console.log(JSON.stringify(VendorInfo))
-    alert(JSON.stringify(VendorInfo));
+    //alert(JSON.stringify(VendorInfo));
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -494,7 +507,7 @@ function SubmitVendorRegistration() {
         success: function (data, status, jqXHR) {
             //alert(data[0].);
             console.log(data.jsondata);
-            //return vendor id
+           
 
             if ($('#filegst').val() != '') {
                 fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data);
@@ -558,8 +571,9 @@ function SubmitVendorRegistration() {
             $('#spansuccessvendor').fadeOut(6000);
             setTimeout(function () {
                 $("#registerParticipantModal").modal("hide");
+               // fnFormClear(); //Create reset Function
                 jQuery.unblockUI();
-            }, 7000)
+            }, 6000)
 
 
         },
@@ -812,6 +826,8 @@ function FormValidate() {
             },
             txtAcNo: {
                 required: true,
+                number: true,
+                maxlength: 15
             },
             txtIFSC: {
                 required: true,
@@ -825,6 +841,13 @@ function FormValidate() {
             },
             txtMobile: {
                 required: true,
+                number: true,
+                maxlength:10
+            },
+            txtMobile2: {
+              
+                number: true,
+                maxlength: 15
             },
             txtEmail: {
                 required: true,
@@ -864,14 +887,13 @@ function FormValidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
-            debugger;
+            
             var id = document.activeElement.getAttribute('id');
-
-            if (id == "btnverifyemail") {
-                //alert("Proceed working");
+            
+            if (id.trim() == "btnverifyemail") {
+                
                 validateEmail();
             } else {
-                //alert("Submit working");
                 SubmitVendorRegistration();
             }
 
@@ -890,7 +912,6 @@ function validateEmail() {
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "VendorRequest/IsVendorExists?emailID=" + emailId,
-        //beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
@@ -898,15 +919,20 @@ function validateEmail() {
         success: function (data) {
 
             if (data == '0') {
-                $('#txtemailverify,#txtEmail').attr('disabled', 'disabled');
+                $('#txtemailverify,#txtEmail,#btnverifyemail').attr('disabled', 'disabled');
                 $('#btnverifysubmit').removeClass('hide');
-                $('#txtEmail').val(emailId);
+                $('#txtEmail,#txtEmail2').val(emailId);
+                $('#collapse2').removeClass('collapse2').addClass('collapse in')
+                $('#H4ContactDetails').removeClass('collapsed')
 
             }
             else {
                 $('#diverrorvendor').show();
                 $('#spanerrorvendor').text("EmailId is already registered");
                 $('#diverrorvendor').fadeOut(10000);
+                $('#collapse2').addClass('collapse2').removeClass('collapse in')
+                $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
+                $('#txtemailverify,#txtEmail,#btnverifyemail').removeAttr('disabled');
             }
             $('#modalLoaderparameter').addClass('display-none');
             jQuery.unblockUI();
@@ -933,11 +959,15 @@ function validateEmail() {
 }
 
 $('#registerParticipantModal').on("hidden.bs.modal", function () {
-    $('#txtemailverify').removeAttr('disabled');
+    $('#txtemailverify,#btnverifyemail').removeAttr('disabled');
     $('#btnverifysubmit').addClass('hide');
     $('#txtemailverify').val('');
+    $('#txtEmail,#txtEmail2').val('');
     $('#modalLoaderparameter').addClass('display-none');
-
+    $('#collapse2').addClass('collapse2').removeClass('collapse in')
+    $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
     window.location = window.location.href.split('#')[0];
 })
 
+
+// make reset Function & call after Details submit ????

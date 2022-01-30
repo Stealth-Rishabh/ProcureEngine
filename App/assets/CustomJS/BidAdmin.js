@@ -92,6 +92,7 @@ function startTimer(duration, display) {
             //}
         //}
         //fetchBidTime();
+
        setTimeout(function () {
             
             if (--timer <= 0) {

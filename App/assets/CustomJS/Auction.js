@@ -461,12 +461,15 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 
-function openChatDiv(name, email, vendorId) {
-   
+function openChatDiv(name, email, vendorId,connectionid,userid) {
+    //if (connectionid == '') {
+    //    $('#v' + userid).onclick = null;
+    //}
     $("#chat-label").html(name + '(' + email + ')');
     $("#hddnVendorId").val(vendorId);
+    $("#hddnVendorConnection").val(connectionid);
     fetchUserChats(vendorId,'S');
-    updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
+    //updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
     
 }
 
@@ -495,43 +498,7 @@ function getUrlVars() {
     return vars;
 }
 
-function sendChatMsgs() {
-  
-    var data = {
-        "ChatMsg": jQuery("#txtChatMsg").val(),
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-        "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
-    }
-    
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
 
-                jQuery("#txtChatMsg").val('');
-                if (sessionStorage.getItem("UserType") == 'E') {
-                    fetchUserChats($('#hddnVendorId').val(),'S');
-                } else {
-                    fetchUserChats(sessionStorage.getItem('UserID'),'S');
-                }
-            
-        },
-        
-        error: function (xhr, status, error) {
-              
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        jQuery.unblockUI();
-    }
-    })
-}
 
 function sendBroadCastChatMsgs() {
    
@@ -576,91 +543,13 @@ if (window.location.search) {
     BidID = getUrlVarsURL(decryptedstring)['BidID'];
     sessionStorage.setItem('BidID', BidID)
 }
-
-var counter = 0;
-function fetchUserChats(userId,msgType) {
-    toastr.clear();
-    var _bidId = 0;
-    _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
-    var url = "";
- 
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data, status, jqXHR) {
-            $("#chatList").empty();
-            if (data.length > 0) {
-                $(".pulsate-regular").css('animation', 'none');
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].readFlag == 'N') {
-                        if (i < 1 && sessionStorage.getItem("UserID") != data[i].fromUserId) {
-                        $(".pulsate-regular").css('animation', 'pulse 2s infinite');
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "positionClass": "toast-top-right",
-                            "onclick": null,
-                            "showDuration": "1000",
-                            "hideDuration": "1000",
-                            "timeOut": "2000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                            //$('#basic').modal('show');
-                       // if (counter == 0) {
-                            toastr.success('You have a new message.', 'New Message')
-                        //}
-                        //counter++;
-                      }
-                    }
-                    if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
-                        $("#chatList").append('<div class="post in">'
-                                    + '<div class="message">'
-                                        + '<span class="arrow"></span>'
-                                        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                                        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
-                                        + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                                    + '</div>'
-                                + '</div>');
-                    }
-                    if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
-                        $("#chatList").append('<div class="post out">'
-                                    +'<div class="message">'
-                                        + '<span class="arrow"></span>'
-                                        +'<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                                        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
-                                        + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                                    +'</div>'
-                                +'</div>');
-                    }                       
-                }
-                if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
-                    openForm();
-                }                
-               
-            }
-        },
-
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else { fnErrorMessageText('errormsg', ''); }
-            jQuery.unblockUI();
-        }
-    })
+function timeNow() {
+    var d = new Date(),
+        h = (d.getHours() < 10 ? '0' : '') + d.getHours(),
+        m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+    return h + ':' + m;
 }
-
+var counter = 0;
 function fetchBroadcastMsgs(userId,msgType) {
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
@@ -707,7 +596,6 @@ function fetchBroadcastMsgs(userId,msgType) {
         }
     })
 }
-
 function fetchvendor() {
 
     toastr.clear();
@@ -722,6 +610,7 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
+            
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
@@ -749,9 +638,9 @@ function fetchvendor() {
                             //$('#basic').modal('show');
                             toastr.success('You have a new message.', 'New Message')
                         }
-                        $("#vendorsChatlist").append('<li class="media" onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\''+data[i].userID+'\');">'
                             + '<div class="media-status">'
-                                + '<span class="actions-dot bg-red"></span>'
+                            + '<span class="badge badge-empty badge-info" id=sticon' + data[i].userID +'  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
@@ -760,10 +649,11 @@ function fetchvendor() {
                             + '</div>'
                         + '</li>');
                        
-                    } else {
+                    }
+                    else {
                         //$(".pulsate-regular-li").hide();
-                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID+'  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\');">'
-                            + '<div class="media-status"><span class="badge badge-empty badge-success"></span>'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID +'\');">'
+                            + '<div class="media-status"><span class="badge badge-empty badge-default" id=sticon'+data[i].userID+'  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
@@ -772,7 +662,18 @@ function fetchvendor() {
                             + '</div>'
                         + '</li>');
 
-                    }
+                        }
+                       
+                        if (data[i].connected == true) {
+                            $('#sticon' + data[i].userID).removeClass('badge-info').addClass('badge-success')
+                            $('#v' + data[i].userID).removeAttr('disabled')
+
+                        }
+                        else {
+                            $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-default')
+                            $('#v' + data[i].userID).attr('disabled', 'disabled')
+                            $('#v' + data[i].userID).onclick = null;
+                        }
                     vName = data[i].vendorName
                   }
                 }
@@ -793,7 +694,89 @@ function fetchvendor() {
         }
     });
 }
-/*<span class="badge badge-empty badge-warning"></span>*/
+function fetchUserChats(userId, msgType) {
+    toastr.clear();
+    var _bidId = 0;
+    _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
+    var url = "";
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+            $("#chatList").empty();
+            if (data.length > 0) {
+                $(".pulsate-regular").css('animation', 'none');
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].readFlag == 'N') {
+                        if (i < 1 && sessionStorage.getItem("UserID") != data[i].fromUserId) {
+                            $(".pulsate-regular").css('animation', 'pulse 2s infinite');
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "positionClass": "toast-top-right",
+                                "onclick": null,
+                                "showDuration": "1000",
+                                "hideDuration": "1000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
+                            //$('#basic').modal('show');
+                            // if (counter == 0) {
+                            toastr.success('You have a new message.', 'New Message')
+                            //}
+                            //counter++;
+                        }
+                    }
+                    if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
+                        $("#chatList").append('<div class="post in">'
+                            + '<div class="message">'
+                            + '<span class="arrow"></span>'
+                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                            + '</div>'
+                            + '</div>');
+                    }
+                    if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
+                        $("#chatList").append('<div class="post out">'
+                            + '<div class="message">'
+                            + '<span class="arrow"></span>'
+                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                            + '</div>'
+                            + '</div>');
+                    }
+                }
+                if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
+                    openForm();
+                }
+
+            }
+        },
+
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else { fnErrorMessageText('errormsg', ''); }
+            jQuery.unblockUI();
+        }
+    })
+}
+
 function updateMsgReadFlag(bidId, vendorId, forUpdate) {
    
     var data = {
