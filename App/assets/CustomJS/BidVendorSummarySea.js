@@ -1183,7 +1183,7 @@ $('#SignalRid').text('Not Started');
 
     var StID = 'sticon' + UserId.trim()
     if (flag == true) {
-            $("#hddnVendorConnection").val(connectionId);
+        $("#hddnVendorConnection").val(connectionId);
         $('#' + StID).removeClass('badge-info').addClass('badge-success')
         $('#v' + data[i].userID).removeAttr('disabled')
         }

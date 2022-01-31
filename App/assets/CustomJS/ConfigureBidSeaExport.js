@@ -1488,7 +1488,7 @@ function ConfigureBidForSeaExportandSave() {
             "BidTime": jQuery("#txtbidTime").val(),
             "BidTypeID": 7
         };
-         console.log(JSON.stringify(Tab3data))
+        // console.log(JSON.stringify(Tab3data))
         jQuery.ajax({
 
             type: "POST",
@@ -1501,27 +1501,13 @@ function ConfigureBidForSeaExportandSave() {
             dataType: "json",
             success: function (data) {
 
-                // if (data[0].mailSubject !='') {
-
-                // jQuery.unblockUI();
 
                 bootbox.alert("Bid Configured Successfully.", function () {
                     sessionStorage.removeItem('CurrentBidID');
                     window.location = sessionStorage.getItem("HomePage")
                     return false;
                 });
-                // }
-                //else {
-
-                //    jQuery.unblockUI();
-                //    bootbox.alert("Configuration error.", function () {
-                //        sessionStorage.removeItem('CurrentBidID');
-                //        window.location = sessionStorage.getItem("HomePage")
-                //        return false;
-                //    });
-
-                //}
-
+                
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText //eval("(" + xhr.responseText + ")");
@@ -3554,7 +3540,7 @@ function fnfetchRFQVendor() {
                     vCount = vCount + 1;
                     str = "<tr id=vList" + data[i].vendorID +" ><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class='checked'><input disabled type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
                     jQuery('#tblvendorlist > tbody').append(str);
-                    alert($('#ddlAuctiontype').val())
+                   
                     if ($('#ddlAuctiontype').val() == "83" || $('#ddlAuctiontype').val() == "81") {
                         $('.THLoading').show()
                         jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ',' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')

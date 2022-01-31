@@ -204,6 +204,7 @@ $('body').on('click', '#decline_all', function () {
 
 var IP = "";
 $(document).ready(function () {
+    
     $.getJSON('https://json.geoiplookup.io/?callback=?', function (data) {
         console.log(JSON.stringify(data.ip, null, 2));
         IP = JSON.stringify(data.ip, null, 2);

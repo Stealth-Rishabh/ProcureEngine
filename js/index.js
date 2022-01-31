@@ -230,7 +230,7 @@ $("#requestModal").on("hidden.bs.modal", function () {
     $(".form-group").removeClass("has-error");
 });
 function fnFormSubmitSupp() {
-    jQuery.blockUI({ message: '<h5><img src="pro_img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="pro_img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("PageFrom").toLowerCase() == "contact-us") {
         Flag = $('#ddlsupport').val()
     }
@@ -268,7 +268,7 @@ function fnFormSubmitSupp() {
                 $('#errordivSupp').hide();
                 fnReset();
                // Metronic.scrollTo($(".alert-success"), -200);
-                jQuery.unblockUI();
+              //  jQuery.unblockUI();
             }
         });
   }
@@ -333,7 +333,7 @@ function fnReset()
     $('#selectdatetime3').val('')
     $('#briefRequirement').val('')
 
-    $('#CompanyName').val('')
+    $('#CompanyNameSupp').val('')
     $('#CountrySuppID').val('')
     $('#StateID').val('')
     $('#CityID').val('')
