@@ -82,18 +82,9 @@ function startTimer(duration, display) {
             //else {
             //   fnBidRefreshOnTimerforAdmin(BidID)
             //}
-           
-           // fetchBidTime()
-
-            //if (sessionStorage.getItem("UserType") == 'E') {
-            //    fetchUserChats($('#hddnVendorId').val(),'S');
-            //} else {
-            //    fetchUserChats(sessionStorage.getItem('UserID'),'S');
-            //}
-        //}
+           //}
         //fetchBidTime();
-
-       setTimeout(function () {
+        setTimeout(function () {
             
             if (--timer <= 0) {
                 timer = 0;

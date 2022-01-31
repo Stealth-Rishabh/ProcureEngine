@@ -24,13 +24,15 @@ if (window.location.search) {
     var Type = getUrlVarsURL(decryptedstring)["Type"];
    
     $('#hdnRfqID').val(RFQID);
+  
     var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
    
     //jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
-    jQuery("#txtrfirfqsubject").val(decodeURIComponent(sub) + ' - ' + RFQID)
+    //alert(decodeURIComponent(sub) + ' - ' + RFQID)
+    jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
     fetchReguestforQuotationDetails()
     fetchRFQApproverStatus(RFQID);
     FetchRFQVersion();

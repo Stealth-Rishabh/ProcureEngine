@@ -135,23 +135,7 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
 
 }
 
-function gritternotification(msz) {
 
-    $.gritter.add({
-        // (string | mandatory) the heading of the notification
-        title: '',
-        // (string | mandatory) the text inside the notification
-        text: msz,
-        // (string | optional) the image to display on the left
-        //image: './assets/img/avatar1.jpg',
-        // (bool | optional) if you want it to fade out on its own or just sit there
-        sticky: false,
-        // (int | optional) the time you want it to be alive for before fading out
-        time: ''
-    });
-
-    return false;
-}
 
 function CheckOnlineStatus(msg) {
     
@@ -452,6 +436,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
     return str;
 }
 
+////******* Chat functions*********/////////////////////////////
 function openForm() {
     updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
  
@@ -463,7 +448,7 @@ function closeForm() {
 
 function openChatDiv(name, email, vendorId,connectionid,userid) {
     //if (connectionid == '') {
-    //    $('#v' + userid).onclick = null;
+    //    $('#v'+ userid).onclick = null;
     //}
     $("#chat-label").html(name + '(' + email + ')');
     $("#hddnVendorId").val(vendorId);
@@ -487,6 +472,48 @@ function closeChatsForAdminB() {
     document.getElementById("btn-cont").style.display = "none";
     document.getElementById("close-btn").style.display = "none";
 }
+
+function sendBroadCastChatMsgs() {
+
+    var data = {
+        "ChatMsg": jQuery("#txtBroadcastMsg").val(),
+        "fromID": sessionStorage.getItem("UserID"),
+        "BidId": parseInt(getUrlVarsURL(decryptedstring)["BidID"]),
+        "msgType": 'B',
+        "toID": ''
+    }
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            jQuery("#txtBroadcastMsg").val('');
+            bootbox.alert("Message has been successfully sent to all vendors.", function () {
+                fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
+            });
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            jQuery.unblockUI();
+        }
+    })
+}
+
+
+
+////******* Chat functions End*********/////////////////////////////
 function getUrlVars() {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -498,45 +525,6 @@ function getUrlVars() {
     return vars;
 }
 
-
-
-function sendBroadCastChatMsgs() {
-   
-    var data = {
-        "ChatMsg": jQuery("#txtBroadcastMsg").val(),
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId":parseInt( getUrlVarsURL(decryptedstring)["BidID"]), 
-        "msgType": 'B',
-        "toID": ''
-    }
-   
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-            
-                jQuery("#txtBroadcastMsg").val('');
-                bootbox.alert("Message has been successfully sent to all vendors.", function () {
-                    fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
-                });
-           
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else{
-                fnErrorMessageText('errormsg', '');
-            }
-            jQuery.unblockUI();
-        }
-    })
-}
 if (window.location.search) {
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
@@ -674,7 +662,7 @@ function fetchvendor() {
                             $('#v' + data[i].userID).attr('disabled', 'disabled')
                             $('#v' + data[i].userID).onclick = null;
                         }
-                    vName = data[i].vendorName
+                       vName = data[i].vendorName
                   }
                 }
             }
@@ -1199,7 +1187,7 @@ var code = {
             var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
             return encryptedMessage.toString();
         },
-            decryptMessage: function(encryptedMessage, secretkey){
+         decryptMessage: function(encryptedMessage, secretkey){
                 var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
                 var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
 

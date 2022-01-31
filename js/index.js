@@ -1,5 +1,6 @@
 ﻿var Flag = 'S';
 function annualSubscription(flag) {
+  
     Flag = flag;
     if (flag.substr(0, 2).toLowerCase() == "cu") {
         $('#requestModalLabel').text("Contact Us")
@@ -192,7 +193,7 @@ function FormValidate() {
             $('#errormsgSupp').text("Please fill all mandatory fields.");
             $('#errordivSupp').fadeOut(5000);
             $('#successdivSupp').hide()
-
+            //Metronic.scrollTo($(".alert-danger"), -200);
         },
         //errorPlacement: function (error, element) {
         //    //error.addClass('help-block');
@@ -217,7 +218,7 @@ function FormValidate() {
         },
         submitHandler: function (form) {
             $('#errordivSupp').hide();
-            fnFormSubmit()
+            fnFormSubmitSupp()
         }
     })
 }
@@ -228,32 +229,32 @@ $("#requestModal").on("hidden.bs.modal", function () {
     fnReset();
     $(".form-group").removeClass("has-error");
 });
-function fnFormSubmit() {
-    $('#modalLoaderparameter').show()
+function fnFormSubmitSupp() {
+    jQuery.blockUI({ message: '<h5><img src="pro_img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("PageFrom").toLowerCase() == "contact-us") {
         Flag = $('#ddlsupport').val()
     }
         var payload = {
-            CompanyName: $('#CompanyName,#CompanyNameSupp').val(),
+            CompanyName: $('#CompanyNameSupp').val(),
             Address: "",
-            CountryID: $('#CountryID,#CountrySuppID').val(),
+            CountryID: $('#CountrySuppID').val(),
             StateID: "",
             CityID: "",
-            UserName: $('#UserName,#UserNameSupp').val(),
-            MobileNo: $('#MobileNo,#MobileNoSupp').val(),
-            UserEmail: $('#UserEmail,#UserEmailSupp').val(),
-            Message: $('#briefRequirement,#briefRequirementSupp').val(),
-            designation: $('#designation,#designationSupp').val(),
-            Slot1: $('#selectdate1,#selectdatespp1').val() + " " + $('#selectdatetime1,#selectdatetimesupp1').val(),
-            Slot2: $('#selectdate2,#selectdatespp2').val() + " " + $('#selectdatetime2,#selectdatetimesupp2').val(),
-            Slot3: $('#selectdate3,#selectdatespp3').val() + " " + $('#selectdatetime3,#selectdatetimesupp3').val(),
+            UserName: $('#UserNameSupp').val(),
+            MobileNo: $('#MobileNoSupp').val(),
+            UserEmail: $('#UserEmailSupp').val(),
+            Message: $('#briefRequirementSupp').val(),
+            designation: $('#designationSupp').val(),
+            Slot1: $('#selectdatespp1').val() + " " + $('#selectdatetimesupp1').val(),
+            Slot2: $('#selectdatespp2').val() + " " + $('#selectdatetimesupp2').val(),
+            Slot3: $('#selectdatespp3').val() + " " + $('#selectdatetimesupp3').val(),
             Flag: Flag,
             PageFrom: sessionStorage.getItem("PageFrom")
         };
 
        
-       // alert(JSON.stringify(payload))
-        console.log(JSON.stringify(payload))
+        //alert(JSON.stringify(payload))
+       // console.log(JSON.stringify(payload))
             $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -262,18 +263,58 @@ function fnFormSubmit() {
             success: function (data) {
                 $('#modalLoaderparameter').hide();
                 $('.alert-success').show();
-                $('#successdiv,#successdivSupp').html("Thank you so much for contacting us.We shall contact you according to preffered Time slot mentioned.");
+                $('#successdivSupp').html("Thank you so much for contacting us.We shall contact you according to preffered Time slot mentioned.");
                 $('.alert-success').fadeOut(5000);
-                $('#errordiv,#errordivSupp').hide();
-                
+                $('#errordivSupp').hide();
                 fnReset();
-                setTimeout(function () {
-                    $("#requestModal").modal("hide");
-                }, 5000)
+               // Metronic.scrollTo($(".alert-success"), -200);
+                jQuery.unblockUI();
             }
         });
   }
-   
+function fnFormSubmit() {
+    $('#modalLoaderparameter').show()
+    
+    var payload = {
+        CompanyName: $('#CompanyName').val(),
+        Address: "",
+        CountryID: $('#CountryID').val(),
+        StateID: "",
+        CityID: "",
+        UserName: $('#UserName').val(),
+        MobileNo: $('#MobileNo').val(),
+        UserEmail: $('#UserEmail').val(),
+        Message: $('#briefRequirement').val(),
+        designation: $('#designation').val(),
+        Slot1: $('#selectdate1').val() + " " + $('#selectdatetime1').val(),
+        Slot2: $('#selectdate2').val() + " " + $('#selectdatetime2').val(),
+        Slot3: $('#selectdate3').val() + " " + $('#selectdatetime3').val(),
+        Flag: Flag,
+        PageFrom: sessionStorage.getItem("PageFrom")
+    };
+
+
+    // alert(JSON.stringify(payload))
+    console.log(JSON.stringify(payload))
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        url: baseUri + 'InsCustomerQueries',
+        data: JSON.stringify(payload),
+        success: function (data) {
+            $('#modalLoaderparameter').hide();
+            $('.alert-success').show();
+            $('#successdiv').html("Thank you so much for contacting us.We shall contact you according to preffered Time slot mentioned.");
+            $('.alert-success').fadeOut(5000);
+            $('#errordiv').hide();
+
+            fnReset();
+            setTimeout(function () {
+                $("#requestModal").modal("hide");
+            }, 5000)
+        }
+    });
+}
 function fnReset()
 {
     $('#CompanyName').val('')

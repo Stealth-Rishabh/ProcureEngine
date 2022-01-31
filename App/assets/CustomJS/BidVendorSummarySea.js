@@ -574,6 +574,7 @@ function fnTimeUpdate() {
             if (data== "1") {
                 jQuery("#lblbidduration").text(jQuery('#txtBidDurationPrev').val() + ' mins');
                 $('#extendedDurationPara').show()
+                fetchBidTime();
             }
 
             jQuery.unblockUI();
@@ -1170,17 +1171,15 @@ function fnClickHeader(event, icon, flag) {
 ///////////////////////----************************************signal R Start****************************************************
 
 //$(window).load(function () {
-    var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
-    $('#SignalRid').text('Not Started');
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath")+"bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+$('#SignalRid').text('Not Started');
+    console.log('Not Started')
     connection.start().then(function () {
-
-        $('#SignalRid').text('connection started');
-
+        console.log('connection started')
     }).catch(function (err) {
-        $('#SignalRid').text(err.toString());
-        // return console.error(err.toString());
-    });
-connection.on("refreshChatUsers", function (UserId, connectionId, flag) {
+        console.log(err.toString())
+ });
+     connection.on("refreshChatUsers", function (UserId, connectionId, flag) {
 
     var StID = 'sticon' + UserId.trim()
     if (flag == true) {
@@ -1195,7 +1194,7 @@ connection.on("refreshChatUsers", function (UserId, connectionId, flag) {
         }
     });
 
-connection.on("refreshColumnStatus", function (data) {
+     connection.on("refreshColumnStatus", function (data) {
         var Url = "";
 
         if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
@@ -1447,8 +1446,8 @@ connection.on("refreshColumnStatus", function (data) {
         });
     });
 
-    /////****** Chat *****************
-connection.on("ReceiveMessage", function (objChatmsz) {
+    /////****** Chat *****************/////
+     connection.on("ReceiveMessage", function (objChatmsz) {
             alert('hi')
             toastr.clear();
             if (sessionStorage.getItem("UserID") != objChatmsz.fromUserId) {
@@ -1489,8 +1488,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
         });
  
-//});
-function sendChatMsgs() {
+      function sendChatMsgs() {
     
     var data = {
         "ChatMsg": jQuery("#txtChatMsg").val(),
@@ -1511,34 +1509,9 @@ function sendChatMsgs() {
     connection.invoke("SendMessage", JSON.stringify(data), $('#hddnVendorConnection').val()).catch(function (err) {
         return console.error(err.toString());
     });
-    //jQuery.ajax({
-    //    url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //    type: "POST",
-    //    data: JSON.stringify(data),
-    //    contentType: "application/json; charset=utf-8",
-    //    success: function (data, status, jqXHR) {
-
-    //            jQuery("#txtChatMsg").val('');
-    //            if (sessionStorage.getItem("UserType") == 'E') {
-    //                fetchUserChats($('#hddnVendorId').val(),'S');
-    //            } else {
-    //                fetchUserChats(sessionStorage.getItem('UserID'),'S');
-    //            }
-
-    //    },
-
-    //    error: function (xhr, status, error) {
-
-    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-    //    if (xhr.status == 401) {
-    //        error401Messagebox(err.Message);
-    //    }
-    //    jQuery.unblockUI();
-    //}
-    //})
+    
 }
-///////////////////////----************************************signal R End****************************************************
+    ///////////////////////----************************************signal R End****************************************************
 $('#lnktotvalue').click(function () {
     if ($('#lnktotvalue').html() == "Detailed Report") {
         $('#divfordetailreport').hide()

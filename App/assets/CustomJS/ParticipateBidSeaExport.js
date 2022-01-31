@@ -1,13 +1,13 @@
 ﻿/*"use strict";*/
 //$(window).load(function () {
-    var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+/////****** Chat Start*****************/////
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") +"bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
 
-    $('#SignalRid').text('Not Started');
+    console.log("Not Started")
     connection.start().then(function () {
-        $('#SignalRid').text('connection started');
-
+       console.log("connection started")
     }).catch(function (err) {
-        $('#SignalRid').text(err.toString());
+        console.log(err.toString())
     });
     connection.on("refreshColumnStatus", function (data) {
         if (data == "-1") {
@@ -87,8 +87,8 @@
             });
         }
     });
-    /////****** Chat *****************
-connection.on("ReceiveMessage", function (objChatmsz) {
+    
+    connection.on("ReceiveMessage", function (objChatmsz) {
     
     let chat = JSON.parse(objChatmsz)
     toastr.clear();
@@ -178,6 +178,10 @@ function sendChatMsgs() {
     //}
     //})
 }
+
+/////****** Chat END*****************/////
+
+
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -188,18 +192,6 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var display = "";
 var displayForS = "";
-
-
-//connection.disconnected(function () {
-//    setTimeout(function () {
-//        connection.start();
-//    }, 5000); // Restart connection after 5 seconds.
-//});
-
-//$.connection.hub.stop().done(function () {
-//    alert('stopped');
-//});
-
 
 function fetchBidHeaderDetails(bidId) {
     var tncAttachment = '';

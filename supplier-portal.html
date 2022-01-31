@@ -16,7 +16,6 @@
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <link id="colors" href="css/colors/scheme-03.css" rel="stylesheet" type="text/css">
     <link href="css/coloring.css" rel="stylesheet" type="text/css">
-  
 </head>
 
 <body>
@@ -82,7 +81,7 @@
                                         <a href="javascript:void(0)">Resources</a>
                                         <ul>
                                             <li><a href="news.html">Blog</a></li>
-                                            <li><a href="#">Case Study</a></li>
+                                            <li><a href="javascript:void(0)" id="case_button">Case Study</a></li>
                                         </ul>
                                     </li>
                                     <li>
@@ -444,6 +443,10 @@
                     <div class="alert alert-success" id="successdiv" style="display:none">
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
+                    </div>
+                    <div class="alert alert-danger" id="errordiv" style="display:none">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
                     </div>
                     <div class="clearfix">&nbsp;</div>
                     <form id="registerForm" action="#" method="POST">
