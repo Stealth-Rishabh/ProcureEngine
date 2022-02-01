@@ -189,7 +189,7 @@ function BindAttachmentsOfEdit() {
 
 function BindSaveparams() {
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx);
-
+    
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
 

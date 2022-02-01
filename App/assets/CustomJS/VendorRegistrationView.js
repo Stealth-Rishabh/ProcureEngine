@@ -2,45 +2,65 @@
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
 function fetchVendorRegistrationDetails() {
-    var attachmentt = '', _txtCategories = [];
-    
     jQuery.ajax({
-
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID="+sessionStorage.getItem('tmpVendorID'),
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + sessionStorage.getItem('tmpVendorID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (json) {
-            
-            
-            let companydetails = json[0].jsondata;
-            companydetails = JSON.parse(companydetails);
-           
+            debugger;
 
-            let categorydetails = json[1].jsondata;
-            categorydetails = JSON.parse(categorydetails);
-          
+            var companydetails = JSON.parse(json[0].jsondata);
+            var categorydetails = JSON.parse(json[1].jsondata);
+
+            sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
 
             var categoryresult = categorydetails.map(function (val) {
                 return val.CategoryName;
-            }).join(',');
+            }).join(', ');
 
-          ;
 
-            attachment = companydetails[0].GSTFile.replace(/\s/g, "%20");
-            console.log("attachment", attachment);
+            if (companydetails[0].GSTFile != "" || companydetails[0].GSTFile != null || companydetails[0].GSTFile != undefined) {
+                $('#gstattach').show();
+                $('#gstattach').html(companydetails[0].GSTFile);
 
-             jQuery("#gstattach").append('<div class="col-md-6">' +
-                 '<p class="form-control-static"><a href=PortalDocs/VR/' + sessionStorage.getItem("tmpVendorID") + "/" + attachment + ' style="text-decoration: none !important;">' + attachment + '</a></p>' +
-                '</div>');
+            } else {
 
-           
-            jQuery('#gstvendorclass').html(companydetails[0].GSTClass); 
+                $('#gstattach').hide();
+            }
+
+            if (companydetails[0].PANFile != "" || companydetails[0].PANFile != null || companydetails[0].PANFile != undefined) {
+                $('#panattach').show();
+                $('#panattach').html(companydetails[0].PANFile);
+
+            } else {
+
+                $('#panattach').hide();
+            }
+
+            if (companydetails[0].MSMEFile != "" || companydetails[0].MSMEFile != null || companydetails[0].MSMEFile != undefined) {
+                $('#msmeattach').show();
+                $('#msmeattach').html(companydetails[0].MSMEFile);
+
+            } else {
+
+                $('#msmeattach').hide();
+            }
+
+            if (companydetails[0].cancelledCheck != "" && companydetails[0].cancelledCheck != null && companydetails[0].cancelledCheck != undefined) {
+                $('#checkattach').show();
+                $('#checkattach').html(companydetails[0].cancelledCheck);
+
+            } else {
+
+                $('#checkattach').hide();
+            }
+
+            jQuery('#gstvendorclass').html(companydetails[0].GSTClass);
             jQuery('#gstno').html(companydetails[0].GSTNo);
-            //jQuery('#gstattach').html(companydetails[0].GSTFile);
             jQuery('#natureofest').html(companydetails[0].EstName);
             jQuery('#vendortype').html(companydetails[0].VendorCatName);
             jQuery('#typeofproduct').html(categoryresult);
@@ -52,7 +72,6 @@ function fetchVendorRegistrationDetails() {
             jQuery('#state').html(companydetails[0].StateName);
             jQuery('#city').html(companydetails[0].CityName);
             jQuery('#pincode').html(companydetails[0].pinCode);
-
             jQuery('#panno').html(companydetails[0].PAN);
             jQuery('#panfilename').html(companydetails[0].PANFile);
             jQuery('#TDStype').html(companydetails[0].TDSTypeName);
@@ -62,25 +81,24 @@ function fetchVendorRegistrationDetails() {
             jQuery('#bankaccountno').html(companydetails[0].BankAccount);
             jQuery('#ifsccode').html(companydetails[0].IFSCCode);
             jQuery('#accountholdername').html(companydetails[0].AccountName);
-
             jQuery('#primaryname').html(companydetails[0].ContactName);
             jQuery('#primarymobile').html(companydetails[0].MOBILE);
             jQuery('#primaryemail').html(companydetails[0].ContactEmailID);
-            jQuery('#altname').html(companydetails[0].ContactNameMD);
-            jQuery('#altmobile').html(companydetails[0].mobileMD);
+            jQuery('#altname').html(companydetails[0].ContactNameAlt);
+            jQuery('#altmobile').html(companydetails[0].mobileAlt);
             jQuery('#altemail').html(companydetails[0].AltEmailID);
-
             jQuery('#msme').html(companydetails[0].MSMECheck);
             jQuery('#msmeclass').html(companydetails[0].MSMEType);
             jQuery('#msmeno').html(companydetails[0].MSMENo);
-            //jQuery('#msmeattach').html(companydetails[0].mSMEFile);
-            jQuery('#lastFY').html(companydetails[0].PreviousTurnover);
-            jQuery('#seclastFY').html(companydetails[0].SecondLastTurnover);
-            //jQuery('#attachedfilename').html(companydetails[0].AltEmailID);
-            //jQuery('#attachedfile').html(companydetails[0].AltEmailID);
+            jQuery('#msmeattach').html(companydetails[0].MSMEFile);
+            jQuery('#lastFY').html(companydetails[0].currencyLastFY + ' ' + companydetails[0].PreviousTurnover);
+            jQuery('#seclastFY').html(companydetails[0].currencyLast2FY + ' ' + companydetails[0].SecondLastTurnover);
+            jQuery('#txtLastFiscalyear').html(companydetails[0].PreviousTurnoverYear);
+            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear);
+
         },
         error: function (xhr, status, error) {
-           
+            alert('hi')
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -93,6 +111,9 @@ function fetchVendorRegistrationDetails() {
 
 }
 
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+}
 
 
 function ApproveRFI(For) {

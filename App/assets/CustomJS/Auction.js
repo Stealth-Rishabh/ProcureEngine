@@ -447,9 +447,7 @@ function closeForm() {
 }
 
 function openChatDiv(name, email, vendorId,connectionid,userid) {
-    //if (connectionid == '') {
-    //    $('#v'+ userid).onclick = null;
-    //}
+    
     $("#chat-label").html(name + '(' + email + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);

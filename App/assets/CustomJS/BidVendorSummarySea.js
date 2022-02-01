@@ -910,8 +910,8 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             }
 
                            else {
-                                var str = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=:text-decoration:none;">' + desitinationport + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
-                                var strsumm = '<tr id=low_str' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
+                                var str = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=:text-decoration:none;">' + desitinationport + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
+                                var strsumm = '<tr id=low_str' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
                             }
                             c = c + 1;
                             //$('#i_expandcollapse' + i).popover("show")
@@ -1179,18 +1179,19 @@ $('#SignalRid').text('Not Started');
     }).catch(function (err) {
         console.log(err.toString())
  });
-     connection.on("refreshChatUsers", function (UserId, connectionId, flag) {
+     connection.on("refreshChatUsers", function (UserId, connectionId, flag,name,emailid,vendorid) {
 
     var StID = 'sticon' + UserId.trim()
     if (flag == true) {
-        $("#hddnVendorConnection").val(connectionId);
-        $('#' + StID).removeClass('badge-info').addClass('badge-success')
-        $('#v' + data[i].userID).removeAttr('disabled')
+            $("#hddnVendorConnection").val(connectionId);
+            $('#' + StID).removeClass('badge-info').addClass('badge-success')
+            $('#v' + data[i].userID).removeAttr('disabled')
+            $('#v' + userid).attr('onclick', 'openChatDiv(\'' + name + '\', \'' + emailid + '\', \'' + vendorid + '\', \'' + connectionId + '\',\'' + UserId+'\')');
         }
         else {
-        $('#' + StID).removeClass('badge-success').addClass('badge-default')
-        $('#v' + data[i].userID).attr('disabled', 'disabled')
-        $('#v' + userid).onclick = null;
+            $('#' + StID).removeClass('badge-success').addClass('badge-default')
+            $('#v' + data[i].userID).attr('disabled', 'disabled')
+            $('#v' + userid).removeAttr('onclick')
         }
     });
 
@@ -1448,7 +1449,7 @@ $('#SignalRid').text('Not Started');
 
     /////****** Chat *****************/////
      connection.on("ReceiveMessage", function (objChatmsz) {
-            alert('hi')
+            
             toastr.clear();
             if (sessionStorage.getItem("UserID") != objChatmsz.fromUserId) {
                 $("#chatList").append('<div class="post out">'
@@ -1502,7 +1503,7 @@ $('#SignalRid').text('Not Started');
         + '<span class="arrow"></span>'
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
         + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString()+'</span>'
-        + '<span class="body" style="color: #c3c3c3;">' + jQuery("#txtChatMsg").val() + '</span>'
+        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
         + '</div>'
         + '</div>');
    

@@ -87,13 +87,13 @@
                         </div>
                         <div class="form-actions">
                             <!--<div class="col-sm-4">
-                            <div class="rem-password">
-                                <p>
-                                    Remember Me
-                                    <input type="checkbox" class="rem-checkbox" />
-                                </p>
-                            </div>
-                        </div>-->
+                                <div class="rem-password">
+                                    <p>
+                                        Remember Me
+                                        <input type="checkbox" class="rem-checkbox" />
+                                    </p>
+                                </div>
+                            </div>-->
                             <a href="#registerParticipantModal" class="pull-left" style="color:#ff0000;text-decoration:none;" data-toggle="modal">Register as new vendor</a>
                             <div class="col-sm-8 text-right pull-right">
                                 <div class="forgot-password">
@@ -127,24 +127,24 @@
                 <div class="login-footer">
                     <div class="row bs-reset">
                         <!--<div class="col-xs-5 bs-reset">
-                        <ul class="login-social">
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-social-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-social-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-social-dribbble"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>-->
+                            <ul class="login-social">
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-dribbble"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>-->
                         <div class="col-xs-12  pull-left">
                             <div class="login-copyright text-left">
                                 <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
@@ -328,7 +328,7 @@
                                                                                         <div class="col-md-9">
 
                                                                                             <input type="text" class="form-control" placeholder="Enter Name"
-                                                                                                   id="txtContName2" name="txtContName2" autocomplete="off"  />
+                                                                                                   id="txtContName2" name="txtContName2" autocomplete="off" />
 
                                                                                         </div>
 
@@ -349,7 +349,7 @@
                                                                                         <div class="col-md-9">
 
                                                                                             <input type="text" class="form-control" placeholder="Mobile No"
-                                                                                                   id="txtMobile2" name="txtMobile2" autocomplete="off"  />
+                                                                                                   id="txtMobile2" name="txtMobile2" autocomplete="off" />
 
                                                                                         </div>
 
@@ -392,9 +392,7 @@
                                                                                 <select class="form-control" id="ddlContactPerson" name="ddlContactPerson">
 
                                                                                     <option value="0">Select</option>
-
                                                                                     <option value="1">MD</option>
-
                                                                                     <option value="2">Owner</option>
 
 
@@ -541,9 +539,7 @@
                                                                                     <select class="form-control" id="ddlVendorType" name="ddlVendorType">
 
                                                                                         <option value="0">Select</option>
-
                                                                                         <option value="1">Supply Vendor</option>
-
                                                                                         <option value="2">Service Vendor</option>
                                                                                         <option value="3">Both</option>
                                                                                     </select>
@@ -780,9 +776,9 @@
 
                                                                                     <option value="0">Select</option>
 
-                                                                                    <option value="1">Registered</option>
+                                                                                    <option value="Registered">Registered</option>
 
-                                                                                    <option value="2">Un Registered</option>
+                                                                                    <option value="Un Registered">Un Registered</option>
 
                                                                                 </select>
 
@@ -1101,9 +1097,7 @@
                                                                                     <select class="form-control" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
 
                                                                                         <option value="0" class="hide">Select</option>
-
                                                                                         <option value="Y">Yes</option>
-
                                                                                         <option value="N">No</option>
 
                                                                                     </select>
@@ -1127,11 +1121,9 @@
                                                                                     <select class="form-control" id="ddlMSMEClass" name="ddlMSMEClass">
 
                                                                                         <option value="0">Select</option>
-
-                                                                                        <option value="1">Micro</option>
-
-                                                                                        <option value="2">Small</option>
-                                                                                        <option value="3">Medium</option>
+                                                                                        <option value="Micro">Micro</option>
+                                                                                        <option value="Small">Small</option>
+                                                                                        <option value="Medium">Medium</option>
 
                                                                                     </select>
 
@@ -1237,7 +1229,7 @@
 
                                                                         </div>
 
-                                                                        </div>
+                                                                    </div>
 
 
                                                                     <div class="form-group">
@@ -1260,7 +1252,7 @@
 
                                                                                 <input type="text" class="form-control thousand"
                                                                                        id="txt2LastFiscal" name="txt2LastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
-                                                                               
+
                                                                             </div>
 
                                                                             <div class="inputgroup">
@@ -1301,6 +1293,7 @@
                                         </div>
                                         <div class="form-actions fluid">
                                             <div class="col-md-offset-5 col-md-6">
+                                                <input type="hidden" value="0" id="hdntmpvendorid" />
                                                 <button type="submit" class="btn btn-success hide verifySubmit" id="btnverifysubmit">
                                                     Submit <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
                                                 </button>

@@ -31,7 +31,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
                 crossDomain: true,
                 dataType: "json",
                 success: function (data, status, jqXHR) {
-                    alert(data.length)
+                   
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].noOfExtension >= 1) {
@@ -760,11 +760,11 @@ function fetchBidSummaryVendorSeaExportDutch() {
                 }
                 else {
 
-                    jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id=THTarget>Target Price</th><th class=hide>Show L1 Price</th><th>Offered Unit Price (" + $('#lblcurrency').text() + ")</th><th>Action</th></thead>");
+                    jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id=THTarget>Target Price</th><th class=hide>Show L1 Price</th><th style='width:20%!important'>Offered Unit Price (" + $('#lblcurrency').text() + ")</th><th>Action</th></thead>");
                     for (var i = 0; i < data.length; i++) {
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : thousands_separators(data[i].offeredPrice);
                         if (data[i].isAcceptedPrice != 'Y') {
-                            jQuery("#tblParticipantsService").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdtarget" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td id=L1Price" + i + " class=hide>" + thousands_separators(data[i].l1Quote) + "</td><td id='offeredprice" + i + "'>" + _offeredPrice + "</td><td><button id='btnsubmit' type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteSeaDutch(" + i + ")' onkeyup='thousands_separators_input(this)'>Accept </button></td></tr>");
+                            jQuery("#tblParticipantsService").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdtarget" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td id=L1Price" + i + " class=hide>" + thousands_separators(data[i].l1Quote) + "</td><td id='offeredprice" + i + "' class='text-right bold  font-red'>" + _offeredPrice + "</td><td><button id='btnsubmit' type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteSeaDutch(" + i + ")' onkeyup='thousands_separators_input(this)'>Accept </button></td></tr>");
 
                             $('#spanamount' + i).addClass('hide spanclass');
                             if (data[i].maskVendor == "Y") {
