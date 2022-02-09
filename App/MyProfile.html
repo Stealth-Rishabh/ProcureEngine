@@ -244,7 +244,6 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">Person Name:</label>
                                                     <div class="col-md-9">
-                                                        
                                                             <input type="text" class="form-control" id="personname" name="personname" />
                                                         </p>
                                                     </div>
@@ -497,6 +496,7 @@
                     $('#frmprofilevendor').hide();
                     fetchUserDetails();
                     fetchMenuItemsFromSession(0, 0);
+                   
                     formvalidate();
                     $('#bid').removeClass('page-sidebar-closed page-full-width');
                 }
@@ -505,8 +505,8 @@
                     $('.page-container').show();
                     $('#frmprofile').hide()
                     $('#frmprofilevendor').show()
-                    fetchVendorDetails()
-					formvalidatevendor();
+                    fetchVendorDetails1()
+					formvalidatevendor1();
                     $('#bid').addClass('page-sidebar-closed page-full-width');
                 }
             }

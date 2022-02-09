@@ -338,8 +338,9 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="drpshowL1L2">
-                                                                    <option value="N">As L1 or Not L1</option>
                                                                     <option value="Y">As L1, L2, L3 etc.</option>
+                                                                    <option value="N">As L1 or Not L1</option>
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -493,7 +494,7 @@
                                                         </div>
                                                         <div class="for-nondutch-bid">
                                                             <label class="control-label col-md-2">
-                                                                Minimum Decrement<span class="required"> *</span>
+                                                                Minimum decrement<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <input type="tel" class="form-control" id="txtminimumdecreament" name="txtminimumdecreament"
@@ -521,7 +522,7 @@
                                                     </div>
                                                     <div class="form-group for-dutch-bid">
                                                         <label class="control-label col-md-2">
-                                                            Price Decreament Amount <span class="required">*</span>
+                                                            Price Decrement Amount <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control" id="txtPriceReductionAmount"
@@ -529,7 +530,7 @@
 
                                                         </div>
                                                         <label class="control-label col-md-2">
-                                                            Price Decreament Frequency&nbsp;<span class="required">*</span>
+                                                            Price Decrement Frequency&nbsp;<span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-1">
 
@@ -1081,7 +1082,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="col-md-12 text-left">
-                                                        4. Select <b>DecreamentOn (A or P)</b> as given below:
+                                                        4. Select <b>DecrementOn (A or P)</b> as given below:
                                                     </label><br /><br />
                                                     <ul class='col-md-12 text-left'>
                                                         <li>A - to select bid decrement in Amount</li>
@@ -1538,7 +1539,7 @@
         });
 
         $('#file-excelparameter').change(handleFileparameter);
-        $('#spinner4').spinner({ value: 0, step: 1, min: 1, max: 10 });
+        $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
     </script>
 </body>
 

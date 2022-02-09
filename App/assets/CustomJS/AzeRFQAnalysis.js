@@ -5,7 +5,7 @@ if (window.location.search) {
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
     $('#hdnRfqID').val(RFQID);
     var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
-    jQuery("#txtrfirfqsubject").val(decodeURIComponent(sub) + ' - ' + RFQID)
+    jQuery("#txtrfirfqsubject").val((sub) + ' - ' + RFQID)//decodeURIComponent
 
     fetchReguestforQuotationDetails()
     FetchRFQVersion();

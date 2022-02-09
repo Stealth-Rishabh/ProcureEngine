@@ -143,7 +143,7 @@
                                     <i class="fa fa-gift"></i>CREATE - NFA REQUEST
                                 </div>
                                 <div class="tools hidden-xs">
-                                    <button class="btn btn-sm btn-success" id="cancelNFABtn">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="CancelBidDuringConfig()">Cancel</button>
                                     <a href="javascript:;" class="collapse hidden-xs"></a>
                                 </div>
                             </div>
@@ -385,42 +385,14 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' style="text-decoration:none;">Questions</a>
+                                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' style="text-decoration:none;">Questions</a>
                                                                 </h4>
                                                             </div>
-                                                            <div id=collapse2 class="panel-collapse collapse">
+                                                            <div id=collapse2 class="panel-collapse collapse in">
                                                                 <div class="panel-body">
 
-                                                                    <div class="col-md-12">
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-2">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-4">
-                                                                                <input type="text" tabindex="1" class="form-control MaxLength" maxlength="150" placeholder="Select NFA Question" id="txtNFAParam"
-                                                                                       data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtNFAParam" />
-                                                                               
-                                                                            </div>
-                                                                            <div class="col-md-5">
-                                                                                <textarea id="txtNfaParamAns" placeholder="Response" name="txtNfaParamAns" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-1">
-                                                                                <button type="button"  class="btn green-haze btn-sm" id="addques" onclick="fnaddQuestion()">
-                                                                                    <i class="fa fa-plus"></i></button>
-                                                                                    <a href="#SubCategory" class="btn blue hide" id="addNfaText" data-toggle="modal"><i class="fa fa-plus"></i></a>
-                                                                                   
-</div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                    <div class="clearfix">&nbsp;</div>
-                                                                    <div class="col-md-12">
-                                                                        <div class="col-md-2">
+                                                                       <div class="col-md-12">
+                                                                        <div class="col-md-1">
                                                                             &nbsp;
 
                                                                         </div>
@@ -432,7 +404,38 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                &nbsp;
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">
+                                                                                <!--<input type="text" tabindex="1" class="form-control MaxLength" maxlength="150" placeholder="Select NFA Question" id="txtNFAParam"
+                                                                                       data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtNFAParam" />-->
+                                                                                      <label class="control-label">Addtional Questions, if any</label>
+                                                                            </div>
+                                                                            <!--<div class="col-md-5">
+                                                                                <textarea id="txtNfaParamAns" placeholder="Response" name="txtNfaParamAns" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
+                                                                            </div>-->
+                                                                             <div class="col-md-5 text-left">
+                                                                                 <select class="form-control" placeholder="Select NFA Question" id="ddlNFAParam" name="ddlNFAParam">
+                                                                                     <option value="">Select </option>
+                                                                                 </select>
+                                                                            </div>
+                                                                        </div>
 
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                <button type="button" class="btn green-haze btn-sm" id="addques" onclick="fnaddQuestion()">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
                                                             </div>
@@ -441,7 +444,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse' style="text-decoration:none;">Attachments</a>
+                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse' style="text-decoration:none;">Attachments, if any</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse class="panel-collapse collapse">
@@ -449,7 +452,7 @@
 
                                                                     <div class="col-md-12">
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-2">
+                                                                            <div class="col-md-1">
                                                                                 &nbsp;
                                                                             </div>
                                                                         </div>
@@ -471,7 +474,7 @@
                                                                     </div>
                                                                     <div class="clearfix">&nbsp;</div>
                                                                     <div class="col-md-12">
-                                                                        <div class="col-md-2">
+                                                                        <div class="col-md-1">
                                                                             &nbsp;
 
                                                                         </div>

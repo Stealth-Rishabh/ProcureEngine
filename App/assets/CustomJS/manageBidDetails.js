@@ -181,7 +181,7 @@ function fetchUserBids() {
 
     });
 }
-
+var connection;
 jQuery("#txtbid").typeahead({
     source: function (query, process) {
         var data = sessionStorage.getItem('hdnAllBids');
@@ -199,6 +199,22 @@ jQuery("#txtbid").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].bidId != "0") {
+          
+            if (connection != undefined && connection != null) {
+                connection.stop().then(function () {
+                    console.log('Closed');
+                    connection = null;
+                });
+            }
+            setTimeout(function () {
+                connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + map[item].bidId + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+                console.log('Not Started')
+                connection.start().then(function () {
+                    console.log("connection started")
+                }).catch(function (err) {
+                    console.log(err.toString())
+                });
+            }, 1000);
             jQuery("#eventUpdateStatusTab5").show();
 
             hdnSeId = 0;
@@ -1932,40 +1948,58 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "IsMailSend": isMailSend,
         "FinalStatus": finalStatus
     }
-  
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateBidStatus",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(Data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-           // if (data == "1") {
+   
+    if (sessionStorage.getItem('hdnbidtypeid') != 7) {
+        jQuery.ajax({
+            url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateBidStatus",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            data: JSON.stringify(Data),
+            contentType: "application/json; charset=utf-8",
+            success: function (data, status, jqXHR) {
 
                 erroropenbid.hide();
                 successopenbid.show();
                 $('#succopenbid').html('Bid updated successfully');
                 successopenbid.fadeOut(3000);
                 App.scrollTo(successopenbid, -200);
-           // }
-
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                
+                jQuery.unblockUI();
+            },
+            error: function (xhr, status, error) {
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
+                jQuery.unblockUI();
+                return false;
             }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
 
-    })
+        })
+    }
+    else {
+        connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
+            //connection.start().then(function () {
+            //    console.log("connection started")
+            //    }).catch(function (err) {
+            //   console.log(err.toString())
+            //});
+        });
+        connection.on("refreshTimeronClients", function () {
+          
+            erroropenbid.hide();
+            successopenbid.show();
+            $('#succopenbid').html('Bid updated successfully');
+            successopenbid.fadeOut(3000);
+            App.scrollTo(successopenbid, -200);
+            jQuery.unblockUI();
+        })
+      
+    }
 }
 
 function editValues(divName, rowid) {

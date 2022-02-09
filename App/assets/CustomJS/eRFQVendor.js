@@ -575,7 +575,7 @@ function fetchAttachments() {
                 for (var i = 0; i < data.length; i++) {
                  
                    
-                    jQuery('<tr id=trid' + i + '><td class=hidden >' + data[i].rfqParameterId + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hidden >' + data[i].tcid + '</td><td>' + data[i].tcName + '</td><td><input type="text"  id="mkswithtax1' + i + '" class="form-control text-right numeric" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off   onkeyup="this.value=minmax(this.value, 0, 50)" /></td></tr>').appendTo("#tblRFQParameterComponet");
+                    jQuery('<tr id=trid' + i + '><td class=hidden >' + data[i].rfqParameterId + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hidden >' + data[i].tcid + '</td><td>' + data[i].tcName + '</td><td><input type="text"  id="mkswithtax1' + i + '" class="form-control text-right numeric" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off   onkeyup="this.value=minmax(this.value, 0, 90)" /></td></tr>').appendTo("#tblRFQParameterComponet");
                     
                 }
             }

@@ -82,55 +82,15 @@
             // Display cookie message on page
             var cookieMessage = "<div id='gdpr-cookie-message'><div class='ciikie_inr'><h4>" + settings.title + "</h4><p>This site uses cookies and related technologies, as described in our privacy policy, for purposes that may include site operation, analytics, enhanced user experience, or advertising. You may choose to consent to our use of these technologies, or manage your own preferences.</p><div class='cookie_btn'><button type=button data-toggle='modal' data-target='#exampleModalcookie'>View Details</button><button id='gdpr-cookie-accept' type=button  >" + settings.acceptBtnLabel + "</button><button id='decline_all' type=button >Decline</button></div></div></div>";
             $($element).append(cookieMessage);
-           // setTimeout(function () {
-               
-                //$('#gdpr-cookie-message').hide().fadeIn('slow', function(){
-                //    // If reinit'ing, open the advanced section of message
-                //    // and re-check all previously selected options.
-                //    if (event == 'reinit') {
-                //        $('#gdpr-cookie-advanced').trigger('click');
-                //        $.each(preferences, function(index, field) {
-                //            $('input#gdpr-cookietype-' + field).prop('checked', true);
-                //        });
-                //    }
-                //});
-           // }, settings.delay);
-
-            // When accept button is clicked drop cookie
+          
             $('body').on('click','#gdpr-cookie-accept', function(){
-                //// Set cookie
-                //dropCookie(true, settings.expires);
-
-                //// If 'data-auto' is set to ON, tick all checkboxes because
-                //// the user hasn't clicked the customise cookies button
-                //$('input[name="gdpr[]"][data-auto="on"]').prop('checked', true);
-
-                //// Save users cookie preferences (in a cookie!)
-                //var prefs = [];
-                //$.each($('input[name="gdpr[]"]').serializeArray(), function(i, field){
-                //    prefs.push(field.value);
-                //});
-                //setCookie('cookieControlPrefs', encodeURIComponent(JSON.stringify(prefs)), 365);
-
-                //// Run callback function
-                //settings.onAccept.call(this);
-
+                
                 fnacceptrejectcookie('A')
             });
             $("#decline_all").click(function () {
                 fnacceptrejectcookie('D')
             });
-        //}
-        //else {
-        //    var cookieVal = true;
-        //    if (myCookie == 'false') {
-        //        cookieVal = false;
-        //    }
-            
-        //    dropCookie(cookieVal, settings.expires);
-        //}
-
-        // Uncheck any checkboxes on page load
+        
         if (settings.uncheckBoxes === true) {
             $('input[type="checkbox"].ihavecookies').prop('checked', false);
         }
@@ -244,6 +204,7 @@ $('body').on('click', '#decline_all', function () {
 
 var IP = "";
 $(document).ready(function () {
+    
     $.getJSON('https://json.geoiplookup.io/?callback=?', function (data) {
         console.log(JSON.stringify(data.ip, null, 2));
         IP = JSON.stringify(data.ip, null, 2);

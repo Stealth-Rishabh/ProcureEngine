@@ -111,7 +111,13 @@
         .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
             padding: 20px 10px 15px 10px;
         }
-
+        .badge.badge-empty {
+            height: 12px !important;
+            width: 12px !important;
+        }
+        .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
+            right: 8px !important;
+        }
     </style>
 
 </head>
@@ -146,7 +152,8 @@
 
                     <li class="dropdown dropdown-quick-sidebar-toggler">
                         <div class="pulsate-regular" style="padding:12px;">
-                            <a href="javascript:void(0);" class="dropdown-toggle" title="Chat" onclick="openForm()">
+                            <a href="javascript:void(0);" class="dropdown-toggle" title="Chat">
+                               
                                 <i class="fa fa-wechat" style="color:#ffb848;"></i>
                             </a>
                         </div>
@@ -204,8 +211,14 @@
                                             </label>
                                         </b>
                                         <input type="hidden" id="hdnDuration" />
-
+                                        <input type="hidden" id="hddnadminConnection" value="0" />
                                     </p>&nbsp;
+                                   
+                                        <label  class="control-label bold hide" id="pleft5mins" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                            Only 5 mins Left!!
+                                        </label>
+
+                                    &nbsp;&nbsp;
                                     <label class="control-label bold" style="font-size: 17px !important; font-weight: 900!important">
                                         Time left (HH:MM:SS):
                                     </label>
@@ -220,7 +233,6 @@
                                     </p>&nbsp;
                                     <p class="form-control-static no-space">
                                         <label id="lblTimeLeftTxt" class="display-none">
-
                                         </label>
 
                                     </p>&nbsp;&nbsp;
@@ -240,9 +252,6 @@
                                                     Bid Subject:
                                                 </label>
                                                 <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
-                                                </label>
-
-                                                <label id="SignalRid" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
                                                 </label>
 
                                             </div>
@@ -383,6 +392,7 @@
                                         <input id="hdnTimeItem" type="hidden" value="0" />
                                         <input id="hdnnoofextension" type="hidden" value="0" />
                                         <input id="hdnAdvFactor" type="hidden" value="0" />
+                                        <input id="hdnselectedindex" type="hidden" value="0" />
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="tblParticipantsService"></table>
                                         </div>
@@ -494,12 +504,14 @@
                 <i class="icon-arrow-up"></i>
             </div>
         </div>
+        </div>
         <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
                 type="text/javascript"></script>
+        <script src="assets/SignalRjs/signalr.js"></script>
         <script src="assets/admin/pages/scripts/components-pickers.js"></script>
         <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
@@ -520,7 +532,7 @@
         <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
         <script src="assets/scripts/aes.js"></script>
         <script src="assets/CustomJS/TypeaHead.js"></script>
-        <script src="assets/SignalRjs/signalr.js"></script>
+
         <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
         <script src="assets/CustomJS/ParticipateBidSeaExport.js" type="text/javascript"></script>
 
@@ -565,9 +577,9 @@
                 }
                 $(".pulsate-regular").css('animation', 'none');
 
-                $(window).unload(function () {
-                    alert("you are leaving from page");
-                });
+                //$(window).unload(function () {
+                //    alert("you are leaving from page");
+                //});
             });
         </script>
         <!-- END JAVASCRIPTS -->
