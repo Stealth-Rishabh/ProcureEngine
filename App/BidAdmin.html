@@ -148,7 +148,7 @@
         .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
             margin-top: 5px;
         }
-
+        
         .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
             /*bottom:1px;*/
             /*padding: 20px 10px 15px 10px;*/
@@ -156,7 +156,7 @@
 
         .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
             /*top: 26px;*/
-            right: 5px;
+            right: 20px!important;
         }
          tr, td
         {
@@ -165,6 +165,21 @@
         tr.header
         {
             cursor:pointer;
+        }
+        .badge.badge-empty {
+           
+            height: 12px!important;
+            width: 12px!important;
+        }
+        /*.page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media {
+            padding: 12px 10px 11px 10px;
+        }*/
+        /*.page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
+           right: 5px!important;
+           
+        }*/
+        .vendorlist {
+            padding: 12px 10px 11px 10px;
         }
     </style>
 
@@ -237,7 +252,7 @@
                             <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
                         </ul>
                     </li>
-                    <li class="dropdown dropdown-quick-sidebar-toggler">
+                    <li class="dropdown dropdown-quick-sidebar-toggler" id="lichat">
                         <div class="pulsate-regular" style="padding:12px;">
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat">
                                 <i class="fa fa-wechat" style="color:#ffb848;"></i>
@@ -258,10 +273,10 @@
                         <li id="liHome"></li>
                     </ul>
                     <!-- <div class="page-toolbar">
-                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
-                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
-                        </div>
-                    </div> -->
+                    <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
+                        <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                    </div>
+                </div> -->
                 </div>
                 <div class="row">
                     <div class="col-md-12 ">
@@ -443,8 +458,8 @@
                                         Detailed Report
                                     </a>
                                     <!--<a href="#graphModal" data-toggle="modal" class="btn green button-submit" id="btngraphbubble">
-                                        <i class="fa fa-bar-chart-o" style="margin-top: 1px;"></i> Graph
-                                    </a>-->
+                                    <i class="fa fa-bar-chart-o" style="margin-top: 1px;"></i> Graph
+                                </a>-->
                                 </div>
                             </div>
                             <div class="portlet-body form">
@@ -452,7 +467,7 @@
                                 <!--<div class="clearfix">&nbsp;</div>-->
                                 <!--<br />-->
                                 <!--<div class="row second">
-                                <div class="form-group">-->
+                            <div class="form-group">-->
                                 <div class="table-responsive" style="overflow: auto" id="divforBidsummary">
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
@@ -495,26 +510,26 @@
                                     </table>
 
                                     <!--<div id="divRemarks" class="col-md-12" style="display:none;">
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">
-                                                    Bid Specification :
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <textarea id="txtbidspecification" name="txtbidspecification" class="wysihtml5 form-control" rows="4"></textarea>
-                                                </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                                Bid Specification :
+                                            </label>
+                                            <div class="col-md-6">
+                                                <textarea id="txtbidspecification" name="txtbidspecification" class="wysihtml5 form-control" rows="4"></textarea>
+                                            </div>
+                                    </div>
 
-                                    </div>-->
+                                </div>-->
                                 </div>
                                 <!--</div>
-                                </div>-->
+                            </div>-->
                                 <!--<div class="mt-element-step hide" id="div_statusbar">
 
 
-                                    <div class="row step-no-background step-line container" id="divappendstatusbar">
+                                <div class="row step-no-background step-line container" id="divappendstatusbar">
 
-                                    </div>
-                                </div>-->
+                                </div>
+                            </div>-->
                                 <div class="table-responsive display-none" style="overflow: auto" id="divfordetailreport">
                                     <table class="table table-bordered" id="tblbidsummarypercentagewise">
                                         <thead>
@@ -528,23 +543,23 @@
                                         </tbody>
                                     </table>
                                     <!--<div id="divRemarks" class="col-md-12" style="display:none;">
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">
-                                                    Bid Specification :
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <textarea id="txtbidspecification" name="txtbidspecification" class="wysihtml5 form-control" rows="4"></textarea>
-                                                </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">
+                                                Bid Specification :
+                                            </label>
+                                            <div class="col-md-6">
+                                                <textarea id="txtbidspecification" name="txtbidspecification" class="wysihtml5 form-control" rows="4"></textarea>
+                                            </div>
+                                    </div>
 
-                                    </div>-->
+                                </div>-->
                                 </div>
                                 <br />
                                 <div class="form-actions fluid" style="padding: 10px 5px;">
                                     <div class="col-md-offset-3 col-md-6" style="text-align: center">
                                         <!--<button id="butsubmit"  type="submit" class="btn blue" style="display:none;">
-                                            Submit
-                                        </button>-->
+                                        Submit
+                                    </button>-->
                                         <button id="butCancelbid" type="submit" class="btn red" style="display:none;">
                                             Cancel
                                         </button>
@@ -566,76 +581,77 @@
                 <div class="chat-popup" id="myForm">
                     <form class="form-container">
                         <!--<div class="actions pull-right">
-                            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" title="Send Broadcast Message" onclick="openBroadcastMessage();">
-                                <i class="icon-cloud-upload"></i>
-                            </a>
-                            <a class="btn btn-circle btn-icon-only btn-default" id="close-btn" href="javascript:;"
-                               title="Send Broadcast Message" onclick="closeChatsForAdminB();closeForm();" style="display:none;">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>-->
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" title="Send Broadcast Message" onclick="openBroadcastMessage();">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" id="close-btn" href="javascript:;"
+                           title="Send Broadcast Message" onclick="closeChatsForAdminB();closeForm();" style="display:none;">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>-->
                         <div class="clearfix"></div>
                         <!--<h1>Chat</h1>-->
                         <div class="scroller" style="height: 150px;position:absolute;left:2px;right:7px" data-always-visible="1" data-rail-visible="0">
                             <div class="general-item-list" id="">
                                 <!--<div class="item">
-                                    <div class="item-head">
-                                        <div class="item-details">
-                                            <a href="" class="item-name primary-link">Nick Larson</a>
-                                            <span class="item-label">3 hrs ago</span>
-                                        </div>
-                                        <span class="item-status">
-                                            <span class="badge badge-empty badge-success"></span> Open
-                                        </span>
+                                <div class="item-head">
+                                    <div class="item-details">
+                                        <a href="" class="item-name primary-link">Nick Larson</a>
+                                        <span class="item-label">3 hrs ago</span>
                                     </div>
-                                </div>-->
+                                    <span class="item-status">
+                                        <span class="badge badge-empty badge-success"></span> Open
+                                    </span>
+                                </div>
+                            </div>-->
                             </div>
                         </div>
                         <!--<div class="chat-form" id="broadcastMsgdiv" style="background:none;">
-                            <div class="input-cont">
-                                <input class="form-control" type="text"
-                                       placeholder="Type a message here..."
-                                       id="txtBroadcastMsg" name="txtBroadcastMsg" style="visibility:hidden;" />
-                            </div>
-                            <div class="btn-cont" id="btn-cont" style="display:none;">
-                                <span class="arrow"> </span>
-                                <a href="javascript:void(0);" class="btn blue icn-only" onclick="sendBroadCastChatMsgs();">
-                                    <i class="fa fa-check icon-white"></i>
-                                </a>
-                            </div>
-                        </div>-->
+                        <div class="input-cont">
+                            <input class="form-control" type="text"
+                                   placeholder="Type a message here..."
+                                   id="txtBroadcastMsg" name="txtBroadcastMsg" style="visibility:hidden;" />
+                        </div>
+                        <div class="btn-cont" id="btn-cont" style="display:none;">
+                            <span class="arrow"> </span>
+                            <a href="javascript:void(0);" class="btn blue icn-only" onclick="sendBroadCastChatMsgs();">
+                                <i class="fa fa-check icon-white"></i>
+                            </a>
+                        </div>
+                    </div>-->
 
                     </form>
                 </div>
 
                 <!--<div class="chat-popup-admin" id="chatWindow">
-                    <form class="form-container">
-                        <input type="hidden" id="hddnVendorId" value="0" />
-                        <span class="badge badge-danger pull-right" onclick="closeChatsForAdmin();"><i class="fa fa-times" style="margin-top:-1px"></i></span>
-                        <div class="clearfix"></div>
-                        <div class="scroller" style="height: 150px;position:absolute;left:2px;right:7px" data-always-visible="1" data-rail-visible="0">
-                            <ul class="chats" id=""></ul>
-                        </div>
-                        <div class="chat-form">
-                            <div class="input-cont">
+                <form class="form-container">
+                    <input type="hidden" id="hddnVendorId" value="0" />
+                    <span class="badge badge-danger pull-right" onclick="closeChatsForAdmin();"><i class="fa fa-times" style="margin-top:-1px"></i></span>
+                    <div class="clearfix"></div>
+                    <div class="scroller" style="height: 150px;position:absolute;left:2px;right:7px" data-always-visible="1" data-rail-visible="0">
+                        <ul class="chats" id=""></ul>
+                    </div>
+                    <div class="chat-form">
+                        <div class="input-cont">
 
-                            </div>
-                            <div class="btn-cont">
-                                <span class="arrow"> </span>
-                                <a href="javascript:void(0);" class="btn blue icn-only" onclick="sendChatMsgs();">
-                                    <i class="fa fa-check icon-white"></i>
-                                </a>
-                            </div>
                         </div>
+                        <div class="btn-cont">
+                            <span class="arrow"> </span>
+                            <a href="javascript:void(0);" class="btn blue icn-only" onclick="sendChatMsgs();">
+                                <i class="fa fa-check icon-white"></i>
+                            </a>
+                        </div>
+                    </div>
 
-                    </form>
-                </div>-->
+                </form>
+            </div>-->
 
             </div>
         </div>
         <!-- BEGIN QUICK SIDEBAR -->
         <input type="hidden" id="hddnVendorId" value="0" />
         <input type="hidden" id="hddnVendorConnection" value="0" />
+        <input type="hidden" id="hddnadminConnection" value="0" />
         <a href="javascript:;" class="page-quick-sidebar-toggler">
             <i class="icon-login"></i>
         </a>
@@ -657,19 +673,18 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-                        <div class="page-quick-sidebar-list">
+                        <div class="page-quick-sidebar-list" id="tab1quicksidebarlist">
                             <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd">
-
                                 <ul class="media-list list-items" id="vendorsChatlist">
                                 </ul>
                             </div>
 
                         </div>
-                        <div class="page-quick-sidebar-item">
-                            <div class="page-quick-sidebar-chat-user">
+                        <div class="page-quick-sidebar-item" id="tab1sidebarlist">
+                            <div class="page-quick-sidebar-chat-user" id="tab1chatuser">
                                 <label id="chat-label" class="control-label text-center"><b></b></label><br />
                                 <div class="page-quick-sidebar-nav">
-                                    <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list">
+                                    <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list" id="backbutton">
                                         <!--onclick="fetchvendor()"-->
                                         <i class="icon-arrow-left"></i>Back
                                     </a>
@@ -678,7 +693,7 @@
                                     <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                     </div>
                                 </div>
-                                <div class="page-quick-sidebar-chat-user-form" style="position:absolute;bottom:1px;background:#393939;width:100%;">
+                                <div class="page-quick-sidebar-chat-user-form" id="chattypeform" style="position:absolute;bottom:1px;background:#393939;width:100%;">
 
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
@@ -696,10 +711,10 @@
                         <div class="page-quick-sidebar-item2">
                             <div class="page-quick-sidebar-chat-user">
                                 <!--<div class="page-quick-sidebar-nav">
-                                    <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list" onclick="fetchvendor()">
-                                        <i class="icon-arrow-left"></i>Back
-                                    </a>
-                                </div>-->
+                                <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list" onclick="fetchvendor()">
+                                    <i class="icon-arrow-left"></i>Back
+                                </a>
+                            </div>-->
                                 <div class="scroller" style="height: 496px;">
                                     <div class="page-quick-sidebar-chat-user-messages" id="listBroadCastMessages">
                                     </div>
@@ -707,8 +722,8 @@
                                 <div class="page-quick-sidebar-chat-user-form" style="position:absolute;bottom:1px;background:#393939;width:100%;">
                                     <!--<div class="input-group">-->
                                     <!--<input class="form-control" type="text"
-                                    placeholder="Type a message here..."
-                                    id="txtBroadcastMsg" name="txtBroadcastMsg" />-->
+                                placeholder="Type a message here..."
+                                id="txtBroadcastMsg" name="txtBroadcastMsg" />-->
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
                                               id="txtBroadcastMsg" name="txtBroadcastMsg"></textarea>
@@ -831,9 +846,7 @@
 
     <script>
         jQuery(document).ready(function () {
-            // var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
-
+            
             Pageloaded()
             fetchvendor();
 

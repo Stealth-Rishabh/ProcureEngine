@@ -881,7 +881,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].Quantity).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
@@ -899,7 +899,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     else {
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].Quantity).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"

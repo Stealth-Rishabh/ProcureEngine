@@ -358,6 +358,11 @@ function CancelBidDuringConfig() {
         _for = 'RFI';
         _bidId = sessionStorage.getItem("CurrentRFXID");
     }
+    else if (sessionStorage.getItem("hdnNFAID") != '0' && sessionStorage.getItem("hdnNFAID") != null) {
+
+        _for = 'NFA';
+        _bidId = sessionStorage.getItem("hdnNFAID");
+    }
     else {
 
         _for = 'VQ';
@@ -386,8 +391,15 @@ function CancelBidDuringConfig() {
                     window.location = "index.html";
                     return false;
                 });
-            } else if (data == '1' && _for == 'eRFQ') {
+            }
+            else if (_for == 'eRFQ') {
                 bootbox.alert("RFQ Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+            else if (_for == 'NFA') {
+                bootbox.alert("NFA Cancelled successfully.", function () {
                     window.location = "index.html";
                     return false;
                 });
@@ -397,7 +409,8 @@ function CancelBidDuringConfig() {
                     window.location = "index.html";
                     return false;
                 });
-            } else {
+            }
+            else {
                 bootbox.alert("VQ Cancelled successfully.", function () {
                     window.location = "index.html";
                     return false;
@@ -445,98 +458,60 @@ function openForm() {
 function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
-
+//** when click on vendor from List
 function openChatDiv(name, email, vendorId,connectionid,userid) {
-    
+   
     $("#chat-label").html(name + '(' + email + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
-    fetchUserChats(vendorId,'S');
+    fetchUserChats(vendorId, 'S');
+    //if (connectionid == '') {
+    //    $('#tab1sidebarlist').removeClass('page-quick-sidebar-item')
+    //    $('#backbutton').hide()
+    //    $('#chattypeform').hide()
+    //}
+    //else {
+    //    $('#tab1sidebarlist').removeClass('page-quick-sidebar-item').addClass('page-quick-sidebar-item')
+    //    $('#backbutton').show()
+    //    $('#chattypeform').show()
+    //}
     //updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
-    
+    $(".pulsate-regular").css('animation', 'none');
+    toastr.clear();
 }
 
 function closeChatsForAdmin() {
     document.getElementById("chatWindow").style.display = "none";
+    
 }
 
 function openBroadcastMessage() {
     fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
+    $(".pulsate-regular").css('animation', 'none');
+    toastr.clear();
 }
-
 function closeChatsForAdminB() {
     document.getElementById("broadcastMsgdiv").style.background = 'none';
     document.getElementById("txtBroadcastMsg").style.visibility = "hidden";
     document.getElementById("btn-cont").style.display = "none";
     document.getElementById("close-btn").style.display = "none";
 }
+//toastr.options = {
+//    "closeButton": true,
+//    "debug": false,
+//    "positionClass": "toast-top-right",
+//    "onclick": null,
+//    "showDuration": "1000",
+//    "hideDuration": "1000",
+//    "timeOut": "2000",
+//    "extendedTimeOut": "1000",
+//    "showEasing": "swing",
+//    "hideEasing": "linear",
+//    "showMethod": "fadeIn",
+//    "hideMethod": "fadeOut"
+//}
 
-function sendBroadCastChatMsgs() {
-
-    var data = {
-        "ChatMsg": jQuery("#txtBroadcastMsg").val(),
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": parseInt(getUrlVarsURL(decryptedstring)["BidID"]),
-        "msgType": 'B',
-        "toID": ''
-    }
-
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-            jQuery("#txtBroadcastMsg").val('');
-            bootbox.alert("Message has been successfully sent to all vendors.", function () {
-                fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
-            });
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            jQuery.unblockUI();
-        }
-    })
-}
-
-
-
-////******* Chat functions End*********/////////////////////////////
-function getUrlVars() {
-    var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = hash[1];
-    }
-    return vars;
-}
-
-if (window.location.search) {
-    var param = getUrlVars()["param"];
-    var decryptedstring = fndecrypt(param);
-    BidID = getUrlVarsURL(decryptedstring)['BidID'];
-    sessionStorage.setItem('BidID', BidID)
-}
-function timeNow() {
-    var d = new Date(),
-        h = (d.getHours() < 10 ? '0' : '') + d.getHours(),
-        m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
-    return h + ':' + m;
-}
-var counter = 0;
-function fetchBroadcastMsgs(userId,msgType) {
+function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     jQuery.ajax({
@@ -553,20 +528,20 @@ function fetchBroadcastMsgs(userId,msgType) {
                 for (var i = 0; i < data.length; i++) {
                     if (sessionStorage.getItem("UserID") == data[i].FromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
-                                    + '<div class="message">'
-                                        + '<span class="arrow"></span>'
-                                        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                                        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
-                                        + '<span class="body" style="color: #c3c3c3;">' + data[i].ChatMsg + '</span>'
-                                    + '</div>'
-                                + '</div>');
+                            + '<div class="message">'
+                            + '<span class="arrow"></span>'
+                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="body" style="color: #c3c3c3;">' + data[i].ChatMsg + '</span>'
+                            + '</div>'
+                            + '</div>');
                     }
 
                 }
-               
+
             }
 
-           
+
         },
 
         error: function (xhr, status, error) {
@@ -586,7 +561,7 @@ function fetchvendor() {
 
     toastr.clear();
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    //$('#quick_sidebar_tab_1').removeAttr('Class')
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -596,73 +571,65 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            
+
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
                 $(".pulsate-regular").css('animation', 'none');
                 var vName = '';
                 for (var i = 0; i < data.length; i++) {
-                    if (vName != data[i].vendorName) { 
-                    if (data[i].readFlag == 'N') {
-                        if (i <= 1) {
-                            $(".pulsate-regular").css('animation', 'pulse 2s infinite');
-                            toastr.options = {
-                                "closeButton": true,
-                                "debug": false,
-                                "positionClass": "toast-top-right",
-                                "onclick": null,
-                                "showDuration": "1000",
-                                "hideDuration": "1000",
-                                "timeOut": "2000",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            }
-                            //$('#basic').modal('show');
-                            toastr.success('You have a new message.', 'New Message')
-                        }
-                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\''+data[i].userID+'\');">'
+                    if (vName != data[i].vendorName) {
+                        
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\');">'
                             + '<div class="media-status">'
-                            + '<span class="badge badge-empty badge-info" id=sticon' + data[i].userID +'  ></span>'
+                            + '<span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                                + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
-                                + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
+                            + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
+                            + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
                             + '</div>'
-                        + '</li>');
-                       
+                            + '</li>');
+
                     }
                     else {
                         //$(".pulsate-regular-li").hide();
-                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID +'\');">'
-                            + '<div class="media-status"><span class="badge badge-empty badge-default" id=sticon'+data[i].userID+'  ></span>'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\');">'
+                            + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                                + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
-                                + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
+                            + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
+                            + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
                             + '</div>'
-                        + '</li>');
+                            + '</li>');
 
-                        }
+                    }
+
+                    if (data[i].connected == true) {
+                        $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
+                        $('#v' + data[i].userID).removeAttr('disabled')
+
+                        //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item').addClass('page-quick-sidebar-item')
+                        //$('#backbutton').show()
+                        //$('#chattypeform').show()
+                        // $('#quick_sidebar_tab_2').addClass('page-quick-sidebar-content-item-shown')
+                    }
+                    else {
+                        $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
+                        $('#v' + data[i].userID).attr('disabled', 'disabled')
+                        
+                        //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item')
+                        //$('#backbutton').hide()
+                        //$('#chattypeform').hide()
+
+                        //$('#v' + data[i].userID).removeAttr('onclick')
+                        //$('#quick_sidebar_tab_2').removeClass('page-quick-sidebar-content-item-shown')
                        
-                        if (data[i].connected == true) {
-                            $('#sticon' + data[i].userID).removeClass('badge-info').addClass('badge-success')
-                            $('#v' + data[i].userID).removeAttr('disabled')
-
-                        }
-                        else {
-                            $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-default')
-                            $('#v' + data[i].userID).attr('disabled', 'disabled')
-                            $('#v' + data[i].userID).onclick = null;
-                        }
-                       vName = data[i].vendorName
-                  }
+                    }
+                    vName = data[i].vendorName
                 }
+                //  }
             }
             QuickSidebar.init();
         },
@@ -674,7 +641,7 @@ function fetchvendor() {
             }
             else {
                 fnErrorMessageText('errormsg', '');
-               
+
             }
             jQuery.unblockUI();
         }
@@ -699,30 +666,7 @@ function fetchUserChats(userId, msgType) {
             if (data.length > 0) {
                 $(".pulsate-regular").css('animation', 'none');
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].readFlag == 'N') {
-                        if (i < 1 && sessionStorage.getItem("UserID") != data[i].fromUserId) {
-                            $(".pulsate-regular").css('animation', 'pulse 2s infinite');
-                            toastr.options = {
-                                "closeButton": true,
-                                "debug": false,
-                                "positionClass": "toast-top-right",
-                                "onclick": null,
-                                "showDuration": "1000",
-                                "hideDuration": "1000",
-                                "timeOut": "2000",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            }
-                            //$('#basic').modal('show');
-                            // if (counter == 0) {
-                            toastr.success('You have a new message.', 'New Message')
-                            //}
-                            //counter++;
-                        }
-                    }
+                    
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#chatList").append('<div class="post in">'
                             + '<div class="message">'
@@ -764,14 +708,14 @@ function fetchUserChats(userId, msgType) {
 }
 
 function updateMsgReadFlag(bidId, vendorId, forUpdate) {
-   
+
     var data = {
         "BidId": parseInt(bidId),
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
     //console.log(JSON.stringify(data))
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -779,7 +723,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           //fetchvendor(vendorId);
+            //fetchvendor(vendorId);
             return true;
 
         },
@@ -797,6 +741,34 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
 
     })
 }
+
+
+////******* Chat functions End*********/////////////////////////////
+function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+if (window.location.search) {
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    BidID = getUrlVarsURL(decryptedstring)['BidID'];
+    sessionStorage.setItem('BidID', BidID)
+}
+function timeNow() {
+    var d = new Date(),
+        h = (d.getHours() < 10 ? '0' : '') + d.getHours(),
+        m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+    return h + ':' + m;
+}
+var counter = 0;
+
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
    

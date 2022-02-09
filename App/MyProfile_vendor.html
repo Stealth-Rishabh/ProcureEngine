@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -142,7 +142,7 @@
                                         <button class="close" data-close="alert"></button>
                                         <span id="spanerrorvendor"> </span>
                                     </div>
-                                    <form  class="form-horizontal" role="form" id="frmprofilevendornew">
+                                    <form class="form-horizontal" role="form" id="frmprofilevendornew">
 
 
 
@@ -166,7 +166,7 @@
 
                                                             <div class="panel-body">
 
-                                                                <div class="row">
+                                                                <div class="row" id="tab1check">
 
 
                                                                     <div class="col-lg-12">
@@ -304,7 +304,7 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        
+
 
                                                                     </div>
 
@@ -415,7 +415,7 @@
                                                                             <div class="col-md-9 xyz">
 
                                                                                 <!--<select class="form-control" name="ddlProduct" id="ddlProduct" tabindex="4" multiple></select>-->
-                                                                                <input type="text" class="form-control" 
+                                                                                <input type="text" class="form-control"
                                                                                        id="product" name="product" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
@@ -453,7 +453,7 @@
 
                                                                             <label class="col-md-3 control-label" style="text-align:left">
 
-                                                                                Address 
+                                                                                Address
 
                                                                             </label>
 
@@ -597,11 +597,11 @@
 
                                                                                 <select class="form-control" id="ddlGSTclass" name="ddlGSTclass">
 
-                                                                                    <option value="0">Select</option>
+                                                                                    <option value="Select">Select</option>
 
-                                                                                    <option value="1">Registered</option>
+                                                                                    <option value="Registered">Registered</option>
 
-                                                                                    <option value="2">Un Registered</option>
+                                                                                    <option value="Un Registered">Un Registered</option>
 
                                                                                 </select>
 
@@ -643,17 +643,14 @@
                                                                                     <li>
                                                                                         <div class="inputgroup">
 
-
                                                                                             <div class="att_input">
-                                                                                                <input type="file" class="form-control" tabindex="5"
+                                                                                                <input type="file" class="form-control" tabindex="5" id="filegst"
                                                                                                        onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
                                                                                                 <span class="help-block">
-                                                                                                    <a href="javascript:;" onclick="DownloadFile(this)" id="a" style="text-align:left; text-decoration: none !important;">
+                                                                                                    <a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" style="text-align:left; text-decoration: none !important;">
                                                                                                     </a>
                                                                                                 </span>
-                                                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
-                                                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
-                                                                                                </span>
+
                                                                                             </div>
 
                                                                                         </div>
@@ -699,12 +696,10 @@
 
 
                                                                                                 <div class="att_input">
-                                                                                                    <input type="file" class="form-control" tabindex="5"
+                                                                                                    <input type="file" class="form-control" tabindex="5" id="filepan"
                                                                                                            onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
-                                                                                                    <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="a" style="text-align:left; text-decoration: none !important;"></a></span>
-                                                                                                    <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
-                                                                                                        <i class='fa fa-times-circle-o' id='icon2'></i>
-                                                                                                    </span>
+                                                                                                    <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" style="text-align:left; text-decoration: none !important;"></a></span>
+
                                                                                                 </div>
 
                                                                                             </div>
@@ -730,18 +725,16 @@
 
                                                                             <div class="col-md-3">
 
-                                                                                <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElemChecktblAttachmentsElemCheck">
+                                                                                <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElemCheck">
                                                                                     <li>
                                                                                         <div class="inputgroup">
 
 
                                                                                             <div class="att_input">
-                                                                                                <input type="file" class="form-control" tabindex="5"
+                                                                                                <input type="file" class="form-control" tabindex="5" id="filecheck"
                                                                                                        onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
-                                                                                                <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="a" style="text-align:left; text-decoration: none !important;"></a></span>
-                                                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
-                                                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
-                                                                                                </span>
+                                                                                                <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" style="text-align:left; text-decoration: none !important;"></a></span>
+
                                                                                             </div>
 
                                                                                         </div>
@@ -760,7 +753,7 @@
 
                                                                                 <div class="col-md-3">
 
-                                                                                    <input type="text" class="form-control" 
+                                                                                    <input type="text" class="form-control"
                                                                                            id="tan" name="tan" maxlength="10" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                                 </div>
@@ -825,7 +818,7 @@
 
                                                                             <div class="col-md-3 xyz">
 
-                                                                                <input type="text" class="form-control" 
+                                                                                <input type="text" class="form-control"
                                                                                        id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
@@ -840,7 +833,7 @@
 
                                                                                 <div class="col-md-3 xyz">
 
-                                                                                    <input type="text" class="form-control" 
+                                                                                    <input type="text" class="form-control"
                                                                                            id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                                 </div>
@@ -863,7 +856,7 @@
 
                                                                             <div class="col-md-9 xyz">
 
-                                                                                <input type="text" class="form-control" 
+                                                                                <input type="text" class="form-control"
                                                                                        id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
@@ -950,12 +943,12 @@
 
                                                                                     <select class="form-control" id="ddlMSMEClass" name="ddlMSMEClass">
 
-                                                                                        <option value="0">Select</option>
+                                                                                        <option value="Select">Select</option>
 
-                                                                                        <option value="1">Micro</option>
+                                                                                        <option value="Micro">Micro</option>
 
-                                                                                        <option value="2">Small</option>
-                                                                                        <option value="3">Medium</option>
+                                                                                        <option value="Small">Small</option>
+                                                                                        <option value="Medium">Medium</option>
 
                                                                                     </select>
 
@@ -998,21 +991,12 @@
                                                                                     <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem3">
                                                                                         <li>
 
-                                                                                            <input type="file" class="form-control" tabindex="5"
+                                                                                            <input type="file" class="form-control" tabindex="5" id="filemsme"
                                                                                                    onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
-
-                                                                                            <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="a" style="text-align:left; text-decoration: none !important;"></a></span>
-
-                                                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
-
-                                                                                                <i class='fa fa-times-circle-o' id='icon2'></i>
-
-                                                                                            </span>
+                                                                                            <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" style="text-align:left; text-decoration: none !important;"></a></span>
                                                                                         </li>
                                                                                     </ul>
                                                                                 </div>
-
-
 
                                                                             </div>
 
@@ -1115,7 +1099,7 @@
 
 
                                                                 </div>
-                                                                
+
                                                             </div>
 
 
@@ -1123,20 +1107,21 @@
                                                         </div>
 
                                                     </div>
+
+
+
                                                 </div>
 
-
                                             </div>
+                                            <div class="form-actions fluid">
+                                                <div class="col-md-offset-5 col-md-6">
+                                                    <button type="submit" class="btn btn-success">
+                                                        Update <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                                    </button>
 
-                                        </div>
-                                        <div class="form-actions fluid">
-                                            <div class="col-md-offset-5 col-md-6">
-                                                <button type="submit" class="btn btn-success"  >
-                                                    Update <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
-                                                </button>
-
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
-                                            <div class="clearfix"></div>
                                         </div>
 
 
@@ -1148,12 +1133,151 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box green-haze">
+                            <div class="portlet-title min-h-auto">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Register With Companies
+                                </div>
+                                <div class="tools">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <!--<a id="showHide" href="javascript:;" class="collapse"></a>-->
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="page-container mt-0" style="display:none">
+                                    <div class="alert alert-success" style='display: none;' id="divsuccvendor">
+                                        <span id="spansuccessvendor"> </span>
+                                    </div>
+                                    <div class="alert alert-danger display-none" id="diverrorvendor">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="spanerrorvendor"> </span>
+                                    </div>
+                                    <form class="form-horizontal" role="form" id="frmprofilevendornewcompany">
+
+                                        <div class="form-body">
+
+                                            <div class="panel panel-default">
+
+                                                <div class="panel-heading">
+
+                                                    <h4 class="panel-title">
+
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse4">Send Request To Register With Companies</a>
+
+                                                    </h4>
+
+                                                </div>
+                                                <div id="collapse4" class="panel-collapse collapse" seqno="4" style="height: 0px;">
+
+                                                    <div class="panel-body">
+
+                                                        <div class="row">
+                                                            <div style="margin-top:30px">
+                                                                <div class="tab-pane" id="tab4">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="col-md-6">
+                                                                                <div class="row">
+
+                                                                                    <div class="col-md-8">
+
+
+                                                                                        <input type="text" class="form-control" placeholder="Select Companies" id="txtVendorGroup"
+                                                                                               data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                                        <!--<input type="text" autocomplete="off" class="form-control" placeholder="Search Companies" id="txtSearch" name="txtSearch">-->
+
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+
+                                                                                    <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
+                                                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                            <thead class="flip-content">
+                                                                                                <tr>
+                                                                                                    <th width="20%">
+                                                                                                        <div class="col-md-10 checkbox-list">
+                                                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
+                                                                                                            </label>
+                                                                                                        </div>
+                                                                                                    </th>
+                                                                                                    <th width="100%">
+                                                                                                        Companies
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody></tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <input type="hidden" id="hdnweightageIndex" value="0" />
+                                                                                <input type="hidden" id="selectedcompanies" name="selectedcompanies" />
+                                                                                <div class="table-scrollable">
+                                                                                    <table id="selectedvendorlists" class="table table-bordered display-none">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th>Companies</th>
+                                                                                                <th>Actions</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="form-actions fluid">
+                                <div class="col-md-offset-5 col-md-6">
+                                    <button type="submit" class="btn btn-success">
+                                        Send <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                    </button>
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="clearfix">
                 </div>
+
                 <!-- END PAGE CONTENT-->
             </div>
+
+
         </div>
     </div>
+
+
     <div class="page-footer">
         <div class="page-footer" style="color: #FFF !important;">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
@@ -1216,6 +1340,7 @@
     <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
     <script type="text/javascript" src="assets/plugins/bootstrap-markdown/lib/markdown.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
     <script src="assets/scripts/core/app.js"></script>
@@ -1224,6 +1349,7 @@
     <!-- END PAGE LEVEL SCRIPTS -->
     <script src="assets/CustomJS/Auction.js"></script>
     <script src="assets/CustomJS/MyProfile.js"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         jQuery(document).ready(function () {
             Pageloaded()
@@ -1269,12 +1395,14 @@
             }, 1000)
 
             setTimeout(function () {
-                fetchCategorymaster1();
+                /*fetchCategorymaster1();
                 fetchCountry();
                 fetchTDS();
-                fetchPaymentTerms();
+                fetchPaymentTerms();*/
+                fetchCompanyVR();
+
                 //fetchMapCategory('M', 0);
-            }, 2000) 
+            }, 2000)
 
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
@@ -1294,15 +1422,21 @@
                     $('.page-container').show();
                     $('#frmprofile').hide()
                     $('#frmprofilevendornew').show()
-                    
+
                     //fetchCategorymaster1();
                     //fetchCountry();
                     //fetchTDS();
+                    fetchCategorymaster1();
+                    fetchCountry();
+                    fetchTDS();
+                    fetchPaymentTerms();
                     fetchVendorDetails();
                     //fetchPaymentTerms();
-                    
-                    //fetchMapCategory('M', 0);
+
+                    //fetchMapCategory('M', 0);                    
                     formvalidatevendor();
+                    formSendCompanies();
+
 
                     $('#bid').addClass('page-sidebar-closed page-full-width');
                 }

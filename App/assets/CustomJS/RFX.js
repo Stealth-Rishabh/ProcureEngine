@@ -359,17 +359,11 @@ function fileUploader(RFXID,fileObj) {
     $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',
-
         data: formData,
-
         processData: false,
-
         contentType: false,
-
         asyc: false,
-
         type: 'POST',
-
         success: function (data) {
 
         },
@@ -784,7 +778,7 @@ function fetchTempVendors() {
                         
                     for (var i = 0; i < data.length; i++) {
 
-                        jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].CompanyName + "</td><td>" + data[i].EmailId + "</td><td>" + data[i].MobileNo + "</td><td>" + data[i].ContactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].RowID + "\",\"" + data[i].CompanyName + "\",\"" + data[i].EmailId + "\",\"" + data[i].MobileNo + "\",\"" + data[i].ContactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFXTempVendors(\"" + data[i].RowID + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
+                        jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].companyName + "</td><td>" + data[i].emailId + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].rowid + "\",\"" + data[i].companyName + "\",\"" + data[i].emailId + "\",\"" + data[i].mobileNo + "\",\"" + data[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFXTempVendors(\"" + data[i].rowid + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
                         
 
                     }
@@ -798,7 +792,7 @@ function fetchTempVendors() {
             error: function (xhr, status, error) {
 
                 var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
+                if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                
@@ -854,7 +848,7 @@ function deleteRFXTempVendors(RowID) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var data = {
-        'RFXID':sessionStorage.getItem('CurrentRFXID'),
+        'RFXID':parseInt(sessionStorage.getItem('CurrentRFXID')),
         'RowID':RowID
     };
     jQuery.ajax({
@@ -865,7 +859,7 @@ function deleteRFXTempVendors(RowID) {
         contentType: "application/json",
         success: function (data) {
 
-            if (data[0].Outmsg == "1") {
+            if (data[0].outmsg == "1") {
                 $('.alert-danger').hide(); 
                 $('#spansuccess1').html('Vendor Record Deleted.!!');
                 $(".alert-success").show();

@@ -892,9 +892,11 @@ function fetchBidHeaderDetails(bidId) {
 
                 if (data[0].bidForID == 81 || data[0].bidForID == 83) {
                     display = document.querySelector('#lblTimeLeft');
+                    $('#bidtimer').show()
                 }
                 else {
                     display = document.querySelector('#lblTimeLeftD');
+                    $('#bidtimer').hide()
                 }
 
                 startTimerBeforeBidStart(data[0].timeLeft, display)

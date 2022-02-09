@@ -20,12 +20,18 @@ function FormValidate() {
         rules: {
         conditionName: {
                 required: true
+            },
+            conditionSr: {
+                required: true
             }
         },
         messages: {
 
         conditionName: {
                 required: "Condition is required."
+            },
+            conditionSr: {
+                required: "Condition Sr. is required."
             }
 
         },
@@ -79,6 +85,7 @@ function insupdconditionmaster() {
         "conditionName": $('#conditionName').val(),
         "IsActive": status,        
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+        "conditionSr": $('#conditionSr').val()
     }
 
    
@@ -99,7 +106,7 @@ function insupdconditionmaster() {
                 success.show();
                 success.fadeOut(3000);
 
-                fetchconditionmaster();
+                fetchConditionmaster();
                 
                 jQuery.unblockUI();
             }
@@ -108,7 +115,7 @@ function insupdconditionmaster() {
                 success.show();
                 success.fadeOut(3000);
               
-                fetchconditionmaster();
+                fetchConditionmaster();
                 
                 jQuery.unblockUI();
 
@@ -141,17 +148,17 @@ function insupdconditionmaster() {
         });
 
         jQuery.unblockUI();
-        resetscholership();
+        resetform();
         
     }
 
 function fetchConditionmaster() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+    
            jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "NFA/fetchNFACondition/?CustomerID=" + sessionStorage.getItem('CustomerID')+ "&IsActive=null" ,
+            url: sessionStorage.getItem("APIPath") + "NFA/fetchNFACondition/?CustomerID=" + sessionStorage.getItem('CustomerID')+ "&IsActive=T" ,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             data: "{}",
             cache: false,
@@ -159,14 +166,14 @@ function fetchConditionmaster() {
             success: function (data) {
                 jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
                  jQuery("#tblPlaceMaster").empty();
-                debugger;
+                
                 if (data.result.length > 0) {
 
-                     jQuery("#tblPlaceMaster").append("<thead id='tblheader'><th>Edit</th><th>Condition</th><th>Status</th></thead>");
+                    jQuery("#tblPlaceMaster").append("<thead id='tblheader'><th>#</th><th>Condition</th><th>Condition Sr.</th><th>Status</th></thead>");
 
                     for (var i = 0; i < data.result.length; i++) {
 
-                        jQuery('<tr><td><button class="btn yellow " onclick="updateType(\'' + data.result[i].conditionName + '\',\'' + data.result[i].isActive + '\',\'' + data.result[i].conditionID + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data.result[i].conditionName + '</td><td>' + data.result[i].isActive + '</td></tr>').appendTo("#tblPlaceMaster");
+                        jQuery('<tr><td><button class="btn btn-xs yellow " onclick="updateType(\'' + data.result[i].conditionName + '\',\'' + data.result[i].isActive + '\',\'' + data.result[i].conditionID + '\',\'' + data.result[i].conditionSr + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data.result[i].conditionName + '</td><td> ' + data.result[i].conditionSr + '</td><td>' + data.result[i].isActive + '</td></tr>').appendTo("#tblPlaceMaster");
 
                     }
                  }
@@ -191,10 +198,11 @@ function fetchConditionmaster() {
         });
     }
 
-function updateType(rname, status, id) {
+function updateType(rname, status, id,srno) {
 
     $('#hddnConditionID').val(id);
     $('#conditionName').val(rname);
+    $('#conditionSr').val(srno);
                     if (status =='Y') {
                        
                         jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
@@ -242,9 +250,10 @@ jQuery("#search").keyup(function () {
 });
 
 
-function resetscholership() {
+function resetform() {
     $('#conditionName').val('');
     $('#hddnconditionID').val('0');
+    $('#conditionSr').val('');
     jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
     jQuery('#checkboxactive').parents('span').addClass('checked');
 

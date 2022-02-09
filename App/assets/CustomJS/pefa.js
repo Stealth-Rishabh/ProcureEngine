@@ -2025,7 +2025,7 @@ function resetfun() {
     $('#fileattachment').attr('disabled', false);
     $('#txtStartingPrice').val('');
     $('#txtPriceReductionFrequency').val('');
-    $('#spinner4').spinner('value', 0);
+    $('#spinner4').spinner('value', 1);
     $('#txtPriceReductionAmount').val('');
     if ($('#ddlAuctiontype option:selected').val() == "83") {
        $('#showhlprice').val("Y").attr("disabled", true);

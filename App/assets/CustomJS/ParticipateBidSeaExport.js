@@ -1,5 +1,4 @@
-﻿/*"use strict";*/
-//$(window).load(function () {
+﻿var url = '';
 /////****** Chat Start*****************/////
 var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") +"bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
 
@@ -11,14 +10,14 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
     });
     connection.on("refreshColumnStatus", function (data) {
         if (data == "-1") {
-            //$('#spanmszA' + index).removeClass('hide')
-            //$('#spanmszA' + index).text('already Quoted by someone.');
+            $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
+            $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
             return false;
         }
         else {
             //jQuery("#txtquote" + index).val('');
             clearInterval(mytime)
-            var url = '';
+            
             $('#lbltest').text('Success')
             url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
             // alert(url)
@@ -35,16 +34,16 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].noOfExtension >= 1) {
-                                jQuery('#lblTimeLeft', '#lblTimeLeftD').css('color', 'red');
-                                jQuery('#lblTimeLeftTxt', '#lblTimeLeftTxtD').removeClass('display-none');
-                                jQuery('#lblTimeLeftTxt', '#lblTimeLeftTxtD').html('<b>Bid Time Extended.</b>').css('color', 'red')
+                                jQuery('#lblTimeLeft').css('color', 'red');
+                                jQuery('#lblTimeLeftTxt').removeClass('display-none');
+                                jQuery('#lblTimeLeftTxt').html('<b>Bid Time Extended.</b>').css('color', 'red')
                             }
                             else {
-                                jQuery('#lblTimeLeftTxt', '#lblTimeLeftTxtD').addClass('display-none');
-                                jQuery('#lblTimeLeft', '#lblTimeLeftD').css('color', '');
+                                jQuery('#lblTimeLeftTxt').addClass('display-none');
+                                jQuery('#lblTimeLeft').css('color', '');
                             }
                             jQuery("#lblbidduration").text(data[0].bidDuration);
-                            display = document.querySelector('#lblTimeLeft', '#lblTimeLeftD');
+                            display = document.querySelector('#lblTimeLeft');
                             startTimer(data[i].timeLeft, display);
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                             $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
@@ -87,12 +86,48 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
             });
         }
     });
-    
-    connection.on("ReceiveMessage", function (objChatmsz) {
+    connection.on("refreshTimeronClients", function () {
+       
+        url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
+        jQuery.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+
+                if (data.length > 0) {
+                    jQuery("#lblbidduration").text(data[0].bidDuration);
+                    display = document.querySelector('#lblTimeLeft');
+                    startTimer(data[0].timeLeft, display);
+                }
+
+            },
+            error: function (xhr, status, error) {
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+            }
+        });
+    })
+connection.on("ReceiveMessage", function (objChatmsz) {
     
     let chat = JSON.parse(objChatmsz)
-    toastr.clear();
-    //if (sessionStorage.getItem("UserID") != chat.FromUserId) {
+    
+        toastr.clear();
+        $(".pulsate-regular").css('animation', 'pulse 2s infinite')
+        toastr.success('You have a new message.', 'New Message')
+        //alert(chat.fromconnectionID)
+        $("#hddnadminConnection").val(chat.fromconnectionID)
+       // if (sessionStorage.getItem("UserID") != chat.fromID) {
             $("#chatList").append('<div class="post out">'
                 + '<div class="message">'
                 + '<span class="arrow"></span>'
@@ -102,81 +137,54 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
                 + '</div>'
                 + '</div>');
        // }
-         $(".pulsate-regular").css('animation', 'none');
-        //if (data[i].readFlag == 'N') {
-        //    if (i < 1 && sessionStorage.getItem("UserID") != data[i].fromUserId) {
-        //        $(".pulsate-regular").css('animation', 'pulse 2s infinite');
-        //        toastr.options = {
-        //            "closeButton": true,
-        //            "debug": false,
-        //            "positionClass": "toast-top-right",
-        //            "onclick": null,
-        //            "showDuration": "1000",
-        //            "hideDuration": "1000",
-        //            "timeOut": "2000",
-        //            "extendedTimeOut": "1000",
-        //            "showEasing": "swing",
-        //            "hideEasing": "linear",
-        //            "showMethod": "fadeIn",
-        //            "hideMethod": "fadeOut"
-        //        }
-        //        //$('#basic').modal('show');
-        //        // if (counter == 0) {
-        //        toastr.success('You have a new message.', 'New Message')
-        //        //}
-        //        //counter++;
-        //    }
-        //}
-
+         //$(".pulsate-regular").css('animation', 'none');
     });
-   
-//})
-function sendChatMsgs() {
+    //})
+    connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
+
+    let chat = JSON.parse(objChatmsz)
+        toastr.clear();
+
+    $(".pulsate-regular").css('animation', 'pulse 2s infinite')
+        toastr.success('You have a new message.', 'New Message')
+
+        $("#hddnadminConnection").val(chat.fromconnectionID)
+    // if (sessionStorage.getItem("UserID") == chat.fromID) {
+        $("#chatList").append('<div class="post out">'
+            + '<div class="message">'
+            + '<span class="arrow"></span>'
+            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>'
+            + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
+            + '</div>'
+            + '</div>');
+    //  }
+        //$(".pulsate-regular").css('animation', 'none');
+});
+ function sendChatMsgs() {
 
     var data = {
-        "ChatMsg": jQuery("#txtChatMsg").val(),
+        "ChatMsg": $("#txtChatMsg").val(),
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
         "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+        
     }
     $("#chatList").append('<div class="post in">'
         + '<div class="message">'
         + '<span class="arrow"></span>'
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
         + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-        + '<span class="body" style="color: #c3c3c3;">' + jQuery("#txtChatMsg").val() + '</span>'
+        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
         + '</div>'
         + '</div>');
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnVendorConnection').val()).catch(function (err) {
+      
+     connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
         return console.error(err.toString());
+       
     });
-    //jQuery.ajax({
-    //    url: sessionStorage.getItem("APIPath") + "Activities/sendChatMessages",
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //    type: "POST",
-    //    data: JSON.stringify(data),
-    //    contentType: "application/json; charset=utf-8",
-    //    success: function (data, status, jqXHR) {
-
-    //            jQuery("#txtChatMsg").val('');
-    //            if (sessionStorage.getItem("UserType") == 'E') {
-    //                fetchUserChats($('#hddnVendorId').val(),'S');
-    //            } else {
-    //                fetchUserChats(sessionStorage.getItem('UserID'),'S');
-    //            }
-
-    //    },
-
-    //    error: function (xhr, status, error) {
-
-    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-    //    if (xhr.status == 401) {
-    //        error401Messagebox(err.Message);
-    //    }
-    //    jQuery.unblockUI();
-    //}
-    //})
+    $("#txtChatMsg").val('')
 }
 
 /////****** Chat END*****************/////
@@ -186,6 +194,7 @@ var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var _isBidStarted = true;
+var totalfrequency = 0;
 sessionStorage.setItem('BidClosingType', '');
 
 var error1 = $('.alert-danger');
@@ -236,9 +245,16 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);
-
-                var display = document.querySelector('#lblTimeLeft', '#lblTimeLeftD');
-
+                if (data[0].bidForID == 81 || data[0].bidForID == 83) {
+                    display = document.querySelector('#lblTimeLeft');
+                    $('#bidtimer').show()
+                    $('#bidtimerdutch').hide()
+                }
+                else {
+                    display = document.querySelector('#lblTimeLeftD');
+                    $('#bidtimer').hide()
+                    $('#bidtimerdutch').show()
+                }
                 startTimerBeforeBidStart(data[0].timeLeft, display)
                 fetchBidSummaryVendorproduct()
             }
@@ -335,12 +351,12 @@ function fetchVendorDetails() {
                 
                 _isBidStarted = true;
                 $('#lblTimeLeftBeforeBid','#blTimeLeftBeforeBidD').html('').hide('');
-                display = document.querySelector('#lblTimeLeft','#lblTimeLeftD');
                
                 BidTypeID = data[0].bidTypeID;
                 BidForID = data[0].bidForID;
 
                 if (BidForID == 81 || BidForID == 83) {
+                    display = document.querySelector('#lblTimeLeft');
                     $('#bidtimer').show()
                     $("#bidtimerdutch").hide();
                     $(".lbltimetextdutch").hide();
@@ -349,6 +365,8 @@ function fetchVendorDetails() {
                     startTimer((parseInt(data[0].timeLeft)), display);
                 }
                 else {
+                    display = document.querySelector('#lblTimeLeftD');
+                    totalfrequency = parseInt(data[0].priceDecreamentFrequency*60)
                     $('#bidtimer').hide()
                     $("#bidtimerdutch").show();
                     $(".lbltimetextdutch").show();
@@ -360,12 +378,12 @@ function fetchVendorDetails() {
              }
             else if (data.length > 1 || data.length == 0) {
                
-                $('#lblTimeLeftBeforeBid','#blTimeLeftBeforeBidD').html('Bid is not  started.').css('color', 'red');
-                $('#tblParticipantsService').hide();
-                jQuery("#tblParticipantsServiceBeforeStartBid").show();
-                _isBidStarted = false;
-               // $('#btnsubmit').hide()
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
+                    $('#lblTimeLeftBeforeBid','#blTimeLeftBeforeBidD').html('Bid is not  started.').css('color', 'red');
+                    $('#tblParticipantsService').hide();
+                    jQuery("#tblParticipantsServiceBeforeStartBid").show();
+                    _isBidStarted = false;
+                   // $('#btnsubmit').hide()
+                    fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
             }
         },
         error: function(xhr) {
@@ -381,6 +399,9 @@ function fetchVendorDetails() {
         }
     });
 
+}
+function convertMintosec(value) {
+    return Math.floor(value * 60)
 }
 var count;
 var url = '';
@@ -569,9 +590,7 @@ function InsUpdQuoteSeaExport(index) {
     else {
 
         insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
-
-      
-            var QuoteProduct = {
+        var QuoteProduct = {
                 "VendorID": vendorID,
                 "BidID": parseInt(sessionStorage.getItem("BidID")),
                 "insertQuery": insertquery,
@@ -582,11 +601,11 @@ function InsUpdQuoteSeaExport(index) {
                 "ForRFQ": "N",
                 "extendTime": parseInt($('#hdnval').val())
             }
-   
+        $('#hdnselectedindex').val(index);
             connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
                 return console.error(err.toString());
             });
-
+        $('#txtquote' + index).val('')
     }
 }
 
@@ -613,20 +632,17 @@ function startTimer(duration, display) {
         else {
             display.textContent = minutes + ":" + seconds;
         }
-        //if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-       
-
-        //    if (sessionStorage.getItem("UserType") == 'E') {
-        //        fetchUserChats($('#hddnVendorId').val(),'S');
-        //    } else {
-        //        fetchUserChats(sessionStorage.getItem('UserID'),'S');
-        //    }
-
-        //}
-        // console.log(timer)
+        
+        console.log(timer)
+        if (timer == 300) {
+            $('#pleft5mins').removeClass('hide')
+        }
+        else if (timer <= 240) {
+            $('#pleft5mins').addClass('hide')
+        }
         if (timer <= 0) {
              $('.clsdisable').attr('disabled', 'disabled')
-         }
+        }
        setTimeout(function () {
             if (--timer < -3) {
                 timer = -3;
@@ -646,8 +662,8 @@ function closeBidAir() {
     clearInterval(mytime)
     var data = {
         "BidId":sessionStorage.getItem("BidID")
-
     }
+   // alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorParticipation/CloseBid/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -877,9 +893,10 @@ function InsUpdQuoteSeaDutch(rowID) {
 function startTimerDutch(duration, display) {
     clearInterval(mytime)
     var timer = duration;
+    var Timer1 = duration;
     var hours, minutes, seconds;
     mytime = setInterval(function () {
-        fetchBidTime()
+       
         hours = parseInt(timer / 3600, 10)
         minutes = parseInt(timer / 60, 10) - (hours * 60)
         seconds = parseInt(timer % 60, 10);
@@ -895,15 +912,13 @@ function startTimerDutch(duration, display) {
             display.textContent = minutes + ":" + seconds;
         }
 
-
-        if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
+       // console.log(timer)
+       // console.log(Timer1-totalfrequency)
+        //  if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
+        if (timer == (Timer1 - totalfrequency)) {
+            Timer1 = timer;
             fetchBidSummaryVendorSeaExportDutch();
-            fetchBidTime()
-            if (sessionStorage.getItem("UserType") == 'E') {
-                fetchUserChats($('#hddnVendorId').val(), 'S');
-            } else {
-                fetchUserChats(sessionStorage.getItem('UserID'), 'S');
-            }
+            //fetchBidTime()
         }
 
         //console.log(timer)
@@ -911,7 +926,6 @@ function startTimerDutch(duration, display) {
             closeBidAir();
             return;
         }
-
 
     }, 1000);
 }

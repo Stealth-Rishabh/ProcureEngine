@@ -3,8 +3,8 @@ var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
 var Duration = '0.00';
-var connection=''
-var UserID=sessionStorage.getItem("UserID")
+var connection = ''
+var UserID = sessionStorage.getItem("UserID")
 $(document).ready(function () {
     if (window.location.search) {
 
@@ -18,25 +18,25 @@ $(document).ready(function () {
         fetchBidSummaryDetails(BidID, BidForID)
         fetchBidTime()
     }
-   
+
 });
 function fetchBidTime() {
     var display = document.querySelector('#lblTimeLeft');
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        
+
         url: sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + BidID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
-                startTimer(data[0].timeLeft, display);
-                $('#tmleft').html($('#lblTimeLeft').text())
-			
+
+            startTimer(data[0].timeLeft, display);
+            $('#tmleft').html($('#lblTimeLeft').text())
+
         },
         error: function (xhr, status, error) {
 
@@ -52,8 +52,8 @@ function fetchBidTime() {
 }
 var mytime = 0;
 function startTimer(duration, display) {
-   clearInterval(mytime)
-   var  timer = duration;
+    clearInterval(mytime)
+    var timer = duration;
     var hours, minutes, seconds;
     mytime = setInterval(function () {
         //fetchBidTime();
@@ -72,28 +72,30 @@ function startTimer(duration, display) {
             display.textContent = minutes + ":" + seconds;
         }
 
+        if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
 
-        //if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-           
-            //if ((BidTypeID == 6 && BidForID == 82) || BidTypeID == 8 || (BidTypeID == 7 && BidForID == 82)) {
-                
-            //    fetchBidSummaryDetails(BidID, BidForID);
-            //}
-            //else {
-            //   fnBidRefreshOnTimerforAdmin(BidID)
-            //}
-           //}
-        //fetchBidTime();
-        setTimeout(function () {
-            
-            if (--timer <= 0) {
-                timer = 0;
-                if (timer == 0) {
-                    window.location = "index.html";
-                    return;
-                }
+            if ((BidTypeID == 6 && BidForID == 82) || BidTypeID == 8 || (BidTypeID == 7 && BidForID == 82)) {
+
+                fetchBidSummaryDetails(BidID, BidForID);
+                fetchBidTime();
             }
-       }, 5000);
-        
+            else if ((BidTypeID == 6 && BidForID != 82) || BidTypeID == 7 && _bidClosingType == 'S') {
+                fnBidRefreshOnTimerforAdmin(BidID)
+                fetchBidTime();
+            }
+
+        }
+        //console.log(timer)
+        //setTimeout(function () {
+
+        if (--timer <= 0) {
+            timer = 0;
+            if (timer == 0) {
+                window.location = "index.html";
+                return;
+            }
+        }
+        // }, 5000);
+
     }, 1000);
 }

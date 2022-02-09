@@ -27,6 +27,7 @@ if (window.location.search) {
         GetOverviewmasterbyId(idx);
     },1000)
 }
+$("#cancelNFABtn").hide();
 function FetchRecomendedVendor() {
 
     jQuery.ajax({
@@ -324,6 +325,7 @@ var FormWizard = function () {
                         }
                         Savetab2Data();
                         SaveAttechmentinDB();
+                        BindAttachmentsOfEdit();
                         Bindtab3Data();
                     }
                     handleTitle(tab, navigation, index);
@@ -464,7 +466,8 @@ function GetOverviewmasterbyId(idx) {
             if (res.result.length > 0) {
                 $("#txtTitle").val(res.result[0].nfaSubject);
                 $("#txtNFADetail").val(res.result[0].nfaDescription);
-               
+                $("#cancelNFABtn").show();
+                sessionStorage.setItem('hdnNFAID', idx);
                 sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);
                 sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].purchaseGroup);
                 sessionStorage.setItem('hdnConditionID', res.result[0].conditionID);
@@ -593,26 +596,22 @@ jQuery("#ddlCondition").typeahead({
 
 });
 
-//$("#txtNfaParamAns").on("change", function () {
 
-   
-
-//});
 function fnaddQuestion() {
-    fnApproversNBQuery(parseInt(sessionStorage.getItem("hdnParamIdx")), $("#txtNFAParam").val(), $("#txtNfaParamAns").val());
+    fnApproversNBQuery(parseInt($("#ddlNFAParam option:selected").val()), $("#ddlNFAParam option:selected").text());/*, $("#txtNfaParamAns").val()*/
 }
 
-function fnApproversNBQuery(rownum, question, remark) {
+function fnApproversNBQuery(rownum, question) {
 
-    if ($("#txtNfaParamAns").val() == "") {
-        $('#errordivSeq').show();
-        $('#errorSeq').html('Please specify Response for Question');
-        Metronic.scrollTo($("#errordivSeq"), -200);
-        $('#errordivSeq').fadeOut(7000);
+    //if ($("#txtNfaParamAns").val() == "") {
+    //    $('#errordivSeq').show();
+    //    $('#errorSeq').html('Please specify Response for Question');
+    //    Metronic.scrollTo($("#errordivSeq"), -200);
+    //    $('#errordivSeq').fadeOut(7000);
 
-        return false;
-    }
-    if (rownum == "0" || jQuery("#txtNFAParam").val() == "") {
+    //    return false;
+    //}
+    if (rownum == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Question not selected. Please press + Button after selecting Approver');
         Metronic.scrollTo($("#errordivSeq"), -200);
@@ -623,12 +622,10 @@ function fnApproversNBQuery(rownum, question, remark) {
 
     var status = true
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
-        var this_row = $(this);
-
-        if ($.trim(this_row.find('td:eq(3)').html()) == sessionStorage.getItem('hdnParamIdx')) {
+       var this_row = $(this);
+       if ($.trim(this_row.find('td:eq(3)').html()) == $("#ddlNFAParam").val()) {
             status = false
-
-        }
+       }
     });
 
     if (status == false) {
@@ -642,22 +639,27 @@ function fnApproversNBQuery(rownum, question, remark) {
     else {
         var rowApp = rownum;
         if (!jQuery("#tblNFAOverviewParam thead").length) {
-            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp+'>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + question + '</td><td>' + remark + '</td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp +'>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-
-        sessionStorage.setItem("hdnParamIdx", 0);
-        $("#txtNFAParam").val('');
-        $("#txtNfaParamAns").val('');
-        $("#txtNFAParam").select();
+        $('#paramremark' + rowApp).maxlength({
+            limitReachedClass: "label label-danger",
+            alwaysShow: true
+        });
+       // sessionStorage.setItem("hdnParamIdx", 0);
+        $("#ddlNFAParam").val('');
+        $('#nfaparamoption' + rownum).remove();
+        //$("#txtNfaParamAns").val('');
+        //$("#txtNFAParam").select();
     }
 }
 function deleteNFAParams(rowid) {
-   
+    $('#ddlNFAParam').append('<option value=' + rowid + ' id=nfaparamoption' + rowid + ' >' + $('#ques' + rowid).text() + '</option>');
     $('#trNfaParam' + rowid).remove();
+    
    }
 
 var rowAttach = 0;
@@ -682,17 +684,17 @@ function addmoreattachments() {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         rowAttach = rowAttach + 1;
-        if (!jQuery("#tblAttachmentsPrev thead").length) {
-            jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
-            var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
-        }
-        else {
-            var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
-        }
+        //if (!jQuery("#tblAttachmentsPrev thead").length) {
+        //    jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
+        //    var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
+        //}
+        //else {
+        //    var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
+        //}
 
 
-        strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
-        jQuery('#tblAttachmentsPrev').append(strprev);
+        //strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
+        //jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
@@ -823,69 +825,66 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
 }
 
 
-var NfaParams = [];
-function GetNfaOverviewParams() {
-    var url = "NFA/GetNfaParams?CustomerID=" + parseInt(CurrentCustomer);
+//var NfaParams = [];
+//function GetNfaOverviewParams() {
+//    var url = "NFA/GetNfaParams?CustomerID=" + parseInt(CurrentCustomer);
 
 
-    var GetData = callajaxReturnSuccess(url, "Get", {});
-    GetData.success(function (res) {
-        if (res.result != null) {
+//    var GetData = callajaxReturnSuccess(url, "Get", {});
+//    GetData.success(function (res) {
+//        if (res.result != null) {
 
-            if (res.result.length > 0) {
-                NfaParams = res.result;
-            }
-        }
-    });
-    GetData.error(function (res) {
-        jQuery.unblockUI();
-    });
-
-
-};
-$("#txtNFAParam").keyup(function () {
-    sessionStorage.setItem("hdnParamIdx", 0);
-
-});
+//            if (res.result.length > 0) {
+//                NfaParams = res.result;
+//            }
+//        }
+//    });
+//    GetData.error(function (res) {
+//        jQuery.unblockUI();
+//    });
 
 
-sessionStorage.setItem("hdnParamIdx", 0);
-$("#txtNFAParam").typeahead({
-    source: function (query, process) {
-        var data = NfaParams;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            // console.log(data);
-            map[username.paramtext] = username;
+//};
+//$("#txtNFAParam").keyup(function () {
+//    sessionStorage.setItem("hdnParamIdx", 0);
 
-            usernames.push(username.paramtext);
-        });
-
-        process(usernames);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-        if (map[item].idx != "0") {
+//});
 
 
-            sessionStorage.setItem('hdnParamIdx', map[item].idx);
+//sessionStorage.setItem("hdnParamIdx", 0);
+//$("#txtNFAParam").typeahead({
+//    source: function (query, process) {
+//        var data = NfaParams;
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            // console.log(data);
+//            map[username.paramtext] = username;
 
-            $("#txtNfaParamAns").select();
-            // GetApprovermasterbyId(nfaApproverIDX);
-        }
-        else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
-        }
+//            usernames.push(username.paramtext);
+//        });
 
-        return item;
-    }
-});
+//        process(usernames);
 
+//    },
+//    minLength: 2,
+//    updater: function (item) {
+//        if (map[item].idx != "0") {
 
 
+//            sessionStorage.setItem('hdnParamIdx', map[item].idx);
+
+//            $("#txtNfaParamAns").select();
+//            // GetApprovermasterbyId(nfaApproverIDX);
+//        }
+//        else {
+//            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+//        }
+
+//        return item;
+//    }
+//});
 
 
 jQuery("#txtDetails").keyup(function () {
@@ -932,7 +931,7 @@ var orgData = [];
 function BindPurchaseOrg() {
 
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlModelOrg").html('');
@@ -957,9 +956,9 @@ function BindPurchaseOrg() {
 
 };
 
-$("#cancelNFABtn").on("click", function () {
-    window.location.reload();
-});
+//$("#cancelNFABtn").on("click", function () {
+//    window.location.reload();
+//});
 
 var Groupdata = [];
 function bindPurchaseGroupDDL(orgID) {
@@ -1110,11 +1109,7 @@ function ValidTeTab1() {
 }
 
 function Savedata() {
-
-
     var overviewList = [];
-
-
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
     var p_org = sessionStorage.getItem('hdnPurchaseORGID');;
@@ -1181,13 +1176,16 @@ function Savetab2Data() {
     objData = {};
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
         var this_row = $(this);
-        objData = {
-            Paramidx: parseInt($.trim(this_row.find('td:eq(3)').html())),
-            paramtext: $.trim(this_row.find('td:eq(1)').html()),
-            paramremark: $.trim(this_row.find('td:eq(2)').html()),
+        var remarks = $.trim(this_row.find('td:eq(2)').find('textarea').val()).replace(/'/g, "''");
+       // if (remarks != '' && remarks != null) {
+            objData = {
+                Paramidx: parseInt($.trim(this_row.find('td:eq(3)').html())),
+                paramtext: $.trim(this_row.find('td:eq(1)').html()),
+                paramremark: remarks//$.trim(this_row.find('td:eq(2)').html()),
 
-        };
-        Paramdata.push(objData);
+            };
+            Paramdata.push(objData);
+       // }
 
     });
 
@@ -1202,9 +1200,28 @@ function Savetab2Data() {
 
 
 };
+function GetNfaOverviewParams() {
+    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected";
+    
+    var ParamData = callajaxReturnSuccess(url, "Get", {})
+    ParamData.success(function (res) {
 
+        if (res != null) {
+            $("#ddlNFAParam").empty();
+            if (res.result.length > 0) {
+                $("#ddlNFAParam").append("<option value=0>Select</option>");
+                $.each(res.result, function (key, value) {
+                    $('#ddlNFAParam').append('<option value=' + value.idx + ' id=nfaparamoption' + value.idx +' >' + value.paramtext + '</option>');
+                });
+            }
+        }
+        else {
+            $("#ddlNFAParam").append("<option value=0>Select</option>");
+        }
+    })
+}
 function BindSaveparams() {
-    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx);
+    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) +"&For=NFRequest";
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
@@ -1212,10 +1229,13 @@ function BindSaveparams() {
         if (res != null) {
             $("#tblNFAOverviewParam").empty();
             if (res.result.length > 0) {
-                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
+                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
-
+                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx+' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    $('#paramremark' + value.idx).maxlength({
+                        limitReachedClass: "label label-danger",
+                        alwaysShow: true
+                    });
                 });
 
             }
@@ -1236,12 +1256,13 @@ function Bindtab3Data() {
 }
 function BindParamsForpreview() {
     $("#tblOBpreview").empty();
-    $("#tblOBpreview").append("<thead><tr><th class='bold' style='width:50%!important'>Param Text</th><th class='bold' style='width:40%!important'>Remark</th></tr></thead>");
+    $("#tblOBpreview").append("<thead><tr><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
         var this_row = $(this);
-
-        $("#tblOBpreview").append('<tr id=trNFAOverviewParam' + parseInt($.trim(this_row.find('td:eq(3)').html())) + '><td>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td>' + $.trim(this_row.find('td:eq(2)').html()) + '</td><td class=hide>' + parseInt($.trim(this_row.find('td:eq(3)').html())) + '</td></tr>');
-
+        var Nfidvalue = parseInt($.trim(this_row.find('td:eq(3)').html()))
+       // if ($('#paramremark' + Nfidvalue).val() != "" && $('#paramremark' + Nfidvalue).val() != null) {
+            $("#tblOBpreview").append('<tr id=trNFAOverviewParam' + Nfidvalue + '><td>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td>' + $('#paramremark' + Nfidvalue).val() + '</td><td class=hide>' + Nfidvalue + '</td></tr>');
+       // }
     });
 
 }
@@ -1272,7 +1293,7 @@ function FetchMatrixApprovers() {
 };
 
 function BindApprovers(amount, groupId, orgid, conId, budgetType) {
-    alert(sessionStorage.getItem("hdnConditionID"))
+   
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
     
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -1442,6 +1463,7 @@ function BindAttachmentsOfEdit() {
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
     GetFilesData.success(function (res) {
         $('#tblAttachments').empty();
+        $('#tblAttachmentsPrev').empty();
         if (res != null) {
             if (res.result.length > 0) {
 
@@ -1496,9 +1518,6 @@ function SaveFirstTabActivity() {
     });
 
 }
-
-
-
 
 Array.prototype.max = function () {
     return Math.max.apply(null, this);
@@ -1652,10 +1671,9 @@ function SaveUpdate() {
             alert(res.error);
         }
         else {
-            //  BindData();
-            NfaParams = [];
+            
+            
             GetNfaOverviewParams();
-
             $('#SubCategory').modal('hide')
         }
     });
@@ -1681,6 +1699,7 @@ function bindConditionDDL() {
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
+       
         if (res.result != null) {
             if (res.result.length > 0) {
                 conditionData = res.result;

@@ -1009,7 +1009,7 @@ function ConfigureBidForSeaExportTab1() {
         _bidType = $("#ddlAuctiontype option:selected").val();
     }
 
-    if (jQuery("#txtBidDuration").val() != '' && jQuery("#txtBidDuration").val() != null   ) {
+    if (jQuery("#txtBidDuration").val() != '' && jQuery("#txtBidDuration").val() != null && jQuery("#txtBidDuration").val() != "0" ) {
         BidDuration = jQuery("#txtBidDuration").val();
 
     }
@@ -1388,17 +1388,14 @@ function ConfigureBidForSeaExportTab2() {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-                if (parseInt(data) > 0) {
+
                     if ($('#ddlbidclosetype').val() == "S") {
                         $('#txtBidDuration').val(BidDuration)
                         fetchSeaExportDetails();
                     }
                     return true;
-                }
-                else {
-                    return false;
-
-                }
+                
+                
 
             },
            error: function (xhr, status, error) {
@@ -1781,7 +1778,7 @@ function InsUpdSeaExport() {
                  return false;
 
              }
-            else if ($('#txtPriceReductionAmount').is(":visible") && parseFloat(removeThousandSeperator($('#txtPriceReductionAmount').val())) >= (parseFloat(removeThousandSeperator($('#txtfloorPrice').val())) - parseFloat(removeThousandSeperator($('#txtCeilingPrice').val())) / 2) && $("#ddlAuctiontype option:selected").val() == 82) {
+            else if ($('#txtPriceReductionAmount').is(":visible") && parseFloat(removeThousandSeperator($('#txtPriceReductionAmount').val())) >= parseFloat(removeThousandSeperator($('#txtPriceReductionAmount').val())) >= (parseFloat(removeThousandSeperator($('#txtCeilingPrice').val())) - parseFloat(removeThousandSeperator($('#txtfloorPrice').val()))) / 2  && $("#ddlAuctiontype option:selected").val() == 82) {
                  error.show();
                  $('#spandanger').html('Please enter valid Price Decrement amount.');
                  Metronic.scrollTo(error, -200);
@@ -2056,7 +2053,7 @@ function resetfun() {
     }
     $('#drpdecreamenton').val('A')
     $('#txtPriceReductionFrequency').val('');
-    $('#spinner4').spinner('value', 0);
+    $('#spinner4').spinner('value', 1);
     $('#txtPriceReductionAmount').val('');
     $('#txtfloorPrice').val('');
 }
@@ -2304,7 +2301,8 @@ function fetchSeaExportDetails() {
                     }
                 }
             if (BidData[0].bidVendorDetails.length > 0) {
-
+                jQuery('#selectedvendorlists').empty();
+                jQuery('#selectedvendorlistsPrev').empty();
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
                     vCount = vCount + 1;
                     if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
@@ -2716,7 +2714,6 @@ jQuery("#txtSearch").typeahead({
 function getCategoryWiseVendors(categoryID) {
     
         jQuery.ajax({
-
             type: "GET",
             contentType: "application/json; charset=utf-8",
           
@@ -3061,7 +3058,7 @@ function printdataSeaBid(result) {
             }
             if ($('#ddlbidclosetype').val() == "S") {
                 totalitemdurationstagger = totalitemdurationstagger + parseInt($.trim(result[i].ItemBidDuration.trim()));
-                Itembidduration = parseInt($.trim(result[i].ItemBidDuration.trim())) + parseInt(BidDuration)
+                Itembidduration = parseInt($.trim(result[i].ItemBidDuration.trim())) //+ parseInt(BidDuration)
                 ItemStatus = 'Inactive';
             }
         else {
@@ -3245,6 +3242,8 @@ function fnSeteRFQparameterTable() {
         i = 0;
         var decon = '';
         rowAppItemsrno = 0;
+        totalitemdurationstagger = 0;
+        
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
             if ($.trim(this_row.find('td:eq(11)').html()) == "A") {
@@ -3278,7 +3277,7 @@ function fnSeteRFQparameterTable() {
                 totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(this_row.find('td:eq(13)').html());
 
             }
-            sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
+            
             if ($('#ddlbidclosetype option:selected').val() == "S") {
                 $('.itemclass').removeClass('hide')
             }
@@ -3292,6 +3291,8 @@ function fnSeteRFQparameterTable() {
             rowAppItemsrno = rowAppItemsrno + 1;
             i = i + 1;
         })
+        sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
+        $("#txtBidDuration").val(totalitemdurationstagger)
         setTimeout(function () {
             $('#RAexcel').modal('hide');
             jQuery.unblockUI();
