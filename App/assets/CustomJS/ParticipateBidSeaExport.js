@@ -118,7 +118,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
             }
         });
     })
-connection.on("ReceiveMessage", function (objChatmsz) {
+    connection.on("ReceiveMessage", function (objChatmsz) {
     
     let chat = JSON.parse(objChatmsz)
     
@@ -914,9 +914,9 @@ function startTimerDutch(duration, display) {
 
        // console.log(timer)
        // console.log(Timer1-totalfrequency)
-        //  if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
-        if (timer == (Timer1 - totalfrequency)) {
-            Timer1 = timer;
+          if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
+        //if (timer == (Timer1 - totalfrequency)) {
+           // Timer1 = timer;
             fetchBidSummaryVendorSeaExportDutch();
             //fetchBidTime()
         }

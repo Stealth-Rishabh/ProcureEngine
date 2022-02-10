@@ -1396,7 +1396,7 @@ function SaveApproversConfirmation() {
                         className: "btn-success",
                         callback: function () {
                             bootbox.alert("NFA Request Submitted Successfully.", function () {
-                                window.location.href = "NFARequest.html";
+                                window.location.href = "index.html";
                                 return false;
                             });
                             

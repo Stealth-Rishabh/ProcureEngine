@@ -1423,15 +1423,18 @@ connection.start().then(function () {
     console.log(err.toString())
 });
 
-connection.on("refreshChatUsers", function (adminconn, UserId, connectionId, flag, name, emailid, vendorid) {
-
-    $("#hddnadminConnection").val(adminconn);
-    var StID = 'sticon' + UserId.trim()
+connection.on("refreshChatUsers", function (rdataJson,connectionId, flag) {
+    let data = JSON.parse(rdataJson)
+    
+    if ($("#hddnadminConnection").val() == "0") {
+        $("#hddnadminConnection").val(connectionId);
+    }
+    var StID = 'sticon' + data[0].userID.trim()
     if (flag == true) {
 
         $('#' + StID).removeClass('badge-danger').addClass('badge-success')
-        $('#v' + UserId).removeAttr('disabled')
-        $('#v' + UserId).attr('onclick', 'openChatDiv(\'' + name + '\', \'' + emailid + '\', \'' + vendorid + '\', \'' + connectionId + '\',\'' + UserId + '\')');
+        $('#v' + data[0].userID).removeAttr('disabled')
+        $('#v' + data[0].userID).attr('onclick', 'openChatDiv(\'' + data[0].VendorName + '\', \'' + data[0].EmailId + '\', \'' + data[0].VendorID + '\', \'' + connectionId + '\',\'' + data[0].userID + '\')');
         //alert(emailid)
         //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item').addClass('page-quick-sidebar-item')
         //$('#backbutton').show()
@@ -1441,8 +1444,8 @@ connection.on("refreshChatUsers", function (adminconn, UserId, connectionId, fla
     else {
 
         $('#' + StID).removeClass('badge-success').addClass('badge-danger')
-        $('#v' + UserId).attr('disabled', 'disabled')
-        $('#v' + UserId).removeAttr('onclick')
+        $('#v' + data[0].userID).attr('disabled', 'disabled')
+        $('#v' + data[0].userID).removeAttr('onclick')
         //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item')
         //$('#backbutton').hide()
         //$('#chattypeform').hide()
