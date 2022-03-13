@@ -26,6 +26,9 @@ function FetchInvitedVendorsForeRFQ() {
                 $("#deadlineModal").html(data[0].deadline);
                 for (var i = 0; i < data.length; i++) {
                     $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + data[i].responseDTTime + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    if (data[i].rqStatus.toLowerCase() != 'close' && data[i].rqStatus.toLowerCase != 'regretted') {
+                        $('#send_remainder').removeClass('hide')
+                    }
                 }
             }
         },

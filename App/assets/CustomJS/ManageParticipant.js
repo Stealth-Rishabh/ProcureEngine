@@ -197,7 +197,31 @@ function FetchAllCustomer() {
 }
 var status = "";
 function RegisterParticipants() {
-   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var status = "";
+    if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
+        status = 'Y';
+    }
+    else {
+        status = 'N';
+    }
+    var InsertQuery = '';
+    $('.childchkbox').each(function () {
+        if (this.checked) {
+            InsertQuery = InsertQuery + $(this).val() + "#";
+        }
+    });
+
+    if (InsertQuery == '') {
+
+        $('#divalerterr').find('span').text('Please select atleast one group!');
+        $('#divalerterr').slideDown('show');
+        App.scrollTo(jQuery('#divalerterr'), -200);
+        return false;
+        setTimeout(function () {
+            jQuery('#divalerterr').css('display', 'none');
+        }, 5000);
+    }
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
@@ -213,8 +237,8 @@ function RegisterParticipants() {
         "MobileNo": jQuery("#txtMobileNo").val(),
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
-        "AlternateEmailID": $('#txtAlternateeMailID').val()
-       
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ProductCatID": InsertQuery
         
     };
    // alert(JSON.stringify(RegisterParticipants))
@@ -250,6 +274,7 @@ function RegisterParticipants() {
             }, 5000);
             fetchParticipantsVenderTable();
             clearform();
+            jQuery.unblockUI();
         },
         
         error: function (xhr, status, error) {

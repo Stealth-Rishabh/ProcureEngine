@@ -424,7 +424,7 @@ function fetchRFIDetails() {
                             '<input type="text" class="form-control" placeholder="Attachment Description" tabindex="5" name="txtattachdescription" autocomplete="off" value=' + BidData[0].vqAttachment[i].vqAttachmentDescription.replace(/\s/g, "&nbsp;") + ' />' +
                             '</div>' +
                             '<div class="col-md-3">' +
-                            '<input type="file" id=file' + (i + 1) + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
+                            '<input type="file" id=file' + (i + 1) + ' class="form-control"  tabindex="4" onchange="checkfilesize(this)" />' +
                             '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + BidData[0].vqAttachment[i].vqAttachment + '</a></span>' +
 
                             '</div>' +
@@ -1688,7 +1688,7 @@ function addMoreAttachment() {
         '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />'+
         '</div>'+
         '<div class="col-md-3">'+
-        '<input type="file" id=file'+ _count+' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
+        '<input type="file" id=file' + _count +' class="form-control"  tabindex="4" onchange="checkfilesize(this)" />' +
         '<span class="help-block"><a id=attach-file'+_count+' href="javascript:;" style="text-decoration: none !important;"></a></span>'+
         '</div>'+
         '<div class="col-md-2" style=" padding-left:0px !important; ">'+
@@ -1771,10 +1771,10 @@ function fetchCategorymaster() {
                     jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
                 jQuery("#ddlCategoryMultiple").trigger("change");
-                if (sessionStorage.getItem('CurrentVQID') != "0"){
-                setTimeout(function () {
-                    fetchRFIDetails();
-                }, 1000)
+                    if (sessionStorage.getItem('CurrentVQID') != "0"){
+                    setTimeout(function () {
+                        fetchRFIDetails();
+                    }, 1000)
                 }
             }
             else {
@@ -1784,7 +1784,7 @@ function fetchCategorymaster() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }

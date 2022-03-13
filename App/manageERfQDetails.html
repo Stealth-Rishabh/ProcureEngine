@@ -334,7 +334,15 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Technical Approval:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="lbltechnicalApproval"></p>
+                                                                                           
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <h3 class="form-section hide">Approvers</h3>
@@ -765,10 +773,13 @@
 
                                                                             <div id="divvendorlistremainder" class="portlet-body flip-scroll ">
                                                                                 <table style="width:500px" align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content">
-
-
                                                                                     <thead>
                                                                                         <tr>
+                                                                                            <th>
+                                                                                                <label class='checker'>
+                                                                                                    <input type='checkbox' id='chkAllrem' value='All' name='chkAll' onclick='fnheckAllremainder()' checked /> All
+                                                                                                </label>
+                                                                                            </th>
                                                                                             <th>Vendors</th>
 
                                                                                         </tr>
@@ -784,7 +795,7 @@
 
                                                                 <div class="form-actions fluid" style="padding:5px!important;">
                                                                     <div class="col-md-offset-1 col-md-6">
-                                                                        <button type="button" onclick="sendremainderstoparicipants()" class="btn green">
+                                                                        <button type="button" onclick="sendremainderstoparicipants()" class="btn green" id="sendremainder">
                                                                             Send
                                                                         </button>
                                                                     </div>

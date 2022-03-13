@@ -28,18 +28,20 @@ function fetchReguestforQuotationDetails() {
                 RFQSubject = RFQData[0].general[0].rfqSubject;
                
                 if (RFQData[0].vendors.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:30%!important;'>Quotation Received</th><th style='width:30%!important;'>Technically Acceptable</th></tr></thead><tbody>");
+                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
                     for(i= 0;i < RFQData[0].vendors.length;i++){
-                        $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td></tr>")
+                        $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td></tr>")
                         $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation'+i+' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation'+i+' value="N"  />No</label></div>')
                         $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
+                        $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + '  checked />No</label></div>')
+                        $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
                     }
                     $('#tblvendors').append("</tbody>");
                 }
                
             }
         },
-            error: function (xhr, status, error) {
+        error: function (xhr, status, error) {
 
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
@@ -103,9 +105,18 @@ function formvalidate() {
 function frmAzurePPCForm() {
     
     var i = 0;
-    var BiddingVendorQuery = '';
+    //var BiddingVendorQuery = '';
+    var AzurevendorDetails = [];
     $("#tblvendors> tbody > tr").each(function (index) {
-        BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
+       // BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
+        var details = {
+            "VendorID": parseInt($(this).find("td").eq(0).html()),
+            "QuotationReceived": $("input[name=OpQuotation" + index + "]:checked").val(),
+            "TexhnicallyAcceptable": $("input[name=OpTechAccep" + index + "]:checked").val(),
+            "PoliticallyExposed": $("input[name=politicalyexp" + index + "]:checked").val(),
+            "QuotedValidatedSCM": $("input[name=QuotedSCM" + index + "]:checked").val()
+        };
+        AzurevendorDetails.push(details)
     });
    
     var EnquiryIssuedthrogh = $("input[name='optionenquiryissued']:checked").val();
@@ -146,7 +157,7 @@ function frmAzurePPCForm() {
         "WhetherCPBGApplicable": jQuery('#txtCPBGapplicable').val(),
         "PRDetails": jQuery('#txtPRdetails').val(),
         "EnteredBy": sessionStorage.getItem("UserID"),
-        "BiddingVendorDetails":BiddingVendorQuery
+        "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
        
     };
     // alert(JSON.stringify(Data))
@@ -337,12 +348,14 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtPRdetails').val(data[0].azureDetails[0].prDetails);
                 
                 if (data[0].biddingVendor.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:30%!important;'>Quotation Received</th><th style='width:30%!important;'>Technically Acceptable</th></tr></thead>");
+                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td></tr>")
+                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td></tr>")
                         $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y"  id=OpQuotationY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N" id=OpQuotationN' + i + ' />No</label></div>')
                         $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y" id=OpTechAccepY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  id=OpTechAccepN' + i + ' />No</label></div>')
-                       
+                        $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' />No</label></div>')
+                        $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+
                             if (data[0].biddingVendor[i].quotationReceived == "Y") {
                                 $("#OpQuotationY" + i).attr("checked", "checked");
                                 $("#OpQuotationN" + i).removeAttr("checked");
@@ -359,7 +372,26 @@ function fetchAzPPcFormDetails() {
                                 $("#OpTechAccepY" + i).removeAttr("checked");
                                 $("#OpTechAccepN" + i).attr("checked", "checked");
                             }
-                       
+                        if (data[0].biddingVendor[i].politicallyExposed == "Y") {
+                            $("#politicalyexpY" + i).attr("checked", "checked");
+                            $("#politicalyexpN" + i).removeAttr("checked");
+                            }
+                            else {
+                            $("#politicalyexpY" + i).removeAttr("checked");
+                            $("#politicalyexpN" + i).attr("checked", "checked");
+                            }
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
+                            $("#QuotedSCMY" + i).attr("checked", "checked");
+                            $("#QuotedSCMN" + i).removeAttr("checked");
+                        }
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
+                            $("#QuotedSCMNA" + i).attr("checked", "checked");
+                            $("#QuotedSCMNA" + i).removeAttr("checked");
+                        }
+                            else {
+                                $("#QuotedSCMY" + i).removeAttr("checked");
+                                $("#QuotedSCMN" + i).attr("checked", "checked");
+                            }
                     }
                   
                 }

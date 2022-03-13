@@ -703,8 +703,6 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
             $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             if ($("#ddlrfqVersion option:selected").val() == 99) {
-
-
                 $(".lambdafactor").addClass('hide');
 
             }

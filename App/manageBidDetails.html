@@ -175,27 +175,27 @@
                                                         Edit Events
                                                     </a>
                                                 </li>
-                                                <li>
+                                                <li id="litab1">
                                                     <a href="#tab_1" data-toggle="tab">
                                                         Resend Password
                                                     </a>
                                                 </li>
-                                                <li id="litab1">
+                                                <li id="litab2">
                                                     <a href="#tab_2" data-toggle="tab">
                                                         Add Vendors
                                                     </a>
                                                 </li>
-                                                <li id="litab2">
+                                                <li id="litab3">
                                                     <a href="#tab_3" data-toggle="tab">
                                                         Remove Quotes
                                                     </a>
                                                 </li>
-                                                <li id="li1">
+                                                <li id="litab4">
                                                     <a href="#tab_4" data-toggle="tab">
                                                         Time Extension
                                                     </a>
                                                 </li>
-                                                <li id="li1">
+                                                <li id="litab5">
                                                     <a href="#tab_5" data-toggle="tab">
                                                         Bid Open
                                                     </a>
@@ -910,7 +910,7 @@
                                                         <!-- BEGIN Portlet PORTLET-->
                                                         <div class="portlet light ">
 
-                                                            <div class="portlet-body">
+                                                            <div class="portlet-body" id="div_surrogate">
                                                                 <div class="alert alert-block alert-danger" id="errorsurro" style="display: none">
                                                                     <span id="spnerrorsurr"></span>
                                                                 </div>
@@ -994,10 +994,11 @@
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
                                                                                 <table style="width:920px" align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content">
-
-
-                                                                                    <thead>
+                                                                                  <thead>
                                                                                         <tr>
+                                                                                            <th><label class='checker'>
+                                                                                                <input type='checkbox' id='chkAllrem' value='All' name='chkAll' onclick='fnheckAllremainder()' checked/> All</label>
+                                                                                            </th>
                                                                                             <th>Vendors</th>
 
                                                                                         </tr>

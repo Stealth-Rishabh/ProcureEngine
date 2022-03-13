@@ -676,46 +676,61 @@ function fetchrfqcomprative() {
                 strExcelQ += "</tr>";
 
 
+                //** Add row Reinvitation Remarks & status
+                if ($("#ddlrfqVersion option:selected").val() != 0) {
+                    str += "<tr id='reinvitationTRRem'><td colspan=5><b>Re-Invitation Remarks</b></td>";
+                    strExcel += "<tr><td colspan=5><b>Re-Invitation Remarks</b></td>";
+                    for (var k = 0; k < data[0].vendorNames.length; k++) {
+
+                        if (data[0].vendorNames[k].reInvitedRemarks != "") {
+                            var reinvitedRemarks = stringDivider(data[0].vendorNames[k].reInvitedRemarks, 40, "<br/>\n");
+                            str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            strExcel += "<td colspan='4' >" + reinvitedRemarks + "</td>";
+                        }
+                        else {
+                            str += "<td colspan=4>&nbsp;</td>";
+                            strExcel += "<td colspan=4>&nbsp;</td>";
+                        }
+                    }
+                    str += "<td colspan='7'>&nbsp;</td>";
+                    str += " </tr>";
+                    strExcel += "<td colspan='7'>&nbsp;</td>";
+                    strExcel += " </tr>";
+                }
 
 
                 if ($("#ddlrfqVersion option:selected").val() != 99) {
                     //For ReInvite Row
-
-                    str += "<tr id='reinvitationTR'><td colspan=5><b>Re-Invitation Row</b></td>";
                     var maxValue = -1;
-                    for (var k = 0; k < data[0].vendorNames.length; k++) {
-                        $("#ddlrfqVersion option").each(function () {
-                            var thisVal = $(this).val();
+                    $("#ddlrfqVersion option").each(function () {
+                        var thisVal = $(this).val();
 
-                            if (maxValue < thisVal && thisVal != 99) {
-                                maxValue = thisVal;
-                            }
+                        if (maxValue < thisVal && thisVal != 99) {
+                            maxValue = thisVal;
+                        }
 
-                            if ($("#ddlrfqVersion option:selected").val() == maxValue) {
-                                reInvited = 'Y'
-                            }
-                        });
+                        if ($("#ddlrfqVersion option:selected").val() == maxValue) {
+                            reInvited = 'Y'
+                        }
+                    });
+                    if (maxValue == $("#ddlrfqVersion option:selected").val()) {
+                        $("#btn-reInvite").removeClass('hide')
+                        str += "<tr id='reinvitationTR'><td colspan=5><b>Re-Invitation Row</b></td>";
 
-                        if (maxValue == $("#ddlrfqVersion option:selected").val()) {
+                        for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                            $("#btn-reInvite").attr('disabled', false)
-                            $("#btn-reInvite").removeClass('hide')
                             str += "<td colspan='4' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].vendorNames[k].vendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
-
-
+                           
                         }
-                        else {
-
-                            $("#btn-reInvite").attr('disabled', true);
-                            $("#btn-reInvite").addClass('hide')
-
-                            str += "<td colspan=4>&nbsp;</td>";
-                        }
-
-
+                        str += "<td colspan='7'>&nbsp;</td>";
+                        str += " </tr>";
                     }
-                    str += "<td colspan='5'>&nbsp;</td>";
-                    str += " </tr>";
+                    else {
+                        $("#btn-reInvite").addClass('hide')
+                    }
+                }
+                else {
+                    $("#btn-reInvite").addClass('hide')
                 }
                 jQuery('#tblRFQComprative').append(str);
                 jQuery("#tblRFQComprativeForExcel").append(strExcel);
@@ -725,14 +740,11 @@ function fetchrfqcomprative() {
 
                 if ($("#ddlrfqVersion option:selected").val() == 99) {
                     
-                    $("#btn-reInvite").attr('disabled', true);
-                    $("#btn-reInvite").addClass('hide')
                     $("#btn_techmapaaprover").addClass('hide');
                     $(".lambdafactor").addClass('hide');
 
                 }
                 else {
-                  
                     if ($("#ddlrfqVersion option:selected").val() == '0') {
                         $("#btn_techmapaaprover").show()
                     }
@@ -1024,10 +1036,21 @@ function fetchAzPPcFormDetails() {
                 jQuery('#hdnPPCID').val(data[0].azureDetails[0].ppcid);
                
                 //alert(data[0].BiddingVendor.length)
+                var validatescm = "Yes";
                 if (data[0].biddingVendor.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:30%!important;'>Quotation Received</th><th style='width:30%!important;'>Technically Acceptable</th></tr></thead><tbody>");
+                    
+                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td></tr>")
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
+                            validatescm = "Yes";
+                        }
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
+                            validatescm = "No";
+                        }
+                        else {
+                            validatescm = "NA";
+                        }
+                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td></tr>")
                        
                     }
                     $('#tblvendors').append("</tbody>");

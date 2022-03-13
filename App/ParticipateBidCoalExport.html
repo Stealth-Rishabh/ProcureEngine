@@ -191,14 +191,16 @@
 
                     <ul class="page-breadcrumb">
                         <li id="liHome">
-                            <i class="fa fa-angle-right"></i></li><li id="LiISsurrogate" class="hide">Surrogate</li>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                        <li id="LiISsurrogate" class="hide">Surrogate</li>
                     </ul>
 
                     <!-- <div class="page-toolbar">
-                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
-                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
-                        </div>
-                    </div> -->
+                    <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
+                        <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                    </div>
+                </div> -->
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
@@ -218,8 +220,11 @@
                                             </label>
                                         </b>
                                         <input type="hidden" id="hdnDuration" />
-
+                                        <input type="hidden" id="hddnadminConnection" value="0" />
                                     </p>&nbsp;
+                                    <label class="control-label bold hide" id="pleft5mins" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                        Only 5 mins Left!!
+                                    </label>&nbsp;&nbsp;
                                     <label class="control-label bold" style="font-size:17px!important;">
                                         Time left (HH:MM:SS):
                                     </label>
@@ -241,111 +246,112 @@
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
-                          
+
                             <div class="portlet-body form" id="content">
                                 <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
-                                    <span id="error"></span></div>
-                                    <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-12 ">
-                                                <div class="form-group">
-                                                    <label class="col-md-1 control-label">
-                                                        Bid Subject:
-                                                    </label>
-                                                    <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
-                                                    </label>
-                                                </div>
+                                    <span id="error"></span>
+                                </div>
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-12 ">
+                                            <div class="form-group">
+                                                <label class="col-md-1 control-label">
+                                                    Bid Subject:
+                                                </label>
+                                                <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 ">
-                                                <div class="form-group">
-                                                    <label class=" col-md-1 control-label">
-                                                        Bid Details:
-                                                    </label>
-                                                    <!-- <div class="col-md-10"> -->
-                                                    <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
-                                                    </label>
-                                                    <!-- </div> -->
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 ">
+                                            <div class="form-group">
+                                                <label class=" col-md-1 control-label">
+                                                    Bid Details:
+                                                </label>
+                                                <!-- <div class="col-md-10"> -->
+                                                <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
+                                                </label>
+                                                <!-- </div> -->
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Bid Date:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblbiddate">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 ">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Bid Time:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblbidtime">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 ">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Bid Type:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblbidtype">
-                                                    </label>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Date:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbiddate">
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4 ">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Bid For:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblbidfor">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 ">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Bid Duration:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblbidduration">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 ">
-                                                <div class="form-control">
-                                                    <label class="col-md-6 control-label">
-                                                        Currency:
-                                                    </label>
-                                                    <label class="col-md-6 control-label" id="lblcurrency">
-                                                    </label>
-                                                </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Time:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidtime">
+                                                </label>
                                             </div>
                                         </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Type:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidtype">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid For:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidfor">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Duration:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidduration">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Currency:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblcurrency">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <div class="form-control">
+                                    <div class="form-control">
 
-                                            <label class="col-md-2 control-label">
-                                                Terms & Condition:
-                                            </label>
-                                            <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
+                                        <label class="col-md-2 control-label">
+                                            Terms & Condition:
+                                        </label>
+                                        <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
 
-                                        </div>
-                                        <div class="form-control">
-                                            <label class="col-md-2 control-label">
-                                                Attachment (Any Other):
-                                            </label>
-                                            <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
-                                        </div>
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="col-md-2 control-label">
+                                            Attachment (Any Other):
+                                        </label>
+                                        <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label "></a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -358,7 +364,7 @@
                                 </div>
                                 <div class="tools">
                                     <span id="bid_EventID" class="align-right"></span>
-                                  
+
                                 </div>
 
                             </div>
@@ -372,191 +378,195 @@
                                         <input id="hdnval" type="hidden" value="0" />
                                         <input id="hdnTimeItem" type="hidden" value="0" />
                                         <input id="hdnnoofextension" type="hidden" value="0" />
-                                        <input id="hdnAdvFactor" type="hidden" value="0" />
+                                        <input id="hdnselectedindex" type="hidden" value="0" />
                                         <!--<div class="table-responsive">
-        <table class="table table-bordered" id="tblParticipantsService"></table>
-    </div>-->
-                                        <div class="panel-group accordion" id="Coalitems">
-                                            </div>
-                                            <table class="table table-bordered" id="tblParticipantsServiceBeforeStartBid"></table>
-                                            * Bidding may get disabled in the last few seconds. Please put your bid well in time.
-                                        </div>
-
-
-</form>
-                            <!-- END FORM-->
-                        </div>
-                    </div>
-                </div>
-
-                <!--  chat section-->
-                <!-- End chat Section-->
-            </div>
-        </div>
-        <!-- BEGIN QUICK SIDEBAR -->
-        <a href="javascript:;" class="page-quick-sidebar-toggler">
-            <i class="icon-login"></i>
-        </a>
-        <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
-            <div class="page-quick-sidebar">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab">
-                            Messages
-                            
-                        </a>
-                    </li>
-                    
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-                        <div class="page-quick-sidebar-item2">
-                            <div class="page-quick-sidebar-chat-user">
-                                
-
-                                <div class="scroller" style="height: 490px;">
-                                    <div class="page-quick-sidebar-chat-user-messages" id="chatList">
-                                    </div>
-                                </div>
-                                <div class="page-quick-sidebar-chat-user-form"  style="position:absolute; bottom:1px; background:#393939; width:100%;">
-                                   
-                                    <textarea class="form-control" type="text"
-                                              placeholder="Type a message here..."
-                                              id="txtChatMsg" name="txtChatMsg"></textarea>
-                                   
-                                    <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
-                                        <i class="fa fa-check icon-white"></i> Send
-                                    </button>
-                                    <!--</div>
+                                        <table class="table table-bordered" id="tblParticipantsService"></table>
                                     </div>-->
-                                </div>
+                                        <div class="panel-group accordion" id="Coalitems">
+                                        </div>
+                                        <table class="table table-bordered" id="tblParticipantsServiceBeforeStartBid"></table>
+                                        * Bidding may get disabled in the last few seconds. Please put your bid well in time.
+                                    </div>
+
+
+                                </form>
+                                <!-- END FORM-->
                             </div>
                         </div>
                     </div>
-                   
+
+                    <!--  chat section-->
+                    <!-- End chat Section-->
+                </div>
+            </div>
+            <!-- BEGIN QUICK SIDEBAR -->
+            <a href="javascript:;" class="page-quick-sidebar-toggler">
+                <i class="icon-login"></i>
+            </a>
+            <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
+                <div class="page-quick-sidebar">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab">
+                                Messages
+
+                            </a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
+                            <div class="page-quick-sidebar-item2">
+                                <div class="page-quick-sidebar-chat-user">
+
+
+                                    <div class="scroller" style="height: 490px;">
+                                        <div class="page-quick-sidebar-chat-user-messages" id="chatList">
+                                        </div>
+                                    </div>
+                                    <div class="page-quick-sidebar-chat-user-form" style="position:absolute; bottom:1px; background:#393939; width:100%;">
+
+                                        <textarea class="form-control" type="text"
+                                                  placeholder="Type a message here..."
+                                                  id="txtChatMsg" name="txtChatMsg"></textarea>
+
+                                        <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
+                                            <i class="fa fa-check icon-white"></i> Send
+                                        </button>
+                                        <!--</div>
+                                    </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- END QUICK SIDEBAR -->
+        </div>
+
+        <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Help
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+
+                        <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                            <p class="ppolicy-text"><b></b></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- END QUICK SIDEBAR -->
-    </div>
-
-    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-reorder"></i>Help
-                    </div>
-                    <div class="tools">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                   
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                        <p class="ppolicy-text"><b></b></p>
-                    </div>
-                </div>
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
             </div>
         </div>
-    </div>
-    <div class="page-footer">
-        <div class="page-footer-inner">
-            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
-        </div>
-        <div class="scroll-to-top">
-            <i class="icon-arrow-up"></i>
-        </div>
-    </div>
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+                type="text/javascript"></script>
+        <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+        <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+        <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+        <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+        <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+        <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
 
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/ParticipateBidCoalExport.js" type="text/javascript"></script>
-    <script>
-
-        jQuery(document).ready(function () {
-            Pageloaded()
-            $('ul#chatList').slimScroll({
-                height: '250px'
+        <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+        <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+        <script src="assets/SignalRjs/signalr.js"></script>
+        <script src="assets/scripts/core/app.js"></script>
+        <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+        <script src="assets/scripts/aes.js"></script>
+        <script src="assets/CustomJS/TypeaHead.js"></script>
+        <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+        <script src="assets/CustomJS/ParticipateBidCoalExport.js" type="text/javascript"></script>
+        <script>
+            $(window).focus(function (e) {
+                fetchVendorDetails()
+                // e.preventDefault();
             });
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
+            jQuery(document).ready(function () {
+                Pageloaded()
+                $('ul#chatList').slimScroll({
+                    height: '250px'
                 });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P" ) { 
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
+                setInterval(function () { Pageloaded() }, 15000);
+                if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                    bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+                        window.location = sessionStorage.getItem('MainUrl');
                         return false;
                     });
                 }
-            }
+                else {
+                    if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+                        $('.page-container').show();
+                    }
+                    else {
+                        bootbox.alert("You are not authorize to view this page", function () {
+                            parent.history.back();
+                            return false;
+                        });
+                    }
+                }
 
-            Metronic.init();
-            Layout.init();
-            App.init();
-            QuickSidebar.init();
-            setCommonData();
-            
-            fetchVendorDetails();
-            if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
-                $('#LiISsurrogate').removeClass('hide')
-            }
-            else {
-                $('#LiISsurrogate').addClass('hide')
-            }
-            $(".pulsate-regular").css('animation', 'none');
-           
-        });
-    </script>
-    <!-- END JAVASCRIPTS -->
+                Metronic.init();
+                Layout.init();
+                App.init();
+                QuickSidebar.init();
+                setCommonData();
+
+                fetchVendorDetails();
+                if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                    $('#LiISsurrogate').removeClass('hide')
+                }
+                else {
+                    $('#LiISsurrogate').addClass('hide')
+                }
+                $(".pulsate-regular").css('animation', 'none');
+
+            });
+        </script>
+        <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
 </html>

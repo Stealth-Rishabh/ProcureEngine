@@ -218,7 +218,7 @@ function FetchAllCloseBids() {
                 jQuery('#tblVendorSummary').append("<thead><tr><th><label class='checkbox-inline checker'><input type='checkbox' id='chkAll' value='All' name='chkAll' onclick='fnheckAll()' /> All</label></th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class=hide></th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
                 for (var i = 0; i < BidData.length; i++) {
                   
-                    var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\,\'" + BidData[i].toUserId + "'\)\"; Onclick=\"Check(this)\"; id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
+                    var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\,\'" + BidData[i].toUserId + "'\)\";  id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
                   
                     str += "<td class='text-left'>" + BidData[i].bidID + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
@@ -414,7 +414,7 @@ function fnCloseBids() {
     }
     
    // alert(JSON.stringify(data))
-  console.log(JSON.stringify(data))
+  //console.log(JSON.stringify(data))
     jQuery.ajax({
         url: APIPath + "BidVendorSummary/SendReminderToPendingApprovers",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

@@ -377,7 +377,7 @@ function fetchVQDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-           
+            sessionStorage.setItem('CustomerID', BidData[0].vqMaster[0].customerID)
             attachment = BidData[0].vqMaster[0].vqAttachment.replace(/\s/g, "%20")
            
             jQuery('#RFISubject').text(BidData[0].vqMaster[0].vqSubject)
@@ -401,19 +401,18 @@ function fetchRFIDetails(){
     var attachment = ''
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFIMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFIID=" + sessionStorage.getItem('hddnRFQRFIID') + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('hddnRFQRFIID') ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-          
-            attachment = BidData[0].RFIMaster[0].RFIAttachment.replace(/\s/g, "%20")
-            sessionStorage.setItem('CurrentrfiID', BidData[0].RFIMaster[0].RFIId)
-            jQuery('#RFISubject').text(BidData[0].RFIMaster[0].RFISubject)
-            jQuery('#RFIDeadline').text(BidData[0].RFIMaster[0].RFIDeadline)
-            jQuery('#RFIDescription').text(BidData[0].RFIMaster[0].RFIDescription)
+            sessionStorage.setItem('CustomerID', BidData[0].rfxMaster[0].customerID)
+            sessionStorage.setItem('CurrentRFXID', BidData[0].rfxMaster[0].rfxid)
+            jQuery('#RFISubject').text(BidData[0].rfxMaster[0].rfxSubject)
+            jQuery('#RFIDeadline').text(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#RFIDescription').text(BidData[0].rfxMaster[0].rfxDescription)
 
         },
         error: function (xhr, status, error) {
@@ -442,7 +441,7 @@ function fetchReguestforQuotationDetailseRFQ() {
         dataType: "json",
         success: function (RFQData) {
             
-           
+            sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
            
             $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -526,7 +525,7 @@ function acceptBidTermsRFIVQ() {
             }
         },
         error: function (xhr, status, error) {
-            alert('error')
+           
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
            
             if (xhr.status == 401) {
@@ -573,13 +572,15 @@ function eRFQAcceptBidTerms() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-   
+   var custid=0
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+    if ($('#ULCustomers').val() != null) {
+        custid=$('#ULCustomers').val()
+    }
    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&RequestType=" + requesttype + "&CustomerID=" + $('#ULCustomers').val(),
+        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&RequestType=" + requesttype + "&CustomerID=" + custid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -927,7 +928,7 @@ function fetchBidHeaderDetails() {
             console.log("dataa > ", data)
             if (data.length == 1) {
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
-               
+                sessionStorage.setItem('CustomerID', data[0].customerID)
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);

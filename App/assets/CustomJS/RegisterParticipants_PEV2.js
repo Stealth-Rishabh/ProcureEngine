@@ -188,6 +188,23 @@ function RegisterParticipants() {
     else {
         status = 'N';
     }
+    var InsertQuery = '';
+    $('.childchkbox').each(function () {
+        if (this.checked) {
+           InsertQuery = InsertQuery + $(this).val() + "#";
+        }
+    });
+
+    if (InsertQuery == '') {
+
+        $('#divalerterr').find('span').text('Please select atleast one group!');
+        $('#divalerterr').slideDown('show');
+        App.scrollTo(jQuery('#divalerterr'), -200);
+        return false;
+        setTimeout(function () {
+            jQuery('#divalerterr').css('display', 'none');
+        }, 5000);
+    }
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
@@ -203,7 +220,8 @@ function RegisterParticipants() {
         "MobileNo": jQuery("#txtMobileNo").val(),
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
-        "AlternateEmailID": $('#txtAlternateeMailID').val()
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ProductCatID": InsertQuery
 
     };
     // console.log(JSON.stringify(RegisterParticipants))
@@ -220,19 +238,14 @@ function RegisterParticipants() {
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
            
-            if (data.isSuccess == '1') {
-
-                if ($("#hdnParticipantID").val() != '') {
-                    MapVendorCategories();
-                }
-            }
-            else if (data.isSuccess == '2') {
-                if ($("#hdnParticipantID").val() != '') {
-                    MapVendorCategories();
-                }
+          
+            if (data.isSuccess != '1' && data.isSuccess != '2') {
+                fnshowexistedVendorForextend();
             }
             else {
-                fnshowexistedVendorForextend();
+                $('#divalertsucess').slideDown('show');
+                App.scrollTo(jQuery('#divalertsucess'), -200);
+                clearform();
             }
             setTimeout(function() {
                 jQuery('#divalertsucess').css('display', 'none');
@@ -286,8 +299,7 @@ function fnshowexistedVendorForextend() {
                     for (var i = 0; i < data.length; i++) {
                         addr1 = data[0].address1.replace(/\n/g, " ");
                         addr2 = data[0].address2.replace(/\n/g, " ");
-                       
-                        $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                       $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
                     }
                 }
@@ -710,80 +722,80 @@ jQuery("#txtSearch").keyup(function () {
             jQuery(this).show();
     });
 });
-function MapVendorCategories() {
+//function MapVendorCategories() {
 
-    var InsertQuery = '';
+//    var InsertQuery = '';
    
-    $('.childchkbox').each(function() {
-        if (this.checked) {
-           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
-            InsertQuery = InsertQuery + $(this).val() + "#";
-        }
+//    $('.childchkbox').each(function() {
+//        if (this.checked) {
+//           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
+//            InsertQuery = InsertQuery + $(this).val() + "#";
+//        }
         
-    });
+//    });
 
-    if (InsertQuery == '') {
+//    if (InsertQuery == '') {
 
-        jQuery('#divalerterr').find('span').text('Please select atleast one group!');
-        jQuery('#divalerterr').slideDown('show');
-        App.scrollTo(jQuery('#divalerterr'), -200);
-        return false;
-        setTimeout(function() {
-            jQuery('#divalerterr').css('display', 'none');
-        }, 5000);
-    }
+//        jQuery('#divalerterr').find('span').text('Please select atleast one group!');
+//        jQuery('#divalerterr').slideDown('show');
+//        App.scrollTo(jQuery('#divalerterr'), -200);
+//        return false;
+//        setTimeout(function() {
+//            jQuery('#divalerterr').css('display', 'none');
+//        }, 5000);
+//    }
 
 
-    var MapParticipants = {
-        "CustomerID":parseInt(sessionStorage.getItem('CustomerID')),
-        "InsertQuery": InsertQuery,
-        "UserID": sessionStorage.getItem('UserID'),
-        "VendorID": parseInt($("#hdnParticipantID").val())
+//    var MapParticipants = {
+//        "CustomerID":parseInt(sessionStorage.getItem('CustomerID')),
+//        "InsertQuery": InsertQuery,
+//        "UserID": sessionStorage.getItem('UserID'),
+//        "VendorID": parseInt($("#hdnParticipantID").val())
         
-    };
-    //console.log(JSON.stringify(MapParticipants))
-   // alert(JSON.stringify(MapParticipants))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(MapParticipants),
-        contentType: "application/json; charset=utf-8",
-        success: function(data, status, jqXHR) {
+//    };
+//    //console.log(JSON.stringify(MapParticipants))
+//   // alert(JSON.stringify(MapParticipants))
+//    jQuery.ajax({
+//        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
+//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+//        type: "POST",
+//        data: JSON.stringify(MapParticipants),
+//        contentType: "application/json; charset=utf-8",
+//        success: function(data, status, jqXHR) {
        
-        //if (data == '1') {
-            jQuery('#divalertsucess').slideDown('show');
-            App.scrollTo(jQuery('#divalertsucess'), -200);
-            fetchParticipantsVenderTable();
-            clearform();
-        // }
-            //else {
+//        //if (data == '1') {
+//            jQuery('#divalertsucess').slideDown('show');
+//            App.scrollTo(jQuery('#divalertsucess'), -200);
+//            fetchParticipantsVenderTable();
+//            clearform();
+//        // }
+//            //else {
 
-            //    jQuery('#divalerterr').slideDown('show');
-            //    App.scrollTo(jQuery('#divalerterr'), -200);
-            // }
-            setTimeout(function() {
-                jQuery('#divalertsucess').css('display', 'none');
-                jQuery('#divalerterr').css('display', 'none');
+//            //    jQuery('#divalerterr').slideDown('show');
+//            //    App.scrollTo(jQuery('#divalerterr'), -200);
+//            // }
+//            setTimeout(function() {
+//                jQuery('#divalertsucess').css('display', 'none');
+//                jQuery('#divalerterr').css('display', 'none');
               
-            }, 5000);
+//            }, 5000);
             
-        },
-        error: function (xhr, status, error) {
+//        },
+//        error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spanerterr', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
+//            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+//            if (xhr.status == 401) {
+//                error401Messagebox(err.Message);
+//            }
+//            else {
+//                fnErrorMessageText('spanerterr', '');
+//            }
+//            jQuery.unblockUI();
+//            return false;
+//        }
         
-    });
-}
+//    });
+//}
 
 jQuery("#txtSearchCategory").keyup(function () {
 
@@ -872,36 +884,36 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-
-                if ($('#txtUI').val().length == "15" || $('#txtUI').val().length == "11") {
+                if ($('#txtUI').val().length == "15" && $('#ddlUI').val().toLowerCase() == "servicetaxno") {
+                   
                     $('#divVendorForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
                 }
 
+                else if ($('#txtUI').val().length == "11" && $('#ddlUI').val().toLowerCase() == "vendorcode" && $('#txtUI').val().substring(0, 2).toLowerCase() == "vd" && $('#txtUI').val()!="") {
+                    $('#divVendorForm').removeClass('hide')
+                    $('#div_tableVendor').removeClass('hide');
+                }
+                
                 $('#tblVendorFoundDetails').empty();
                 var addr1 = "";
                 var addr2 = "";
                 if (data.length > 0) {
+                    
                     $('#tblVendorFoundDetails').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th></th></tr></thead><tbody>")
                     for (var i = 0; i < data.length; i++) {
 
                         addr1 = data[i].address1.replace(/\n/g, " ");
-
                         addr2 = data[i].address2.replace(/\n/g, " ");
-
                         if (data[i].buttonName == "Extend") {
                             $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-
                         }
                         else {
                             $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-
                         }
-
                     }
                 }
                 else {
-
 
                     if ($('#ddlUI').val() == "PanNo") {
                         $('#txtPanNo').val($('#txtUI').val().toUpperCase())
@@ -918,7 +930,6 @@ function fnfetchfoundVendors() {
                 }
             },
             error: function (xhr, status, error) {
-
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -938,7 +949,8 @@ function fnfetchfoundVendors() {
         jQuery('#divalerterr').css('display', 'none');
     }, 5000);
 }
-function AddVendor() {
+function AddVendor()
+{
     clearform();
     $('#divVendorForm').removeClass('hide')
     $('#ParticipantName').removeAttr('disabled')
@@ -952,20 +964,20 @@ function AddVendor() {
     $('#chkalternatemail').removeAttr('disabled')
     //$('#txtAlternateeMailID').removeAttr('disabled')
     jQuery("#ContactName").removeAttr('disabled')
-    $('#lbl_panmsz').addClass('hide')
-    jQuery('#hdnParticipantID').val('0');
+    $('#lbl_panmsz').addClass('hide');
+    $('#hdnParticipantID').val('0');
 
     if ($('#ddlUI').val() == "PanNo")
     {
-        $('#txtPanNo').val($('#txtUI').val())
-        $('#txtPanNo').attr('disabled', 'disabled')
+        $('#txtPanNo').val($('#txtUI').val());
+        $('#txtPanNo').attr('disabled', 'disabled');
     }
     else {
         var pan = $('#txtUI').val().substr(2, 10);//11
         $('#txtPanNo').val(pan);
-        $('#txtTINNo').val($('#txtUI').val())
-        $('#txtPanNo').attr('disabled', 'disabled')
-        $('#txtTINNo').attr('disabled', 'disabled')
+        $('#txtTINNo').val($('#txtUI').val());
+        $('#txtPanNo').attr('disabled', 'disabled');
+        $('#txtTINNo').attr('disabled', 'disabled');
     }
 }
 $("#txtUI").keyup(function () {
@@ -973,19 +985,19 @@ $("#txtUI").keyup(function () {
 });
 function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode,alternatemailid) {
    // alert(buttonname)
-    $('#hdnFlagType').val(buttonname)
-    jQuery("#hdnParticipantID").val(vendorid)
-    $("#hdnParticipantCode").val(vendorcode)
-    jQuery("#ParticipantName").val(vname)
-    jQuery("#txtAddress").val(decodeURIComponent(addr1))
-    jQuery("#txtCity").val(decodeURIComponent(addr2))
-    jQuery("#txtPanNo").val(pan)
-    jQuery("#txtTINNo").val(gst)
-    jQuery("#txtPhoneNo").val(phone)
-    jQuery("#txtMobileNo").val(mobile)
-    jQuery("#ContactName").val(contactp)
-    jQuery("#txtcompanyemail").val(emailid)
-    jQuery("#txtAlternateeMailID").val(alternatemailid)
+    $('#hdnFlagType').val(buttonname);
+    jQuery("#hdnParticipantID").val(vendorid);
+    $("#hdnParticipantCode").val(vendorcode);
+    jQuery("#ParticipantName").val(vname);
+    jQuery("#txtAddress").val(decodeURIComponent(addr1));
+    jQuery("#txtCity").val(decodeURIComponent(addr2));
+    jQuery("#txtPanNo").val(pan);
+    jQuery("#txtTINNo").val(gst);
+    jQuery("#txtPhoneNo").val(phone);
+    jQuery("#txtMobileNo").val(mobile);
+    jQuery("#ContactName").val(contactp);
+    jQuery("#txtcompanyemail").val(emailid);
+    jQuery("#txtAlternateeMailID").val(alternatemailid);
   
     if (isactive == "Y" || isactive.toLowerCase() == "yes") {
         jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
@@ -995,82 +1007,99 @@ function EditVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, add
         jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
         jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
     }
-    $('#divVendorForm').removeClass('hide')
+    $('#divVendorForm').removeClass('hide');
     fetchMapCategory('Z', vendorid);
 
     if (buttonname == "EditCustomerVendor") {
-        $('#ParticipantName').attr('disabled', 'disabled')
-        $('#txtAddress').attr('disabled', 'disabled')
-        $('#txtCity').attr('disabled', 'disabled')
-        $('#txtPanNo').attr('disabled', 'disabled')
-        $('#txtTINNo').attr('disabled', 'disabled')
-        $('#txtPhoneNo').attr('disabled', 'disabled')
-        $('#txtMobileNo').attr('disabled', 'disabled')
-        $('#txtcompanyemail').attr('disabled', 'disabled')
-        $('#chkalternatemail').attr('disabled', 'disabled')
+        $('#ParticipantName').attr('disabled', 'disabled');
+        $('#txtAddress').attr('disabled', 'disabled');
+        $('#txtCity').attr('disabled', 'disabled');
+        $('#txtPanNo').attr('disabled', 'disabled');
+        $('#txtTINNo').attr('disabled', 'disabled');
+        $('#txtPhoneNo').attr('disabled', 'disabled');
+        $('#txtMobileNo').attr('disabled', 'disabled');
+        $('#txtcompanyemail').attr('disabled', 'disabled');
+        $('#chkalternatemail').attr('disabled', 'disabled');
         //$('#txtAlternateeMailID').attr('disabled', 'disabled')
-        jQuery("#ContactName").attr('disabled', 'disabled')
-        $('#lbl_panmsz').removeClass('hide')
+        $("#ContactName").attr('disabled', 'disabled');
+        $('#lbl_panmsz').removeClass('hide');
     }
     else {
-        $('#ParticipantName').removeAttr('disabled')
-        $('#txtAddress').removeAttr('disabled')
-        $('#txtCity').removeAttr('disabled')
-        $('#txtPanNo').removeAttr('disabled')
-        $('#txtTINNo').removeAttr('disabled')
-        $('#txtPhoneNo').removeAttr('disabled')
-        $('#txtMobileNo').removeAttr('disabled')
-        $('#txtcompanyemail').removeAttr('disabled')
-        $('#chkalternatemail').removeAttr('disabled')
+        $('#ParticipantName').removeAttr('disabled');
+        $('#txtAddress').removeAttr('disabled');
+        $('#txtCity').removeAttr('disabled');
+        $('#txtPanNo').removeAttr('disabled');
+        $('#txtTINNo').removeAttr('disabled');
+        $('#txtPhoneNo').removeAttr('disabled');
+        $('#txtMobileNo').removeAttr('disabled');
+        $('#txtcompanyemail').removeAttr('disabled');
+        $('#chkalternatemail').removeAttr('disabled');
         //$('#txtAlternateeMailID').removeAttr('disabled')
-        jQuery("#ContactName").removeAttr('disabled')
-        $('#lbl_panmsz').addClass('hide')
+        jQuery("#ContactName").removeAttr('disabled');
+        $('#lbl_panmsz').addClass('hide');
     }
 }
 function ExtendVendor(vendorid, vname,contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname,vendorcode) {
    
-    jQuery("#hdnParticipantID").val(vendorid)
-    $("#hdnParticipantCode").val(vendorcode)
-    $('#hdnFlagType').val(buttonname)
-     jQuery("#ParticipantName").val(vname)
-     jQuery("#txtAddress").val(addr1)
-      jQuery("#txtCity").val(addr2)
-     jQuery("#txtPanNo").val(pan)
-    jQuery("#txtTINNo").val(gst)
-    jQuery("#txtPhoneNo").val(phone)
-    jQuery("#txtMobileNo").val(mobile)
-    jQuery("#ContactName").val(contactp)
+    $("#hdnParticipantID").val(vendorid);
+    $("#hdnParticipantCode").val(vendorcode);
+    $('#hdnFlagType').val(buttonname);
+    $("#ParticipantName").val(vname);
+    $("#txtAddress").val(addr1);
+    $("#txtCity").val(addr2);
+    $("#txtPanNo").val(pan);
+    $("#txtTINNo").val(gst);
+    $("#txtPhoneNo").val(phone);
+    $("#txtMobileNo").val(mobile);
+    $("#ContactName").val(contactp);
 
-    jQuery("#txtcompanyemail").val(emailid)
-    jQuery("#txtAlternateeMailID").val(emailid)
-    $('#ParticipantName').attr('disabled', 'disabled')
-    $('#txtAddress').attr('disabled', 'disabled')
-    $('#txtCity').attr('disabled', 'disabled')
-    $('#txtPanNo').attr('disabled', 'disabled')
-    $('#txtTINNo').attr('disabled', 'disabled')
-    $('#txtPhoneNo').attr('disabled', 'disabled')
-    $('#txtMobileNo').attr('disabled', 'disabled')
-    $('#txtcompanyemail').attr('disabled', 'disabled')
-    $('#chkalternatemail').attr('disabled', 'disabled')
+    jQuery("#txtcompanyemail").val(emailid);
+    jQuery("#txtAlternateeMailID").val(emailid);
+    $('#ParticipantName').attr('disabled', 'disabled');
+    $('#txtAddress').attr('disabled', 'disabled');
+    $('#txtCity').attr('disabled', 'disabled');
+    $('#txtPanNo').attr('disabled', 'disabled');
+    $('#txtTINNo').attr('disabled', 'disabled');
+    $('#txtPhoneNo').attr('disabled', 'disabled');
+    $('#txtMobileNo').attr('disabled', 'disabled');
+    $('#txtcompanyemail').attr('disabled', 'disabled');
+    $('#chkalternatemail').attr('disabled', 'disabled');
    // $('#txtAlternateeMailID').attr('disabled', 'disabled')
-    jQuery("#ContactName").attr('disabled', 'disabled')
-    $('#divVendorForm').removeClass('hide')
-    $('#lbl_panmsz').removeClass('hide')
+    jQuery("#ContactName").attr('disabled', 'disabled');
+    $('#divVendorForm').removeClass('hide');
+    $('#lbl_panmsz').removeClass('hide');
     if (isactive == "Y") {
-        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
-        jQuery('#chkIsActiveparticipant').parents('div').addClass('checked');
+        $('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
+        $('#chkIsActiveparticipant').parents('div').addClass('checked');
     }
     else {
-        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
-        jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
+        $('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
+        $('#chkIsActiveparticipant').parents('div').removeClass('checked');
     }
    
 }
 function ExtendParticipants() {
+    var InsertQuery = '';
+    $('.childchkbox').each(function () {
+        if (this.checked) {
+            InsertQuery = InsertQuery + $(this).val() + "#";
+        }
+    });
+
+    if (InsertQuery == '') {
+        $('#divalerterr').find('span').text('Please select atleast one group!');
+        $('#divalerterr').slideDown('show');
+        App.scrollTo(jQuery('#divalerterr'), -200);
+        return false;
+        setTimeout(function () {
+            jQuery('#divalerterr').css('display', 'none');
+        }, 5000);
+    }
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "VendorCode": jQuery("#hdnParticipantCode").val(),
-        "UserID": sessionStorage.getItem('UserID')
+        "UserID": sessionStorage.getItem('UserID'),
+        "ProductCatID": InsertQuery
     }
     jQuery.ajax({
 
@@ -1080,20 +1109,22 @@ function ExtendParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           
+
             if (data.isSuccess == '1') {
                 $("#hdnParticipantID").val(data.participantID)
-                MapVendorCategories();
+                $('#divalertsucess').slideDown('show');
+                App.scrollTo(jQuery('#divalertsucess'), -200);
+                clearform();
+               // MapVendorCategories();
             }
             else {
-                jQuery('#spanerterr').text('Vendor is already exists for this customer.')
-                jQuery('#divalerterr').slideDown('show');
+                $('#spanerterr').text('Vendor is already exists for this customer.')
+                $('#divalerterr').slideDown('show');
                 App.scrollTo(jQuery('#divalerterr'), -200);
             }
-
             setTimeout(function () {
-                jQuery('#divalertsucess').css('display', 'none');
-                jQuery('#divalerterr').css('display', 'none');
+                $('#divalertsucess').css('display', 'none');
+                $('#divalerterr').css('display', 'none');
             }, 5000);
             fnfetchfoundVendors();
             fetchParticipantsVenderTable();
@@ -1106,7 +1137,8 @@ function ExtendParticipants() {
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else {
+            else
+            {
                 fnErrorMessageText('spanerterr', '');
             }
             jQuery.unblockUI();
@@ -1154,7 +1186,7 @@ function clearform() {
 function fnchangeplaceholder() {
     clearform();
     $('#txtUI').val('');
-    $('#txtUI').attr("placeholder", $('#ddlUI  option:selected').text())
+    $('#txtUI').attr("placeholder", $('#ddlUI  option:selected').text());
     if ($('#ddlUI  option:selected').val() =="PanNo") {
         $("#txtUI").attr('maxlength', '10');
         $("#txtUI").attr('minlength', '10');

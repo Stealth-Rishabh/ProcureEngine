@@ -11,7 +11,6 @@ var Vehicleerror1 = $('#errordiv1');
 var Vehiclesuccess1 = $('#successdiv1');
 
 var currentdate = new Date();
-
 $(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
@@ -79,7 +78,7 @@ var FormWizard = function () {
                     },
                     txtenddatettime: {
                         required: true
-                       
+
                     },
                     txtrfqdescription: {
                         required: true
@@ -100,12 +99,12 @@ var FormWizard = function () {
                     drp_TechnicalApp: {
                         required: true
                     },
-                  
+
                     //Second Tab
-                    
+
                     txtbiddescriptionP: {
                         required: true
-                       
+
                     },
                     txtedelivery: {
                         required: true
@@ -113,69 +112,69 @@ var FormWizard = function () {
                     //dropuom: {
                     //    required: true
                     //},
-                    txtUOM:{
+                    txtUOM: {
                         required: true
                     },
-                     txttargetprice: {
-                         number: true,
-                        
+                    txttargetprice: {
+                        number: true,
+
                     },
                     //txtlastinvoiceprice: {
                     //    number: true
                     //},
-                     txtquantitiy: {
-                         required: true,
-                         maxlength: 18,
-                         notEqualTo: 0
-                     },
-                     txtshortname: {
-                         required: true,
-                         maxlength:200
-                     },
-                     txtItemCode: {
+                    txtquantitiy: {
+                        required: true,
+                        maxlength: 18,
+                        notEqualTo: 0
+                    },
+                    txtshortname: {
+                        required: true,
+                        maxlength: 200
+                    },
+                    txtItemCode: {
                         // required: true,
-                         maxlength: 50
-                     },
+                        maxlength: 50
+                    },
                     txtItemRemarks: {
                         required: true,
-                        maxlength:200
-                     },
-                     //txttat: {
-                     //    digits: true,
-                     //    maxlength: 4,
-                     //    //notEqualTo: 0
-                     //},
-                     txtPono: {
-                         maxlength:20,
+                        maxlength: 200
+                    },
+                    //txttat: {
+                    //    digits: true,
+                    //    maxlength: 4,
+                    //    //notEqualTo: 0
+                    //},
+                    txtPono: {
+                        maxlength: 20,
                         /* required: true*/
-                     },
-                     txtunitrate: {
+                    },
+                    txtunitrate: {
                         // required: true,
-                         number:true
-                     },
-                     txtvendorname: {
+                        number: true
+                    },
+                    txtvendorname: {
                         // required: true
-                     },
-                     txtPODate: {
+                    },
+                    txtPODate: {
                         // required: true
-                     },
-                     txtpovalue:{
+                    },
+                    txtpovalue: {
                         // required: true,
-                         number:true
-                     },
+                        number: true
+                    },
                     //Third Tab
-                    AttachDescription1:{
+                    AttachDescription1: {
                         required: true
                     }
 
                 },
 
-                messages: {                    
+                messages: {
 
                 },
 
                 errorPlacement: function (error, element) {
-                     if (element.attr("name") == "txtPODate") {
+                    if (element.attr("name") == "txtPODate") {
                         error.insertAfter("#daterr");
                     }
                     else {
@@ -204,7 +203,7 @@ var FormWizard = function () {
 
                     $(element)
 
-                         .closest('.col-md-4,.xyz,.col-md-2').removeClass('has-success').addClass('has-error');
+                        .closest('.col-md-4,.xyz,.col-md-2').removeClass('has-success').addClass('has-error');
 
                 },
 
@@ -227,8 +226,7 @@ var FormWizard = function () {
                         label.remove();
 
                     }
-                    else
-                    {
+                    else {
                         label.addClass('valid').closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
                         label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success'); // set success class to the control group
 
@@ -236,16 +234,16 @@ var FormWizard = function () {
 
                 },
 
-            submitHandler: function (form) {
+                submitHandler: function (form) {
                     // success.show();
-                         error.hide();
-                    }
-             });
+                    error.hide();
+                }
+            });
 
 
 
             var displayConfirm = function () {
-                     $('#tab4 .form-control-static', form).each(function () {
+                $('#tab4 .form-control-static', form).each(function () {
 
                     var input = $('[name="' + $(this).attr("data-display") + '"]', form);
 
@@ -312,14 +310,14 @@ var FormWizard = function () {
 
 
                 if (current == 1) {
-                         $('#form_wizard_1').find('.button-previous').hide();
+                    $('#form_wizard_1').find('.button-previous').hide();
 
                 } else {
-                        $('#form_wizard_1').find('.button-previous').show();
+                    $('#form_wizard_1').find('.button-previous').show();
 
                 }
 
-               if (current >= total) {
+                if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
 
@@ -348,31 +346,31 @@ var FormWizard = function () {
 
                 onTabClick: function (tab, navigation, index, clickedIndex) {
                     return false;
-                 },
+                },
 
                 onNext: function (tab, navigation, index) {
                     success.hide();
                     error.hide();
                     if (index == 1) {
-                       
+
                         var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
                         var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
                         var CurDateonly = new Date(currentdate.toDateString())
                         var StartDTdateonly = new Date(StartDT.toDateString())
-                       if (form.valid() == false) {
+                        if (form.valid() == false) {
                             return false;
 
-                       }
-                       else if ($('#txtenddatettime').val() == '') {
-                           $('.alert-danger').show();
-                           $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                           $('#spandanger').html('Please Enter RFQ END Date');
-                           Metronic.scrollTo($(".alert-danger"), -200);
-                           $('.alert-danger').fadeOut(7000);
-                           return false;
+                        }
+                        else if ($('#txtenddatettime').val() == '') {
+                            $('.alert-danger').show();
+                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                            $('#spandanger').html('Please Enter RFQ END Date');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
+                            return false;
 
-                       }
-                           else if ($('#txtstartdatettime').val() != '' && StartDTdateonly < CurDateonly) {
+                        }
+                        else if ($('#txtstartdatettime').val() != '' && StartDTdateonly < CurDateonly) {
                             $('.alert-danger').show();
                             $('#txtstartdatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Start Date Time must greater than Current Date Time.');
@@ -398,26 +396,26 @@ var FormWizard = function () {
                             $('.alert-danger').fadeOut(7000);
                             $('#txtenddatettime').val('')
                             return false;
-                       }
-                       else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
-                                $('.alert-danger').show();
-                                $('#spandanger').html('Please  Map Commercial Approver.');
-                                Metronic.scrollTo($(".alert-danger"), -200);
-                                $('.alert-danger').fadeOut(5000);
-                                return false;
+                        }
+                        else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
+                            $('.alert-danger').show();
+                            $('#spandanger').html('Please  Map Commercial Approver.');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
 
-                       }
-                       else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
-                           $('.alert-danger').show();
-                           $('#spandanger').html('Please Map Approver.');
-                           Metronic.scrollTo($(".alert-danger"), -200);
-                           $('.alert-danger').fadeOut(5000);
-                           return false;
+                        }
+                        else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
+                            $('.alert-danger').show();
+                            $('#spandanger').html('Please Map Approver.');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
 
-                       }
+                        }
                         else {
                             InsUpdRFQDEtailTab1()
-                            
+
                         }
 
                     } else if (index == 2) {
@@ -432,7 +430,7 @@ var FormWizard = function () {
                         else {
                             InsUpdRFQDEtailTab2()
                         }
-                        
+
                     }
                     else if (index == 3) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
@@ -455,7 +453,7 @@ var FormWizard = function () {
                             fnsaveAttachmentsquestions();
                         }
                     }
-                     handleTitle(tab, navigation, index);
+                    handleTitle(tab, navigation, index);
 
                 },
 
@@ -473,16 +471,16 @@ var FormWizard = function () {
                     var $percent = (current / total) * 100;
 
                     $('#form_wizard_1').find('.progress-bar').css({
-                         width: $percent + '%'
+                        width: $percent + '%'
                     });
-                 }
+                }
 
             });
 
             $('#form_wizard_1').find('.button-previous').hide();
 
-            $('#form_wizard_1 .button-submit').click(function () {        
-                 if ($('#tblServicesProduct > tbody >tr').length == 0) {
+            $('#form_wizard_1 .button-submit').click(function () {
+                if ($('#tblServicesProduct > tbody >tr').length == 0) {
                     $('#form_wizard_1').bootstrapWizard('previous');
                     error.show();
 
@@ -492,9 +490,9 @@ var FormWizard = function () {
 
                 }
                 else if (ValidateVendor() == 'false') {
-                         return false;
+                    return false;
                 }
-                 else {
+                else {
                     RFQInviteVendorTab3();
                     fetchPSBidDetailsForPreview()
                     return true;
@@ -513,9 +511,9 @@ var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
 function InsUpdRFQDEtailTab1() {
-   jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-	var TermsConditionFileName = '';
-   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var TermsConditionFileName = '';
+
     if ($('#attach-file').html() != '' && $('#file1').val() == '') {
         TermsConditionFileName = $.trim(jQuery('#attach-file').html());
     } else {
@@ -528,7 +526,7 @@ function InsUpdRFQDEtailTab1() {
     if (rowCount >= 1) {
         jQuery('#tblapprovers >tbody >tr').each(function () {
             var this_row = $(this);
-           
+
             var app = {
                 "UserID": parseInt($.trim(this_row.find('td:eq(3)').html())),
                 "ApproverType": 'C',
@@ -539,13 +537,13 @@ function InsUpdRFQDEtailTab1() {
         })
     }
     var rowCounttech = jQuery('#tblapproverstech >tbody >tr').length;
-    
+
     var showP = 'Y';
     if (rowCounttech >= 1) {
         $("#tblapproverstech >tbody >tr").each(function () {
             var this_row = $(this);
             showP = 'Y';
-            
+
             if (!$("#chkshowp" + $.trim(this_row.find('td:eq(3)').html())).is(":checked")) {
                 showP = 'N';
             }
@@ -558,9 +556,9 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-   
+
     var Tab1Data = {
-      
+
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
         "RFQSubject": jQuery("#txtrfqSubject").val(),
         "RFQStartDate": jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
@@ -574,9 +572,9 @@ function InsUpdRFQDEtailTab1() {
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
         "TechnicalApproval": $("#drp_TechnicalApp").val()
-       
 
-    }; 
+
+    };
     //console.log(JSON.stringify(Tab1Data))
     //alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
@@ -594,10 +592,10 @@ function InsUpdRFQDEtailTab1() {
 
             //** Upload Files on Azure PortalDocs folder
             if ($('#file1').val() != '') {
-                fnUploadFilesonAzure('file1',TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+                fnUploadFilesonAzure('file1', TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 
             }
-            
+
         },
         error: function (xhr, status, error) {
 
@@ -610,7 +608,7 @@ function InsUpdRFQDEtailTab1() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
 
@@ -657,7 +655,7 @@ function InsUpdRFQDEtailTab2() {
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
                 "PoDate": $.trim(this_row.find('td:eq(14)').html()),
                 "PoValue": parseFloat(removeThousandSeperator(povalue))
-               
+
 
             }
             ItemDetails.push(tab2Items)
@@ -667,11 +665,11 @@ function InsUpdRFQDEtailTab2() {
         "ProductDetails": ItemDetails,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
         "UserID": sessionStorage.getItem('UserID')
-        
+
     };
 
-    console.log(JSON.stringify(Tab2data))
-   
+    // console.log(JSON.stringify(Tab2data))
+
     jQuery.ajax({
 
         type: "POST",
@@ -684,7 +682,7 @@ function InsUpdRFQDEtailTab2() {
         dataType: "json",
         success: function (data) {
             if (parseInt(data) > 0) {
-                
+
                 return true;
             }
             else {
@@ -715,7 +713,7 @@ function InsUpdRFQDEtailTab2() {
 
 
 function fnGetTermsCondition() {
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -731,21 +729,21 @@ function fnGetTermsCondition() {
                 $('#btnS').removeAttr('disabled')
                 jQuery('#tbltermsconditionprev').append("<thead><tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
-                    
-                    var str = "<tr id=tr" + i + "><td class=hide>"+data[i].id+"</td><td class=hide>"+data[i].level+"</td>";
+
+                    var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
                     str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
                     str += "<td>" + data[i].name + "</td>";
-                   
-                   
-                   var strPrev = "<tr><td>" + data[i].name + "</td>";
-                   
-                   str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
-                   str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
-                    
-                   
+
+
+                    var strPrev = "<tr><td>" + data[i].name + "</td>";
+
+                    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
+                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+
+
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
                         jQuery('#tblTermsCondition').append(str);
-                        
+
                     }
                     $('#rem' + i).maxlength({
                         limitReachedClass: "label label-danger",
@@ -763,25 +761,25 @@ function fnGetTermsCondition() {
                         $("#levelI" + i).prop("checked", true);
                         $("#rem" + i).prop("disabled");
                     }
-                    
-                        if (data[i].isChecked == "Y") {
-                            $("#spancheckedTerms" + data[i].id).addClass("checked");
-                            jQuery('#tbltermsconditionprev').append(strPrev);
-                        }
-                        else {
-                            $("#spancheckedTerms" + data[i].id).removeClass("checked");
-                        }
-                        if (data[i].isDefault == "Y") {
 
-                            $("#spancheckedTerms" + data[i].id).addClass("checked");
-                            $("#chkTerms"+ data[i].id).attr("disabled", "disabled");
-                       }
-                      
+                    if (data[i].isChecked == "Y") {
+                        $("#spancheckedTerms" + data[i].id).addClass("checked");
+                        jQuery('#tbltermsconditionprev').append(strPrev);
+                    }
+                    else {
+                        $("#spancheckedTerms" + data[i].id).removeClass("checked");
+                    }
+                    if (data[i].isDefault == "Y") {
+
+                        $("#spancheckedTerms" + data[i].id).addClass("checked");
+                        $("#chkTerms" + data[i].id).attr("disabled", "disabled");
+                    }
+
                 }
             }
             else {
                 jQuery('#tblTermsCondition').append('<tr><td>No Terms & Condition</td></tr>')
-              
+
                 $('#btnS').attr('disabled', 'disabled')
             }
         },
@@ -796,16 +794,16 @@ function fnGetTermsCondition() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
-        
+
     })
 }
 function fnheckAllTerms() {
 
     if ($("#chkAllTerms").is(':checked') == true) {
-       
+
         $('table#tblTermsCondition').closest('.inputgroup').removeClass('has-error');
         $("#spancheckedTermsall").addClass("checked");
 
@@ -817,8 +815,8 @@ function fnheckAllTerms() {
         });
     }
     else {
-         $("#spancheckedTermsall").removeClass("checked");
-         $("#tblTermsCondition> tbody > tr").each(function (index) {
+        $("#spancheckedTermsall").removeClass("checked");
+        $("#tblTermsCondition> tbody > tr").each(function (index) {
             $(this).find("span#spancheckedTerms").removeClass("checked");
             $('input[name="chkvenderTerms"]').prop('disabled', false);
 
@@ -828,14 +826,14 @@ function fnheckAllTerms() {
 
 
 }
-function CheckTerms(event,ID) {
-  
+function CheckTerms(event, ID) {
+
     if ($('#spancheckedTerms' + ID).attr('class') == 'checked') {
         $('#spancheckedTerms' + ID).removeClass("checked")
     }
     else {
         $('#spancheckedTerms' + ID).addClass("checked")
-        
+
     }
 
 }
@@ -857,7 +855,7 @@ function fnsavetermscondition(isbuttonclick) {
             "ConditionType": jQuery("#ddlConditiontype").val()
 
         }
-        console.log(JSON.stringify(Attachments))
+        // console.log(JSON.stringify(Attachments))
         // alert(JSON.stringify(Attachments))
         jQuery.ajax({
             type: "POST",
@@ -911,18 +909,18 @@ function fnsaveAttachmentsquestions() {
         var this_row = $(this);
         attchquery = attchquery + $.trim(this_row.find('td:eq(1)').text()) + '~' + $.trim(this_row.find('td:eq(0)').text()) + '#';
 
-     });
+    });
     $("#tblquestions> tbody > tr").each(function (index) {
         var this_row = $(this);
         quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '#';
-        
+
     });
     var data = {
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
         "AttachString": attchquery,
         "QuesString": quesquery
     }
-    
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -940,24 +938,24 @@ function fnsaveAttachmentsquestions() {
         error: function (xhr, status, error) {
 
             var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('spandanger', 'form_wizard_1');
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
             }
             jQuery.unblockUI();
-                return false;
-               
-            }
+            return false;
 
-        });
-   
+        }
+
+    });
+
 }
 var rowAttach = 0;
 
 function addmoreattachments() {
-    
+
     if (jQuery("#AttachDescription1").val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Enter Attachment Description');
@@ -983,18 +981,18 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-       
-       
+
+
         strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        
+
         str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
-        
-        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach+',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach + ',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 
@@ -1002,16 +1000,16 @@ function addmoreattachments() {
         fnsaveAttachmentsquestions();
 
         //var arr = $("#tblAttachments tr");
-       
+
         //$.each(arr, function (i, item) {
         //    var currIndex = $("#tblAttachments tr").eq(i);
         //    var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
-           
+
         //    if (rowAttach == 1) {
         //        //** Upload Files on Azure PortalDocs folder first Time
         //        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
         //     }
-            
+
         //    $(this).nextAll().each(function (i, inItem) {
         //        if (matchText == $(this).find("td:eq(1)").text().toLowerCase()) {
         //            $(this).remove();
@@ -1019,32 +1017,32 @@ function addmoreattachments() {
         //        if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
         //                //** Upload Files on Azure PortalDocs folder
         //             fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-                  
+
         //        }
-               
-                
+
+
         //    });
-           
+
         //});
         jQuery("#AttachDescription1").val('')
         jQuery('#fileToUpload1').val('')
 
-        
+
     }
 }
-function deleteattachrow(rowid, rowidPrev,filename,aID,srno) {
+function deleteattachrow(rowid, rowidPrev, filename, aID, srno) {
 
     rowAttach = rowAttach - 1;
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
 
-    
+
     //** File delete from Blob or DB 
     ajaxFileDelete('', '', filename, 'eRFQAttachment', aID, srno)
- }
+}
 
 function fetchAttachments() {
-   jQuery.ajax({
+    jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1057,28 +1055,27 @@ function fetchAttachments() {
             rowAttach = 0;
             jQuery("#tblAttachments").empty();
             jQuery("#tblAttachmentsPrev").empty();
-            if (data[0].attachments.length > 0)
-            {
+            if (data[0].attachments.length > 0) {
 
                 jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     rowAttach = rowAttach + 1;
                     attach = data[0].attachments[i].rfqAttachment.replace(/\s/g, "%20");
                     var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                   
-                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach+'  style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+
+                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + '  style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     jQuery('#tblAttachmentsPrev').append(strprev);
 
                     var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[0].attachments[i].rfqAttachmentDescription + '</td>';
-                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach +' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+                    str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach + ' style="pointer:cursor;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
                     str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"   onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[0].attachments[i].rfqAttachment + '\',aeRFQFile' + rowAttach + ',\'' + data[0].attachments[i].srNo + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                     jQuery('#tblAttachments').append(str);
-                    
+
                 }
             }
-          
-            
-            
+
+
+
         },
         error: function (xhr, status, error) {
 
@@ -1116,7 +1113,7 @@ function addquestions() {
         }
         var strprev = '<tr id=trquesidprev' + rowques + ' ><td>' + jQuery("#txtquestions").val() + '</td>';
         strprev += "<td>" + jQuery("#txtreq").val() + "</td></tr>"
-       
+
         jQuery('#tblQuestionsPrev').append(strprev);
 
         if (!jQuery("#tblquestions thead").length) {
@@ -1151,16 +1148,16 @@ function GetQuestions() {
                 jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:54.9%!important'>Questions</th><th class='bold' style='width:35%!important'>Requirement</th><th style='width:5%!important'></th></tr></thead>");
                 jQuery('#tblQuestionsPrev').append("<thead><tr><th class='bold' style='width:50%!important'>Questions</th><th class='bold' style='width:50%!important'>Requirement</th></tr></thead>");
                 for (var i = 0; i < data[0].questions.length; i++) {
-                    str = '<tr id=trquesid' + (i+1) + '><td>' + data[0].questions[i].rfqQuestions + '</td>';
+                    str = '<tr id=trquesid' + (i + 1) + '><td>' + data[0].questions[i].rfqQuestions + '</td>';
                     str += "<td>" + data[0].questions[i].rfqQuestionsRequirement + "</td>";
-                    str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletequesrow(trquesid' + (i+1) + ',trquesidprev' + (i+1) + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                    str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletequesrow(trquesid' + (i + 1) + ',trquesidprev' + (i + 1) + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                     jQuery('#tblquestions').append(str);
 
                     strp = '<tr id=trquesidprev' + (i + 1) + '><td>' + data[0].questions[i].rfqQuestions + '</td>';
                     strp += "<td>" + data[0].questions[i].rfqQuestionsRequirement + "</td></tr>";
                     jQuery('#tblQuestionsPrev').append(strp);
-                   
-                    
+
+
                 }
             }
             else {
@@ -1178,43 +1175,43 @@ function GetQuestions() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
-        })
+    })
 }
 
 var allUsers
 function fetchRegisterUser() {
     jQuery.ajax({
-         type: "GET",
-         contentType: "application/json; charset=utf-8",
-         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-         cache: false,
-         crossDomain: true,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
         dataType: "json",
-         success: function (data) {
-             if (data.length > 0) {
-                 allUsers = data;
-             }
-             else {
-                 allUsers = '';
-             }
+        success: function (data) {
+            if (data.length > 0) {
+                allUsers = data;
+            }
+            else {
+                allUsers = '';
+            }
 
-         },
-         error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
-             if (xhr.status == 401) {
-                 error401Messagebox(err.Message);
-             }
-             else {
-                 fnErrorMessageText('spandanger', 'form_wizard_1');
-             }
-             jQuery.unblockUI();
-             return false;
-            
-         }
+            var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
 
     });
 
@@ -1231,8 +1228,8 @@ jQuery("#txtApprover").typeahead({
         map = {};
         var uname = "";
         jQuery.each(data, function (i, username) {
-           // map[username.userName] = username;
-           // usernames.push(username.userName);
+            // map[username.userName] = username;
+            // usernames.push(username.userName);
             uname = username.userName + ' (' + username.emailID + ')'
             map[uname] = username;
             usernames.push(uname);
@@ -1245,7 +1242,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
-           // fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
+            // fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver');
@@ -1261,11 +1258,11 @@ function fnapptype() {
 }
 function fnTocheckAproverMapp() {
     jQuery("#txtApprover").val('')
-    sessionStorage.setItem('hdnApproverid','0');
+    sessionStorage.setItem('hdnApproverid', '0');
     if ($('#drp_TechnicalApp').val() == "RFQ" || $('#drp_TechnicalApp').val() == "AfterRFQ") {
         $('#ddlapprovertype').val('T');
         $('#ddlapprovertype').removeAttr('disabled');
-        
+
     }
     else {
         $('#ddlapprovertype').val('C');
@@ -1337,18 +1334,18 @@ function fnApproversQuery() {
     }
     else if (status == "false") {
         $('.alert-danger').show();
-        $('#spandanger').html('Approver is already mapped for ' + $('#ddlapprovertype option:selected').text()+' RFQ.');
+        $('#spandanger').html('Approver is already mapped for ' + $('#ddlapprovertype option:selected').text() + ' RFQ.');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         $("#txtApprover").val('')
         return false;
     }
     else {
-        
+
         if ($('#ddlapprovertype').val() == "C") {
             commApp = commApp + 1;
             commAppsrno = commAppsrno + 1;
-            
+
             if (!jQuery("#tblapprovers thead").length) {
                 jQuery("#tblapprovers").append("<thead><tr><th colspan=4  style='text-align:center;' class='bold'>Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
                 jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commAppsrno + '</td><td class=hide>' + UserID + '</td></tr>');
@@ -1378,7 +1375,7 @@ function fnApproversQuery() {
                 jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
             }
             else {
-                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp+')" /></span></div></td></tr>');
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
             }
 
             $('#wrap_scrollerPrevApptech').show();
@@ -1386,25 +1383,24 @@ function fnApproversQuery() {
             if (!jQuery("#tblapproversPrevtech thead").length) {
 
                 jQuery("#tblapproversPrevtech").append("<thead><tr><th colspan=3  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold'>Show Price</th></tr></thead>");
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp +'></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             else {
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp+'></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             $('#tdshowp' + TechApp).text('No');
         }
         jQuery("#txtApprover").val('');
-        sessionStorage.setItem('hdnApproverid','0')
-        
+        sessionStorage.setItem('hdnApproverid', '0')
+
     }
 }
 function deleteApprow(rowid, rowidPrev, apptype) {
     var i = 1;
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
-    
-    if (apptype == "C")
-    {
+
+    if (apptype == "C") {
         //commApp = commApp - 1;
         commAppsrno = commAppsrno - 1;
         var rowCount = jQuery('#tblapprovers tr').length;
@@ -1412,8 +1408,8 @@ function deleteApprow(rowid, rowidPrev, apptype) {
             i = 0;
             $("#tblapprovers tr:gt(0)").each(function () {
                 var this_row = $(this);
-                    $.trim(this_row.find('td:eq(2)').html(i));
-                    i++;
+                $.trim(this_row.find('td:eq(2)').html(i));
+                i++;
             });
             i = 0;
             $("#tblapproversPrev tr:gt(0)").each(function () {
@@ -1424,7 +1420,7 @@ function deleteApprow(rowid, rowidPrev, apptype) {
         }
     }
     else {
-       // TechApp = TechApp - 1;
+        // TechApp = TechApp - 1;
         TechAppsrno = TechAppsrno - 1;
         var rowCount = jQuery('#tblapproverstech tr').length;
         if (rowCount > 1) {
@@ -1442,7 +1438,7 @@ function deleteApprow(rowid, rowidPrev, apptype) {
             });
         }
     }
-  
+
 }
 function fnGetApprovers() {
     jQuery.ajax({
@@ -1551,8 +1547,8 @@ function fnGetApprovers() {
         }
     })
 }
-function Checktechapp(event,rowid) {
-    
+function Checktechapp(event, rowid) {
+
     if ($(event).closest("span#spancheckedtech").attr('class') == 'checked') {
         $(event).closest("span#spancheckedtech").removeClass("checked")
         $(event).removeAttr('checked')
@@ -1560,17 +1556,17 @@ function Checktechapp(event,rowid) {
     }
 
     else {
-       
+
         $(event).closest("span#spancheckedtech").addClass("checked")
-        $(event).attr('checked','checked')
+        $(event).attr('checked', 'checked')
         $('#tdshowp' + rowid).html('Yes')
     }
-   
+
 }
 
 function fetchRFIParameteronload() {
-   
-    
+
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1579,19 +1575,18 @@ function fetchRFIParameteronload() {
         data: "{}",
         cache: false,
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty()
             $('#scrolr').show();
-        
+
             if (data[0].parameters.length > 0) {
-                
+
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                 jQuery('#tblRFQPrev').append('<thead><tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>');
-                
-                for (var i = 0; i < data[0].parameters.length; i++)
-                {
+
+                for (var i = 0; i < data[0].parameters.length; i++) {
                     rowAppItems = rowAppItems + 1
                     rowAppItemsrno = rowAppItemsrno + 1;
                     jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button type=button class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type=button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
@@ -1614,146 +1609,146 @@ function fetchRFIParameteronload() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
-        
+
     });
 
 
     jQuery.unblockUI();
-    
+
 }
 function InsUpdProductSevices() {
-    
-        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
-       
-        if (form.valid() == true) {
-            var st = "true"
-           
-            var i = 0;
-           
-            if ($('#add_or').text() == "Modify") {
-                st = "true";
-                i = 1;
+
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
+
+    if (form.valid() == true) {
+        var st = "true"
+
+        var i = 0;
+
+        if ($('#add_or').text() == "Modify") {
+            st = "true";
+            i = 1;
+            $("#tblServicesProduct tr:gt(0)").each(function () {
+
+                if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                    st = "false"
+                }
+                i++;
+            });
+
+            if ($('#dropuom').val() == '') {
+                $('.alert-danger').show();
+                $('#spandanger').html('Please Select UOM Properly');
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                jQuery.unblockUI();
+                return false;
+            }
+            else if (st == "false") {
+                error.show();
+                $('#spandanger').html('Data already exists...');
+                Metronic.scrollTo(error, -200);
+                error.fadeOut(3000);
+            }
+
+            else {
+                //Set data on main Table after edit
+
+                var Description = $('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " ");
+                var this_row = $('#rowid').val()
+                $("#itemcode" + this_row).text($('#txtItemCode').val())
+                $("#sname" + this_row).text($('#txtshortname').val())
+                $("#desc" + this_row).text(Description)
+
+                $("#TP" + this_row).text($('#txttargetprice').val())
+
+                $("#quan" + this_row).text($('#txtquantitiy').val())
+                $("#uom" + this_row).text($('#dropuom').val())
+                $("#remarks" + this_row).text($('#txtItemRemarks').val())
+                $("#tat" + this_row).text($('#txttat').val())
+                $("#delivery" + this_row).text($('#txtedelivery').val())
+                $("#pono" + this_row).text($("#txtPono").val())
+                $("#povname" + this_row).text($('#txtvendorname').val())
+                $("#unitrate" + this_row).text($('#txtunitrate').val())
+                $("#podate" + this_row).text($('#txtPODate').val())
+                $("#pono" + this_row).find("td:eq(18)").text($('#txtPono').val())
+                $("#povalue" + this_row).text($('#txtpovalue').val())
+
+                //Set data on Prev Table after edit
+                $("#itemcodeprev" + this_row).text($('#txtItemCode').val())
+                $("#snameprev" + this_row).text($('#txtshortname').val())
+                $("#descprev" + this_row).text(Description)
+                $("#TPPrev" + this_row).text($('#txttargetprice').val())
+                $("#quanprev" + this_row).text($('#txtquantitiy').val())
+                $("#uomprev" + this_row).text($('#dropuom').val())
+                $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
+                $("#tatprev" + this_row).text($('#txttat').val())
+                $("#deliveryprev" + this_row).text($('#txtedelivery').val())
+                $("#ponoprev" + this_row).text($("#txtPono").val())
+                $("#povnameprev" + this_row).text($('#txtvendorname').val())
+                $("#unitrateprev" + this_row).text($('#txtunitrate').val())
+                $("#podateprev" + this_row).text($('#txtPODate').val())
+                $("#ponoprev" + this_row).find("td:eq(18)").text($('#txtPono').val())
+                $("#povalueprev" + this_row).text($('#txtpovalue').val())
+                resetfun()
+            }
+        }
+        else {
+
+            st = "true"; i = 0;
+            if ($('#dropuom').val() == '') {
+                $('.alert-danger').show();
+                $('#spandanger').html('Please Select UOM Properly');
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                jQuery.unblockUI();
+                return false;
+            }
+            else if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                ParametersQuery()
+            }
+            else {
                 $("#tblServicesProduct tr:gt(0)").each(function () {
-                    
-                     if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                    var this_row = $(this);
+                    if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                         st = "false"
                     }
                     i++;
                 });
-             
-                if ($('#dropuom').val() == '') {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('Please Select UOM Properly');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    jQuery.unblockUI();
-                    return false;
-                }
-               else if (st == "false") {
+
+
+                if (st == "false") {
                     error.show();
                     $('#spandanger').html('Data already exists...');
                     Metronic.scrollTo(error, -200);
                     error.fadeOut(3000);
                 }
 
-               else {
-                   //Set data on main Table after edit
-                   
-                   var Description = $('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " ");
-                   var this_row=$('#rowid').val()
-                   $("#itemcode" + this_row).text($('#txtItemCode').val())
-                   $("#sname" + this_row).text($('#txtshortname').val())
-                   $("#desc" + this_row).text(Description)
-                   
-                   $("#TP" + this_row).text($('#txttargetprice').val())
-
-                   $("#quan" + this_row).text($('#txtquantitiy').val())
-                   $("#uom" + this_row).text($('#dropuom').val())
-                   $("#remarks" + this_row).text($('#txtItemRemarks').val())
-                   $("#tat" + this_row).text($('#txttat').val())
-                   $("#delivery" + this_row).text($('#txtedelivery').val())
-                   $("#pono" + this_row).text($("#txtPono").val())
-                   $("#povname" + this_row).text($('#txtvendorname').val())
-                   $("#unitrate" + this_row).text($('#txtunitrate').val())
-                   $("#podate" + this_row).text($('#txtPODate').val())
-                   $("#pono" + this_row).find("td:eq(18)").text($('#txtPono').val())
-                   $("#povalue" + this_row).text($('#txtpovalue').val())
-
-                   //Set data on Prev Table after edit
-                   $("#itemcodeprev" + this_row).text($('#txtItemCode').val())
-                   $("#snameprev" + this_row).text($('#txtshortname').val())
-                   $("#descprev" + this_row).text(Description)
-                   $("#TPPrev" + this_row).text($('#txttargetprice').val())
-                   $("#quanprev" + this_row).text($('#txtquantitiy').val())
-                   $("#uomprev" + this_row).text($('#dropuom').val())
-                   $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
-                   $("#tatprev" + this_row).text($('#txttat').val())
-                   $("#deliveryprev" + this_row).text($('#txtedelivery').val())
-                   $("#ponoprev" + this_row).text($("#txtPono").val())
-                   $("#povnameprev" + this_row).text($('#txtvendorname').val())
-                   $("#unitrateprev" + this_row).text($('#txtunitrate').val())
-                   $("#podateprev" + this_row).text($('#txtPODate').val())
-                   $("#ponoprev" + this_row).find("td:eq(18)").text($('#txtPono').val())
-                   $("#povalueprev" + this_row).text($('#txtpovalue').val())
-                   resetfun()
-                }
-            }
-            else {
-                
-                st = "true"; i = 0;
-                if ($('#dropuom').val() == '') {
-                    $('.alert-danger').show();
-                    $('#spandanger').html('Please Select UOM Properly');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    jQuery.unblockUI();
-                    return false;
-                }
-               else if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                    ParametersQuery()
-                }
                 else {
-                    $("#tblServicesProduct tr:gt(0)").each(function () {
-                        var this_row = $(this);
-                        if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
-                            st = "false"
-                        }
-                        i++;
-                    });
-
-                   
-                     if (st == "false") {
-                        error.show();
-                        $('#spandanger').html('Data already exists...');
-                        Metronic.scrollTo(error, -200);
-                        error.fadeOut(3000);
-                    }
-
-                    else {
-                        ParametersQuery();
-                    }
+                    ParametersQuery();
                 }
             }
-           
-      
+        }
+
+
         jQuery.unblockUI();
-         
+
     }
-        else {
+    else {
 
         form.validate()
         jQuery.unblockUI();
         return false;
     }
-  
+
 }
-var rowAppItems = 0,rowAppItemsrno=0;
+var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
     var i;
-   
+
     i = rowAppItems;
     if ($("#txtunitrate").val() == null || $("#txtunitrate").val() == '') {
         $("#txtunitrate").val('0')
@@ -1766,18 +1761,18 @@ function ParametersQuery() {
     }
     if (!jQuery("#tblServicesProduct thead").length) {
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno+1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
     }
     else {
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno+1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
-   }
-   
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+    }
+
     $('#scrolr').show();
 
     if (!jQuery("#tblRFQPrev thead").length) {
 
         jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev'+i+'>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($("#txtunitrate").val()) + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
 
     }
     else {
@@ -1792,14 +1787,14 @@ function ParametersQuery() {
 }
 
 function editRow(icount) {
-    
+
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
-    var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n') 
+    var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n')
     var RFQRemark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
-    
-	//sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
-   
+
+    //sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
+
     $('#txtshortname').val($("#sname" + icount).text())
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
@@ -1838,7 +1833,7 @@ function deleterow(TrId, Trprevid) {
             i++;
         });
     }
-   
+
 }
 
 function resetfun() {
@@ -1849,7 +1844,7 @@ function resetfun() {
     $('#txtquantitiy').val('');
     $('#dropuom').val('');
     $('#txttat').val('');
-    $('#txtUOM').val(''); 
+    $('#txtUOM').val('');
     $('#txtItemRemarks').val('');
     $('#txtbiddescriptionP').val('');
     $('#txtedelivery').val('');
@@ -1857,7 +1852,7 @@ function resetfun() {
     $("#txtPono").val('');
     $("#txtunitrate").val('');
     $("#txtvendorname").val('');
-    $("#txtPODate").val(''); 
+    $("#txtPODate").val('');
     $("#txtpovalue").val('');
     $('#rowid').val('')
 
@@ -1881,7 +1876,7 @@ function FetchUOM(CustomerID) {
             else {
                 allUOM = '';
             }
-          
+
         },
         error: function (xhr, status, error) {
 
@@ -1894,7 +1889,7 @@ function FetchUOM(CustomerID) {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
     });
@@ -1920,14 +1915,14 @@ jQuery("#txtUOM").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-       
+
         if (map[item].uom != "") {
-           $('#dropuom').val(map[item].uom)
+            $('#dropuom').val(map[item].uom)
         }
         else {
             gritternotification('Please select UOM  properly!!!');
         }
-       return item;
+        return item;
     }
 
 });
@@ -1959,7 +1954,7 @@ function FetchUOMforpop(CustomerID) {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
     });
@@ -1973,7 +1968,7 @@ function displayUOM() {
     else {
         jQuery('#lblUOM').text('')
     }
-   
+
 }
 
 
@@ -1982,7 +1977,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblvendorlist tbody").find("tr"), function () {
-       
+
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -2029,7 +2024,7 @@ function FetchCurrency(CurrencyID) {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
     });
@@ -2037,7 +2032,7 @@ function FetchCurrency(CurrencyID) {
 }
 function RFQInviteVendorTab3() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var InsertQuery = '';
 
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
@@ -2048,7 +2043,7 @@ function RFQInviteVendorTab3() {
             $('.alert-danger').show();
             $('#spandanger').html('Some Error in Vendor Selection.Please Select again');
             Metronic.scrollTo($(".alert-danger"), -200);
-            $("#tblvendorlist> tbody > tr").each(function(index) {
+            $("#tblvendorlist> tbody > tr").each(function (index) {
                 $(this).find("span#spanchecked").removeClass("checked");
                 $('input[name="chkvender"]').prop('disabled', false);
                 jQuery('#selectedvendorlists> tbody').empty()
@@ -2066,9 +2061,9 @@ function RFQInviteVendorTab3() {
         "subject": jQuery('#txtrfqSubject').val(),
         "Deadline": jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-        
+
     };
-    //console.log(JSON.stringify(Tab3data))
+   // console.log(JSON.stringify(Tab3data))
     jQuery.ajax({
 
         type: "POST",
@@ -2084,7 +2079,7 @@ function RFQInviteVendorTab3() {
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
             jQuery.unblockUI();
-             return true;
+            return true;
         },
         error: function (xhr, status, error) {
 
@@ -2154,7 +2149,7 @@ function fnsubmitRFQ() {
 }
 
 var vCount = 0;
-$("#chkAll").click(function() {
+$("#chkAll").click(function () {
 
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
@@ -2162,10 +2157,10 @@ $("#chkAll").click(function() {
         jQuery('#selectedvendorlists> tbody').empty()
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
-        $("#tblvendorlist> tbody > tr").each(function(index) {
+        $("#tblvendorlist> tbody > tr").each(function (index) {
             $(this).find("span#spanchecked").addClass("checked");
-            $('#chkvender' + vCount).prop("disabled", true);
-            var vendorid = $('#chkvender' + vCount).val()
+            $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
+            var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val()
             var v = vCount;
             vCount = vCount + 1;
             var vname = $.trim($(this).find('td:eq(2)').html())
@@ -2175,7 +2170,7 @@ $("#chkAll").click(function() {
         });
     }
     else {
-        $("#tblvendorlist> tbody > tr").each(function(index) {
+        $("#tblvendorlist> tbody > tr").each(function (index) {
             $(this).find("span#spanchecked").removeClass("checked");
             vCount = 0;
             $('input[name="chkvender"]').prop('disabled', false);
@@ -2198,17 +2193,16 @@ $("#chkAll").click(function() {
 function Check(event, vname, vendorID) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
-          $(event).closest("span#spanchecked").removeClass("checked")
-   }
+        $(event).closest("span#spanchecked").removeClass("checked")
+    }
 
     else {
 
         vCount = vCount + 1;
         //var EvID = event.id;
-       
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ','+vendorID+')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
         jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
@@ -2226,12 +2220,12 @@ function Check(event, vname, vendorID) {
 
 }
 
-function removevendor(trid, trprevid,vid) {
-   
+function removevendor(trid, trprevid, vid) {
+
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
-    
+
     if (vCount > 0) {
         jQuery('#selectedvendorlists').show()
         jQuery('#selectedvendorlistsPrev').show()
@@ -2244,43 +2238,41 @@ function removevendor(trid, trprevid,vid) {
         jQuery('#selectedvendorlistsPrev').hide()
 
     }
-    if ($('#chkvender'+vid).length)         
-    {
+    if ($('#chkvender' + vid).length) {
         $('#chkvender' + vid).closest("span#spanchecked").removeClass("checked")
         $('#chkvender' + vid).prop("disabled", false);
     }
- 
+
 }
 
 function ValidateVendor() {
 
     var status = "false";
 
-   // $("#tblvendorlist> tbody > tr").each(function (index) {
-        
-   //    if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-   //             status = "True";
-   //    }
-   //    else {
-   //        status == "false";
-   //    }
-    
+    // $("#tblvendorlist> tbody > tr").each(function (index) {
+
+    //    if ($(this).find("span#spanchecked").attr('class') == 'checked') {
+    //             status = "True";
+    //    }
+    //    else {
+    //        status == "false";
+    //    }
+
     //});
-    if ($("#selectedvendorlists> tbody > tr").length == 0)
-    {
+    if ($("#selectedvendorlists> tbody > tr").length == 0) {
         status == "false";
     }
     else {
         status = "True";
     }
-    
-    if (status == "false") {        
+
+    if (status == "false") {
         $('.alert-danger').show();
         $('#spandanger').html('Please select atleast one vendors');
         Metronic.scrollTo($('.alert-danger'), -200);
         $('.alert-danger').fadeOut(5000);
         $('table#tblvendorlist').closest('.inputgroup').addClass('has-error');
-        
+
         status = "false";
 
     }
@@ -2290,7 +2282,7 @@ function ValidateVendor() {
 }
 
 function fetchReguestforQuotationDetails() {
- jQuery.ajax({
+    jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2299,34 +2291,34 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-          
+
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
             jQuery('#txtrfqdescription').val(RFQData[0].general[0].rfqDescription)
-           
+
             jQuery('#txtConversionRate').val(RFQData[0].general[0].rfqConversionRate);
             jQuery('#drp_TechnicalApp').val(RFQData[0].general[0].technicalApproval);
-            
-                if (RFQData[0].general[0].technicalApproval == "RFQ" || RFQData[0].general[0].technicalApproval == "AfterRFQ") {
-                    $('#ddlapprovertype').val('T');
-                    $('#ddlapprovertype').removeAttr('disabled');
-                    jQuery("#tblapproverstech").removeClass('hide')
-                    jQuery("#tblapproversPrevtech").removeClass('hide')
-                }
-                else {
-                    $('#ddlapprovertype').val('C');
-                    $('#ddlapprovertype').attr('disabled');
-                    $('#tblapproverstech').addClass('hide')
-                    jQuery("#tblapproversPrevtech").addClass('hide')
-                }
+
+            if (RFQData[0].general[0].technicalApproval == "RFQ" || RFQData[0].general[0].technicalApproval == "AfterRFQ") {
+                $('#ddlapprovertype').val('T');
+                $('#ddlapprovertype').removeAttr('disabled');
+                jQuery("#tblapproverstech").removeClass('hide')
+                jQuery("#tblapproversPrevtech").removeClass('hide')
+            }
+            else {
+                $('#ddlapprovertype').val('C');
+                $('#ddlapprovertype').attr('disabled');
+                $('#tblapproverstech').addClass('hide')
+                jQuery("#tblapproversPrevtech").addClass('hide')
+            }
             jQuery('#txtRFQReference').val(RFQData[0].general[0].rfqReference)
             jQuery('#txtstartdatettime').val(RFQData[0].general[0].rfqStartDate)
             jQuery('#txtenddatettime').val(RFQData[0].general[0].rfqEndDate)
             $("#cancelBidBtn").show();
-          
+
             if (RFQData[0].general[0].rfqTermandCondition != '') {
-				$('#file1').attr('disabled', true);
+                $('#file1').attr('disabled', true);
                 $('#closebtn').removeClass('display-none');
                 $('#attach-file').html(RFQData[0].general[0].rfqTermandCondition);
             }
@@ -2345,7 +2337,7 @@ function fetchReguestforQuotationDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-         
+
         },
         error: function (xhr, status, error) {
 
@@ -2358,83 +2350,82 @@ function fetchReguestforQuotationDetails() {
             }
             jQuery.unblockUI();
             return false;
-           
+
         }
     });
     jQuery.unblockUI();
 }
 function DownloadFile(aID) {
-   
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/'+ sessionStorage.getItem('hddnRFQID'));
+
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 
 //*** File delete from Blob or DB 
 function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srno) {
-   
+
     if (deletionFor == 'eRFQTerms') {
-        filename= $('#'+filename).html()
+        filename = $('#' + filename).html()
     }
     else {
         filename = filename;
     }
-        var data = {
-            "filename": filename,
-            "foldername": 'eRFQ/' + sessionStorage.getItem('hddnRFQID')
-        }
-   
-   
-     $.ajax({
+    var data = {
+        "filename": filename,
+        "foldername": 'eRFQ/' + sessionStorage.getItem('hddnRFQID')
+    }
+
+
+    $.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DeleteFiles/",
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-         success: function (data, status, jqXHR)
-         {
-         
-             if (deletionFor == 'eRFQTerms') {
-                 fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
-                 $('#' + filepath).html('')
-                 $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
-                 $('#' + fileid).attr('disabled', false);
-             }
-             else {
-                 if (srno != 0) {
-                     fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
-                 }
-             }
+        success: function (data, status, jqXHR) {
+
+            if (deletionFor == 'eRFQTerms') {
+                fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
+                $('#' + filepath).html('')
+                $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
+                $('#' + fileid).attr('disabled', false);
+            }
+            else {
+                if (srno != 0) {
+                    fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno);
+                }
+            }
             $('#spansuccess1').html('File Deleted Successfully');
             success.show();
             Metronic.scrollTo(success, -200);
             success.fadeOut(5000);
-           
+
         },
-          error: function() {
-              $(".alert-danger").find("span").html('').html('Error in file deletion.')
-              Metronic.scrollTo(error, -200);
-              $(".alert-danger").show();
-              $(".alert-danger").fadeOut(5000);
-              jQuery.unblockUI();
-         }
+        error: function () {
+            $(".alert-danger").find("span").html('').html('Error in file deletion.')
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI();
+        }
 
     });
     jQuery.unblockUI();
 
 }
 
-function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
+function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
     if (srno == 0) {
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')
         $('#' + filepath).attr('href', 'javascript:;').addClass('display-none');
         $('#' + fileid).attr('disabled', false);
     }
- 
+
     var Attachments = {
         "SrNo": parseInt(srno),
         "DeletionFor": deletionFor,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
     }
-   //alert(JSON.stringify(Attachments))
+    //alert(JSON.stringify(Attachments))
     jQuery.ajax({
 
         type: "POST",
@@ -2459,27 +2450,27 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor,srno) {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
     });
 }
 
 
-$('#back_prev_btn').click(function() {
+$('#back_prev_btn').click(function () {
     $('#BidPreviewDiv').hide();
     $('#form_wizard_1').show();
 });
 
 function fetchPSBidDetailsForPreview() {
     var TermsConditionFileName = '';
-   
+
     jQuery('#lblRfqsubject').html($('#txtrfqSubject').val())
-    
+
     jQuery('#lblrfqstartdate').html($('#txtstartdatettime').val())
     jQuery('#lblrfqenddate').html($('#txtenddatettime').val())
     jQuery('#lblrfqdescription').html($('#txtrfqdescription').val())
-    
+
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#lblConversionRatePrev').html($('#txtConversionRate').val())
     jQuery("#txtRFQReferencePrev").html($('#txtRFQReference').val());
@@ -2491,7 +2482,7 @@ function fetchPSBidDetailsForPreview() {
     else {
         TermsConditionFileName = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1);
         $('#filepthtermsPrev').html(TermsConditionFileName)
-       
+
     }
     jQuery.unblockUI();
 
@@ -2501,7 +2492,7 @@ $("#btninstructionexcelparameter").click(function () {
     var ErrorUOMMsz = '<ul class="col-md-5 text-left">';
     var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-    for (var i = 0; i < parseInt(quorem) ; i++) {
+    for (var i = 0; i < parseInt(quorem); i++) {
         ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].UOM + '</li>';
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {
@@ -2511,7 +2502,7 @@ $("#btninstructionexcelparameter").click(function () {
     ErrorUOMMsz = ErrorUOMMsz + '</ul>'
     ErrorUOMMszRight = ErrorUOMMszRight + '</ul>'
 
-   
+
     $("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
     if ($('#ddlbidclosetype').val() == "S") {
         $('#libidduraion').show()
@@ -2543,7 +2534,7 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
-   
+
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -2610,7 +2601,7 @@ function printDataparameter(result) {
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
-   // var numberOnly = /^[0-9]+$/;
+    // var numberOnly = /^[0-9]+$/;
     var numberOnly = /^[0-9]\d*(\.\d+)?$/;
     $("#temptableForExcelDataparameter").empty();
     $("#temptableForExcelDataparameter").append("<tr><th>ItemService</th><th>ItemCode</th><th>TargetPrice</th><th>Quantity</th><th>UOM</th><th>Description</th><th>TAT</th><th>DeliveryLocation</th><th>Remarks</th><th>PoNo</th><th>VendorName</th><th>UnitRate</th><th>PoDate</th><th>PoValue</th></tr>");
@@ -2651,41 +2642,41 @@ function printDataparameter(result) {
         }
         if ($.trim(result[i].PoDate) != '') {
             podate = $.trim(result[i].PoDate);
-           // podatejv = new Date(podate);
+            // podatejv = new Date(podate);
         }
         //var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
         //var formats = [
         //    moment.ISO_8601,
         //    "MM/DD/YYYY  :)  HH*mm*ss"
         //];
-       
-       // alert(moment(podatejv, formats, true).isValid())
-      
-     if ($.trim(result[i].PoNo) != '') {
+
+        // alert(moment(podatejv, formats, true).isValid())
+
+        if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
-     }
-     if ($.trim(result[i].PoVendorName) != '') {
+        }
+        if ($.trim(result[i].PoVendorName) != '') {
             povendorname = $.trim(result[i].PoVendorName);
-            
-      }
-        if ($.trim(result[i].ItemCode) != '' ) {
+
+        }
+        if ($.trim(result[i].ItemCode) != '') {
             itemcode = $.trim(result[i].ItemCode);
-           
+
         }
         //alert($.trim(result[i].Remarks))
         if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Item/Service can not be blank or length should be 200 characters of item no '+(i+1)+'. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Item/Service can not be blank or length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].ItemCode).length > 50 ) {
+        else if ($.trim(result[i].ItemCode).length > 50) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
-       }
-            
+        }
+
         else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Remarks can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2717,12 +2708,12 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ( TAT != '' && (!TAT.match(numberOnly) || TAT.length > 4) ) {
-                 $("#error-excelparameter").show();
-                 $("#errspan-excelparameter").html('TAT should be in numbers only and maximum 4 digits allowed of item no ' + (i + 1) + '.');
-                 $("#file-excelparameter").val('');
-                return false;
-           
+        else if (TAT != '' && (!TAT.match(numberOnly) || TAT.length > 4)) {
+            $("#error-excelparameter").show();
+            $("#errspan-excelparameter").html('TAT should be in numbers only and maximum 4 digits allowed of item no ' + (i + 1) + '.');
+            $("#file-excelparameter").val('');
+            return false;
+
         }
         else if (!$.trim(result[i].UnitRate).match(numberOnly) && unitrate != 0) {
             $("#error-excelparameter").show();
@@ -2737,13 +2728,13 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
 
-    }
-        else if (!moment(podate, 'MM/DD/YYYY', true).isValid() && podate!='') {
-               
-                $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
-                $("#file-excelparameter").val('');
-                return false;
+        }
+        else if (!moment(podate, 'MM/DD/YYYY', true).isValid() && podate != '') {
+
+            $("#error-excelparameter").show();
+            $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
+            $("#file-excelparameter").val('');
+            return false;
         }
         else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
             $("#error-excelparameter").show();
@@ -2758,12 +2749,12 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-       
+
         else {
             // if values are correct then creating a temp table
-         
-          $("<tr><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + targetPrice + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Description) + "</td><td>" + TAT + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].DeliveryLocation) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + unitrate + "</td><td>" + podate + "</td><td>" + povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
-           
+
+            $("<tr><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + targetPrice + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Description) + "</td><td>" + TAT + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].DeliveryLocation) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + unitrate + "</td><td>" + podate + "</td><td>" + povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
+
             var arr = $("#temptableForExcelDataparameter tr");
 
             $.each(arr, function (i, item) {
@@ -2775,70 +2766,70 @@ function printDataparameter(result) {
                     if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
                         $(this).remove();
                         st = 'false'
-                        
-                        ErrorMszDuplicate = ErrorMszDuplicate+' RFQ Item with same name already exists at row no ' + (i+1) + ' . Item will not insert.!<BR>'
+
+                        ErrorMszDuplicate = ErrorMszDuplicate + ' RFQ Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
                     }
                 });
             });
-           
+
         }
 
     } // for loop ends
     var excelCorrect = 'N';
     var ErrorUOMMsz = '';
     var ErrorUOMMszRight = '';
-     Rowcount = 0;
+    Rowcount = 0;
     // check for UOM
-    
-         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
-             var this_row = $(this);
-             excelCorrect = 'N';
-             Rowcount = Rowcount + 1;
 
-             for (var i = 0; i < allUOM.length; i++) {
+    $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+        var this_row = $(this);
+        excelCorrect = 'N';
+        Rowcount = Rowcount + 1;
 
-                 if ($.trim(this_row.find('td:eq(4)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
-                     excelCorrect = 'Y';
-                 }
+        for (var i = 0; i < allUOM.length; i++) {
 
-             }
-             var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-             if (excelCorrect == "N") {
-                 $("#error-excelparameter").show();
-                 ErrorUOMMsz = 'UOM not filled properly at row no ' + Rowcount + '. Please choose UOM from given below: <br><ul class="col-md-3 text-left">';
-                 ErrorUOMMszRight = '<ul class="col-md-3 text-left">'
-                 for (var i = 0; i < parseInt(quorem) ; i++) {
-                     ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
-                     var z = (parseInt(quorem) + i);
-                     if (z <= allUOM.length - 1) {
-                         ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
-                     }
-                 }
-                 ErrorUOMMsz = ErrorUOMMsz + '</ul>'
-                 ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
-                 $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
+            if ($.trim(this_row.find('td:eq(4)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
+                excelCorrect = 'Y';
+            }
 
-                 return false;
-             }
+        }
+        var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+        if (excelCorrect == "N") {
+            $("#error-excelparameter").show();
+            ErrorUOMMsz = 'UOM not filled properly at row no ' + Rowcount + '. Please choose UOM from given below: <br><ul class="col-md-3 text-left">';
+            ErrorUOMMszRight = '<ul class="col-md-3 text-left">'
+            for (var i = 0; i < parseInt(quorem); i++) {
+                ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+                var z = (parseInt(quorem) + i);
+                if (z <= allUOM.length - 1) {
+                    ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+                }
+            }
+            ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+            ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
+            $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
 
-         });
-         // alert(excelCorrect)
-         if (excelCorrect == "Y") {
-             $("#error-excelparameter").hide();
-             // $("#errspan-excelparameter").html('');
-             $("#success-excelparameter").show();
-             $('#btnsforYesNo').show()
-             $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
-             $("#file-excelparameter").val('');
-             excelCorrect = '';
-             if (st == 'false') {
-                 $("#error-excelparameter").show();
-                 $("#errspan-excelparameter").html(ErrorMszDuplicate)
-             }
-            
-         }
-    
-    
+            return false;
+        }
+
+    });
+    // alert(excelCorrect)
+    if (excelCorrect == "Y") {
+        $("#error-excelparameter").hide();
+        // $("#errspan-excelparameter").html('');
+        $("#success-excelparameter").show();
+        $('#btnsforYesNo').show()
+        $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
+        $("#file-excelparameter").val('');
+        excelCorrect = '';
+        if (st == 'false') {
+            $("#error-excelparameter").show();
+            $("#errspan-excelparameter").html(ErrorMszDuplicate)
+        }
+
+    }
+
+
 }
 function isDate(ExpiryDate) {
     var objDate,  // date object initialized from the ExpiryDate string 
@@ -2922,9 +2913,9 @@ function fnSeteRFQparameterTable() {
             i = i + 1;
         })
         setTimeout(function () {
-           $('#RfqParameterexcel').modal('hide');
+            $('#RfqParameterexcel').modal('hide');
             jQuery.unblockUI();
-            }, 500 * rowCount)
+        }, 500 * rowCount)
     }
     else {
         $("#error-excelparameter").show();
@@ -2932,7 +2923,7 @@ function fnSeteRFQparameterTable() {
     }
 }
 
-$("#btninstructionexcel").click(function() {
+$("#btninstructionexcel").click(function () {
     $("#instructionsDiv").show();
     $("#instructionSpan").show();
 });
@@ -2941,7 +2932,7 @@ function fetchVendorGroup(categoryFor, vendorId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID'))+ "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -2964,9 +2955,9 @@ function fetchVendorGroup(categoryFor, vendorId) {
             }
             jQuery.unblockUI();
             return false;
-           
+
         }
-       
+
     });
 }
 jQuery("#txtVendorGroup").keyup(function () {
@@ -3026,12 +3017,12 @@ jQuery("#txtSearch").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        
+
         if (map[item].participantID != "0") {
 
             //sessionStorage.setItem('hdnVendorID', map[item].participantID);
-             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
-          
+            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
+
             jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
@@ -3079,14 +3070,14 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName;
-                var str = "<tr id=vList" + data[i].vendorID +"><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                var str = "<tr id=vList" + data[i].vendorID + "><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                   
+
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
 
@@ -3104,7 +3095,7 @@ function getCategoryWiseVendors(categoryID) {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
 
     });
@@ -3136,7 +3127,7 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append('<thead><tr><th   colspan=2  data-style="Header" colspan=2>Please enter UOM as given below:</th></tr></thead>')
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-    for (var i = 0; i < parseInt(quorem) ; i++) {
+    for (var i = 0; i < parseInt(quorem); i++) {
         $('#tblUOM').append('<tr id=TR' + i + '><td>' + allUOM[i].uom + '</td>');
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {

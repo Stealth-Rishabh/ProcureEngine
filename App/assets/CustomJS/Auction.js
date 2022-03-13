@@ -59,6 +59,34 @@ function gritternotification(msz) {
 
     return false;
 }
+function calltoaster(msz, title, type) {
+    var options = {
+        tapToDismiss: false,
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "onclick": null,
+        "autohide": false,
+        "extendedTimeOut": "0",
+        "timeOut": "0",
+        "hideDuration": "0",
+        "showEasing": "swing"
+        // "showDuration": "1000",
+       //"hideEasing": "linear",
+        //"showMethod": "fadeIn",
+        //"hideMethod": "fadeOut"
+    }
+    if (type == 'success') {
+        toastr.success(msz, title, options);
+    } else if (type == 'error') {
+        toastr.error(msz, 'Error');
+    } else if (type == 'warning') {
+        toastr.warning(msz, 'Warning');
+    } else {
+        toastr.info(msz, 'Information', options);
+  }
+   // toastr.success(msz, title)
+}
 function setCommonData() {
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
@@ -134,9 +162,6 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     });
 
 }
-
-
-
 function CheckOnlineStatus(msg) {
     
    
@@ -164,7 +189,7 @@ function CheckOnlineStatus(msg) {
     }
     else {
         
-        toastr.clear();
+       // toastr.clear();
     }
    
 }
@@ -199,8 +224,9 @@ $('#logOut_btn').click(function() {
 function checkfilesize(fileid) {
 
     var ftype= $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
-    //var ftype = jQuery('#file1')[0].files[0].type; // get file type
-    //ftype = ftype.split('/')[1];
+    
+    var fn = $('#' + fileid.id)[0].files[0].name; // get file type
+    var fname = fn.substring(fn.lastIndexOf('/') + 1, fn.lastIndexOf('.'));
     var size = $('#' + fileid.id)[0].files[0].size;
    
     switch (ftype.toLowerCase()) {
@@ -217,7 +243,16 @@ function checkfilesize(fileid) {
         }
     //if (size > 5242880)// checks the file more than 5 MB
     //{
-    if (size > 7340032) {
+    
+    if (fname.length > 70) {
+        $('.alert-danger').html('File Name should not be more than 70 charachters!')
+        $('.alert-danger').show();
+        Metronic.scrollTo($('.alert-danger'), -200);
+        $('.alert-danger').fadeOut(5000);
+        $('#' + fileid.id).val('')
+        return false;
+    }
+   else if (size > 7340032) {
        // $('#spandanger,#spanerrordomestic').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').show();
@@ -451,33 +486,32 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
-    updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
- 
+    //updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
+    $(".pulsate-regular").css('animation', 'none');
 }
 
 function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 //** when click on vendor from List
-function openChatDiv(name, email, vendorId,connectionid,userid) {
-   
-    $("#chat-label").html(name + '(' + email + ')');
+function openChatDiv(name, email, vendorId,connectionid,userid,contactperson) {
+  
+    $("#chat-label").html(contactperson + '(' + name + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
     fetchUserChats(vendorId, 'S');
-    //if (connectionid == '') {
-    //    $('#tab1sidebarlist').removeClass('page-quick-sidebar-item')
-    //    $('#backbutton').hide()
-    //    $('#chattypeform').hide()
-    //}
-    //else {
-    //    $('#tab1sidebarlist').removeClass('page-quick-sidebar-item').addClass('page-quick-sidebar-item')
-    //    $('#backbutton').show()
-    //    $('#chattypeform').show()
-    //}
-    //updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
-    $(".pulsate-regular").css('animation', 'none');
-    toastr.clear();
+    if (connectionid == '') {
+        $('#chatbtn').addClass('hide')
+        $('#txtChatMsg').addClass('hide')
+    }
+    else {
+        $('#chatbtn').removeClass('hide')
+        $('#txtChatMsg').removeClass('hide')
+       
+    }
+    ////updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
+    //$(".pulsate-regular").css('animation', 'none');
+   
 }
 
 function closeChatsForAdmin() {
@@ -488,7 +522,7 @@ function closeChatsForAdmin() {
 function openBroadcastMessage() {
     fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
     $(".pulsate-regular").css('animation', 'none');
-    toastr.clear();
+  
 }
 function closeChatsForAdminB() {
     document.getElementById("broadcastMsgdiv").style.background = 'none';
@@ -496,20 +530,6 @@ function closeChatsForAdminB() {
     document.getElementById("btn-cont").style.display = "none";
     document.getElementById("close-btn").style.display = "none";
 }
-//toastr.options = {
-//    "closeButton": true,
-//    "debug": false,
-//    "positionClass": "toast-top-right",
-//    "onclick": null,
-//    "showDuration": "1000",
-//    "hideDuration": "1000",
-//    "timeOut": "2000",
-//    "extendedTimeOut": "1000",
-//    "showEasing": "swing",
-//    "hideEasing": "linear",
-//    "showMethod": "fadeIn",
-//    "hideMethod": "fadeOut"
-//}
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
@@ -523,16 +543,17 @@ function fetchBroadcastMsgs(userId, msgType) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+           
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    if (sessionStorage.getItem("UserID") == data[i].FromUserId) {
+                    if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
                             + '<div class="message">'
                             + '<span class="arrow"></span>'
                             + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
                             + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
-                            + '<span class="body" style="color: #c3c3c3;">' + data[i].ChatMsg + '</span>'
+                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
                             + '</div>'
                             + '</div>');
                     }
@@ -580,51 +601,43 @@ function fetchvendor() {
                 for (var i = 0; i < data.length; i++) {
                     if (vName != data[i].vendorName) {
                         
-                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\');">'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status">'
                             + '<span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                            + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
-                            + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
+                            + '<h4 class="media-heading">' + data[i].contactPerson + '</h4>'
+                            + '<div class="media-heading-sub">' + data[i].vendorName + '</div>'
                             + '</div>'
                             + '</li>');
 
                     }
                     else {
                         //$(".pulsate-regular-li").hide();
-                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\');">'
+                        $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
                             + '<!--<img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">-->'
                             + '<div class="media-body">'
-                            + '<h4 class="media-heading">' + data[i].vendorName + '</h4>'
-                            + '<div class="media-heading-sub">' + data[i].emailId + '</div>'
+                            + '<h4 class="media-heading">' + data[i].contactPerson + '</h4>'
+                            + '<div class="media-heading-sub">' + data[i].vendorName + '</div>'
                             + '</div>'
                             + '</li>');
 
                     }
-
+                    
                     if (data[i].connected == true) {
                         $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
                         $('#v' + data[i].userID).removeAttr('disabled')
-
-                        //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item').addClass('page-quick-sidebar-item')
-                        //$('#backbutton').show()
-                        //$('#chattypeform').show()
-                        // $('#quick_sidebar_tab_2').addClass('page-quick-sidebar-content-item-shown')
+                       // $('#chatbtn').addClass('hide')
+                       // $('#txtChatMsg').addClass('hide')
                     }
                     else {
                         $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
                         $('#v' + data[i].userID).attr('disabled', 'disabled')
-                        
-                        //$('#tab1sidebarlist').removeClass('page-quick-sidebar-item')
-                        //$('#backbutton').hide()
-                        //$('#chattypeform').hide()
-
-                        //$('#v' + data[i].userID).removeAttr('onclick')
-                        //$('#quick_sidebar_tab_2').removeClass('page-quick-sidebar-content-item-shown')
+                       // $('#chatbtn').addClass('hide')
+                      //  $('#txtChatMsg').addClass('hide')
                        
                     }
                     vName = data[i].vendorName
@@ -648,6 +661,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
+   
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');

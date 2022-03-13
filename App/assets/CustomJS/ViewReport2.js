@@ -560,7 +560,40 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
     });
 }
 
-
+function fnfetchvendortotalSummary(BidID, BidTypeID) {
+    
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+            if (data.length > 0) {
+                $('#tblbidvendortotalsummary').show();
+                
+                $('#HRTotsumm').removeClass('hide')
+                jQuery("#tblbidvendortotalsummary").append("<thead><tr style='background: gray; color: #FFF'><th>Supplier</th><th style='width:15%!important;'>Total</th><th style='width:20%!important;' class=loadingfactor >Loading Factor - &lambda; (in %)</th></thead>");
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#tblbidvendortotalsummary").append("<tr><td>" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].totalamount) + "</td><td class='text-right loadingfactor'>" + data[i].advFactor + "</td></tr>");
+                }
+            }
+            else {
+                $('#HRTotsumm').addClass('hide')
+                $('#tblbidvendortotalsummary').hide();
+                jQuery("#tblbidvendortotalsummary").append("<tr colspan=2 style='text-align: center; color: Red' >No record's found</tr>");
+            }
+            if (BidTypeID == 6) {
+                $('.loadingfactor').hide()
+            }
+            else {
+                $('.loadingfactor').show()
+            }
+        }
+    });
+}
 function FetchRecomendedVendor(bidid) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
    
