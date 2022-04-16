@@ -837,7 +837,8 @@ function confirmEditEventAction(eventType) {
 
     var Data = {
         "RFQID": parseInt(sessionStorage.getItem('hdnrfqid')),
-        "ParamType": eventType
+        "ParamType": eventType,
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     }
 
     // alert(JSON.stringify(Data))

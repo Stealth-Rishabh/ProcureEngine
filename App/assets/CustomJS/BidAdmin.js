@@ -36,12 +36,14 @@ function fetchBidTime() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
+
+           
+            startTimer(data[0].timeLeft, display);
             jQuery("#lblbidduration").text(data[0].actualBidDuartion + ' mins');
             jQuery('#txtBidDurationPrev').val(data[0].actualBidDuartion)
             $('#spinnerBidclosingTab').spinner({ value: data[0].actualBidDuartion, step: 1, min: 1, max: 999 });
 
-            startTimer(data[0].timeLeft, display);
+            
             $('#tmleft').html($('#lblTimeLeft').text())
 
         },
@@ -83,11 +85,11 @@ function startTimer(duration, display) {
 
             if ((BidTypeID == 6 && BidForID == 82)  || (BidTypeID == 7 && BidForID == 82)) {
                 fetchBidSummaryDetails(BidID, BidForID);
-                fetchBidTime();
+                //fetchBidTime();
             }
         }
         //console.log(timer)
-        setTimeout(function () {
+        //setTimeout(function () {
 
         if (--timer <= 0) {
             timer = 0;
@@ -96,15 +98,15 @@ function startTimer(duration, display) {
                 return;
             }
         }
-         }, 3000);
+         //}, 3000);
 
     }, 1000);
 }
 var mytimeforSatus = 0;
-function startTimerForStaggerItem(duration, displayS) {
+function startTimerForStaggerItem(duration1, displayS) {
     clearInterval(mytimeforSatus)
 
-    var timer = duration, hours, minutes, seconds;
+    var timer = duration1, hours, minutes, seconds;
     mytimeforSatus = setInterval(function () {
         
         hours = parseInt(timer / 3600, 10)
@@ -125,6 +127,7 @@ function startTimerForStaggerItem(duration, displayS) {
         if (--timer <= 1) {//button disabled at 2 sec or <=0 if at 1 sec
             timer = 0;
             if (timer == 0) {
+                alert(timer)
               fnrefreshStaggerTimerdataonItemClose();
             }
         }

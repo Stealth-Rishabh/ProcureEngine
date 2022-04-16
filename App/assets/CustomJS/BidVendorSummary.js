@@ -250,7 +250,7 @@ function formvalidate() {
     submitHandler: function(form) {
         var dtfrom = '', dtto = '', subject = 'X-X';
         if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-            dtfrom = '1900/01/01';
+            dtfrom = '01/01/1900';
 
         }
         else {
@@ -258,7 +258,7 @@ function formvalidate() {
         }
 
         if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-            dtto = '1900/01/01';
+            dtto = '01/01/1900';
 
         }
         else {

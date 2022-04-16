@@ -64,7 +64,7 @@ jQuery("#txtrfirfqsubject").typeahead({
 
             $('#hdnRfqID').val(map[item].rfqid);
             fetchReguestforQuotationDetails()
-           
+
             if (sessionStorage.getItem('CustomerID') == "32") {
                 fetchRFQPPCApproverStatus(map[item].rfqid);
             }
@@ -153,17 +153,17 @@ function MapApprover() {
 
 }
 function fetchApproverRemarks(Type) {
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType="+Type,
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + Type,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
+
             $('#tblCommercialApproval').empty()
             $('#tblCommercialApprovalprev').empty()
             if (data.length > 0) {
@@ -254,7 +254,7 @@ function ReInviteVendorsForRFQ() {
                 $('#SaveExsist').removeAttr('disabled')
                 jQuery.unblockUI();
             });
-            
+
 
         },
         error: function (xhr, status, error) {
@@ -380,7 +380,7 @@ var TechnicalApproval = "";
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -674,9 +674,9 @@ function fnDownloadZip() {
             window.URL.revokeObjectURL(url);
             downloadexcel();
             bootbox.alert("File downloaded Successfully.", function () {
-               return true;
+                return true;
             });
-           
+
         })
 }
 
@@ -703,6 +703,8 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
             $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             if ($("#ddlrfqVersion option:selected").val() == 99) {
+
+
                 $(".lambdafactor").addClass('hide');
 
             }
@@ -919,7 +921,7 @@ function MapRFQapprover(Type) {
         "CreatedBy": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
     }
-    
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -943,7 +945,7 @@ function MapRFQapprover(Type) {
                         className: "btn-success",
                         callback: function () {
                             setTimeout(function () {
-                               
+
                                 $('#addapprovers').modal('hide')
                             }, 700)
                             if (Type == "Report") {
@@ -999,7 +1001,7 @@ function fnGetRFQApprovers(Type) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + RFQID+"&Type=RFQ",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + RFQID + "&Type=RFQ",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1021,9 +1023,9 @@ function fnGetRFQApprovers(Type) {
                     str += "<td class=hide>" + data[i].userID + "</td></tr>";
 
                     jQuery('#tblRFQapprovers').append(str);
-                   
+
                     if (Type == "Report") {
-                        $('#Removebtn' + rowRFQApp).attr('disabled','disabled')
+                        $('#Removebtn' + rowRFQApp).attr('disabled', 'disabled')
                     }
                     else {
                         $('#Removebtn' + rowRFQApp).removeAttr('disabled')
@@ -1056,7 +1058,7 @@ function fnGetRFQApprovers(Type) {
         }
 
     })
-} 
+}
 function fnOpenPopupApprover(Type) {
     fnGetRFQApprovers(Type);
     if (Type == "Report") {
@@ -1069,7 +1071,7 @@ function fnOpenPopupApprover(Type) {
         fetchRegisterUser()
         $('#addapprovers').modal('show')
     }
-   
+
 }
 function fnclosepopupApprovers(Type) {
     if (Type == "Report") {
@@ -1083,7 +1085,7 @@ function fnclosepopupApprovers(Type) {
     }
 }
 function fetchRFQApproverStatus(RFQID) {
-   
+
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQApproverStatus/?RFQID=" + RFQID
 
@@ -1263,7 +1265,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
                     if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40 || data[i].statusCode == 50) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
-                    
+
                     if (counterColor > 1 && data[i].pendingSince == '') {//
                         if (status == 'Pending') {
                             status = 'N/A'
@@ -1324,6 +1326,6 @@ function downloadexcel() {
     a.download = 'RFQDetails -' + postfix + '.xls';
 
     a.click();
-            //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
-            // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
+    //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
+    // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
 }

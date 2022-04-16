@@ -10,9 +10,13 @@ function Pageloaded() {
         $("#ddlBidType").val(_bidTypeId)
         $(".ddlBidType").html('Forward Auction');
     }
-    if (_bidTypeId == 8) {
+    else if (_bidTypeId == 8) {
         $("#ddlBidType").val(_bidTypeId)
         $(".ddlBidType").html('Coal Auction');
+    }
+    else if (_bidTypeId == 9) {
+        $("#ddlBidType").val(_bidTypeId)
+        $(".ddlBidType").html('French Auction');
     }
     else {
         $("#ddlBidType").val(_bidTypeId)
@@ -247,13 +251,17 @@ function msgForClonedBid(bidId, bidTypeId) {
             break;
         case 7:
             urlLink = 'configureBidSeaExport.html?param=' + encrypdata;
-           // urlLink = 'eRA.html?BidID=' + bidId;
+           
             break;
         case 8:
             urlLink = 'configureBidCoalExport.html?param=' + encrypdata;
-            // urlLink = 'eRA.html?BidID=' + bidId;
+            
             break;
         case 9:
+            urlLink = 'configurefrench.html?param=' + encrypdata;
+            
+            break;
+        case 10:
             urlLink = '';
 
         default:            

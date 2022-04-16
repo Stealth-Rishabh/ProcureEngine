@@ -25,14 +25,14 @@ function fetchCategorymaster1() {
         data: "{}",
         cache: false,
         dataType: "json",
-        success: function (data) {            
+        success: function (data) {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
-            if (data.length > 0) {                
+            if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-                }                
-                $("#ddlTypeofProduct").trigger("change");              
+                }
+                $("#ddlTypeofProduct").trigger("change");
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
@@ -41,7 +41,7 @@ function fetchCategorymaster1() {
         },
 
         error: function (xhr, status, error) {
-            
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -56,7 +56,7 @@ function fetchCategorymaster1() {
 }
 
 
-function fetchCountry() {    
+function fetchCountry() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -66,14 +66,14 @@ function fetchCountry() {
         data: "{}",
         cache: false,
         dataType: "json",
-        success: function (data) {           
+        success: function (data) {
             $("#ddlCountry").empty();
             var vlal = new Array();
-            if (data.length > 0) {                
+            if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
                 }
-                $("#ddlCountry").val('111').trigger("change");         
+                $("#ddlCountry").val('111').trigger("change");
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
@@ -330,7 +330,7 @@ function SubmitVendorRegistration() {
     if ($("#ddlTypeofProduct").select2('data').length) {
         $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
             selectedid.push(item.id);
-            selected.push(item.text);            
+            selected.push(item.text);
             $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
             result += selectedidss.concat(item.id, "#");
 
@@ -426,7 +426,7 @@ function SubmitVendorRegistration() {
     };
 
     //console.log(JSON.stringify(VendorInfo));
-     
+
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -532,7 +532,7 @@ function fetchCategorymaster() {
 }
 function fetchRFIDetails() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var replaced = '', _selectedCat = new Array();    
+    var replaced = '', _selectedCat = new Array();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID'),
@@ -635,6 +635,7 @@ jQuery.validator.addMethod("ValidIFSC", function (value, element) {
 
 }, " Invalid IFSC Code");
 
+var formEmailvalidate = $('#frmEmailValidate');
 var formvendor = $('#submit_form');
 var successVendor = $('.alert-success', formvendor);
 var errorVendor = $('.alert-danger', formvendor);
@@ -646,11 +647,7 @@ function FormValidate() {
         errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
         rules: {
-            txtemailverify: {
-                required: true,
-                email: true
-            },
-
+            
             ddlNatureEstaiblishment: {
                 required: true,
                 notEqualTo: 0
@@ -777,14 +774,50 @@ function FormValidate() {
         },
         submitHandler: function (form) {
 
-            var id = document.activeElement.getAttribute('id');
+            SubmitVendorRegistration();
+            //var id = document.activeElement.getAttribute('id');
+            //if (id.trim() == "btnverifyemail") {
+            //    validateEmail();
+            //} else {
+            //    SubmitVendorRegistration();
+            //}
+        }
+    });
+    formEmailvalidate.validate({
 
-            if (id.trim() == "btnverifyemail") {
-
-                validateEmail();
-            } else {
-                SubmitVendorRegistration();
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+            txtemailverify: {
+                required: true,
+                email: true
             }
+
+        },
+        invalidHandler: function (event, validator) {
+            errorVendor.hide()
+            successVendor.hide();
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+
+            validateEmail();
         }
     });
 }
@@ -804,7 +837,7 @@ function validateEmail() {
         success: function (data) {
 
             if (data == '0') {
-                $('#txtemailverify,#txtEmail,#btnverifyemail').attr('disabled', 'disabled');
+                $('#txtEmail').attr('disabled', 'disabled');//#txtemailverify,#btnverifyemail
                 $('#btnverifysubmit').removeClass('hide');
                 $('#txtEmail,#txtEmail2').val(emailId);
                 $('#collapse2').removeClass('collapse2').addClass('collapse in')
@@ -813,10 +846,10 @@ function validateEmail() {
             }
             else {
                 $('#diverrorvendor').show();
-                $('#spanerrorvendor').text("EmailId is already registered");
-                $('#diverrorvendor').fadeOut(10000);
-                $('#collapse2').addClass('collapse2').removeClass('collapse in')
-                $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
+                $('#spanerrorvendor').html("EmailId is already registered&nbsp;&nbsp;<b><a style=text-decoration:none href='https://www.procurengine.com/vendor/'>Please Login here</a></b>");
+                //$('#diverrorvendor').fadeOut(10000);
+                //$('#collapse2').addClass('collapse2').removeClass('collapse in')
+                //$('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
                 $('#txtemailverify,#txtEmail,#btnverifyemail').removeAttr('disabled');
             }
             $('#modalLoaderparameter').addClass('display-none');
@@ -839,7 +872,9 @@ function validateEmail() {
         }
     });
 }
-
+$("#txtemailverify").keyup(function () {
+    $('#diverrorvendor').fadeOut(7000);
+});
 $('#registerParticipantModal').on("hidden.bs.modal", function () {
     //fnFormClear();
     $('#txtemailverify,#btnverifyemail').removeAttr('disabled');
@@ -862,7 +897,7 @@ function fnFormClear() {
     $("#txtAdd1").val('')
     $("#ddlCountry").val('')
     $("#ddlState").val(''),
-    $("#ddlCity").val('')
+        $("#ddlCity").val('')
     $("#txtPin").val('')
     $("#txtPan").val('')
     $("#txtTan").val('')

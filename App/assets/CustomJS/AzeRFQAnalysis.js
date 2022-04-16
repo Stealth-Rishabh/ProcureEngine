@@ -17,14 +17,14 @@ if (window.location.search) {
 
 function fnfillPPCForm() {
     var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val())
-    var url = 'AzurePPCForm.html?param='+encrypdata;
+    var url = 'AzurePPCForm.html?param=' + encrypdata;
     window.open(url, '_blank');
-   
+
 }
 
 
 sessionStorage.setItem("RFQVersionId", "0")
-function getSummary(vendorid,version) {
+function getSummary(vendorid, version) {
     var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=" + $("#ddlrfqVersion option:selected").text().replace(' ', '%20'))
     window.open("eRFQReport.html?param=" + encrypdata, "_blank")
 
@@ -32,10 +32,10 @@ function getSummary(vendorid,version) {
 var Vendor;
 function fetchrfqcomprative() {
 
-   
+
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
 
     //alert(sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&dateTo=" + dtto + "&dateFrom=" + dtfrom + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val())
     jQuery.ajax({
@@ -45,19 +45,19 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            
+
             var str = '';
             var strHead = '';
             var strHeadExcel = '';
             var strExcel = '';
-            
+
             var totallowestValue = 0;
             var strQ = '';
             var strHeadQ = '';
             var strHeadExcelQ = '';
             var strExcelQ = '';
-           
-           
+
+
 
             jQuery('#tblRFQComprative > thead').empty()
             jQuery("#tblRFQComprativeForExcel > thead").empty();
@@ -171,7 +171,7 @@ function fetchrfqcomprative() {
                 strHead += "</tr>";
                 strHeadExcel += "</tr>";
 
-               
+
                 jQuery('#tblRFQComprative > thead').append(strHead);
                 jQuery('#tblRFQComprativeForExcel > thead').append(strHeadExcel);
 
@@ -186,7 +186,7 @@ function fetchrfqcomprative() {
                 var unitrate = 0;
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
                     unitrate = 0;
-                    
+
                     var flag = 'T';
                     $("#tblRFQComprativetest > tbody > tr").each(function (index) {
                         var this_row = $(this);
@@ -200,17 +200,17 @@ function fetchrfqcomprative() {
                     x = -1;
                     if (flag == 'T') {
 
-                       
+
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
                         strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
 
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
-                            
+
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
                                 x = x + 1;
-                              
+
                                 if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                 
+
                                     strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td>";
                                     str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td>";
                                     if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
@@ -250,15 +250,15 @@ function fetchrfqcomprative() {
 
                                     }
                                 }
-                          }
+                            }
 
                         }
-                      
+
                         totallowestValue = totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue)
 
                         str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         strExcel += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                       
+
                         str += "</tr>"
                         strExcel += "</tr>"
 
@@ -479,7 +479,7 @@ function fetchrfqcomprative() {
 
 
                 //For Vendor Comments
-               
+
                 str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
                 strExcel += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -576,7 +576,7 @@ function fetchrfqcomprative() {
                 // ***************** END  Answer Question Row
                 // ***************** Start  Define Technical  Approver Row**********************
                 strQ += " <tr><td><b>Technical Approval Required</b></td>";
-                
+
 
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
@@ -600,7 +600,7 @@ function fetchrfqcomprative() {
                 strQ += "</tr>";
                 // ***************** END  Define Technical  Row **********************
                 // ***************** Start  Technical Approver Row**********************
-               
+
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
@@ -617,8 +617,8 @@ function fetchrfqcomprative() {
 
                         if (flag3 == 'T') {
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") +"</td>";
-                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") +"</td>";
+                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
+                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
 
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
 
@@ -720,7 +720,7 @@ function fetchrfqcomprative() {
                         for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                             str += "<td colspan='4' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].vendorNames[k].vendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
-                           
+
                         }
                         str += "<td colspan='7'>&nbsp;</td>";
                         str += " </tr>";
@@ -739,7 +739,7 @@ function fetchrfqcomprative() {
                 jQuery("#tblRFQComprativeForExcelQ").append(strExcelQ);
 
                 if ($("#ddlrfqVersion option:selected").val() == 99) {
-                    
+
                     $("#btn_techmapaaprover").addClass('hide');
                     $(".lambdafactor").addClass('hide');
 
@@ -751,36 +751,36 @@ function fetchrfqcomprative() {
                     else {
                         $("#btn_techmapaaprover").hide()
                     }
-                   
+
                 }
 
                 //** check if technical approval initiated
-                if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() == "rfq") { 
+                if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() == "rfq") {
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
-                    
+
                 }
                 else if (data[0].techApprover[0].isFwdTechApp == "C" && TechnicalApproval.toLowerCase() == "rfq") {
-                    
+
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Technical Approved')
                 }
                 else if (data[0].techApprover[0].isFwdTechApp == "N" && TechnicalApproval.toLowerCase() == "rfq") {
-                    
+
                     $('#btn_techmapaaprover').removeAttr('disabled')
                     $('#btn_techmapaaprover').text('Technical Approval')
                 }
-               else if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() != "rfq") { //|| allvendorresponse=='N'
+                else if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() != "rfq") { //|| allvendorresponse=='N'
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
-                   
+
                 }
                 else {
                     $('#btn_techmapaaprover').removeAttr('disabled')
                     $('#btn_techmapaaprover').text('Technical Approval')
                 }
-                
-                
+
+
             }
             else {
 
@@ -802,7 +802,7 @@ function fetchrfqcomprative() {
             }
             jQuery.unblockUI();
             return false;
-           
+
         }
 
     });
@@ -930,7 +930,7 @@ function formvalidate() {
 
     });
 
-    
+
     //Form Validation for Cancel Reason
     var form1 = $('#frmRemarksCancel');
     var error1 = $('.alert-danger', form1);
@@ -960,17 +960,17 @@ function formvalidate() {
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                    .closest('.col-md-10').addClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').addClass('has-error'); // set error class to the control group
         },
 
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
-                    .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
             label
-                    .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
+                .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
         },
 
         submitHandler: function (form) {
@@ -979,10 +979,10 @@ function formvalidate() {
         }
     });
 }
-    
+
 function fetchAzPPcFormDetails() {
-   // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+    // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + $("#hdnRfqID").val() + "&BidID=0",
@@ -992,7 +992,7 @@ function fetchAzPPcFormDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
+
             if (data[0].azureDetails.length > 0) {
                 $('#tblvendors > tbody').empty();
                 $('#tblvendors > thead').empty();
@@ -1034,11 +1034,11 @@ function fetchAzPPcFormDetails() {
                 jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#lblPRDetails').html(data[0].azureDetails[0].prDetails);
                 jQuery('#hdnPPCID').val(data[0].azureDetails[0].ppcid);
-               
+
                 //alert(data[0].BiddingVendor.length)
                 var validatescm = "Yes";
                 if (data[0].biddingVendor.length > 0) {
-                    
+
                     $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
                         if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
@@ -1051,7 +1051,7 @@ function fetchAzPPcFormDetails() {
                             validatescm = "NA";
                         }
                         $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td></tr>")
-                       
+
                     }
                     $('#tblvendors').append("</tbody>");
                 }
@@ -1062,8 +1062,8 @@ function fetchAzPPcFormDetails() {
                     $('#tblPPCAttachments').removeClass('hide')
                     jQuery('#tblPPCAttachments').append("<thead><tr><th class='bold'>Attachment</th></tr></thead>");
                     for (i = 0; i < data[0].attachments.length; i++) {
-                       
-                        var str = '<tr><td><a id=eRFqTerm' + i +' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)" href="javascript:;">' + data[0].attachments[i].attachment + '</a></td>';
+
+                        var str = '<tr><td><a id=eRFqTerm' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFilePPC(this)" href="javascript:;">' + data[0].attachments[i].attachment + '</a></td>';
                         jQuery('#tblPPCAttachments').append(str);
                     }
                 }
@@ -1073,10 +1073,10 @@ function fetchAzPPcFormDetails() {
                     $('#btn_fillPPCForm').attr('disabled', 'disabled')
                 }
                 else {
-                    
+
                     $('#btn_fillPPCForm').removeAttr('disabled')
                 }
-              
+
                 $('#tab_0').removeClass('hide')
                 $('#tabApp').addClass('hide')
                 $('#tabApp').removeClass('active')
@@ -1092,18 +1092,18 @@ function fetchAzPPcFormDetails() {
             }
             else {
                 fnErrorMessageText('error', '');
-               
+
             }
 
             jQuery.unblockUI();
             return false;
-            
+
         }
-    
+
     })
 }
 function DownloadFilePPC(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val()+'/PPC');
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/PPC');
 }
 function fnRemoveClassTab0() {
     $('#tab_0').removeClass('hide')

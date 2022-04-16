@@ -293,7 +293,62 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
                     }
-                }
+                 }
+                 else if (parseInt(BidTypeID) == 9) {
+
+                     $('#lnktotvalue').html('Detailed Report')
+                     if ($('#lnktotvalue').html() == "Detailed Report") {
+                         jQuery("#tblBidSummary").hide()
+                         jQuery("#tblbidsummarypercentagewise").show()
+                         $('#divfordetailreport').show()
+                         $('#divforBidsummary').hide()
+                     }
+                     $('#lnktotvalue').hide()
+
+                     var minimuminc;
+                     $('#divTarget').hide();
+                     var sname = '';
+                     var strHead = "<tr><th>S No</th><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>Unallocated Quantity</th><th>UOM</th><th>Minimum Increment</th><th>Level</th><th>Vendor</th><th>Quantity Bided</th><th>Allocated Quantity</th><th>Initial Quote</th><th>Highest Quote</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
+                     jQuery('#tblBidSummary > thead').append(strHead);
+                    
+                     var c = 1;
+                     for (var i = 0; i < data.length; i++) {
+
+                         if (data[i].increamentOn == "P") {
+                             minimuminc = thousands_separators(data[i].minimumIncreament) + ' %'
+                         }
+                         else {
+                             minimuminc = thousands_separators(data[i].minimumIncreament)
+                         }
+                         if (sname != data[i].shortName) {
+                             sname = data[i].shortName
+
+                             var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].frid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
+                             c = c + 1;
+
+                         }
+                         else {
+                             var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
+                         }
+
+                         str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].biddedQuantity) + "</td><td class=text-right >" + thousands_separators(data[i].quantityAllocated) + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
+                         str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
+
+                         
+                         str += "</tr>";
+                         jQuery('#tblBidSummary > tbody').append(str);
+                        
+                         if (data[i].srNo == 'H1') {
+                            $('#lowa' + i).css({
+                                 'background-color': '#dff0d8',
+                                 'font-weight': 'bold',
+                                 'color': '#3c763d'
+                             })
+
+                         }
+
+                     }
+                 }
                  else if (parseInt(BidTypeID) == 7) {
                     counterForItenscount = 0;
                     $('#BidTrendGraph').css('display', 'block');

@@ -21,13 +21,37 @@ function fnErrorMessageText(spanid,formid) {
         $('.button-submit').addClass('hide');
     }
     $('.alert-danger').show();
-    $('#' + spanid).html('Some error occured . Please contact administrator');
+    $('#' + spanid).html('').html('Some error occured . Please contact administrator');
     $('.alert-danger').fadeOut(8000);
     
    // App.scrollTo(error1, -200);
     jQuery.unblockUI();
     return false;
     
+}
+function getCurrentTime(date) {
+    var hours = date.getHours(),
+        minutes = date.getMinutes(),
+        ampm = hours >= 12 ? 'pm' : 'am';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return hours + ':' + minutes + ' ' + ampm;
+}
+function getCurrentDateddmmyyyy() {
+    var currentdate = new Date();
+    var biddatetime = "";
+    var yyyy = currentdate.getFullYear();
+    let mm = currentdate.getMonth() + 1; // Months start at 0!
+    let dd = currentdate.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    biddatetime = dd + '/' + mm + '/' + yyyy;
+    return biddatetime;
 }
 function fnredirecttoHome(){
 	if(sessionStorage.getItem('UserType')=="V"){
@@ -205,6 +229,14 @@ function Pageloaded() {
         CheckOnlineStatus("online")
         
     }, false);
+}
+function BindNoExtensions(divid) {
+   
+    jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
+    for (var i = 0; i <= 10; i++) {
+
+        jQuery("#" + divid).append(jQuery("<option></option>").val(i).html(i));
+    }
 }
 jQuery("#txtSearch").keyup(function () {
     _this = this;
@@ -399,7 +431,6 @@ function CancelBidDuringConfig() {
         _bidId = sessionStorage.getItem("hdnNFAID");
     }
     else {
-
         _for = 'VQ';
         _bidId = sessionStorage.getItem("CurrentVQID");
     }

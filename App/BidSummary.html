@@ -91,8 +91,9 @@
                             <div class="portlet-title">
                                 <div class="caption">
 
-                                    <i class="fa fa-gift"></i>Bid Summary <span class="badge badge-primary" style="font-size: 13px !important;" id="bid_status"></span>
-                                   
+                                    <i class="fa fa-gift"></i>Bid Summary <!--<span class="badge badge-primary" style="font-size: 13px !important;font-weight:500!important" id="bid_status"></span>-->
+                                    <label class="control-label bold" id="bid_status" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                    </label>
                                 </div><!--
                                 <div id="bid_status" class="display-none"></div>-->
                                 
@@ -310,7 +311,7 @@
                                
                                
                                 <div class="table-responsive display-none" style="overflow: auto" id="divfordetailreport">
-                                    <table class="table table-bordered valign-center-th" id="tblbidsummarypercentagewise">
+                                    <table class="table table-bordered valign-center-th" id="tblBidSummary">
                                         <thead>
                                         </thead>
                                         <tbody>
@@ -349,15 +350,15 @@
                                     <p class="display-none" id="Pdate"> <label class="pull-right"><b>Date :&nbsp;&nbsp;</b></label><label id="lbldate" class="control-label pull-right"></label></p>
                                     <div class="col-md-offset-3 col-md-6" style="text-align: center">
 
-                                        <button id="btnExportToExcel" type="button" class="btn blue">
+                                        <button id="btnExportToExcel" type="button" class="btn blue forbtnpause">
                                             Export To Excel
                                         </button>
-                                        <button id="btnpdf" type="button" class="btn green">generate PDF</button>
-                                        <a href="#inviteVendorModal" data-toggle="modal" id="btn_invite_vendors" class="btn green" onclick="FetchVenderNotInvited()">
+                                        <button id="btnpdf" type="button" class="btn green forbtnpause">generate PDF</button>
+                                        <a href="#inviteVendorModal" data-toggle="modal" id="btn_invite_vendors" class="btn green forbtnpause" onclick="FetchVenderNotInvited()">
                                             Invite Vendors
                                         </a>
 
-                                        <button type="button" class="btn red" id="cancl_btn" onclick="cancelBtnclick()">
+                                        <button type="button" class="btn red forbtnpause" id="cancl_btn" onclick="cancelBtnclick()">
                                             Cancel Bid
                                         </button>
                                         <button id="btnback" type="button" class="btn yellow" onclick="backButtonClick()">

@@ -1,15 +1,19 @@
 ﻿var url = '';
 /////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
     console.log(err.toString())
+    bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
 connection.on("refreshColumnStatus", function (data) {
-    if (data == "-1") {
+
+    var JsonMsz = JSON.parse(data[0]);
+
+    if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
         $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
         $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
         return false;
@@ -372,8 +376,10 @@ function fetchVendorDetails() {
                     fetchBidSummaryVendorproduct()
 
                     startTimer((parseInt(data[0].timeLeft)), display);
+                    $('#lblTimeLeftBeforeBid').hide();
                 }
                 else {
+                    $('#blTimeLeftBeforeBidD').hide();
                     display = document.querySelector('#lblTimeLeftD');
                     totalfrequency = parseInt(data[0].priceDecreamentFrequency * 60)
                     $('#bidtimer').hide()
@@ -385,9 +391,12 @@ function fetchVendorDetails() {
                 }
 
             }
-            else if (data.length > 1 || data.length == 0) {
+            else {// if (data.length > 1 || data.length == 0) {
 
-                $('#lblTimeLeftBeforeBid', '#blTimeLeftBeforeBidD').html('Bid is not  started.').css('color', 'red');
+                $('#lblTimeLeftBeforeBid').show();
+                $('#blTimeLeftBeforeBidD').show();
+                $('#lblTimeLeftBeforeBid').html('<b>Bid is not started.</b>').css('color', 'red');
+                $('#blTimeLeftBeforeBidD').html('<b>Bid is not started.</b>').css('color', 'red');
                 $('#tblParticipantsService').hide();
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 _isBidStarted = false;
@@ -436,7 +445,7 @@ function fetchBidSummaryVendorproduct() {
             if (data.length > 0) {
                 if (_isBidStarted == false) {
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
-                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
+                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Quote*</th><th class=hide>Action</th><th>Remarks</th></thead>");
                     for (var i = 0; i < data.length; i++) {
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
                     }
@@ -447,7 +456,7 @@ function fetchBidSummaryVendorproduct() {
                     sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
                     if (data[0].bidClosingType == 'A') {
 
-                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Enter your Bid*</th><th>Action</th></thead>");
+                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Enter_Quote*</th><th>Action</th></thead>");
 
                         for (var i = 0; i < data.length; i++) {
 
@@ -698,8 +707,8 @@ function closeBidAir() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            // if (parseInt(data) > 0) {
-            bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+             if (data == '1') {
+                 bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
 
                 if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
                     window.location = sessionStorage.getItem('HomePage');
@@ -713,7 +722,14 @@ function closeBidAir() {
                 return false;
 
             });
-            // }
+             }
+             else if (data == '-1') 
+             {
+                 fetchBidTime();
+                //location.reload(true)
+             }
+
+          
         },
         error: function (xhr, status, error) {
 
@@ -753,8 +769,25 @@ function fetchBidTime() {
 
             if (data.length > 0) {
                 if (BidForID == 81 || BidForID == 83) {
-                    display = document.querySelector('#lblTimeLeft');
-                    startTimer((parseInt(data[0].timeLeft)), display);
+                    if (data[0].timeLeft <= 0) {
+                        clearInterval(mytime);
+                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+
+                            if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                                window.location = sessionStorage.getItem('HomePage');
+                                sessionStorage.clear();
+                            }
+                            else {
+                                window.location = 'VendorHome.html';
+                            }
+
+                            return false;
+                        });
+                    }
+                    else {
+                        display = document.querySelector('#lblTimeLeft');
+                        startTimer((parseInt(data[0].timeLeft)), display);
+                    }
                 }
                 else {
                     display = document.querySelector('#lblTimeLeftD');

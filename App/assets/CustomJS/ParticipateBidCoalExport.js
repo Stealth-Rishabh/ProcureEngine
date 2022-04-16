@@ -8,13 +8,14 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var displayForS = "";
 /////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).build();
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
     console.log(err.toString())
+    bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
 connection.on("refreshColumnStatusCoal", function (data) {
     if (data == "-1") {
@@ -655,8 +656,6 @@ function InsUpdQuoteSeaExport(index) {
         if ($('#cess' + index).val() != "" && $('#cess' + index).val() != null) {
             cess = $('#cess' + index).val()
         }
-
-
         // if ($('#hdnval').val() >= 60) {
         var QuoteProduct = {
             "VendorID": vendorID,
@@ -677,134 +676,9 @@ function InsUpdQuoteSeaExport(index) {
             return console.error(err.toString());
         });
 
-        //$("#txtquote" + index).val('');
-        //$("#cess" + index).val('');
-        //$("#ncv" + index).val('');
-        //$("#landedp" + index).val('');
-
-        //jQuery.ajax({
-        //    url: sessionStorage.getItem("APIPath") + "VendorParticipation/ParticipationCoalExport/",
-        //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //    type: "POST",
-        //    data: JSON.stringify(QuoteProduct),
-        //    contentType: "application/json; charset=utf-8",
-        //    success: function (data, status, jqXHR) {
-
-        //        if (data == "-1") {
-        //            $('#spanmszA' + index).removeClass('hide')
-        //            $('#spanmszA' + index).text('already Quoted by someone.');
-
-        //        } else {
-        //            //jQuery("#txtquote" + index).val('');
-        //            //jQuery("#cess" + index).val('');
-        //            //jQuery("#ncv" + index).val('');
-        //            //jQuery("#landedp" + index).val('');
-        //            fetchVendorDetails();
-        //        }
-
-        //        return true;
-
-
-        //    },
-        //    error: function (xhr) {
-
-        //        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        //        if (xhr.status == 401) {
-        //            error401Messagebox(err.Message);
-        //        }
-        //        else {
-        //            fnErrorMessageText('error', '');
-        //        }
-        //        jQuery.unblockUI();
-        //        return false;
-        //    }
-        //});
-        // }
-        //else {
-        //    var QuoteProduct = {
-        //        "VendorID": vendorID,
-        //        "BidID": parseInt(sessionStorage.getItem("BidID")),
-        //        //"insertQuery": insertquery,
-        //        "EnteredBy": vendorID,
-        //        "Quote": parseFloat(removeThousandSeperator($('#txtquote' + index).val())),
-        //        "CoalID": parseInt($('#coalid' + index).html()),
-        //        "OfferedQuan": parseFloat($("#delquan" + index).val()),
-        //        "Cess": parseFloat(removeThousandSeperator(cess)),
-        //        "NCV": parseFloat(removeThousandSeperator($('#ncv' + index).val())),
-        //        "LandedPrice": parseFloat(removeThousandSeperator($('#landedp' + index).val())),
-        //    }
-        //    //  alert(JSON.stringify(QuoteProduct))
-        //    jQuery.ajax({
-        //        url: sessionStorage.getItem("APIPath") + "VendorParticipation/ParticipationCoalExport/",
-        //        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //        type: "POST",
-        //        data: JSON.stringify(QuoteProduct),
-        //        contentType: "application/json; charset=utf-8",
-        //        success: function (data, status, jqXHR) {
-        //            if (data == "-1") {
-        //                $('#spanmszA' + index).removeClass('hide')
-        //                $('#spanmszA' + index).text('already Quoted by someone.');
-        //            }
-        //            else {
-        //                //jQuery("#txtquote" + index).val('');
-        //                //jQuery("#cess" + index).val('');
-        //                //jQuery("#ncv" + index).val('');
-        //                //jQuery("#landedp" + index).val('');
-        //                extendbidA()
-        //            }
-        //            return true;
-
-        //        },
-        //        error: function (xhr) {
-
-        //            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        //            if (xhr.status == 401) {
-        //                error401Messagebox(err.Message);
-        //            }
-        //            else {
-        //                fnErrorMessageText('error', '');
-        //            }
-        //            jQuery.unblockUI();
-        //            return false;
-        //        }
-        //    });
-
-
-        //}
-
     }
 }
-//function extendbidA() {
-//    var data = {
-//        "BidId": sessionStorage.getItem("BidID")
-//    }
-//    //alert(JSON.stringify(data))
-//    jQuery.ajax({
-//        url: sessionStorage.getItem("APIPath") + "VendorParticipation/ExtendDuration/",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        type: "POST",
-//        data: JSON.stringify(data),
-//        contentType: "application/json; charset=utf-8",
-//        success: function (data, status, jqXHR) {
-//            refreshColumnsStaus();
-//            fetchVendorDetails()
-//            return true
-//        },
-//        error: function (xhr) {
 
-
-//            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('error', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-//        }
-//    });
-//}
 
 function closeBidAir() {
     clearInterval(mytime)
@@ -819,20 +693,26 @@ function closeBidAir() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+            if (data == '1') {
+                bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
 
-                if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
-                    window.location = sessionStorage.getItem('HomePage');
-                    sessionStorage.clear();
-                }
-                else {
-                    window.location = 'VendorHome.html';
+                    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                        window.location = sessionStorage.getItem('HomePage');
+                        sessionStorage.clear();
+                    }
+                    else {
+                        window.location = 'VendorHome.html';
 
-                }
+                    }
 
-                return false;
+                    return false;
 
-            });
+                });
+            }
+            else if (data == '-1') {
+                //location.reload(true)
+                fetchBidTime();
+            }
         },
         error: function (xhr, status, error) {
 
@@ -845,6 +725,54 @@ function closeBidAir() {
             }
             jQuery.unblockUI();
             return false;
+        }
+    });
+}
+function fetchBidTime() {
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem("BidID"),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+            if (data.length > 0) {
+                if (data[0].timeLeft <= 0) {
+                    clearInterval(mytime);
+                    bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+
+                        if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                            window.location = sessionStorage.getItem('HomePage');
+                            sessionStorage.clear();
+                        }
+                        else {
+                            window.location = 'VendorHome.html';
+                        }
+
+                        return false;
+                    });
+                }
+                else {
+                    var display = document.querySelector('#lblTimeLeft');
+                    startTimer((parseInt(data[0].timeLeft)), display);
+                }
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+
         }
     });
 }

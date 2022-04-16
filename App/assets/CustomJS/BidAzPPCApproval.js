@@ -4,7 +4,7 @@ jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     BidID = getUrlVarsURL(decryptedstring)["BidID"]
-    
+
     FetchRecomendedVendor(BidID)
     validateAppsubmitData();
     setTimeout(function () {
@@ -16,11 +16,11 @@ jQuery(document).ready(function () {
     else {
         $('#divRemarksApp').show();
     }
-    
+
 });
 
 function fetchAzPPcFormDetails() {
-     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -116,7 +116,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtLDapplicable').text(data[0].azureDetails[0].whetherLDApplicable);
                 jQuery('#txtCPBGapplicable').text(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#txtPRdetails').text(data[0].azureDetails[0].prDetails);
-               
+
                 //if (data[0].biddingVendor.length > 0) {
                 //    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
                 //    for (i = 0; i < data[0].biddingVendor.length; i++) {
@@ -194,7 +194,7 @@ function fetchAzPPcFormDetails() {
                 jQuery.unblockUI();
 
             }
-            
+
         },
         error: function (xhr, status, error) {
 
@@ -277,7 +277,7 @@ function validateAppsubmitData() {
 }
 function ApprovalRejectPPCApp() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var Approvers = {
         "ApproverType": "P",
         "BidID": parseInt(BidID),

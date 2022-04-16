@@ -848,7 +848,9 @@ function ConfigureBidForCoalTab1() {
         "BidApprovers": approvers,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "BidClosetype": $('#ddlbidclosetype').val(),
-        "ShowRankToVendor": $('#drpshowL1L2').val()
+        "ShowRankToVendor": $('#drpshowL1L2').val(),
+        "HideVendor": $('#drphideVendor').val(),
+        "NoofBidExtension": parseInt($("#txtBidExtension").val())
     };
 
     // console.log(JSON.stringify(Tab1Data))
@@ -1692,6 +1694,9 @@ function fetchCoalDetails() {
             jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
             jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
+            $('#drphideVendor').val(BidData[0].bidDetails[0].hideVendor)
+            //jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension == -1 ? "" : BidData[0].bidDetails[0].noofBidExtension)
+            jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension)
             setTimeout(function () {
                 jQuery("#dropCurrency").val(BidData[0].bidDetails[0].currencyID).attr("selected", "selected");
                 jQuery('#txtConversionRate').val(BidData[0].bidDetails[0].conversionRate)
@@ -1896,7 +1901,7 @@ function Dateandtimevalidate(indexNo) {
 function fetchPSBidDetailsForPreview() {
     var TermsConditionFileName = '';
     var AttachementFileName = '';
-
+    var hidevendor = 'No';
     jQuery('#mapedapproverPrev').html('');
 
     jQuery('#txtBidSubjectPrev').html($('#txtBidSubject').val())
@@ -1912,7 +1917,11 @@ function fetchPSBidDetailsForPreview() {
     jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#txtConversionRatePrev').html($('#txtConversionRate').val())
-
+    jQuery('#noofextensionprev').text($('#txtBidExtension option:selected').text())
+    if ($('#drphideVendor').val() == "Y") {
+        hidevendor = "Yes";
+    }
+    jQuery('#hidevendorprev').html(hidevendor)
     jQuery('#ddlbidclosetypePrev').html($('#ddlbidclosetype option:selected').text())
     $('#mapedapprover option').each(function () {
         // alert($(this).html())

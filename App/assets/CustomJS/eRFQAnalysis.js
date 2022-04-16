@@ -729,7 +729,7 @@ function fetchrfqcomprative() {
                     strExcel += "<td colspan='7'>&nbsp;</td>";
                     strExcel += " </tr>";
                 }
-                
+
 
                 if ($("#ddlrfqVersion option:selected").val() != 99) {
                     //For ReInvite Row
@@ -809,7 +809,7 @@ function fetchrfqcomprative() {
                 if (data[0].commApprover[0].isFwdCommApp == "Y") {
                     $('#btn_commercial').attr('disabled', 'disabled')
                     $('#btn_commercial').text('Approval Pending')
-                 }
+                }
                 else {
                     $('#btn_commercial').removeAttr('disabled')
                     $('#btn_commercial').text('Commercial Approval')

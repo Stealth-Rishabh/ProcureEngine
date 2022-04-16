@@ -346,6 +346,34 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Maximum No. of Bid Extensions
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <!--<input type="text" class="form-control" placeholder="None" id="txtBidExtension"
+           autocomplete="off" name="txtBidExtension">-->
+                                                                <select class="form-control" id="txtBidExtension">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Mask Participants during Bidding<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="drphideVendor">
+                                                                    <option value="N">No</option>
+                                                                    <option value="Y">Yes</option>
+
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!--</form>-->
+                                                    </div>
+                                                    <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Select Approvers
@@ -360,11 +388,11 @@
 
                                                             </div>
                                                             <!--<div class="inputgroup">
-                                                                <div class="col-md-1 ">
+                <div class="col-md-1 ">
 
-                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                </div>
-                                                            </div>-->
+                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>-->
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -825,6 +853,30 @@
                                             <!--/span-->
                                         </div>
                                         <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Maximum No. of Bid Extensions:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="noofextensionprev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Mask Participants during Bidding:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="hidevendorprev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -1606,6 +1658,7 @@
             fetchRegisterUser();
             fetchBidType();//for search vendor
             FetchUOM(sessionStorage.getItem("CustomerID"));
+            BindNoExtensions('txtBidExtension');
             setTimeout(function () {
                 $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
                 $('#txtConversionRate').val(1);

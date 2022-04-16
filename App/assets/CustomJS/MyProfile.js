@@ -62,7 +62,7 @@ function fetchState() {
 
     var countryid = jQuery('#ddlCountry option:selected').val();
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -110,7 +110,7 @@ function fetchCity() {
 
     var stateid = jQuery('#ddlState').val();
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -169,11 +169,10 @@ function fetchPaymentTerms() {
             $("#ddPayTerms").empty();
             if (data.length > 0) {
 
-                $("#ddPayTerms").append("<option value=0>Select Payment Terms</option>");
+                $("#ddPayTerms").append("<option value=0 selected>Select Payment Terms</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
-
                 $("#ddPayTerms").trigger("change");
             }
             else {
@@ -198,7 +197,7 @@ function fetchPaymentTerms() {
 }
 
 function fetchUserDetails() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -239,7 +238,7 @@ function fetchUserDetails() {
 //vendor myprofile.html
 function fetchVendorDetails() {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -283,7 +282,7 @@ function fetchVendorDetails() {
 
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
-    //alert(APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + sessionStorage.getItem('VendorId') + "&UserType=" + sessionStorage.getItem('UserType') + "&CustomerID=" + sessionStorage.getItem("CustomerID"))
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -294,8 +293,7 @@ function fetchMyProfileVendor() {
         dataType: "json",
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
-            //console.log("vendordetails", vendordetails);
-            //alert(vendordetails[0].VendorCode)
+
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
             } else {
@@ -385,13 +383,11 @@ function fetchMyProfileVendor() {
                 $('#tan').val(vendordetails[0].TAN);
             }
 
-            //alert(vendordetails[0].GSTFile);
-            //alert($('#gstattach').html())
-            //console.log($('#gstattach').html());
+
             if (vendordetails[0].GSTFile != "" && vendordetails[0].GSTFile != null && vendordetails[0].GSTFile != undefined) {
                 $('#filegst').hide();
                 $('#gstattach').show();
-                $('#filegst').attr("disabled", 'disabled');                            
+                $('#filegst').attr("disabled", 'disabled');
                 $('#gstattach').html(vendordetails[0].GSTFile);
             } else {
                 $('#filegst').show();
@@ -402,7 +398,7 @@ function fetchMyProfileVendor() {
             if (vendordetails[0].PANFile != "" && vendordetails[0].PANFile != null && vendordetails[0].PANFile != undefined) {
                 $('#filepan').hide();
                 $('#panattach').show();
-                $('#filepan').attr("disabled", 'disabled');                
+                $('#filepan').attr("disabled", 'disabled');
                 $('#panattach').html(vendordetails[0].PANFile);
             } else {
                 $('#filepan').show();
@@ -410,11 +406,12 @@ function fetchMyProfileVendor() {
                 $('#panattach').hide();
             }
 
+
             if (vendordetails[0].MSMEFile != "" && vendordetails[0].MSMEFile != null && vendordetails[0].MSMEFile != undefined) {
                 $('#filemsme').hide();
                 $('#msmeattach').show();
                 $('#filemsme').attr("disabled", 'disabled');
-                $('#msmeattach').html(vendordetails[0].MSMEFile);               
+                $('#msmeattach').html(vendordetails[0].MSMEFile);
 
             } else {
                 $('#filemsme').show();
@@ -426,7 +423,7 @@ function fetchMyProfileVendor() {
                 $('#filecheck').hide();
                 $('#checkattach').show();
                 $('#filecheck').attr("disabled", 'disabled');
-                $('#checkattach').html(vendordetails[0].cancelledCheck);                
+                $('#checkattach').html(vendordetails[0].cancelledCheck);
             } else {
                 $('#filecheck').show();
                 $('#filecheck').removeAttr("disabled");
@@ -435,34 +432,39 @@ function fetchMyProfileVendor() {
 
             if (vendordetails[0].currencyLastFY !== "" && vendordetails[0].currencyLastFY != null && vendordetails[0].currencyLastFY != undefined) {
                 $('#currencyLastFiscal').val(vendordetails[0].currencyLastFY);
-            } else {
+            }
+            else {
                 $('#currencyLastFiscal').val('INR');
             }
+            setTimeout(function () {
+                if (vendordetails[0].PayTermID !== "" && vendordetails[0].PayTermID != null && vendordetails[0].PayTermID != undefined) {
+                    console.log(vendordetails[0].PayTermID)
+                    $('#ddPayTerms').val(vendordetails[0].PayTermID).trigger('change');
 
-            if (vendordetails[0].PayTermID !== "" && vendordetails[0].PayTermID != null && vendordetails[0].PayTermID != undefined) {
-
-                $('#ddPayTerms').val(vendordetails[0].PayTermID).trigger('change');
-
-            } else {
-                $('#ddPayTerms').val(0).select2().trigger('change');
-
-            }
+                }
+            }, 800)
+            /*  else {
+                  console.log("esle")
+                  $('#ddPayTerms').val(0).select2().trigger('change');
+  
+              }*/
 
             if (vendordetails[0].CountryID !== "" && vendordetails[0].CountryID != null && vendordetails[0].CountryID != undefined) {
                 $('#ddlCountry').val(vendordetails[0].CountryID)
                 setTimeout(function () {
                     $('#ddlState').val(vendordetails[0].StateID).trigger('change')
-                }, 300)
+                }, 900)
                 setTimeout(function () {
                     $('#ddlCity').val(vendordetails[0].CityID).trigger('change')
                     calCompanyDetailPercent();
-                }, 1000)
+                }, 1500)
 
-            } else {               
-                setTimeout(function () {                   
-                    calCompanyDetailPercent();
-                }, 1300)
             }
+            /* else {
+                 setTimeout(function () {
+                     calCompanyDetailPercent();
+                 }, 1300)
+             }*/
 
             $('#personname').val(vendordetails[0].ContactPerson)
             $('#personnamealt').val(vendordetails[0].ContactNameAlt)
@@ -472,7 +474,7 @@ function fetchMyProfileVendor() {
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
             $('#vendoraddress').val(vendordetails[0].Address1 + vendordetails[0].Address2)
-            $('#vendorCity').val(data[0].city)
+            // $('#vendorCity').val(data[0].city)
             $('#vendorphone').val(data[0].phone)
             $('#vendorpanno').html(vendordetails[0].PANNo)
             $('#vendorservicetaxno').html(vendordetails[0].ServiceTaxNo)
@@ -488,7 +490,7 @@ function fetchMyProfileVendor() {
                 CalContactDetailPercent();
                 calAccountDetailPercent();
                 calBusinessDetailPercent();
-            }, 2000)
+            }, 1500)
             jQuery.unblockUI();
 
         },
@@ -538,7 +540,6 @@ function formvalidate() {
 
         },
         messages: {
-
             usermobileno: {
                 required: "Mobile No is required."
             }
@@ -703,10 +704,9 @@ function formvalidatevendor() {
 function updMobileNo() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    ID = sessionStorage.getItem("UserID");
 
     var data = {
-        "UserID": ID,
+        "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
         "MobileNo": $('#usermobileno').val(),
         "Address1": $('#vendoraddress').val(),
@@ -827,6 +827,7 @@ function updateVendor() {
     var cityname = jQuery("#ddlCity option:selected").text().trim();
     var tdstype = 0;
     var tdsname = '';
+    var paymenttermvalue = 0;
 
     if (msmetype == 'Select') {
         var msmeselectvalue = "";
@@ -851,9 +852,7 @@ function updateVendor() {
         var citynamevalue = jQuery("#ddlCity option:selected").text().trim();
     }
 
-    if (paymentterm == 0) {
-        var paymenttermvalue = 0;
-    } else {
+    if (paymentterm != 0) {
         var paymenttermvalue = parseInt(jQuery("#ddPayTerms").val());
     }
 
@@ -874,16 +873,16 @@ function updateVendor() {
     var msmefilename = '';
     var checkfilename = '';
 
-    
+
     if ($('#gstattach').html() !== '') {
         gstfilename = $('#gstattach').html();
-        
+
     }
     else {
         gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
         gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
-    
+
 
     if ($('#panattach').html() !== '') {
         panfilename = $('#panattach').html();
@@ -984,9 +983,12 @@ function updateVendor() {
             profileerror.hide();
             jQuery("#success").text("Your data is updated successfully..");
             profilesuccess.show();
-            profilesuccess.fadeOut(10000);
-            fetchMyProfileVendor();
+            profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
+            setTimeout(function () {
+                //fetchMyProfileVendor();
+                location.reload();
+            }, 5000)
             //location.reload();
 
             jQuery.unblockUI();
@@ -1052,7 +1054,12 @@ function fetchCompanyVR() {
 
     });
 }
+$("#txtCompanies").keypress(function (e) {
+    if (e.which == 13) {
+        return false;
 
+    }
+})
 jQuery("#txtCompanies").typeahead({
     source: function (query, process) {
         var data = customersForAutoComplete
@@ -1095,6 +1102,7 @@ jQuery("#txtCompanies").typeahead({
             }
         }
         else {
+            alert('hi')
             gritternotification('Please select Vendor  properly!!!');
         }
 
@@ -1187,51 +1195,51 @@ $("#chkAll").click(function () {
 });
 
 //vendor myprofile_vendor.html form to send request to companies
-function formSendCompanies() {
-    $('#frmprofilevendornewcompany').validate({
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: false,
+//function formSendCompanies() {
+//    $('#frmprofilevendornewcompany').validate({
+//        errorElement: 'span',
+//        errorClass: 'help-block',
+//        focusInvalid: false,
 
-        rules: {
+//        rules: {
 
-        },
-        messages: {
+//        },
+//        messages: {
 
-        },
-        invalidHandler: function (event, validator) { //display error alert on form submit   
-            profilesuccess.hide();
-            jQuery("#error").text("You have some form errors. Please check below.");
-            profileerror.show();
-            profileerror.fadeOut(5000);
-            App.scrollTo(profileerror, -200);
-        },
+//        },
+//        invalidHandler: function (event, validator) { //display error alert on form submit   
+//            profilesuccess.hide();
+//            jQuery("#error").text("You have some form errors. Please check below.");
+//            profileerror.show();
+//            profileerror.fadeOut(5000);
+//            App.scrollTo(profileerror, -200);
+//        },
 
-        highlight: function (element) { // hightlight error inputs
-            $(element)
-                .closest('.form-group').addClass('has-error'); // set error class to the control group
-        },
-        unhighlight: function (element) { // revert the change done by hightlight
-            $(element)
-                .closest('.form-group').removeClass('has-error'); // set error class to the control group
-        },
+//        highlight: function (element) { // hightlight error inputs
+//            $(element)
+//                .closest('.form-group').addClass('has-error'); // set error class to the control group
+//        },
+//        unhighlight: function (element) { // revert the change done by hightlight
+//            $(element)
+//                .closest('.form-group').removeClass('has-error'); // set error class to the control group
+//        },
 
-        success: function (label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
-        },
+//        success: function (label) {
+//            label.closest('.form-group').removeClass('has-error');
+//            label.remove();
+//        },
 
-        errorPlacement: function (error, element) {
-            profileerror.insertAfter(element.closest('.xyz'));
-        },
+//        errorPlacement: function (error, element) {
+//            profileerror.insertAfter(element.closest('.xyz'));
+//        },
 
-        submitHandler: function (form) {
-            //profileerror.hide();            
-            sendToCompanies();
-        }
-    });
+//        submitHandler: function (form) {
+//            //profileerror.hide();            
+//            sendToCompanies();
+//        }
+//    });
 
-}
+//}
 
 function sendToCompanies() {
 
@@ -1246,9 +1254,9 @@ function sendToCompanies() {
         $("#selectedcompanies").val(strr);
     }
 
-    var customerids = $("#selectedcompanies").val();
+
     var datainfo = {
-        "customersID": customerids,
+        "customersID": $("#selectedcompanies").val(),
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
@@ -1278,7 +1286,7 @@ function sendToCompanies() {
             }
             else {
                 fnErrorMessageText('companieserror', 'Please try again..');
-                
+
             }
             jQuery.unblockUI();
             return false;
@@ -1310,7 +1318,8 @@ function CalContactDetailPercent() {
         }
     }
 
-    var filledPercentage = (inputsWithValue / totalInputs) * 100;
+    var filledPercentage = 0;
+    filledPercentage = (inputsWithValue / totalInputs) * 100;
     contactpercent = Math.round(filledPercentage);
 
     $('#totalcontactpercent').val(contactpercent);
@@ -1342,8 +1351,9 @@ function calCompanyDetailPercent() {
         }
     }
 
+    var filledPercentage = 0;
     var totalFilledValue = inputsWithValuee + selectsWithValue;
-    var filledPercentage = (totalFilledValue / totalFields) * 100;
+    filledPercentage = (totalFilledValue / totalFields) * 100;
     companypercent = Math.round(filledPercentage);
 
     $('#totalcompanypercent').val(companypercent);
@@ -1394,8 +1404,9 @@ function calAccountDetailPercent() {
 
     }
 
+    var filledPercentage = 0;
     var totalFilledValue = inputsWithValue + selectsWithValue + filesWithValuee;
-    var filledPercentage = (totalFilledValue / totalFields) * 100;
+    filledPercentage = (totalFilledValue / totalFields) * 100;
     accountpercent = Math.round(filledPercentage);
     $('#totalaccountpercent').val(accountpercent);
     $('#accountspan').text(accountpercent);
@@ -1435,9 +1446,10 @@ function calBusinessDetailPercent() {
                 selectsWithValue += 1;
             }
 
+        var filledPercentage = 0;
         var totalFilledValue = inputsWithValue + selectsWithValue + filesWithValuee;
         var total = totalInputs + totalSelect;
-        var filledPercentage = (totalFilledValue / total) * 100;
+        filledPercentage = (totalFilledValue / total) * 100;
         businesspercent = Math.round(filledPercentage);
         var totalsum = Math.round(contactpercent + companypercent + accountpercent + businesspercent);
         var $totalpercent = Math.round((totalsum / totalTab) * 100);
@@ -1454,7 +1466,11 @@ function calBusinessDetailPercent() {
 
         if ($totalpercent == 100) {
             $('.requestcompanydiv').removeClass('hide');
+            $('#lblmszforcompleteP').addClass('hide')
             fetchCompanyVR();
+        }
+        else {
+            $('#lblmszforcompleteP').removeClass('hide')
         }
 
         setTimeout(function () {
@@ -1469,7 +1485,8 @@ function calBusinessDetailPercent() {
             });
         }, 1000);
 
-    } else {
+    }
+    else {
         var tab4 = document.getElementById("collapse3");
         var selects = tab4.querySelectorAll('select.selectno');
         var inputs = tab4.querySelectorAll('input.selectno');
@@ -1489,9 +1506,10 @@ function calBusinessDetailPercent() {
                 selectsWithValue += 1;
             }
 
+        var filledPercentage = 0;
         var totalFilledValue = inputsWithValue + selectsWithValue;
         var total = totalInputs + totalSelect;
-        var filledPercentage = (totalFilledValue / total) * 100;
+        filledPercentage = (totalFilledValue / total) * 100;
         businesspercent = Math.round(filledPercentage);
         var totalsum = contactpercent + companypercent + accountpercent + businesspercent;
         var $totalpercent = Math.round((totalsum / totalTab) * 100);
@@ -1503,9 +1521,14 @@ function calBusinessDetailPercent() {
         $("#business_chart").attr('data-percent', businesspercent);
         $('#businessspan').text(businesspercent);
         $("#totalpercent").text($totalpercent + '%');
+
         if ($totalpercent == 100) {
             $('.requestcompanydiv').removeClass('hide');
+            $('#lblmszforcompleteP').addClass('hide')
             fetchCompanyVR();
+        }
+        else {
+            $('#lblmszforcompleteP').removeClass('hide')
         }
         setTimeout(function () {
             $('.cs_chart').easyPieChart({
