@@ -54,7 +54,7 @@ function Validate() {
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer)+"&IsActive=2";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblPurchaseORGMaster").empty();
@@ -125,14 +125,27 @@ function SaveUpdateData() {
         CreatedBy: UserID,
         UpdatedBy: UserID
     };
-
+   // alert(JSON.stringify(obj))
     var SaveUpdateData = callajaxReturnSuccess(url, "Post", JSON.stringify(obj));
     SaveUpdateData.success(function (res) {
-        if (res.status == "E") {
-            alert(res.error);
-        }
-        else
-            window.location.reload();
+        
+        
+        if (res == '1') {
+                $('.alert-success').show();
+                $('#success').text('Data Saved Successfull...');
+                $('.alert-success').fadeOut(7000);
+            }
+        else if (res == '-1') {
+            $('#error').html("Data already exists..");
+            $('.alert-danger').show();
+            $('.alert-danger').fadeOut(5000);
+          }
+
+        setTimeout(function () {
+            BindData();
+            clear();
+        }, 100)
+       
 
     });
     SaveUpdateData.error(function (xhr, status, error) {
@@ -146,4 +159,11 @@ function SaveUpdateData() {
         }
         
     });
+}
+function clear() {
+    $('input:checkbox[name=chkIsActive]').attr('checked', true);
+    $('#chkIsActive').parents('span').addClass('checked');
+    $("#hdnPurchaseOrgId").val('0')
+    $("#txtPurchaseOrg").val('')
+    $("#submitbtnmaster").text("Save");
 }

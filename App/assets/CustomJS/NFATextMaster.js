@@ -20,6 +20,11 @@ function onSave() {
 
 function onClear() {
     $("#txtParamText").val('');
+    $('input:checkbox[name=chkIsActive]').attr('checked', true);
+    $('#chkIsActive').parents('span').addClass('checked');
+
+    $('input:checkbox[name=chkIsdefault]').attr('checked', true);
+    $('#chkIsdefault').parents('span').addClass('checked');
 };
 
 
@@ -45,14 +50,14 @@ function Validate() {
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer) +"&Isactive=2";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblFetchParamMaster").empty();
 
         if (res.result.length > 0) {
             $('#searchmaster').show();
-            $('#tblFetchParamMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Question</th><th>Status</th></tr></thead>');
+            $('#tblFetchParamMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Question</th><th>Pre Populated</th><th>Status</th></tr></thead>');
             
             $.each(res.result, function (key, value) {
                 if (value.isActive == true)
@@ -60,7 +65,12 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>"; /*class='badge badge-pill badge-danger'*/
 
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.nfaParamText + '</td><td>' + Status + '</td></tr>')
+                if (value.flDefault == "Y")
+                    isdefault = "<span>Yes</span>"; 
+                else
+                    isdefault = "<span>No</span>";
+
+                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\')"><i class="fa fa-pencil"></i></button></td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -75,15 +85,15 @@ function BindData() {
     jQuery.unblockUI();
 
 };
-function onEditClick(idx, checked) {
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+function onEditClick(idx, checked,isdefault) {
+    
+    
     var rowID = $('#' + idx);
     var idxParam = idx.replace('rowid_', '');
     $("#txtParamText").val(rowID.find('td:eq(2)').text());
     $("#hdnParamID").val(idxParam);
-    if (checked == true) {
-
+    if (checked == 'true') {
+       
         $('input:checkbox[name=chkIsActive]').attr('checked', true);
         $('#chkIsActive').parents('span').addClass('checked');
         //$("#chkIsActive").attr('checked', true)
@@ -98,23 +108,39 @@ function onEditClick(idx, checked) {
 
         //$("#chkIsActive").prop('checked', checked);
     }
+    if (isdefault == "Y") {
 
+        $('input:checkbox[name=chkIsdefault]').attr('checked', true);
+        $('#chkIsdefault').parents('span').addClass('checked');
+        
+    }
+    else {
 
+        $('input:checkbox[name=chkIsdefault]').attr('checked', false);
+        $('#chkIsdefault').parents('span').removeClass('checked');
+       
+    }
     $("#submitbtnmaster").text("Modify");
-    jQuery.unblockUI();
+   
 };
 
 function SaveUpdate() {
-
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var isdefault='N'
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
     var paramtext = $("#txtParamText").val();
     var status = $("#chkIsActive").is(':checked')
+    if ($("#chkIsdefault").is(':checked')) {
+        isdefault ='Y'
+    }
+    
     var Data = {
         NfaParamID: parseInt(idx),
         CustomerID: parseInt(CurrentCustomer),
         NfaParamText: paramtext,
         IsActive: status,
+        flDefault: isdefault,
         createdUser: UserID,
         updatedUser: UserID
     };
@@ -124,8 +150,14 @@ function SaveUpdate() {
         if (res.status == "E") {
             alert(res.error);
         }
-        else
-        window.location.reload();
+        else {
+            $('.alert-success').show();
+            $('#success').text('Qusetion saved Successfully.');
+            $('.alert-success').fadeOut(7000);
+            BindData();
+            onClear();
+        }
+        jQuery.unblockUI();
     });
     SaveParam.error(function (xhr, status,error) {
         var err = eval("(" + xhr.responseText + ")");
@@ -135,6 +167,7 @@ function SaveUpdate() {
         if (xhr.status === 401) {
             error401Messagebox(err.Message);
         }
+        jQuery.unblockUI();
     });
 };
 

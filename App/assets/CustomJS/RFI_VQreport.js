@@ -89,7 +89,7 @@ function FetchRfiRfqVendorsForReport() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -198,7 +198,7 @@ function fetchRFIRFQReportDetails() {
 
                 for (var i = 0; i < data.length; i++) {
                     var encrypdataVQ = fnencrypt("VQID=" + data[i].rfiid + "&VendorID=" + data[i].vendorID + "&PageType=Report&FinalStatus=" + data[i].finalStatus);
-                    var encrypdataRFI = fnencrypt('RFXID=' + data[i].rfiid + '&VendorID=' + data[i].vendorID + '&PageType=Report&FinalStatus=' + data[i].finalStatus);
+                    var encrypdataRFI = fnencrypt('RFIID=' + data[i].rfiid + '&VendorID=' + data[i].vendorID + '&PageType=Report&FinalStatus=' + data[i].finalStatus);
                     if (data[i].rfiid != 0) {
                         if (data[i].rfxType == 'VQ') {
                             $('<tr><td><a href=VQResponse.html?param='+encrypdataVQ+' style="text-decoration:none !important;">' + data[i].referenceNo + '</a></td><td>' + data[i].deadline + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].activityDescription + '</td><td>' + data[i].finalStatus + '</td></tr>').appendTo('#tblVendorSummary');

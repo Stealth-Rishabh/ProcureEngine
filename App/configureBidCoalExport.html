@@ -190,7 +190,7 @@
                                                             </label>
                                                             <div class="col-md-9 xyz">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject"
-                                                                      autocomplete="off"  name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" maxlength="100" />
+                                                                       autocomplete="off" name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" maxlength="100" />
                                                             </div>
                                                         </div>
 
@@ -205,7 +205,7 @@
                                                             </label>
                                                             <div class="col-md-9 xyz">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                        autocomplete="off"  rows="3" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                                          autocomplete="off" rows="3" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -260,8 +260,8 @@
                                                                 <input type="text" autocomplete="off" class="form-control" placeholder="Enter Current Conversion Factor" id="txtConversionRate"
                                                                        name="txtConversionRate" maxlength="7">
                                                             </div>
-                                                            </div>
-                                                           
+                                                        </div>
+
                                                     </div>
                                                     <div class="form-group">
                                                         <!--<form id="form">-->
@@ -299,9 +299,9 @@
                                                                 Auction Type: <span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3 xyz">
-                                                             <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="HideShowL1price()">
-                                                                  <option value="81">English</option>
-                                                                   <option value="83">Japanese</option>
+                                                                <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="HideShowL1price()">
+                                                                    <option value="81">English</option>
+                                                                    <option value="83" class="hide">Japanese</option>
                                                                 </select>
 
                                                             </div>
@@ -312,14 +312,14 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <select class="form-control" id="ddlbidclosetype" name="ddlbidclosetype" onchange="showhideItemBidDuration();">
-                                                                    
+
                                                                     <option value="A">All items in one go</option>
-                                                                    <option value="S">Stagger at: Item level</option>
-                                                                    
+                                                                    <option value="S" class="hide">Stagger at: Item level</option>
+
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup condition-based-validate">
@@ -340,7 +340,36 @@
                                                                     <option value="Y">As L1, L2, L3 etc.</option>
                                                                 </select>
                                                             </div>
-                                                            </div></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Maximum No. of Bid Extensions
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <!--<input type="text" class="form-control" placeholder="None" id="txtBidExtension"
+           autocomplete="off" name="txtBidExtension">-->
+                                                                <select class="form-control" id="txtBidExtension">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="control-label col-md-3">
+                                                                Mask Participants during Bidding<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" id="drphideVendor">
+                                                                    <option value="N">No</option>
+                                                                    <option value="Y">Yes</option>
+
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!--</form>-->
+                                                    </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -356,25 +385,26 @@
 
                                                             </div>
                                                             <!--<div class="inputgroup">
-                                                                <div class="col-md-1 ">
-                                                                   
-                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                </div>
-                                                            </div>-->
+                <div class="col-md-1 ">
+
+                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>-->
                                                         </div>
                                                     </div>
-                                                        <div class="form-group">
-                                                            <div class="inputgroup">
-                                                                <div class="col-md-3">&nbsp;</div>
-                                                                <div class="col-md-9">
-                                                                    <div class="table-scrollable">
-                                                                        <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
-                                                                    </div></div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <div class="col-md-3">&nbsp;</div>
+                                                            <div class="col-md-9">
+                                                                <div class="table-scrollable">
+                                                                    <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+                                                                </div>
+                                                            </div>
 
-                                                             </div>
                                                         </div>
+                                                    </div>
 
-                                                  
+
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
@@ -711,7 +741,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
 
                                         </div>
                                         <!--/row-->
@@ -783,6 +813,30 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label class="control-label col-md-4">Maximum No. of Bid Extensions:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="noofextensionprev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Mask Participants during Bidding:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="hidevendorprev">
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label class="control-label col-md-4">Term & Condition:</label>
                                                     <div class="col-md-8">
                                                         <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;" onclick="DownloadFile(this)">
@@ -824,7 +878,7 @@
                                             </div>
                                             <!--/span-->
                                         </div>
-                                        
+
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
                                             <div class="col-md-7">
@@ -1363,6 +1417,7 @@
             fetchRegisterUser();
             fetchBidType();
             FetchUOM(sessionStorage.getItem("CustomerID"));
+            BindNoExtensions('txtBidExtension');
             setTimeout(function () {
                 $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
                 $('#txtConversionRate').val(1);

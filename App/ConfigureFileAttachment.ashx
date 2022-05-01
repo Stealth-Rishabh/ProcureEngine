@@ -46,7 +46,7 @@ public class ConfigureFileAttachment : IHttpHandler {
                     {
                         
                         savepath = rootpath + "\\"+CustomerName+ "\\assets\\";
-             }
+                     }
 
                     string filenameTerms ="";
                    
@@ -61,10 +61,7 @@ public class ConfigureFileAttachment : IHttpHandler {
 
 
                   //  Regex re = new Regex("[|@|*|&|/|\\|,|+|$|~|%|'|\"|:|?|<|>|{|}|]|/g|#|]");
-                   
-                    
-
-                    if (System.IO.File.Exists(savepath + @"\" + filenameTerms))
+                   if (System.IO.File.Exists(savepath + @"\" + filenameTerms))
                     {
                         ResponseMsg r = new ResponseMsg
                         {

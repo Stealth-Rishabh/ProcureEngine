@@ -85,8 +85,16 @@ jQuery("#ddlBidtype").change(function () {
     if (BidTypeID == 6) {
         $('#opntionRFQ').addClass('hide')
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
-        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(RA)"));
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(RA)"));
+        
+    }
+    else if (BidTypeID == 7) {
+        $('#opntionRFQ').addClass('hide')
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
+        jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
+        jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(FA)"));
+       
     }
     else {
         $('#opntionRFQ').removeClass('hide')
@@ -242,7 +250,7 @@ function formvalidate() {
     submitHandler: function(form) {
         var dtfrom = '', dtto = '', subject = 'X-X';
         if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-            dtfrom = '1900/01/01';
+            dtfrom = '01/01/1900';
 
         }
         else {
@@ -250,7 +258,7 @@ function formvalidate() {
         }
 
         if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-            dtto = '1900/01/01';
+            dtto = '01/01/1900';
 
         }
         else {
@@ -873,7 +881,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].Quantity).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
@@ -891,7 +899,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     else {
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].Quantity).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"

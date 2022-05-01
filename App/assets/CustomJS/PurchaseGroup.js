@@ -55,7 +55,7 @@ function ValidatePurchaseGroup() {
 function BindPurchaseOrg() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer)+"&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlPurchaseOrg").html('');
@@ -134,11 +134,20 @@ function SavePurchaseGroup() {
     var url = "NFA/InsertUpdatePurchaseGroup";
     var SavePurchaseGroup = callajaxReturnSuccess(url, "Post", JSON.stringify(objData));
     SavePurchaseGroup.success(function (res) {
-        if (res.status == "E") {
-            alert(res.error);
+        if (res == '1') {
+            $('.alert-success').show();
+            $('#success').text('Data Saved Successfull...');
+            $('.alert-success').fadeOut(7000);
         }
-        else
-            window.location.reload();
+        else if (res == '-1') {
+            $('#error').html("Data already exists..");
+            $('.alert-danger').show();
+            $('.alert-danger').fadeOut(5000);
+        }
+        setTimeout(function () {
+            bindPurchaseGroupData();
+            ClearControl();
+        }, 100)
     });
     SavePurchaseGroup.error(function (xhr, status, error) {
         var err = eval("(" + xhr.responseText + ")");
@@ -154,6 +163,10 @@ function SavePurchaseGroup() {
 function ClearControl() {
     $("#txtPurchaseGroup").val('');
     $("#ddlPurchaseOrg").val(0);
+    $('input:checkbox[name=chkIsActive]').attr('checked', true);
+    $('#chkIsActive').parents('span').addClass('checked');
+    $("#hdnPurchaseGroupId").val('0')
+     $("#submitbtnmaster").text("Save");
 }
 
 function onGroupEdit(rowid,checked,orgid) {
@@ -223,7 +236,7 @@ function onClear() {
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer)+"&IsActive=2";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblmodelPurchaseOrg").empty();

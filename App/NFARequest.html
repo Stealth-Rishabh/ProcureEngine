@@ -143,7 +143,7 @@
                                     <i class="fa fa-gift"></i>CREATE - NFA REQUEST
                                 </div>
                                 <div class="tools hidden-xs">
-                                    <button class="btn btn-sm btn-success" id="cancelNFABtn">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="CancelBidDuringConfig()">Cancel</button>
                                     <a href="javascript:;" class="collapse hidden-xs"></a>
                                 </div>
                             </div>
@@ -186,14 +186,15 @@
                                                     <div class="alert alert-danger" style='display: none; '>
                                                         <span id="spandanger"> </span>
                                                     </div>
-                                                    
+
                                                     <div class="panel panel-warning hide" id="divreverted">
                                                         <div class="panel-heading">
 
                                                             <h3 class="panel-title">NFA History</h3>
-                                                       </div>
+                                                        </div>
 
-                                                        <div class="panel-body"> <table class="table table-bordered" id="tblremarksapprover">
+                                                        <div class="panel-body">
+                                                            <table class="table table-bordered" id="tblremarksapprover">
                                                                 <thead>
                                                                 </thead>
                                                                 <tbody>
@@ -203,15 +204,16 @@
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
-                                                            </table> </div>
+                                                            </table>
+                                                        </div>
 
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Title/Subject<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-10">
+                                                            <div class="col-md-8">
                                                                 <input type="text" autocomplete="off" placeholder="Enter NFA Request Title" id="txtTitle" maxlength="150" name="txtTitle" class="form-control MaxLength" onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
 
@@ -219,10 +221,10 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Detail/Description<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-10">
+                                                            <div class="col-md-8">
                                                                 <textarea id="txtNFADetail" name="txtNFADetail" class="wysihtml5 form-control MaxLength"
                                                                           rows="3" placeholder="Enter NFA Request Detail" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                                 <!--<input type="text" placeholder="Enter NFA Request Detail" id="txtDetail" maxlength="500" name="txtDetail" class="form-control MaxLength" onkeyup="replaceQuoutesFromString(this)" />-->
@@ -231,130 +233,143 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Amount<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-2">
+                                                            <div class="col-md-3">
                                                                 <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
                                                             </div>
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Currency<span class="required"> *</span>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-2 control-label">
+                                                                Budget
                                                             </label>
-                                                            <div class="col-12 col-md-2">
+                                                            <div class="col-md-2">
+                                                                <input type="text" id="txtBudget" name="txtBudget" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
+                                                            </div>
+                                                            <div class="col-md-1">
                                                                 <select id="dropCurrency" name="dropCurrency" class="form-control">
                                                                 </select>
                                                             </div>
-                                                            <label class="col-12 col-md-2 control-label">
+                                                        </div>
+                                                       
+                                                     </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Budget Status<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <select id="ddlBudget" name="ddlBudget" class="form-control" disabled>
+                                                                    <!--<option value="NO">Select</option>-->
+                                                                    <option value="WB">Within Budget</option>
+                                                                    <option value="OB">Outside Budget</option>
+                                                                    <option value="NB" selected>Not Budgeted</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-2 control-label">
                                                                 Category<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-2">
+                                                            <div class="col-md-3">
                                                                 <select id="ddlCategory" name="ddlCategory" class="form-control">
                                                                     <option value="0">Project</option>
                                                                     <option value="1">Other</option>
-
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group isProject">
-                                                        <div class="inputgroup">
-
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Project Name
-                                                            </label>
-                                                            <div class="col-12 col-md-10">
-                                                                <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" />
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Budget Status<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="col-12 col-md-2">
-                                                                <select id="ddlBudget" name="ddlBudget" class="form-control">
-                                                                    <option value="NO">--Please Select--</option>
-                                                                    <option value="WB">Within Budget</option>
-                                                                    <option value="OB">Outside Budget</option>
-                                                                    <option value="NB">Not Budgeted</option>
-                                                                </select>
-                                                            </div>
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Purchase Org.<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="inputgroup">
-
-                                                                <label class="col-12 col-md-4">
-                                                                    <!--<select id="ddlPurchaseOrg" class="form-control"></select>-->
-                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="txtPurcOrg"
-                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcOrg" />
+                                                        <div class="form-group">
+                                                           <div class="inputgroup isProject">
+                                                                <label class="col-md-3 control-label">
+                                                                    Project Name
                                                                 </label>
-                                                            </div>
-
-
+                                                                <div class="col-md-8">
+                                                                    <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" />
+                                                                </div>
+                                                           </div>
                                                         </div>
-
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Purchase Group<span class="required"> *</span>
-                                                            </label>
+                                                        <div class="form-group">
                                                             <div class="inputgroup">
-
-                                                                <label class="col-10 col-md-8">
-                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="txtPurcGroup"
-                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcGroup" />
-
+                                                                <label class="col-md-3 control-label">
+                                                                    Purchase Org.<span class="required"> *</span>
                                                                 </label>
-                                                            </div>
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Event Type
-                                                            </label>
-                                                            <div class="col-12 col-md-2">
-                                                                <select id="ddlEventType" name="ddlEventType" class="form-control">
-                                                                    <option value="0">Select</option>
-                                                                    <option value="1">RFQ</option>
-                                                                    <option value="7">RA</option>
-                                                                    <option value="6">FA</option>
-                                                                </select>
-                                                            </div>
-                                                            <label class="col-12 col-md-2 control-label">
-                                                                Event Detail
-                                                            </label>
+                                                                <div class="col-md-3">
+                                                                    <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" onchange="bindPurchaseGroupDDL()" class="form-control"></select>
+                                                                    <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="txtPurcOrg"
+                   data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcOrg" />-->
+                                                                </div>
+                                                             </div>
                                                             <div class="inputgroup">
-
-                                                                <label class="col-10 col-md-6">
-                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" id="txtEventref"
-                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtEventref" />
-
+                                                                <label class="col-md-2 control-label">
+                                                                    Purchase Group<span class="required"> *</span>
                                                                 </label>
+                                                                <div class="col-md-3">
+                                                                        <select id="ddlPurchasegroup" name="ddlPurchasegroup" class="form-control">
+                                                                            <option value="0">Select</option>
+                                                                        </select>
+                                                                        <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="txtPurcGroup"
+           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcGroup" />-->
+
+                                                                    </div>
+                                                             </div>
+                                                        </div>
+                                                       
+
+                                                        <div class="form-group">
+                                                            <div class="inputgroup">
+                                                                <label class="col-md-3 control-label">
+                                                                    Condition
+                                                                </label>
+                                                               
+                                                                <label class="col-md-8">
+                                                                    <select class="form-control" id="ddlCondition" name="ddlCondition"></select>
+                                                                    <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Condition" id="ddlCondition"
+           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
+                                                                </label>
+                                                               
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-12 col-md-2 control-label">
-                                                            Additional Remark (If any)<span class="required"></span>
-                                                        </label>
+<div class="form-group">
+                                                            <div class="inputgroup">
+                                                                <label class="col-md-3 control-label">
+                                                                    Event Type
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <select id="ddlEventType" name="ddlEventType" class="form-control">
+                                                                        <option value="0">Select</option>
+                                                                        <option value="1">RFQ</option>
+                                                                        <option value="7">RA</option>
+                                                                        <option value="6">PEFA</option>
+                                                                        <option value="8">CA</option>
+                                                                        <option value="9">FA</option>
+                                                                    </select>
+                                                                </div>
+                                                                <label class="col-md-2 control-label">
+                                                                    Event Detail
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                        <input type="text" class="form-control pull-right MaxLength" maxlength="100" id="txtEventref"
+                                                                               data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtEventref" />
 
-                                                        <div class="col-12 col-md-8">
-                                                            <textarea id="txtRemark" name="txtRemark" class="wysihtml5 form-control MaxLength"
-                                                                      rows="2" placeholder="Enter Remark (If any)" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                </div>
+                                                              </div>
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">
+                                                                Additional Remark (If any)<span class="required"></span>
+                                                            </label>
+
+                                                            <div class="col-12 col-md-8">
+                                                                <textarea id="txtRemark" name="txtRemark" class="form-control MaxLength"
+                                                                          rows="2" placeholder="Enter Remark (If any)" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                            </div>
+                                                        </div>
+
+
+
                                                     </div>
-
-
-
-                                                </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="alert alert-block alert-danger" id="errordivSeq" style="display: none">
                                                         <span id="errorSeq"></span>
@@ -367,42 +382,14 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' style="text-decoration:none;">Questions</a>
+                                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' style="text-decoration:none;">Questions</a>
                                                                 </h4>
                                                             </div>
-                                                            <div id=collapse2 class="panel-collapse collapse">
+                                                            <div id=collapse2 class="panel-collapse collapse in">
                                                                 <div class="panel-body">
 
-                                                                    <div class="col-md-12">
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-2">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-4">
-                                                                                <input type="text" tabindex="1" class="form-control MaxLength" maxlength="150" placeholder="Select NFA Question" id="txtNFAParam"
-                                                                                       data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtNFAParam" />
-                                                                               
-                                                                            </div>
-                                                                            <div class="col-md-5">
-                                                                                <textarea id="txtNfaParamAns" placeholder="Response" name="txtNfaParamAns" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="inputgroup">
-                                                                            <div class="col-md-1">
-                                                                                <button type="button"  class="btn green-haze btn-sm" id="addques" onclick="fnaddQuestion()">
-                                                                                    <i class="fa fa-plus"></i></button>
-                                                                                    <a href="#SubCategory" class="btn blue hide" id="addNfaText" data-toggle="modal"><i class="fa fa-plus"></i></a>
-                                                                                   
-</div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                    <div class="clearfix">&nbsp;</div>
-                                                                    <div class="col-md-12">
-                                                                        <div class="col-md-2">
+                                                                       <div class="col-md-12">
+                                                                        <div class="col-md-1">
                                                                             &nbsp;
 
                                                                         </div>
@@ -414,7 +401,38 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="clearfix">&nbsp;</div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                &nbsp;
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-2">
+                                                                                <!--<input type="text" tabindex="1" class="form-control MaxLength" maxlength="150" placeholder="Select NFA Question" id="txtNFAParam"
+                                                                                       data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtNFAParam" />-->
+                                                                                      <label class="control-label">Addtional Questions, if any</label>
+                                                                            </div>
+                                                                            <!--<div class="col-md-5">
+                                                                                <textarea id="txtNfaParamAns" placeholder="Response" name="txtNfaParamAns" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
+                                                                            </div>-->
+                                                                             <div class="col-md-5 text-left">
+                                                                                 <select class="form-control" placeholder="Select NFA Question" id="ddlNFAParam" name="ddlNFAParam">
+                                                                                     <option value="">Select </option>
+                                                                                 </select>
+                                                                            </div>
+                                                                        </div>
 
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-1">
+                                                                                <button type="button" class="btn green-haze btn-sm" id="addques" onclick="fnaddQuestion()">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
                                                             </div>
@@ -423,7 +441,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse' style="text-decoration:none;">Attachments</a>
+                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse' style="text-decoration:none;">Attachments, if any</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse class="panel-collapse collapse">
@@ -431,7 +449,7 @@
 
                                                                     <div class="col-md-12">
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-2">
+                                                                            <div class="col-md-1">
                                                                                 &nbsp;
                                                                             </div>
                                                                         </div>
@@ -453,7 +471,7 @@
                                                                     </div>
                                                                     <div class="clearfix">&nbsp;</div>
                                                                     <div class="col-md-12">
-                                                                        <div class="col-md-2">
+                                                                        <div class="col-md-1">
                                                                             &nbsp;
 
                                                                         </div>
@@ -511,25 +529,28 @@
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <!--<div class="form-group">-->
-                                                                        <label class="col-12 col-md-2 control-label">Amount :</label>
-                                                                        <div class="col-12 col-md-2">
-                                                                            <p class="form-control-static thousandsep" id="lblAmount">
+                                                                    <label class="col-12 col-md-2 control-label">Amount :</label>
+                                                                    <div class="col-12 col-md-2">
+                                                                        <p class="form-control-static thousandsep" id="lblAmount">
 
-                                                                            </p>
-                                                                        </div>
-                                                                        <label class="col-12 col-md-2 control-label ">Currency :</label>
-                                                                        <div class="col-12 col-md-2">
-                                                                            <p class="form-control-static" id="lblCurrency">
-
-                                                                            </p>
-                                                                        </div>
-                                                                        <label class="col-12 col-md-2 control-label">Category :</label>
-                                                                        <div class="col-12 col-md-2">
-                                                                            <p class="form-control-static" id="lblCategory">
-
-                                                                            </p>
-                                                                        </div>
+                                                                        </p>
                                                                     </div>
+                                                                    <label class="col-12 col-md-2 control-label ">Budget :</label>
+                                                                    <div class="col-12 col-md-2">
+                                                                        <p class="form-control-static" id="lblbudgetamount">
+                                                                        </p>&nbsp;
+                                                                        <p class="form-control-static" id="lblCurrency">
+
+                                                                        </p>
+                                                                    </div>
+                                                                    
+                                                                    <label class="col-12 col-md-2 control-label">Category :</label>
+                                                                    <div class="col-12 col-md-2">
+                                                                        <p class="form-control-static" id="lblCategory">
+
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
                                                                 <!--</div>-->
                                                             </div>
                                                             <div class="row">
@@ -548,18 +569,18 @@
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <!--<div class="form-group">-->
-                                                                        <label class="col-12 col-md-2 control-label">Budget Status :</label>
-                                                                        <div class="col-12 col-md-2">
-                                                                            <p class="form-control-static" id="lblbudget">
+                                                                    <label class="col-12 col-md-2 control-label">Budget Status :</label>
+                                                                    <div class="col-12 col-md-2">
+                                                                        <p class="form-control-static" id="lblbudget">
 
-                                                                            </p>
-                                                                        </div>
-                                                                        <label class="col-12 col-md-2 control-label">Purchase Org :</label>
-                                                                        <div class="col-12 col-md-6">
-                                                                            <p class="form-control-static" id="lblPurOrg">
+                                                                        </p>
+                                                                    </div>
+                                                                    <label class="col-12 col-md-2 control-label">Condition :</label>
+                                                                    <div class="col-12 col-md-6">
+                                                                        <p class="form-control-static" id="lblCondition">
 
-                                                                            </p>
-                                                                        </div>
+                                                                        </p>
+                                                                    </div>
 
                                                                     <!--</div>-->
                                                                 </div>
@@ -567,12 +588,18 @@
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <!--<div class="form-group">-->
-                                                                        <label class="col-12 col-md-2 control-label">Purchase Group :</label>
-                                                                        <div class="col-12 col-md-10">
-                                                                            <p class="form-control-static" id="lblGroup">
+                                                                    <label class="col-12 col-md-2 control-label">Purchase Org :</label>
+                                                                    <div class="col-12 col-md-2">
+                                                                        <p class="form-control-static" id="lblPurOrg">
 
-                                                                            </p>
-                                                                        </div>
+                                                                        </p>
+                                                                    </div>
+                                                                    <label class="col-12 col-md-2 control-label">Purchase Group :</label>
+                                                                    <div class="col-12 col-md-6">
+                                                                        <p class="form-control-static" id="lblGroup">
+
+                                                                        </p>
+                                                                    </div>
 
 
                                                                     <!--</div>-->
@@ -892,6 +919,7 @@
 
             fetchMenuItemsFromSession(1, 53);
             BindPurchaseOrg();
+            bindConditionDDL();
           
         });
 

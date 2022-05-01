@@ -75,7 +75,7 @@ function FetchInvitedVendorsForRFIRFQ() {
 }
 
 
-function CancelRFIRFQ(MailPermit) {
+function CancelRFIVQ(MailPermit) {
     var Data = {
 
         "RFIVQID": $('#hddn_RQID_txt').val(),
@@ -153,14 +153,14 @@ message: "Do you want to send email to vendors regarding this cancellation?",
             label: "Yes",
             className: "btn-success",
             callback: function() {
-                CancelRFIRFQ('SendMail')
+                CancelRFIVQ('SendMail')
             }
         },
         cancel: {
             label: "No",
             className: "btn-warning",
             callback: function() {
-             CancelRFIRFQ('NoMail')
+             CancelRFIVQ('NoMail')
             }
         }
     }

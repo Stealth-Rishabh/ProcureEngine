@@ -373,7 +373,7 @@
                                                         Remarks
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <textarea id="txtRemarksApp" name="txtRemarksApp" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
+                                                        <textarea id="txtRemarksApp" onkeyup="replaceQuoutesFromString(this)" name="txtRemarksApp" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -527,7 +527,7 @@
                                     Remarks<span class="required">*</span>
                                 </label>
                                 <div class="col-md-8">
-                                    <textarea id="txtdelegate" name="txtdelegate" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
+                                    <textarea id="txtdelegate" name="txtdelegate" onkeyup="replaceQuoutesFromString(this)" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
                                 </div>
                             </div>
 
@@ -643,7 +643,7 @@
                                     Remarks<span class="required">*</span>
                                 </label>
                                 <div class="col-md-8">
-                                    <textarea id="txtRemarksrecall" name="txtRemarksrecall" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
+                                    <textarea id="txtRemarksrecall" name="txtRemarksrecall" onkeyup="replaceQuoutesFromString(this)" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
                                 </div>
                             </div>
 

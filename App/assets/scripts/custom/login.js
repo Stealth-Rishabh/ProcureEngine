@@ -139,26 +139,28 @@ var Login = function () {
     function validateUser() {
 
         sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       // sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+      //  sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
       //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-    
+      
     var LoginID = encodeURIComponent(jQuery("#username").val().trim());
     var Password = encodeURIComponent(jQuery("#password").val().trim());
     var LinkUrl = encodeURIComponent(window.location);
     var path = window.location.pathname;
     var url = '';
     var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+   // lastPart = 'vendor'
+
     if (lastPart.toLocaleLowerCase() == "vendor")
     {
-        url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password + "&MachineIP=1";
+        url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
     }
     else
     {
-        url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl + "&MachineIP=1";
-        }
+        url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
+    }
+
       
-   
-    jQuery.ajax({
+    $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: url,
@@ -183,7 +185,7 @@ var Login = function () {
             }
     })
 }
- function fnGetUserBasicDetails(lastPart) {
+     function fnGetUserBasicDetails(lastPart) {
 
         jQuery.ajax({
             type: "GET",
@@ -208,7 +210,7 @@ var Login = function () {
                     sessionStorage.setItem("DefaultCurrency", value.defaultCurrency);
                     sessionStorage.setItem("UserType", value.userType);
                     sessionStorage.setItem("VendorId", value.vendorID);
-                  
+                    sessionStorage.setItem("BidPreApp", value.bidpreapproval);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -217,7 +219,7 @@ var Login = function () {
                             }
                         }
                         else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
-                            fnGetUserBasicDetails(lastPart)
+                              fnGetUserBasicDetails(lastPart)
                         }
 
                         else {
@@ -334,12 +336,12 @@ var Login = function () {
 
 
    
-    jQuery('#forget-password').click(function () {
+    $('#forget-password').click(function () {
         jQuery('.login-form').hide();
         jQuery('.forget-form').show();
     });
 
-    jQuery('#back-btn').click(function () {
+    $('#back-btn').click(function () {
         jQuery('.login-form').show();
         jQuery('.forget-form').hide();
     });
@@ -361,8 +363,13 @@ var Login = function () {
 function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
+    var custid = 0;
+    if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
+        custid = sessionStorage.getItem('CustomerID');
+    }
     var data = {
-        "EmailID": $("#txtemail").val()
+        "EmailID": $("#txtemail").val(),
+        "CustomerID": parseInt(custid)
     }
    
     jQuery.ajax({
@@ -403,8 +410,6 @@ function resetfileds() {
     $('#divBid').hide()
 }
 
-
-
 function fetchMapCategory(categoryFor, vendorId) {
    
     jQuery.ajax({
@@ -443,9 +448,6 @@ function fetchMapCategory(categoryFor, vendorId) {
         }
     });
 }
-
-
-
 //get the IP addresses associated with an account
 function getIPs(callback) {
 

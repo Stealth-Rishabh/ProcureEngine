@@ -6,11 +6,11 @@ var ApproverType = '';
 var nfaApproverIDX = 0;
 var error = $('.alert-danger');
 var success = $('.alert-success');
-var orgData = [];
-var Groupdata = [];
+
 var form = $('#submit_form');
 var FlagForCheckShowPrice = "N";
 var objData = {};
+
 var ApproverSeqData = [];
 var Approvermasterdata = [];
 var allUsers = [];
@@ -22,9 +22,10 @@ var MoveSeqData = '<a style="cursor:pointer" class="up"><i class="fa fa-arrow-up
 
 $(document).ready(function () {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+
     bindApproverMaster();
     BindPurchaseOrg();
+    bindConditionDDL();
     fetchRegisterUser();
     jQuery.unblockUI();
     //  BindApprovers();
@@ -35,28 +36,19 @@ function FetchCurrency(CurrencyID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
-
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchCurrency/?CurrencyID=" + CurrencyID + "&excludeStatus=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-
         cache: false,
-
         dataType: "json",
-
         success: function (data) {
 
             jQuery("#dropCurrency").empty();
-
             jQuery("#dropCurrency").append(jQuery("<option ></option>").val("").html("Select"));
-
             for (var i = 0; i < data.length; i++) {
-
                 jQuery("#dropCurrency").append(jQuery("<option></option>").val(data[i].currencyId).html(data[i].currencyNm));
 
             }
-
             $("#dropCurrency").val(parseInt(DefaultCurrency));
 
         },
@@ -137,15 +129,16 @@ $("#tblNBApproverSeq").on("click", ".up,.down", function () {
 function bindApproverMaster() {
 
     var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer);
-
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
-
                 Approvermasterdata = res.result;
-
+                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Deviation %</th></thead>")
+                for (var i = 0; i < res.result.length; i++) {
+                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + res.result[i].amountFrom + '</td><td>' + res.result[i].amountTo + '</td><td>' + res.result[i].deviation+'</td></tr>');
+                }
             }
         }
     });
@@ -156,7 +149,9 @@ function bindApproverMaster() {
 };
 
 function GetApprovermasterbyId(idx) {
+   
     var url = "NFA/FetchApproverMasterById?CustomerId=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
+    
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
@@ -165,11 +160,19 @@ function GetApprovermasterbyId(idx) {
                 $("#ddlApproveltype").val(res.result[0].approvalType);
                 $("#txtAmountFrom").val(removeThousandSeperator(res.result[0].amountFrom));
                 $("#txtAmountTo").val(removeThousandSeperator(res.result[0].amountTo));
-                $("#ddlPurchasegroup").val(res.result[0].groupName);
-                $("#ddlPurchaseOrg").val(res.result[0].orgName);
-
-                sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].groupID);
-                sessionStorage.setItem('hdnPurchaseORGID', res.result[0].orgID);
+                
+                $("#txtdeviation").val(res.result[0].deviation);
+                $("#ddlPurchaseOrg").val(res.result[0].orgID);
+                setTimeout(function () {
+                    bindPurchaseGroupDDL();
+                    $("#ddlPurchasegroup").val(res.result[0].groupID);
+                    $('#viewAllMatrix').modal('hide')
+                }, 1000)
+                
+                $("#ddlCondition").val(res.result[0].conditionID);
+                //sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].groupID);
+                //sessionStorage.setItem('hdnPurchaseORGID', res.result[0].orgID);
+                //sessionStorage.setItem('hdnConditionID', res.result[0].conditionID);
                 ApproverType = res.result[0].approvalType;
                 var checked = res.result[0].isActive;
 
@@ -179,16 +182,12 @@ function GetApprovermasterbyId(idx) {
                 //    MoveSeqData = '';
 
                 if (checked == true) {
-
                     $('input:checkbox[name=chkIsActive]').attr('checked', true);
                     $('#chkIsActive').parents('span').addClass('checked');
-
                 }
                 else {
-
                     $('input:checkbox[name=chkIsActive]').attr('checked', false);
                     $('#chkIsActive').parents('span').removeClass('checked');
-
                 }
             }
         }
@@ -222,45 +221,79 @@ $("#txtDetails").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].idx != "0") {
-
-
             sessionStorage.setItem('hdnApprovermasterIDX', map[item].idx);
             nfaApproverIDX = map[item].idx;
             nfaEditedID = nfaApproverIDX;
             GetApprovermasterbyId(nfaApproverIDX);
         }
         else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+            gritternotification('Select Approval Matrix to edit!!!');
         }
 
         return item;
     }
 })
 
+
+//jQuery("#ddlCondition").keyup(function () {
+//    sessionStorage.setItem('hdnConditionID', '0');
+
+//});
+//sessionStorage.setItem('hdnConditionID', 0);
+//jQuery("#ddlCondition").typeahead({
+//    source: function (query, process) {
+
+//        var data = conditionData;
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            console.log(data);
+//            map[username.conditionName] = username;
+//            usernames.push(username.conditionName);
+//        });
+//        process(usernames);
+//    },
+
+//    minLength: 2,
+//    updater: function (item) {
+
+//        if (map[item].conditionID != "0") {
+//            sessionStorage.setItem('hdnConditionID', map[item].conditionID);
+//        }
+//        else {
+//            gritternotification('Condition Not selected!!!');
+//        }
+
+//        return item;
+//    }
+
+//});
+
 function CheckDuplicate() {
 
-    var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
-    var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');
-
+    //var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
+    //var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');
+    //var p_conditionId = sessionStorage.getItem('hdnConditionID');
     var amountFrom = $("#txtAmountFrom").val();
     var amountTo = $("#txtAmountTo").val();
 
     var Model = {
 
-        orgID: parseInt(p_orgId),
+        orgID: parseInt($('#ddlPurchaseOrg option:selected').val()),
         cusID: parseInt(CurrentCustomer),
-        groupID: parseInt(p_groupId),
+        groupID: parseInt($('#ddlPurchasegroup option:selected').val()),
+        conditionID: parseInt($('#ddlCondition option:selected').val()),
         amountFrom: parseFloat(removeThousandSeperator(amountFrom)),
         amountTo: parseFloat(removeThousandSeperator(amountTo))
 
     };
 
-   
-    var url = "NFA/VerifyExistingApprover";
 
+    var url = "NFA/VerifyExistingApprover";
     var VerifyApproverMatrix = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     VerifyApproverMatrix.success(function (res) {
-        
+
         if (res.status != "E") {
 
             verifyApproverMatrix = res.result;
@@ -272,155 +305,148 @@ function CheckDuplicate() {
     VerifyApproverMatrix.error(function (xhr, status, error) {
         //  jQuery.unblockUI();
     })
-
-
 }
+
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
 
-
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-        $("#ddlModelOrg").html('');
-        $('#ddlModelOrg').append('<option value="0">Please Select..</option>');
+        $("#ddlModelOrg,#ddlPurchaseOrg").empty();
+        $('#ddlModelOrg').append('<option value="0">Select</option>');
+        $('#ddlPurchaseOrg').append('<option value="0">Select</option>');
         if (res.result.length > 0) {
-            orgData = res.result;
+            //orgData = res.result;
             $.each(res.result, function (key, value) {
                 $('#ddlModelOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
-
-
+                $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
             });
-
-
         }
-
     });
     GetNFAPARAM.error(function (error) {
         console.log(error);
 
     });
 
+};
+
+function bindPurchaseGroupDDL() {
+
+    var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
+    var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
+   
+    GetNFAPARAM.success(function (res) {
+        $("#ddlPurchasegroup").empty();
+        $('#ddlPurchasegroup').append('<option value="0">Select</option>');
+        if (res.result.length > 0) {
+           $.each(res.result, function (key, value) {
+               $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
+           });
+        }
+    });
+    GetNFAPARAM.error(function (error) {
+        console.log(error);
+    });
 
 };
 
+function bindConditionDDL() {
 
-
-function bindPurchaseGroupDDL(orgID) {
-    
-    var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt(orgID);
-    
+    var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=Y";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-       
-        if (res.result.length > 0) {
-
-            Groupdata = res.result;
-          
+        if (res.result != null) {
+            if (res.result.length > 0) {
+                //conditionData = res.result;
+                $("#ddlCondition").empty();
+                $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
+                for (var i = 0; i < res.result.length; i++) {
+                    $("#ddlCondition").append(jQuery("<option></option>").val(res.result[i].conditionID).html(res.result[i].conditionName));
+                }
+            }
         }
     });
     GetNFAPARAM.error(function (error) {
         console.log(error);
-    });
-
+   });
 };
-jQuery("#ddlPurchaseOrg").keyup(function () {
-    sessionStorage.setItem('hdnPurchaseORGID', '0');
-
-});
-sessionStorage.setItem('hdnPurchaseORGID', '0');
-jQuery("#ddlPurchaseOrg").typeahead({
-    source: function (query, process) {
-        var data = orgData;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            // console.log(data);
-            map[username.purchaseOrgName] = username;
-
-            usernames.push(username.purchaseOrgName);
-        });
-
-        process(usernames);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-        if (map[item].purchaseOrgID != "0") {
 
 
-            sessionStorage.setItem('hdnPurchaseORGID', map[item].purchaseOrgID);
-            bindPurchaseGroupDDL(map[item].purchaseOrgID);
-        }
-        else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
-        }
+//jQuery("#ddlPurchaseOrg").keyup(function () {
+//    sessionStorage.setItem('hdnPurchaseORGID', '0');
 
-        return item;
-    }
+//});
+//sessionStorage.setItem('hdnPurchaseORGID', '0');
+//jQuery("#ddlPurchaseOrg").typeahead({
+//    source: function (query, process) {
 
-});
-jQuery("#ddlPurchasegroup").keyup(function () {
-    sessionStorage.setItem('hdnPurchaseGroupID', '0');
+//        var data = orgData;
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            // console.log(data);
+//            map[username.purchaseOrgName] = username;
+//            usernames.push(username.purchaseOrgName);
+//        });
 
-});
-sessionStorage.setItem('hdnPurchaseGroupID', '0');
-jQuery("#ddlPurchasegroup").typeahead({
-    source: function (query, process) {
-        var data = Groupdata;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            // console.log(data);
-            map[username.groupName] = username;
+//        process(usernames);
 
-            usernames.push(username.groupName);
-        });
+//    },
+//    minLength: 2,
+//    updater: function (item) {
+//        if (map[item].purchaseOrgID != "0") {
+//            sessionStorage.setItem('hdnPurchaseORGID', map[item].purchaseOrgID);
+//            bindPurchaseGroupDDL(map[item].purchaseOrgID);
+//        }
+//        else {
+//            gritternotification('Purchase Group not selected!!!');
+//        }
 
-        process(usernames);
+//        return item;
+//    }
 
-    },
-    minLength: 2,
-    updater: function (item) {
-        if (map[item].idx != "0") {
+//});
+//jQuery("#ddlPurchasegroup").keyup(function () {
+//    sessionStorage.setItem('hdnPurchaseGroupID', '0');
+
+//});
+//sessionStorage.setItem('hdnPurchaseGroupID', '0');
+//jQuery("#ddlPurchasegroup").typeahead({
+//    source: function (query, process) {
+//        var data = Groupdata;
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            // console.log(data);
+//            map[username.groupName] = username;
+
+//            usernames.push(username.groupName);
+//        });
+
+//        process(usernames);
+
+//    },
+//    minLength: 2,
+//    updater: function (item) {
+//        if (map[item].idx != "0") {
 
 
-            sessionStorage.setItem('hdnPurchaseGroupID', map[item].idx);
+//            sessionStorage.setItem('hdnPurchaseGroupID', map[item].idx);
 
-        }
-        else {
-            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
-        }
+//        }
+//        else {
+//            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+//        }
 
-        return item;
-    }
+//        return item;
+//    }
 
-});
+//});
 
-$("#ddlPurchaseOrg").on("keyup", function () {
-    $("#ddlPurchaseOrg").css("border-color", "");
-});
-$("#ddlPurchasegroup").on("keyup", function () {
-    $("#ddlPurchasegroup").css("border-color", "");
-});
-$("#txtAmountFrom").on("keyup", function () {
-    $("#txtAmountFrom").css("border-color", "");
-});
-$("#txtAmountTo").on("keyup", function () {
-    $("#txtAmountTo").css("border-color", "");
-});
-$("#txtmodelPurchaseOrg").on("keyup", function () {
-    $("#txtmodelPurchaseOrg").css("border-color", "");
-});
-$("#ddlModelOrg").on("keyup", function () {
-    $("#ddlModelOrg").css("border-color", "");
-});
-$("#txtModelPurchaseGroup").on("keyup", function () {
-    $("#txtModelPurchaseGroup").css("border-color", "");
-});
 //Second tab controls
 $("#txtApprover").on("keyup", function () {
     $("#txtApprover").css("border-color", "");
@@ -442,58 +468,8 @@ $("#txtNBSeq").on("keyup", function () {
 });
 
 
-function validateApproverMaster() {
-    var v_org = false;
-    var v_group = false;
-    var v_approverType = false;
-    var amountfrom = false;
-    var amountto = false;
-    var amountCompare = false;
-    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchaseOrg").val() == "") {
-        $("#ddlPurchaseOrg").css("border-color", "red");
-        v_org = true;
-    }
-    else {
-        $("#ddlPurchaseOrg").css("border-color", "");
-        v_org = false;
-    }
-    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchasegroup").val() == "") {
-        $("#ddlPurchasegroup").css("border-color", "red");
-        v_group = true;
-    }
-    else {
-        $("#ddlPurchasegroup").css("border-color", "");
-        v_group = false;
-    }
-    if ($("#ddlApproveltype option:selected").val() == "") {
-        $("#ddlApproveltype").css("border-color", "red");
-        v_approverType = true;
-    }
-    else {
-        $("#ddlApproveltype").css("border-color", "");
-        v_approverType = false;
-    }
-    if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
-        $("#txtAmountFrom").css("border-color", "red");
-        $("#txtAmountTo").css("border-color", "red");
-        amountCompare = true;
-    }
-    else {
-        $("#txtAmountFrom").css("border-color", "");
-        $("#txtAmountTo").css("border-color", "");
-        amountCompare = false;
-    }
-
-    if (v_org || v_group || v_approverType || amountCompare)
-        return true;
-    else
-        return false;
-
-};
-function SaveApproverMaster() {
-
-    var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
-    var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');;
+function SaveApproverMaster()
+{
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
     var isActive = $("#chkIsActive").is(':checked');
     var amountFrom = $("#txtAmountFrom").val();
@@ -501,19 +477,21 @@ function SaveApproverMaster() {
     var p_idx = nfaApproverIDX;
     var Model = {
         idx: parseInt(p_idx),
-        orgID: parseInt(p_orgId),
+        orgID: parseInt($("#ddlPurchaseOrg option:selected").val()),
         cusID: parseInt(CurrentCustomer),
-        groupID: parseInt(p_groupId),
+        groupID: parseInt($("#ddlPurchasegroup option:selected").val()),
+        conditionID: parseInt($("#ddlCondition option:selected").val()),
         IsActive: isActive,
         createdBy: UserID,
         updatedBy: UserID,
         approvalType: p_approvaltype,
         amountFrom: parseFloat(removeThousandSeperator(amountFrom)),
         amountTo: parseFloat(removeThousandSeperator(amountTo)),
-        draft: true
+        draft: true,
+        deviation: parseFloat(removeThousandSeperator($("#txtdeviation").val()))
     };
     var url = "NFA/InsertUpdateApprovelMaster";
-
+   // alert(JSON.stringify(Model))
     var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     SaveApproverMaster.success(function (res) {
         // console.log(res);
@@ -522,6 +500,7 @@ function SaveApproverMaster() {
             nfaApproverIDX = parseInt(res.result[0].idx);
             nfaEditedID = parseInt(res.result[0].idx);
             ApproverType = p_approvaltype;
+            bindApproverMaster();
             if (ApproverType == "S") {
                 $(".clsHide").hide();
                 isHide = '';
@@ -564,9 +543,7 @@ function fetchRegisterUser() {
         success: function (data) {
 
             if (data.length > 0) {
-
                 allUsers = data;
-
             }
 
         },
@@ -609,14 +586,11 @@ jQuery("#txtApprover").typeahead({
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             sessionStorage.setItem('hdnWBApproverEmailid', map[item].emailID);
-
-
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
-
-        return item;
+       return item;
     }
 
 });
@@ -788,8 +762,6 @@ jQuery("#txtOBApprover").typeahead({
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnOBApproverid', map[item].userID);
             sessionStorage.setItem('hdnOBApproverEmail', map[item].emailID);
-
-
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
@@ -1216,7 +1188,7 @@ function CreateSeqData() {
 function SaveApproverSeqData(objSeqData) {
 
     var url = "NFA/InsertUpdateMultipleSeq?customerid=" + parseInt(CurrentCustomer) + "&nfaApproverid=" + nfaApproverIDX;
-    console.log(JSON.stringify(objSeqData))
+
 
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(objSeqData));
     callAPI.success(function (res) {
@@ -1292,11 +1264,13 @@ function BindPreviewDetails() {
 
     var org = $("#ddlPurchaseOrg").val();
     var group = $("#ddlPurchasegroup").val();
+    var conditionName = $("#ddlCondition").val();
     var approvelType = $("#ddlApproveltype option:selected").text();
     var from = $("#txtAmountFrom").val();
     var to = $("#txtAmountTo").val();
     $("#lblPurchaseOrg").text(org);
     $("#lblPurchaseGroup").text(group);
+    $("#lblCondition").text(conditionName);
     $("#lblApproveltype").text(approvelType);
     $("#lblAmountFrom").text(from);
     $("#lblAmountTo").text(to);
@@ -1346,6 +1320,10 @@ var FormWizard = function () {
                         required: true
 
                     },
+                    txtdeviation:{
+                        required: true,
+                        number: true
+                    },
                     txtAmountFrom: {
                         required: true,
                         number: true,
@@ -1358,9 +1336,6 @@ var FormWizard = function () {
                         minlength: 1,
                         maxlength: 18//3
                     }
-
-
-
                 },
 
                 messages: {
@@ -1476,65 +1451,12 @@ var FormWizard = function () {
                     //}
 
                 },
-
-
-
                 submitHandler: function (form) {
 
                     error.hide();
 
                 }
-
-
-
             });
-
-
-
-            var displayConfirm = function () {
-
-                //$('#tab4 .form-control-static', form).each(function () {
-
-                //    var input = $('[name="' + $(this).attr("data-display") + '"]', form);
-
-                //    if (input.is(":radio")) {
-
-                //        input = $('[name="' + $(this).attr("data-display") + '"]:checked', form);
-
-                //    }
-
-                //    if (input.is(":text") || input.is("textarea")) {
-
-                //        $(this).html(input.val());
-
-                //    } else if (input.is("select")) {
-
-                //        $(this).html(input.find('option:selected').text());
-
-                //    } else if (input.is(":radio") && input.is(":checked")) {
-
-                //        $(this).html(input.attr("data-title"));
-
-                //    } else if ($(this).attr("data-display") == 'payment') {
-
-                //        var payment = [];
-
-                //        $('[name="payment[]"]:checked').each(function () {
-
-                //            payment.push($(this).attr('data-title'));
-
-                //        });
-
-                //        $(this).html(payment.join("<br>"));
-
-                //    }
-
-                //});
-
-            }
-
-
-
             var handleTitle = function (tab, navigation, index) {
 
                 var total = navigation.find('li').length;
@@ -1572,17 +1494,11 @@ var FormWizard = function () {
 
 
                 if (current >= total) {
-
-                    $('#form_wizard_1').find('.button-next').hide();
-
+                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-
-                    displayConfirm();
-
-                } else {
+            } else {
 
                     $('#form_wizard_1').find('.button-next').show();
-
                     $('#form_wizard_1').find('.button-submit').hide();
 
                 }
@@ -1590,25 +1506,18 @@ var FormWizard = function () {
                 Metronic.scrollTo($('.page-title'));
 
             }
-
-
-
-
             // default form wizard
 
             $('#form_wizard_1').bootstrapWizard({
 
                 'nextSelector': '.button-next',
-
                 'previousSelector': '.button-previous',
-
-                onTabClick: function (tab, navigation, index, clickedIndex) {
+                 onTabClick: function (tab, navigation, index, clickedIndex) {
 
                     return false;
 
                 },
-
-                onNext: function (tab, navigation, index) {
+                 onNext: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -1626,45 +1535,45 @@ var FormWizard = function () {
                             return false;
 
                         }
-                        if (validateApproverMaster()) {
+                        //if (validateApproverMaster()) {
+                        //    $('.alert-danger').show();
+                        //    $('#spandanger').html('Please check highlighted fileds');
+                        //    Metronic.scrollTo($(".alert-danger"), -200);
+                        //    $('.alert-danger').fadeOut(5000);
+                        //    return false;
+                        //}
+
+                        CheckDuplicate();
+                        if (verifyApproverMatrix == "1" && nfaEditedID == '0') {
                             $('.alert-danger').show();
-                            $('#spandanger').html('Please check highlighted fileds');
+                            $('#spandanger').html('Approver Matrix details already exist');
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(5000);
                             return false;
                         }
-                      
-                          CheckDuplicate();
-                            if (verifyApproverMatrix == "1" && nfaEditedID=='0') {
-                                $('.alert-danger').show();
-                                $('#spandanger').html('Approver Matrix details already exist');
-                                Metronic.scrollTo($(".alert-danger"), -200);
-                                $('.alert-danger').fadeOut(5000);
-                                return false;
-                            }
-                            else {
-                                SaveApproverMaster();
-                            }
-                       
+                        else {
+                            SaveApproverMaster();
+                        }
+
                         if (nfaEditedID != 0) {
                             BindApproverSeqOnEdit();
                         }
-                       
+
                         //   BindApprovers();
                         var PreviewHtml = "Preview <i class='fa fa-eye' aria-hidden='true'></i>";
                         $(".button-next").html(PreviewHtml);
                     }
                     else if (index == 2) {
-                       
+
                         if ($('#tblWBApproverSeq >tbody >tr').length == 0 && $('#tblOBApproverSeq >tbody >tr').length == 0 && $('#tblNBApproverSeq >tbody >tr').length == 0) {
-                           // $('#errorSeq').html('Please Select Within Budgeted Approvers')
+                            // $('#errorSeq').html('Please Select Within Budgeted Approvers')
                             $('#errorSeq').html('Please Select atleast one Budgeted Approvers')
                             $('#errordivSeq').show();
                             Metronic.scrollTo($('errordivSeq'), -200);
                             $('#errordivSeq').fadeOut(5000);
 
                             return false;
-                         }
+                        }
                         //if ($('#tblOBApproverSeq >tbody >tr').length == 0) {
                         //    $('#errorSeq').html('Please Select Outside Budgeted Approvers')
                         //    $('#errordivSeq').show();
@@ -1688,13 +1597,12 @@ var FormWizard = function () {
                         else {
                             onPreviewClick();
                         }
-                        
+
                     }
                     handleTitle(tab, navigation, index);
 
                 },
-
-                onPrevious: function (tab, navigation, index) {
+                 onPrevious: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -1707,8 +1615,7 @@ var FormWizard = function () {
                     handleTitle(tab, navigation, index);
 
                 },
-
-                onTabShow: function (tab, navigation, index) {
+                 onTabShow: function (tab, navigation, index) {
 
                     var total = navigation.find('li').length;
 
@@ -1832,7 +1739,8 @@ function onClear() {
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
+
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblmodelPurchaseOrg").empty();
@@ -1842,7 +1750,7 @@ function BindData() {
             $('#tblmodelPurchaseOrg').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Purchase Org.</th><th>Status</th></tr></thead>');
 
             $.each(res.result, function (key, value) {
-                console.log(value);
+
                 if (value.isActive == true)
                     Status = "<span>Active</span>";
                 else
@@ -1985,7 +1893,7 @@ function CompleteProcess() {
             }
         }
     });
-    
+
 }
 
 //Add Purchase Group Data
@@ -1997,7 +1905,6 @@ $("#addNewGroup").click(function () {
     $('input:checkbox[name=chkGroupActive]').attr('checked', true);
     $('#chkGroupActive').parents('span').addClass('checked');
 });
-
 function onGroupSaveClick() {
     var str = $('#txtModelPurchaseGroup').val();
     if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
@@ -2011,7 +1918,6 @@ function onGroupSaveClick() {
     SavePurchaseGroup();
 
 }
-
 function ValidatePurchaseGroup() {
     var groupName = false;
     var OrgID = false;
@@ -2041,11 +1947,10 @@ function ValidatePurchaseGroup() {
         return false;
 
 }
-
 function BindModelPurchaseOrg() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlModelOrg").html('');
@@ -2069,7 +1974,6 @@ function BindModelPurchaseOrg() {
     jQuery.unblockUI();
 
 };
-
 function bindPurchaseGroupData() {
 
     jQuery.blockUI({ message: LoadingMessage });
@@ -2103,7 +2007,6 @@ function bindPurchaseGroupData() {
     });
     jQuery.unblockUI();
 };
-
 function SavePurchaseGroup() {
     jQuery.blockUI({ message: LoadingMessage });
     var url = "NFA/InsertUpdatePurchaseGroup";
@@ -2146,7 +2049,6 @@ function ClearControl() {
     $("#txtModelPurchaseGroup").val('');
     $("#ddlModelOrg").val(0);
 }
-
 function onGroupEdit(rowid, checked, orgid) {
     var rowID = $('#' + rowid);
     if (checked == true) {
@@ -2173,8 +2075,85 @@ function onGroupEdit(rowid, checked, orgid) {
 
 };
 
+
 $("#searchPopGrp-up").keyup(function () {
     var SearchTerm = $('#searchPopGrp-up').val();
     SearchInGridview("tblmodelPurchaseGroup", SearchTerm);
 
 });
+jQuery("#txtSearchmatrix").keyup(function () {
+
+    jQuery("#tblAllmatrix tr:has(td)").hide(); // Hide all the rows.
+
+    var iCounter = 0;
+    var sSearchTerm = jQuery('#txtSearchmatrix').val(); //Get the search box value
+
+    if (sSearchTerm.length == 0) //if nothing is entered then show all the rows.
+    {
+        jQuery("#tblAllmatrix tr:has(td)").show();
+        return false;
+    }
+
+    //Iterate through all the td.
+    jQuery("#tblAllmatrix tr:has(td)").children().each(function () {
+
+        var cellText = jQuery(this).text().toLowerCase();
+        if (cellText.indexOf(sSearchTerm.toLowerCase()) >= 0) //Check if data matches
+        {
+
+            jQuery(this).parent().show();
+            iCounter++;
+
+            return true;
+        }
+
+    });
+});
+//function validateApproverMaster() {
+//    var v_org = false;
+//    var v_group = false;
+//    var v_approverType = false;
+//    var amountfrom = false;
+//    var amountto = false;
+//    var amountCompare = false;
+//    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchaseOrg").val() == "") {
+//        $("#ddlPurchaseOrg").css("border-color", "red");
+//        v_org = true;
+//    }
+//    else {
+//        $("#ddlPurchaseOrg").css("border-color", "");
+//        v_org = false;
+//    }
+//    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchasegroup").val() == "") {
+//        $("#ddlPurchasegroup").css("border-color", "red");
+//        v_group = true;
+//    }
+//    else {
+//        $("#ddlPurchasegroup").css("border-color", "");
+//        v_group = false;
+//    }
+//    if ($("#ddlApproveltype option:selected").val() == "") {
+//        $("#ddlApproveltype").css("border-color", "red");
+//        v_approverType = true;
+//    }
+//    else {
+//        $("#ddlApproveltype").css("border-color", "");
+//        v_approverType = false;
+//    }
+//    if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
+//        $("#txtAmountFrom").css("border-color", "red");
+//        $("#txtAmountTo").css("border-color", "red");
+//        amountCompare = true;
+//    }
+//    else {
+//        $("#txtAmountFrom").css("border-color", "");
+//        $("#txtAmountTo").css("border-color", "");
+//        amountCompare = false;
+//    }
+
+//    if (v_org || v_group || v_approverType || amountCompare)
+//        return true;
+//    else
+//        return false;
+
+//};

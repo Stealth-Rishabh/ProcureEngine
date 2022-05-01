@@ -1,0 +1,22 @@
+/*------------------------------------------------------------------
+  	[Footer]
+------------------------------------------------------------------*/
+
+.footer {
+	.footer-logo {
+		@include size(150px, auto);
+	}
+
+	.footer-list {
+		margin-bottom: 0;
+	}
+	
+	.footer-list-item {
+		color: #777984;
+		
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

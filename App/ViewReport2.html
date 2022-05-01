@@ -110,7 +110,7 @@
                     </td>
 
                 </tr>
-               
+
                 <tr><td></td></tr>
                 <tr>
                     <td>
@@ -134,7 +134,17 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table></td></tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr><td></td></tr>
+                <tr>
+                    <td>
+                        <table width="100%" cellpadding="8" style="border-collapse: collapse; display: none;" border="1" id="tblbidvendortotalsummary">
+                            
+                        </table>
+                    </td>
+                </tr>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
@@ -187,6 +197,7 @@
             ReportBind(BidID, BidTypeID, BidForID)
             fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
             FetchRecomendedVendor(BidID)
+            fnfetchvendortotalSummary(BidID, BidTypeID)
           //  setTimeout(function () {
                 // saveAspdf()
                 // window.print();

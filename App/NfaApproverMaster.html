@@ -125,7 +125,7 @@
                             </i>
                         </li>
                         <li><a href="#">NFA Approver Master</a> <i class="fa fa-angle-right"></i></li>
-                        
+
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -158,14 +158,19 @@
                                                     &nbsp;&nbsp;&nbsp;
                                                     Select Approval Matrix to edit
                                                 </label>
-                                                <div class="col-md-9">
+                                                <div class="col-md-6">
 
                                                     <input type="hidden" value="0" id="ddlbid" />
                                                     <input type="text" class="form-control MaxLength" id="txtDetails" name="txtDetails"
                                                            data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" placeholder="Approver Details" />
 
                                                 </div>
-
+                                                <div class="col-md-1">
+                                                    <button href="#viewAllMatrix" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to
+                                                                                  View All Matrix">
+                                                        <i class="fa fa-search"></i> View All Matrix
+                                                    </button>
+                                                </div>
                                             </div>
                                             <ul class="nav nav-pills nav-justified steps">
                                                 <li>
@@ -201,48 +206,57 @@
                                                     <input type="hidden" id="hdnNfaApproverID" value="0">
                                                     <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Purchase Org.<span class="required"> *</span>
                                                             </label>
-                                                            <div class="inputgroup">
-
-                                                                <label class="col-12 col-md-8">
-                                                                    <!--<select id="ddlPurchaseOrg" class="form-control"></select>-->
-                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
-                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />
-                                                                </label>
+                                                            <div class="col-md-3">
+                                                                <select id="ddlPurchaseOrg" class="form-control" onchange="bindPurchaseGroupDDL()"></select>
+                                                                <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
+                                                    data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
                                                             </div>
+
                                                             <div class="col-12 col-md-2 hide">
-                                                                <!--style=" padding-left:0px !important; "-->
                                                                 <a href="#SubCategory" class="btn blue" id="addNewOrg" data-toggle="modal"><i class="fa fa-plus"></i></a>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Purchase Group<span class="required"> *</span>
                                                             </label>
-                                                            <div class="inputgroup">
-
-                                                                <label class="col-10 col-md-8">
-                                                                    <input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="ddlPurchasegroup"
-                                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchasegroup" />
-
-                                                                </label>
+                                                            <div class="col-md-3">
+                                                                <select id="ddlPurchasegroup" name="ddlPurchasegroup" class="form-control">
+                                                                    <option value="0">Select</option>
+                                                                </select>
+                                                                <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="ddlPurchasegroup"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchasegroup" />-->
                                                             </div>
 
+
                                                             <div class="col-12 col-md-2 hide">
-                                                               <a href="#PurchaseGroup" class="btn blue" id="addNewGroup" data-toggle="modal"><i class="fa fa-plus"></i></a>
+                                                                <a href="#PurchaseGroup" class="btn blue" id="addNewGroup" data-toggle="modal"><i class="fa fa-plus"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
+                                                                Condition
+                                                            </label>
+                                                            <div class="col-md-9">
+                                                                <select class="form-control" id="ddlCondition" name="ddlCondition"></select>
+                                                                <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Condition" id="ddlCondition"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
                                                                 Approvel Type<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-10 col-md-2">
+                                                            <div class="col-md-3">
                                                                 <select id="ddlApproveltype" class="form-control">
                                                                     <option value="P">Parallel/Mixed</option>
                                                                     <option value="S">Sequential</option>
@@ -252,10 +266,10 @@
 
                                                         </div>
                                                         <div class="inputgroup">
-                                                            <label class="col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Currency<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <select class="form-control" disabled id="dropCurrency" name="dropCurrency"></select>
                                                             </div>
                                                         </div>
@@ -264,32 +278,40 @@
                                                         <div class="inputgroup">
 
 
-                                                            <label class="col-12 col-md-2 control-label">
+                                                            <label class="col-md-3 control-label">
                                                                 Amount From<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-2">
+                                                            <div class="col-md-3">
                                                                 <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
                                                             </div>
-                                                            <label class="col-12 col-md-2 control-label">
+                                                        </div>
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
                                                                 Amount To<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-12 col-md-2">
+                                                            <div class="col-md-3">
                                                                 <input type="text" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-12 col-md-6 control-label">
-                                                            <input type="checkbox" checked id="chkIsActive" name="chkIsActive" class="form-control JustifyCenter ">
-                                                            IsActive
-                                                        </label>
-                                                        <label class="col-12 col-md-6 control-label">
-                                                        </label>
-
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox" checked id="chkIsActive" name="chkIsActive" class="form-control JustifyCenter ">
+                                                                IsActive
+                                                            </div>
+                                                            <div class="inputgroup">
+                                                                <label class="col-md-3 control-label">
+                                                                    Deviation (%)<span class="required"> *</span>
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="tel" id="txtdeviation" name="txtdeviation" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="5" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-
-
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="alert alert-block alert-danger" id="errordivSeq" style="display: none">
@@ -513,6 +535,22 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
+                                                                <label class="col-12 col-md-2 control-label">Condition :</label>
+                                                                <div class="col-12 col-md-4">
+                                                                    <p class="form-control-static" id="lblCondition">
+
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
                                                                 <label class="col-12 col-md-2 control-label">Approvel Type :</label>
                                                                 <div class="col-12 col-md-2">
                                                                     <p class="form-control-static" id="lblApproveltype">
@@ -534,20 +572,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--<div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
 
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
-                                                    <!--<div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
                                                     <h3 class="form-section">Within Budget (WB) Approvers</h3>
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -611,6 +636,36 @@
                 </div>
                 <!-- END PAGE CONTENT-->
                 <!--Model popup Start-->
+                <div id="viewAllMatrix" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Matrix
+                                </div>
+                                <div class="tools">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <br />
+                                <div class="col-md-12">
+                                    <div class="input-icon">
+                                        <i class="fa fa-search"></i>
+                                        <input type="text" id="txtSearchmatrix" placeholder="Search ..." class="form-control  input-circle" />
+                                    </div>
+                                    </div>
+                                    <div class="table-scrollable">
+                                        <div class="scroller" style="height:400px;" data-always-visible="1" data-rail-visible="0">
+                                            <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                    </div>
+                </div>
                 <div id="SubCategory" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="portlet box blue-hoki">
@@ -858,8 +913,7 @@
 
     <script src="assets/CustomJS/Common.js"></script>
     <script type="text/javascript" src="assets/CustomJS/nfaApprovermaster.js"></script>
-    <!--<script src="assets/CustomJS/Constant.js"></script>-->
-
+    
     <script>
         jQuery(document).ready(function () {
             $('[data-toggle="popover"]').popover({})
@@ -879,16 +933,13 @@
                     });
                 }
             }
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-
-
+            
+            setCommonData();
             Metronic.init();
             Layout.init();
             FormWizard.init();
             // ComponentsPickers.init();
-            setCommonData();
+            
 
             fetchMenuItemsFromSession(19, 56);
             FetchCurrency("0");

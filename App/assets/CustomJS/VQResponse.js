@@ -511,7 +511,8 @@ function ApproveRFI(For) {
         'For': For,
         'Remarks': $('#txtrejectreason').val(),
         "UserName": sessionStorage.getItem('UserName'),
-        "UserEmail": sessionStorage.getItem('EmailID')
+        "UserEmail": sessionStorage.getItem('EmailID'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     //alert(JSON.stringify(data))
     jQuery.ajax({
@@ -526,7 +527,7 @@ function ApproveRFI(For) {
         contentType: "application/json",
         success: function (data) {
             
-                bootbox.alert("VQ Submitted.", function () {
+            bootbox.alert("VQ " + For+" successfully.", function () {
                     window.location = sessionStorage.getItem("HomePage")
                     return false;
                 });

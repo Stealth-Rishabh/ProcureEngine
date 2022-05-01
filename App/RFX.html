@@ -243,7 +243,7 @@
                                                                    </div>
                                                                    <div class="col-md-3">
                                                                        <input type="file" class="form-control" tabindex="6"
-                                                                              onchange="checkfilesizeMultiple(this)"
+                                                                              onchange="checkfilesize(this)"
                                                                                /><!-- id="file2" name="file2"-->
                                                                        <span class="help-block"><a id="attach-file1" href="javascript:;" style="text-decoration: none !important;"></a></span>
                                                                        <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
@@ -266,7 +266,7 @@
                                                     </div>                                                
                                                 </div>
                                                 <div class="tab-pane" id="tab3">
-                                                    <div class="row
+                                                    <div class="row"">
                                                         <div class="col-md-12">
                                                             <div class="col-md-6">
                                                              
@@ -662,10 +662,10 @@
                     </div>
                     <div class="modal-body" style="height: 450px; overflow-y: scroll;">                      
                      <p class="ppolicy-text">                           
-	Using this page user can define RFX details and invite vendors to respond before specified deadline.<br/>
-	There are three steps to complete this process. All the mandatory information is marked with * sign.
-	</p>
-	<p class="ppolicy-text">Details required at every step are given below: </p>
+	                Using this page user can define RFX details and invite vendors to respond before specified deadline.<br/>
+	                There are three steps to complete this process. All the mandatory information is marked with * sign.
+	                </p>
+	                <p class="ppolicy-text">Details required at every step are given below: </p>
                         <p class="ppolicy-text"><b>Step -1: "RFX Details"–</b>In this step user needs to fill all generic information related to RFX.  Individual columns with their relevance are given below</p>
                         <ul>
 						<li><b>RFX Subject: </b>Meaningful short subject for the RFX. This is used as a subject for all related email notifications & reports.</li>
@@ -711,7 +711,7 @@
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
     
-<script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
     <script src="assets/admin/pages/scripts/components-pickers.js"></script>
     
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -722,8 +722,6 @@
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-   
-
     <script src="assets/CustomJS/RFX.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
@@ -762,18 +760,18 @@
                     var param = getUrlVars()["param"]
                     var decryptedstring = fndecrypt(param)
                      _RFXID = getUrlVarsURL(decryptedstring)["RFXID"];
-                }
+            }
+            fetchCategorymaster()
             if (_RFXID == null){
                sessionStorage.setItem('CurrentRFXID', 0)
                fetchRFXQuestions('RFI');
 			   }
            else {
                 sessionStorage.setItem('CurrentRFXID', _RFXID)
-				fetchRFXDetails();
-				fetchRFXDetailsForTab2('RFI');
+               
             }
            
-            fetchCategorymaster()
+           
             FormWizard.init();
 			FormValidate();
             ComponentsPickers.init();
