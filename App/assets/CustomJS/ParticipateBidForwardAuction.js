@@ -96,37 +96,40 @@ connection.on("refreshColumnStatusFA", function (data) {
     }
 });
 connection.on("refreshTimer", function () {
+    fetchBidTime();
+    //url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
+    //jQuery.ajax({
+    //    type: "GET",
+    //    contentType: "application/json; charset=utf-8",
+    //    url: url,
+    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+    //    cache: false,
+    //    crossDomain: true,
+    //    dataType: "json",
+    //    success: function (data, status, jqXHR) {
 
-    url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data, status, jqXHR) {
+    //        if (data.length > 0) {
+    //            jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
+    //            display = document.querySelector('#lblTimeLeft');
+    //            startTimer(data[0].timeLeft, display);
+    //        }
 
-            if (data.length > 0) {
-                jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
-                display = document.querySelector('#lblTimeLeft');
-                startTimer(data[0].timeLeft, display);
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-        }
-    });
+    //    },
+    //    error: function (xhr, status, error) {
+    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+    //        if (xhr.status == 401) {
+    //            error401Messagebox(err.Message);
+    //        }
+    //        else {
+    //            fnErrorMessageText('error', '');
+    //        }
+    //        jQuery.unblockUI();
+    //    }
+    //});
 })
+connection.on("refreshTimeronClients", function () {
+    fetchBidTime();
+});
 connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
@@ -751,12 +754,11 @@ function closeBidAir() {
                     }
                     return false;
                 });
-           }
-           else if (data == '-1') 
-              {
-                  //location.reload(true)
-                    fetchBidTime();
-             }
+            }
+            else if (data == '-1') {
+                //location.reload(true)
+                fetchBidTime();
+            }
         },
         error: function (xhr, status, error) {
 
@@ -965,6 +967,7 @@ function fetchBidSummaryVendorScrapDutch() {
                             count = count + 1;
                         }
                         else {
+
                             display = document.querySelector('#lblTimeLeft');
                             startTimerDutch(0, display);
                         }
@@ -994,7 +997,7 @@ function fetchBidSummaryVendorScrapDutch() {
 }
 
 function fetchBidTime() {
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1005,7 +1008,7 @@ function fetchBidTime() {
         dataType: "json",
         success: function (data, status, jqXHR) {
             if (data.length > 0) {
-               
+
                 if (BidForID == 81 || BidForID == 83) {
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
@@ -1028,8 +1031,21 @@ function fetchBidTime() {
                     }
                 }
                 else {
-                    display = document.querySelector('#lblTimeLeft');
-                    startTimerDutch((parseInt(data[0].timeLeft)), display);
+                    if (data[0].timeLeft <= 0) {
+                        clearInterval(mytime);
+                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+
+                            if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                                window.location = sessionStorage.getItem('HomePage');
+                                sessionStorage.clear();
+                            }
+                            else {
+                                window.location = 'VendorHome.html';
+                            }
+
+                            return false;
+                        });
+                    }
                 }
             }
         },
@@ -1079,7 +1095,7 @@ function startTimerDutch(duration, display) {
             //}
         }
 
-        console.log(timer)
+        //console.log(timer)
         if (--timer <= 0) {
             closeBidAir();
             return;

@@ -11,10 +11,10 @@ $(document).ready(function () {
         var param = getUrlVars()["param"];
         var decryptedstring = fndecrypt(param);
         BidID = getUrlVarsURL(decryptedstring)["BidID"];
-       
+
         BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
         BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
-        
+
         sessionStorage.setItem('hdnbidtypeid', BidTypeID)
         sessionStorage.setItem('BidID', BidID)
         fetchBidSummaryDetails(BidID, BidForID)
@@ -25,7 +25,7 @@ $(document).ready(function () {
 });
 function fetchBidTime() {
     var display = document.querySelector('#lblTimeLeft');
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -37,14 +37,15 @@ function fetchBidTime() {
         dataType: "json",
         success: function (data, status, jqXHR) {
 
-           
-            startTimer(data[0].timeLeft, display);
-            jQuery("#lblbidduration").text(data[0].actualBidDuartion + ' mins');
-            jQuery('#txtBidDurationPrev').val(data[0].actualBidDuartion)
-            $('#spinnerBidclosingTab').spinner({ value: data[0].actualBidDuartion, step: 1, min: 1, max: 999 });
+            if (data.length > 0) {
+                startTimer(data[0].timeLeft, display);
+                jQuery("#lblbidduration").text(data[0].actualBidDuartion + ' mins');
+                jQuery('#txtBidDurationPrev').val(data[0].actualBidDuartion)
+                $('#spinnerBidclosingTab').spinner({ value: data[0].actualBidDuartion, step: 1, min: 1, max: 999 });
 
-            
-            $('#tmleft').html($('#lblTimeLeft').text())
+
+                $('#tmleft').html($('#lblTimeLeft').text())
+            }
 
         },
         error: function (xhr, status, error) {
@@ -61,11 +62,12 @@ function fetchBidTime() {
 }
 var mytime = 0;
 function startTimer(duration, display) {
+   
     clearInterval(mytime)
     var timer = duration;
     var hours, minutes, seconds;
     mytime = setInterval(function () {
-        //fetchBidTime();
+
         hours = parseInt(timer / 3600, 10)
         minutes = parseInt(timer / 60, 10) - (hours * 60)
         seconds = parseInt(timer % 60, 10);
@@ -83,9 +85,9 @@ function startTimer(duration, display) {
 
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
 
-            if ((BidTypeID == 6 && BidForID == 82)  || (BidTypeID == 7 && BidForID == 82)) {
+            if ((BidTypeID == 6 && BidForID == 82) || (BidTypeID == 7 && BidForID == 82)) {
                 fetchBidSummaryDetails(BidID, BidForID);
-                //fetchBidTime();
+                fetchBidTime(); //** to refresh Timer after Bid accept by vendor
             }
         }
         //console.log(timer)
@@ -98,7 +100,7 @@ function startTimer(duration, display) {
                 return;
             }
         }
-         //}, 3000);
+        //}, 3000);
 
     }, 1000);
 }
@@ -108,7 +110,7 @@ function startTimerForStaggerItem(duration1, displayS) {
 
     var timer = duration1, hours, minutes, seconds;
     mytimeforSatus = setInterval(function () {
-        
+
         hours = parseInt(timer / 3600, 10)
         minutes = parseInt(timer / 60, 10) - (hours * 60)
         seconds = parseInt(timer % 60, 10);
@@ -124,11 +126,10 @@ function startTimerForStaggerItem(duration1, displayS) {
             displayS.textContent = minutes + ":" + seconds;
         }
 
-        if (--timer <= 1) {//button disabled at 2 sec or <=0 if at 1 sec
+        if (--timer <= 0) {
             timer = 0;
             if (timer == 0) {
-                alert(timer)
-              fnrefreshStaggerTimerdataonItemClose();
+               fnrefreshStaggerTimerdataonItemClose();
             }
         }
 
@@ -138,6 +139,6 @@ function startTimerForStaggerItem(duration1, displayS) {
 $("#txtChatMsg").keypress(function (e) {
     if (e.which == 13) {
         sendChatMsgs();
-       
+
     }
 })

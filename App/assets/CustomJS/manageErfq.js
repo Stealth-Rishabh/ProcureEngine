@@ -416,7 +416,7 @@ function InsUpdRFQDEtailTab1() {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-           
+
             fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
             $('.alert-success').show();
             $('#spansuccess1').html('Terms & Condition updated successfully!');
@@ -430,7 +430,7 @@ function InsUpdRFQDEtailTab1() {
             Reset();
         },
         error: function (xhr, status, error) {
-          
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -490,14 +490,14 @@ function fetchReguestforQuotationDetails(RFQID) {
             jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
             var CurDateonly = new Date(currentdate.toDateString())
             var ENDDTdateonly = new Date(new Date(RFQData[0].general[0].rfqEndDate.replace('-', '')).toDateString())
-           
+
             if (ENDDTdateonly < CurDateonly) {
                 $('#sendremainder').attr("disabled", "disabled");
             }
             else {
                 $('#sendremainder').removeAttr("disabled");
             }
-           
+
 
             if (RFQData[0].general[0].rfqTermandCondition != '') {
                 replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
@@ -1212,8 +1212,8 @@ function FetchVendorNotsubmittedQuotesPassreset(rfqid) {
 
             if (data.length > 0) {
                 $('#sendremainder').removeClass('hide')
-                 for (var i = 0; i < data.length; i++) {
-                     jQuery('#tblparicipantslists').append("<tr><td class=hide>" + data[i].vendorID + "</td><td class=hide>" + data[i].emailID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spancheckedrem\" class=checked ><input type=\"checkbox\" Onclick=\"Checkrem(this) \";  id=chkvenderrem" + BidData[0].bidVendorDetails[i].vendorID +" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvenderrem\" checked /></span></div></td><td>" + data[i].vendorName + " " + " ( " + data[i].emailID + " ) </td></tr>");
+                for (var i = 0; i < data.length; i++) {
+                    jQuery('#tblparicipantslists').append("<tr><td class=hide>" + data[i].vendorID + "</td><td class=hide>" + data[i].emailID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spancheckedrem\" class=checked ><input type=\"checkbox\" Onclick=\"Checkrem(this) \";  id=chkvenderrem" + data[i].vendorID + " value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvenderrem\" checked /></span></div></td><td>" + data[i].vendorName + " " + " ( " + data[i].emailID + " ) </td></tr>");
                 }
             }
             else {
@@ -1903,7 +1903,7 @@ function saveBidSurrogate() {
         "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-   // alert(JSON.stringify(Data))
+    // alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         jQuery.ajax({

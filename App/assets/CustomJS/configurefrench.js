@@ -736,7 +736,7 @@ var FormWizard = function () {
 
                     } else if (index == 2) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                            $('#spandanger').html('You have Some error. Please Check Below!')
+                            $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
                             Metronic.scrollTo($('.alert-danger'), -200);
                             $('.alert-danger').fadeOut(5000);
@@ -1113,6 +1113,7 @@ function ConfigureBidInsFrenchTab3() {
                 dataType: "json",
                 success: function (data) {
 
+                    jQuery.unblockUI();
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
                         window.location = sessionStorage.getItem("HomePage")

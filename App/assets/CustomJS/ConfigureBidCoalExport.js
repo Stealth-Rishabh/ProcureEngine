@@ -714,7 +714,7 @@ var FormWizard = function () {
                     else if (index == 2) {
 
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                            $('#spandanger').html('You have Some error. Please Check Below!')
+                            $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
                             Metronic.scrollTo($('.alert-danger'), -200);
                             $('.alert-danger').fadeOut(5000);
@@ -1212,7 +1212,7 @@ function ConfigureBidForSeaExportandSave() {
 
             // if (data[0].mailSubject !='') {
 
-            // jQuery.unblockUI();
+            jQuery.unblockUI();
 
             bootbox.alert("Bid Configured Successfully.", function () {
                 sessionStorage.removeItem('CurrentBidID');
@@ -1888,7 +1888,15 @@ function Dateandtimevalidate(indexNo) {
         },
         error: function () {
 
-            bootbox.alert("you have some error. Please try again.");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
 
         }
 

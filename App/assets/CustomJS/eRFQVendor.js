@@ -2,8 +2,10 @@
 var error = $('.alert-danger');
 var success = $('.alert-success');
 
-var form = $('#submit_form');
 
+
+
+var form = $('#submit_form');
 $(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
@@ -19,16 +21,18 @@ $(".thousandseparated").inputmask({
     'removeMaskOnSubmit': false
 
 });
+
 var Vehicleerror1 = $('#errordiv1');
 var Vehiclesuccess1 = $('#successdiv1');
 $('.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+jQuery.validator.addMethod("dollarsscents", function (value, element) {
+    return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(removeThousandSeperator(value));
+}, "You must include three decimal places");
 function formValidation() {
-    jQuery.validator.addMethod("dollarsscents", function (value, element) {
-        return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(value);
-    }, "You must include three decimal places");
+
     $('#mapPrices').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
@@ -36,7 +40,7 @@ function formValidation() {
         rules: {
             txtbasicPrice: {
                 required: true,
-                dollarsscents:true
+                dollarsscents: true
             }
         },
         messages: {
@@ -1021,11 +1025,13 @@ function addQuestionAnswer(ismailsent) {
 
                 fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
                 if (ismailsent == "Y") {
+                    jQuery.unblockUI();
                     bootbox.alert("RFQ response submitted and forwarded to company.", function () {
 
                         if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
                             window.location = sessionStorage.getItem('HomePage');
                             sessionStorage.clear();
+
                         }
                         else {
                             window.location = 'VendorHome.html';
@@ -1183,7 +1189,7 @@ function fnRegreteRFQ() {
         data: JSON.stringify(RegretData),
         dataType: "json",
         success: function (data) {
-
+            jQuery.unblockUI();
             bootbox.alert("RFQ Regretted Successfully.", function () {
 
                 if (sessionStorage.getItem("ISFromSurrogate") == "Y") {

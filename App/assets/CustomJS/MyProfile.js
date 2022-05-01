@@ -25,6 +25,7 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             jQuery("#ddlCountry").empty();
@@ -69,6 +70,7 @@ function fetchState() {
         url: sessionStorage.getItem("APIPath") + "CustomerRegistration/State/?CountryID=" + countryid + "&StateID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
+        async: false,
         cache: false,
         dataType: "json",
         success: function (data) {
@@ -118,6 +120,7 @@ function fetchCity() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
 
@@ -163,6 +166,7 @@ function fetchPaymentTerms() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: true,
         dataType: "json",
         success: function (data) {
 
@@ -306,15 +310,18 @@ function fetchMyProfileVendor() {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
                 $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
+
                 $('#ddlMSMEClass').val(vendordetails[0].MSMEType)
                 $('#txtUdyam').val(vendordetails[0].MSMENo)
 
-            } else if (vendordetails[0].MSMECheck == '' || vendordetails[0].MSMECheck == null || vendordetails[0].MSMECheck == undefined) {
+            }
+            else if (vendordetails[0].MSMECheck == '' || vendordetails[0].MSMECheck == null || vendordetails[0].MSMECheck == undefined) {
                 $('.hideInput').addClass('hide');
                 $('#ddlMSME').val(0);
-            } else {
+            }
+            else {
                 $('.hideInput').addClass('hide');
-                //$('#ddlMSME').attr("disabled", 'disabled');
+                $('#ddlMSME').attr("disabled", 'disabled');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
             }
 
@@ -526,7 +533,16 @@ companiessuccess.hide();
 var formvendor = $('#frmprofilevendornew');
 var successVendor = $('.alert-success', formvendor);
 var errorVendor = $('.alert-danger', formvendor);
+
 //vendor profile.html user form
+jQuery.validator.addMethod(
+    "notEqualTo",
+    function (elementValue, element, param) {
+        return elementValue != param;
+    },
+    //"Value cannot be {0}"
+    "This field is required."
+);
 function formvalidate() {
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -576,9 +592,10 @@ function formvalidate() {
         }
     });
     formvendor.validate({
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
 
         rules: {
             personname: {
@@ -587,10 +604,27 @@ function formvalidate() {
             vendormobileno: {
                 required: true,
             },
-
+            /* txtUdyam: {
+                 required: true,
+             },
+             filemsme: {
+                 required: true
+             },
+             ddlMSMEClass: {
+                 required: true,
+                 notEqualTo: 0
+             }*/
         },
         messages: {
-
+            ddlMSMEClass: {
+                required: "MSME Class is required."
+            },
+            txtUdyam: {
+                required: "Udyam No. is required."
+            },
+            filemsme: {
+                required: "Udyam certificate is required."
+            }
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
             errorVendor.hide()
@@ -605,13 +639,13 @@ function formvalidate() {
         },
 
         success: function (label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
+            label.closest('.form-group,.xyz').removeClass('has-error');
+            //label.remove();
         },
 
-        errorPlacement: function (error, element) {
-            profileerror.insertAfter(element.closest('.xyz'));
-        },
+        //errorPlacement: function (error, element) {
+        //    profileerror.insertAfter(element.closest('.xyz'));
+        //},
 
         submitHandler: function (form) {
             updateVendor();
@@ -1015,13 +1049,35 @@ function updateVendor() {
 }
 
 function fetchMsme() {
+
     if (jQuery("#ddlMSME option:selected").val() == 'Y') {
         $('.hideInput').removeClass('hide');
+        $('#frmprofilevendornew').validate();
+        $('input[name="txtUdyam"]').rules('add', {
+            required: true
+        });
+        $('input[name="filemsme"]').rules('add', {
+            required: true
+        });
+        $('input[name="ddlMSMEClass"]').rules('add', {
+            required: true,
+            notEqualTo: 0
+        });
+
+
     } else {
         $('.hideInput').addClass('hide');
+        $('input[name="filemsme"]').rules('remove');
+        $('input[name="txtUdyam"]').rules('remove');
+        $('input[name="ddlMSMEClass"]').rules('remove');
     }
 }
-
+$("#txtUdyam").keyup(function () {
+    $("#txtUdyam").css("border-color", "");
+});
+$("#filemsme").keyup(function () {
+    $("#filemsme").css("border-color", "");
+});
 var customersForAutoComplete;
 
 function fetchCompanyVR() {
@@ -1102,7 +1158,7 @@ jQuery("#txtCompanies").typeahead({
             }
         }
         else {
-            alert('hi')
+
             gritternotification('Please select Vendor  properly!!!');
         }
 
@@ -1502,7 +1558,8 @@ function calBusinessDetailPercent() {
         for (var j = 0; j < totalSelect; j++)
             if (selects[j].options.selectedIndex == 0 || selects[j].options.selectedIndex == -1) {
                 selectsWithValue = 0;
-            } else {
+            }
+            else {
                 selectsWithValue += 1;
             }
 
@@ -1511,6 +1568,7 @@ function calBusinessDetailPercent() {
         var total = totalInputs + totalSelect;
         filledPercentage = (totalFilledValue / total) * 100;
         businesspercent = Math.round(filledPercentage);
+
         var totalsum = contactpercent + companypercent + accountpercent + businesspercent;
         var $totalpercent = Math.round((totalsum / totalTab) * 100);
 

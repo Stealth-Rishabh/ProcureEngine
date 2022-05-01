@@ -13,6 +13,12 @@ function error401Messagebox(error) {
         return false;
     });
 }
+if (sessionStorage.getItem('CustomerID') == 32) {
+    $('#lichngepass').hide()
+}
+else {
+    $('#lichngepass').show()
+}
 function fnErrorMessageText(spanid,formid) {
    
     if (formid != '') {

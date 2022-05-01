@@ -40,7 +40,7 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 jQuery.validator.addMethod("dollarsscents", function (value, element) {
-    return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(value);
+    return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(removeThousandSeperator(value));
 }, "You must include three decimal places");
 var FormWizard = function () {
 
@@ -111,7 +111,7 @@ var FormWizard = function () {
                     },
                     txtedelivery: {
                         required: true
-                        
+
                     },
                     //dropuom: {
                     //    required: true
@@ -130,7 +130,7 @@ var FormWizard = function () {
                         required: true,
                         maxlength: 18,
                         notEqualTo: 0,
-                        dollarsscents:true
+                        dollarsscents: true
                     },
                     txtshortname: {
                         required: true,
@@ -1773,11 +1773,11 @@ function ParametersQuery() {
         Povalue = thousands_separators($('#txtpovalue').val())
     }
     //quan=thousands_separators(parseFloat(removeThousandSeperator($('#txtquantitiy').val())).round(3))
-        quan = thousands_separators($('#txtquantitiy').val())
-    
+    quan = thousands_separators($('#txtquantitiy').val())
+
     if (!jQuery("#tblServicesProduct thead").length) {
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
     }
     else {
         jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
@@ -1814,7 +1814,7 @@ function editRow(icount) {
     $('#txtshortname').val($("#sname" + icount).text())
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
-    $('#txtquantitiy').val(removeThousandSeperator($("#quan" + icount).text()))
+    $('#txtquantitiy').val(thousands_Sep_Text(removeThousandSeperator($("#quan" + icount).text())))
     $('#txtUOM').val($("#uom" + icount).text())
     $('#dropuom').val($("#uom" + icount).text())
     $('#txtItemRemarks').val(RFQRemark)
@@ -2136,6 +2136,7 @@ function fnsubmitRFQ() {
             data: JSON.stringify(Tab3data),
             dataType: "json",
             success: function (data) {
+                jQuery.unblockUI();
                 bootbox.alert("Request for Quotation Submitted Successfully.", function () {
                     sessionStorage.removeItem('CurrentBidID');
                     window.location = sessionStorage.getItem("HomePage")
@@ -2614,11 +2615,15 @@ function isValidDate(str) {
 }
 var Rowcount = 0;
 function printDataparameter(result) {
+
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
     // var numberOnly = /^[0-9]+$/;
-    var numberOnly = /^[0-9]\d*(\.\d+)?$/;
+    //var numberOnly = /^[0-9]\d*(\.\d+)?$/;
+    // var numberOnly = /^[0-18]\d*(\.\d[0-3]+)?$/;
+    var numberOnly = /^\d+(?:\.\d{1,3})?$/;
+
     $("#temptableForExcelDataparameter").empty();
     $("#temptableForExcelDataparameter").append("<tr><th>ItemService</th><th>ItemCode</th><th>TargetPrice</th><th>Quantity</th><th>UOM</th><th>Description</th><th>TAT</th><th>DeliveryLocation</th><th>Remarks</th><th>PoNo</th><th>VendorName</th><th>UnitRate</th><th>PoDate</th><th>PoValue</th></tr>");
     // checking validat  alert(loopcount)
@@ -2701,6 +2706,7 @@ function printDataparameter(result) {
         }
         else if ($.trim(result[i].Quantity) == '') {
             $("#error-excelparameter").show();
+
             $("#errspan-excelparameter").html('Quantity can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
@@ -2714,7 +2720,7 @@ function printDataparameter(result) {
         else if (!result[i].Quantity.trim().match(numberOnly)) {
 
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Quantity should be in numbers only of item no ' + (i + 1) + '.');
+            $("#errspan-excelparameter").html('Quantity should be in numbers or upto 3 decimal places of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
@@ -2724,7 +2730,7 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if (TAT != '' && (!TAT.match(numberOnly) || TAT.length > 4)) {
+        else if (TAT != '' && (!TAT.match() || TAT.length > 4)) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('TAT should be in numbers only and maximum 4 digits allowed of item no ' + (i + 1) + '.');
             $("#file-excelparameter").val('');
@@ -2733,14 +2739,14 @@ function printDataparameter(result) {
         }
         else if (!$.trim(result[i].UnitRate).match(numberOnly) && unitrate != 0) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Unit Rate should be in numbers only of item no ' + (i + 1) + '.');
+            $("#errspan-excelparameter").html('Unit Rate should be in numbers or upto 3 decimal places only of item no ' + (i + 1) + '.');
             $("#file-excelparameter").val('');
             return false;
 
         }
         else if (!$.trim(result[i].PoValue).match(numberOnly) && povalue != 0) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('PO Value should be in numbers only of item no ' + (i + 1) + '.');
+            $("#errspan-excelparameter").html('PO Value should be in numbers or upto 3 decimal places only of item no ' + (i + 1) + '.');
             $("#file-excelparameter").val('');
             return false;
 
@@ -2761,7 +2767,7 @@ function printDataparameter(result) {
         else if (targetPrice != '' && (!targetPrice.match(numberOnly))) {
 
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Target Price should be in numbers only of item no ' + (i + 1) + '.');
+            $("#errspan-excelparameter").html('Target Price should be in numbers or upto 3 decimal places only of item no ' + (i + 1) + '.');
             $("#file-excelparameter").val('');
             return false;
         }

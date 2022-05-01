@@ -584,7 +584,7 @@ var FormWizard = function () {
                     },
                     txtBidExtension: {
                         //required: true,
-                        number:true
+                        number: true
                     },
 
                     //Second Tab
@@ -930,7 +930,7 @@ var FormWizard = function () {
 
                     } else if (index == 2) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                            $('#spandanger').html('You have Some error. Please Check Below!')
+                            $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
                             Metronic.scrollTo($('.alert-danger'), -200);
                             $('.alert-danger').fadeOut(5000);
@@ -988,17 +988,10 @@ var FormWizard = function () {
             $('#form_wizard_1 .button-submit').click(function () {
 
                 if ($('#tblServicesProduct >tbody >tr').length == 0) {
-
-
-
                     $('#form_wizard_1').bootstrapWizard('previous');
-
                     error.show();
-
                     $('#spandanger').html('please Configure Bid parameters..')
-
                     error.fadeOut(3000)
-
                     return false;
 
                 }
@@ -1113,7 +1106,7 @@ function ConfigureBidInsPefaTab1() {
 
     };
 
-  //  alert(JSON.stringify(Tab1Data))
+    //  alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
 
         type: "POST",
@@ -1380,7 +1373,7 @@ function ConfigureBidInsPefaTab3() {
     else {
         if (sessionStorage.getItem("BidPreApp") == "N") {
             var Tab3data = {
-                
+
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "UserID": sessionStorage.getItem('UserID'),
                 "BidTypeID": 6,
@@ -1399,7 +1392,7 @@ function ConfigureBidInsPefaTab3() {
                 data: JSON.stringify(Tab3data),
                 dataType: "json",
                 success: function (data) {
-
+                    jQuery.unblockUI();
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
                         window.location = sessionStorage.getItem("HomePage")
@@ -1471,7 +1464,7 @@ function MapBidapprover() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "BidTypeID": 6,
     }
-   // alert(JSON.stringify(Approvers))
+    // alert(JSON.stringify(Approvers))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -2005,7 +1998,7 @@ function InsUpdProductSevices() {
                 if (form.valid() == false) {
 
                     error.show();
-                    $('#spandanger').html('You have some error.Please Check below...');
+                    $('#spandanger').html('please Configure Bid parameters..');
 
                     Metronic.scrollTo(error, -200);
 
@@ -2809,7 +2802,7 @@ function fetchPSBidDetailsForPreview() {
     jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#txtConversionRatePrev').html($('#txtConversionRate').val())
-    
+
     jQuery('#noofextensionprev').text($('#txtBidExtension option:selected').text())
     if ($('#drphideVendor').val() == "Y") {
         hidevendor = "Yes";

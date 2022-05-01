@@ -207,7 +207,7 @@ function fetchVendorDetails() {
 
                 fetchBidSummaryVendorproduct()
 
-                //$('#btnsubmit').show()
+                $('#btnsubmit').show()
 
             }
             else if (data.length == 1 && data[0].status.toLowerCase() == 'pause') {
@@ -215,22 +215,20 @@ function fetchVendorDetails() {
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is paused.</b>').css('color', 'red');
                 $('#tblParticipantsService').hide();
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
-               // $('#btnsubmit').hide()
+                $('#btnsubmit').hide()
                 fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
             }
-            else {//if (data.length == 0 || data.length > 1) {
+            else {//if (data.length == 0 || data.length > 1 ) {
 
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is not started.</b>').css('color', 'red');
 
                 $('#tblParticipantsService').hide();
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 _isBidStarted = false;
-                //$('#btnsubmit').hide()
+                $('#btnsubmit').hide()
                 fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
             }
-            
-            $(window).focusout();
-            $(window).blur()
+
         },
 
         error: function (xhr, status, error) {
@@ -257,6 +255,9 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
 }).catch(function (err) {
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
+});
+connection.on("refreshBidStatusAfterPause", function (data) {
+    fetchBidTime();
 });
 connection.on("refreshColumnStatus", function (data) {
     var JsonMsz = JSON.parse(data[0]);
@@ -368,37 +369,40 @@ connection.on("refreshColumnStatus", function (data) {
     }
 });
 connection.on("refreshTimer", function () {
+    fetchBidTime();
+    //url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
+    //jQuery.ajax({
+    //    type: "GET",
+    //    contentType: "application/json; charset=utf-8",
+    //    url: url,
+    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+    //    cache: false,
+    //    crossDomain: true,
+    //    dataType: "json",
+    //    success: function (data, status, jqXHR) {
 
-    url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data, status, jqXHR) {
+    //        if (data.length > 0) {
+    //            jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
+    //            display = document.querySelector('#lblTimeLeft');
+    //            startTimer(data[0].timeLeft, display);
+    //        }
 
-            if (data.length > 0) {
-                jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
-                display = document.querySelector('#lblTimeLeft');
-                startTimer(data[0].timeLeft, display);
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-        }
-    });
+    //    },
+    //    error: function (xhr, status, error) {
+    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+    //        if (xhr.status == 401) {
+    //            error401Messagebox(err.Message);
+    //        }
+    //        else {
+    //            fnErrorMessageText('error', '');
+    //        }
+    //        jQuery.unblockUI();
+    //    }
+    //});
 })
+connection.on("refreshTimeronClients", function () {
+    fetchBidTime();
+});
 connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
@@ -441,6 +445,57 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //  }
     //$(".pulsate-regular").css('animation', 'none');
 });
+function fetchBidTime() {
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem("BidID"),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+
+            if (data.length > 0) {
+
+                if (data[0].timeLeft <= 0) {
+                    clearInterval(mytime);
+                    bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+
+                        if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                            window.location = sessionStorage.getItem('HomePage');
+                            sessionStorage.clear();
+                        }
+                        else {
+                            window.location = 'VendorHome.html';
+                        }
+
+                        return false;
+                    });
+                }
+                else {
+                    display = document.querySelector('#lblTimeLeft');
+                    startTimer((parseInt(data[0].timeLeft)), display);
+                }
+
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+
+        }
+    });
+}
 function sendChatMsgs() {
 
     var data = {
@@ -703,25 +758,22 @@ function closeBidAir() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //if (data == '1') {
-                bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
 
-                    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
-                        window.location = sessionStorage.getItem('HomePage');
-                        sessionStorage.clear();
-                    }
-                    else {
-                        window.location = 'VendorHome.html';
+            bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
 
-                    }
+                if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+                    window.location = sessionStorage.getItem('HomePage');
+                    sessionStorage.clear();
+                }
+                else {
+                    window.location = 'VendorHome.html';
 
-                    return false;
+                }
 
-                });
-            //}
-            //else if (data == '-1') {
-            //    location.reload(true)
-            //}
+                return false;
+
+            });
+
         },
         error: function (xhr, status, error) {
 

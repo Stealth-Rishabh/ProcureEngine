@@ -267,7 +267,7 @@ function fetchPendingBid() {
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
           
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -495,7 +495,7 @@ function acceptBidTermsAuction() {
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -921,7 +921,7 @@ function fetchBidDataDashboard(requesttype) {
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -975,7 +975,7 @@ function fetchBidHeaderDetails() {
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 
@@ -1077,9 +1077,6 @@ function validateBid(bidid) {
    
     $('#validatebidmodal').modal('show')
 }
-
-
-
 function fetchMappedCustomers() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1109,7 +1106,7 @@ function fetchMappedCustomers() {
             $('.page-container').show();
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
            
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
 

@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-   
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -277,14 +277,14 @@
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
                                                                                 <!--<div class="form-group">
-                <label class="control-label col-md-4">Time:</label>
-                <div class="col-md-8">
-                    <p class="form-control-static" id="txtbidTimePrevtab_0">
+                                                                                    <label class="control-label col-md-4">Time:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static" id="txtbidTimePrevtab_0">
 
-                    </p>
-                    <a class="isDisabledClass" onclick="editValues('divbidTimePrevtab_0','')"><i class="fa fa-pencil"></i></a>
-                </div>
-            </div>-->
+                                                                                        </p>
+                                                                                        <a class="isDisabledClass" onclick="editValues('divbidTimePrevtab_0','')"><i class="fa fa-pencil"></i></a>
+                                                                                    </div>
+                                                                                </div>-->
                                                                             </div>
                                                                             <!--/span-->
                                                                         </div>
@@ -377,7 +377,7 @@
                                                                                     <label class="control-label col-md-3">Display Vendors their Rank:</label>
                                                                                     <div class="col-md-9">
                                                                                         <p class="form-control-static" id="showL1l2"></p>
-                                                                                        <a class=isDisabledClass id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a  id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
 
                                                                                     </div>
                                                                                 </div>
@@ -809,8 +809,10 @@
                                                                             <span id="succopenbid"></span>
                                                                         </div>
                                                                         <div class="row">
-                                                                            <h3 class="form-section">Bid Details &nbsp;&nbsp;<label class="control-label bold" id="bid_status" style="font-size: 17px !important; font-weight: 900!important;color:darkblue;">
-                                                                                </label></h3>
+                                                                            <h3 class="form-section">
+                                                                                Bid Details &nbsp;&nbsp;<label class="control-label bold" id="bid_status" style="font-size: 17px !important; font-weight: 900!important;color:darkblue;">
+                                                                                </label>
+                                                                            </h3>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Status:</label>
@@ -832,33 +834,33 @@
                                                                                         <div class="col-md-3">
                                                                                             <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                                                  data-date-start-date="+0d">
-                                                                                                <input type="text" id="txtbidDate" name="txtbidDate" class="form-control dttime" readonly>
+                                                                                                <input type="text" id="txtbidDate" name="txtbidDate" class="form-control dttime afterrunning" readonly>
                                                                                                 <span class="input-group-btn">
-                                                                                                    <button class="btn default dttime" id="btncalopendate" type="button">
+                                                                                                    <button class="btn default dttime afterrunning" id="btncalopendate" type="button">
                                                                                                         <i class="fa fa-calendar"></i>
                                                                                                     </button>
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                      <div class="col-md-3">
-                                                                                                        <div class="input-group">
-                                                                                                            <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds dttime"
-                                                                                                                   readonly>
-                                                                                                            <span class="input-group-btn">
-                                                                                                                <button class="btn default" type="button" id="btnopentime">
-                                                                                                                    <i class="fa fa-clock-o"></i>
-                                                                                                                </button>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                       </div>
-                                                                                             
+                                                                                        <div class="col-md-3">
+                                                                                            <div class="input-group">
+                                                                                                <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds dttime afterrunning"
+                                                                                                       readonly>
+                                                                                                <span class="input-group-btn">
+                                                                                                    <button class="btn default afterrunning" type="button" id="btnopentime">
+                                                                                                        <i class="fa fa-clock-o"></i>
+                                                                                                    </button>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+
                                                                                     </div>
                                                                                 </div>
 
                                                                             </div>
                                                                         </div>
                                                                         <div class="row">
-                                                                             <div class="col-md-6">
+                                                                            <div class="col-md-6">
 
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Bid Duration (in minutes):</label>
@@ -883,9 +885,9 @@
                                                                                         <div class="col-md-3">
                                                                                             <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                                                  data-date-start-date="+0d">
-                                                                                                <input type="text" id="txtreopenDate" name="txtreopenDate" class="form-control" readonly>
+                                                                                                <input type="text" id="txtreopenDate" name="txtreopenDate" class="form-control afterrunning" readonly>
                                                                                                 <span class="input-group-btn">
-                                                                                                    <button class="btn default" id="btncalreopen" type="button">
+                                                                                                    <button class="btn default afterrunning" id="btncalreopen" type="button">
                                                                                                         <i class="fa fa-calendar"></i>
                                                                                                     </button>
                                                                                                 </span>
@@ -893,7 +895,7 @@
                                                                                         </div>
                                                                                         <div class="col-md-3">
                                                                                             <div class="input-group">
-                                                                                                <input type="text" id="txreopenTime" name="txreopenTime" class="form-control timepicker timepicker-no-seconds"
+                                                                                                <input type="text" id="txreopenTime" name="txreopenTime" class="form-control timepicker timepicker-no-seconds afterrunning"
                                                                                                        readonly>
                                                                                                 <span class="input-group-btn">
                                                                                                     <button class="btn default" type="button">
@@ -931,7 +933,7 @@
                                                                         <div>&nbsp;</div>
                                                                         <div class="row">
                                                                             <div class="col-md-12">
-                                        
+
                                                                                 <div class="col-md-offset-5">
                                                                                     <button id="btnbidchangedttime" type="button" class="btn btn-success" onclick="DateandtimevalidateForBidOpen('Y')">
 
@@ -1515,7 +1517,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="divfrench hide">
+                                <div id="divfrench" class="hide">
                                     <div class="form-group">
                                         <label class="control-label col-md-2">
                                             Item/Product <span class="required">
@@ -1984,9 +1986,7 @@
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-
-                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" />
-
+                                             <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />                                  
                                         </div>
                                     </div>
 
@@ -2161,8 +2161,8 @@
                         </form>
 
                     </div>-->
-                    <!-- /.modal-content -->
-                <!--</div>
+    <!-- /.modal-content -->
+    <!--</div>
             </div>
         </div>
     </div>-->
@@ -2235,7 +2235,7 @@
             FormValidate();
             FetchUOM(sessionStorage.getItem("CustomerID"));
             BindNoExtensions('txtnoofextensiontab_0');
-            
+
 
         });
     </script>

@@ -282,7 +282,7 @@
                                                                                 <select class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" aria-invalid="false">
                                                                                     <option value="0">Select</option>
                                                                                     <option value="1">Partnership</option>
-                                                                                    <option value="2">Company</option>
+                                                                                    <option value="2">Proprietor</option>
                                                                                     <option value="3">Private limited</option>
                                                                                     <option value="4">Public limited</option>
                                                                                 </select>
@@ -429,10 +429,10 @@
                                                                                         <div class="inputgroup">
                                                                                             <div class="att_input">
                                                                                                 <input type="file" class="form-control" tabindex="5" id="filegst"
-                                                                                                       onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
+                                                                                                       onchange="checkfilesize(this)" />
                                                                                                 <span class="help-block uploadedfile">
                                                                                                     <!--<a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" name="gstattach"  style="text-align:left; text-decoration: none !important;">
-                                                                                        test</a>-->
+                                                                                                    test</a>-->
                                                                                                     <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;"></a>
                                                                                                 </span>
                                                                                             </div>
@@ -464,7 +464,7 @@
                                                                                             <div class="inputgroup">
                                                                                                 <div class="att_input">
                                                                                                     <input type="file" class="form-control" tabindex="5" id="filepan"
-                                                                                                           onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
+                                                                                                           onchange="checkfilesize(this)" />
                                                                                                     <span class="help-block uploadedfile"> <a href="javascript:;" id="panattach" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;"></a></span>
                                                                                                 </div>
                                                                                             </div>
@@ -486,7 +486,7 @@
                                                                                         <div class="inputgroup">
                                                                                             <div class="att_input">
                                                                                                 <input type="file" class="form-control" tabindex="5" id="filecheck"
-                                                                                                       onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
+                                                                                                       onchange="checkfilesize(this)" />
                                                                                                 <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" style="text-align:left; text-decoration: none !important;"></a></span>
                                                                                             </div>
                                                                                         </div>
@@ -592,7 +592,7 @@
                                                                         <div class="col-lg-11">
                                                                             <div class="inputgroup">
                                                                                 <label class="col-md-3 control-label" style="text-align:left">
-                                                                                    MSME<span class="required"> *</span>
+                                                                                    MSME
                                                                                 </label>
                                                                                 <div class="col-md-3 ">
                                                                                     <select class="form-control selects selectno" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
@@ -607,8 +607,8 @@
                                                                                 <label class="col-md-3 control-label">
                                                                                     MSME Class<span class="required"> *</span>
                                                                                 </label>
-                                                                                <div class="col-md-3 ">
-                                                                                    <select class="form-control selects" id="ddlMSMEClass" name="ddlMSMEClass">
+                                                                                <div class="col-md-3 xyz">
+                                                                                    <select class="form-control selects" id="ddlMSMEClass" name="ddlMSMEClass" >
                                                                                         <option value="0">Select</option>
                                                                                         <option value="Micro">Micro</option>
                                                                                         <option value="Small">Small</option>
@@ -624,20 +624,20 @@
                                                                             <label class="col-md-3 control-label" style="text-align:left">
                                                                                 MSME Udyam No.<span class="required">*</span>
                                                                             </label>
-                                                                            <div class="col-md-3 ">
+                                                                            <div class="col-md-3 xyz">
                                                                                 <input type="text" class="form-control" placeholder="MSME Udyam No."
-                                                                                       id="txtUdyam" name="txtUdyam" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                       id="txtUdyam" name="txtUdyam" autocomplete="off"  onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
 
                                                                             <div class="inputgroup">
                                                                                 <label class="col-md-3 control-label">
-                                                                                    Attach MSME Udyam certificate
+                                                                                    Attach MSME Udyam certificate<span class="required"> *</span>
                                                                                 </label>
-                                                                                <div class="col-md-3">
+                                                                                <div class="col-md-3 xyz">
                                                                                     <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem3">
                                                                                         <li>
-                                                                                            <input type="file" class="form-control" tabindex="5" id="filemsme"
-                                                                                                   onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
+                                                                                            <input type="file" class="form-control" tabindex="5" id="filemsme" name="filemsme"
+                                                                                                   onchange="checkfilesize(this)" />
                                                                                             <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" style="text-align:left; text-decoration: none !important;"></a></span>
                                                                                         </li>
                                                                                     </ul>

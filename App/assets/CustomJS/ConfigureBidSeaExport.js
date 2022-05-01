@@ -355,8 +355,8 @@ $("#chkAll").click(function () {
             var v = vCount;
             vCount = vCount + 1;
             var vname = $.trim($(this).find('td:eq(2)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorid + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',SelecetedVendorPrev' + vendorid + ',' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" id=Lambda' + vendorid + ' class="btn btn-xs btn-success lambdafactor" data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorid + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td id=tblcolweightagePrev' + vendorid + '>0</td><td class=hide>N</td></tr>')
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td class=tblcolweightage id=tblcolweightage' + vendorid + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',SelecetedVendorPrev' + vendorid + ',' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" id=Lambda' + vendorid + ' class="btn btn-xs btn-success lambdafactor" data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorid + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td class=tblcolweightage id=tblcolweightagePrev' + vendorid + '>0</td><td class=hide>N</td></tr>')
             if (FlagForCheckShowPrice == "Y") {
                 $('#Lambda' + vendorid).addClass('tooltips')
             }
@@ -407,13 +407,13 @@ function Check(event, vname, vendorID) {
         $(event).closest("span#spanchecked").addClass("checked")
         if ($("#ddlAuctiontype option:selected").val() == 81 || $("#ddlAuctiontype option:selected").val() == 83) {
             $('.THLoading').show()
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td id=tblcolweightagePrev' + vendorID + '>0</td><td class=hide>N</td></tr>')
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=tblcolweightage id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=tblcolweightage id=tblcolweightagePrev' + vendorID + '>0</td><td class=hide>N</td></tr>')
         }
         else {
             $('.THLoading').hide()
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success hide lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide id=tblcolweightagePrev' + vendorID + '>0</td><td class=hide>N</td></tr>')
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class="hide tblcolweightage" id=tblcolweightage' + vendorID + '>0</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success hide lambdafactor tooltips" id=Lambda' + vendorID + ' data-toggle="tooltip"  data-placement="left" data-original-title="Lambda factor can not be put in case Show L1 Price is selected Yes of this bid." onclick="addWeightageToVendor(' + vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class="hide tblcolweightage" id=tblcolweightagePrev' + vendorID + '>0</td><td class=hide>N</td></tr>')
         }
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -1013,7 +1013,7 @@ var FormWizard = function () {
                     else if (index == 2) {
 
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
-                            $('#spandanger').html('You have Some error. Please Check Below!')
+                            $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
                             Metronic.scrollTo($('.alert-danger'), -200);
                             $('.alert-danger').fadeOut(5000);
@@ -1035,6 +1035,7 @@ var FormWizard = function () {
 
                             if (FlagForCheckShowPrice == "Y") {
                                 $('.lambdafactor').attr("disabled", "disabled");
+                                $('.tblcolweightage').text('0')
                             }
                             else {
                                 $('.lambdafactor').removeAttr("disabled", "disabled");
@@ -1197,8 +1198,8 @@ function ConfigureBidForSeaExportTab1() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "BidClosetype": $('#ddlbidclosetype').val(),
         "ShowRankToVendor": $('#drpshowL1L2').val(),
-        "HideVendor": $('#drphideVendor').val(),
-        "NoofBidExtension": parseInt($("#txtBidExtension").val())
+        "NoofBidExtension": parseInt($("#txtBidExtension").val()),
+        "HideVendor": $('#drphideVendor').val()
     };
 
     //console.log(JSON.stringify(Tab1Data))
@@ -1637,7 +1638,7 @@ function ConfigureBidForSeaExportandSave() {
                 dataType: "json",
                 success: function (data) {
 
-
+                    jQuery.unblockUI();
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
                         window.location = sessionStorage.getItem("HomePage")
@@ -2370,7 +2371,7 @@ function fetchSeaExportDetails() {
             jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
             $('#drphideVendor').val(BidData[0].bidDetails[0].hideVendor)
-           // jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension == -1 ? "" : BidData[0].bidDetails[0].noofBidExtension)
+            // jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension == -1 ? "" : BidData[0].bidDetails[0].noofBidExtension)
             jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension)
             setTimeout(function () {
                 jQuery("#dropCurrency").val(BidData[0].bidDetails[0].currencyID).attr("selected", "selected");
@@ -2557,13 +2558,13 @@ function fetchSeaExportDetails() {
                         vCount = vCount + 1;
                         if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
                             $('.THLoading').show()
-                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + '>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + '>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
+                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
                         }
                         else {
                             $('.THLoading').hide()
-                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class=hide>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class=hide>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
+                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
                         }
 
                     }
@@ -2738,7 +2739,15 @@ function Dateandtimevalidate(indexNo) {
         },
         error: function () {
 
-            bootbox.alert("you have some error. Please try again.");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
 
         }
 
@@ -3057,11 +3066,9 @@ $("#btninstructionexcelparameter").click(function () {
     $("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
     if ($('#ddlbidclosetype').val() == "S") {
         $('#libidduraion').show()
-
     }
     else {
         $('#libidduraion').hide()
-
     }
     $("#instructionsDivParameter").show();
     $("#instructionSpanParameter").show();
@@ -3104,384 +3111,392 @@ var ShowL1Price = ''
 var BidDuration = 0;
 function printdataSeaBid(result) {
     var loopcount = result.length; //getting the data length for loop.
-    var ErrorMszDuplicate = '';
-    var i;
-    //var numberOnly = /^[0-9]+$/;
-    var numberOnly = /^[0-9]\d*(\.\d+)?$/;
-    $("#temptableForExcelDataparameter").empty();
-    $("#temptableForExcelDataparameter").append("<tr><th style='width:20%!important;'>ItemCode</th><th>ItemService</th><th  class=hide>Description</th><th>TargetPrice</th><th>HideTargetPrice</th><th>Remarks</th><th>Quantity</th><th>UOM</th><th>BidStartPrice</th><th>SelectedCurrency</th><th>MinimumDecreament</th><th>DecreamentOn</th>th class=hide>LastInvoicePrice</th><th>ItemBidDuration</th><th>ItemStatus</th><th>ShowL1Price</th><th>ShowStartPrice</th><th>PoUnitRate</th><th>PoNo</th><th>PoVendorName</th><th>PoDate</th><th>PoValue</th></tr>");
-    // checking validation for each row
-    var targetPrice = '';
-    var BidstartPrice = 0;
-    var minimumdec = 0;
-    var LastInvoicePrice = 0;
-    var Itembidduration = 0;
-    BidDuration = 0;
-    var unitrate = 0
-    var Povalue = 0
-    var pono = ''
-    var podate = ''
-    var povendorname = ''
-    var itemcode = '', description = ''; var st = 'true'
-
-    //var MaskL1Price='Y'
-    var SelectedCurrency = $('#txtselectedCurrency').val();
-
-    if ($('#txtBidDuration').val() == "") {
-        BidDuration = 0
+    if (loopcount > 200) {
+        $("#error-excelparameter").show();
+        $("#errspan-excelparameter").html('Only max 200 Items is allowed. Please fill and upload the file again.');
+        $("#file-excelparameter").val('');
+        return false;
     }
     else {
-        BidDuration = $('#txtBidDuration').val();
-    }
-    totalitemdurationstagger = 0;
-    var z = 0;
-    for (i = 0; i < loopcount; i++) {
+        var ErrorMszDuplicate = '';
+        var i;
+        //var numberOnly = /^[0-9]+$/;
+        var numberOnly = /^[0-9]\d*(\.\d+)?$/;
+        $("#temptableForExcelDataparameter").empty();
+        $("#temptableForExcelDataparameter").append("<tr><th style='width:20%!important;'>ItemCode</th><th>ItemService</th><th  class=hide>Description</th><th>TargetPrice</th><th>HideTargetPrice</th><th>Remarks</th><th>Quantity</th><th>UOM</th><th>BidStartPrice</th><th>SelectedCurrency</th><th>MinimumDecreament</th><th>DecreamentOn</th>th class=hide>LastInvoicePrice</th><th>ItemBidDuration</th><th>ItemStatus</th><th>ShowL1Price</th><th>ShowStartPrice</th><th>PoUnitRate</th><th>PoNo</th><th>PoVendorName</th><th>PoDate</th><th>PoValue</th></tr>");
+        // checking validation for each row
+        var targetPrice = '';
+        var BidstartPrice = 0;
+        var minimumdec = 0;
+        var LastInvoicePrice = 0;
+        var Itembidduration = 0;
+        BidDuration = 0;
+        var unitrate = 0
+        var Povalue = 0
+        var pono = ''
+        var podate = ''
+        var povendorname = ''
+        var itemcode = '', description = ''; var st = 'true'
 
-        //alert($.trim(result[i].ItemBidDuration.trim()))
-        itemcode = '', povendorname = '', podate = '', pono = '', Povalue = 0, unitrate = 0;
-        if ($.trim(result[i].PoUnitRate) == '') {
-            unitrate = 0;
+        //var MaskL1Price='Y'
+        var SelectedCurrency = $('#txtselectedCurrency').val();
+
+        if ($('#txtBidDuration').val() == "") {
+            BidDuration = 0
         }
         else {
-            unitrate = $.trim(result[i].PoUnitRate);
+            BidDuration = $('#txtBidDuration').val();
         }
-        if ($.trim(result[i].PoValue) == '') {
-            Povalue = 0;
-        }
-        else {
-            Povalue = $.trim(result[i].PoValue);
-        }
+        totalitemdurationstagger = 0;
+        var z = 0;
+        for (i = 0; i < loopcount; i++) {
 
-        if ($.trim(result[i].TargetPrice) == '') {
-            targetPrice = 0;
-        }
-        else {
-            targetPrice = $.trim(result[i].TargetPrice);
-        }
-        if ($.trim(result[i].BidStartPrice) == '') {
-            BidstartPrice = 0;
-        }
-        else {
-            BidstartPrice = $.trim(result[i].BidStartPrice);
-        }
-        if ($.trim(result[i].MinimumDecreament) == '') {
-            minimumdec = 0;
-        }
-        else {
-            minimumdec = $.trim(result[i].MinimumDecreament);
-        }
-        if ($.trim(result[i].PoDate) != '') {
-            podate = $.trim(result[i].PoDate);
-        }
-        if ($.trim(result[i].PoNo) != '') {
-            pono = $.trim(result[i].PoNo);
-        }
-        if ($.trim(result[i].PoVendorName) != '') {
-            povendorname = $.trim(result[i].PoVendorName);
-
-        }
-        if ($.trim(result[i].ItemCode) != '') {
-            itemcode = $.trim(result[i].ItemCode);
-        }
-        // alert(Povalue)
-        if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Item/Product/Services can not be blank or length should be 200 characters of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].ItemCode).length > 50) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].ItemService).toLowerCase() == $.trim(result[i - z].ItemService).toLowerCase() && i > 0) {
-
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('ItemService with same name already exists of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        //else if (!result[i].TargetPrice.trim().match(numberOnly) || targetPrice == 0 ) {
-        //    $("#error-excelparameter").show();
-        //    $("#errspan-excelparameter").html('Target Price should be in numbers only of Item no ' + (i + 1) +'.');
-        //    $("#file-excelparameter").val('');
-        //    return false;
-        //}
-        else if ($.trim(result[i].HideTargetPrice) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Hide Target Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].ShowL1Price) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Show L1 Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].ShowStartPrice) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Show Start Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].ItemService).length > 200) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Remarks can not be blank or length should be 200 characters of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-
-        else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '') {
-
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Quantity should be in numbers only of Item no ' + (i + 1) + '.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($.trim(result[i].UOM) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Quantity UOM can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-
-        else if (!result[i].BidStartPrice.trim().match(numberOnly) || BidstartPrice == 0) {
-
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Bid Start Price should be in numbers only of Item no ' + (i + 1) + '.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if (!result[i].MinimumDecreament.trim().match(numberOnly) || minimumdec == 0) {
-
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Minimum Decrement Price should be in numbers only of Item no ' + (i + 1) + '.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-
-        else if ($.trim(result[i].DecreamentOn) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('DecrementOn can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if ($('#ddlbidclosetype').val() == "S" && $.trim(result[i].ItemBidDuration) == '') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('ItemBidDuration can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if (parseInt(minimumdec) > parseInt(BidstartPrice)) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Minimum decrement should be less than bid start price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if (parseInt(minimumdec) > parseInt(20) && $.trim(result[i].DecreamentOn) == "P") {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Minimum decrement should be less than 20% of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if (parseInt(minimumdec) > parseFloat(20 * (BidstartPrice) / 100) && $.trim(result[i].DecreamentOn) == "A") {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Minimum decrement should be less than 20% of Bid Start Price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
-            $("#file-excelparameter").val('');
-            return false;
-        }
-        else if (!$.trim(result[i].PoUnitRate).match(numberOnly) && unitrate != 0) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Unit Rate should be in numbers only of item no ' + (i + 1) + '.');
-            $("#file-excelparameter").val('');
-            return false;
-
-        }
-        else if (!$.trim(result[i].PoValue).match(numberOnly) && Povalue != 0) {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('PO Value should be in numbers only of item no ' + (i + 1) + '.');
-            $("#file-excelparameter").val('');
-            return false;
-
-        }
-        else {
-            if ($('#ddlAuctiontype').val() == "83") {
-                ShowL1Price = 'Y';
+            //alert($.trim(result[i].ItemBidDuration.trim()))
+            itemcode = '', povendorname = '', podate = '', pono = '', Povalue = 0, unitrate = 0;
+            if ($.trim(result[i].PoUnitRate) == '') {
+                unitrate = 0;
             }
             else {
-                ShowL1Price = result[i].ShowL1Price;
-
+                unitrate = $.trim(result[i].PoUnitRate);
             }
-            if ($('#ddlbidclosetype').val() == "S") {
-                totalitemdurationstagger = totalitemdurationstagger + parseInt($.trim(result[i].ItemBidDuration.trim()));
-                Itembidduration = parseInt($.trim(result[i].ItemBidDuration.trim())) //+ parseInt(BidDuration)
-                ItemStatus = 'Inactive';
+            if ($.trim(result[i].PoValue) == '') {
+                Povalue = 0;
             }
             else {
-                Itembidduration = parseInt(BidDuration);
-                ItemStatus = 'Open';
+                Povalue = $.trim(result[i].PoValue);
             }
 
-            // if values are correct then creating a temp table
-            $("<tr><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td class=hide>" + replaceQuoutesFromStringFromExcel(description) + "</td><td>" + targetPrice + "</td><td>" + result[i].HideTargetPrice + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + BidstartPrice + "</td><td>" + SelectedCurrency + "</td><td>" + minimumdec + "</td><td>" + result[i].DecreamentOn + "</td><td>" + unitrate + "</td><td  id=tditemduration" + i + ">" + Itembidduration + "</td><td>" + ItemStatus + "</td><td>" + ShowL1Price + "</td><td>" + result[i].ShowStartPrice + "</td><td>" + unitrate + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + podate + "</td><td>" + Povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
-            var arr = $("#temptableForExcelDataparameter tr");
+            if ($.trim(result[i].TargetPrice) == '') {
+                targetPrice = 0;
+            }
+            else {
+                targetPrice = $.trim(result[i].TargetPrice);
+            }
+            if ($.trim(result[i].BidStartPrice) == '') {
+                BidstartPrice = 0;
+            }
+            else {
+                BidstartPrice = $.trim(result[i].BidStartPrice);
+            }
+            if ($.trim(result[i].MinimumDecreament) == '') {
+                minimumdec = 0;
+            }
+            else {
+                minimumdec = $.trim(result[i].MinimumDecreament);
+            }
+            if ($.trim(result[i].PoDate) != '') {
+                podate = $.trim(result[i].PoDate);
+            }
+            if ($.trim(result[i].PoNo) != '') {
+                pono = $.trim(result[i].PoNo);
+            }
+            if ($.trim(result[i].PoVendorName) != '') {
+                povendorname = $.trim(result[i].PoVendorName);
 
-            $.each(arr, function (i, item) {
-                var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
+            }
+            if ($.trim(result[i].ItemCode) != '') {
+                itemcode = $.trim(result[i].ItemCode);
+            }
+            // alert(Povalue)
+            if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Item/Product/Services can not be blank or length should be 200 characters of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ItemCode).length > 50) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Item Code length should be 50 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ItemService).toLowerCase() == $.trim(result[i - z].ItemService).toLowerCase() && i > 0) {
 
-                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
-                $(this).nextAll().each(function (i, inItem) {
-
-                    if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
-                        $(this).remove();
-                        st = 'false'
-                        ErrorMszDuplicate = ErrorMszDuplicate + ' RFQ Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
-                    }
-                });
-            });
-        }
-
-        z++;
-
-    } // for loop ends
-
-    var excelCorrect = 'N';
-    var ErrorUOMMsz = '';
-    var ErrorUOMMszRight = '';
-    Rowcount = 0;
-
-    // check for UOM
-    $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
-        var this_row = $(this);
-        excelCorrect = 'N';
-        Rowcount = Rowcount + 1;
-        for (var i = 0; i < allUOM.length; i++) {
-            if ($.trim(this_row.find('td:eq(7)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
-                excelCorrect = 'Y';
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('ItemService with same name already exists of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            //else if (!result[i].TargetPrice.trim().match(numberOnly) || targetPrice == 0 ) {
+            //    $("#error-excelparameter").show();
+            //    $("#errspan-excelparameter").html('Target Price should be in numbers only of Item no ' + (i + 1) +'.');
+            //    $("#file-excelparameter").val('');
+            //    return false;
+            //}
+            else if ($.trim(result[i].HideTargetPrice) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Hide Target Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ShowL1Price) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Show L1 Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ShowStartPrice) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Show Start Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].ItemService).length > 200) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Remarks can not be blank or length should be 200 characters of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
             }
 
-        }
-        var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-        if (excelCorrect == "N") {
-            $("#error-excelparameter").show();
-            ErrorUOMMsz = '<b>UOM</b> not filled properly at row no ' + Rowcount + '. Please choose <b>UOM</b> from given below: <br><ul class="col-md-5 text-left">';
-            ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
-            for (var i = 0; i < parseInt(quorem); i++) {
-                ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
-                var z = (parseInt(quorem) + i);
-                if (z <= allUOM.length - 1) {
-                    ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+            else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '') {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Quantity should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].UOM) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Quantity UOM can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+
+            else if (!result[i].BidStartPrice.trim().match(numberOnly) || BidstartPrice == 0) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Bid Start Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (!result[i].MinimumDecreament.trim().match(numberOnly) || minimumdec == 0) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum Decrement Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+
+            else if ($.trim(result[i].DecreamentOn) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('DecrementOn can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($('#ddlbidclosetype').val() == "S" && $.trim(result[i].ItemBidDuration) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('ItemBidDuration can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimumdec) > parseInt(BidstartPrice)) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum decrement should be less than bid start price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimumdec) > parseInt(20) && $.trim(result[i].DecreamentOn) == "P") {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum decrement should be less than 20% of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimumdec) > parseFloat(20 * (BidstartPrice) / 100) && $.trim(result[i].DecreamentOn) == "A") {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum decrement should be less than 20% of Bid Start Price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (!$.trim(result[i].PoUnitRate).match(numberOnly) && unitrate != 0) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Unit Rate should be in numbers only of item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+
+            }
+            else if (!$.trim(result[i].PoValue).match(numberOnly) && Povalue != 0) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('PO Value should be in numbers only of item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+
+            }
+            else {
+                if ($('#ddlAuctiontype').val() == "83") {
+                    ShowL1Price = 'Y';
                 }
+                else {
+                    ShowL1Price = result[i].ShowL1Price;
+
+                }
+                if ($('#ddlbidclosetype').val() == "S") {
+                    totalitemdurationstagger = totalitemdurationstagger + parseInt($.trim(result[i].ItemBidDuration.trim()));
+                    Itembidduration = parseInt($.trim(result[i].ItemBidDuration.trim())) //+ parseInt(BidDuration)
+                    ItemStatus = 'Inactive';
+                }
+                else {
+                    Itembidduration = parseInt(BidDuration);
+                    ItemStatus = 'Open';
+                }
+
+                // if values are correct then creating a temp table
+                $("<tr><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td class=hide>" + replaceQuoutesFromStringFromExcel(description) + "</td><td>" + targetPrice + "</td><td>" + result[i].HideTargetPrice + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + BidstartPrice + "</td><td>" + SelectedCurrency + "</td><td>" + minimumdec + "</td><td>" + result[i].DecreamentOn + "</td><td>" + unitrate + "</td><td  id=tditemduration" + i + ">" + Itembidduration + "</td><td>" + ItemStatus + "</td><td>" + ShowL1Price + "</td><td>" + result[i].ShowStartPrice + "</td><td>" + unitrate + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + podate + "</td><td>" + Povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
+                var arr = $("#temptableForExcelDataparameter tr");
+
+                $.each(arr, function (i, item) {
+                    var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
+
+                    var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+                    $(this).nextAll().each(function (i, inItem) {
+
+                        if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
+                            $(this).remove();
+                            st = 'false'
+                            ErrorMszDuplicate = ErrorMszDuplicate + ' RFQ Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
+                        }
+                    });
+                });
             }
-            ErrorUOMMsz = ErrorUOMMsz + '</ul>'
-            ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
-            $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
 
-            return false;
-        }
+            z++;
 
-    });
+        } // for loop ends
 
-    $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
-        var this_row = $(this);
+        var excelCorrect = 'N';
+        var ErrorUOMMsz = '';
+        var ErrorUOMMszRight = '';
+        Rowcount = 0;
 
-        switch ($.trim(this_row.find('td:eq(4)').html())) {
-            case 'N':
-                excelCorrect = 'Y';
-                break;
-            case 'Y':
-                excelCorrect = 'Y';
-                break;
+        // check for UOM
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+            var this_row = $(this);
+            excelCorrect = 'N';
+            Rowcount = Rowcount + 1;
+            for (var i = 0; i < allUOM.length; i++) {
+                if ($.trim(this_row.find('td:eq(7)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
+                    excelCorrect = 'Y';
+                }
 
-            default:
-                excelCorrect = 'N';
+            }
+            var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+            if (excelCorrect == "N") {
                 $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('<b>Hide Target Price</b> text not filled properly. Please choose Hide TP from given below: <br/><br/>'
-                    + '<ul class="col-md-4 text-left">'
-                    + '<li>Y for Hide Target Price to all vendors</li>'
-                    + '<li>N for Show Target Price to all vendors</li>'
-                    + '</ul><div class=clearfix></div>'
-                    + '<br/>and upload the file again.');
-                $("#file-excelparameter").val('');
-                return false;
-        }
-        switch ($.trim(this_row.find('td:eq(15)').html())) {
-            case 'N':
-                excelCorrect = 'Y';
-                break;
-            case 'Y':
-                excelCorrect = 'Y';
-                break;
+                ErrorUOMMsz = '<b>UOM</b> not filled properly at row no ' + Rowcount + '. Please choose <b>UOM</b> from given below: <br><ul class="col-md-5 text-left">';
+                ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+                for (var i = 0; i < parseInt(quorem); i++) {
+                    ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+                    var z = (parseInt(quorem) + i);
+                    if (z <= allUOM.length - 1) {
+                        ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+                    }
+                }
+                ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+                ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
+                $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
 
-            default:
-                excelCorrect = 'N';
+                return false;
+            }
+
+        });
+
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            switch ($.trim(this_row.find('td:eq(4)').html())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Hide Target Price</b> text not filled properly. Please choose Hide TP from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>Y for Hide Target Price to all vendors</li>'
+                        + '<li>N for Show Target Price to all vendors</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim(this_row.find('td:eq(15)').html())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Show L1 Price</b> text not filled properly. Please choose Show L1 Price from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>N - for not showing ongoing L1 Price to all vendor</li>'
+                        + '<li>Y - for showing ongoing L1 Price to all vendors</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim(this_row.find('td:eq(16)').html())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Show Start Price</b> text not filled properly. Please choose Show Start Price from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>'
+                        + '<li>N for Hide</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim(this_row.find('td:eq(11)').html())) {
+                case 'A':
+                    excelCorrect = 'Y';
+                    break;
+                case 'P':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>DecrementOn</b> not filled properly. Please choose DecrementOn from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>A - to select bid decrement in Amount</li>'
+                        + '<li>P - to select bid decrement in percentage</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+        });
+
+
+        if (excelCorrect == 'Y') {
+            $('#btnyesno').show();
+            $("#error-excelparameter").hide();
+            $("#errspan-excelparameter").html('');
+            $("#success-excelparameter").show()
+            $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
+            $("#file-excelparameter").val('');
+            excelCorrect = '';
+            if (st == 'false') {
                 $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('<b>Show L1 Price</b> text not filled properly. Please choose Show L1 Price from given below: <br/><br/>'
-                    + '<ul class="col-md-4 text-left">'
-                    + '<li>N - for not showing ongoing L1 Price to all vendor</li>'
-                    + '<li>Y - for showing ongoing L1 Price to all vendors</li>'
-                    + '</ul><div class=clearfix></div>'
-                    + '<br/>and upload the file again.');
-                $("#file-excelparameter").val('');
-                return false;
-        }
-        switch ($.trim(this_row.find('td:eq(16)').html())) {
-            case 'N':
-                excelCorrect = 'Y';
-                break;
-            case 'Y':
-                excelCorrect = 'Y';
-                break;
-
-            default:
-                excelCorrect = 'N';
-                $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('<b>Show Start Price</b> text not filled properly. Please choose Show Start Price from given below: <br/><br/>'
-                    + '<ul class="col-md-4 text-left">'
-                    + '<li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>'
-                    + '<li>N for Hide</li>'
-                    + '</ul><div class=clearfix></div>'
-                    + '<br/>and upload the file again.');
-                $("#file-excelparameter").val('');
-                return false;
-        }
-        switch ($.trim(this_row.find('td:eq(11)').html())) {
-            case 'A':
-                excelCorrect = 'Y';
-                break;
-            case 'P':
-                excelCorrect = 'Y';
-                break;
-
-            default:
-                excelCorrect = 'N';
-                $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('<b>DecrementOn</b> not filled properly. Please choose DecrementOn from given below: <br/><br/>'
-                    + '<ul class="col-md-4 text-left">'
-                    + '<li>A - to select bid decrement in Amount</li>'
-                    + '<li>P - to select bid decrement in percentage</li>'
-                    + '</ul><div class=clearfix></div>'
-                    + '<br/>and upload the file again.');
-                $("#file-excelparameter").val('');
-                return false;
-        }
-    });
-
-
-    if (excelCorrect == 'Y') {
-        $('#btnyesno').show();
-        $("#error-excelparameter").hide();
-        $("#errspan-excelparameter").html('');
-        $("#success-excelparameter").show()
-        $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
-        $("#file-excelparameter").val('');
-        excelCorrect = '';
-        if (st == 'false') {
-            $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html(ErrorMszDuplicate)
+                $("#errspan-excelparameter").html(ErrorMszDuplicate)
+            }
         }
     }
 }
@@ -3550,8 +3565,10 @@ function fnSeteRFQparameterTable() {
             rowAppItemsrno = rowAppItemsrno + 1;
             i = i + 1;
         })
-        sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
-        $("#txtBidDuration").val(totalitemdurationstagger)
+        if ($('#ddlbidclosetype option:selected').val() == "S") {
+            sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
+            $("#txtBidDuration").val(totalitemdurationstagger)
+        }
         setTimeout(function () {
             $('#RAexcel').modal('hide');
             jQuery.unblockUI();
@@ -3802,24 +3819,24 @@ function fnfetchRFQVendor() {
 
                     if ($('#ddlAuctiontype').val() == "83" || $('#ddlAuctiontype').val() == "81") {
                         $('.THLoading').show()
-                        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ',' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class=tblcolweightage id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ',' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
                     }
                     else {
                         $('.THLoading').hide()
-                        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class=hide id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ',' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + data[i].vendorID + ',SelecetedVendorPrev' + data[i].vendorID + ',' + data[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
                     }
 
                     if (data[i].isFromRFQ == "Y") {
-                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
+                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
                     }
                     else {
                         if ($('#ddlAuctiontype').val() == "83" || $('#ddlAuctiontype').val() == "81") {
                             $('.THLoading').show()
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td id=tblcolweightagePrev' + data[i].vendorID + ' colspan=2>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td></tr>')
+                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightagePrev' + data[i].vendorID + ' colspan=2>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td></tr>')
                         }
                         else {
                             $('.THLoading').hide()
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class=hide id=tblcolweightagePrev' + data[i].vendorID + ' colspan=2>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td></tr>')
+                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="hide tblcolweightage" id=tblcolweightagePrev' + data[i].vendorID + ' colspan=2>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td></tr>')
                         }
                     }
                     $('#td' + i).popover("show")
