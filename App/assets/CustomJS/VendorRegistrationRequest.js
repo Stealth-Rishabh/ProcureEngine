@@ -1,9 +1,4 @@
 ﻿
-//$('#txtGst').maxlength({
-//    limitReachedClass: "label label-danger",
-//    alwaysShow: true
-//});
-
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
@@ -21,7 +16,7 @@ jQuery(document).ready(function () {
 });
 
 function fetchCategorymaster1() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -31,19 +26,13 @@ function fetchCategorymaster1() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
             if (data.length > 0) {
-                // alert(data.length);
-
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
-                //debugger;
                 $("#ddlTypeofProduct").trigger("change");
-                //alert(sessionStorage.getItem('CurrentVQID'));
-
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
@@ -52,26 +41,23 @@ function fetchCategorymaster1() {
         },
 
         error: function (xhr, status, error) {
-            console.log(url);
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
         }
-
-
     });
 }
 
 
 function fetchCountry() {
-    //var stateid = jQuery('#ddlCountry').val();
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -81,24 +67,13 @@ function fetchCountry() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
             $("#ddlCountry").empty();
             var vlal = new Array();
             if (data.length > 0) {
-                // alert(data.length);
-
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
                 }
                 $("#ddlCountry").val('111').trigger("change");
-                //debugger;
-
-                //if (countryid != '0') {
-                //    //jQuery("#ddlCountry").val(countryid);
-                //    jQuery("#ddlCountry").trigger("change");
-                //}
-                //alert(sessionStorage.getItem('CurrentVQID'));
-
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
@@ -112,7 +87,7 @@ function fetchCountry() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -121,12 +96,9 @@ function fetchCountry() {
     });
 }
 
-//var countryid = 0;
 function fetchState() {
-
     var countryid = $('#ddlCountry option:selected').val();
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -136,19 +108,14 @@ function fetchState() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             $("#ddlState").empty();
-            var vlal = new Array();
             if (data.length > 0) {
-                // alert(data.length);
+
                 $("#ddlState").append("<option value=0>Select State</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
                 }
-                //debugger;
                 $("#ddlState").trigger("change");
-                //alert(sessionStorage.getItem('CurrentVQID'));
-
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');
@@ -162,7 +129,7 @@ function fetchState() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -172,10 +139,8 @@ function fetchState() {
 }
 
 function fetchCity() {
-
     var stateid = $('#ddlState').val();
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -185,19 +150,13 @@ function fetchCity() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(data);
             $("#ddlCity").empty();
-            var vlal = new Array();
             if (data.length > 0) {
-
                 $("#ddlCity").append("<option value=0>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
-
                 $("#ddlCity").val('0').trigger("change");
-
-
             }
             else {
                 $("#ddlCity").append('<tr><td>No city found..</td></tr>');
@@ -205,13 +164,12 @@ function fetchCity() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -220,11 +178,8 @@ function fetchCity() {
     });
 }
 
-
 function fetchProduct() {
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -234,18 +189,12 @@ function fetchProduct() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             $("#ddlProduct").empty();
-            var vlal = new Array();
             if (data.length > 0) {
-
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlProduct").append("<option value=" + data[i].productID + ">" + data[i].productName + "</option>");
                 }
-
                 $("#ddlProduct").trigger("change");
-
-
             }
             else {
                 $("#ddlProduct").append('<tr><td>No products found..</td></tr>');
@@ -253,13 +202,12 @@ function fetchProduct() {
 
         },
         error: function (xhr, status, error) {
-
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -269,8 +217,7 @@ function fetchProduct() {
 }
 
 function fetchTDS() {
-
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -280,20 +227,14 @@ function fetchTDS() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             $("#ddlTds").empty();
-            var vlal = new Array();
-
             if (data.length > 0) {
 
                 $("#ddlTds").append("<option value=0>Select Type of TDS</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTds").append("<option value=" + data[i].tdsID + ">" + data[i].tds + "</option>");
                 }
-
                 $("#ddlTds").trigger("change");
-
-
             }
             else {
                 $("#ddlTds").append('<tr><td>No tds found..</td></tr>');
@@ -301,13 +242,12 @@ function fetchTDS() {
 
         },
         error: function (xhr, status, error) {
-
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -318,7 +258,7 @@ function fetchTDS() {
 
 function fetchPaymentTerms() {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -330,17 +270,14 @@ function fetchPaymentTerms() {
         success: function (data) {
 
             $("#ddPayTerms").empty();
-            var vlal = new Array();
             if (data.length > 0) {
 
                 $("#ddPayTerms").append("<option value=0>Select Payment Terms</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
-                //debugger;
+
                 $("#ddPayTerms").trigger("change");
-
-
             }
             else {
                 $("#ddPayTerms").append('<tr><td>No payment terms found..</td></tr>');
@@ -354,7 +291,7 @@ function fetchPaymentTerms() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -364,18 +301,13 @@ function fetchPaymentTerms() {
 }
 
 function getPan(pan) {
-
     var pan = $('#txtGst').val().substr(2, 10); //11
-
     if ($('#txtGst').val().length == 15) {
         $('#txtPan').val(pan.toUpperCase());
         $('#txtGst').val($('#txtGst').val().toUpperCase())
         $('#txtPan').attr('disabled', 'disabled')
         //$('#txtGst').attr('disabled', 'disabled')
     }
-
-
-
 }
 
 function fetchMsme() {
@@ -388,8 +320,8 @@ function fetchMsme() {
 }
 
 function SubmitVendorRegistration() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //debugger;
     var selected = [];
     var selectedid = [];
     var selectedidss = '';
@@ -399,19 +331,18 @@ function SubmitVendorRegistration() {
         $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
             selectedid.push(item.id);
             selected.push(item.text);
-            //jQuery("#ddlTypeofProduct").append(item.id).join('#');
             $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
             result += selectedidss.concat(item.id, "#");
 
         });
-        straddedproduct = result.slice('#', -1); 
-        
+        straddedproduct = result.slice('#', -1);
+
         var msmetype = $("#ddlMSMEClass option:selected").val().trim();
         var gstclass = $("#ddlGSTclass option:selected").val().trim();
         var tds = $("#ddlTds option:selected").val().trim();
         var paymentterm = $("#ddPayTerms option:selected").val().trim();
         if (msmetype == 'Select') {
-            var msmeselectvalue = ""; 
+            var msmeselectvalue = "";
         } else {
             var msmeselectvalue = $("#ddlMSMEClass option:selected").val().trim();
         }
@@ -430,7 +361,6 @@ function SubmitVendorRegistration() {
         } else {
             var paymenttermvalue = parseInt($("#ddPayTerms").val());
         }
-
 
         var gstfilename = $('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
         gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
@@ -456,7 +386,7 @@ function SubmitVendorRegistration() {
             "vendorAdd": $("#txtAdd1").val().trim(),
             "countryID": parseInt($("#ddlCountry").val()),
             "countryName": $("#ddlCountry option:selected").text().trim(),
-            "stateID": parseInt($("#ddlState").val()), 
+            "stateID": parseInt($("#ddlState").val()),
             "stateName": $("#ddlState option:selected").text().trim(),
             "cityID": parseInt($("#ddlCity").val()),
             "cityName": $("#ddlCity option:selected").text().trim(),
@@ -466,7 +396,7 @@ function SubmitVendorRegistration() {
             "tDSTypeId": parseInt($("#ddlTds option:selected").val().trim()),
             "tDSTypeName": tdsvalue,
             "gSTClass": gstclassvalue,
-            "gSTNo": $("#txtGst").val().trim(),
+            "ServiceTaxNo": $("#txtGst").val().trim(),
             "payTermID": paymenttermvalue,
             "bankName": $("#txtBank").val().trim(),
             "bankAccount": $("#txtAcNo").val().trim(),
@@ -477,8 +407,8 @@ function SubmitVendorRegistration() {
             "mSMENo": $("#txtUdyam").val().trim(),
             "previousTurnover": $("#txtLastFiscal").val().trim(),
             "secondLastTurnover": $("#txt2LastFiscal").val().trim(),
-            "previousTurnoverYear": $("#txtLastFiscalyear").val().trim().replace(/,/g, ''),
-            "secondLastTurnoverYear": $("#txt2LastFiscalyear").val().trim().replace(/,/g, ''),
+            "previousTurnoverYear": $("#txtLastFiscalyear").val().trim(),
+            "secondLastTurnoverYear": $("#txt2LastFiscalyear").val().trim(),
             "contactName": $("#txtContName").val().trim(),
             "contactEmailID": $("#txtEmail").val().trim(),
             "mobile": $("#txtMobile").val().trim(),
@@ -492,11 +422,11 @@ function SubmitVendorRegistration() {
             "productCat": straddedproduct,
             "currencyLastFY": $("#currencyLastFiscal option:selected").val(),
             "currencyLast2FY": $("#currency2LastFiscal option:selected").val(),
-           
         }
     };
-    console.log(JSON.stringify(VendorInfo))
-    alert(JSON.stringify(VendorInfo));
+
+    //console.log(JSON.stringify(VendorInfo));
+
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -504,27 +434,27 @@ function SubmitVendorRegistration() {
         type: "POST",
         data: JSON.stringify(VendorInfo),
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {          
-             $('#hdntmpvendorid').val(data.jsondata);
-            
+        success: function (data, status, jqXHR) {
+            //alert(data.length);
+            $('#hdntmpvendorid').val(data);
             if ($('#filegst').val() != '') {
-                alert(data.jsondata);
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data.jsondata);
+
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data);
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data.jsondata);
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data);
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data.jsondata);
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data);
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + data.jsondata);
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + data);
 
             }
 
@@ -540,7 +470,6 @@ function SubmitVendorRegistration() {
 
         },
         error: function (xhr, status, error) {
-
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -552,13 +481,17 @@ function SubmitVendorRegistration() {
             return false;
         }
 
-    }); 
+    });
 
+}
+
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function fetchCategorymaster() {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -570,7 +503,6 @@ function fetchCategorymaster() {
         success: function (data) {
 
             $("#ddlCategoryMultiple").empty();
-            var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
@@ -590,7 +522,7 @@ function fetchCategorymaster() {
                 error401Messagebox(err.Message);
             }
             else {
-                alert("error");
+                fnErrorMessageText('errormsg', '');
             }
             return false;
             jQuery.unblockUI();
@@ -599,9 +531,8 @@ function fetchCategorymaster() {
     });
 }
 function fetchRFIDetails() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced = '', _selectedCat = new Array();
-    // alert(sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID') )
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID'),
@@ -665,8 +596,7 @@ function fetchRFIDetails() {
 
         },
         error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -705,13 +635,11 @@ jQuery.validator.addMethod("ValidIFSC", function (value, element) {
 
 }, " Invalid IFSC Code");
 
-
+var formEmailvalidate = $('#frmEmailValidate');
 var formvendor = $('#submit_form');
 var successVendor = $('.alert-success', formvendor);
 var errorVendor = $('.alert-danger', formvendor);
 function FormValidate() {
-
-    //$('#divsuccvendor').hide();
     formvendor.validate({
 
         doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -719,11 +647,7 @@ function FormValidate() {
         errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
         rules: {
-            txtemailverify: {
-                required: true,
-                email: true
-            },
-
+            
             ddlNatureEstaiblishment: {
                 required: true,
                 notEqualTo: 0
@@ -825,7 +749,7 @@ function FormValidate() {
             },
             txtUdyam: {
                 required: true,
-            } 
+            }
 
         },
 
@@ -850,24 +774,56 @@ function FormValidate() {
         },
         submitHandler: function (form) {
 
-            var id = document.activeElement.getAttribute('id');
+            SubmitVendorRegistration();
+            //var id = document.activeElement.getAttribute('id');
+            //if (id.trim() == "btnverifyemail") {
+            //    validateEmail();
+            //} else {
+            //    SubmitVendorRegistration();
+            //}
+        }
+    });
+    formEmailvalidate.validate({
 
-            if (id.trim() == "btnverifyemail") {
-
-                validateEmail();
-            } else {
-                SubmitVendorRegistration();
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+            txtemailverify: {
+                required: true,
+                email: true
             }
 
+        },
+        invalidHandler: function (event, validator) {
+            errorVendor.hide()
+            successVendor.hide();
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+
+            validateEmail();
         }
-
-
     });
-
 }
 
 function validateEmail() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     $('#modalLoaderparameter').removeClass('display-none')
     var emailId = $("#txtemailverify").val().trim();
 
@@ -881,7 +837,7 @@ function validateEmail() {
         success: function (data) {
 
             if (data == '0') {
-                $('#txtemailverify,#txtEmail,#btnverifyemail').attr('disabled', 'disabled');
+                $('#txtEmail').attr('disabled', 'disabled');//#txtemailverify,#btnverifyemail
                 $('#btnverifysubmit').removeClass('hide');
                 $('#txtEmail,#txtEmail2').val(emailId);
                 $('#collapse2').removeClass('collapse2').addClass('collapse in')
@@ -890,10 +846,10 @@ function validateEmail() {
             }
             else {
                 $('#diverrorvendor').show();
-                $('#spanerrorvendor').text("EmailId is already registered");
-                $('#diverrorvendor').fadeOut(10000);
-                $('#collapse2').addClass('collapse2').removeClass('collapse in')
-                $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
+                $('#spanerrorvendor').html("EmailId is already registered&nbsp;&nbsp;<b><a style=text-decoration:none href='https://www.procurengine.com/vendor/'>Please Login here</a></b>");
+                //$('#diverrorvendor').fadeOut(10000);
+                //$('#collapse2').addClass('collapse2').removeClass('collapse in')
+                //$('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
                 $('#txtemailverify,#txtEmail,#btnverifyemail').removeAttr('disabled');
             }
             $('#modalLoaderparameter').addClass('display-none');
@@ -914,12 +870,11 @@ function validateEmail() {
             jQuery.unblockUI();
             return false;
         }
-
     });
-
-
 }
-
+$("#txtemailverify").keyup(function () {
+    $('#diverrorvendor').fadeOut(7000);
+});
 $('#registerParticipantModal').on("hidden.bs.modal", function () {
     //fnFormClear();
     $('#txtemailverify,#btnverifyemail').removeAttr('disabled');
@@ -932,28 +887,21 @@ $('#registerParticipantModal').on("hidden.bs.modal", function () {
     window.location = window.location.href.split('#')[0];
 })
 
-
 // make reset Function & call after Details submit ????
 function fnFormClear() {
-            
     $("#ddlNatureEstaiblishment").val('')
     $("#ddlNatureEstaiblishment option:selected").text('')
     $("#ddlVendorType").val('')
-    $("#ddlVendorType option:selected").text('')
     $("#txtProduct").val('')
     $("#ddlCompanyName").val('')
     $("#txtAdd1").val('')
     $("#ddlCountry").val('')
-    $("#ddlCountry option:selected").text('')
     $("#ddlState").val(''),
-    $("#ddlState option:selected").text('')
-    $("#ddlCity").val('')
-    $("#ddlCity option:selected").text('')
+        $("#ddlCity").val('')
     $("#txtPin").val('')
     $("#txtPan").val('')
     $("#txtTan").val('')
-    $("#ddlTds option:selected").val(''),            
-    $("#txtGst").val('')             
+    $("#txtGst").val('')
     $("#txtBank").val('')
     $("#txtAcNo").val('')
     $("#txtIFSC").val('')
@@ -969,14 +917,14 @@ function fnFormClear() {
     $("#txtMobile").val('')
     $("#txtContName2").val('')
     $("#txtMobile2").val('')
-    $("#txtEmail2").val('')  
+    $("#txtEmail2").val('')
     $("#ddlMSMEClass option:selected").val('')
     $("#ddlGSTclass option:selected").val('')
     $("#ddlTds option:selected").val('')
-    $("#ddPayTerms option:selected").val('')    
+    $("#ddPayTerms option:selected").val('')
     $('#filegst').val('')
     $('#filepan').val('')
-    $('#filemsme').val('')    
+    $('#filemsme').val('')
     $('#filecheck').val('')
     $("#currencyLastFiscal option:selected").val('')
     $("#currency2LastFiscal option:selected").val('')

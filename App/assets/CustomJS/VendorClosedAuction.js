@@ -43,6 +43,11 @@ function fetchBidHeaderDetails() {
                     $('#tblParticipantsVender').addClass('hide');
                     fetchBidSummaryVendorproduct()
                 }
+                else if (data[0].bidTypeID == 9) {
+                    $('#tblParticipantsService').removeClass('hide');
+                    $('#tblParticipantsVender').addClass('hide');
+                    fetchBidSummaryVendorproductFF()
+                }
                 else if (data[0].bidTypeID == 8) {
                     $('#tblParticipantsService').removeClass('hide');
                     $('#tblParticipantsVender').addClass('hide');
@@ -209,6 +214,64 @@ function fetchBidSummaryVendorproduct() {
                 }
 
             
+            else {
+                jQuery("#tblParticipantsService").append("<tr><td>Nothing Participation</td></tr>")
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    })
+    jQuery.unblockUI();
+
+}
+function fetchBidSummaryVendorproductFF() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var url = '';
+   
+
+    url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryFrench/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType") ;
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+
+            if (data.length > 0) {
+
+                jQuery("#tblParticipantsService").empty()
+                jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Total Quantity</th><th>UOM</th><th>Last Quote</th><th>Bidded Quantity*</th><th>Allocated Quantity</th></thead>");
+                for (var i = 0; i < data.length; i++) {
+
+
+                    var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
+                    
+                    $("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td>" + data[i].shortName + "</td><td class='text-center'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + " class='text-center' ></td><td class='text-center' id=txtquantity"+i+" ></td><td  class='text-center bold' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
+                    jQuery('#allocatedQuan' + i).css('color', 'Red');
+                    $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
+                   
+                    $('#txtquantity' + i).text(data[i].bidQuantity == '0' ? '' : thousands_separators(data[i].bidQuantity));
+                }
+            }
+
+
             else {
                 jQuery("#tblParticipantsService").append("<tr><td>Nothing Participation</td></tr>")
             }

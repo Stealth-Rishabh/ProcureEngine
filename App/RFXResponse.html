@@ -46,7 +46,7 @@
                 <a class="navbar-brand" href="index.html" style="padding:4px !important;">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
                 </a>
-               
+
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -60,7 +60,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
                             <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
-                           
+
                         </ul>
                     </li>
                 </ul>
@@ -77,7 +77,8 @@
                     <li class="sidebar-toggler-wrapper">
                         <div class="sidebar-toggler hidden-phone">
                         </div>
-                    </li><br />
+                    </li>
+                    <br />
                 </ul>
             </div>
         </div>
@@ -113,11 +114,11 @@
                             <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
-                      
+
                         <li><a href="#">RFI Response</a></li>
                     </ul>
-                    
-                      
+
+
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
@@ -130,7 +131,7 @@
                                     <span class="badge badge-primary" style="font-size: 13px !important;" id="spnFinalStatus"></span>
                                 </div>
                                 <div class="tools hidden-xs">
-                                   
+
                                     <span id="lbl_configuredBy" class="align-right"></span>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
@@ -145,7 +146,7 @@
                                                     RFI Subject
                                                 </label>
                                                 <div class="col-md-3">
-                                                  
+
                                                     <p class="form-control-static" id="txtrfiSubject" name="txtrfiSubject">
 
                                                     </p>
@@ -156,7 +157,7 @@
                                                     RFI Deadline
                                                 </label>
                                                 <div class="col-md-3">
-                                                   
+
                                                     <p class="form-control-static" id="txtrfideadline" name="txtrfideadline">
 
                                                     </p>
@@ -171,7 +172,7 @@
                                                     RFI Description
                                                 </label>
                                                 <div class="col-md-9">
-                                                    
+
                                                     <p class="form-control-static" id="txtrfidescription" name="txtrfidescription">
 
                                                     </p>
@@ -191,14 +192,14 @@
                                                 <label class="control-label col-md-3">
                                                     Attachment
                                                 </label>
-                                               
+
                                                 <div class="col-md-8">
-                                                    
+
                                                     <ul style="list-style:none; display:grid;padding-left:0px;" id="tblAttachmentsElemPrev"></ul>
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                 </form>
                             </div>
@@ -210,7 +211,7 @@
                                     <i class="fa fa-bars"></i>Request For Information Report
                                 </div>
                                 <div class="actions">
-                                   
+
                                     <button class="btn blue tooltips" type="button" id="btnExport" onclick="window.print()" data-placement="left" data-original-title="Print">
                                         Print
                                     </button>
@@ -227,7 +228,7 @@
                                     <a id="dlink" style="display:none;"></a>
                                     <div class="form-body" id="divToExport">
 
-                                       
+
 
                                         <h3 class="form-section">Technical Capability</h3>
                                         <div class="form-group">
@@ -289,14 +290,16 @@
     <div class="page-footer">
         <div class="page-footer-inner">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
-           
+
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-   <div id="rejectionReason" class="modal fade" tabindex="-1" aria-hidden="true"> <!--bs-modal-lg in-->
-        <div class="modal-dialog"><!--modal-lg-->
+    <div id="rejectionReason" class="modal fade" tabindex="-1" aria-hidden="true">
+        <!--bs-modal-lg in-->
+        <div class="modal-dialog">
+            <!--modal-lg-->
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
@@ -307,34 +310,34 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-				<div class="alert alert-success" style='display: none;'>
-                                                    <span id="spansuccess"> </span>
-                                                </div>
-                                                <div class="alert alert-danger" style='display: none;'>
-                                                    <span id="spandanger"> </span>
-                                                </div>
+                    <div class="alert alert-success" style='display: none;'>
+                        <span id="spansuccess"> </span>
+                    </div>
+                    <div class="alert alert-danger" style='display: none;'>
+                        <span id="spandanger"> </span>
+                    </div>
                     <form class="form-horizontal" id="rejectionForm" role="form" action="#">
-					<div class="form-body">
-						<div class="form-group">
-							<label class="control-label col-md-3">Rejection Reason</label>
-						
-							<div class="col-md-9">
-								<textarea class="form-control" id="txtrejectreason" name="txtrejectreason" rows="4"></textarea>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="form-actions fluid">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Rejection Reason</label>
+
+                                <div class="col-md-9">
+                                    <textarea class="form-control" id="txtrejectreason" name="txtrejectreason" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-actions fluid">
                                     <div class="row">
                                         <div class="col-md-offset-4 col-md-9">
                                             <button type="submit" id="submitbtnmaster" class="btn blue">
-                                                    Submit
-                                            </button>											
+                                                Submit
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
                             </div>
-						</div>
-						</div>
-					</form>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -352,7 +355,7 @@
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-	<script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
@@ -363,18 +366,20 @@
     <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-
     <script src="assets/CustomJS/RFXResponse.js" type="text/javascript"></script>
-	
+
     <script>
         jQuery(document).ready(function () {
-		Pageloaded()
+            Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                 window.location = sessionStorage.getItem('MainUrl');
+                window.location = sessionStorage.getItem('MainUrl');
             }
             else {
+
                 if (sessionStorage.getItem("UserType") == "E") {
                     $('.page-container').show();
                 }
@@ -387,15 +392,17 @@
             }
             Metronic.init();
             Layout.init();
-				
+
             $('#dropbidType').select2({
                 placeholder: "Select Bid Type",
                 allowClear: true
             });
-            var _RFXID = getUrlVars()["RFXID"];
-            var _VendorID = getUrlVars()["VendorID"];
-            var _pageType = getUrlVars()["PageType"];
-            var _finalStatus = getUrlVars()["FinalStatus"]
+            var param = getUrlVars()["param"];
+            var decryptedstring = fndecrypt(param);
+            var _RFXID = getUrlVarsURL(decryptedstring)["RFIID"];
+            var _VendorID = getUrlVarsURL(decryptedstring)["VendorID"];
+            var _pageType = getUrlVarsURL(decryptedstring)["PageType"];
+            var _finalStatus = getUrlVarsURL(decryptedstring)["FinalStatus"]
             if (_pageType == null || _pageType == '' || typeof _pageType == 'undefined') {
                 $('.button-submit').show();
                 $('.button-reject').show();
@@ -406,23 +413,23 @@
                 $("#spnFinalStatus").show().html("Status : " + _finalStatus);
             }
 
-            if (_RFXID == null){
+            if (_RFXID == null) {
                 sessionStorage.setItem('CurrentRFXID', 0)
                 sessionStorage.setItem('VendorId', 0);
             }
-           else {
+            else {
                 sessionStorage.setItem('CurrentRFXID', _RFXID)
                 sessionStorage.setItem('VendorId', _VendorID)
-				fetchRFIDetails();
-				
-				fetchQuestionsForVendors('TechnicalCapabilities');
-				fetchQuestionsForVendors('ExecutionCapabilities');
-           }
+                fetchRFIDetails();
+
+                fetchQuestionsForVendors('TechnicalCapabilities');
+                fetchQuestionsForVendors('ExecutionCapabilities');
+            }
             formvalidate();
             ComponentsPickers.init();
-            setCommonData();      
+            setCommonData();
             fetchMenuItemsFromSession(0, 0);
-			
+
         });
         jQuery('#btnpush').click(function (e) {
             jQuery('#approverList > option:selected').appendTo('#mapedapprover');
@@ -432,8 +439,8 @@
         });
 
     </script>
-	
-	
+
+
 </body>
 
 </html>

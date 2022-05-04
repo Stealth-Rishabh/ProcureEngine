@@ -527,7 +527,7 @@ function ApproveRFI(For) {
         contentType: "application/json",
         success: function (data) {
             
-                bootbox.alert("VQ Submitted.", function () {
+            bootbox.alert("VQ " + For+" successfully.", function () {
                     window.location = sessionStorage.getItem("HomePage")
                     return false;
                 });

@@ -471,7 +471,7 @@ function fetchRFIDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -922,7 +922,7 @@ function RFIFetchFinanceHeader() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1161,7 +1161,7 @@ function InsUpdTab2Data(locText) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1245,7 +1245,7 @@ function InsUpdTab3Data(locText) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1329,7 +1329,7 @@ function InsUpdTab4Data() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1475,7 +1475,7 @@ function fetchPreCompanydetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1529,7 +1529,7 @@ function submitRFIVR() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }

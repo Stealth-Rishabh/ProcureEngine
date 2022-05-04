@@ -259,6 +259,9 @@ function fetchDashboardData() {
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
                         $('#icon' + i).addClass('fa fa-fire-extinguisher');
                     }
+                    else if (BidData[0].pendingActivity[i].bidTypeName.toLowerCase() == 'french auction') {
+                        $('#icon' + i).addClass('fa fa-forward');
+                    }
                 }
             }
             else {
@@ -311,7 +314,9 @@ function fetchDashboardData() {
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
                         $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
                     }
-
+                    else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
+                        $('#iconbid_all' + i).addClass('fa fa-forward');
+                    }
                 }
             }
             else {
@@ -367,6 +372,9 @@ function fetchDashboardData() {
                     }
                     else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
                         $('#iconbid' + i).addClass('fa fa-fire-extinguisher');
+                    }
+                    else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
+                        $('#iconbid' + i).addClass('fa fa-forward');
                     }
 
                 }
@@ -454,8 +462,11 @@ function fetchBidDataDashboard(requesttype) {
                             jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
                         } else if (BidData[i].bidTypeName == 'RFQ') {
                             $('#iconbidd' + i).addClass('icon-envelope');
-                        } else if (BidData[i].bidTypeName == 'Forward Auction') {
-
+                        }
+                        else if (BidData[i].bidTypeName == 'Forward Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-forward');
+                        }
+                        else if (BidData[i].bidTypeName.toLowerCase() == 'french auction') {
                             $('#iconbidd' + i).addClass('fa fa-forward');
                         }
                         else if (BidData[i].bidTypeName == 'Reverse Auction') {
@@ -502,8 +513,10 @@ function fetchBidDataDashboard(requesttype) {
                         else if (BidData[i].bidTypeName == 'Forward Auction') {
                             $('#iconbidd' + i).addClass('fa fa-forward');
                         }
+                        else if (BidData[i].bidTypeName.toLowerCase() == 'french auction') {
+                            $('#iconbidd' + i).addClass('fa fa-forward');
+                        }
                         else if (BidData[i].bidTypeName == 'Reverse Auction') {
-
                             $('#iconbidd' + i).addClass('fa fa-gavel');
                         }
                         else if (BidData[i].bidTypeName == 'NFA') {

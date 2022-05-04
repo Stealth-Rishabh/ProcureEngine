@@ -217,7 +217,6 @@ var FormWizard = function() {
                 if (current >= total) {
 
                     $('#form_wizard_1').find('.button-next').hide();
-                    getCategoryWiseVendors($("#ddlCategoryMultiple option:selected").val())
                     $('#form_wizard_1').find('.button-submit').show();
                     $('#form_wizard_1').find('#submit_vendors').show();
 
@@ -227,11 +226,8 @@ var FormWizard = function() {
                 } else {
 
                     $('#form_wizard_1').find('.button-next').show();
-
                     $('#form_wizard_1').find('.button-submit').hide();
                     $('#form_wizard_1').find('#submit_vendors').hide();
-
-
                 }
 
                 Metronic.scrollTo($('.page-title'));
@@ -267,7 +263,7 @@ var FormWizard = function() {
                         } else {
                             RFXConfigureTab1()
                             fetchRFXDetailsForPreview()
-
+                            getCategoryWiseVendors($("#ddlCategoryMultiple option:selected").val())
                         }
 
                     } else if (index == 2) {
@@ -278,6 +274,7 @@ var FormWizard = function() {
                         else {
                             RFXConfigureTab2();
                             getRFXQuestionsForPreview();
+                            
                         }
 
                     } 
@@ -400,7 +397,7 @@ function fetchRFXDetails() {
             jQuery('#txtattachdescription').val(BidData[0].rfxMaster[0].rfxAttachmentDescription)
             jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
             $("#cancelBidBtn").show();
-            jQuery('#attach-file').attr('href', 'PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced).html(BidData[0].rfxMaster[0].rfxAttachment)
+           // jQuery('#attach-file').attr('href', 'PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced).html(BidData[0].rfxMaster[0].rfxAttachment)
             
             if (BidData[0].rfxAttachment.length > 0) {
                 $("#tblAttachmentsElem").empty();
@@ -412,8 +409,8 @@ function fetchRFXDetails() {
                         '<input type="text" class="form-control" placeholder="Attachment Description" tabindex="5" name="txtattachdescription" autocomplete="off" value=' + BidData[0].rfxAttachment[i].rfxAttachmentDescription.replace(/\s/g, "&nbsp;") + ' />' +
                         '</div>' +
                         '<div class="col-md-3">' +
-                        '<input type="file" class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-                        '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' href=PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced + ' style="text-decoration: none !important;">' + BidData[0].rfxAttachment[i].rfxAttachment + '</a></span>' +
+                        '<input type="file" class="form-control"  tabindex="4" onchange="checkfilesize(this)" />' +
+                        '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' href="javascript:;" onclick="DownloadFile(this)"   style="text-decoration: none !important;">' + BidData[0].rfxAttachment[i].rfxAttachment + '</a></span>' +
                        
                         '</div>' +
                         '<div class="col-md-2" style=" padding-left:0px !important; ">' +
@@ -428,20 +425,22 @@ function fetchRFXDetails() {
                 for (var i = 0; i < BidData[0].rfxProductCat.length; i++) {
                     _selectedCat.push(BidData[0].rfxProductCat[i].categoryID);
                 }
-
-                setTimeout(function () {
-                    $("#ddlCategoryMultiple").select2('val', _selectedCat);
-                }, 1000);
+                $("#ddlCategoryMultiple").val(_selectedCat).trigger("change")
+                //setTimeout(function () {
+                //    $("#ddlCategoryMultiple").select2('val', _selectedCat);
+                //}, 1000);
             }
                
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -450,7 +449,9 @@ function fetchRFXDetails() {
     jQuery.unblockUI();
 
 }
-
+function DownloadFile(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'RFI/' + sessionStorage.getItem('CurrentRFXID'));
+}
 function fetchRFXQuestions(applicableFor) {
  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -467,15 +468,17 @@ function fetchRFXQuestions(applicableFor) {
         dataType: "json",
         success: function(data) {
             jQuery("#accordion1").empty();
+            
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
+               
                 if (QuestionCategoryID != data[i].questionCategoryID) {
                     $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].questionCategoryID + '\',\'' + data[i].questionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id=tblRFXquestions' + i + '><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Questions</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
                     QuestionCategoryID = data[i].questionCategoryID;
                     seqCount = seqCount + 1;
                     for (var j = 0; j < data.length; j++) {
                         if (QuestionCategoryID == data[j].questionCategoryID && data[j].questionID > 0) {
-                            $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + '></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].Mandatory + '</td><td>' + data[j].Attachement + '</td></tr>');
+                            $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + '></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].mandatory + '</td><td>' + data[j].attachement + '</td></tr>');
                         }
                     }
 
@@ -493,11 +496,13 @@ function fetchRFXQuestions(applicableFor) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -526,12 +531,12 @@ function fetchRFXDetailsForTab2(applicableFor) {
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
                 if (QuestionCategoryID != data[i].questionCategoryID) {
-                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].QuestionCategoryID + '\',\'' + data[i].QuestionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id="tblRFXquestions' + i + '"><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Question</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
+                    $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].questionCategoryID + '\',\'' + data[i].questionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id="tblRFXquestions' + i + '"><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Question</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
                     QuestionCategoryID = data[i].questionCategoryID;
                     seqCount = seqCount + 1;
                     for (var j = 0; j < data.length; j++) {
                         if (QuestionCategoryID == data[j].questionCategoryID && data[j].questionID !== 0) {
-                            if (data[j].Flag == 'Checked') {
+                            if (data[j].flag == 'Checked') {
                                 $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + ' checked></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].mandatory + '</td><td>' + data[j].attachement + '</td></tr>');
                             } else {
                                 $('#collapse' + i + ' > .panel-body > .table').append('<tr><td><input type="checkbox" class=childchkbox value=' + data[j].questionID + '></td><td>' + data[j].questionDescription + '</td><td>' + data[j].questionSubCategory + '</td><td>' + data[j].mandatory + '</td><td>' + data[j].attachement + '</td></tr>');
@@ -553,11 +558,13 @@ function fetchRFXDetailsForTab2(applicableFor) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -614,7 +621,8 @@ function RFXConfigureTab1() {
         "RFXReference": $("#txtReferenceDetails").val()
 
     };
-   
+    //alert(JSON.stringify(Tab1Data))
+   // console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
 
         type: "POST",
@@ -631,24 +639,30 @@ function RFXConfigureTab1() {
         dataType: "json",
 
         success: function (data) {
-           
-            sessionStorage.setItem('CurrentRFXID', data[0].rfxid);
-            $("#tblAttachmentsElem> li").each(function (index) {                 
-                if ($(this).find('input[type=file]').val() != '') {
-                   
-               
-                    fileUploader(sessionStorage.getItem('CurrentRFXID'), $(this).find('input[type=file]').prop("files")[0]);
+           sessionStorage.setItem('CurrentRFXID', data[0].rfxid);
+            $("#tblAttachmentsElem> li").each(function (index) {
+                //** Upload Files on Azure PortalDocs folder
+
+
+                if ($('#file' + index).val() != '' && $('#file' + index).val() != undefined) {
+                    filename = jQuery('#file' + index).val().substring(jQuery('#file' + index).val().lastIndexOf('\\') + 1);
+                    fnUploadFilesonAzure('file' + index, filename, 'RFI/' + sessionStorage.getItem('CurrentRFXID'));
+
                 }
+
             });
+           
             
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -704,7 +718,7 @@ function RFXConfigureTab2() {
         "RFXQuestionMapping": InsertQuery
 
     };
-    console.log(JSON.stringify(Tab2Data))
+    //console.log(JSON.stringify(Tab2Data))
     jQuery.ajax({
 
         type: "POST",
@@ -713,21 +727,17 @@ function RFXConfigureTab2() {
         url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXConfigureTab2",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         crossDomain: true,
-
         async: false,
-
         data: JSON.stringify(Tab2Data),
-
         dataType: "json",
-
         success: function (data) {
+            return true;
            
-            
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else{
@@ -791,11 +801,13 @@ function fetchTempVendors() {
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-               
+                else {
+                    fnErrorMessageText('spandanger', 'submit_form');
+                }
                 return false;
                 jQuery.unblockUI();
             }
@@ -879,11 +891,13 @@ function deleteRFXTempVendors(RowID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1047,9 +1061,9 @@ function FormValidate() {
 }
 
 function setCategory(CategoryID,CategoryDesc) {
-    $('#ddlquestCategory').val(categoryDesc);
-    $('#hdnquestCatID').val(categoryID);
-    $('#txtQuestCategory').val(categoryDesc)
+    $('#ddlquestCategory').val(CategoryDesc);
+    $('#hdnquestCatID').val(CategoryID);
+    $('#txtQuestCategory').val(CategoryDesc)
     fetchQuestionSubCategory(CategoryID)
     fetchqsubcategoryForAuto(CategoryID)
 }
@@ -1071,11 +1085,13 @@ function fetchqsubcategoryForAuto(questcategoryID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1093,7 +1109,6 @@ function fetchQuestionSubCategory(questcategoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            //alert(JSON.stringify(data))           
            
             $('#tblsubcategory').empty();
             if (data.length > 0) {
@@ -1105,7 +1120,7 @@ function fetchQuestionSubCategory(questcategoryID) {
                     } else {
                         stats = 'Inactive'
                     }
-                    $('#tblsubcategory').append('<tr id=rowidID' + i + '><td class="hide">' + data[i].questionSubCategoryID + '</td><td class="hide">' + data[i].questionSubCategory + '</td><td class="hide">' + data[i].isActive + '</td><td>' + $('#ddlquestCategory').val() + '</td><td>' + data[i].QuestionSubCategory + '</td><td>' + stats + '</td><td><a href=javascript:; class="btn btn-xs blue" onclick="editSubcategory(\'rowidID' + i + '\')"><i class="fa fa-pencil"></i> Edit</a></td></tr>')
+                    $('#tblsubcategory').append('<tr id=rowidID' + i + '><td class="hide">' + data[i].questionSubCategoryID + '</td><td class="hide">' + data[i].questionSubCategory + '</td><td class="hide">' + data[i].isActive + '</td><td>' + $('#ddlquestCategory').val() + '</td><td>' + data[i].questionSubCategory + '</td><td>' + stats + '</td><td><a href=javascript:; class="btn btn-xs blue" onclick="editSubcategory(\'rowidID' + i + '\')"><i class="fa fa-pencil"></i> Edit</a></td></tr>')
 
                 }
             } else {
@@ -1116,11 +1131,13 @@ function fetchQuestionSubCategory(questcategoryID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1152,8 +1169,8 @@ jQuery("#txtsubCategory").typeahead({
         map = {};
         var username = "";
         jQuery.each(jQuery.parseJSON(data), function (i, username) {
-            map[username.QuestionSubCategory] = username;
-            usernames.push(username.QuestionSubCategory);
+            map[username.questionSubCategory] = username;
+            usernames.push(username.questionSubCategory);
         });
 
         process(usernames);
@@ -1161,12 +1178,8 @@ jQuery("#txtsubCategory").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-
-
-        if (map[item].QuestionSubCategoryID != "0") {
-            
-            sessionStorage.setItem('hdnSubCategoryID', map[item].QuestionSubCategoryID);
-
+        if (map[item].questionSubCategoryID != "0") {
+             sessionStorage.setItem('hdnSubCategoryID', map[item].questionSubCategoryID);
         }
         else {
             gritternotification('Please select Sub Category properly!!!');
@@ -1190,11 +1203,11 @@ function InsUpdQuestionSubcategory() {
     }
 
     var data = {
-        "QuestionCategoryID": $('#hdnquestCatID').val(),
-        "QuestionSubCategoryID": $('#hdnsubCatID').val(),
+        "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
+        "QuestionSubCategoryID": parseInt($('#hdnsubCatID').val()),
         "QuestionSubCategory": $('#txtqSubcategory').val(),
         "isActive": status,
-        "customerId": sessionStorage.getItem('CustomerID')
+        "customerId": parseInt(sessionStorage.getItem('CustomerID'))
 
     }
    // alert(JSON.stringify(data))
@@ -1209,7 +1222,8 @@ function InsUpdQuestionSubcategory() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
-            if (data[0].Flag == "1") {               
+            
+            if (data == "1") {               
                 errorModal.hide();
                 $("#successmsg").html("Transaction Successful.");
                 successModal.show();
@@ -1218,7 +1232,7 @@ function InsUpdQuestionSubcategory() {
                 fetchqsubcategoryForAuto($('#hdnquestCatID').val())
 
             }
-            else if (data[0].Flag == '2') {
+            else if (data == '2') {
                 errorModal.hide();
                 $("#successmsg").html("Updation Successful.");
                 successModal.show();
@@ -1230,11 +1244,13 @@ function InsUpdQuestionSubcategory() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1242,9 +1258,6 @@ function InsUpdQuestionSubcategory() {
 
     jQuery.unblockUI();
     resetSubcategory();
-
-
-
 }
 
 function editSubcategory(RowID) {
@@ -1312,13 +1325,13 @@ function insupdRFXQuestionMaster() {
     }
 
     var data = {
-        "QuestionCategoryID": $('#hdnquestCatID').val(),
-        "QuestionSubCategoryID": sessionStorage.getItem("hdnSubCategoryID"),
+        "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
+        "QuestionSubCategoryID": parseInt(sessionStorage.getItem("hdnSubCategoryID")),
         "QuestionDescription": $('#txtQuestiondescription').val(),
         "Mandatory": mandatory,
         "Attachement": status,
         "QuestionID": 0,
-        "CustomerID": sessionStorage.getItem("CustomerID"),
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "QuestionApplicableFor": 'RFI'
 
     }
@@ -1335,7 +1348,7 @@ function insupdRFXQuestionMaster() {
         contentType: "application/json",
         success: function (data) {
             // alert((data[0].GetMsz))
-            if (data[0].GetMsz == "1") {                
+            if (data == "1") {                
                 errorModal.hide();
                 $("#successmsg").html("Transaction Successful.");
                 successModal.show();                
@@ -1348,7 +1361,7 @@ function insupdRFXQuestionMaster() {
                 }
                 
             }
-            else if (data[0].GetMsz == '2') {
+            else if (data == '2') {
                 errorModal.hide();
                 $("#success").html("Updation Successfull...");
                 successModal.show();
@@ -1359,15 +1372,13 @@ function insupdRFXQuestionMaster() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-                $('#error').html('You have some errors')
-                error.show();
-                error.fadeOut(5000)
-            } 
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1378,8 +1389,6 @@ function insupdRFXQuestionMaster() {
 
 
 }
-
-
 function resetRFXQuestionmaster() {
     $('#submitbtnmaster').text('Submit');
     sessionStorage.setItem('hdnSubCategoryID', '0');    
@@ -1450,6 +1459,7 @@ function fetchRFXDetailsForPreview() {
     jQuery("#productCatPrev").html(_txtCategories);
                                                
     var ptTbl = '';
+    $("#tblAttachmentsElemPrev").empty();
     $("#tblAttachmentsElem> li").each(function (index) {
         if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
             ptTbl = $(this);
@@ -1457,7 +1467,7 @@ function fetchRFXDetailsForPreview() {
                  '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
                 '</div>' +
                 '<div class="col-md-4">' +
-                    '<p class="form-control-static"><a href=PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + $('#attach-file' + (index + 1)).html() + ' style="text-decoration: none !important;">' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
+                '<p class="form-control-static"><a id=RFIFilePrev' + (index + 1) + ' href="javascript:;" onclick="DownloadFile(this)" style="text-decoration: none !important;">' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
                 '</div></li>');
            
             
@@ -1468,7 +1478,7 @@ function fetchRFXDetailsForPreview() {
                  '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
                 '</div>' +
                 '<div class="col-md-4">' +
-                    '<p class="form-control-static"><a href=PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + AttachementFileName + ' style="text-decoration: none !important;">' + AttachementFileName + '</a></p>' +
+                '<p class="form-control-static"><a id=RFIFilePrev' + (index + 1) + '  href="javascript:;" onclick="DownloadFile(this)" style="text-decoration: none !important;">' + AttachementFileName + '</a></p>' +
                 '</div></li>');
 
         }
@@ -1571,11 +1581,13 @@ function fetchVendorDetail() {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
             return false;
             jQuery.unblockUI();
         }
@@ -1620,12 +1632,17 @@ function fetchCategorymaster() {
         dataType: "json",
         success: function (data) {
             jQuery("#ddlCategoryMultiple").empty();
-            var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
                 jQuery("#ddlCategoryMultiple").trigger("change");
+                if (sessionStorage.getItem('CurrentRFXID') != "0") {
+                    setTimeout(function () {
+                        fetchRFXDetails();
+                        fetchRFXDetailsForTab2('RFI');
+                    }, 1000)
+                }
             }
             else {
                 jQuery("#ddlCategoryMultiple").append('<tr><td>No categories found..</td></tr>');
@@ -1752,13 +1769,12 @@ function getCategoryWiseVendors(categoryID) {
 
         success: function (data) {
 
-            jQuery("#tblvendorlist > tbody").empty();
+            $("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName;
                 var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].emailid + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td><td class='hide'>"+data[i].emailid+"</td></tr>";
-
-                jQuery('#tblvendorlist > tbody').append(str);
+                $('#tblvendorlist > tbody').append(str);
 
             }
            
@@ -1958,30 +1974,25 @@ function RFXSubmitTempVendors() {
     
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function(index) {
-        InsertQuery = InsertQuery + " Insert into PE.RFQRFIVendorDetails(RFQRFIId,EmailId,VendorId,LinkURL,DeadlineDT,RFIRFQStatus,EntryDT,Version) values('RFI-" + sessionStorage.getItem('CurrentRFXID') + "','" + $.trim($(this).find('td:eq(2)').html()) + "'," + $.trim($(this).find('td:eq(0)').html()) + ",'RFXVendor.html?RFXID=" + sessionStorage.getItem('CurrentRFXID') + "',CONVERT(DATE,'" + $("#txtRFXdeadline").val() + "',103),'N',getDate(),0) ";
+        InsertQuery = InsertQuery + " Insert into PE.VQRFIVendorDetails(VQRFIId,EmailId,VendorId,LinkURL,DeadlineDT,RFIVQStatus,EntryDT,Version) values('RFI-" + sessionStorage.getItem('CurrentRFXID') + "','" + $.trim($(this).find('td:eq(2)').html()) + "'," + $.trim($(this).find('td:eq(0)').html()) + ",'RFXVendor.html?RFIID=" + sessionStorage.getItem('CurrentRFXID') + "',CONVERT(DATE,'" + $("#txtRFXdeadline").val() + "',103),'N',getDate(),0) ";
     });
-
-    if (InsertQuery != '') {
-
-    }
-    else {
+    if (InsertQuery == '') {
         InsertQuery = "Print 1";
     }
-    debugger;
+   
     var TempVendors = {
         "VendorDetails": InsertQuery,
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID'))
     };
-   
-
-    jQuery.ajax({
+    $.ajax({
         url: sessionStorage.getItem("APIPath") + "RFXMaster/ConfigureRFXTab3",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(TempVendors),
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            if (data[0].OutMsg == "1") {
+           
+            if (data[0].outMsg == "1") {
                
                 $('#BidPreviewDiv').show();
                 $('#form_wizard_1').hide();
@@ -2027,38 +2038,37 @@ function RFXInsUpdConfigurationSubmit() {
         jQuery.ajax({
 
             type: "POST",
-
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXInsUpdConfigurationSubmit",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             crossDomain: true,
 
             async: false,
-
             data: JSON.stringify(TempCompany),
-
             dataType: "json",
 
             success: function (data) {
 
                 jQuery.unblockUI();
-                if (data[0].OutMsg == '1') {
+                //if (data[0].outMsg == '1') {
                     bootbox.alert("RFI submitted successfully.", function () {
                         window.location = sessionStorage.getItem("HomePage")
                         return false;
                     });   
 
-                }
+                //}
                 
                 
             },
             error: function (xhr, status, error) {
 
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText//eval("(" +  + ")");
                 if (xhr.status === 401) {
                     error401Messagebox(err.Message);
                 }
-               
+                else {
+                    fnErrorMessageText('spandanger', 'submit_form');
+                }
                 return false;
                 jQuery.unblockUI();
             }
