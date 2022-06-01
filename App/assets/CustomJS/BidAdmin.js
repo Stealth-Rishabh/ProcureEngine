@@ -93,11 +93,17 @@ function startTimer(duration, display) {
         //console.log(timer)
         //setTimeout(function () {
 
-        if (--timer <= 0) {
-            timer = 0;
-            if (timer == 0) {
+        //if (--timer <= 0) {
+        //    timer = 0;
+        //    if (timer == 0) {
+        //        window.location = "index.html";
+        //        return;
+        //    }
+        //}
+        if (--timer < -3) {
+            timer = -3;
+            if (timer == -3) {
                 window.location = "index.html";
-                return;
             }
         }
         //}, 3000);

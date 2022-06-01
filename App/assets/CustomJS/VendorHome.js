@@ -67,7 +67,7 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#nPassword").val() != $("#reEnterPass").val()) {
+    if ($("#nPassword").val().toLowerCase() != $("#reEnterPass").val().toLowerCase()) {
         jQuery("#errorpassword").text("Password not matched..");
         Changepassworderror.show();
         Changepassworderror.fadeOut(5000);
@@ -92,20 +92,21 @@ function ChangePassword() {
             contentType: "application/json; charset=utf-8",
             EnableViewState:false,
             success: function (data, status, jqXHR) {
-                //if (data == "1") {
-
+                if (data.isSuccess == "-1") {
+                    jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
+                    Changepassworderror.show();
+                    Changepassworderror.fadeOut(5000);
+                    jQuery.unblockUI();
+                    return false;
+                 }
+                else {
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
                     Changepasswordsuccess.fadeOut(5000);
                     clearResetForm();
                     jQuery.unblockUI();
-                //}
-                //else {
-                //    jQuery("#errorpassword").html("Please try again with correct current password..");
-                //    Changepassworderror.show();
-                //    Changepassworderror.fadeOut(5000);
-                //    jQuery.unblockUI();
-                //}
+                }
+                
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");

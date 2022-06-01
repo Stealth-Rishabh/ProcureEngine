@@ -995,10 +995,10 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             }
                             if (data[i].lastInvoicePrice != 0) {
                                 if (PEfaBidForId == 81 || PEfaBidForId == 83) {
-                                    Percentreductioninvoice = parseFloat(parseFloat(data[i].lQuote / data[i].lastInvoicePrice - 100) * 100).toFixed(2) + ' %'
+                                    Percentreductioninvoice = parseFloat(100 - parseFloat(data[i].lQuote / data[i].lastInvoicePrice) * 100).toFixed(2) + ' %'
                                 }
                                 else {
-                                    Percentreductioninvoice = (parseFloat(parseFloat(data[i].lQuote / data[i].lastInvoicePrice) - 1) * 100).toFixed(2) + ' %'
+                                     Percentreductioninvoice = (parseFloat(parseFloat(data[i].lQuote / data[i].lastInvoicePrice) - 1) * 100).toFixed(2) + ' %'
                                 }
                             }
                             else {
@@ -1450,7 +1450,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].itemStatus.toLowerCase() == 'open') {
-                        openlefttime = data[i].itemLeftTime;
+                        openlefttime = openlefttime+data[i].itemLeftTime;
                     }
                     //  alert(data[i].itemStatus.toLowerCase())
                     // alert(openlefttime)
@@ -1527,8 +1527,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
                                     })
 
                                 }
-
-                                if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
+                           if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
                                     $('#low_str' + j).css({
                                         'background-color': '#32C5D2!important',
                                         'color': '#000000!important'
@@ -1546,6 +1545,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
                         }
                     }
                     else if (data[i].itemStatus.toLowerCase() == 'pause' && openlefttime <= 0) {
+                       
                         clearInterval(mytimeforSatus)
                         clearInterval(mytime)
                         bootbox.alert("Bid is successfully paused. To Start again, go to Manage Open Bids", function () {
@@ -2262,6 +2262,38 @@ connection.on("refreshTimer", function (data) {
         }
     });
 })
+connection.on("refreshBidDetailsManage", function (data) {
+
+    if (data.length > 0) {
+        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+            var JsonMsz = JSON.parse(data);
+            if (JsonMsz[0].SeId == $('#seid' + i).text()) {
+
+                if (JsonMsz.valType == "BSPRA") {
+                    $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
+                }
+                if (JsonMsz.valType == "BMD") {
+                    $("#Mindec" + i).html(thousands_separators(JsonMsz.QueryString));
+                }
+
+            }
+            if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
+                fetchBidSummary(sessionStorage.getItem("BidID"));
+            }
+            if (JsonMsz.valType == "BHV") {
+                if (JsonMsz.QueryString == 'N') {
+                    $('.showvendor').removeClass('hide');
+                }
+                else {
+                    $('.showvendor').addClass('hide');
+                }
+            }
+
+        });
+
+    }
+
+});
 
 /////****** Chat *****************/////
 connection.on("ReceiveMessage", function (objChatmsz) {

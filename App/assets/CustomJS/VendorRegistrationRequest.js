@@ -65,6 +65,7 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlCountry").empty();
@@ -106,6 +107,7 @@ function fetchState() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlState").empty();
@@ -148,6 +150,7 @@ function fetchCity() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlCity").empty();
@@ -439,22 +442,22 @@ function SubmitVendorRegistration() {
             $('#hdntmpvendorid').val(data);
             if ($('#filegst').val() != '') {
 
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filegst', gstfilename, 'tempVR/' + data);
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filepan', panfilename, 'tempVR/' + data);
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data);
+                fnUploadFilesonAzure('filemsme', msmefilename, 'tempVR/' + data);
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filecheck', checkfilename, 'tempVR/' + data);
 
             }
 
@@ -486,7 +489,7 @@ function SubmitVendorRegistration() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'tempVR/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function fetchCategorymaster() {
@@ -647,7 +650,7 @@ function FormValidate() {
         errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
         rules: {
-            
+
             ddlNatureEstaiblishment: {
                 required: true,
                 notEqualTo: 0

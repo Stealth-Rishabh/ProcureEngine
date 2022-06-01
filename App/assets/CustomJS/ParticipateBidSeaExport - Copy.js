@@ -21,7 +21,8 @@ connection.on("refreshColumnStatus", function (data) {
     else {
 
         clearInterval(mytime)
-        url = sessionStorage.getItem("APIPath") + "VendorParticipation/RefreshRAParticipation/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&SeID=" + JSON.parse(JsonMsz[2]);
+        url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
+
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -33,54 +34,50 @@ connection.on("refreshColumnStatus", function (data) {
             success: function (data, status, jqXHR) {
 
                 if (data.length > 0) {
-                    // for (var i = 0; i < data.length; i++) {
-                    jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
-                        if (data[0].seid == $('#seid' + i).text()) {
-
-                            if (data[0].noOfExtension >= 1) {
-                                jQuery('#lblTimeLeft').css('color', 'red');
-                                jQuery('#lblTimeLeftTxt').removeClass('display-none');
-                                jQuery('#lblTimeLeftTxt').html('<b>Bid Time Extended.</b>').css('color', 'red')
-                            }
-                            else {
-                                jQuery('#lblTimeLeftTxt').addClass('display-none');
-                                jQuery('#lblTimeLeft').css('color', '');
-                            }
-
-                            jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
-                            display = document.querySelector('#lblTimeLeft');
-                            startTimer(data[0].timeLeft, display);
-
-                            $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-                            $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
-
-                            $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
-                            $("#lblstatus" + i).html(data[0].vendorRank)
-                            var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
-                            $("#L1Price" + i).html(L1Quote)
-
-                            if (data[0].vendorRank == 'L1') {
-                                jQuery('#lblstatus' + i).css('color', 'Blue');
-                            }
-                            else {
-                                jQuery('#lblstatus' + i).css('color', 'Red');
-                            }
-                            if (data[0].itemNoOfExtension > 0) {
-                                jQuery('#itemleft' + i).css({
-                                    'color': 'Red',
-                                    'font-weight': '500'
-                                });
-                                jQuery('#itemleftTime' + i).css({
-                                    'color': 'Red',
-                                    'font-weight': '500'
-                                });
-                            }
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].noOfExtension >= 1) {
+                            jQuery('#lblTimeLeft').css('color', 'red');
+                            jQuery('#lblTimeLeftTxt').removeClass('display-none');
+                            jQuery('#lblTimeLeftTxt').html('<b>Bid Time Extended.</b>').css('color', 'red')
                         }
-                    });
-                }
+                        else {
+                            jQuery('#lblTimeLeftTxt').addClass('display-none');
+                            jQuery('#lblTimeLeft').css('color', '');
+                        }
 
-                //}
+                        jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
+                        display = document.querySelector('#lblTimeLeft');
+                        startTimer(data[i].timeLeft, display);
+
+                        $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
+                        $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
+
+
+                        $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
+                        $("#lblstatus" + i).html(data[i].loQuotedPrice)
+                        var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
+                        $("#L1Price" + i).html(L1Quote)
+                        if (data[i].maskL1Price == 'N') {
+                            $("#L1Price" + i).html('Not Disclosed');
+                        }
+                        if (data[i].loQuotedPrice == 'L1') {
+                            jQuery('#lblstatus' + i).css('color', 'Blue');
+                        }
+                        else {
+                            jQuery('#lblstatus' + i).css('color', 'Red');
+                        }
+                        if (data[i].itemNoOfExtension > 0) {
+                            jQuery('#itemleft' + i).css({
+                                'color': 'Red',
+                                'font-weight': '500'
+                            });
+                            jQuery('#itemleftTime' + i).css({
+                                'color': 'Red',
+                                'font-weight': '500'
+                            });
+                        }
+                    }
+                }
 
             },
             error: function (xhr, status, error) {
@@ -95,68 +92,6 @@ connection.on("refreshColumnStatus", function (data) {
             }
         });
     }
-});
-connection.on("refreshBidDetailsManage", function (data) {
-
-    if (data.length > 0) {
-        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
-            var JsonMsz = JSON.parse(data[0]);
-            if (JsonMsz.valType == "BAL") {
-                var VRanlList = JSON.parse(data[1]);
-                for (var j = 0; j < VRanlList.length; j++) {
-                    if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-                            //if (sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-                            $('#lblstatus' + i).html(VRanlList[j].VendorRank)
-                        if (VRanlList[j].VendorRank == 'L1') {
-                                jQuery('#lblstatus' + i).css('color', 'Blue');
-                            }
-                            else {
-                                jQuery('#lblstatus' + i).css('color', 'Red');
-                            }
-                        //}
-                    }
-                }
-            }
-            if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
-            }
-            if (JsonMsz.valType != "BAL") {
-                if (JsonMsz.SeId == $('#seid' + i).text()) {
-                    if (JsonMsz.valType == "BSPRA") {
-                        $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
-                    }
-                    if (JsonMsz.valType == "BMD") {
-                        $("#minimumdec" + i).html(thousands_separators(JsonMsz.QueryString));
-                        $("#mindec" + i).text(thousands_separators(JsonMsz.QueryString));
-                    }
-                    if (JsonMsz.valType == "RAL1") {
-                        if (JsonMsz.QueryString == 'N') {
-                            $("#L1Price" + i).css("display", "none");//.hide();
-                            $("#L1Pricenotdisclosed" + i).css("display", "block");
-                        }
-                        else {
-                            $("#L1Price" + i).css("display", "block");
-                            $("#L1Pricenotdisclosed" + i).css("display", "none");
-                        }
-                    }
-                    if (JsonMsz.valType == "RAStartP") {
-                        if (JsonMsz.QueryString == 'N') {
-                            $("#ceilingprice" + i).css("display", "none");
-                            $("#ceilingpricenotdisclose" + i).css("display", "block");
-                        }
-                        else {
-                            $("#ceilingprice" + i).css("display", "block");
-                            $("#ceilingpricenotdisclose" + i).css("display", "none");
-                        }
-                    }
-                    return false;
-                }
-            }
-
-        });
-
-    }
-
 });
 connection.on("refreshTimer", function () {
     fetchBidTime();
@@ -515,7 +450,7 @@ function fetchBidSummaryVendorproduct() {
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Quote*</th><th class=hide>Action</th><th>Remarks</th></thead>");
                     for (var i = 0; i < data.length; i++) {
-                        jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide><span>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
+                        jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
                     }
                 }
                 else {
@@ -532,7 +467,7 @@ function fetchBidSummaryVendorproduct() {
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                             var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
-                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td  id=L1Price" + i + ">" + L1Quote + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(LqQuote))
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
 
@@ -544,31 +479,10 @@ function fetchBidSummaryVendorproduct() {
                                 $("#targetprice" + i).html('Not Disclosed');
                             }
                             if (data[i].maskL1Price == 'N') {
-                                //$("#L1Price" + i).html('Not Disclosed');
-
-                                $("#L1Price" + i).css("display", "none");//.hide();
-                                $("#L1Pricenotdisclosed" + i).css("display", "block");
-                            }
-                            else {
-                                //$("#L1Pricenotdisclosed" + i).hide();
-                                //$("#L1Price" + i).show();
-                                $("#L1Price" + i).css("display", "block");
-                                $("#L1Pricenotdisclosed" + i).css("display", "none");
+                                $("#L1Price" + i).html('Not Disclosed');
                             }
                             if (data[i].showStartPrice == 'N') {
-                                $("#ceilingprice" + i).css("display", "none");//.hide();
-                                $("#ceilingpricenotdisclose" + i).css("display", "block");
-                                // $(".ceilingprice"+i).hide();
-                                //$(".ceilingpricenotdisclose"+i).show();
-                                //$("#ceilingprice" + i).html('Not Disclosed');
-                            }
-                            else {
-                                //$("#ceilingprice" + i).show();
-                                //$("#ceilingpricenotdisclose" + i).hide();
-                                //$(".ceilingprice"+i).show();
-                                //$(".ceilingpricenotdisclose"+i).hide();
-                                $("#ceilingprice" + i).css("display", "block");//.hide();
-                                $("#ceilingpricenotdisclose" + i).css("display", "none");
+                                $("#ceilingprice" + i).html('Not Disclosed');
                             }
 
                             if (data[i].itemBlockedRemarks != '') {
@@ -675,7 +589,7 @@ function InsUpdQuoteSeaExport(index) {
         $('#spanamount' + index).text('Amount is required in number only')
         return false
     }
-    else if ((parseFloat(removeThousandSeperator($('#ceilingprice' + index).text())) < parseFloat(removeThousandSeperator($('#txtquote' + index).val()))) && $('#ceilingprice' + index).is(":visible")) {
+    else if (parseFloat(removeThousandSeperator($('#ceilingprice' + index).text())) < parseFloat(removeThousandSeperator($('#txtquote' + index).val()))) {
         $('#spanamount' + index).removeClass('hide')
         $('#spanamount' + index).text('Amount should be less than Bid start price')
         return false
