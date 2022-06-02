@@ -1321,7 +1321,10 @@ function InsUpdProductSevices() {
                 $("#itemcode" + this_row).text($('#txtItemCode').val())
                 $("#itemname" + this_row).text($('#txtshortname').val())
                 $("#TP" + this_row).text(thousands_separators($('#txttargetprice').val()))
-                $("#qunatity" + this_row).text(thousands_separators($('#txtquantitiy').val()))
+                $("#quantity" + this_row).text(thousands_separators($('#txtquantitiy').val()))
+
+                $("#minquantity" + this_row).text(thousands_separators($('#txtminquantitiy').val()))
+                $("#maxquantity" + this_row).text(thousands_separators($('#txtmaxquantitiy').val()))
                 $("#UOM" + this_row).text($('#dropuom').val())
                 $("#BSP" + this_row).text(thousands_separators($('#txtCeilingPrice').val()))
                 $("#mininc" + this_row).text(thousands_separators($('#txtminimumdecreament').val()))
