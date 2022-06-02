@@ -19,8 +19,8 @@ if (sessionStorage.getItem('CustomerID') == 32) {
 else {
     $('#lichngepass').show()
 }
-function fnErrorMessageText(spanid,formid) {
-   
+function fnErrorMessageText(spanid, formid) {
+
     if (formid != '') {
         $('#' + formid).bootstrapWizard('previous')
         $('.button-next').removeClass('hide');
@@ -29,11 +29,11 @@ function fnErrorMessageText(spanid,formid) {
     $('.alert-danger').show();
     $('#' + spanid).html('').html('Some error occured . Please contact administrator');
     $('.alert-danger').fadeOut(8000);
-    
-   // App.scrollTo(error1, -200);
+
+    // App.scrollTo(error1, -200);
     jQuery.unblockUI();
     return false;
-    
+
 }
 function getCurrentTime(date) {
     var hours = date.getHours(),
@@ -59,18 +59,18 @@ function getCurrentDateddmmyyyy() {
     biddatetime = dd + '/' + mm + '/' + yyyy;
     return biddatetime;
 }
-function fnredirecttoHome(){
-	if(sessionStorage.getItem('UserType')=="V"){
-		window.location="VendorHome.html"
-	}
-	else if(sessionStorage.getItem('UserType')=="P"){
-        
-	    window.history.back();
-	}
-	else if(sessionStorage.getItem('UserType')=="E"){
-	
-		window.location="index.html"
-	}
+function fnredirecttoHome() {
+    if (sessionStorage.getItem('UserType') == "V") {
+        window.location = "VendorHome.html"
+    }
+    else if (sessionStorage.getItem('UserType') == "P") {
+
+        window.history.back();
+    }
+    else if (sessionStorage.getItem('UserType') == "E") {
+
+        window.location = "index.html"
+    }
 }
 function gritternotification(msz) {
 
@@ -90,6 +90,7 @@ function gritternotification(msz) {
     return false;
 }
 function calltoaster(msz, title, type) {
+
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -97,12 +98,13 @@ function calltoaster(msz, title, type) {
         "positionClass": "toast-top-right",
         "onclick": null,
         "autohide": false,
-        "extendedTimeOut": "0",
-        "timeOut": "0",
         "hideDuration": "0",
-        "showEasing": "swing"
+        "showEasing": "swing",
+        extendedTimeOut: 0,
+        timeOut: 0,
+        tapToDismiss: false
         // "showDuration": "1000",
-       //"hideEasing": "linear",
+        //"hideEasing": "linear",
         //"showMethod": "fadeIn",
         //"hideMethod": "fadeOut"
     }
@@ -114,15 +116,15 @@ function calltoaster(msz, title, type) {
         toastr.warning(msz, 'Warning');
     } else {
         toastr.info(msz, 'Information', options);
-  }
-   // toastr.success(msz, title)
+    }
+    // toastr.success(msz, title)
 }
 function setCommonData() {
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
 }
 function minutes_with_leading_zeros(dtmin) {
-  
+
     return (dtmin < 10 ? '0' : '') + dtmin;
 }
 
@@ -168,12 +170,12 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     jQuery.each(jQuery.parseJSON(data), function (key, value) {
         if (value.parentMenuID == '0') {
             if (parentmenuid == value.menuID) {
-                
+
                 jQuery('#ulMain').append("<li class='active'><a href='javascript:;'><i class='" + value.iconClass + "'></i><span class='title'>" + value.menuName + "</span><span class='arrow'></span></a><ul class='sub-menu' id=MenuHeader" + i + "></ul></li>");
             }
             else
                 jQuery('#ulMain').append("<li ><a href='javascript:;' ><i class='" + value.iconClass + "'></i><span class='title'>" + value.menuName + "</span><span class='arrow'></span></a><ul class='sub-menu' id=MenuHeader" + i + "></ul></li>");
-                
+
 
             jQuery.each(jQuery.parseJSON(data), function (key, value1) {
                 if (value.menuID == value1.parentMenuID) {
@@ -193,11 +195,11 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
 
 }
 function CheckOnlineStatus(msg) {
-    
-   
+
+
     var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
     if (condition == "OFFLINE") {
-        
+
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -214,30 +216,30 @@ function CheckOnlineStatus(msg) {
         }
         //$('#basic').modal('show');
         toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
-       
-        
+
+
     }
     else {
-        
-       // toastr.clear();
+
+        // toastr.clear();
     }
-   
+
 }
 function Pageloaded() {
-  
+
     CheckOnlineStatus("load");
     document.body.addEventListener("offline", function () {
-        
+
         CheckOnlineStatus("offline")
     }, false);
     document.body.addEventListener("online", function () {
-        
+
         CheckOnlineStatus("online")
-        
+
     }, false);
 }
 function BindNoExtensions(divid) {
-   
+
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
     for (var i = 0; i <= 10; i++) {
 
@@ -256,32 +258,33 @@ jQuery("#txtSearch").keyup(function () {
     });
 });
 
-$('#logOut_btn').click(function() {
+$('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
 
-    var ftype= $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
-    
+    var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
+
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
     var fname = fn.substring(fn.lastIndexOf('/') + 1, fn.lastIndexOf('.'));
     var size = $('#' + fileid.id)[0].files[0].size;
-   
+
     switch (ftype.toLowerCase()) {
-        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx': case 'jpg': case 'jpeg': case 'png':
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx");
+            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
-            Metronic.scrollTo($('.alert-danger'), -200);
+            //Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
+
             return false
-        }
+    }
     //if (size > 5242880)// checks the file more than 5 MB
     //{
-    
+
     if (fname.length > 70) {
         $('.alert-danger').html('File Name should not be more than 70 charachters!')
         $('.alert-danger').show();
@@ -290,8 +293,8 @@ function checkfilesize(fileid) {
         $('#' + fileid.id).val('')
         return false;
     }
-   else if (size > 7340032) {
-       // $('#spandanger,#spanerrordomestic').html('Filesize must be less than or equal to 5 MB.!')
+    else if (size > 7340032) {
+        // $('#spandanger,#spanerrordomestic').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
@@ -320,10 +323,10 @@ function thousands_Sep_Text(num) {
     return num_parts.join(".");
 }
 function thousands_separators(num) {
-    
+
     x = num.toString();
     x = x.replace(/,/g, '');
-   
+
     var afterPoint = '';
     if (x.indexOf('.') > 0)
         afterPoint = x.substring(x.indexOf('.'), x.length);
@@ -338,7 +341,7 @@ function thousands_separators(num) {
 }
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
-  
+
     x = num.toString();
     x = x.replace(/,/g, '');
 
@@ -352,12 +355,12 @@ function thousands_separators_NonMadCol(ele) {
     if (otherNumbers != '')
         lastThree = ',' + lastThree;
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-    ele.value= res;
+    ele.value = res;
 }
 function thousands_separators_input(ele) {
     var valArr, val = ele.value;
     val = val.replace(/[^0-9\.]/g, '');
-   
+
     if (val != "") {
         valArr = val.split('.');
         valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
@@ -367,10 +370,9 @@ function thousands_separators_input(ele) {
 }
 
 function removeThousandSeperator(val) {
-    if (val.length > 4)
-    {
+    if (val.length > 4) {
         val = val.replace(/,/g, '');
-        
+
     }
     return val;
 }
@@ -396,17 +398,17 @@ function convertTo24Hour(time) {
     //if (hours < 10) {
     //     hours = parseInt(hours.substr(0, 1))
     //}
-    
+
     if (time.indexOf('am') != -1 && hours == 12) {
         time = time.replace('12', '0');
     }
-  
+
     if (time.indexOf('pm') != -1 && hours < 12) {
         time = time.replace(hours, (hours + 12));
     }
     time = time.replace(/(am|pm)/, '');
     time = time.substr(time.length - 6)
-   
+
     return time;
 }
 function CancelBidDuringConfig() {
@@ -422,10 +424,10 @@ function CancelBidDuringConfig() {
         _for = 'eRFQ';
         _bidId = sessionStorage.getItem("hddnRFQID");
     }
-        //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-        //    _for = 'RFQ';
-        //    _bidId = sessionStorage.getItem("hddnRFQID");
-        // }
+    //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
+    //    _for = 'RFQ';
+    //    _bidId = sessionStorage.getItem("hddnRFQID");
+    // }
     else if (sessionStorage.getItem("CurrentRFXID") != '0' && sessionStorage.getItem("CurrentRFXID") != null) {
 
         _for = 'RFI';
@@ -520,6 +522,17 @@ function replaceQuoutesFromStringFromExcel(ele) {
     //ele.value = str;
     return str;
 }
+function removeZero(ele) {
+    var str = '';
+    if ($('#' + ele.id).val() == "0") {
+        str = "";
+    }
+    else {
+        str = $('#' + ele.id).val();
+    }
+    ele.value = str;
+}
+
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
@@ -531,8 +544,8 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 //** when click on vendor from List
-function openChatDiv(name, email, vendorId,connectionid,userid,contactperson) {
-  
+function openChatDiv(name, email, vendorId, connectionid, userid, contactperson) {
+
     $("#chat-label").html(contactperson + '(' + name + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
@@ -544,22 +557,22 @@ function openChatDiv(name, email, vendorId,connectionid,userid,contactperson) {
     else {
         $('#chatbtn').removeClass('hide')
         $('#txtChatMsg').removeClass('hide')
-       
+
     }
     ////updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
     //$(".pulsate-regular").css('animation', 'none');
-   
+
 }
 
 function closeChatsForAdmin() {
     document.getElementById("chatWindow").style.display = "none";
-    
+
 }
 
 function openBroadcastMessage() {
     fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
     $(".pulsate-regular").css('animation', 'none');
-  
+
 }
 function closeChatsForAdminB() {
     document.getElementById("broadcastMsgdiv").style.background = 'none';
@@ -580,7 +593,7 @@ function fetchBroadcastMsgs(userId, msgType) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
@@ -617,7 +630,7 @@ function fetchBroadcastMsgs(userId, msgType) {
 }
 function fetchvendor() {
 
-    toastr.clear();
+    // toastr.clear();
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     //$('#quick_sidebar_tab_1').removeAttr('Class')
     jQuery.ajax({
@@ -632,12 +645,12 @@ function fetchvendor() {
 
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
-                toastr.clear();
+                // toastr.clear();
                 $(".pulsate-regular").css('animation', 'none');
                 var vName = '';
                 for (var i = 0; i < data.length; i++) {
                     if (vName != data[i].vendorName) {
-                        
+
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status">'
                             + '<span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
@@ -663,19 +676,19 @@ function fetchvendor() {
                             + '</li>');
 
                     }
-                    
+
                     if (data[i].connected == true) {
                         $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
                         $('#v' + data[i].userID).removeAttr('disabled')
-                       // $('#chatbtn').addClass('hide')
-                       // $('#txtChatMsg').addClass('hide')
+                        // $('#chatbtn').addClass('hide')
+                        // $('#txtChatMsg').addClass('hide')
                     }
                     else {
                         $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
                         $('#v' + data[i].userID).attr('disabled', 'disabled')
-                       // $('#chatbtn').addClass('hide')
-                      //  $('#txtChatMsg').addClass('hide')
-                       
+                        // $('#chatbtn').addClass('hide')
+                        //  $('#txtChatMsg').addClass('hide')
+
                     }
                     vName = data[i].vendorName
                 }
@@ -698,8 +711,8 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-   
-    toastr.clear();
+
+    // toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
@@ -717,7 +730,7 @@ function fetchUserChats(userId, msgType) {
             if (data.length > 0) {
                 $(".pulsate-regular").css('animation', 'none');
                 for (var i = 0; i < data.length; i++) {
-                    
+
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#chatList").append('<div class="post in">'
                             + '<div class="message">'
@@ -822,11 +835,11 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-   
+
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
@@ -834,16 +847,16 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
         processData: false,
         data: formData,
         success: function (data) {
-          //  alert('success')
+            //  alert('success')
             return;
         },
         error: function (xhr, status, error) {
             $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
-                Metronic.scrollTo(error, -200);
-                $(".alert-danger").show();
-                $(".alert-danger").fadeOut(5000);
-                jQuery.unblockUI();
-            
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI();
+
         }
     });
 }
@@ -868,7 +881,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //            //{
 //            //    fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + FileName)
 //            //}
-           
+
 //            return;
 //        },
 //        error: function (xhr, status, error) {
@@ -877,7 +890,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //            $(".alert-danger").show();
 //            $(".alert-danger").fadeOut(5000);
 //            jQuery.unblockUI();
-            
+
 //        }
 //    });
 
@@ -885,14 +898,14 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-  
-        jQuery.ajax({
+
+    jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
         type: "GET",
         cache: false,
         crossDomain: true,
         success: function (data) {
-           
+
             console.log(data)
             var downloadwindow = window.open(data, "_blank");
             downloadwindow.focus();
@@ -904,12 +917,12 @@ function fnDownloadAttachments(filename, foldername) {
             $(".alert-danger").fadeOut(5000);
             jQuery.unblockUI();
         }
-    }) 
+    })
 
 }
 
 //** Delete Files from Blob
-function fnFileDeleteAzure(filename, foldername,deletionfor,srno) {
+function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
     var data = {
         "filename": filename,
         "foldername": foldername
@@ -928,7 +941,7 @@ function fnFileDeleteAzure(filename, foldername,deletionfor,srno) {
             success.show();
             Metronic.scrollTo(success, -200);
             success.fadeOut(5000);
-         
+
         },
         error: function (xhr, status, error) {
             $(".alert-danger").find("span").html('').html(filename + " Couldn't deleted successfully from Azure");
@@ -965,9 +978,9 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 var allvendorsforautocomplete;
- 
+
 function fetchParticipantsVender() {
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -977,18 +990,18 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-           
+
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
-               
+
             }
             else {
                 allvendorsforautocomplete = '';
-               
+
             }
         },
         error: function (xhr, status, error) {
-          
+
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1013,7 +1026,7 @@ jQuery("#txtsearchvendor").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-           
+
             vname = username.participantName + ' (' + username.companyEmail + ')'
             map[vname] = username;
             usernames.push(vname);
@@ -1038,7 +1051,7 @@ jQuery("#txtsearchvendor").typeahead({
 });
 jQuery("#txtsearchcat").keyup(function () {
     sessionStorage.setItem('hdnCategoryGrpID', '0');
-    
+
 });
 sessionStorage.setItem('hdnCategoryGrpID', 0);
 jQuery("#txtsearchcat").typeahead({
@@ -1124,12 +1137,12 @@ function fetchBidType() {
             jQuery.unblockUI();
         }
     });
-   
+
 }
 
 function fnfetchCatVendors() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
+    // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1151,7 +1164,7 @@ function fnfetchCatVendors() {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#spanerterrserach').text('No data found')
                 $('#div_table').addClass('hide');
-               // App.scrollTo(jQuery('#divalerterrsearch'), -200);
+                // App.scrollTo(jQuery('#divalerterrsearch'), -200);
 
                 return false;
             }
@@ -1171,7 +1184,7 @@ function fnfetchCatVendors() {
             return false;
             jQuery.unblockUI();
         }
-        
+
     })
 
     setTimeout(function () {
@@ -1203,21 +1216,21 @@ function getUrlVarsURL(URLString) {
 
 
 var code = {
-   
-        encryptMessage: function(messageToencrypt, secretkey){
-            var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
-            return encryptedMessage.toString();
-        },
-         decryptMessage: function(encryptedMessage, secretkey){
-                var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
-                var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
-                return decryptedMessage;
-         }
+    encryptMessage: function (messageToencrypt, secretkey) {
+        var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
+        return encryptedMessage.toString();
+    },
+    decryptMessage: function (encryptedMessage, secretkey) {
+        var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
+        var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+        return decryptedMessage;
+    }
 }
 //var key = 'MAKV2SPBNI99212';
 function fnEnryptURL(URL) {
-  
+
     var hashes = URL.slice(URL.indexOf('?') + 1)//.split('&')
     var encryptedstring = encrypt(hashes)
     var url = URL.split("?")[0] + "?param=" + encryptedstring
@@ -1236,19 +1249,19 @@ var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
-    {
-        keySize: 128 / 8,
-        iv: iv,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-    });
+        {
+            keySize: 128 / 8,
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
     return (encryptedtext)
 }
 function fndecrypt(message) {
 
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
-    
+
     var dncryptedpassword = CryptoJS.AES.decrypt(message, key,
         {
             keySize: 128 / 8,
@@ -1354,54 +1367,54 @@ var tableToExcelMultipleSheetwithoutColor = (function () {
 var tableToExcelMultipleWorkSheet = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
-      + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
-    + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
-      + '           <Author>Qompare</Author>'
-      + '           <Created>{created}</Created>'
-      + '       </DocumentProperties>'
-    + '     <Styles>'
-     + '           <Style ss:ID="Header">'
-      + '               <Alignment ss:Vertical="Bottom"/>'
-    + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
-      + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="NonMandatory">'
-      + '              <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat ss:Format=""/>'
-      + '               <Protection/>'
-      + '           </Style>'
-       + '         <Style ss:ID="Mandatory">'
-      + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-        + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
-   
-    + ' </Styles>'
-    + ' {worksheets}'
-      + '</Workbook>'
+            + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
+            + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
+            + '           <Author>Qompare</Author>'
+            + '           <Created>{created}</Created>'
+            + '       </DocumentProperties>'
+            + '     <Styles>'
+            + '           <Style ss:ID="Header">'
+            + '               <Alignment ss:Vertical="Bottom"/>'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
+            + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="NonMandatory">'
+            + '              <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat ss:Format=""/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Mandatory">'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
+
+            + ' </Styles>'
+            + ' {worksheets}'
+            + '</Workbook>'
         , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
         , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
         , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
@@ -1452,7 +1465,7 @@ var tableToExcelMultipleWorkSheet = (function () {
         document.body.removeChild(link);
     }
 })();
-   
+
 var tableToExcel = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -1468,77 +1481,77 @@ var tableToExcel = (function () {
 
 var tablesToExcel = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
-    , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
-      + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
-    + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
-      + '           <Author>Qompare</Author>'
-      + '           <Created>{created}</Created>'
-      + '       </DocumentProperties>'
-    + '     <Styles>'
-      + '           <Style ss:ID="Default" ss:Name="Normal">'
-      + '               <NumberFormat ss:Format=""/>'
-      + '           </Style>'
-      + '           <Style ss:ID="Header">'
-      + '               <Alignment ss:Vertical="Bottom"/>'
-    + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
-      + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
+        , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
+            + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
+            + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
+            + '           <Author>Qompare</Author>'
+            + '           <Created>{created}</Created>'
+            + '       </DocumentProperties>'
+            + '     <Styles>'
+            + '           <Style ss:ID="Default" ss:Name="Normal">'
+            + '               <NumberFormat ss:Format=""/>'
+            + '           </Style>'
+            + '           <Style ss:ID="Header">'
+            + '               <Alignment ss:Vertical="Bottom"/>'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
+            + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
 
-    + '         <Style ss:ID="NonMandatory">'
-      + '              <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-       + '         <Style ss:ID="Mandatory">'
-      + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="Missed">'
-      + '               <Borders/>'
-      + '               <Font ss:Color="#ff0000"></Font>'
-      + '               <Interior ss:Color="#ff0000" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="Decimals">'
-      + '               <NumberFormat ss:Format="Fixed"/>'
-      + '           </Style>'
-    + ' </Styles>'
-    + ' {worksheets}'
-      + '</Workbook>'
-    , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}">'
-      + '   <ss:Table>'
-      + '       {rows}' 
-      + '   </ss:Table>'
-      + '</Worksheet>'
-    , tmplCellXML = '           <ss:Cell{attributeStyleID}{attributeFormula}>'
-      + '               <ss:Data ss:Type="{nameType}">{data}</ss:Data>'
-      + '           </ss:Cell>'
-    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            + '         <Style ss:ID="NonMandatory">'
+            + '              <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Mandatory">'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Missed">'
+            + '               <Borders/>'
+            + '               <Font ss:Color="#ff0000"></Font>'
+            + '               <Interior ss:Color="#ff0000" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Decimals">'
+            + '               <NumberFormat ss:Format="Fixed"/>'
+            + '           </Style>'
+            + ' </Styles>'
+            + ' {worksheets}'
+            + '</Workbook>'
+        , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}">'
+            + '   <ss:Table>'
+            + '       {rows}'
+            + '   </ss:Table>'
+            + '</Worksheet>'
+        , tmplCellXML = '           <ss:Cell{attributeStyleID}{attributeFormula}>'
+            + '               <ss:Data ss:Type="{nameType}">{data}</ss:Data>'
+            + '           </ss:Cell>'
+        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
     return function (tables, wsnames, wbname, appname) {
         var ctx = "";
         var workbookXML = "";
@@ -1562,9 +1575,9 @@ var tablesToExcel = (function () {
                     dataFormula = (dataFormula) ? dataFormula : (appname == 'Calc' && dataType == 'DateTime') ? dataValue : null;
                     ctx = {
                         attributeStyleID: (dataStyle == 'NonMandatory' || dataStyle == 'Mandatory' || dataStyle == 'Missed' || dataStyle == 'Header') ? ' ss:StyleID="' + dataStyle + '"' : ''
-                           , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
-                           , data: (dataFormula) ? '' : dataValue
-                           , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
+                        , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
+                        , data: (dataFormula) ? '' : dataValue
+                        , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
                     };
                     rowsXML += format(tmplCellXML, ctx);
                 }

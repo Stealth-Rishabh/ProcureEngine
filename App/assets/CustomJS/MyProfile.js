@@ -305,7 +305,7 @@ function fetchMyProfileVendor() {
             }
 
             sessionStorage.setItem('vendorCode', vendordetails[0].VendorCode);
-
+          
             if (vendordetails[0].MSMECheck == 'Y') {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
@@ -321,7 +321,6 @@ function fetchMyProfileVendor() {
             }
             else {
                 $('.hideInput').addClass('hide');
-                $('#ddlMSME').attr("disabled", 'disabled');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
             }
 
@@ -518,7 +517,7 @@ function fetchMyProfileVendor() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('VendorId'));
 }
 var profileerror = $('#errordiv');
 var profilesuccess = $('#successdiv');
@@ -985,7 +984,7 @@ function updateVendor() {
         "mSMEFile": msmefilename,
         "cancelledCheck": checkfilename,
     }
-    //console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data));
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorProfileUpdate",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -995,22 +994,22 @@ function updateVendor() {
         success: function (data, status, jqXHR) {
 
             if ($('#filegst').val() != '') {
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 

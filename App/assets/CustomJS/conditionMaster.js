@@ -18,7 +18,7 @@ function FormValidate() {
         focusInvalid: false, // do not focus the last invalid input
 
         rules: {
-        conditionName: {
+            conditionName: {
                 required: true
             },
             conditionSr: {
@@ -27,7 +27,7 @@ function FormValidate() {
         },
         messages: {
 
-        conditionName: {
+            conditionName: {
                 required: "Condition is required."
             },
             conditionSr: {
@@ -40,18 +40,16 @@ function FormValidate() {
             jQuery("#error").text("You have some form errors. Please check below.");
             error.show();
             error.fadeOut(5000);
-           
-        },
 
+        },
         highlight: function (element) { // hightlight error inputs
             $(element)
-	                   .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
         },
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
                 .closest('.form-group').removeClass('has-error'); // set error class to the control group
         },
-
         success: function (label) {
             label.closest('.form-group').removeClass('has-error');
             label.remove();
@@ -60,7 +58,6 @@ function FormValidate() {
         errorPlacement: function (error, element) {
             error.insertAfter(element.closest('.xyz'));
         },
-
         submitHandler: function (form) {
             error.hide();
             insupdconditionmaster();
@@ -70,25 +67,25 @@ function FormValidate() {
 }
 
 function insupdconditionmaster() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery("#checkboxactive").is(':checked')) {
         status = "Y";
     }
-    else {
+    else
+    {
         status = "N";
-    }   
-   
+    }
+
     var data = {
         "conditionID": parseInt($('#hddnConditionID').val()),
         "conditionName": $('#conditionName').val(),
-        "IsActive": status,        
+        "IsActive": status,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "conditionSr": $('#conditionSr').val()
     }
-
-   
+    //alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "NFA/InsUpdConditionMaster",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -101,36 +98,82 @@ function insupdconditionmaster() {
         contentType: "application/json",
         success: function (data) {
             if (data == '1') {
-
                 $("#success").html("Transaction Successfull...");
                 success.show();
                 success.fadeOut(3000);
-
                 fetchConditionmaster();
-                
                 jQuery.unblockUI();
             }
-            else if (data == '2') {
+            else if (data == '2')
+            {
                 $("#success").html("Updation Successfull...");
                 success.show();
                 success.fadeOut(3000);
-              
                 fetchConditionmaster();
-                
                 jQuery.unblockUI();
 
             }
-
-            else if (data == '3') {
+            else if (data == '3')
+            {
                 success.hide();
                 $("#error").html("Condition already exists..");
                 error.show();
                 error.fadeOut(3000);
-              
-
                 jQuery.unblockUI();
             }
 
+        },
+        error: function (xhr, status, error)
+        {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+
+    jQuery.unblockUI();
+    resetform();
+
+}
+
+function fetchConditionmaster() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "NFA/fetchNFACondition/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&IsActive=T",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
+            jQuery("#tblPlaceMaster").empty();
+            var status = "No";
+            if (data.result.length > 0) {   
+                jQuery("#tblPlaceMaster").append("<thead id='tblheader'><th>#</th><th>Condition Sr.</th><th>Condition</th><th>Status</th></thead>");
+                for (var i = 0; i < data.result.length; i++) {
+                    if (data.result[i].isActive == "N") {
+                        status = "No";
+                    }
+                    else {
+                        status = "Yes";
+                    }
+                    jQuery('<tr><td><button class="btn btn-xs yellow " onclick="updateType(\'' + data.result[i].conditionName + '\',\'' + data.result[i].isActive + '\',\'' + data.result[i].conditionID + '\',\'' + data.result[i].conditionSr + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data.result[i].conditionSr + '</td><td> ' + data.result[i].conditionName + '</td><td>' + status + '</td></tr>').appendTo("#tblPlaceMaster");
+                }
+            }
+            else {
+                jQuery("#tblPlaceMaster").append('<tr><td>No Information is there..</td></tr>');
+            }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -145,85 +188,29 @@ function insupdconditionmaster() {
             return false;
         }
 
-        });
+    });
+}
 
-        jQuery.unblockUI();
-        resetform();
-        
-    }
-
-function fetchConditionmaster() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
-           jQuery.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "NFA/fetchNFACondition/?CustomerID=" + sessionStorage.getItem('CustomerID')+ "&IsActive=T" ,
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            data: "{}",
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
-                 jQuery("#tblPlaceMaster").empty();
-                
-                if (data.result.length > 0) {
-
-                    jQuery("#tblPlaceMaster").append("<thead id='tblheader'><th>#</th><th>Condition</th><th>Condition Sr.</th><th>Status</th></thead>");
-
-                    for (var i = 0; i < data.result.length; i++) {
-
-                        jQuery('<tr><td><button class="btn btn-xs yellow " onclick="updateType(\'' + data.result[i].conditionName + '\',\'' + data.result[i].isActive + '\',\'' + data.result[i].conditionID + '\',\'' + data.result[i].conditionSr + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data.result[i].conditionName + '</td><td> ' + data.result[i].conditionSr + '</td><td>' + data.result[i].isActive + '</td></tr>').appendTo("#tblPlaceMaster");
-
-                    }
-                 }
-                 else { 
-                     jQuery("#tblPlaceMaster").append('<tr><td>No Information is there..</td></tr>');
-                 }
-                jQuery.unblockUI();
-            },
-            error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('error', '');
-                }
-                jQuery.unblockUI();
-                return false;
-            }
-
-        });
-    }
-
-function updateType(rname, status, id,srno) {
+function updateType(rname, status, id, srno) {
 
     $('#hddnConditionID').val(id);
     $('#conditionName').val(rname);
     $('#conditionSr').val(srno);
-                    if (status =='Y') {
-                       
-                        jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
-                        jQuery('#checkboxactive').parents('span').addClass('checked');
+    if (status == 'Y') {
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
+        jQuery('#checkboxactive').parents('span').addClass('checked');
 
-                    }
-                    else {
-                        jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
-                        jQuery('#checkboxactive').parents('span').removeClass('checked');
-                    }
-
-   
-  
     }
+    else {
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
+        jQuery('#checkboxactive').parents('span').removeClass('checked');
+    }
+}
 
 
 
 jQuery("#search").keyup(function () {
-    
     jQuery("#tblPlaceMaster tr:has(td)").hide(); // Hide all the rows.
-
     var iCounter = 0;
     var sSearchTerm = jQuery('#search').val(); //Get the search box value
 
