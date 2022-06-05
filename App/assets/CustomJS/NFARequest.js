@@ -298,12 +298,12 @@ var FormWizard = function () {
                             $('#ddlBudget').val('NB');
                         }
                         if (form.valid() == false) {
-
+                            
                             form.validate();
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Check Highlighted Fileds');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(5000);
+                            Metronic.scrollTo($(".alert-danger"), -500);
+                            $('.alert-danger').fadeOut(8000);
                             return false;
 
                         }
@@ -342,15 +342,27 @@ var FormWizard = function () {
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
                             $('#errorSeq').html('You have Some error. Please Check Below!')
                             $('#errordivSeq').show();
-                            Metronic.scrollTo($('errordivSeq'), -200);
-                            $('#errordivSeq').fadeOut(5000);
+                            Metronic.scrollTo($('errordivSeq'), -500);
+                            $('#errordivSeq').fadeOut(8000);
 
                             return false;
                         }
-                        Savetab2Data();
-                        SaveAttechmentinDB();
-                        BindAttachmentsOfEdit();
-                        Bindtab3Data();
+                        else if (form.valid() == false) {
+
+                            form.validate();
+                            $('.alert-danger').show();
+                            $('#errorSeq').text('Remarks should be minimum 50 characters & maximum 1000 characters.');
+                            Metronic.scrollTo($(".alert-danger"), -500);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
+
+                        }
+                        else {
+                            Savetab2Data();
+                            SaveAttechmentinDB();
+                            BindAttachmentsOfEdit();
+                            Bindtab3Data();
+                        }
                     }
                     handleTitle(tab, navigation, index);
                     if (ApproverCtr === 0)
@@ -699,21 +711,26 @@ function fnApproversNBQuery(rownum, question) {
         var rowApp = rownum;
         if (!jQuery("#tblNFAOverviewParam thead").length) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 minlength=50 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' ></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 minlength=50 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' ></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-        $('#paramremark' + rowApp).maxlength({
-            limitReachedClass: "label label-danger",
-            alwaysShow: true
-        });
+        
         // sessionStorage.setItem("hdnParamIdx", 0);
         $("#ddlNFAParam").val('');
         $('#nfaparamoption' + rownum).remove();
         //$("#txtNfaParamAns").val('');
         //$("#txtNFAParam").select();
     }
+    $('#paramremark' + rowApp).rules('add', {
+        minlength: 50,
+        maxlength: 1000,
+    });
+    $('#paramremark' + rowApp).maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
 }
 function deleteNFAParams(rowid) {
     $('#ddlNFAParam').append('<option value=' + rowid + ' id=nfaparamoption' + rowid + ' >' + $('#ques' + rowid).text() + '</option>');
@@ -1291,7 +1308,12 @@ function BindSaveparams() {
             if (res.result.length > 0) {
                 $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control" maxlength=1000 onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    $('#paramremark' + value.idx).rules('add', {
+                        minlength: 50,
+                        maxlength: 1000,
+                    });
+
                     $('#paramremark' + value.idx).maxlength({
                         limitReachedClass: "label label-danger",
                         alwaysShow: true

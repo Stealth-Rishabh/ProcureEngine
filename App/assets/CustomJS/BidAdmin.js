@@ -61,8 +61,9 @@ function fetchBidTime() {
     });
 }
 var mytime = 0;
+var TotalTimer = 0;
 function startTimer(duration, display) {
-   
+
     clearInterval(mytime)
     var timer = duration;
     var hours, minutes, seconds;
@@ -90,16 +91,17 @@ function startTimer(duration, display) {
                 fetchBidTime(); //** to refresh Timer after Bid accept by vendor
             }
         }
-        //console.log(timer)
+        //  console.log(timer)
         //setTimeout(function () {
 
-        //if (--timer <= 0) {
-        //    timer = 0;
-        //    if (timer == 0) {
-        //        window.location = "index.html";
-        //        return;
-        //    }
-        //}
+        /* if (--timer <= 0) {
+             timer = 0;
+             if (timer == 0) {
+                 window.location = "index.html";
+                 return;
+             }
+         }*/
+
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {
@@ -107,35 +109,36 @@ function startTimer(duration, display) {
             }
         }
         //}, 3000);
-
+        TotalTimer = timer;
     }, 1000);
 }
 var mytimeforSatus = 0;
 function startTimerForStaggerItem(duration1, displayS) {
     clearInterval(mytimeforSatus)
 
-    var timer = duration1, hours, minutes, seconds;
+    var timer1 = duration1, hours1, minutes1, seconds1;
     mytimeforSatus = setInterval(function () {
 
-        hours = parseInt(timer / 3600, 10)
-        minutes = parseInt(timer / 60, 10) - (hours * 60)
-        seconds = parseInt(timer % 60, 10);
+        hours1 = parseInt(timer1 / 3600, 10)
+        minutes1 = parseInt(timer1 / 60, 10) - (hours1 * 60)
+        seconds1 = parseInt(timer1 % 60, 10);
 
-        hours = hours < 10 ? "0" + hours : hours;
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+        hours1 = hours1 < 10 ? "0" + hours1 : hours1;
+        minutes1 = minutes1 < 10 ? "0" + minutes1 : minutes1;
+        seconds1 = seconds1 < 10 ? "0" + seconds1 : seconds1;
 
-        if (hours > 0) {
-            displayS.textContent = hours + ":" + minutes + ":" + seconds;
+        if (hours1 > 0) {
+            displayS.textContent = hours1 + ":" + minutes1 + ":" + seconds1;
         }
         else {
-            displayS.textContent = minutes + ":" + seconds;
+            displayS.textContent = minutes1 + ":" + seconds1;
         }
+        //console.log(TotalTimer)
 
-        if (--timer <= 0) {
-            timer = 0;
-            if (timer == 0) {
-               fnrefreshStaggerTimerdataonItemClose();
+        if (--timer1 <= 0 && TotalTimer > 0) {
+            timer1 = 0;
+            if (timer1 == 0) {
+                fnrefreshStaggerTimerdataonItemClose();
             }
         }
 

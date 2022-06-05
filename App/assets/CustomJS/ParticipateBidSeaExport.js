@@ -103,17 +103,19 @@ connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.valType == "BAL") {
                 var VRanlList = JSON.parse(data[1]);
+                console.log(VRanlList)
                 for (var j = 0; j < VRanlList.length; j++) {
+                   
                     if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-                            //if (sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-                            $('#lblstatus' + i).html(VRanlList[j].VendorRank)
+
+                       $('#lblstatus' + i).html(VRanlList[j].VendorRank)
                         if (VRanlList[j].VendorRank == 'L1') {
-                                jQuery('#lblstatus' + i).css('color', 'Blue');
-                            }
-                            else {
-                                jQuery('#lblstatus' + i).css('color', 'Red');
-                            }
-                        //}
+                            jQuery('#lblstatus' + i).css('color', 'Blue');
+                        }
+                        else {
+                            jQuery('#lblstatus' + i).css('color', 'Red');
+                        }
+                      
                     }
                 }
             }
@@ -124,6 +126,7 @@ connection.on("refreshBidDetailsManage", function (data) {
                 if (JsonMsz.SeId == $('#seid' + i).text()) {
                     if (JsonMsz.valType == "BSPRA") {
                         $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
+                        $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
                     }
                     if (JsonMsz.valType == "BMD") {
                         $("#minimumdec" + i).html(thousands_separators(JsonMsz.QueryString));
@@ -141,11 +144,13 @@ connection.on("refreshBidDetailsManage", function (data) {
                     }
                     if (JsonMsz.valType == "RAStartP") {
                         if (JsonMsz.QueryString == 'N') {
-                            $("#ceilingprice" + i).css("display", "none");
+                            //$("#ceilingprice" + i).css("display", "none");
+                            $("#CP" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
                         }
                         else {
-                            $("#ceilingprice" + i).css("display", "block");
+                           // $("#ceilingprice" + i).css("display", "block");
+                            $("#CP" + i).css("display", "block");
                             $("#ceilingpricenotdisclose" + i).css("display", "none");
                         }
                     }
@@ -154,8 +159,8 @@ connection.on("refreshBidDetailsManage", function (data) {
             }
 
         });
-
     }
+    
 
 });
 connection.on("refreshTimer", function () {
@@ -532,7 +537,7 @@ function fetchBidSummaryVendorproduct() {
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                             var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
-                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=CP" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + "</span><span>" + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(LqQuote))
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
 
@@ -544,30 +549,24 @@ function fetchBidSummaryVendorproduct() {
                                 $("#targetprice" + i).html('Not Disclosed');
                             }
                             if (data[i].maskL1Price == 'N') {
-                                //$("#L1Price" + i).html('Not Disclosed');
-
+                                
                                 $("#L1Price" + i).css("display", "none");//.hide();
                                 $("#L1Pricenotdisclosed" + i).css("display", "block");
                             }
                             else {
-                                //$("#L1Pricenotdisclosed" + i).hide();
-                                //$("#L1Price" + i).show();
+                               
                                 $("#L1Price" + i).css("display", "block");
                                 $("#L1Pricenotdisclosed" + i).css("display", "none");
                             }
                             if (data[i].showStartPrice == 'N') {
-                                $("#ceilingprice" + i).css("display", "none");//.hide();
+                               // $("#ceilingprice" + i).css("display", "none");
+                                $("#CP" + i).css("display", "none");
                                 $("#ceilingpricenotdisclose" + i).css("display", "block");
-                                // $(".ceilingprice"+i).hide();
-                                //$(".ceilingpricenotdisclose"+i).show();
-                                //$("#ceilingprice" + i).html('Not Disclosed');
+                               
                             }
                             else {
-                                //$("#ceilingprice" + i).show();
-                                //$("#ceilingpricenotdisclose" + i).hide();
-                                //$(".ceilingprice"+i).show();
-                                //$(".ceilingpricenotdisclose"+i).hide();
-                                $("#ceilingprice" + i).css("display", "block");//.hide();
+                               //  $("#ceilingprice" + i).css("display", "block");//.hide();
+                                $("#CP" + i).css("display", "block");
                                 $("#ceilingpricenotdisclose" + i).css("display", "none");
                             }
 

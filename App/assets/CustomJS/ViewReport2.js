@@ -126,6 +126,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 }
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -330,7 +331,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
                         else {
-                            var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
+                            var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
                         }
 
                         str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].biddedQuantity) + "</td><td class=text-right >" + thousands_separators(data[i].quantityAllocated) + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
