@@ -12,7 +12,6 @@ jQuery(document).ready(function () {
         allowPlus: false,
         allowMinus: false,
         'removeMaskOnSubmit': true
-
     });
 
 });
@@ -493,7 +492,6 @@ function ValidateVendor() {
 
             i = i + 1;
             if (i >= 2) {
-
                 status = "True";
             }
             else {
