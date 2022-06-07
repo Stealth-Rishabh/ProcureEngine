@@ -66,7 +66,8 @@ connection.on("refreshColumnStatusFA", function (data) {
                         $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(data[i].mqQuotedPrice))
                         $("#lblstatus" + i).html(data[i].moQuotedPrice)
-                        $("#H1Price" + i).html(thousands_separators(data[i].h1Price))
+                        var H1Quote = data[i].h1Price == '0' ? '' : thousands_separators(data[i].h1Price)
+                        $("#H1Price" + i).html(H1Quote)
                         if (data[i].moQuotedPrice == 'H1') {
                             jQuery('#lblstatus' + i).css('color', 'Blue');
                         }
@@ -403,7 +404,8 @@ function fetchBidSummaryVendorScrap() {
                         var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                         var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
                         var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                        jQuery("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td>" + thousands_separators(data[i].minimumIncreament) + " " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td id=H1Price" + i + ">" + thousands_separators(data[i].h1Price) + "</td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
+                        var H1Quote = data[i].h1Price == '0' ? '' : thousands_separators(data[i].h1Price)
+                        jQuery("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td>" + thousands_separators(data[i].minimumIncreament) + " " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td id=H1Price" + i + ">" + H1Quote + "</td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
 
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
                         // $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
@@ -520,7 +522,7 @@ function InsUpdQuoteScrap(rowID) {
     var v = 0;
     var valuejap = 0;
     var vjap = 0;
-
+    var numberOnly = /^\d+(?:\.\d{1,2})?$/;
     var Amount = $('#minimuminc' + i).text()
 
     if ($('#incon' + i).text() == "A") {
@@ -553,7 +555,7 @@ function InsUpdQuoteScrap(rowID) {
     }
 
     var valdiff = (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))).toFixed(2)
-    if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+    if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || !(removeThousandSeperator($('#txtquote' + i).val())).match(numberOnly)) {
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount is required in number only')
         return false
@@ -565,7 +567,7 @@ function InsUpdQuoteScrap(rowID) {
         $('#spanamount' + i).text('Amount should not be less than Bid start price')
         return false
     }
-    else if (jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {
+    else if (jQuery("#H1Price" + i).text() != "" && jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {
 
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Maximum bid amount = Current H1 Price + Min. Inc. Value of ' + Amount + " " + $('#lblcurrency').text() + ".")

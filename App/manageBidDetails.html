@@ -377,7 +377,7 @@
                                                                                     <label class="control-label col-md-3">Display Vendors their Rank:</label>
                                                                                     <div class="col-md-9">
                                                                                         <p class="form-control-static" id="showL1l2"></p>
-                                                                                        <a  id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
 
                                                                                     </div>
                                                                                 </div>
@@ -836,7 +836,7 @@
                                                                                     <div class="col-md-6">
                                                                                         <select class="form-control" id="ddlBidStatus" onchange="fnshowDatetime()">
                                                                                             <!--<option value="">Select All</option>-->
-                                                                                            <option value="1">OPEN</option>
+                                                                                            <option value="1" id="optopen">OPEN</option>
                                                                                             <option value="2">CLOSE</option>
                                                                                             <!--<option value="3" id="opPauseval" class="hide">PAUSE</option>-->
                                                                                         </select>
@@ -1398,7 +1398,7 @@
                                             </span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
 
                                         </div>
@@ -1455,8 +1455,7 @@
                                         </label>
 
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
-
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkshowstartPrice" name="checkshowstartPrice">
@@ -1474,7 +1473,7 @@
                                             Starting Price<span class="required">*</span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
 
@@ -1511,7 +1510,7 @@
                                                 Bid Duration <span class="required">*</span>
                                             </label>
                                             <div class="col-md-3 RaAuctionFields">
-                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" />
+                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" onkeyup="removeZero(this)" />
                                             </div>
                                             <label class="control-label col-md-1 RaAuctionFields">
                                                 (in&nbsp;minutes)
@@ -1530,7 +1529,7 @@
                                             GST
                                         </label>
                                         <div class="col-md-1 RAFAEnglishonly" id="divGST">
-                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" />
+                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" onkeyup="removeZero(this)" />
                                         </div>
                                     </div>
                                 </div>
@@ -1633,7 +1632,7 @@
                                             Bid Start Price<span class="required"> *</span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
                                         <div class="col-md-2">
@@ -1648,7 +1647,7 @@
                                         </label>
 
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off"  onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
 
                                         <div class="col-md-2">
@@ -1723,7 +1722,7 @@
                                         Minimun Decreament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -1778,7 +1777,7 @@
                                         Bid Start Price<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
 
@@ -1828,7 +1827,7 @@
                                         Minimun Increament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -2003,7 +2002,7 @@
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-                                             <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />                                  
+                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />
                                         </div>
                                     </div>
 

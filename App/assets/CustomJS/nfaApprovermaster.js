@@ -135,9 +135,9 @@ function bindApproverMaster() {
             $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
                 Approvermasterdata = res.result;
-                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Deviation %</th></thead>")
+                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Deviation %</th></thead>")
                 for (var i = 0; i < res.result.length; i++) {
-                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + res.result[i].amountFrom + '</td><td>' + res.result[i].amountTo + '</td><td>' + res.result[i].deviation+'</td></tr>');
+                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td><td>' + res.result[i].deviation + '</td></tr>');
                 }
             }
         }
@@ -149,18 +149,19 @@ function bindApproverMaster() {
 };
 
 function GetApprovermasterbyId(idx) {
-   
+
     var url = "NFA/FetchApproverMasterById?CustomerId=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
-    
+
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            nfaEditedID = idx;
+            nfaApproverIDX = idx;
             if (res.result.length > 0) {
                 $("#ddlApproveltype").val(res.result[0].approvalType);
                 $("#txtAmountFrom").val(removeThousandSeperator(res.result[0].amountFrom));
                 $("#txtAmountTo").val(removeThousandSeperator(res.result[0].amountTo));
-                
+
                 $("#txtdeviation").val(res.result[0].deviation);
                 $("#ddlPurchaseOrg").val(res.result[0].orgID);
                 setTimeout(function () {
@@ -168,7 +169,7 @@ function GetApprovermasterbyId(idx) {
                     $("#ddlPurchasegroup").val(res.result[0].groupID);
                     $('#viewAllMatrix').modal('hide')
                 }, 1000)
-                
+
                 $("#ddlCondition").val(res.result[0].conditionID);
                 //sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].groupID);
                 //sessionStorage.setItem('hdnPurchaseORGID', res.result[0].orgID);
@@ -289,7 +290,7 @@ function CheckDuplicate() {
 
     };
 
-
+    //alert(JSON.stringify(Model))
     var url = "NFA/VerifyExistingApprover";
     var VerifyApproverMatrix = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     VerifyApproverMatrix.success(function (res) {
@@ -336,14 +337,14 @@ function bindPurchaseGroupDDL() {
 
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
-   
+
     GetNFAPARAM.success(function (res) {
         $("#ddlPurchasegroup").empty();
         $('#ddlPurchasegroup').append('<option value="0">Select</option>');
         if (res.result.length > 0) {
-           $.each(res.result, function (key, value) {
-               $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
-           });
+            $.each(res.result, function (key, value) {
+                $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
+            });
         }
     });
     GetNFAPARAM.error(function (error) {
@@ -354,13 +355,15 @@ function bindPurchaseGroupDDL() {
 
 function bindConditionDDL() {
 
-    var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=Y";
+    var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
+
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
+
         if (res.result != null) {
+            $("#ddlCondition").empty();
             if (res.result.length > 0) {
                 //conditionData = res.result;
-                $("#ddlCondition").empty();
                 $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
                 for (var i = 0; i < res.result.length; i++) {
                     $("#ddlCondition").append(jQuery("<option></option>").val(res.result[i].conditionID).html(res.result[i].conditionName));
@@ -370,7 +373,7 @@ function bindConditionDDL() {
     });
     GetNFAPARAM.error(function (error) {
         console.log(error);
-   });
+    });
 };
 
 
@@ -468,13 +471,16 @@ $("#txtNBSeq").on("keyup", function () {
 });
 
 
-function SaveApproverMaster()
-{
+function SaveApproverMaster() {
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
     var isActive = $("#chkIsActive").is(':checked');
     var amountFrom = $("#txtAmountFrom").val();
     var amountTo = $("#txtAmountTo").val();
     var p_idx = nfaApproverIDX;
+    var deviation = 0
+    if ($("#txtdeviation").val() != null || $("#txtdeviation").val() != "" || $("#txtdeviation").val() != undefined) {
+        deviation = removeThousandSeperator($("#txtdeviation").val());
+    }
     var Model = {
         idx: parseInt(p_idx),
         orgID: parseInt($("#ddlPurchaseOrg option:selected").val()),
@@ -488,10 +494,10 @@ function SaveApproverMaster()
         amountFrom: parseFloat(removeThousandSeperator(amountFrom)),
         amountTo: parseFloat(removeThousandSeperator(amountTo)),
         draft: true,
-        deviation: parseFloat(removeThousandSeperator($("#txtdeviation").val()))
+        deviation: parseFloat(deviation)
     };
     var url = "NFA/InsertUpdateApprovelMaster";
-   // alert(JSON.stringify(Model))
+    //alert(JSON.stringify(Model))
     var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     SaveApproverMaster.success(function (res) {
         // console.log(res);
@@ -590,7 +596,7 @@ jQuery("#txtApprover").typeahead({
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
-       return item;
+        return item;
     }
 
 });
@@ -1189,7 +1195,7 @@ function SaveApproverSeqData(objSeqData) {
 
     var url = "NFA/InsertUpdateMultipleSeq?customerid=" + parseInt(CurrentCustomer) + "&nfaApproverid=" + nfaApproverIDX;
 
-
+    //alert(JSON.stringify(objSeqData))
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(objSeqData));
     callAPI.success(function (res) {
     });
@@ -1268,10 +1274,17 @@ function BindPreviewDetails() {
     var approvelType = $("#ddlApproveltype option:selected").text();
     var from = $("#txtAmountFrom").val();
     var to = $("#txtAmountTo").val();
-    $("#lblPurchaseOrg").text(org);
-    $("#lblPurchaseGroup").text(group);
-    $("#lblCondition").text(conditionName);
+    $("#lblPurchaseOrg").text($("#ddlPurchaseOrg option:selected").text());
+    $("#lblPurchaseGroup").text($("#ddlPurchasegroup option:selected").text());
+    if ($("#ddlCondition option:selected").text() == "Select") {
+        var Con = "";
+    }
+    else {
+        var Con = $("#ddlCondition option:selected").text();
+    }
+    $("#lblCondition").text(Con);
     $("#lblApproveltype").text(approvelType);
+    $("#lbldeviation").text($("#txtdeviation").val());
     $("#lblAmountFrom").text(from);
     $("#lblAmountTo").text(to);
 
@@ -1320,8 +1333,8 @@ var FormWizard = function () {
                         required: true
 
                     },
-                    txtdeviation:{
-                        required: true,
+                    txtdeviation: {
+                        //required: true,
                         number: true
                     },
                     txtAmountFrom: {
@@ -1494,9 +1507,9 @@ var FormWizard = function () {
 
 
                 if (current >= total) {
-                     $('#form_wizard_1').find('.button-next').hide();
+                    $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-            } else {
+                } else {
 
                     $('#form_wizard_1').find('.button-next').show();
                     $('#form_wizard_1').find('.button-submit').hide();
@@ -1512,12 +1525,12 @@ var FormWizard = function () {
 
                 'nextSelector': '.button-next',
                 'previousSelector': '.button-previous',
-                 onTabClick: function (tab, navigation, index, clickedIndex) {
+                onTabClick: function (tab, navigation, index, clickedIndex) {
 
                     return false;
 
                 },
-                 onNext: function (tab, navigation, index) {
+                onNext: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -1602,7 +1615,7 @@ var FormWizard = function () {
                     handleTitle(tab, navigation, index);
 
                 },
-                 onPrevious: function (tab, navigation, index) {
+                onPrevious: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -1615,7 +1628,7 @@ var FormWizard = function () {
                     handleTitle(tab, navigation, index);
 
                 },
-                 onTabShow: function (tab, navigation, index) {
+                onTabShow: function (tab, navigation, index) {
 
                     var total = navigation.find('li').length;
 
@@ -1660,6 +1673,7 @@ function BindApproverSeqOnEdit() {
     };
 
     var SaveData = callajaxReturnSuccess(url, "Post", JSON.stringify(model));
+    // alert(JSON.stringify(model))
     SaveData.success(function (res) {
 
 
@@ -1881,7 +1895,11 @@ function CompleteProcess() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    window.location.reload();
+                    //window.location.reload();
+                    bootbox.alert("NFA Approver Matrix Configured Successfully.", function () {
+                        window.location.reload();
+                        return false;
+                    });
                 }
             },
             cancel: {

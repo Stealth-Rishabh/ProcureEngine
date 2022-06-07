@@ -64,7 +64,7 @@ jQuery("#txtrfirfqsubject").typeahead({
 
             $('#hdnRfqID').val(map[item].rfqid);
             fetchReguestforQuotationDetails()
-
+           
             if (sessionStorage.getItem('CustomerID') == "32") {
                 fetchRFQPPCApproverStatus(map[item].rfqid);
             }
@@ -1192,7 +1192,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
-
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

@@ -865,7 +865,6 @@ function formvalidate() {
             }
             else {
                 fetchAzPPcFormDetails();
-                fetchRFQPPCApproverStatus($('#hdnRfiRfqID').val());
                 fetchrfqcomprative()
             }
         }
