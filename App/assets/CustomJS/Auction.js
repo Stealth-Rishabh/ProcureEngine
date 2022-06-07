@@ -393,6 +393,7 @@ function addMinutes(time, minsToAdd) {
     return D(mins % (24 * 60) / 60 | 0) + ':' + D(mins % 60);
 }
 function convertTo24Hour(time) {
+    alert(time)
     var hours = parseInt(time.substr(0, 2));
 
     //if (hours < 10) {
@@ -951,6 +952,16 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
             jQuery.unblockUI();
         }
     })
+}
+function fnConverToLocalTime(dttime) {
+    var theStDate = new Date(dttime)
+    //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+    theStDate = new Date(theStDate + ' UTC');
+
+    theStDate = theStDate.toLocaleString("en-IN", {
+        timeZone: sessionStorage.getItem('preferredtimezone'), hour12: false, dateStyle: "long", timeStyle: "short"
+    })
+    return theStDate;
 }
 
 //function fnFileDeleteLocalfolder(path) {

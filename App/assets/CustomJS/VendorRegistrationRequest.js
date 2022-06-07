@@ -442,22 +442,22 @@ function SubmitVendorRegistration() {
             $('#hdntmpvendorid').val(data);
             if ($('#filegst').val() != '') {
 
-                fnUploadFilesonAzure('filegst', gstfilename, 'tempVR/' + data);
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'tempVR/' + data);
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'tempVR/' + data);
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'tempVR/' + data);
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/Temp/' + data);
 
             }
 

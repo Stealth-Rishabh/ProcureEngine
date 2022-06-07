@@ -407,7 +407,6 @@
                                                                             </div>
                                                                             <!--/span-->
                                                                         </div>
-                                                                        
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
@@ -420,9 +419,8 @@
                                                                             </div>
                                                                             <!--write here-->
                                                                         </div>
-                                                                            
                                                                         <!--/row-->
-                                                                        <h3 class="form-section">Bid parameter details</h3>
+                                                                        <h3 class="form-section">Bid parameter Details</h3>
                                                                         <div class="row">
                                                                             <div class="col-md-12">
                                                                                 <div class="table-scrollable display-none" id="wrap_scrollerPrevtab_0">
@@ -783,11 +781,9 @@
                                                                                 </div>
 
                                                                             </div>
-                                                                            <!--/row-->
-                                                                            <h3 class="form-section display-none" id="head-stagger">
-                                                                                Bid parameter details
-                                                                                
-                                                                            </h3>
+
+
+                                                                            <h3 class="form-section display-none" id="head-stagger">Bid parameter </h3>
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <div class="table-scrollable display-none" id="wrap_scrollerPrev">
@@ -795,7 +791,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
+
                                                                         </div>
                                                                         <input type="hidden" value="0" id="hdnClosingval" />
 
@@ -1215,7 +1211,7 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-reorder"></i>Add/Edit Event
+                        <i class="fa fa-reorder"></i>Edit Event
                     </div>
                     <div class="tools">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -1398,7 +1394,7 @@
                                             </span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
 
                                         </div>
@@ -1455,13 +1451,13 @@
                                         </label>
 
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkshowstartPrice" name="checkshowstartPrice">
-                                                <option value="Y">Show</option>
-                                                <option value="N">Hide</option>
-
+                                                <option value="N">No</option>
+                                                <option value="Y">Yes</option>
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 RaAuctionFields" id="lblmindec">
@@ -1474,7 +1470,7 @@
                                             Starting Price<span class="required">*</span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
 
@@ -1511,7 +1507,7 @@
                                                 Bid Duration <span class="required">*</span>
                                             </label>
                                             <div class="col-md-3 RaAuctionFields">
-                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" onkeyup="removeZero(this)" />
+                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" />
                                             </div>
                                             <label class="control-label col-md-1 RaAuctionFields">
                                                 (in&nbsp;minutes)
@@ -1530,7 +1526,7 @@
                                             GST
                                         </label>
                                         <div class="col-md-1 RAFAEnglishonly" id="divGST">
-                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" onkeyup="removeZero(this)" />
+                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" />
                                         </div>
                                     </div>
                                 </div>
@@ -1588,8 +1584,8 @@
                                             </span>
                                         </label>
                                         <div class="col-md-4 xyz minq">
-                                            <input type="tel" class="form-control  text-right thousandseparated" id="txtminquantitiy"
-                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" onkeyup="fnclearmsz('spnminq')"/>
+                                            <input type="tel" class="form-control  text-right" id="txtminquantitiy"
+                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" />
                                             <span for="txtminquantitiy" class="help-block help-block-error hide" id="spnminq"></span>
 
                                         </div>
@@ -1599,8 +1595,8 @@
                                             </span>
                                         </label>
                                         <div class="col-md-4 xyz maxq">
-                                            <input type="tel" class="form-control text-right thousandseparated" id="txtmaxquantitiy"
-                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" onkeyup="fnclearmsz('spnmaxq')"/>
+                                            <input type="tel" class="form-control text-right " id="txtmaxquantitiy"
+                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" />
                                             <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq"></span><!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                     </div>
@@ -1633,14 +1629,13 @@
                                             Bid Start Price<span class="required"> *</span>
                                         </label>
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkshowstartPricefrench" name="checkshowstartPricefrench">
-                                                <option value="Y">Show</option>
-                                                <option value="N">Hide</option>
-
+                                                <option value="N">No</option>
+                                                <option value="Y">Yes</option>
                                             </select>
                                         </div>
 
@@ -1649,7 +1644,7 @@
                                         </label>
 
                                         <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off"  onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
 
                                         <div class="col-md-2">
@@ -1724,7 +1719,7 @@
                                         Minimun Decreament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -1779,7 +1774,7 @@
                                         Bid Start Price<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
 
@@ -1829,7 +1824,7 @@
                                         Minimun Increament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">

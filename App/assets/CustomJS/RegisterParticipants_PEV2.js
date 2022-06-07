@@ -852,10 +852,8 @@ jQuery("#ParticipantName").typeahead({
     }
 
 });
-
 function validatePanNumber(pan) {
     fnfetchfoundVendors();
-
 }
 function fnfetchfoundVendors() {
 

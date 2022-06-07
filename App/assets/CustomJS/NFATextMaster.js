@@ -50,31 +50,47 @@ function onClear() {
     $('#chkIsdefault').parents('span').addClass('checked');
 };
 
-
+$(document).on('keyup', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
+$(document).on('change', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
 function Validate() {
     var nfaText = false;
-    if ($("#txtParamText").val() == "") {
+
+     if ($("#ddlPurchaseOrg option:selected").val() == "0") {
+        $("#ddlPurchaseOrg").css("border-color", "red");
+        $("#error").text("Purchase Org is required");
+        $("#errordiv").show();
+        nfaques = true;
+    }
+    else if ($("#txtParamText").val() == "") {
         $("#txtParamText").css("border-color", "red");
         $("#error").text("Question is required");
         $("#errordiv").show();
         nfaText = true;
     }
-    else if ($("#ddlPurchaseOrg").val() == "0") {
-        $("#txtParamText").css("border-color", "red");
-        $("#error").text("Purchase Org is required");
-        $("#errordiv").show();
-        nfaText = true;
-    }
     else {
         $("#txtParamText").css("border-color", "");
+        $("#ddlPurchaseOrg").css("border-color", "");
         $("#errordiv").hide();
         $("#error").text('');
         nfaText = false;
     }
-    if (nfaText)
+    
+   
+    if (nfaText) {
         return true;
+    }
     else
+    {
         return false;
+    }
 };
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
