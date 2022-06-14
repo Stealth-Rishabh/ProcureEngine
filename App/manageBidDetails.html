@@ -407,7 +407,16 @@
                                                                             </div>
                                                                             <!--/span-->
                                                                         </div>
-                                                                        
+                                                                        <!--/row-->
+                                                                        <h3 class="form-section">Bid parameter details</h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="table-scrollable display-none" id="wrap_scrollerPrevtab_0">
+                                                                                    <table class=" table table-striped table-bordered table-hover" id="tblServicesProductPrevtab_0"></table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Change Button here-->
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
@@ -420,17 +429,6 @@
                                                                             </div>
                                                                             <!--write here-->
                                                                         </div>
-                                                                            
-                                                                        <!--/row-->
-                                                                        <h3 class="form-section">Bid parameter details</h3>
-                                                                        <div class="row">
-                                                                            <div class="col-md-12">
-                                                                                <div class="table-scrollable display-none" id="wrap_scrollerPrevtab_0">
-                                                                                    <table class=" table table-striped table-bordered table-hover" id="tblServicesProductPrevtab_0"></table>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
 
                                                                         <h3 class="form-section">Participants details</h3>
                                                                         <div class="row">
@@ -784,10 +782,7 @@
 
                                                                             </div>
                                                                             <!--/row-->
-                                                                            <h3 class="form-section display-none" id="head-stagger">
-                                                                                Bid parameter details
-                                                                                
-                                                                            </h3>
+                                                                            <h3 class="form-section display-none" id="head-stagger">Bid parameter details</h3>
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <div class="table-scrollable display-none" id="wrap_scrollerPrev">
@@ -795,7 +790,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
+
                                                                         </div>
                                                                         <input type="hidden" value="0" id="hdnClosingval" />
 
@@ -1222,10 +1217,10 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" id="frmItemeditvalues">
                         <div class="form-body">
-                            <div class="alert alert-success" id="msgSuccessEditEvent" style='display: none;'>
-                                <span id=""> </span>
+                            <div class="alert alert-success" id="msgSuccessEditEvent" style='display:none;'>
+                                <span id=""></span>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
@@ -1269,7 +1264,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <!--<div></div>-->
+
                                     <button type="button" class="btn green" id="btn-submit-datetime" onclick="Dateandtimevalidate()"> Go</button>
                                 </div>
                             </div>
@@ -1362,7 +1357,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 RaAuctionFields">
+                                        <div class="col-md-4 RaAuctionFields xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtdestinationPort" name="txtdestinationPort" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1373,7 +1368,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 faEngilshAuctionFields">
+                                        <div class="col-md-4 faEngilshAuctionFields xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtshortname" name="txtshortname" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1384,7 +1379,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 RaAuctionFields">
+                                        <div class="col-md-4 RaAuctionFields xyz">
                                             <input type="text" id="txtbiddescriptionP" name="txtbiddescriptionP" class="form-control"
                                                    onkeyup="replaceQuoutesFromString(this)" />
                                         </div>
@@ -1397,12 +1392,12 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
 
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
 
                                             <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
                                                    data-provide="typeahead" autocomplete="off" name="txtUOM" />
@@ -1411,20 +1406,18 @@
                                         <label class="control-label col-md-2">
                                             Selected Currency
                                         </label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" id="txtselectedCurrency" name="txtselectedCurrency" autocomplete="off" readonly />
 
                                         </div>
-                                        <!---->
+
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-2">
                                             Target Unit Price
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txttargetprice" name="txttargetprice" number="true" autocomplete="off" /><!--onkeyup="thousands_separators_input(this)"-->
-
-
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkmaskvendor" name="checkmaskvendor">
@@ -1454,7 +1447,7 @@
                                             Ceiling/ Max Price<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                         <div class="col-md-2">
@@ -1473,7 +1466,7 @@
                                         <label class="control-label col-md-2 fadutchAuctionFields" id="lblcelingfloor">
                                             Starting Price<span class="required">*</span>
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
@@ -1492,7 +1485,7 @@
                                             Price Increament Frequency<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" id="txtpricefrequency" name="txtpricefrequency" maxlength="3" number="true" autocomplete="off" />
 
                                         </div>
@@ -1500,7 +1493,7 @@
                                             Price Increament Amount<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtpriceincreamentamount" name="txtpriceincreamentamount" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
@@ -1510,7 +1503,7 @@
                                             <label class="control-label col-md-2 RaAuctionFields">
                                                 Bid Duration <span class="required">*</span>
                                             </label>
-                                            <div class="col-md-3 RaAuctionFields">
+                                            <div class="col-md-3 RaAuctionFields xyz">
                                                 <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" onkeyup="removeZero(this)" />
                                             </div>
                                             <label class="control-label col-md-1 RaAuctionFields">
@@ -1529,7 +1522,7 @@
                                         <label class="control-label col-md-1 RAFAEnglishonly" id="lblGST">
                                             GST
                                         </label>
-                                        <div class="col-md-1 RAFAEnglishonly" id="divGST">
+                                        <div class="col-md-1 RAFAEnglishonly xyz" id="divGST">
                                             <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" onkeyup="removeZero(this)" />
                                         </div>
                                     </div>
@@ -1541,7 +1534,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtItemnameFrench" name="txtItemnameFrench" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1563,7 +1556,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtquantitiyfrench" name="txtquantitiyfrench" number="true" autocomplete="off" onkeyup="checkminmax(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                         <div class="col-md-2">
@@ -1587,9 +1580,9 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 xyz minq">
+                                        <div class="col-md-4 xyz minq xyz">
                                             <input type="tel" class="form-control  text-right thousandseparated" id="txtminquantitiy"
-                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" onkeyup="fnclearmsz('spnminq')"/>
+                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" onkeyup="fnclearmsz('spnminq')" />
                                             <span for="txtminquantitiy" class="help-block help-block-error hide" id="spnminq"></span>
 
                                         </div>
@@ -1598,9 +1591,9 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 xyz maxq">
+                                        <div class="col-md-4 xyz maxq xyz">
                                             <input type="tel" class="form-control text-right thousandseparated" id="txtmaxquantitiy"
-                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" onkeyup="fnclearmsz('spnmaxq')"/>
+                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" onkeyup="fnclearmsz('spnmaxq')" />
                                             <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq"></span><!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                     </div>
@@ -1632,7 +1625,7 @@
                                         <label class="control-label  col-md-2">
                                             Bid Start Price<span class="required"> *</span>
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
@@ -1643,13 +1636,12 @@
 
                                             </select>
                                         </div>
-
                                         <label class="control-label col-md-2">
                                             Minimum&nbsp;Increment<span class="required">*</span>
                                         </label>
 
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off"  onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
 
                                         <div class="col-md-2">
@@ -1658,7 +1650,6 @@
                                                 <option value="P">%age</option>
                                             </select>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
 
@@ -1679,13 +1670,13 @@
                             <div id="divBidItemsFa"></div>
 
                         </div>
-
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-offset-11 col-md-9">
-                                            <button type="button" id="btn-submit-modal" class="btn green" onclick="formSubmitEditEvent()"> Submit</button>
+                                            <!--<button type="button" id="btn-submit-modal" class="btn green" onclick="formSubmitEditEvent()"> Submit</button>-->
+                                            <button type="submit" id="btn-submit-modal" class="btn green"> Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1724,7 +1715,7 @@
                                         Minimun Decreament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -1829,7 +1820,7 @@
                                         Minimun Increament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" onkeyup="removeZero(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -2251,6 +2242,7 @@
             fetchUserBids();
             fetchMenuItemsFromSession(9, 18);
             FormValidate();
+
             FetchUOM(sessionStorage.getItem("CustomerID"));
             BindNoExtensions('txtnoofextensiontab_0');
 
