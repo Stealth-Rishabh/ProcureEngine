@@ -63,6 +63,7 @@
 			}
 
 			function success(message, title, optionsOverride) {
+				
 				return notify({
 					type: toastType.success,
 					iconClass: getOptions().iconClasses.success,

@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Best Procurement Software Services: ProcurEngine</title>
+    <title>Best Procurement Practices- Blog| Procurengine|</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Best Procurement Software Services: ProcurEngine" name="description">
+    <meta content="The impressive blogs on B2B Negotiations and on digital auctions offer a wealth of information about best procurement practices." name="description">
     <meta content="" name="keywords">
     <meta content="" name="author">
     <link rel="icon" type="image/x-icon" href="pro_img/favicon.ico">
@@ -31,7 +31,7 @@
                                 <!-- logo begin -->
                                 <div id="logo">
                                     <a href="index.html">
-                                        <img alt="" src="pro_img/logo_b.svg" />
+                                        <img alt="e-procurement solution provider" src="pro_img/logo_b.svg" />
                                     </a>
                                 </div>
                                 <!-- logo close -->
@@ -96,9 +96,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="align-self-center ml-auto header-col-right">
+                            <div class="align-self-center ml-auto header-col-right" >
                                 <a target="_blank" class="btn-custom text-nowrap d-none d-xl-block" 
-                                href="https://www.procurengine.com/vendor/">Supplier Login</a>
+                                href="javascript:void(0)" data-toggle="modal"
+                                           data-target="#requestModals"> Contact Us </a>
                                 <span id="menu-btn"></span>
                             </div>
                             <div class="clearfix"></div>
@@ -134,10 +135,10 @@
                             <div class="bloglist item">
                                 <div class="post-content">
                                     <div class="post-image">
-                                        <img alt="" src="pro_img/news/blogimg-1.jpg">
+                                        <img alt="best procurement practices" src="pro_img/news/blogimg-1.jpg">
                                         <div class="post-info">
                                             <div class="inner">
-                                                <span class="post-date">3rd Dec 2019</span>
+                                                <span class="post-date">3rd Jan 2022</span>
                                                 <span class="post-author">Anupam Aggrwal, Director AgileApt Solutions
                                                     (procurEngine)</span>
                                             </div>
@@ -160,10 +161,10 @@
                             <div class="bloglist item">
                                 <div class="post-content">
                                     <div class="post-image">
-                                        <img alt="" src="pro_img/news/blogimg-3.jpg">
+                                        <img alt="contract management sourcing" src="pro_img/news/blogimg-3.jpg">
                                         <div class="post-info">
                                             <div class="inner">
-                                                <span class="post-date">19th Aug 2019</span> <span
+                                                <span class="post-date">19th Jan 2022</span> <span
                                                     class="post-author">Anupam Aggrwal, Director AgileApt Solutions
                                                     (procurEngine)</span>
                                             </div>
@@ -171,8 +172,8 @@
                                     </div>
                                     <div class="post-text">
                                         <h4><a href="B2B-Negotiations-Trends-to-Watch-in-2019-20.html">6 – B2B
-                                                Negotiations Trends to Watch in
-                                                2019-20</a></h4>
+                                                Negotiations Trends to Watch in Upcoming financial Year
+                                                </a></h4>
                                         <p>B2B Negotiations went through plenty of changes in the last few years with
                                             increased IT penetration in this field. The advent of smart, intelligent and
                                             easy-to-use e-Negotiations platforms have already disrupted this arena, yet
@@ -187,10 +188,10 @@
                             <div class="bloglist item">
                                 <div class="post-content">
                                     <div class="post-image">
-                                        <img alt="" src="pro_img/news/blogimg-2.jpg">
+                                        <img alt="Negotiaton Strategy" src="pro_img/news/blogimg-2.jpg">
                                         <div class="post-info">
                                             <div class="inner">
-                                                <span class="post-date">5th May 2019</span> <span
+                                                <span class="post-date">5th Feb 2022</span> <span
                                                     class="post-author">Anupam Aggrwal, Director AgileApt Solutions
                                                     (procurEngine)</span>
                                             </div>
@@ -430,12 +431,112 @@
         </div>
         <!-- content close -->
         <!-- footer begin -->
+          <div class="modal fade" id="requestModals" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestModalLabel">Contact Us</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="progress-form" id="modalLoaderparameter" style="display:none;">
+
+                        <div class="col-md-6" style="margin-left:170px!important">
+                            <p id="loader-msgparameter">
+
+                            </p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="alert alert-success" id="successdiv" style="display:none">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <div class="alert alert-danger" id="errordiv" style="display:none">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="clearfix">&nbsp;</div>
+                    <form id="registerForm" action="#" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="margin-t-30">
+                                    Basic Details&nbsp;<span style="color:red!important">*</span>
+                                </h5>
+                                <div class="form-group">
+                                    <input name="UserName" id="UserName" type="text" class="form-control"
+                                           placeholder="Name">
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                                <div class="form-group">
+                                    <input name="designation" id="designation" type="text" class="form-control"
+                                           placeholder="Designation">
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                                <div class="form-group">
+                                    <input name="CompanyName" id="CompanyName" type="text" class="form-control"
+                                           placeholder="CompanyName">
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                                <h5 class="margin-t-30">Contact&nbsp;<span style="color:red!important">*</span></h5>
+                                <div class="form-group">
+                                    <input name="UserEmail" id="UserEmail" type="email" class="form-control"
+                                           placeholder="Official Email ID">
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                                <div class="form-group">
+                                    <input name="MobileNo" id="MobileNo" type="text" class="form-control"
+                                           placeholder="Mobile No">
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                                <h5 class="margin-t-30">Address</h5>
+                                <div class="form-group">
+                                    <select name="CountryID" id="CountryID" class="form-control">
+                                        <option value="">Choose country</option>
+                                    </select>
+                                    <!-- <span class="error_msg">Error</span> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="margin-t-30">Requirement</h5>
+                                <div class="form-group">
+                                    <textarea name="Message" class="form-control" id="briefRequirement"
+                                              placeholder="Brief Requirement" rows="6"></textarea>
+                                </div>
+                                <h5 class="margin-t-30">Preferred Time Slot for Call Back&nbsp;<span style="color:red!important">*</span></h5>
+                                <div class="form-group">
+                                    <input class="form-control" type="datetime-local" id="slot1" name="slot1">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="datetime-local" id="slot2" name="slot2">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="datetime-local" id="slot3" name="slot3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
         <footer class="footer pb-4">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="widget">
-                            <a href="index.html"><img alt="" class="logo" src="pro_img/logo_w.svg"></a>
+                            <a href="index.html"><img alt="logo" class="logo" src="pro_img/logo_w.svg"></a>
                             <div class="spacer-20"></div>
                             <p class="pr-5">ProcurEngine is one of the most trusted, easy to use, enterprise ready and
                                 fastest
@@ -455,12 +556,21 @@
                                 201301, India
                             </div>
                             <ul>
-                                <li class="pb-2"><a href="tel:+919818646103"><span class="icon pr-2"><i
-                                                class="fa fa-envelope" aria-hidden="true"></i></span>981-864-6103</a>
+                                <li class="pb-2">
+                                    <a href="tel:+919818646103">
+                                        <span class="icon pr-2">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                        </span>981-864-6103
+                                    </a>
                                 </li>
-                                <li><a href="mailto:info@procurengine.com"><span class="icon pr-2"><i
-                                                class="fa fa-phone"
-                                                aria-hidden="true"></i></span>info@procurengine.com</a></li>
+                                <li>
+                                    <a href="mailto:info@procurengine.com">
+                                        <span class="icon pr-2">
+                                            <i class="fa fa-envelope"
+                                               aria-hidden="true"></i>
+                                        </span>info@procurengine.com
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

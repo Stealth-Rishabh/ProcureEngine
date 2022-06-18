@@ -13,6 +13,8 @@ jQuery(document).ready(function () {
         'removeMaskOnSubmit': true
 
     });
+    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+    $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
 
 function fetchCategorymaster1() {
@@ -913,8 +915,8 @@ function fnFormClear() {
     $("#txtUdyam").val('')
     $("#txtLastFiscal").val('')
     $("#txt2LastFiscal").val('')
-    $("#txtLastFiscalyear").val('')
-    $("#txt2LastFiscalyear").val('')
+   // $("#txtLastFiscalyear").val('')
+   // $("#txt2LastFiscalyear").val('')
     $("#txtContName").val('')
     $("#txtEmail").val('')
     $("#txtMobile").val('')

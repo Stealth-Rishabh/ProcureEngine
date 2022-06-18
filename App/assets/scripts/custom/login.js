@@ -148,7 +148,7 @@ var Login = function () {
     var path = window.location.pathname;
     var url = '';
     var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-   // lastPart = 'vendor'
+    lastPart = 'vendor'
 
     if (lastPart.toLocaleLowerCase() == "vendor")
     {
@@ -169,9 +169,10 @@ var Login = function () {
         dataType: "json",
         success: function (response) {
           // alert(response.token)
-            sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-            sessionStorage.setItem("Token", response.token)
-            fnGetUserBasicDetails(lastPart)
+               sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                sessionStorage.setItem("Token", response.token)
+                fnGetUserBasicDetails(lastPart)
+            
         },
         error: function (xhr, status, error) {
                 sessionStorage.setItem("Token", '')
@@ -185,7 +186,7 @@ var Login = function () {
             }
     })
 }
-     function fnGetUserBasicDetails(lastPart) {
+    function fnGetUserBasicDetails(lastPart) {
 
         jQuery.ajax({
             type: "GET",
@@ -196,7 +197,7 @@ var Login = function () {
             crossDomain: true,
             dataType: "json",
             success: function (data1) {
-               
+                if (data1.length > 0) {
                 jQuery.each(data1, function (key, value) {
 
                     // if (MemberID != '0') {
@@ -211,6 +212,7 @@ var Login = function () {
                     sessionStorage.setItem("UserType", value.userType);
                     sessionStorage.setItem("VendorId", value.vendorID);
                     sessionStorage.setItem("BidPreApp", value.bidpreapproval);
+                    sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -219,16 +221,21 @@ var Login = function () {
                             }
                         }
                         else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
-                              fnGetUserBasicDetails(lastPart)
+                            fnGetUserBasicDetails(lastPart)
                         }
 
                         else {
                             fetchMenuItemsForSession(lastPart);
                         }
                     }, 800);
-                    
-                });
 
+                });
+            }
+             else
+                {
+                    bootbox.alert("You are not registered in ProcurEngine.Please Contact administrator.")
+
+                }
             },
             error: function (jqXHR, exception) {
 
@@ -253,6 +260,7 @@ var Login = function () {
                 bootbox.alert(msg);
             }
         });
+   
     }
     function fetchMenuItemsForSession(urlLast) {
         jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -362,25 +370,29 @@ var Login = function () {
 }();
 function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
     var custid = 0;
+    var UserType = "E";
     if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
         custid = sessionStorage.getItem('CustomerID');
     }
+    if (sessionStorage.getItem("UserType") != null && sessionStorage.getItem("UserType") != undefined) {
+        UserType = sessionStorage.getItem("UserType");
+    }
     var data = {
         "EmailID": $("#txtemail").val(),
-        "CustomerID": parseInt(custid)
+        "CustomerID": parseInt(custid),
+        "UserType": UserType
     }
-   
+    //alert(JSON.stringify(data))
     jQuery.ajax({
-       
+
         url: APIPath + "ChangeForgotPassword/forgotPassword/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
+
             if (data.isSuccess == "-1") {
                 $('#alrt2').show();
                 $('#alertmessage2').html('Email Id does not exists.!');
@@ -389,7 +401,7 @@ function Changeforgotpasswordfn() {
                 resetfileds()
                 jQuery.unblockUI();
             }
-            else { 
+            else {
                 $('#succs2').show();
                 $('#sucssmessage2').html('Your new password is sent to your email address');
                 $('#succs2').fadeOut(6000);
@@ -397,7 +409,7 @@ function Changeforgotpasswordfn() {
                 resetfileds()
                 jQuery.unblockUI();
             }
-            
+
         }
     });
 
@@ -442,7 +454,7 @@ function fetchMapCategory(categoryFor, vendorId) {
             jQuery.unblockUI();
         },
         error: function (result) {
-            alert("error");
+            bootbox.alert('ProcurEngine API is blocked.Please Connect with your IT Team');
             jQuery.unblockUI();
 
         }

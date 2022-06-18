@@ -297,7 +297,13 @@ function fetchMyProfileVendor() {
         dataType: "json",
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
+            var vendorComps = JSON.parse(data[1].jsondata);
+            var vendorCompstxt = ''
+            for (var i = 0; i < vendorComps.length; i++) {
+                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + '| ';
+            }
 
+            $('#vendorComp').html(vendorCompstxt.slice(0, -1));
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
             } else {

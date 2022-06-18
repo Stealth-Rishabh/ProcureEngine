@@ -23,6 +23,15 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
+connection.on("refreshPEFAQuotes", function (data) {
+    if (BidForID == 81 || BidForID == 83) {
+        fetchBidSummaryVendorScrap();
+    }
+    else {
+        fetchBidSummaryVendorScrapDutch();
+    }
+   
+});
 connection.on("refreshColumnStatusFA", function (data) {
 
     var JsonMsz = JSON.parse(data[0]);
@@ -83,12 +92,15 @@ connection.on("refreshColumnStatusFA", function (data) {
                             $("#H1Pricenotdisclosed" + i).css("display", "none");
                         }
                         if (data[i].showStartPrice == "N") {
-                            //$("#tdBidStartPrice" + i).html('Not Disclosed');
+
+                            $("#tdBidStartPrice" + i).html('Not Disclosed');
                             $("#CP" + i).css("display", "none");
+                            // $("#ceilingprice" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
                         }
                         else {
                             $("#CP" + i).css("display", "block");
+                            // $("#ceilingprice" + i).css("display", "block");
                             $("#ceilingpricenotdisclose" + i).css("display", "none");
                         }
 
@@ -111,11 +123,11 @@ connection.on("refreshColumnStatusFA", function (data) {
     }
 });
 connection.on("refreshBidDetailsManage", function (data) {
-   
+
     if (data.length > 0) {
         jQuery('#tblParticipantsVender >tbody >tr').each(function (i) {
             var JsonMsz = JSON.parse(data[0]);
-        
+
             if (JsonMsz.valType == "BAL") {
                 var VRanlList = JSON.parse(data[1]);
                 for (var j = 0; j < VRanlList.length; j++) {
@@ -139,7 +151,7 @@ connection.on("refreshBidDetailsManage", function (data) {
                 if (JsonMsz.SeId == $('#psid' + i).text()) {
                     if (JsonMsz.valType == "BSPFA") {
                         $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
-                        $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
+                        $("#CP" + i).html(thousands_separators(JsonMsz.QueryString) + " " + jQuery("#lblcurrency").text());
                     }
                     if (JsonMsz.valType == "BMIPE") {
                         $("#minimuminc" + i).html(thousands_separators(JsonMsz.QueryString));
@@ -157,7 +169,7 @@ connection.on("refreshBidDetailsManage", function (data) {
                     }
                     if (JsonMsz.valType == "FAStartP") {
                         if (JsonMsz.QueryString == 'N') {
-                            //$("#ceilingprice" + i).css("display", "none");
+                            // $("#ceilingprice" + i).css("display", "none");
                             $("#CP" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
                         }
@@ -485,7 +497,7 @@ function fetchBidSummaryVendorScrap() {
                         var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
                         var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                         var H1Quote = data[i].h1Price == '0' ? '' : thousands_separators(data[i].h1Price)
-                        jQuery("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + "><span id=CP" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + "</span><span>" + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td></td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mininc" + i + ">" + thousands_separators(data[i].minimumIncreament) + "</span> " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td><span id=H1Price" + i + " >" + H1Quote + "</span><span id=H1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
+                        jQuery("#tblParticipantsVender").append("<tr><td class=hide id=ceilingprice" + i + " > " + data[i].ceilingPrice + "</td><td>" + (i + 1) + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + "><span id=CP" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td></td><td id=targetprice" + i + " class=hide>" + data[i].TargetPrice + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mininc" + i + ">" + thousands_separators(data[i].minimumIncreament) + "</span> " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td><span id=H1Price" + i + " >" + H1Quote + "</span><span id=H1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td><label class=control-label id=lblstatus" + i + ">" + data[i].moQuotedPrice + "</label></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td id=psid" + i + " class='display-none'>" + data[i].psid + "</td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteScrap(" + i + ")'>Submit</button></td></tr>");
 
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
                         // $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
@@ -505,21 +517,23 @@ function fetchBidSummaryVendorScrap() {
                         }
 
                         if (data[i].showHLPrice == 'N') {
-                           // $("#H1Price" + i).html('Not Disclosed');
+                            // $("#H1Price" + i).html('Not Disclosed');
                             $("#H1Price" + i).css("display", "none");
                             $("#H1Pricenotdisclosed" + i).css("display", "block");
                         }
-                        else{
+                        else {
                             $("#H1Price" + i).css("display", "block");
                             $("#H1Pricenotdisclosed" + i).css("display", "none");
                         }
                         if (data[i].showStartPrice == "N") {
                             //$("#tdBidStartPrice" + i).html('Not Disclosed');
                             $("#CP" + i).css("display", "none");
+                            //$("#ceilingprice" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
                         }
                         else {
                             $("#CP" + i).css("display", "block");
+                            //$("#ceilingprice" + i).css("display", "block");
                             $("#ceilingpricenotdisclose" + i).css("display", "none");
                         }
 
@@ -658,7 +672,7 @@ function InsUpdQuoteScrap(rowID) {
         return false
     }
 
-    else if (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) < parseFloat(($('#ceilingprice' + i).text()))) {
+    else if (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) < parseFloat(($('#ceilingprice' + i).text())) && $('#CP' + i).is(":visible")) {
 
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount should not be less than Bid start price')
@@ -1044,8 +1058,7 @@ function fetchBidSummaryVendorScrapDutch() {
                                 $("#H1Price" + i).css("display", "none");
                                 $("#H1Pricenotdisclosed" + i).css("display", "block");
                             }
-                            else
-                            {
+                            else {
                                 $("#H1Price" + i).css("display", "block");
                                 $("#H1Pricenotdisclosed" + i).css("display", "none");
                             }

@@ -170,6 +170,91 @@ function FormValidate() {
 
         }
     });
+    var form = $('#frmItemeditvalues');
+
+    form.validate({
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+            txtdestinationPort: {
+                required: true
+            },
+            txtshortname: {
+                required: true
+            },
+            txtbiddescriptionP: {
+                required: true
+            },
+            txtquantitiy: {
+                required: true
+            },
+            txtUOM: {
+                required: true
+            },
+            txtCeilingPrice: {
+                required: true
+            },
+            txtminimumdecreament: {
+                required: true
+            },
+            txtpricefrequency: {
+                required: true
+            },
+            txtpriceincreamentamount: {
+                required: true
+            },
+            txtitembidduration: {
+                required: true
+            },
+            txtGST: {
+                required: true,
+                number: true
+            },
+            txtItemnameFrench: {
+                required: true
+            },
+            txtquantitiyfrench: {
+                required: true
+            },
+            txtminquantitiy: {
+                required: true
+            },
+            txtmaxquantitiy: {
+                required: true
+            },
+            txtCeilingPricefrench: {
+                required: true
+            },
+            txtminimumdecreamentfrench: {
+                required: true
+            }
+
+        },
+
+        messages: {
+        },
+        invalidHandler: function (event, validator) {
+
+        },
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+
+            formSubmitEditEvent();
+
+
+        }
+
+    });
     //$('#frmReopen').validate({
     //    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
     //    errorElement: 'span', //default input error message container
@@ -545,7 +630,7 @@ function deletePEFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    jQuery.ajax({
+    /*jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePEFAQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
@@ -594,7 +679,49 @@ function deletePEFAquote() {
             jQuery.unblockUI();
             return false;
         }
+    })*/
+    connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
+    connection.on("refreshPEFAQuotes", function (data) {
+        var JsonMsz = JSON.parse(data[0]);
+
+        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            if ($('#fileToUpload').val() != '') {
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+            }
+            success1.show();
+            $('#spansuccess1').html("Quoted Price deleted Successfully..");
+            success1.fadeOut(6000);
+            App.scrollTo(success1, -200);
+            fetchparticationQuotes();
+            $('#deletepopup').modal('hide')
+            $('#txtremarks').val('')
+            $('#fileToUpload').val('')
+        }
+        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            $('#deletepopup').modal('hide')
+            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+        }
+        else {
+            error2.show();
+            $('#err').html('You have some error.Please try agian.');
+            error2.fadeOut(3000);
+            App.scrollTo(error2, -200);
+        }
     })
+    jQuery.unblockUI();
 }
 function deleteFAquote() {
     var AttachementFileName = '';
@@ -617,7 +744,7 @@ function deleteFAquote() {
         "QuantityAllocated": parseFloat(sessionStorage.getItem("QuantityAllocated"))
 
     }
-    jQuery.ajax({
+  /*  jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveFAQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
@@ -666,7 +793,49 @@ function deleteFAquote() {
             jQuery.unblockUI();
             return false;
         }
+    })*/
+    connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
+    connection.on("refreshFAQuotes", function (data) {
+        var JsonMsz = JSON.parse(data[0]);
+
+        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            if ($('#fileToUpload').val() != '') {
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+            }
+            success1.show();
+            $('#spansuccess1').html("Quoted Price deleted Successfully..");
+            success1.fadeOut(6000);
+            App.scrollTo(success1, -200);
+            fetchparticationQuotes()
+            $('#deletepopup').modal('hide')
+            $('#txtremarks').val('')
+            $('#fileToUpload').val('')
+        }
+        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            $('#deletepopup').modal('hide')
+            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+        }
+        else {
+            error2.show();
+            $('#err').html('You have some error.Please try agian.');
+            error2.fadeOut(3000);
+            App.scrollTo(error2, -200);
+        }
     })
+    jQuery.unblockUI();
 }
 function deletePSquote() {
     var AttachementFileName = '';
@@ -689,7 +858,7 @@ function deletePSquote() {
 
     }
 
-    jQuery.ajax({
+    /*jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePSQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
@@ -699,7 +868,7 @@ function deletePSquote() {
 
 
             if (data == "1") {
-                //** Upload Files on Azure PortalDocs folder
+               // ** Upload Files on Azure PortalDocs folder
                 if ($('#fileToUpload').val() != '') {
                     fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
@@ -740,7 +909,49 @@ function deletePSquote() {
             jQuery.unblockUI();
             return false;
         }
+    })*/
+    connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
+    connection.on("refreshRAQuotes", function (data) {
+        var JsonMsz = JSON.parse(data[0]);
+
+        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            if ($('#fileToUpload').val() != '') {
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+            }
+            success1.show();
+            $('#spansuccess1').html("Quoted Price deleted Successfully..");
+            success1.fadeOut(6000);
+            App.scrollTo(success1, -200);
+            fetchparticationQuotes()
+            $('#deletepopup').modal('hide')
+            $('#txtremarks').val('')
+            $('#fileToUpload').val('')
+        }
+        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            $('#deletepopup').modal('hide')
+            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+        }
+        else {
+            error2.show();
+            $('#err').html('You have some error.Please try agian.');
+            error2.fadeOut(3000);
+            App.scrollTo(error2, -200);
+        }
     })
+    jQuery.unblockUI();
 }
 function deleteCoalquote() {
     var AttachementFileName = '';
@@ -763,7 +974,7 @@ function deleteCoalquote() {
 
     }
     //console.log(JSON.stringify(QuoteProduct))
-    jQuery.ajax({
+   /* jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveCAQuote/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
@@ -814,7 +1025,49 @@ function deleteCoalquote() {
             jQuery.unblockUI();
             return false;
         }
+    })*/
+    connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
+    connection.on("refreshCAQuotes", function (data) {
+        var JsonMsz = JSON.parse(data[0]);
+
+        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            if ($('#fileToUpload').val() != '') {
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+
+            }
+            success1.show();
+            $('#spansuccess1').html("Quoted Price deleted Successfully..");
+            success1.fadeOut(6000);
+            App.scrollTo(success1, -200);
+            fetchparticationQuotes()
+            $('#deletepopup').modal('hide')
+            $('#txtremarks').val('')
+            $('#fileToUpload').val('')
+        }
+        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+            $('#deletepopup').modal('hide')
+            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+        }
+        else {
+            error2.show();
+            $('#err').html('You have some error.Please try agian.');
+            error2.fadeOut(3000);
+            App.scrollTo(error2, -200);
+        }
     })
+    jQuery.unblockUI();
 }
 
 
@@ -2741,6 +2994,9 @@ function checkminmax(id) {
 function fnclearmsz(id) {
     $('#' + id).addClass('hide')
 }
+
+
+
 function formSubmitEditEvent() {
 
     var Data = {};
@@ -2862,7 +3118,7 @@ function formSubmitEditEvent() {
 
     }
     if (Data != '') {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+        connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
             return console.error(err.toString());
 
         });
@@ -3522,7 +3778,6 @@ function updMinDecreament() {
 
             });
         }
-
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {

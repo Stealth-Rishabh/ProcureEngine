@@ -2925,7 +2925,6 @@ function fetchApproverStatus() {
 
     });
 }
-
 var CalcelButtonAlert = "Y";
 jQuery("#btnCancelbidAdmin").click(function () {
     $('#modalcancelremarks').modal('show');

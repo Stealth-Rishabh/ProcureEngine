@@ -96,12 +96,10 @@ function FormValidate() {
             CityID: {
                 required: true
             },
-            selectdate1: {
-                required: true
-            },
-            selectdatetime1: {
+            slot1: {
                 required: true
             }
+            
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
             
@@ -175,12 +173,10 @@ function FormValidate() {
             CityID: {
                 required: true
             },
-            selectdatespp1: {
+            slot1supp1: {
                 required: true
             },
-            selectdatetimesupp1: {
-                required: true
-            },
+            
             ddlsupport:{
                 required: true
             }
@@ -245,16 +241,16 @@ function fnFormSubmitSupp() {
             UserEmail: $('#UserEmailSupp').val(),
             Message: $('#briefRequirementSupp').val(),
             designation: $('#designationSupp').val(),
-            Slot1: $('#selectdatespp1').val() + " " + $('#selectdatetimesupp1').val(),
-            Slot2: $('#selectdatespp2').val() + " " + $('#selectdatetimesupp2').val(),
-            Slot3: $('#selectdatespp3').val() + " " + $('#selectdatetimesupp3').val(),
+            Slot1: $('#slot1supp1').val().replace('T', ' '),// $('#selectdatespp1').val() + " " + $('#selectdatetimesupp1').val(),
+            Slot2: $('#slot2supp2').val().replace('T', ' '),//$('#selectdatespp2').val() + " " + $('#selectdatetimesupp2').val(),
+            Slot3: $('#slot3supp3').val().replace('T', ' '),//$('#selectdatespp3').val() + " " + $('#selectdatetimesupp3').val(),
             Flag: Flag,
             PageFrom: sessionStorage.getItem("PageFrom")
         };
 
        
         //alert(JSON.stringify(payload))
-       // console.log(JSON.stringify(payload))
+        console.log(JSON.stringify(payload))
             $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -274,7 +270,7 @@ function fnFormSubmitSupp() {
   }
 function fnFormSubmit() {
     $('#modalLoaderparameter').show()
-    
+  
     var payload = {
         CompanyName: $('#CompanyName').val(),
         Address: "",
@@ -286,16 +282,16 @@ function fnFormSubmit() {
         UserEmail: $('#UserEmail').val(),
         Message: $('#briefRequirement').val(),
         designation: $('#designation').val(),
-        Slot1: $('#selectdate1').val() + " " + $('#selectdatetime1').val(),
-        Slot2: $('#selectdate2').val() + " " + $('#selectdatetime2').val(),
-        Slot3: $('#selectdate3').val() + " " + $('#selectdatetime3').val(),
+        Slot1: $('#slot1').val().replace('T', ' '),//$('#selectdate1').val() + " " + $('#selectdatetime1').val(),
+        Slot2: $('#slot2').val().replace('T', ' '),//$('#selectdate2').val() + " " + $('#selectdatetime2').val(),
+        Slot3: $('#slot3').val().replace('T', ' ' ),//$('#selectdate3').val() + " " + $('#selectdatetime3').val(),
         Flag: Flag,
         PageFrom: sessionStorage.getItem("PageFrom")
     };
 
 
     // alert(JSON.stringify(payload))
-    console.log(JSON.stringify(payload))
+   // console.log(JSON.stringify(payload))
     $.ajax({
         type: 'POST',
         contentType: 'application/json',
@@ -325,12 +321,12 @@ function fnReset()
     $('#MobileNo').val('')
     $('#designation').val('')
     $('#UserEmail').val('')
-    $('#selectdate1').val('')
-    $('#selectdatetime1').val('')
-    $('#selectdate2').val('')
-    $('#selectdatetime2').val('')
-    $('#selectdate3').val('')
-    $('#selectdatetime3').val('')
+    $('#slot1').val('')
+   // $('#selectdatetime1').val('')
+    $('#slot2').val('')
+    //$('#selectdatetime2').val('')
+    $('#slot3').val('')
+    //$('#selectdatetime3').val('')
     $('#briefRequirement').val('')
 
     $('#CompanyNameSupp').val('')
@@ -341,12 +337,18 @@ function fnReset()
     $('#MobileNoSupp').val('')
     $('#designationSupp').val('')
     $('#UserEmailSupp').val('')
-    $('#selectdatespp1').val('')
-    $('#selectdatetimesupp1').val('')
-    $('#selectdatespp2').val('')
-    $('#selectdatetimesupp2').val('')
-    $('#selectdatespp3').val('')
-    $('#selectdatetimesupp3').val('')
+    //$('#selectdatespp1').val('')
+    $('#slot1').val('')
+    $('#slot1supp1').val('')
+    $('#slot2').val('')
+    $('#slot3').val('')
+   // $('#slot1timesupp1').val('')
+    $('#slot2supp2').val('')
+    $('#slot3supp3').val('')
+    //$('#selectdatespp2').val('')
+   // $('#selectdatetimesupp2').val('')
+   // $('#selectdatespp3').val('')
+   // $('#selectdatetimesupp3').val('')
     $('#briefRequirementSupp').val('')
 }
 
