@@ -254,7 +254,8 @@ function formvalidate() {
 
         }
         else {
-            dtfrom = $("#txtFromDate").val()
+            dtfrom = $("#txtFromDate").val();
+            dtfrom = fnConverToLocalTime(dtfrom);
         }
 
         if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
@@ -262,7 +263,8 @@ function formvalidate() {
 
         }
         else {
-            dtto = $("#txtToDate").val()
+            dtto = $("#txtToDate").val();
+            dtto = fnConverToLocalTime(dtto);
         }
         if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
             subject = jQuery("#txtbidsubject").val()
@@ -378,8 +380,11 @@ function fetchBidVendorSummary(dtfrom,dtto,subject) {
                    
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
-                   
-                    var datearray = BidData[i].bidDate.split("/");
+
+                    var _bidDate = fnConverToLocalTime(BidData[i].bidDate);
+
+                    var datearray = _bidDate.split("/");
+                    //var datearray = BidData[i].bidDate.split("/");
                   
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                   
@@ -494,9 +499,12 @@ function fetchBidVendorSummaryDetail(dtfrom,dtto,subject) {
                    
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
+
+                    var _bidDate = fnConverToLocalTime(BidData[i].bidDate);
                    
                    
-                    var datearray = BidData[i].bidDate.split("/");
+                    //var datearray = BidData[i].bidDate.split("/");
+                    var datearray = _bidDate.split("/");
                   
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
@@ -685,8 +693,10 @@ function fetchBidVendorSummarySummarization(dtfrom,dtto,subject) {
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;' >" + BidData[i].bidID + "</a></td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
-                   
-                    var datearray = BidData[i].bidDate.split("/");
+
+                    var _bidDate = fnConverToLocalTime(BidData[i].bidDate);
+                    var datearray = _bidDate.split("/");
+                    //var datearray = BidData[i].bidDate.split("/");
                   
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
@@ -834,8 +844,10 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
 
+                    var _bidDate = fnConverToLocalTime(BidData[i].bidDate);
+                    var datearray = _bidDate.split("/");
                     
-                    var datearray = BidData[i].bidDate.split("/");
+                    //var datearray = BidData[i].bidDate.split("/");
                   
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                   
@@ -1041,8 +1053,10 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
 
-                   
-                    var datearray = BidData[i].bidDate.split("/");
+
+                    var _bidDate = fnConverToLocalTime(BidData[i].bidDate);
+                    var datearray = _bidDate.split("/");
+                    //var datearray = BidData[i].bidDate.split("/");
                    
                     BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                    
