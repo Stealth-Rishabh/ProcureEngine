@@ -11,9 +11,12 @@ jQuery(document).ready(function () {
         digitsOptional: true,
         allowPlus: false,
         allowMinus: false,
-        'removeMaskOnSubmit': true
+       'removeMaskOnSubmit': true
 
     });
+
+    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+    $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
 
 function fetchCountry() {
@@ -287,6 +290,7 @@ function fetchVendorDetails() {
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -298,12 +302,13 @@ function fetchMyProfileVendor() {
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
+
             var vendorCompstxt = ''
             for (var i = 0; i < vendorComps.length; i++) {
                 vendorCompstxt = vendorCompstxt + vendorComps[i].customername + '| ';
             }
 
-            $('#vendorComp').html(vendorCompstxt.slice(0, -1));
+            $('#vendorComp').val(vendorCompstxt.slice(0, -1));
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
             } else {
@@ -311,11 +316,11 @@ function fetchMyProfileVendor() {
             }
 
             sessionStorage.setItem('vendorCode', vendordetails[0].VendorCode);
-          
+
             if (vendordetails[0].MSMECheck == 'Y') {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
-                $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
+                // $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
 
                 $('#ddlMSMEClass').val(vendordetails[0].MSMEType)
                 $('#txtUdyam').val(vendordetails[0].MSMENo)
@@ -495,8 +500,19 @@ function fetchMyProfileVendor() {
             $('#product').val(vendordetails[0].product)
             $('#txtLastFiscal').val(vendordetails[0].PreviousTurnover)
             $('#txt2LastFiscal').val(vendordetails[0].SecondLastTurnover)
-            $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear)
-            $('#txt2LastFiscalyear').val(vendordetails[0].SecondLastTurnoverYear)
+            if (vendordetails[0].PreviousTurnoverYear != "") {
+                $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear)
+            }
+            else {
+                $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+
+            }
+            if (vendordetails[0].PreviousTurnoverYear != "") {
+                $('#txt2LastFiscalyear').val(vendordetails[0].SecondLastTurnoverYear)
+            }
+            else {
+                $('#txt2LastFiscalyear').val(getlastFinancialYear())
+            }
 
             setTimeout(function () {
                 CalContactDetailPercent();

@@ -239,6 +239,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     // }
     // $(".pulsate-regular").css('animation', 'none');
 });
+
 connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)

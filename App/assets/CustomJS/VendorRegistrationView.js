@@ -13,23 +13,19 @@ function fetchCategorymaster1() {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
             if (data.length > 0) {
-
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-                }
-
+            for (var i = 0; i < data.length; i++) {
+                $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
+            }
                 $("#ddlTypeofProduct").trigger("change");
-
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
             }
             jQuery.unblockUI();
         },
-
         error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -59,7 +55,7 @@ function fetchVendorRegistrationDetails() {
         success: function (json) {
 
             var companydetails = JSON.parse(json[0].jsondata);
-            console.log("companydetails", companydetails);
+
 
             if (json.length > 1) {
 
@@ -203,7 +199,10 @@ function fetchVendorRegistrationDetails() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/Temp/' + sessionStorage.getItem('tmpVendorID'));
+    if (sessionStorage.getItem('VendorID') != 0)
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('VendorID'));
+    else
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/Temp/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function ApproveRFI(For) {

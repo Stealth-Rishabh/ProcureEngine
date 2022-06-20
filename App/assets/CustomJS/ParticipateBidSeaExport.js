@@ -18,15 +18,18 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
 
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 
-}); 
+});
 connection.on("refreshRAQuotes", function (data) {
-    if (data[0].bidForID == 81 || data[0].bidForID == 83) {
+
+    console.log(BidForID)
+    if (BidForID == 81 || BidForID == 83) {
         fetchBidSummaryVendorproduct();
     }
     else {
         fetchBidSummaryVendorSeaExportDutch();
     }
 });
+
 connection.on("refreshColumnStatus", function (data) {
 
     var JsonMsz = JSON.parse(data[0]);
@@ -34,7 +37,7 @@ connection.on("refreshColumnStatus", function (data) {
 
         $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
         $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
-         return false;
+        return false;
 
     }
 
@@ -255,7 +258,7 @@ connection.on("refreshBidDetailsManage", function (data) {
                     if (JsonMsz.valType == "BMD") {
 
                         $("#minimumdec" + i).html(thousands_separators(JsonMsz.QueryString));
-                         $("#mindec" + i).text(thousands_separators(JsonMsz.QueryString));
+                        $("#mindec" + i).text(thousands_separators(JsonMsz.QueryString));
 
                     }
 
@@ -276,14 +279,14 @@ connection.on("refreshBidDetailsManage", function (data) {
                     }
 
                     if (JsonMsz.valType == "RAStartP") {
-                         if (JsonMsz.QueryString == 'N') {
+                        if (JsonMsz.QueryString == 'N') {
 
-                             $("#ceilingprice" + i).css("display", "none");
+                            $("#ceilingprice" + i).css("display", "none");
                             //$("#CP" + i).css("display", "none");
-                             $("#ceilingpricenotdisclose" + i).css("display", "block");
+                            $("#ceilingpricenotdisclose" + i).css("display", "block");
 
                         }
-                      else {
+                        else {
                             $("#ceilingprice" + i).css("display", "block");
                             //$("#CP" + i).css("display", "block");
                             $("#ceilingpricenotdisclose" + i).css("display", "none");
@@ -1304,7 +1307,7 @@ function InsUpdQuoteSeaExport(index) {
     var valdiff = parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text()) - removeThousandSeperator(jQuery("#txtquote" + index).val())).toFixed(2)
 
 
-    
+
     if ((removeThousandSeperator($('#txtquote' + index).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + index).val())))) {
 
         $('#spanamount' + index).removeClass('hide')
@@ -1488,11 +1491,11 @@ function startTimer(duration, display) {
                 coutercall = coutercall + 1;
 
             }
-             //$('#pleft5mins').removeClass('hide')
+            //$('#pleft5mins').removeClass('hide')
 
         }
-         else if (timer <= 240 || timer > 300) {
-           // toastr.clear();
+        else if (timer <= 240 || timer > 300) {
+            // toastr.clear();
             $('.toast-info').hide();
             coutercall = 0;
 
@@ -1506,7 +1509,7 @@ function startTimer(duration, display) {
             timer = -3;
             if (timer == -3) {
                 closeBidAir();
-                }
+            }
         }
         $('#hdnval').val(timer)
 
@@ -1540,54 +1543,28 @@ function closeBidAir() {
         data: JSON.stringify(data),
 
         contentType: "application/json; charset=utf-8",
-
         success: function (data, status, jqXHR) {
-
-
 
             if (data == '1') {
 
                 bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
-
-
-
                     if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
 
                         window.location = sessionStorage.getItem('HomePage');
-
                         sessionStorage.clear();
 
                     }
 
                     else {
-
                         window.location = 'VendorHome.html';
-
-
-
                     }
-
-
-
                     return false;
-
-
-
                 });
-
             }
-
             else if (data == '-1') {
-
-                fetchBidTime();
-
                 //location.reload(true)
-
+                fetchBidTime();
             }
-
-
-
-
 
         },
 
@@ -1662,35 +1639,24 @@ function fetchBidTime() {
         success: function (data, status, jqXHR) {
 
 
-
+            // console.log("data length:"+ data.length)
             if (data.length > 0) {
 
                 if (BidForID == 81 || BidForID == 83) {
 
                     if (data[0].timeLeft <= 0) {
-
                         clearInterval(mytime);
-
                         bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
-
-
-
                             if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
-
                                 window.location = sessionStorage.getItem('HomePage');
-
                                 sessionStorage.clear();
 
                             }
 
                             else {
-
                                 window.location = 'VendorHome.html';
 
                             }
-
-
-
                             return false;
 
                         });
@@ -2054,7 +2020,7 @@ function InsUpdQuoteSeaDutch(rowID) {
             }
 
             jQuery.unblockUI();
- }
+        }
 
     });
 }
@@ -2127,6 +2093,6 @@ function startTimerDutch(duration, display) {
             return;
 
         }
-     }, 1000);
+    }, 1000);
 
 }

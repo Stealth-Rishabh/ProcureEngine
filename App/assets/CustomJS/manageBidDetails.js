@@ -92,6 +92,10 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     jQuery("#divbidShowL1L2").hide();
     jQuery("#divhidevendors").hide();
     jQuery("#divbidextension").hide();
+    $(".xyz").removeClass("has-error");
+    $('.help-block-error').remove();
+    $('.alert-success').hide();
+    $('.alert-danger').hide();
 });
 
 
@@ -435,7 +439,8 @@ jQuery("#txtbid").typeahead({
             setTimeout(function () {
                 fetchItemsforPreBidPrices(map[item].bidId, map[item].bidTypeID, map[item].bidForID);
             }, 1000)
-
+            $('#tblquotedprices').hide()
+            jQuery('#tblquotedprices').empty()
 
         }
         else {
@@ -696,7 +701,7 @@ function deletePEFAquote() {
     connection.on("refreshPEFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
                 fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
@@ -710,7 +715,7 @@ function deletePEFAquote() {
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
         }
-        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
             $('#deletepopup').modal('hide')
             bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
         }
@@ -810,7 +815,7 @@ function deleteFAquote() {
     connection.on("refreshFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
                 fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
@@ -824,7 +829,7 @@ function deleteFAquote() {
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
         }
-        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
             $('#deletepopup').modal('hide')
             bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
         }
@@ -924,9 +929,9 @@ function deletePSquote() {
 
     });
     connection.on("refreshRAQuotes", function (data) {
+        
         var JsonMsz = JSON.parse(data[0]);
-
-        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
                 fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
@@ -940,7 +945,7 @@ function deletePSquote() {
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
         }
-        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
             $('#deletepopup').modal('hide')
             bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
         }
@@ -1042,7 +1047,7 @@ function deleteCoalquote() {
     connection.on("refreshCAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
                 fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
 
@@ -1056,7 +1061,7 @@ function deleteCoalquote() {
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
         }
-        else if (JsonMsz[0] == "99" && JsonMsz[1] == sessionStorage.getItem('UserID')) {
+        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
             $('#deletepopup').modal('hide')
             bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
         }
@@ -3117,6 +3122,7 @@ function formSubmitEditEvent() {
         Data = '';
 
     }
+    
     if (Data != '') {
         connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
             return console.error(err.toString());

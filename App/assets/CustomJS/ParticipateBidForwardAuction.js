@@ -30,7 +30,7 @@ connection.on("refreshPEFAQuotes", function (data) {
     else {
         fetchBidSummaryVendorScrapDutch();
     }
-   
+
 });
 connection.on("refreshColumnStatusFA", function (data) {
 
@@ -606,7 +606,8 @@ function startTimer(duration, display) {
         }
         else if (timer <= 240 || timer > 300) {
             //$('#pleft5mins').addClass('hide')
-            toastr.clear();
+            // toastr.clear();
+            $('.toast-info').hide();
             coutercall = 0;
         }
 
