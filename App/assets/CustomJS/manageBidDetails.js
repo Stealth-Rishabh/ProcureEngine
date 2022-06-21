@@ -1543,7 +1543,8 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate);
+            var localBidTime = fnConverToLocalTime(BidData[0].bidDetails[0].bidTime);
             $('#BidPreviewDiv').show()
             jQuery('#mapedapproverPrev').html('');
             jQuery('#mapedapproverPrevtab_0').html('');
@@ -1551,10 +1552,14 @@ function fetchallexportdetails() {
             jQuery('#txtBidSubjectPrevtab_0').html(BidData[0].bidDetails[0].bidSubject)
             jQuery('#txtbiddescriptionPrev').html(BidData[0].bidDetails[0].bidDetails)
             jQuery('#txtbiddescriptionPrevtab_0').html(BidData[0].bidDetails[0].bidDetails)
-            jQuery('#txtbidDatePrev').html(BidData[0].bidDetails[0].bidDate)
-            jQuery('#txtbidDatePrevtab_0').html(BidData[0].bidDetails[0].bidDate)
-            jQuery('#txtbidTimePrevtab_0').html(BidData[0].bidDetails[0].bidTime)
-            jQuery('#txtbidTimePrev').html(BidData[0].bidDetails[0].bidTime)
+            //jQuery('#txtbidDatePrev').html(BidData[0].bidDetails[0].bidDate)
+            //jQuery('#txtbidDatePrevtab_0').html(BidData[0].bidDetails[0].bidDate)
+            //jQuery('#txtbidTimePrevtab_0').html(BidData[0].bidDetails[0].bidTime)
+            //jQuery('#txtbidTimePrev').html(BidData[0].bidDetails[0].bidTime)
+            jQuery('#txtbidDatePrev').html(localBidDate)
+            jQuery('#txtbidDatePrevtab_0').html(localBidDate)
+            jQuery('#txtbidTimePrevtab_0').html(localBidTime)
+            jQuery('#txtbidTimePrev').html(localBidTime)
             jQuery("#dropCurrencyPrev").html(BidData[0].bidDetails[0].currencyName)
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
@@ -1669,8 +1674,11 @@ function fetchallexportdetails() {
             //  $('#spinnerBidDetails').show()
             // $('#spinnerBidDetails').spinner({ value: BidData[0].BidDetails[0].BidDuration, step: 1, min: 0, max: 999 });
             $('#txtBidDurationForBidOpen').val(BidData[0].bidDetails[0].bidDuration)
-            $('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
-            $('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
+            $('#txtbidTime').val(localBidTime)
+            $('#txtbidDate').val(localBidDate)
+
+            //$('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
+            //$('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
 
             $('#ddlBidfinalStatus').val(BidData[0].bidDetails[0].finalStatus)
 
