@@ -803,11 +803,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            $('.header').css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })
+                            /* $('.header').css({
+                                 'background-color': '#dff0d8',
+                                 'font-weight': 'bold',
+                                 'color': '#3c763d'
+                             })*/
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -821,16 +821,17 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         }
                         if (data[i].srNo == 'L1') {
+
                             $('#low' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            $('.header').css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })
+                            /* $('.header').css({
+                                 'background-color': '#dff0d8',
+                                 'font-weight': 'bold',
+                                 'color': '#3c763d'
+                             })*/
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -918,11 +919,16 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            $('.header').css({
+                            $('#low' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
+                            /*$('.header').css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })*/
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -1161,11 +1167,16 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('.header').css({
+                                $('#lowa' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
+                                /* $('.header').css({
+                                     'background-color': '#dff0d8',
+                                     'font-weight': 'bold',
+                                     'color': '#3c763d'
+                                 })*/
                             }
                             $('#itemleftTime' + i).css({
                                 'color': 'Red',
@@ -1176,6 +1187,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         else {
 
                             if (data[i].srNo == 'L1') {
+
                                 $('#low_str' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
@@ -1187,11 +1199,16 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('.header').css({
+                                $('#lowa' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
+                                /* $('.header').css({
+                                     'background-color': '#dff0d8',
+                                     'font-weight': 'bold',
+                                     'color': '#3c763d'
+                                 })*/
 
                             }
                             if (data[i].srNo == 'H1') {
@@ -1205,11 +1222,16 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('.header').css({
+                                $('#lowa' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
+                                /*  $('.header').css({
+                                      'background-color': '#dff0d8',
+                                      'font-weight': 'bold',
+                                      'color': '#3c763d'
+                                  })*/
                             }
                         }
 
@@ -1324,6 +1346,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
+                                $('#lowa' + i).css({
+                                    'background-color': '#dff0d8',
+                                    'font-weight': 'bold',
+                                    'color': '#3c763d'
+                                })
                             }
                         }
                         else {
@@ -1334,6 +1361,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'color': '#3c763d'
                                 })
                                 $('#low' + i).css({
+                                    'background-color': '#dff0d8',
+                                    'font-weight': 'bold',
+                                    'color': '#3c763d'
+                                })
+                                $('#lowa' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
@@ -1681,6 +1713,26 @@ connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 var display = document.querySelector('#lblTimeLeft');
 var displayForS = "";
 var Url = "";
+connection.on("refreshRAQuotes", function (data) {
+
+    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+});
+connection.on("refreshPEFAQuotes", function (data) {
+
+    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+});
+connection.on("refreshPEFAQuotes", function (data) {
+
+    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+});
+connection.on("refreshFAQuotes", function (data) {
+
+    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+});
+connection.on("refreshCAQuotes", function (data) {
+
+    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+});
 connection.on("refreshColumnStatus", function (data1) {
 
     if (data1.length > 1) {
@@ -2269,12 +2321,12 @@ connection.on("refreshTimer", function (data) {
     });
 })
 connection.on("refreshBidDetailsManage", function (data) {
-   
+
     if (BidTypeID == 7) {
         if (data.length > 0) {
             jQuery('#tblBidSummary >tbody >tr').each(function (i) {
                 var JsonMsz = JSON.parse(data);
-               
+
                 if (JsonMsz.SeId == $('#seid' + i).text()) {
                     if (JsonMsz.valType == "BSPRA") {
                         $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
@@ -2304,8 +2356,8 @@ connection.on("refreshBidDetailsManage", function (data) {
         if (data.length > 0) {
             jQuery('#tblBidSummary >tbody >tr').each(function (i) {
                 var JsonMsz = JSON.parse(data);
-               
-                if (JsonMsz.SeId == $('#pid' +i).text()) {
+
+                if (JsonMsz.SeId == $('#pid' + i).text()) {
                     console.log(JsonMsz.SeId)
                     console.log($('#pid' + i).text())
                     if (JsonMsz.valType == "BSPFA") {
@@ -2337,6 +2389,7 @@ connection.on("refreshBidDetailsManage", function (data) {
     }
 
 });
+
 
 /////****** Chat *****************/////
 connection.on("ReceiveMessage", function (objChatmsz) {

@@ -884,6 +884,7 @@
                 sessionStorage.setItem('hddnRFQID', 0)
             else {
                 var version = 0;
+                //console.log(sessionStorage.getItem('RFQVersionId'))
                 if (sessionStorage.getItem('RFQVersionId') > 0) {
                     version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
 

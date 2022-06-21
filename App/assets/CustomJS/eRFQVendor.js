@@ -691,6 +691,7 @@ function addmoreattachments() {
     else {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+        var ver = sessionStorage.getItem('RFQVersionId');
         rowAttach = rowAttach + 1;
         $('#headerresposeatt').removeClass('hide')
         $('#dicresponseatt').removeClass('hide')
@@ -701,14 +702,14 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
+        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,' + ver + ')" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
-        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',VAttachment,0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,' + ver + ')" >' + attchname + '</a></td>';
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',\'VAttachment\',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachmentsresponse').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 
@@ -904,11 +905,11 @@ function fetchRFQResponse(Flag, version) {
                         rowAttach = rowAttach + 1;
                         attach = data[i].attachment.replace(/\s/g, "%20");
                         var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[i].attachmentdescription + '</td>';
-                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
+                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this,' + version + ')" >' + data[i].attachment + '</a></td>';
                         jQuery('#tblAttachmentsPrev').append(strprev);
 
                         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[i].attachmentdescription + '</td>';
-                        str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
+                        str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this,' + version + ')">' + data[i].attachment + '</a></td>';
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
@@ -1347,8 +1348,8 @@ function DownloadFile(aID) {
 
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
-function DownloadFileVendor(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
+function DownloadFileVendor(aID, ver) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + ver);
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {

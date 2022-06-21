@@ -23,6 +23,9 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
+connection.on("refreshFAQuotes", function () {
+    fetchBidSummaryVendorFrench();
+});
 connection.on("refreshColumnStatusFF", function (data) {
     // var JsonMsz = JSON.parse(data[0]);
     //if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
@@ -66,7 +69,7 @@ connection.on("refreshColumnStatusFF", function (data) {
                             jQuery('#lblTimeLeftTxt').addClass('display-none');
                             jQuery('#lblTimeLeft').css('color', '');
                         }
-                        
+
                         $('#txtquantity' + i).val(data[i].bidQuantity == '0' ? '' : thousands_separators(data[i].bidQuantity));
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(data[i].mqQuotedPrice))
                         $("#lblstatus" + i).html(data[i].itemRank)
@@ -117,7 +120,7 @@ connection.on("refreshBidDetailsManage", function (data) {
             console.log(JSON.parse(data[1]))
             if (JsonMsz.valType == "BAL") {
                 var VRanlList = JSON.parse(data[1]);
-               
+
                 for (var j = 0; j < VRanlList.length; j++) {
                     if ($('#FRID' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
                         //if (sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
@@ -138,17 +141,17 @@ connection.on("refreshBidDetailsManage", function (data) {
             if (JsonMsz.valType != "BAL") {
                 if (JsonMsz.SeId == $('#FRID' + i).text()) {
                     if (JsonMsz.valType == "BSPFF") {
-                       
+
                         $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
                         $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
                     }
                     if (JsonMsz.valType == "INCFR") {
-                        
+
                         $("#minimuminc" + i).html(thousands_separators(JsonMsz.QueryString));
                         $("#mininc" + i).text(thousands_separators(JsonMsz.QueryString));
                     }
                     if (JsonMsz.valType == "FFH1") {
-                       
+
                         if (JsonMsz.QueryString == 'N') {
                             $("#H1Price" + i).css("display", "none");
                             $("#H1Pricenotdisclosed" + i).css("display", "block");
@@ -159,8 +162,8 @@ connection.on("refreshBidDetailsManage", function (data) {
                         }
                     }
                     if (JsonMsz.valType == "FFStartP") {
-                      if (JsonMsz.QueryString == 'N') {
-                           // $("#ceilingprice" + i).css("display", "none");
+                        if (JsonMsz.QueryString == 'N') {
+                            // $("#ceilingprice" + i).css("display", "none");
                             $("#CP" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
                         }
@@ -502,11 +505,11 @@ function fetchBidSummaryVendorFrench() {
                             $("#H1Price" + i).css("display", "block");
                             $("#H1Pricenotdisclosed" + i).css("display", "none");
                         }
-                        
+
                         if (data[i].showStartPrice == "N") {
                             $("#CP" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
-                           // $("#tdBidStartPrice" + i).html('Not Disclosed');
+                            // $("#tdBidStartPrice" + i).html('Not Disclosed');
                         }
                         else {
                             $("#CP" + i).css("display", "block");
@@ -589,10 +592,11 @@ function startTimer(duration, display) {
         }
         else if (timer <= 240 || timer > 300) {
             //$('#pleft5mins').addClass('hide')
-            toastr.clear();
+            //toastr.clear();
+            $('.toast-info').hide();
             coutercall = 0;
         }
-      //  console.log(timer)
+        //  console.log(timer)
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {

@@ -9,27 +9,23 @@ function fetchCategorymaster1() {
         data: "{}",
         cache: false,
         dataType: "json",
-        success: function (data) {            
+        success: function (data) {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
-            if (data.length > 0) {                
-
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-                }
-                
-                $("#ddlTypeofProduct").trigger("change");                
-
+            if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
+            }
+                $("#ddlTypeofProduct").trigger("change");
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
             }
-             jQuery.unblockUI();
+            jQuery.unblockUI();
         },
-
-        error: function (xhr, status, error) {            
+        error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -45,82 +41,82 @@ function fetchCategorymaster1() {
 
 function fetchVendorRegistrationDetails() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var selectedValues = [];
     jQuery.ajax({
-        
+
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + sessionStorage.getItem('tmpVendorID') + "&VendorID=" + sessionStorage.getItem('VendorID')  ,
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + sessionStorage.getItem('tmpVendorID') + "&VendorID=" + sessionStorage.getItem('VendorID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (json) {
-            
+
             var companydetails = JSON.parse(json[0].jsondata);
-            console.log("companydetails",companydetails);
-            
+
+
             if (json.length > 1) {
-                
+
                 var categorydetails = JSON.parse(json[1].jsondata);
-                
+
                 var categoryresult = categorydetails.map(function (val) {
-                    selectedValues.push(val.CategoryID);                    
+                    selectedValues.push(val.CategoryID);
                 });
-                
-                $("#ddlTypeofProduct").select2().val(selectedValues).trigger("change");             
-              
-            }    
-                        
+
+                $("#ddlTypeofProduct").select2().val(selectedValues).trigger("change");
+
+            }
+
             sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
             if (companydetails[0].PM[0].paymentTerm != "" && companydetails[0].PM[0].paymentTerm != null && companydetails[0].PM[0].paymentTerm != undefined) {
                 jQuery('#paymentterms').html(companydetails[0].PM[0].paymentTerm);
             }
             else {
                 jQuery('#paymentterms').html();
-            }          
-            
+            }
+
             if (companydetails[0].VendorCode != "" && companydetails[0].VendorCode != null && companydetails[0].VendorCode != undefined) {
                 $('#hdnvendorCode').val(companydetails[0].VendorCode);
             } else {
                 var vendorCode = '';
-                $('#hdnvendorCode').val(vendorCode);                
+                $('#hdnvendorCode').val(vendorCode);
             }
 
             if (companydetails[0].GSTFile != "" && companydetails[0].GSTFile != null && companydetails[0].GSTFile != undefined) {
                 $('#gstattach').show();
                 $('#gstattach').html(companydetails[0].GSTFile);
-              
+
             } else {
-                
+
                 $('#gstattach').hide();
             }
 
             if (companydetails[0].PANFile != "" && companydetails[0].PANFile != null && companydetails[0].PANFile != undefined) {
                 $('#panattach').show();
                 $('#panattach').html(companydetails[0].PANFile);
-                
+
             } else {
-                
-                $('#panattach').hide(); 
+
+                $('#panattach').hide();
             }
 
             if (companydetails[0].MSMEFile != "" && companydetails[0].MSMEFile != null && companydetails[0].MSMEFile != undefined) {
                 $('#msmeattach').show();
                 $('#msmeattach').html(companydetails[0].MSMEFile);
-                
+
             } else {
-               
+
                 $('#msmeattach').hide();
             }
 
             if (companydetails[0].cancelledCheck != "" && companydetails[0].cancelledCheck != null && companydetails[0].cancelledCheck != undefined) {
                 $('#checkattach').show();
                 $('#checkattach').html(companydetails[0].cancelledCheck);
-                
+
             } else {
-            
+
                 $('#checkattach').hide();
             }
 
@@ -155,15 +151,15 @@ function fetchVendorRegistrationDetails() {
             }
             else {
                 jQuery('#pincode').html();
-            }            
+            }
 
-            jQuery('#gstvendorclass').html(gstclass); 
-            jQuery('#gstno').html(companydetails[0].ServiceTaxNo);         
+            jQuery('#gstvendorclass').html(gstclass);
+            jQuery('#gstno').html(companydetails[0].ServiceTaxNo);
             jQuery('#natureofest').html(companydetails[0].EstName);
-            jQuery('#vendortype').html(companydetails[0].VendorCatName);            
-            jQuery('#product').html(companydetails[0].product);           
+            jQuery('#vendortype').html(companydetails[0].VendorCatName);
+            jQuery('#product').html(companydetails[0].product);
             jQuery('#companyname').html(companydetails[0].VendorName);
-            jQuery('#address').html(companydetails[0].Address1 );
+            jQuery('#address').html(companydetails[0].Address1);
             jQuery('#country').html(companydetails[0].CountryName);
             jQuery('#state').html(companydetails[0].StateName);
             jQuery('#city').html(companydetails[0].CityName);
@@ -171,7 +167,7 @@ function fetchVendorRegistrationDetails() {
             jQuery('#panno').html(companydetails[0].PANNo);
             jQuery('#panfilename').html(companydetails[0].PANFile);
             jQuery('#TDStype').html(companydetails[0].TDSTypeName);
-            jQuery('#tanno').html(companydetails[0].TAN);            
+            jQuery('#tanno').html(companydetails[0].TAN);
             jQuery('#bankname').html(companydetails[0].BankName);
             jQuery('#bankaccountno').html(companydetails[0].BankAccount);
             jQuery('#ifsccode').html(companydetails[0].IFSCCode);
@@ -185,12 +181,12 @@ function fetchVendorRegistrationDetails() {
             jQuery('#msme').html(companydetails[0].MSMECheck);
             jQuery('#msmeclass').html(companydetails[0].MSMEType);
             jQuery('#msmeno').html(companydetails[0].MSMENo);
-            jQuery('#msmeattach').html(companydetails[0].MSMEFile);           
+            jQuery('#msmeattach').html(companydetails[0].MSMEFile);
             jQuery('#txtLastFiscalyear').html(companydetails[0].PreviousTurnoverYear);
-            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear );
+            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear);
             jQuery.unblockUI();
         },
-        error: function (xhr, status, error) {            
+        error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -203,11 +199,14 @@ function fetchVendorRegistrationDetails() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    if (sessionStorage.getItem('VendorID') != 0)
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('VendorID'));
+    else
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/Temp/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function ApproveRFI(For) {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];
@@ -221,11 +220,11 @@ function ApproveRFI(For) {
     } else {
         remarks = $('#txtparkreason').val()
     }
-    
+
     if (For == 'A' && $("#ddlTypeofProduct").select2('data').length == 0) {
         $('#requirederror').removeClass('hide');
         jQuery.unblockUI();
-    } else {        
+    } else {
         $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
             selectedid.push(item.id);
             selected.push(item.text);
@@ -282,7 +281,7 @@ function ApproveRFI(For) {
         });
         jQuery.unblockUI();
     }
-    
+
 }
 
 $('#rejectionReason').on('hidden.bs.modal', function () {
