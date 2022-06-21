@@ -202,8 +202,16 @@ function fetchVendorRegistrationDetails() {
 
 }
 
+//function DownloadFile(aID) {
+//    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+//}
+
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    debugger;
+    if (sessionStorage.getItem('VendorID') != 0)
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('VendorID'));
+    else
+        fnDownloadAttachments($("#" + aID.id).html(), 'VR/Temp/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function ApproveRFI(For) {

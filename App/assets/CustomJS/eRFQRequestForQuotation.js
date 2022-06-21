@@ -359,8 +359,11 @@ var FormWizard = function () {
                     success.hide();
                     error.hide();
                     if (index == 1) {
-
-                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        var StartDT = new Date();
+                        if ($('#txtstartdatettime').val() != null) {
+                            StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        }
+                        //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
                         var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
                         var CurDateonly = new Date(currentdate.toDateString())
                         var StartDTdateonly = new Date(StartDT.toDateString())
@@ -520,7 +523,7 @@ sessionStorage.setItem('hddnRFQID', 0)
 function InsUpdRFQDEtailTab1() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
-
+    debugger;
     if ($('#attach-file').html() != '' && $('#file1').val() == '') {
         TermsConditionFileName = $.trim(jQuery('#attach-file').html());
     } else {
@@ -563,8 +566,12 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
-    var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+    //From here
+    var StartDT = new Date();
+    if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() !="") {
+        StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+    }
+    //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
 
     var Tab1Data = {
@@ -627,6 +634,8 @@ function InsUpdRFQDEtailTab1() {
 }
 function InsUpdRFQDEtailTab2() {
     var tab2Items = '', ItemDetails = [];
+    debugger;
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var rowCount = jQuery('#tblServicesProduct tr').length;
     if (rowCount > 1) {
@@ -647,9 +656,18 @@ function InsUpdRFQDEtailTab2() {
             if ($.trim(this_row.find('td:eq(15)').html()) != '') {
                 povalue = removeThousandSeperator($.trim(this_row.find('td:eq(15)').html()));
             }
+            //var podate = new Date("06/14/2022");
+            var podtString = $.trim(this_row.find('td:eq(14)').html());
+            alert(podtString);
+            var podate = new Date(podtString);
+            //var podate = $.trim(this_row.find('td:eq(14)').html());
+            //if ($.trim(this_row.find('td:eq(14)').html()) != null && $.trim(this_row.find('td:eq(14)').html()) != "") {
+            //    podate = new Date($.trim(this_row.find('td:eq(14)').html()));
+            //}
+            alert(podate);
             var remark = $.trim(this_row.find('td:eq(10)').html()).replace(/'/g, "");
             var description = $.trim(this_row.find('td:eq(7)').html()).replace(/'/g, "");
-            var podate = new Date($.trim(this_row.find('td:eq(14)').html()));
+            
             tab2Items = {
                 "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
                 "ItemCode": $.trim(this_row.find('td:eq(2)').html()),
@@ -664,7 +682,7 @@ function InsUpdRFQDEtailTab2() {
                 "PoUnitRate": parseFloat(unitrate),
                 "PoNo": $.trim(this_row.find('td:eq(11)').html()),
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
-                "PoDate": podate.toLocaleString(),
+                "PoDate": podate,//.toLocaleString(),
                 "PoValue": parseFloat(removeThousandSeperator(povalue))
 
 
@@ -2118,6 +2136,7 @@ function RFQInviteVendorTab3() {
     });
 }
 function fnsubmitRFQ() {
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
         var Tab3data = {

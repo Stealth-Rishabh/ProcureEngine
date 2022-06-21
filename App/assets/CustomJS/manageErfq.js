@@ -446,7 +446,7 @@ function InsUpdRFQDEtailTab1() {
 }
 var isrunnigRFQ = 'Y';
 function fetchReguestforQuotationDetails(RFQID) {
-
+    debugger;
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -511,7 +511,11 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery("#tblServicesProduct").empty();
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                 for (var i = 0; i < RFQData[0].parameters.length; i++) {
-                    jQuery('<tr id=trid' + i + '><td style="width:70px;!important"><button type="button" style="text-decoration:none;cursur:pointer;" class="btn btn-xs btn-success isDisabledClass" onclick="editRow(\'divParameter\',\'' + RFQData[0].parameters[i].rfqParameterId + '\',\'trid' + i + '\')" ><i class="fa fa-pencil" style="margin-top: 0px !important;"></i></button><td>' + RFQData[0].parameters[i].rfqItemCode + '</td><td>' + RFQData[0].parameters[i].rfqShortName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfQuantity) + '</td><td>' + RFQData[0].parameters[i].rfqUomId + '</td><td>' + RFQData[0].parameters[i].rfqDescription + '</td><td>' + RFQData[0].parameters[i].rfqDelivery + '</td><td class=text-right>' + RFQData[0].parameters[i].tat + '</td><td>' + RFQData[0].parameters[i].rfqRemark + '</td><td>' + RFQData[0].parameters[i].rfqPoNo + '</td><td>' + RFQData[0].parameters[i].rfqVendorName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqUnitRate) + '</td><td>' + RFQData[0].parameters[i].rfqpoDate + '</td><td>' + thousands_separators(RFQData[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblServicesProduct");
+                    var utcPoDate = ""
+                    if (RFQData[0].parameters[i].rfqpoDate != null) {
+                        utcPoDate = fnConverToLocalTime(RFQData[0].parameters[i].rfqpoDate)
+                    }
+                    jQuery('<tr id=trid' + i + '><td style="width:70px;!important"><button type="button" style="text-decoration:none;cursur:pointer;" class="btn btn-xs btn-success isDisabledClass" onclick="editRow(\'divParameter\',\'' + RFQData[0].parameters[i].rfqParameterId + '\',\'trid' + i + '\')" ><i class="fa fa-pencil" style="margin-top: 0px !important;"></i></button><td>' + RFQData[0].parameters[i].rfqItemCode + '</td><td>' + RFQData[0].parameters[i].rfqShortName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfQuantity) + '</td><td>' + RFQData[0].parameters[i].rfqUomId + '</td><td>' + RFQData[0].parameters[i].rfqDescription + '</td><td>' + RFQData[0].parameters[i].rfqDelivery + '</td><td class=text-right>' + RFQData[0].parameters[i].tat + '</td><td>' + RFQData[0].parameters[i].rfqRemark + '</td><td>' + RFQData[0].parameters[i].rfqPoNo + '</td><td>' + RFQData[0].parameters[i].rfqVendorName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqUnitRate) + '</td><td>' + utcPoDate + '</td><td>' + thousands_separators(RFQData[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblServicesProduct");
 
                 }
 
