@@ -749,56 +749,56 @@ function deleteFAquote() {
         "QuantityAllocated": parseFloat(sessionStorage.getItem("QuantityAllocated"))
 
     }
-  /*  jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveFAQuote/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(QuoteProduct),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-            //** Upload Files on Azure PortalDocs folder
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-            }
-            if (data == "1") {
-
-                success1.show();
-                $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                success1.fadeOut(6000);
-                App.scrollTo(success1, -200);
-                fetchparticationQuotes()
-                $('#deletepopup').modal('hide')
-                $('#txtremarks').val('')
-                $('#fileToUpload').val('')
-
-            }
-            else if (data == "99") {
-                $('#deletepopup').modal('hide')
-                bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-            }
-            else {
-                error2.show();
-                $('#err').html('You have some error.Please try agian.');
-                error2.fadeOut(3000);
-                App.scrollTo(error2, -200);
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormapdiv', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })*/
+    /*  jQuery.ajax({
+          url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveFAQuote/",
+          beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+          type: "POST",
+          data: JSON.stringify(QuoteProduct),
+          contentType: "application/json; charset=utf-8",
+          success: function (data, status, jqXHR) {
+  
+              //** Upload Files on Azure PortalDocs folder
+              if ($('#fileToUpload').val() != '') {
+                  fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+  
+              }
+              if (data == "1") {
+  
+                  success1.show();
+                  $('#spansuccess1').html("Quoted Price deleted Successfully..");
+                  success1.fadeOut(6000);
+                  App.scrollTo(success1, -200);
+                  fetchparticationQuotes()
+                  $('#deletepopup').modal('hide')
+                  $('#txtremarks').val('')
+                  $('#fileToUpload').val('')
+  
+              }
+              else if (data == "99") {
+                  $('#deletepopup').modal('hide')
+                  bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+              }
+              else {
+                  error2.show();
+                  $('#err').html('You have some error.Please try agian.');
+                  error2.fadeOut(3000);
+                  App.scrollTo(error2, -200);
+              }
+              jQuery.unblockUI();
+          },
+          error: function (xhr, status, error) {
+  
+              var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+              if (xhr.status == 401) {
+                  error401Messagebox(err.Message);
+              }
+              else {
+                  fnErrorMessageText('errormapdiv', '');
+              }
+              jQuery.unblockUI();
+              return false;
+          }
+      })*/
     connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -929,7 +929,7 @@ function deletePSquote() {
 
     });
     connection.on("refreshRAQuotes", function (data) {
-        
+
         var JsonMsz = JSON.parse(data[0]);
         if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
@@ -979,58 +979,58 @@ function deleteCoalquote() {
 
     }
     //console.log(JSON.stringify(QuoteProduct))
-   /* jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveCAQuote/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(QuoteProduct),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-
-            if (data == "1") {
-                //** Upload Files on Azure PortalDocs folder
-                if ($('#fileToUpload').val() != '') {
-                    fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-                }
-
-                success1.show();
-                $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                success1.fadeOut(6000);
-                App.scrollTo(success1, -200);
-                fetchparticationQuotes()
-                $('#deletepopup').modal('hide')
-                $('#txtremarks').val('')
-                $('#fileToUpload').val('')
-
-
-            }
-            else if (data == "99") {
-                $('#deletepopup').modal('hide')
-                bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-            }
-            else {
-                error2.show();
-                $('#err').html('You have some error.Please try agian.');
-                error2.fadeOut(3000);
-                App.scrollTo(error2, -200);
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })*/
+    /* jQuery.ajax({
+         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveCAQuote/",
+         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+         type: "POST",
+         data: JSON.stringify(QuoteProduct),
+         contentType: "application/json; charset=utf-8",
+         success: function (data, status, jqXHR) {
+ 
+ 
+             if (data == "1") {
+                 //** Upload Files on Azure PortalDocs folder
+                 if ($('#fileToUpload').val() != '') {
+                     fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+ 
+                 }
+ 
+                 success1.show();
+                 $('#spansuccess1').html("Quoted Price deleted Successfully..");
+                 success1.fadeOut(6000);
+                 App.scrollTo(success1, -200);
+                 fetchparticationQuotes()
+                 $('#deletepopup').modal('hide')
+                 $('#txtremarks').val('')
+                 $('#fileToUpload').val('')
+ 
+ 
+             }
+             else if (data == "99") {
+                 $('#deletepopup').modal('hide')
+                 bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
+             }
+             else {
+                 error2.show();
+                 $('#err').html('You have some error.Please try agian.');
+                 error2.fadeOut(3000);
+                 App.scrollTo(error2, -200);
+             }
+             jQuery.unblockUI();
+         },
+         error: function (xhr, status, error) {
+ 
+             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+             if (xhr.status == 401) {
+                 error401Messagebox(err.Message);
+             }
+             else {
+                 fnErrorMessageText('spandanger', '');
+             }
+             jQuery.unblockUI();
+             return false;
+         }
+     })*/
     connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -2967,7 +2967,7 @@ function editValues(divName, rowid) {
 }
 function CheckminQuantity(id) {
     var biddidval = $('#' + id.id).val();
-    
+
     if (parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiyfrench').val())) || $('#txtminquantitiy').val() == "") {
         $('#' + id.id).closest('.minq').removeClass('has-success').addClass('has-error');
         $('#spnminq').removeClass('hide');
@@ -3044,16 +3044,19 @@ function formSubmitEditEvent() {
     if ($('#drpshowL1L2').val() != '' && $('#divbidShowL1L2').is(':visible')) {
         var showrank = "Y"
         if (sessionStorage.getItem('hdnbidtypeid') == "6") {
-            showrank=$("#drpshowH1H2").val()
+            showrank = $("#drpshowH1H2").val()
         }
         else if (sessionStorage.getItem('hdnbidtypeid') == "7") {
             showrank = $("#drpshowL1L2").val()
         }
-        else{
+        else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
+            showrank = $("#drpshowL1L2").val()
+        }
+        else {
             showrank = $("#drpshowH1H2NA").val()
         }
         Data = {
-            "QueryString":showrank,
+            "QueryString": showrank,
             "QueryStringDT": 'NA',
             "valType": "BAL",
             "BidId": parseInt(sessionStorage.getItem('hdnbid')),
@@ -3122,7 +3125,7 @@ function formSubmitEditEvent() {
         Data = '';
 
     }
-    
+
     if (Data != '') {
         connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
             return console.error(err.toString());
@@ -3845,7 +3848,7 @@ function updMinIncreament() {
     }
 
     if (Data != '' || Data != null) {
-       
+
         connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
             return console.error(err.toString());
 
@@ -3928,7 +3931,7 @@ function UpdShowL1Price() {
 
 
     if (Data != '' || Data != null) {
-        
+
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
             connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
@@ -3956,7 +3959,7 @@ function UpdShowL1Price() {
 
 var errorStart = $('#msgErrorStart');
 function UpdShowStartPrice() {
-   
+
     var URL = '';
     if (sessionStorage.getItem('hdnbidtypeid') == 7) {
         var valtype = "RAStartP";
@@ -4016,14 +4019,14 @@ function UpdShowStartPrice() {
             "CAID": parseInt($("#hdnshowStartPrice").val()),
             "DecreamentOn": '',
             "UserID": sessionStorage.getItem('UserID')
-            
+
         }
         // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
-   
+
     if (Data != '' || Data != null) {
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-             connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
             });
         }
@@ -4125,7 +4128,7 @@ function updBidStartPrice() {
         // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
     if (Data != '' || Data != null) {
-       
+
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
             connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
@@ -4138,7 +4141,7 @@ function updBidStartPrice() {
 
             });
         }
-       
+
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {

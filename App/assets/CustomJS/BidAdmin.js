@@ -88,7 +88,9 @@ function startTimer(duration, display) {
 
             if ((BidTypeID == 6 && BidForID == 82) || (BidTypeID == 7 && BidForID == 82)) {
                 fetchBidSummaryDetails(BidID, BidForID);
-                fetchBidTime(); //** to refresh Timer after Bid accept by vendor
+                if (timer != 0) {
+                    fetchBidTime(); //** to refresh Timer after Bid accept by vendor
+                }
             }
         }
         //  console.log(timer)
@@ -101,7 +103,7 @@ function startTimer(duration, display) {
                  return;
              }
          }*/
-
+        console.log(timer)
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {
