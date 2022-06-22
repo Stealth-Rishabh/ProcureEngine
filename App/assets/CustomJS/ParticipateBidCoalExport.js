@@ -18,39 +18,15 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
 connection.on("refreshBidDetailsManage", function (data) {
+   if (data.length > 0) {
 
-
-    if (data.length > 0) {
-
-        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
-            
             var JsonMsz = JSON.parse(data[0]);
-            alert(JsonMsz.valType)
-            console.log(JsonMsz.valType)
-            if (JsonMsz.valType == "BAL") {
-                var VRanlList = JSON.parse(data[1]);
-                for (var j = 0; j < VRanlList.length; j++) {
-                    if ($('#coalid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-
-                        $('#lblstatus' + i).html(VRanlList[j].VendorRank)
-                        if (VRanlList[j].VendorRank == 'L1') {
-                            jQuery('#lblstatus' + i).css('color', 'Blue');
-                        }
-                        else {
-                            jQuery('#lblstatus' + i).css('color', 'Red');
-                        }
-                        //}
-                    }
-                }
-            }
             if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
                 fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
             }
-            if (JsonMsz.valType != "BAL") {
+            if (JsonMsz.valType != "BHV" && JsonMsz.valType != "BAT") {
                 fetchBidSummaryVendorproduct();
             }
-        });
-
     }
 
 });

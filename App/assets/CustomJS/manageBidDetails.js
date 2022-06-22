@@ -3782,6 +3782,7 @@ function updMinDecreament() {
             });
         }
         else {
+
             connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
 
@@ -3924,12 +3925,13 @@ function UpdShowL1Price() {
             "BidId": parseInt(sessionStorage.getItem('hdnbid')),
             "BidClosingType": 'NA',
             "CAID": parseInt($("#hdnshowL1Price").val()),
-            "UserID": sessionStorage.getItem('UserID')
+            "UserID": sessionStorage.getItem('UserID'),
+            "DecreamentOn": ''
         }
-        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
+        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
 
-
+    //alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
@@ -3938,6 +3940,7 @@ function UpdShowL1Price() {
             });
         }
         else {
+
             connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
             });
