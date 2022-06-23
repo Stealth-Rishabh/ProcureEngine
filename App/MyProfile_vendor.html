@@ -371,22 +371,24 @@
                                                                                 <input type="text" class="form-control"
                                                                                        id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
-                                                                           
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
-                                                                                Companies
-                                                                            </label>
-                                                                            <div class="col-md-9">
-                                                                                <input type="text" class="form-control"
-                                                                                       id="vendorComp" name="vendorComp" autocomplete="off" readonly />
-                                                                                <!--<label id="vendorComp" name="vendorComp" class="label control-label"></label>-->
-                                                                            </div>
-                                                                        </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-11">
+                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                            Companies
+                                                                        </label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" class="form-control"
+                                                                                   id="vendorComp" name="vendorComp" autocomplete="off" readonly />
+                                                                            <!--<label id="vendorComp" name="vendorComp" class="label control-label"></label>-->
                                                                         </div>
                                                                     </div>
+                                                                </div>
+
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -607,7 +609,7 @@
                                                                                 <label class="col-md-3 control-label" style="text-align:left">
                                                                                     MSME
                                                                                 </label>
-                                                                                <div class="col-md-3 ">
+                                                                                <div class="col-md-3">
                                                                                     <select class="form-control selects selectno" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
                                                                                         <option value="0" class="hide">Select</option>
                                                                                         <option value="Y">Yes</option>
@@ -621,8 +623,8 @@
                                                                                     MSME Class<span class="required"> *</span>
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
-                                                                                    <select class="form-control selects" id="ddlMSMEClass" name="ddlMSMEClass" >
-                                                                                        <option value="0">Select</option>
+                                                                                    <select class="form-control selects ddlMSMEClass" id="ddlMSMEClass" name="ddlMSMEClass">
+                                                                                        <option value=" ">Select</option>
                                                                                         <option value="Micro">Micro</option>
                                                                                         <option value="Small">Small</option>
                                                                                         <option value="Medium">Medium</option>
@@ -639,7 +641,7 @@
                                                                             </label>
                                                                             <div class="col-md-3 xyz">
                                                                                 <input type="text" class="form-control" placeholder="MSME Udyam No."
-                                                                                       id="txtUdyam" name="txtUdyam" autocomplete="off"  onkeyup="replaceQuoutesFromString(this)" />
+                                                                                       id="txtUdyam" name="txtUdyam" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
 
                                                                             <div class="inputgroup">
@@ -680,10 +682,10 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label xyz">
                                                                                     Last FY Turn Over Year
                                                                                 </label>
-                                                                                <div class="col-md-3 ">
+                                                                                <div class="col-md-3 xyz">
                                                                                     <input type="text" class="form-control selectno "
                                                                                            id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
                                                                                 </div>
@@ -715,9 +717,9 @@
                                                                                 <label class="col-md-3 control-label">
                                                                                     2nd Last FY Turn Over Year
                                                                                 </label>
-                                                                                <div class="col-md-3 ">
+                                                                                <div class="col-md-3 xyz">
                                                                                     <input type="text" class="form-control selectno"
-                                                                                           id="txt2LastFiscalyear" name="txt2LastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled/>
+                                                                                           id="txt2LastFiscalyear" name="txt2LastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -770,8 +772,9 @@
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" placeholder="Select Companies" id="txtCompanies"
-                                                                       data-provide="typeahead" autocomplete="off" name="txtCompanies" />
+                                                                <!--<input type="text" class="form-control" placeholder="Select Companies" id="txtCompanies"
+           data-provide="typeahead" autocomplete="off" name="txtCompanies" />-->
+                                                                <select class="form-control" id="txtCompanies" name="txtCompanies" onchange="fnAddCustomers()"></select>
                                                             </div>
                                                         </div>
                                                         <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">

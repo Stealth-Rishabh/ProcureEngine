@@ -11,7 +11,7 @@ jQuery(document).ready(function () {
         digitsOptional: true,
         allowPlus: false,
         allowMinus: false,
-       'removeMaskOnSubmit': true
+        'removeMaskOnSubmit': true
 
     });
 
@@ -1112,7 +1112,13 @@ function fetchCompanyVR() {
         dataType: "json",
         success: function (data) {
             customersForAutoComplete = JSON.parse(data[0].jsondata);
-
+            $("#txtCompanies").empty()
+            if (customersForAutoComplete.length > 0) {
+                $("#txtCompanies").append("<option value=0>Select Companies</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
+                }
+            }
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -1131,62 +1137,92 @@ function fetchCompanyVR() {
 
     });
 }
+function fnAddCustomers() {
+            var cusid = $("#txtCompanies option:selected").val();
+    var cusname = $("#txtCompanies option:selected").text();
+    if (cusid != 0) {
+        sessionStorage.setItem('hdnVendorID', $("#txtCompanies option:selected").val());
+        var str = "<tr id=trcomp" + cusid + "><td class='hide'>" + cusid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + cusid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + cusname + "'\,\'" + cusid + "'\)\"; id=\"chkvender" + cusid + "\" value=" + cusid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + cusname + " </td></tr>";
+        jQuery('#tblcompanieslist > tbody').append(str);
+        var arr = $("#tblcompanieslist tr");
+        $.each(arr, function (i, item) {
+            var currIndex = $("#tblcompanieslist tr").eq(i);
+            var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+
+            $(this).nextAll().each(function (i, inItem) {
+
+                if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+                    $(this).remove();
+                }
+
+            });
+
+        });
+        if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+            $("#selectedcompanieslists> tbody > tr").each(function (index) {
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+            });
+        }
+        $("#txtCompanies").val('0')
+    }
+}
 $("#txtCompanies").keypress(function (e) {
     if (e.which == 13) {
         return false;
 
     }
 })
-jQuery("#txtCompanies").typeahead({
-    source: function (query, process) {
-        var data = customersForAutoComplete
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.customername] = username;
-            usernames.push(username.customername);
-        });
+//jQuery("#txtCompanies").typeahead({
+//    source: function (query, process) {
+//        var data = customersForAutoComplete
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            map[username.customername] = username;
+//            usernames.push(username.customername);
+//        });
 
-        process(usernames);
+//        process(usernames);
 
-    },
-    minLength: 0,
-    updater: function (item) {
-        if (map[item].customerid != "0") {
-            sessionStorage.setItem('hdnVendorID', map[item].customerid);
-            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
-            jQuery('#tblcompanieslist > tbody').append(str);
-            var arr = $("#tblcompanieslist tr");
-            $.each(arr, function (i, item) {
-                var currIndex = $("#tblcompanieslist tr").eq(i);
-                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+//    },
+//    minLength: 0,
+//    updater: function (item) {
+//        if (map[item].customerid != "0") {
+//            sessionStorage.setItem('hdnVendorID', map[item].customerid);
+//            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
+//            jQuery('#tblcompanieslist > tbody').append(str);
+//            var arr = $("#tblcompanieslist tr");
+//            $.each(arr, function (i, item) {
+//                var currIndex = $("#tblcompanieslist tr").eq(i);
+//                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
 
-                $(this).nextAll().each(function (i, inItem) {
+//                $(this).nextAll().each(function (i, inItem) {
 
-                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
-                        $(this).remove();
-                    }
+//                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+//                        $(this).remove();
+//                    }
 
-                });
+//                });
 
-            });
-            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
-                $("#selectedcompanieslists> tbody > tr").each(function (index) {
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
-                });
-            }
-        }
-        else {
+//            });
+//            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+//                $("#selectedcompanieslists> tbody > tr").each(function (index) {
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+//                });
+//            }
+//        }
+//        else {
 
-            gritternotification('Please select Vendor  properly!!!');
-        }
+//            gritternotification('Please select Vendor  properly!!!');
+//        }
 
-        return item;
-    }
+//        return item;
+//    }
 
-});
+//});
 
 function Check(event, custName, custID) {
 

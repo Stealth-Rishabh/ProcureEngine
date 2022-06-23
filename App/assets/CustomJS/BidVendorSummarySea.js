@@ -789,10 +789,23 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         str += "</tr>";
                         strsumm += "<td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=psid" + data[i].psid + ">" + data[i].psid + "</td><td class=hide id=pid" + i + ">" + data[i].psid + "</td></tr>";
                         jQuery('#tblBidSummary > tbody').append(str);
-                        jQuery('#tblBidSumm > tbody').append(str);
+                        //jQuery('#tblBidSumm > tbody').append(str);
                         jQuery('#tblbidsummarypercentagewise > tbody').append(strsumm);
+
                         if (data[i].srNo == 'H1') {
+
+                            $('#lowa' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
                             $('#low' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+
+                            $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
@@ -802,16 +815,6 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                  'font-weight': 'bold',
                                  'color': '#3c763d'
                              })*/
-                            $('#low_str' + i).css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })
-                            $('#lowa' + i).css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })
 
                         }
                         if (data[i].srNo == 'L1') {
@@ -904,7 +907,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         strsumm += "<td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=frid" + data[i].frid + ">" + data[i].frid + "</td></tr>";
                         jQuery('#tblBidSummary > tbody').append(str);
-                        jQuery('#tblBidSumm > tbody').append(str);
+                        // jQuery('#tblBidSumm > tbody').append(str);
                         jQuery('#tblbidsummarypercentagewise > tbody').append(strsumm);
 
                         if (data[i].srNo == 'H1') {
@@ -1324,7 +1327,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td></tr>";
 
                         jQuery('#tblBidSummary').append(str);
-                        jQuery('#tblBidSumm > tbody').append(str);
+                        //jQuery('#tblBidSumm > tbody').append(str);
                         jQuery('#tblbidsummarypercentagewise').append(strsumm);
 
 
