@@ -9,12 +9,12 @@ function BindPurchaseOrg() {
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
 
-       $("#ddlPurchaseOrg").empty();
-       $('#ddlPurchaseOrg').append('<option value="0">Select</option>');
+        $("#ddlPurchaseOrg").empty();
+        $('#ddlPurchaseOrg').append('<option value="0">ALL</option>');
         if (res.result.length > 0) {
-                 $.each(res.result, function (key, value) {
-              $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
-             });
+            $.each(res.result, function (key, value) {
+                $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
+            });
         }
 
     });
@@ -63,32 +63,26 @@ $(document).on('change', '.form-control', function () {
 function Validate() {
     var nfaText = false;
 
-     if ($("#ddlPurchaseOrg option:selected").val() == "0") {
-        $("#ddlPurchaseOrg").css("border-color", "red");
-        $("#error").text("Purchase Org is required");
-        $("#errordiv").show();
-        nfaques = true;
-    }
-    else if ($("#txtParamText").val() == "") {
+    
+    if ($("#txtParamText").val() == "") {
         $("#txtParamText").css("border-color", "red");
         $("#error").text("Question is required");
         $("#errordiv").show();
+        $('.alert-danger').fadeOut(5000);
         nfaText = true;
     }
     else {
         $("#txtParamText").css("border-color", "");
-        $("#ddlPurchaseOrg").css("border-color", "");
         $("#errordiv").hide();
         $("#error").text('');
         nfaText = false;
     }
-    
-   
+
+
     if (nfaText) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 };
@@ -114,8 +108,12 @@ function BindData() {
                     isdefault = "<span>Yes</span>";
                 else
                     isdefault = "<span>No</span>";
-
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr>')
+                
+                if (value.purchaseOrgName == '')
+                    porg = 'ALL';
+                else
+                    porg = value.purchaseOrgName;
+                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + porg + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -130,7 +128,7 @@ function BindData() {
     jQuery.unblockUI();
 
 };
-function onEditClick(idx, checked, isdefault,Porgid) {
+function onEditClick(idx, checked, isdefault, Porgid) {
 
 
     var rowID = $('#' + idx);
@@ -194,7 +192,7 @@ function SaveUpdate() {
     //alert(JSON.stringify(Data))
     var SaveParam = callajaxReturnSuccess(url, "Post", JSON.stringify(Data));
     SaveParam.success(function (res) {
-       
+
         if (res == '1') {
             $('.alert-success').show();
             $('#success').text('Qusetion saved Successfully.');
@@ -207,7 +205,7 @@ function SaveUpdate() {
             $('.alert-danger').show();
             $('.alert-danger').fadeOut(5000);
         }
-        
+
         jQuery.unblockUI();
     });
     SaveParam.error(function (xhr, status, error) {

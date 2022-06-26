@@ -104,9 +104,11 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount) )//+ " " + res.result[0].currencyNm);
-              
-                $("#lblCurrency").text(res.result[0].currencyNm);
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaBudget))//+ " " + res.result[0].currencyNm);
+
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaAmount))
+
+                $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
@@ -118,6 +120,14 @@ function GetOverviewmasterbyId(idx) {
                 }
                 else if (res.result[0].eventtypeName == "FA") {
                     $("#lblEventType").text("Forward Auction")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                }
+                else if (res.result[0].eventtypeName == "CA") {
+                    $("#lblEventType").text("Coal Auction")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                }
+                else if (res.result[0].eventtypeName == "FF") {
+                    $("#lblEventType").text("French Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else {

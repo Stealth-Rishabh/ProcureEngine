@@ -649,8 +649,9 @@ function FormValidate() {
 
         //doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
         // errorElement: 'span', //default input error message container
-        // errorClass: 'help-block help-block-error', // default input error message class
+        //  errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
+        ignore: false,
         rules: {
 
             ddlNatureEstaiblishment: {
@@ -756,24 +757,29 @@ function FormValidate() {
                 required: true,
             },
             filegst: {
-                required: true,
+                required: true
             },
             filecheck: {
-                required: true,
+                required: true
             },
             filepan: {
-                required: true,
+                required: true
             }
-           
+
 
         },
 
         invalidHandler: function (event, validator) {
-
-            errorVendor.show()
+            $('#diverrorvendor').show()
+            $('#divsuccvendor').hide()
             $('#spanerrorvendor').text("Please fill all mandatory Details..");
-            errorVendor.fadeOut(6000);
-            successVendor.hide();
+
+            for (var i = 0; i < validator.errorList.length; i++) {
+                $(validator.errorList[i].element).parents('.panel-collapse.collapse').collapse('show');
+            }
+            $('#diverrorvendor').fadeOut(6000);
+
+
         },
 
         highlight: function (element) {
@@ -785,10 +791,15 @@ function FormValidate() {
             $(element).closest('.xyz').removeClass('has-error');
 
         },
-        errorPlacement: function (error, element) {
+        /*errorPlacement: function (error, element) {
 
-        },
+        },*/
         success: function (label) {
+            label.closest('.form-group').removeClass('has-error');
+            label.remove();
+        },
+        errorPlacement: function (error, element) {
+            // error.insertAfter(element); // for other inputs, just perform default behavior
         },
         submitHandler: function (form) {
 
@@ -803,10 +814,10 @@ function FormValidate() {
     });
     formEmailvalidate.validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
         rules: {
             txtemailverify: {
                 required: true,
@@ -814,9 +825,19 @@ function FormValidate() {
             }
 
         },
+        messages: {
+            txtemailverify: {
+                required: "Please Enter Valid EmailID"
+            }
+
+        },
         invalidHandler: function (event, validator) {
-            errorVendor.hide()
-            successVendor.hide();
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#diverrorvendor').show()
+            $('#divsuccvendor').hide()
+            $('#spanerrorvendor').text("Please Enter Valid EmailID");
+            $('#diverrorvendor').fadeOut(6000);
         },
 
         highlight: function (element) {
@@ -842,7 +863,7 @@ function FormValidate() {
 
 function validateEmail() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    $('#modalLoaderparameter').removeClass('display-none')
+    $('#modalLoader').removeClass('display-none')
     var emailId = $("#txtemailverify").val().trim();
 
     jQuery.ajax({
@@ -865,12 +886,9 @@ function validateEmail() {
             else {
                 $('#diverrorvendor').show();
                 $('#spanerrorvendor').html("EmailId is already registered&nbsp;&nbsp;<b><a style=text-decoration:none href='https://www.procurengine.com/vendor/'>Please Login here</a></b>");
-                //$('#diverrorvendor').fadeOut(10000);
-                //$('#collapse2').addClass('collapse2').removeClass('collapse in')
-                //$('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
                 $('#txtemailverify,#txtEmail,#btnverifyemail').removeAttr('disabled');
             }
-            $('#modalLoaderparameter').addClass('display-none');
+            $('#modalLoader').addClass('display-none');
             jQuery.unblockUI();
 
         },
@@ -883,23 +901,21 @@ function validateEmail() {
             else {
                 fnErrorMessageText('spanerrorvendor', '');
             }
-            $('#modalLoaderparameter').addClass('display-none');
+            $('#modalLoader').addClass('display-none');
             $('#txtemailverify').val('')
             jQuery.unblockUI();
             return false;
         }
     });
 }
-$("#txtemailverify").keyup(function () {
-    $('#diverrorvendor').fadeOut(7000);
-});
+
 $('#registerParticipantModal').on("hidden.bs.modal", function () {
     //fnFormClear();
     $('#txtemailverify,#btnverifyemail').removeAttr('disabled');
     $('#btnverifysubmit').addClass('hide');
     $('#txtemailverify').val('');
     $('#txtEmail,#txtEmail2').val('');
-    $('#modalLoaderparameter').addClass('display-none');
+    $('#modalLoader').addClass('display-none');
     $('#collapse2').addClass('collapse2').removeClass('collapse in')
     $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
     window.location = window.location.href.split('#')[0];
@@ -907,9 +923,9 @@ $('#registerParticipantModal').on("hidden.bs.modal", function () {
 
 // make reset Function & call after Details submit ????
 function fnFormClear() {
-    $("#ddlNatureEstaiblishment").val('')
-    $("#ddlNatureEstaiblishment option:selected").text('')
-    $("#ddlVendorType").val('')
+    $("#ddlNatureEstaiblishment").val('0')
+    //$("#ddlNatureEstaiblishment option:selected").text('')
+    $("#ddlVendorType").val('0')
     $("#txtProduct").val('')
     $("#ddlCompanyName").val('')
     $("#txtAdd1").val('')
@@ -946,4 +962,5 @@ function fnFormClear() {
     $('#filecheck').val('')
     $("#currencyLastFiscal option:selected").val('')
     $("#currency2LastFiscal option:selected").val('')
+    $('#diverrorvendor').fadeOut(7000);
 }

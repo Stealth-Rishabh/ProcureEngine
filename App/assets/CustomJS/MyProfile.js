@@ -564,6 +564,7 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+
 function formvalidate() {
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -1080,9 +1081,8 @@ function fetchMsme() {
         $('input[name="filemsme"]').rules('add', {
             required: true
         });
-        $('input[name="ddlMSMEClass"]').rules('add', {
-            required: true,
-            notEqualTo: 0
+        $('#ddlMSMEClass').rules('add', {
+            required: true
         });
 
 
@@ -1113,8 +1113,9 @@ function fetchCompanyVR() {
         success: function (data) {
             customersForAutoComplete = JSON.parse(data[0].jsondata);
             $("#txtCompanies").empty()
+            $("#txtCompanies").append("<option value=0>Select Companies</option>");
             if (customersForAutoComplete.length > 0) {
-                $("#txtCompanies").append("<option value=0>Select Companies</option>");
+                
                 for (var i = 0; i < data.length; i++) {
                     $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
                 }
@@ -1138,7 +1139,7 @@ function fetchCompanyVR() {
     });
 }
 function fnAddCustomers() {
-            var cusid = $("#txtCompanies option:selected").val();
+    var cusid = $("#txtCompanies option:selected").val();
     var cusname = $("#txtCompanies option:selected").text();
     if (cusid != 0) {
         sessionStorage.setItem('hdnVendorID', $("#txtCompanies option:selected").val());
@@ -1373,7 +1374,7 @@ function sendToCompanies() {
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
-    //alert(JSON.stringify(datainfo));
+    alert(JSON.stringify(datainfo));
     //console.log(JSON.stringify(datainfo));
     jQuery.ajax({
 

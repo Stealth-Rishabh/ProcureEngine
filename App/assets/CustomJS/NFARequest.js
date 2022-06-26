@@ -290,23 +290,42 @@ var FormWizard = function () {
                 onNext: function (tab, navigation, index) {
 
                     success.hide();
-
                     error.hide();
+                   
+                    var flag = "T";
+                    //var rowCount = jQuery('#tblNFAOverviewParam >tbody> tr').length;
 
+                    //var count = 1;
+                    //for (i = 0; i < rowCount - 1; i++) {
+                    //    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
+                    //        $('#commremarks' + i).removeClass('has-success')
+                    //        $('#commremarks' + i).css("border", "1px solid red")
+                    //        flag = "F";
+                    //        // $('#form_wizard_1').bootstrapWizard('previous');
+                    //        $('.alert-danger').show();
+                    //        $('#spandanger').html('Please fill RFQ Commercial Terms.');
+                    //        Metronic.scrollTo($(".alert-danger"), -200);
+                    //        $('.alert-danger').fadeOut(7000);
+                    //        count = count + 1;
+                    //    }
+                    //    else {
+                    //        flag = "T"
+                    //    }
+                    //}
+                    
+                   
                     if (index == 1) {
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
                         if (form.valid() == false) {
-                            
                             form.validate();
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Check Highlighted Fileds');
                             Metronic.scrollTo($(".alert-danger"), -500);
                             $('.alert-danger').fadeOut(8000);
                             return false;
-
-                        }
+                         }
                         else {
                             FetchMatrixApprovers();
                         }
@@ -332,32 +351,35 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-
-                            }
+                             }
                             SaveFirstTabActivity();//Insert Activity in ActivityDetails Table
                         }
 
                     }
                     else if (index == 2) {
+                        form.validate();
+                        $('.paramremark').rules('add', {
+                            minlength: 50,
+                            maxlength: 1000
+
+                        });
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
                             $('#errorSeq').html('You have Some error. Please Check Below!')
                             $('#errordivSeq').show();
                             Metronic.scrollTo($('errordivSeq'), -500);
                             $('#errordivSeq').fadeOut(8000);
-
                             return false;
                         }
-                        else if (form.valid() == false) {
-
+                        if (form.valid() == false) {
                             form.validate();
+                            flag = 'F';
                             $('.alert-danger').show();
                             $('#errorSeq').text('Remarks should be minimum 50 characters & maximum 1000 characters.');
                             Metronic.scrollTo($(".alert-danger"), -500);
                             $('.alert-danger').fadeOut(5000);
                             return false;
-
-                        }
-                        else {
+                       }
+                         if(flag == "T") {
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
@@ -373,9 +395,7 @@ var FormWizard = function () {
                 onPrevious: function (tab, navigation, index) {
 
                     success.hide();
-
                     error.hide();
-
                     if (index == 0) {
                         var PreviewHtml = 'Save and Continue <i class="m-icon-swapright m-icon-white">';
                         $(".button-next").html(PreviewHtml);
@@ -501,8 +521,16 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
-                $("#txtTitle").val(res.result[0].nfaSubject);
-                $("#txtNFADetail").val(res.result[0].nfaDescription);
+                setTimeout(function () {
+                    GetEventRefData();
+                    $("#txtEventref").val(res.result[0].eventReftext);
+                    $("#txtTitle").val(res.result[0].nfaSubject);
+                    $("#txtNFADetail").val(res.result[0].nfaDescription);
+                    $("#ddlEventType").val(res.result[0].eventID);
+                    sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
+                    sessionStorage.setItem('hdnEventForID', res.result[0].bidForID);
+                }, 900)
+                
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
                 //sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);
@@ -522,9 +550,7 @@ function GetOverviewmasterbyId(idx) {
                 }
                 $("#txtProjectName").val(res.result[0].projectName);
                 $("#ddlBudget").val(res.result[0].budgetStatus);
-                $("#ddlEventType").val(res.result[0].eventID);
-                $("#txtEventref").val(res.result[0].eventReftext);
-                sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
+                
                 $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
                 setTimeout(function () {
                     bindPurchaseGroupDDL()
@@ -545,10 +571,15 @@ function GetOverviewmasterbyId(idx) {
 var objEventData = [];
 
 $("#ddlEventType").on("change", function () {
-
+    GetEventRefData();
+    
+})
+function GetEventRefData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var EventTypeId = $(this).val();
+    var EventTypeId = $("#ddlEventType option:selected").val();
     $("#txtEventref").val('');
+    $("#txtTitle").val('');
+    $("#txtNFADetail").val('');
     sessionStorage.setItem("hdnEventrefId", 0);
     var url = "NFA/FetchNFAEventRef?CustomerId=" + parseInt(CurrentCustomer) + "&EventTypeid=" + parseInt(EventTypeId);
 
@@ -564,13 +595,11 @@ $("#ddlEventType").on("change", function () {
         jQuery.unblockUI();
     });
     jQuery.unblockUI();
-})
-function GetEventRefData() {
-
-};
+}
 
 $("#txtEventref").keyup(function () {
     sessionStorage.setItem("hdnEventrefId", 0);
+    sessionStorage.setItem("hdnEventForID", 0);
     $("#txtEventref").css("border-color", "");
 });
 $("#txtBudget").focusout(function () {
@@ -596,6 +625,7 @@ $("#txtAmountFrom").focusout(function () {
     }
 });
 sessionStorage.setItem("hdnEventrefId", 0);
+sessionStorage.setItem("hdnEventForID", 0);
 $("#txtEventref").typeahead({
     source: function (query, process) {
         var data = objEventData;
@@ -617,8 +647,9 @@ $("#txtEventref").typeahead({
         if (map[item].refId != "0") {
 
             sessionStorage.setItem('hdnEventrefId', map[item].refId);
-           
-            $('#txtTitle').val("NFA -"+map[item].bidSubject)
+            sessionStorage.setItem('hdnEventForID', map[item].bidForID);
+
+            $('#txtTitle').val("NFA -" + map[item].bidSubject)
             $('#txtNFADetail').val(map[item].bidDetails)
             // GetApprovermasterbyId(nfaApproverIDX);
         }
@@ -711,18 +742,19 @@ function fnApproversNBQuery(rownum, question) {
         var rowApp = rownum;
         if (!jQuery("#tblNFAOverviewParam thead").length) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-        
+
         // sessionStorage.setItem("hdnParamIdx", 0);
         $("#ddlNFAParam").val('');
         $('#nfaparamoption' + rownum).remove();
         //$("#txtNfaParamAns").val('');
         //$("#txtNFAParam").select();
     }
+    form.validate();
     $('#paramremark' + rowApp).rules('add', {
         minlength: 50,
         maxlength: 1000,
@@ -1184,6 +1216,7 @@ function ValidTeTab1() {
 }
 
 function Savedata() {
+
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1221,7 +1254,7 @@ function Savedata() {
         UpdatedBy: UserID
     }
     overviewList.push(model);
-    // console.log(overviewList)
+    console.log(overviewList)
     var url = "NFA/InsUpdateNfaoverview";
 
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
@@ -1308,10 +1341,14 @@ function BindSaveparams() {
             if (res.result.length > 0) {
                 $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    form.validate();
+                   
                     $('#paramremark' + value.idx).rules('add', {
+                       
                         minlength: 50,
-                        maxlength: 1000,
+                        maxlength: 1000
+                        
                     });
 
                     $('#paramremark' + value.idx).maxlength({
@@ -1321,6 +1358,7 @@ function BindSaveparams() {
                 });
 
             }
+            //form.validate();
 
         }
         else {
@@ -1363,10 +1401,40 @@ function Bindtab1DataforPreview() {
     $("#lblGroup").text($("#ddlPurchasegroup option:selected").text());
     $("#lblCondition").text($("#ddlCondition option:selected").text());
     $("#lblEventType").text($("#ddlEventType option:selected").text());
-    $("#lblEventId").text($("#txtEventref").val());
+    //$("#lblEventId").text($("#txtEventref").val());
+    if ($("#ddlEventType option:selected").val() == "7") {
+        
+        $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + sessionStorage.getItem("hdnEventrefId") + "'\,\'" + sessionStorage.getItem("hdnEventForID")  + "'\,\'7'\,\'0'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
+    }
+    else if ($("#ddlEventType option:selected").val() == "7") {
+        
+        $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + sessionStorage.getItem("hdnEventrefId") + "'\, \'" + sessionStorage.getItem("hdnEventForID") + "'\,\'6'\,\'0'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
+    }
+    else if ($("#ddlEventType option:selected").val() == "8") {
+        
+        $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + sessionStorage.getItem("hdnEventrefId") + "'\, \'" + sessionStorage.getItem("hdnEventForID") + "'\,\'8'\,\'0'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
+    }
+    else if ($("#ddlEventType option:selected").val() == "9") {
+        
+        $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + sessionStorage.getItem("hdnEventrefId") + "'\, \'" + sessionStorage.getItem("hdnEventForID") + "'\,\'9'\,\'0'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
+    }
+    else {
+        $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + sessionStorage.getItem("hdnEventrefId") + "'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
+    }
     $("#lblRemark").text($("#txtRemark").val());
 }
+function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
+    if (RFQID == 0) {
+        var encrypdata = fnencrypt("BidID=" + bidid + "&BidTypeID=" + bidtypeid + "&BidForID=" + bidforid)
+        window.open("BidSummary.html?param=" + encrypdata, "_blank")
+    }
+    else {
+        var encrypdata = fnencrypt("RFQID=" + RFQID + "&AppType=NFA&VID=NFA")
+        window.open("eRFQApproverAnalysis.html?param=" + encrypdata, "_blank")
+
+    }
+}
 function FetchMatrixApprovers() {
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
@@ -1380,6 +1448,7 @@ function FetchMatrixApprovers() {
 function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
 
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
+    console.log(url)
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         $("#tblApproversPrev").empty();
@@ -1389,16 +1458,15 @@ function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
                 $("#errorApproverdivSeq").hide();
                 $("#tblApproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:5%!important'>Sequence</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                     $("#tblApproversPrev").append('<tr id=trNfaApprover' + value.idx + '><td>' + value.approverName + '</td><td>' + value.emailId + "<td>" + value.seq + "</td>" + '</td><td class=hide>' + value.idx + '</td></tr>');
+                    $("#tblApproversPrev").append('<tr id=trNfaApprover' + value.idx + '><td>' + value.approverName + '</td><td>' + value.emailId + "<td>" + value.seq + "</td>" + '</td><td class=hide>' + value.idx + '</td></tr>');
 
                 });
                 ApproverCtr = 1;
             }
-            else
-            {
+            else {
                 ApproverCtr = 0;
-                bootbox.alert("No Approver(s) find for selected Apprval matrix(BudgetType: " + $("#ddlBudget option:selected").text() + ", Amount: " + $("#txtAmountFrom").val() + ", Org: " + $("#ddlPurchaseOrg option:selected").text() + ", Group: " + $("#ddlPurchasegroup option:selected").text() )
-               
+                bootbox.alert("No Approver(s) find for selected Apprval matrix(BudgetType: " + $("#ddlBudget option:selected").text() + ", Amount: " + $("#txtAmountFrom").val() + ", Org: " + $("#ddlPurchaseOrg option:selected").text() + ", Group: " + $("#ddlPurchasegroup option:selected").text())
+
                 //$("#errorApproverdivSeq").show();
                 //$("#errorApproverSeq").html("No Approver(s) find for selected Apprval matrix (BudgetType: " + $("#ddlBudget option:selected").text() + ",Amount: " + $("#txtAmountFrom").val() + ",Org: " + $("#ddlPurchaseOrg option:selected").text() + ",Group: " + $("#ddlPurchasegroup option:selected").text() + ")");
                 //Metronic.scrollTo($("#errorApproverdivSeq"), -200);
@@ -1444,8 +1512,6 @@ function SaveApproversConfirmation() {
             apprStatus: "P",
         }
         approversData.push(_data);
-
-
         objActivity = {
             CustomerID: parseInt(CurrentCustomer),
             FromUserId: UserID,
@@ -1834,7 +1900,7 @@ function bindApproverMaster() {
     GetData.success(function (res) {
         if (res.result != null) {
             $('#tblAllmatrix').empty();
-            
+
             if (res.result.length > 0) {
                 $('#tblAllmatrix').append("<thead><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Deviation %</th></thead>")
                 for (var i = 0; i < res.result.length; i++) {

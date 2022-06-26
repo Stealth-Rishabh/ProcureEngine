@@ -67,7 +67,7 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#nPassword").val() != $("#reEnterPass").val()) {
+    if ($("#nPassword").val().toLowerCase() != $("#reEnterPass").val().toLowerCase()) {
         jQuery("#errorpassword").text("Password not matched..");
         Changepassworderror.show();
         Changepassworderror.fadeOut(5000);
@@ -83,7 +83,7 @@ function ChangePassword() {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
 
-        //console.log(data)
+
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -92,7 +92,6 @@ function ChangePassword() {
             contentType: "application/json; charset=utf-8",
             EnableViewState: false,
             success: function (data, status, jqXHR) {
-
                 if (data.isSuccess == "-1") {
                     jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
                     Changepassworderror.show();
@@ -107,6 +106,7 @@ function ChangePassword() {
                     clearResetForm();
                     jQuery.unblockUI();
                 }
+
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -451,8 +451,10 @@ function fetchReguestforQuotationDetailseRFQ() {
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(RFQData[0].general[0].rfqDescription)
 
-            jQuery('#rfqstartdate').text(RFQData[0].general[0].rfqStartDate)
-            jQuery('#rfqenddate').text(RFQData[0].general[0].rfqEndDate)
+            //jQuery('#rfqstartdate').text(RFQData[0].general[0].rfqStartDate)
+            jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            //jQuery('#rfqenddate').text(RFQData[0].general[0].rfqEndDate)
+            jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
 
         },
@@ -1078,9 +1080,6 @@ function validateBid(bidid) {
 
     $('#validatebidmodal').modal('show')
 }
-
-
-
 function fetchMappedCustomers() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });

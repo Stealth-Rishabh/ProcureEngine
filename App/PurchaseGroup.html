@@ -151,7 +151,7 @@
                                                     Purchase Org.<span class="required"> *</span>
                                                 </label>
                                                 <div class="col-md-7">
-                                                    <select id="ddlPurchaseOrg" class="form-control"></select>
+                                                    <select id="ddlPurchaseOrg" class="form-control" onchange="fnclearcss(this)"></select>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <a href="#SubCategory" class="btn blue" id="addNewOrg" data-toggle="modal"><i class="fa fa-plus"></i></a>
@@ -164,7 +164,7 @@
                                                     Group Name<span class="required"> *</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" id="txtPurchaseGroup" autocomplete="off" placeholder="Enter name" class="form-control MaxLength" maxlength="250" />
+                                                    <input type="text" id="txtPurchaseGroup" autocomplete="off" placeholder="Enter name" class="form-control MaxLength" maxlength="250" onkeyup="replaceQuoutesFromString(this)"/>
                                                 </div>
 
                                             </div>

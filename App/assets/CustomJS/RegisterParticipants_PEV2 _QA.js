@@ -210,12 +210,7 @@ function RegisterParticipants() {
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
         "ParticipantName": jQuery("#ParticipantName").val(),
         "Address": jQuery("#txtAddress").val(),
-        "Country": jQuery("#ddlCountry option:selected").val(),
-        "CountryName": jQuery("#ddlCountry option:selected").text(),
-        "State": jQuery("#ddlState option:selected").val(),
-        "StateName": jQuery("#ddlState option:selected").text(),
-        "City": jQuery("#ddlCity option:selected").val(),
-        "CityName": jQuery("#ddlCity option:selected").text(),
+        "City": jQuery("#txtCity").val(),
         "PanNo": jQuery("#txtPanNo").val(),
         "TinNo": jQuery("#txtTINNo").val(),
         "PhoneNo": jQuery("#txtPhoneNo").val(),
@@ -227,7 +222,6 @@ function RegisterParticipants() {
         "ContactPerson": $('#ContactName').val(),
         "AlternateEmailID": $('#txtAlternateeMailID').val(),
         "ProductCatID": InsertQuery
-
 
     };
     // console.log(JSON.stringify(RegisterParticipants))
@@ -306,7 +300,6 @@ function fnshowexistedVendorForextend() {
                         addr1 = data[0].address1.replace(/\n/g, " ");
                         addr2 = data[0].address2.replace(/\n/g, " ");
                         $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-
                     }
                 }
             }
@@ -865,7 +858,7 @@ function validatePanNumber(pan) {
 
 }
 function fnfetchfoundVendors() {
-
+    debugger;
     var UniqueId = "";
     if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
         //UINo = $('#txtUI').val()
@@ -882,7 +875,6 @@ function fnfetchfoundVendors() {
     }
 
     else {
-        //alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -913,17 +905,11 @@ function fnfetchfoundVendors() {
 
                         addr1 = data[i].address1.replace(/\n/g, " ");
                         addr2 = data[i].address2.replace(/\n/g, " ");
-                        // alert(data[i].buttonName)
                         if (data[i].buttonName == "Extend") {
                             $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                         }
                         else {
-                            if (data[i].buttonName.toLowerCase() == "editcustomervendor") {
-                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                            }
-                            else {
-                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                            }
+                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                         }
                     }
                 }
@@ -1240,127 +1226,3 @@ jQuery("#txtSVendor").keyup(function () {
 
     });
 });
-function fetchCountry() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlCountry").empty();
-            var vlal = new Array();
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
-                }
-                $("#ddlCountry").val('111').trigger("change");
-            }
-            else {
-                $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
-            }
-            // jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchState() {
-    var countryid = $('#ddlCountry option:selected').val();
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/State/?CountryID=" + countryid + "&StateID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlState").empty();
-            if (data.length > 0) {
-
-                $("#ddlState").append("<option value=0>Select State</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
-                }
-                $("#ddlState").trigger("change");
-            }
-            else {
-                $("#ddlState").append('<tr><td>No state found..</td></tr>');
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText;
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchCity() {
-    var stateid = $('#ddlState').val();
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlCity").empty();
-            if (data.length > 0) {
-                $("#ddlCity").append("<option value=0>Select City</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
-                }
-                $("#ddlCity").val('0').trigger("change");
-            }
-            else {
-                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}

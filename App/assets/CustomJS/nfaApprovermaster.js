@@ -639,6 +639,7 @@ function AddWBApprovers() {
     if (validateWBADD()) {
         return false;
     }
+   
     if ($("#hdnWBSeqID").val() != -1) {
         var tableName = "tblWBApproverSeq";
         var index = $("#hdnWBSeqID").val();
@@ -649,9 +650,17 @@ function AddWBApprovers() {
         var ApproverID = sessionStorage.getItem("hdnApproverid");
         var ApproverName = $("#txtApprover").val();
         var Seq = $("#txtWBSeq").val();
+        
         var EmailID = sessionStorage.getItem("hdnWBApproverEmailid");
+        
         if (ApproverType == "S") {
+            
+            if (WBSeq < 0) {
+                WBSeq = 0;
+            }
+            
             ++WBSeq;
+           
         }
         else {
             WBSeq = parseInt(Seq);
@@ -718,6 +727,7 @@ function deleteApprow(rowid) {
             i++;
         });
     }
+    
 }
 $("#tblWBApproverSeq").on("click", ".edit", function (e) {
 
