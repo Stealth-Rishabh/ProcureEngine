@@ -19,6 +19,22 @@ if (sessionStorage.getItem('CustomerID') == 32) {
 else {
     $('#lichngepass').show()
 }
+function getCurrentFinancialYear() {
+    var financial_year = "";
+    var today = new Date();
+    if ((today.getMonth() + 1) <= 3) {
+        financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
+    } else {
+        financial_year = today.getFullYear() + "-" + (today.getFullYear() + 1)
+    }
+    return financial_year;
+}
+function getlastFinancialYear() {
+    var financial_year = "";
+    var today = new Date();
+    financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
+    return financial_year;
+}
 function fnErrorMessageText(spanid, formid) {
 
     if (formid != '') {
@@ -91,23 +107,36 @@ function gritternotification(msz) {
 }
 function calltoaster(msz, title, type) {
 
-    var options = {
-        tapToDismiss: false,
+    //var options = {
+    //    tapToDismiss: false,
+    //    "closeButton": true,
+    //    "debug": false,
+    //    "positionClass": "toast-top-right",
+    //    "onclick": null,
+    //    "autohide": false,
+    //    "hideDuration": "0",
+    //    "showEasing": "swing",
+    //    extendedTimeOut: 0,
+    //    timeOut: 0,
+    //    tapToDismiss: false
+    //    // "showDuration": "1000",
+    //    //"hideEasing": "linear",
+    //    //"showMethod": "fadeIn",
+    //    //"hideMethod": "fadeOut"
+    //}
+    toastr.options = {
         "closeButton": true,
         "debug": false,
         "positionClass": "toast-top-right",
-        "onclick": null,
-        "autohide": false,
+        "showDuration": "0",
         "hideDuration": "0",
+        "timeOut": "0",
+        "extendedTimeOut": "0",
         "showEasing": "swing",
-        extendedTimeOut: 0,
-        timeOut: 0,
-        tapToDismiss: false
-        // "showDuration": "1000",
-        //"hideEasing": "linear",
-        //"showMethod": "fadeIn",
-        //"hideMethod": "fadeOut"
-    }
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeIn"
+     }
     if (type == 'success') {
         toastr.success(msz, title, options);
     } else if (type == 'error') {
@@ -953,6 +982,7 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
         }
     })
 }
+
 function fnConverToLocalTime(dttime) {
     var theStDate = new Date(dttime)
     //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
@@ -963,6 +993,20 @@ function fnConverToLocalTime(dttime) {
     })
     return theStDate;
 }
+
+//function fnConverToLocalTime(dttime) {
+//    var theStDate = '';
+//    if (dttime != null && dttime != '') {
+//        theStDate = new Date(dttime)
+//        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+//        theStDate = new Date(theStDate + ' UTC');
+
+//        theStDate = theStDate.toLocaleString("en-IN", {
+//            timeZone: sessionStorage.getItem('preferredtimezone'), hour12: false, dateStyle: "long", timeStyle: "short"
+//        })
+//    }
+//    return theStDate;
+//}
 
 //function fnFileDeleteLocalfolder(path) {
 //    var formData = new window.FormData();

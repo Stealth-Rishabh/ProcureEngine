@@ -860,11 +860,21 @@ function formvalidate() {
         },
         submitHandler: function (form) {
 
-            if ($('#hdnRfiRfqID').val() == "0") {
+            if ($('#hdnRfqID').val() == "0") {
                 gritternotification('Please Select RFQ properly!!!')
             }
             else {
+                fetchReguestforQuotationDetails();
+                if (sessionStorage.getItem('CustomerID') == "32") {
+                    fetchRFQPPCApproverStatus($('#hdnRfqID').val());
+                }
+                else {
+                    fetchRFQApproverStatus($('#hdnRfqID').val());
+                }
+                fetchAttachments();
+                fetchApproverRemarks('C');
                 fetchAzPPcFormDetails();
+                //fetchRFQPPCApproverStatus($('#hdnRfiRfqID').val());
                 fetchrfqcomprative()
             }
         }

@@ -63,7 +63,8 @@ jQuery("#txtrfirfqsubject").typeahead({
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
-            fetchReguestforQuotationDetails()
+            FetchRFQVersion();
+            /*fetchReguestforQuotationDetails()
            
             if (sessionStorage.getItem('CustomerID') == "32") {
                 fetchRFQPPCApproverStatus(map[item].rfqid);
@@ -71,11 +72,14 @@ jQuery("#txtrfirfqsubject").typeahead({
             else {
                 fetchRFQApproverStatus(map[item].rfqid);
             }
-            FetchRFQVersion();
-            FetchRFQVersion();
+            
+           
             fetchAttachments();
-            fetchApproverRemarks('C');
-
+            fetchApproverRemarks('C');*/
+            /*   setTimeout(function () {
+                 
+                  fetchrfqcomprative();
+              }, 1000)*/
         }
 
         return item;
@@ -1192,7 +1196,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
