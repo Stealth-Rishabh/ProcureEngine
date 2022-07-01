@@ -2686,7 +2686,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 }
 function Dateandtimevalidate(indexNo) {
     var dtst = new Date($('#txtbidDate').val().replace('-', ''));
-    dtst = moment(dtst).format('DD/MM/YYYY h:mm:ss a');
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),

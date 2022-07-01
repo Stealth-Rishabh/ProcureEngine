@@ -391,11 +391,11 @@ function fetchVendorDetails() {
             if (data.length == 1) {
                 $('#tblParticipantsVender').show();
 
-
+                var _bidDatelocale = fnConverToLocalTime(data[0].bidDate);
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(_bidDatelocale);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblbidfor").text(data[0].bidFor);
@@ -907,12 +907,13 @@ function fetchBidHeaderDetails(_bidId) {
         success: function (data, status, jqXHR) {
             //alert(JSON.stringify(data));
             if (data.length == 1) {
+                var _bidDatelocale = fnConverToLocalTime(data[0].bidDate);
                 $('#tblParticipantsVender').show();
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(_bidDatelocale);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblbidfor").text(data[0].bidFor);

@@ -484,9 +484,9 @@ var FormWizard = function () {
                         required: true
                     },
 
-                    txtbidTime: {
-                        required: true
-                    },
+                    //txtbidTime: {
+                    //    required: true
+                    //},
 
                     mapedapprover: {
                         required: true
@@ -827,8 +827,8 @@ function ConfigureBidForCoalTab1() {
 
         })
     }
-    StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-    StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
+    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1679,7 +1679,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 
 function fetchCoalDetails() {
-
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
@@ -1689,12 +1689,13 @@ function fetchCoalDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate));
             jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
             jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
-            jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
-            jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
+            //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
+            jQuery('#txtbidDate').val(dtst)
+            //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
             $('#drphideVendor').val(BidData[0].bidDetails[0].hideVendor)
             //jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension == -1 ? "" : BidData[0].bidDetails[0].noofBidExtension)
@@ -1852,10 +1853,12 @@ function DownloadFile(aID) {
 
 
 function Dateandtimevalidate(indexNo) {
-
+    var dtst = new Date($('#txtbidDate').val().replace('-', ''));
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + dtst,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,

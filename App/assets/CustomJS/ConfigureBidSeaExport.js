@@ -1196,7 +1196,7 @@ function ConfigureBidForSeaExportTab1() {
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-        StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
+        //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
     var Tab1Data = {
 
@@ -2776,7 +2776,7 @@ function Dateandtimevalidate(indexNo) {
     //}
     //var dtst = jQuery("#txtbidDate").val()
     var dtst = new Date($('#txtbidDate').val().replace('-', ''));
-    dtst = moment(dtst).format('DD/MM/YYYY h:mm:ss a');
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     
     alert(dtst);
     jQuery.ajax({

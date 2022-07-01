@@ -2646,7 +2646,7 @@ function fnTimeUpdate() {
 }
 
 function fnTimeUpdateClosedBid(isMailSend) {
-
+    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var finalStatus = "";
     if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
@@ -2656,8 +2656,9 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "BidStatus": parseInt($('#ddlBidStatus option:selected').val()),
         "BidID": parseInt(jQuery('#ddlbid').val()),
         "BidDuration": parseInt(jQuery('#txtBidDurationForBidOpen').val()),
-        "BidDate": jQuery('#txtbidDate').val(),
-        "BidTime": jQuery('#txtbidTime').val(),
+        //"BidDate": jQuery('#txtbidDate').val(),
+        //"BidTime": jQuery('#txtbidTime').val(),
+        "BidDate": StartDT,
         "IsMailSend": isMailSend,
         "FinalStatus": finalStatus,
         "UserID": sessionStorage.getItem('UserID'),

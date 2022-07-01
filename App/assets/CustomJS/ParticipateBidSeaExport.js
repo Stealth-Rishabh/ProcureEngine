@@ -589,9 +589,9 @@ function fetchBidHeaderDetails(bidId) {
 
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
 
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
 
-                jQuery("#lblbidtime").text(data[0].bidTime);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
 
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
 
@@ -807,9 +807,9 @@ function fetchVendorDetails() {
 
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
 
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
 
-                jQuery("#lblbidtime").text(data[0].bidTime);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
 
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
 

@@ -513,9 +513,9 @@ var FormWizard = function () {
                         required: true
                     },
 
-                    txtbidTime: {
-                        required: true
-                    },
+                    //txtbidTime: {
+                    //    required: true
+                    //},
 
                     mapedapprover: {
                         required: true
@@ -853,7 +853,11 @@ function ConfigureBidInsfrenchTab1() {
 
         })
     }
-
+    var StartDT = new Date();
+    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
+    }
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -862,8 +866,9 @@ function ConfigureBidInsfrenchTab1() {
         "BidDuration": parseInt(bidDuration),
         "BidSubject": jQuery("#txtBidSubject").val(),
         "BidDescription": jQuery("#txtbiddescription").val(),
-        "BidDate": jQuery("#txtbidDate").val(),
-        "BidTime": jQuery("#txtbidTime").val(),
+        "BidDate": StartDT,
+        //"BidDate": jQuery("#txtbidDate").val(),
+        //"BidTime": jQuery("#txtbidTime").val(),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "ConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "TermsConditions": TermsConditionFileName,
@@ -1681,13 +1686,14 @@ function fetchFrenchBidDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
             jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
 
             jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
-            jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
-            jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
+            //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
+            //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
+            jQuery('#txtbidDate').val(dtst)
             jQuery("#dropCurrency").val(BidData[0].bidDetails[0].currencyID).attr("selected", "selected");
             jQuery('#txtConversionRate').val(BidData[0].bidDetails[0].conversionRate)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
@@ -1922,10 +1928,13 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
     });
 }
 function Dateandtimevalidate(indexNo) {
-
+    var dtst = new Date($('#txtbidDate').val().replace('-', ''));
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     jQuery.ajax({
+        
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + dtst,//jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -2004,7 +2013,7 @@ function fetchPSBidDetailsForPreview() {
     $("#ddlauctiontypePrev").html($("#ddlAuctiontype option:selected").html())
     jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
-    jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
+    //jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#txtConversionRatePrev').html($('#txtConversionRate').val())
     jQuery('#noofextensionprev').text($('#txtBidExtension option:selected').text())

@@ -236,7 +236,7 @@ function fetchVendorDetails() {
         success: function (data, status, jqXHR) {
 
             if (data.length == 1) {
-
+                var _bidDateLocal = fnConverToLocalTime(data[0].bidDate);
                 $('#tblParticipantsService').show();
                 jQuery("#tblParticipantsServiceBeforeStartBid").hide();
 
@@ -244,7 +244,7 @@ function fetchVendorDetails() {
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(_bidDateLocal);
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
@@ -808,6 +808,7 @@ function fetchBidHeaderDetails(bidId) {
         success: function (data, status, jqXHR) {
 
             if (data.length == 1) {
+                var _bidDatelocale = fnConverToLocalTime(data[0].bidDate);
                 $('#tblParticipantsService').show();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
@@ -815,7 +816,7 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(_bidDatelocale);
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
