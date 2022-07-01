@@ -47,7 +47,7 @@ var _bidClosingType = '';
 
 jQuery("#divbidDatePrevtab_0").hide();
 $("#btn-submit-datetime").hide();
-jQuery("#divbidTimePrevtab_0").hide();
+//jQuery("#divbidTimePrevtab_0").hide();
 jQuery("#divbidTermsFilePrevtab_0").hide();
 jQuery("#divbidAttachFilePrevtab_0").hide();
 jQuery("#divbidItemsPrevtab_0").hide();
@@ -85,7 +85,7 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     jQuery("#divbidDatePrevtab_0").hide();
     $("#btn-submit-datetime").hide();
     $("#btn-submit-modal").show();
-    jQuery("#divbidTimePrevtab_0").hide();
+    //jQuery("#divbidTimePrevtab_0").hide();
     jQuery("#divbidTermsFilePrevtab_0").hide();
     jQuery("#divbidAttachFilePrevtab_0").hide();
     jQuery("#divbidItemsPrevtab_0").hide();
@@ -1549,8 +1549,8 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var localBidDate = BidData[0].bidDetails[0].bidDate
-            var localBidTime = BidData[0].bidDetails[0].bidTime
+            var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
+            //var localBidTime = BidData[0].bidDetails[0].bidTime
             //var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate);
             //var localBidTime = fnConverToLocalTime(BidData[0].bidDetails[0].bidTime);
 
@@ -1567,7 +1567,7 @@ function fetchallexportdetails() {
             //jQuery('#txtbidTimePrev').html(BidData[0].bidDetails[0].bidTime)
             jQuery('#txtbidDatePrev').html(localBidDate)
             jQuery('#txtbidDatePrevtab_0').html(localBidDate)
-            jQuery('#txtbidTimePrevtab_0').html(localBidTime)
+            //jQuery('#txtbidTimePrevtab_0').html(localBidTime)
             jQuery('#txtbidTimePrev').html(localBidTime)
             jQuery("#dropCurrencyPrev").html(BidData[0].bidDetails[0].currencyName)
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
@@ -1664,14 +1664,17 @@ function fetchallexportdetails() {
                     $('#divreopendttime').show();
                     $('#btnreopendttime').show();
                     $('#btnbidchangedttime').hide();
+                    $('#btn-add-new-item').show();
                 }
             }
-            $("#ctrlbidTimeandDate").attr('onclick', "editValues('divbidTimePrevtab_0', 'txtbidDatePrevtab_0')");
+            //$("#ctrlbidTimeandDate").attr('onclick', "editValues('divbidTimePrevtab_0', 'txtbidDatePrevtab_0')");
+            $("#ctrlbidTimeandDate").attr('onclick', "editValues('', 'txtbidDatePrevtab_0')");
             $("#ctrlFileTerms").attr('onclick', "editValues('divbidTermsFilePrevtab_0', '')");
             $("#ctrlFileAttachment").attr('onclick', "editValues('divbidAttachFilePrevtab_0', '')");
             $("#ctrlShwL1").attr('onclick', "editValues('divbidShowL1L2', '')");
             $("#ctrlhidevendor").attr('onclick', "editValues('divhidevendors', '')");
             $("#ctrlnoofbidextension").attr('onclick', "editValues('divbidextension', '')");
+            $("#btn-add-new-item").attr('onclick', "editValues('divbidItemsPrevtab_0','')");
             BidForID = BidData[0].bidDetails[0].bidForID;
             if (BidData[0].bidDetails[0].bidForID == "82") {
                 $("#ctrlShwL1").hide()
@@ -1683,7 +1686,7 @@ function fetchallexportdetails() {
             //  $('#spinnerBidDetails').show()
             // $('#spinnerBidDetails').spinner({ value: BidData[0].BidDetails[0].BidDuration, step: 1, min: 0, max: 999 });
             $('#txtBidDurationForBidOpen').val(BidData[0].bidDetails[0].bidDuration)
-            $('#txtbidTime').val(localBidTime)
+            //$('#txtbidTime').val(localBidTime)
             $('#txtbidDate').val(localBidDate)
 
             //$('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
@@ -2093,6 +2096,7 @@ function fetchallexportdetails() {
             if (BidData[0].bidDetails[0].isRunningBid.toLowerCase() == 'runningbid') {
 
                 $("a.isDisabledClass").removeAttr("onclick");
+                $('#btn-add-new-item').hide();
                 isRunningBid = "Y";
                 $('.afterrunning').attr('disabled', 'disabled')
                 if (BidData[0].bidDetails[0].bidClosingType == "S") {
@@ -2529,10 +2533,12 @@ function fnTimeUpdateS(index, seaid) {
 }
 
 function Dateandtimevalidate(indexNo) {
-
+    var dtst = new Date($('#txtbidDate').val().replace('-', ''));
+    dtst = moment(dtst).format('DD/MM/YYYY h:mm:ss a');
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtinputBidDatePrevtab_0").val() + "&BidTime=" + jQuery("#txtinputbidTimePrevtab_0").val(),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtinputBidDatePrevtab_0").val() + "&BidTime=" + jQuery("#txtinputbidTimePrevtab_0").val(),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + dtst,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -2695,7 +2701,7 @@ function editValues(divName, rowid) {
         $("#btn-submit-datetime").show();
         $("#btn-submit-modal").hide();
         $("#" + divName).show();
-        $("#txtinputbidTimePrevtab_0").val(jQuery("#txtbidTimePrevtab_0").html());
+        //$("#txtinputbidTimePrevtab_0").val(jQuery("#txtbidTimePrevtab_0").html());
         $("#" + rowid).show();
         $("#txtinputBidDatePrevtab_0").val(jQuery("#txtbidDatePrevtab_0").html());
     }
@@ -4606,6 +4612,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                 if (isRunningBid == "Y" || BidForID == 82) {
                     $('.clsisdisabled').attr('disabled', true)
                     $('#btnprebid').addClass('hide');
+                    $('#btn-add-new-item').hide();
                 }
 
             }

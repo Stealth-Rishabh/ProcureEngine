@@ -1196,6 +1196,7 @@ function ConfigureBidForSeaExportTab1() {
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
     var Tab1Data = {
 

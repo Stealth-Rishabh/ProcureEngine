@@ -827,14 +827,16 @@ function ConfigureBidForCoalTab1() {
 
         })
     }
-
+    StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         "BidSubject": jQuery("#txtBidSubject").val(),
         "BidDescription": jQuery("#txtbiddescription").val(),
-        "BidDate": jQuery("#txtbidDate").val(),
-        "BidTime": jQuery("#txtbidTime").val(),
+        //"BidDate": jQuery("#txtbidDate").val(),
+        "BidDate": StartDT,
+        //"BidTime": jQuery("#txtbidTime").val(),
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "BidTypeID": 8,
