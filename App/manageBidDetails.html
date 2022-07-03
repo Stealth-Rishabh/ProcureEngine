@@ -428,7 +428,8 @@
                                                                                 <div class="form-group">
                                                                                     <div class="row">
                                                                                         <div class="col-md-offset-9 col-md-4">
-                                                                                            <button id="btn-add-new-item" class="btn green" type="button" onclick="editValues('divbidItemsPrevtab_0','')">Add New</button>
+                                                                                            <button id="btn-add-new-item" class="btn green" type="button">Add New</button>
+                                                                                            <!--<button id="btn-add-new-item" class="btn green" type="button" onclick="editValues('divbidItemsPrevtab_0','')">Add New</button>-->
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -669,7 +670,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <!--/span-->
-                                                                                <div class="col-md-6">
+                                                                                <!--<div class="col-md-6">
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-4">Time:</label>
                                                                                         <div class="col-md-8">
@@ -678,7 +679,7 @@
                                                                                             </p>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div>-->
                                                                                 <!--/span-->
                                                                             </div>
                                                                             <!--/row-->
@@ -915,6 +916,21 @@
                                                                             <div class="col-md-6" style="display:none;" id="divreopendttime">
                                                                                 <div class="form-group">
                                                                                     <div class="inputgroup">
+                                                                                        <label class="col-md-3 control-label">
+                                                                                            Bid ReOpen Date/Time:<!--<span class="required"> *</span>-->
+                                                                                        </label>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                                                                <input type="text" size="16" class="form-control" id="txtreopenDate" name="txtreopenDate" placeholder="Reopen Date/Time" autocomplete="off" readonly>
+                                                                                                <span class="input-group-btn">
+                                                                                                    <button class="btn default date-set" type="button" id="btncal">
+                                                                                                        <i class="fa fa-calendar"></i>
+                                                                                                    </button>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--<div class="inputgroup">
                                                                                         <label class="control-label col-md-4"> Bid ReOpen Date/Time:</label>
 
                                                                                         <div class="col-md-3">
@@ -940,7 +956,7 @@
                                                                                             </div>
                                                                                         </div>
 
-                                                                                    </div>
+                                                                                    </div>-->
                                                                                 </div>
 
                                                                             </div>
@@ -1248,7 +1264,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group" id="divbidDatePrevtab_0">
-                                        <div class="inputgroup">
+                                        <!--<div class="inputgroup">
                                             <label class="control-label col-md-4">
                                                 Bid Date<span class="required"> *</span>
                                             </label>
@@ -1263,10 +1279,27 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                        </div>-->
+                                        <!---->
+                                        <div class="inputgroup">
+                                            <label class="col-md-3 control-label">
+                                                Bid Date/Time<span class="required"> *</span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                    <input type="text" size="16" class="form-control" id="txtinputBidDatePrevtab_0" name="txtinputBidDatePrevtab_0" autocomplete="off" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default date-set" type="button" id="btncal">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <!--<div class="col-md-5">
                                     <div class="form-group" id="divbidTimePrevtab_0">
                                         <div class="inputgroup">
                                             <label class="control-label col-md-5">
@@ -1285,7 +1318,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-md-2">
 
                                     <button type="button" class="btn green" id="btn-submit-datetime" onclick="Dateandtimevalidate()"> Go</button>

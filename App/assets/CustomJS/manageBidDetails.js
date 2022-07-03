@@ -1664,7 +1664,7 @@ function fetchallexportdetails() {
                     $('#divreopendttime').show();
                     $('#btnreopendttime').show();
                     $('#btnbidchangedttime').hide();
-                    $('#btn-add-new-item').show();
+                    $('#btn-add-new-item').removeAttr("disabled");
                 }
             }
             //$("#ctrlbidTimeandDate").attr('onclick', "editValues('divbidTimePrevtab_0', 'txtbidDatePrevtab_0')");
@@ -1798,6 +1798,7 @@ function fetchallexportdetails() {
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Starting Price</th><th>Last Invoice Price</th><th>Floor/ Min. Price</th><th>Price Decrement Frequency</th><th>Price Decrement Amount</th><th class=hide>Show H1 Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
                     var counterReopenbtn = 1;
+                    debugger;
                     for (var i = 0; i < BidData[0].bidSeaExportDetails.length; i++) {
                         var decrementon = ''
 
@@ -1985,6 +1986,7 @@ function fetchallexportdetails() {
 
                 }
             }
+            debugger;
             if (sessionStorage.getItem('hdnbidtypeid') == 6) {
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
                 if (BidData[0].bidScrapSalesDetails.length > 0) {
@@ -2096,7 +2098,7 @@ function fetchallexportdetails() {
             if (BidData[0].bidDetails[0].isRunningBid.toLowerCase() == 'runningbid') {
 
                 $("a.isDisabledClass").removeAttr("onclick");
-                $('#btn-add-new-item').hide();
+                $('#btn-add-new-item').attr("disabled","disabled");
                 isRunningBid = "Y";
                 $('.afterrunning').attr('disabled', 'disabled')
                 if (BidData[0].bidDetails[0].bidClosingType == "S") {
@@ -2534,7 +2536,7 @@ function fnTimeUpdateS(index, seaid) {
 
 function Dateandtimevalidate(indexNo) {
     var dtst = new Date($('#txtbidDate').val().replace('-', ''));
-    dtst = moment(dtst).format('DD/MM/YYYY h:mm:ss a');
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtinputBidDatePrevtab_0").val() + "&BidTime=" + jQuery("#txtinputbidTimePrevtab_0").val(),
@@ -2586,16 +2588,18 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
+    var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
+    //s.setMinutes(s.getMinutes() + 5);
+    //var datearray = $("#txtbidDate").val().split("/");
+    //var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+    //selectedtime = new Date(selectedtime + ' ' + convertTo24Hour($("#txtbidTime").val()));
 
-    s.setMinutes(s.getMinutes() + 5);
-    var datearray = $("#txtbidDate").val().split("/");
-    var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
-    selectedtime = new Date(selectedtime + ' ' + convertTo24Hour($("#txtbidTime").val()));
-
-    if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
+    //if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
+    if (reopenDate <= s) {
 
         erroropenbid.show();
-        $('#erropenbid').html('Please fill all Details');
+        //$('#erropenbid').html('Please fill all Details');
+        $('#erropenbid').html('Date cannot be less than current date');
         erroropenbid.fadeOut(3000);
         App.scrollTo(erroropenbid, -200);
 
@@ -3181,7 +3185,7 @@ function addrowfield() {
     var lastinvoice = 0; var lastinvoicefrench = 0; var itemduration = 0;
     var _Totalbiddurationfordutch = 0; var mininc = 0; var startingprice = 0; var incon = ''; var pricereducfeq = 0;
     var pricereductionamount = 0;
-    var startDateTime = jQuery("#txtbidDatePrevtab_0").html() + " " + jQuery("#txtbidTimePrevtab_0").html();
+    var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
     //alert(jQuery("#txtbidDatePrevtab_0").html());
     debugger;
 
@@ -3266,7 +3270,8 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            "BidStartDate": biddatetime,
+            //"BidStartDate": biddatetime,
+            "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
         }
@@ -3299,7 +3304,8 @@ function addrowfield() {
             "SeId": 0,
             "GST": parseFloat($('#txtGST').val()),
             "BidForId": parseInt(BidForID),
-            "BidStartDate": biddatetime,
+            //"BidStartDate": biddatetime,
+            "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
         }
 
@@ -3331,7 +3337,8 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            "BidStartDate": biddatetime,
+            //"BidStartDate": biddatetime,
+            "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
         }
@@ -3363,7 +3370,8 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            "BidStartDate": biddatetime,
+            //"BidStartDate": biddatetime,
+            "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
         }
@@ -4932,12 +4940,14 @@ function fnpauseaction() {
         App.scrollTo(erroropenbid, -200);
     }
     else {
+        var dtst = new Date($('#txtreopenDate').val().replace('-', ''));
         var Data = {
             "BidID": parseInt(jQuery('#ddlbid').val()),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
             "SeID": 0,
-            "BidDate": $('#txtreopenDate').val(),
-            "BidTime": $('#txreopenTime').val(),
+            //"BidDate": $('#txtreopenDate').val(),
+            "BidDate": dtst,
+            //"BidTime": $('#txreopenTime').val(),
             "Action": $('#ddlBidStatus option:selected').text(),//"Open",
             "UserID": sessionStorage.getItem('UserID')
         }

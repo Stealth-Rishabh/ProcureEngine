@@ -515,7 +515,7 @@ function fetchBidSummary(BidID) {
                     $('#bid_status').hide();
                 }
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
-                var _bidTime = fnConverToLocalTime(data[0].bidTime);
+                //var _bidTime = fnConverToLocalTime(data[0].bidTime);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
@@ -527,7 +527,7 @@ function fetchBidSummary(BidID) {
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + ' ' + _bidTime + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
-                jQuery("#lblbidtime").text(_bidTime);
+                //jQuery("#lblbidtime").text(_bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblEventID").text(BidID);
                 if (data[0].bidForID == 81) {
@@ -560,7 +560,7 @@ function fetchBidSummary(BidID) {
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID
                 //$('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + data[0].bidDate + ' ' + data[0].bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
-                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + _bidDate + ' ' + _bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
+                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + _bidDate + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
                 sessionStorage.setItem('hdnbidtypeid', BidTypeID)
 
                 fetchBidSummaryDetails(BidID, BidForID);
