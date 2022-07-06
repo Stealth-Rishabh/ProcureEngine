@@ -865,7 +865,7 @@ function formvalidate() {
             }
             else {
                 fetchReguestforQuotationDetails();
-                if (sessionStorage.getItem('CustomerID') == "32") {
+                if (sessionStorage.getItem('CustomerID') == "32" ) {
                     fetchRFQPPCApproverStatus($('#hdnRfqID').val());
                 }
                 else {
@@ -1046,23 +1046,37 @@ function fetchAzPPcFormDetails() {
 
                 //alert(data[0].BiddingVendor.length)
                 var validatescm = "Yes";
+                var TPI = "Yes"
                 if (data[0].biddingVendor.length > 0) {
 
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
+                    $('#tblvendors').append("<tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
+
                         if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
                             validatescm = "Yes";
                         }
-                        if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
                             validatescm = "No";
                         }
                         else {
+
                             validatescm = "NA";
                         }
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td></tr>")
+
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            TPI = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "N") {
+                            TPI = "No";
+                        }
+                        else {
+                            TPI = "NA";
+                        }
+
+                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
 
                     }
-                    $('#tblvendors').append("</tbody>");
+                    // $('#tblvendors').append("</tbody>");
                 }
                 var attach = "";
                 jQuery("#tblPPCAttachments").empty();

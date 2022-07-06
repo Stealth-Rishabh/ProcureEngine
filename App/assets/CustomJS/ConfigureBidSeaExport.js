@@ -3344,7 +3344,7 @@ function printdataSeaBid(result) {
                 return false;
             }
 
-            else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '') {
+            else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '' || result[i].Quantity.trim() == '0') {
 
                 $("#error-excelparameter").show();
                 $("#errspan-excelparameter").html('Quantity should be in numbers only of Item no ' + (i + 1) + '.');

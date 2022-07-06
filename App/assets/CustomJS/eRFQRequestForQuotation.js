@@ -2704,10 +2704,10 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].Quantity) == '') {
+        else if ($.trim(result[i].Quantity) == '' || $.trim(result[i].Quantity) == '0') {
             $("#error-excelparameter").show();
 
-            $("#errspan-excelparameter").html('Quantity can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Quantity can not be blank or Zero of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }

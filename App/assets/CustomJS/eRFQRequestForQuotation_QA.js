@@ -564,6 +564,10 @@ function InsUpdRFQDEtailTab1() {
         })
     }
 
+
+
+
+
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
@@ -590,8 +594,8 @@ function InsUpdRFQDEtailTab1() {
         "TechnicalApproval": $("#drp_TechnicalApp").val()
 
     };
-    console.log(JSON.stringify(Tab1Data))
-    // alert(JSON.stringify(Tab1Data))
+
+    alert(JSON.stringify(Tab1Data))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -659,7 +663,7 @@ function InsUpdRFQDEtailTab2() {
             var PODt = new Date($.trim(this_row.find('td:eq(14)').html()))
             PODt = PODt.toDateString();
 
-            debugger;
+
             var remark = $.trim(this_row.find('td:eq(10)').html()).replace(/'/g, "");
             var description = $.trim(this_row.find('td:eq(7)').html()).replace(/'/g, "");
             tab2Items = {
@@ -689,8 +693,8 @@ function InsUpdRFQDEtailTab2() {
 
     };
 
-    console.log(ItemDetails)
-    //console.log(JSON.stringify(Tab2data))
+
+    console.log(JSON.stringify(Tab2data))
 
     jQuery.ajax({
 
@@ -2350,6 +2354,7 @@ function fetchReguestforQuotationDetails() {
 
             var dtst = (fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             var dtend = (fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+
             jQuery('#txtstartdatettime').val(dtst);
             jQuery('#txtenddatettime').val(dtend);
             $("#cancelBidBtn").show();
@@ -2724,7 +2729,7 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].Quantity) == '') {
+        else if ($.trim(result[i].Quantity) == '' || $.trim(result[i].Quantity) == '0') {
             $("#error-excelparameter").show();
 
             $("#errspan-excelparameter").html('Quantity can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');

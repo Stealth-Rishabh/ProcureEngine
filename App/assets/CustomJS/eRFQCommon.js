@@ -381,6 +381,7 @@ function cancelRFQ(mailparam) {
 }
 
 var TechnicalApproval = "";
+var bidopeningdate = new Date();
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -397,6 +398,8 @@ function fetchReguestforQuotationDetails() {
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
+                bidopeningdate = RFQData[0].general[0].bidopeningdate;
+                
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1196,7 +1199,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
-
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1239,6 +1242,13 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
                         //counterColor = counterColor + 1;
                         status = 'Forwarded to comm Approver'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 55) {
+
+                        //counterColor = counterColor + 1;
+                        status = 'Forwarded to FC'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
