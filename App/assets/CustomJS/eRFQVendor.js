@@ -691,7 +691,6 @@ function addmoreattachments() {
     else {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-        var ver = sessionStorage.getItem('RFQVersionId');
         rowAttach = rowAttach + 1;
         $('#headerresposeatt').removeClass('hide')
         $('#dicresponseatt').removeClass('hide')
@@ -702,13 +701,13 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,' + ver + ')" >' + attchname + '</a></td>';
+        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,' + ver + ')" >' + attchname + '</a></td>';
+        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',\'VAttachment\',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachmentsresponse').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
@@ -905,11 +904,11 @@ function fetchRFQResponse(Flag, version) {
                         rowAttach = rowAttach + 1;
                         attach = data[i].attachment.replace(/\s/g, "%20");
                         var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[i].attachmentdescription + '</td>';
-                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this,' + version + ')" >' + data[i].attachment + '</a></td>';
+                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
                         jQuery('#tblAttachmentsPrev').append(strprev);
 
                         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[i].attachmentdescription + '</td>';
-                        str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this,' + version + ')">' + data[i].attachment + '</a></td>';
+                        str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
@@ -1091,10 +1090,11 @@ function fetchReguestforQuotationDetails() {
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
-            jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-            jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
+            // jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
+            // jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
 
-
+            jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
             //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
 
@@ -1105,8 +1105,8 @@ function fetchReguestforQuotationDetails() {
 
             jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
 
-            jQuery('#lblrfqstartdate').html(RFQData[0].general[0].rfqStartDate)
-            jQuery('#lblrfqenddate').html(RFQData[0].general[0].rfqEndDate)
+            jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
 
             jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
@@ -1114,7 +1114,7 @@ function fetchReguestforQuotationDetails() {
 
             jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-            var StartDT = new Date(RFQData[0].general[0].rfqStartDate.replace('-', ''));
+            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate));
             if (currentdate < StartDT) {
                 $('#form_wizard_1').find('.button-next').hide();
                 $('#regretrfq').hide();
@@ -1348,8 +1348,8 @@ function DownloadFile(aID) {
 
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
-function DownloadFileVendor(aID, ver) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + ver);
+function DownloadFileVendor(aID) {
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {

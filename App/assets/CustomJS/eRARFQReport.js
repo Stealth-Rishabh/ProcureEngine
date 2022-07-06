@@ -17,7 +17,7 @@ function fetchrfqcomprative() {
 
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   // alert( sessionStorage.getItem("APIPath") + "eRFQReport/efetchRA_RFQComprativeDetails/?RFQID=" + RFQID + "&BidID=" + BIdID + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99")
+    // alert( sessionStorage.getItem("APIPath") + "eRFQReport/efetchRA_RFQComprativeDetails/?RFQID=" + RFQID + "&BidID=" + BIdID + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99")
 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRA_RFQComprativeDetails/?RFQID=" + RFQID + "&BidID=" + BIdID + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99",
@@ -58,7 +58,7 @@ function fetchrfqcomprative() {
 
             sessionStorage.setItem('ShowPrice', '');
 
-            
+
             if (data[0].vendorNames.length > 0) {
                 Vendor = data[0].vendorNames;
                 $('#displayTable').show();
@@ -72,12 +72,12 @@ function fetchrfqcomprative() {
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                   
-                    strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName +"</th>";
-                    strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName +"</th>";
 
-                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName +"</th>";
-                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName +"</th>";
+                    strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName + "</th>";
+                    strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName + "</th>";
+
+                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName + "</th>";
+                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName + "</th>";
 
 
                 }
@@ -122,15 +122,15 @@ function fetchrfqcomprative() {
 
 
                 var x = 0;
-               
+
                 var unitrate = 0;
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
                     unitrate = 0;
                     var flag = 'T';
-                    
+
                     $("#tblRFQComprativetest > tbody > tr").each(function (index) {
                         var this_row = $(this);
-                      
+
                         if ($.trim(this_row.find('td:eq(2)').html()) == data[0].quotesDetails[i].rfqParameterId) {
                             flag = 'F';
 
@@ -140,7 +140,7 @@ function fetchrfqcomprative() {
                     x = -1;
                     if (flag == 'T') {
 
-                       
+
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
                         strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
 
@@ -194,7 +194,7 @@ function fetchrfqcomprative() {
                         }
 
                         totallowestValue = totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue)
-                       
+
                         str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td>";
                         strExcel += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td>";
                         str += "</tr>"
@@ -301,7 +301,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=6>&nbsp;</td></tr>";
                 strExcel += "<td colspan=6>&nbsp;</td></tr>";
 
-               // For L1 Package
+                // For L1 Package
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -418,7 +418,7 @@ function fetchrfqcomprative() {
 
 
 
-               // //For Vendor Comments
+                // //For Vendor Comments
 
                 str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
                 strExcel += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
@@ -439,10 +439,10 @@ function fetchrfqcomprative() {
                 str += " </tr>";
                 strExcel += " </tr>";
 
-               // //For Qusetion table
-               // // ***************** Start  Answer Question Row
+                // //For Qusetion table
+                // // ***************** Start  Answer Question Row
                 if (data[0].questions.length > 0) {
-                   
+
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
@@ -513,8 +513,8 @@ function fetchrfqcomprative() {
                     strQ += "</tr>";
                     strExcelQ += "</tr>";
                 }
-               // // ***************** END  Answer Question Row
-               // // ***************** Start  Define Technical  Approver Row**********************
+                // // ***************** END  Answer Question Row
+                // // ***************** Start  Define Technical  Approver Row**********************
                 strQ += " <tr><td><b>Technical Approver Required</b></td>";
 
                 if (data[0].vendorNames[0].isApproverRequired == "Y") {
@@ -530,8 +530,8 @@ function fetchrfqcomprative() {
                 }
                 //}
                 strQ += "</tr>"
-               // // ***************** END  Define Technical  Row **********************
-               // // ***************** Start  Technical Approver Row**********************
+                // // ***************** END  Define Technical  Row **********************
+                // // ***************** Start  Technical Approver Row**********************
 
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
@@ -693,7 +693,7 @@ function RFQFetchL1Package(VendorID, Counter) {
             $("#withoutGSTNotL1RankRAExcel" + VendorID).html(data[0].totalNotL1RankWithoutGSTRA);
             $("#withoutGSTL1RankRA" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGSTRA));
             $("#withoutGSTL1RankRAExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGSTRA));
-          
+
         }, error: function (xhr, status, error) {
 
             var err = eval("(" + xhr.responseText + ")");
@@ -723,7 +723,7 @@ function fetchReguestforQuotationDetails() {
         success: function (RFQData) {
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
-           
+
             if (RFQData.length > 0) {
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
@@ -731,8 +731,8 @@ function fetchReguestforQuotationDetails() {
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
                 jQuery('#refno').html(RFQData[0].general[0].rfqReference)
 
-                jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-                jQuery('#RFQDeadline').html(RFQData[0].general[0].rfqEndDate)
+                jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
                 jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
                 jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
                 jQuery('#lblRano').html(BIdID)
@@ -792,7 +792,7 @@ function fetchAttachments() {
 
         },
         error: function (xhr, status, error) {
-           var err = eval("(" + xhr.responseText + ")");
+            var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }

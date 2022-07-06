@@ -23,7 +23,7 @@ function fetchReguestforQuotationDetails() {
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
 
-            jQuery('#RFQDeadline').html(RFQData[0].general[0].rfqStartDate + ' / ' + RFQData[0].general[0].rfqEndDate)
+            jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' / ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate)
             $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
 

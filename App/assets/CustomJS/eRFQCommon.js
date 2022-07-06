@@ -63,23 +63,19 @@ jQuery("#txtrfirfqsubject").typeahead({
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
-            FetchRFQVersion();
-            /*fetchReguestforQuotationDetails()
-           
+            fetchReguestforQuotationDetails()
+
             if (sessionStorage.getItem('CustomerID') == "32") {
                 fetchRFQPPCApproverStatus(map[item].rfqid);
             }
             else {
                 fetchRFQApproverStatus(map[item].rfqid);
             }
-            
-           
+            FetchRFQVersion();
+            FetchRFQVersion();
             fetchAttachments();
-            fetchApproverRemarks('C');*/
-            /*   setTimeout(function () {
-                 
-                  fetchrfqcomprative();
-              }, 1000)*/
+            fetchApproverRemarks('C');
+
         }
 
         return item;
@@ -177,8 +173,8 @@ function fetchApproverRemarks(Type) {
                 $('#tblCommercialApprovalprev').append('<tr><th>Action</th><th>For</th><th>Remarks</th><th class=hide>Action Type</th><th>Date</th></tr>')
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblCommercialApproval').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
-                    $('#tblCommercialApprovalprev').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblCommercialApproval').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                    $('#tblCommercialApprovalprev').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                 }
             }
@@ -403,8 +399,8 @@ function fetchReguestforQuotationDetails() {
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
                 jQuery('#refno').html(RFQData[0].general[0].rfqReference)
 
-                jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-                jQuery('#RFQDeadline').html(RFQData[0].general[0].rfqEndDate)
+                jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
                 jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
 
                 $('#hdnUserID').val(RFQData[0].general[0].userId)

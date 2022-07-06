@@ -106,37 +106,22 @@ function gritternotification(msz) {
     return false;
 }
 function calltoaster(msz, title, type) {
-
-    //var options = {
-    //    tapToDismiss: false,
-    //    "closeButton": true,
-    //    "debug": false,
-    //    "positionClass": "toast-top-right",
-    //    "onclick": null,
-    //    "autohide": false,
-    //    "hideDuration": "0",
-    //    "showEasing": "swing",
-    //    extendedTimeOut: 0,
-    //    timeOut: 0,
-    //    tapToDismiss: false
-    //    // "showDuration": "1000",
-    //    //"hideEasing": "linear",
-    //    //"showMethod": "fadeIn",
-    //    //"hideMethod": "fadeOut"
-    //}
-    toastr.options = {
+    var options = {
+        tapToDismiss: false,
         "closeButton": true,
         "debug": false,
         "positionClass": "toast-top-right",
-        "showDuration": "0",
-        "hideDuration": "0",
-        "timeOut": "0",
+        "onclick": null,
+        "autohide": false,
         "extendedTimeOut": "0",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeIn"
-     }
+        "timeOut": "0",
+        "hideDuration": "0",
+        "showEasing": "swing"
+        // "showDuration": "1000",
+        //"hideEasing": "linear",
+        //"showMethod": "fadeIn",
+        //"hideMethod": "fadeOut"
+    }
     if (type == 'success') {
         toastr.success(msz, title, options);
     } else if (type == 'error') {
@@ -299,16 +284,15 @@ function checkfilesize(fileid) {
     var size = $('#' + fileid.id)[0].files[0].size;
 
     switch (ftype.toLowerCase()) {
-        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx': case 'jpg': case 'jpeg': case 'png':
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
-            //Metronic.scrollTo($('.alert-danger'), -200);
+            Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
-
             return false
     }
     //if (size > 5242880)// checks the file more than 5 MB
@@ -422,7 +406,6 @@ function addMinutes(time, minsToAdd) {
     return D(mins % (24 * 60) / 60 | 0) + ':' + D(mins % 60);
 }
 function convertTo24Hour(time) {
-    alert(time)
     var hours = parseInt(time.substr(0, 2));
 
     //if (hours < 10) {
@@ -552,17 +535,6 @@ function replaceQuoutesFromStringFromExcel(ele) {
     //ele.value = str;
     return str;
 }
-function removeZero(ele) {
-    var str = '';
-    if ($('#' + ele.id).val() == "0") {
-        str = "";
-    }
-    else {
-        str = $('#' + ele.id).val();
-    }
-    ele.value = str;
-}
-
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
@@ -660,7 +632,7 @@ function fetchBroadcastMsgs(userId, msgType) {
 }
 function fetchvendor() {
 
-    // toastr.clear();
+    toastr.clear();
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     //$('#quick_sidebar_tab_1').removeAttr('Class')
     jQuery.ajax({
@@ -675,7 +647,7 @@ function fetchvendor() {
 
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
-                // toastr.clear();
+                toastr.clear();
                 $(".pulsate-regular").css('animation', 'none');
                 var vName = '';
                 for (var i = 0; i < data.length; i++) {
@@ -742,7 +714,7 @@ function fetchvendor() {
 }
 function fetchUserChats(userId, msgType) {
 
-    // toastr.clear();
+    toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
@@ -950,6 +922,23 @@ function fnDownloadAttachments(filename, foldername) {
     })
 
 }
+function fnConverToLocalTime(dttime) {
+    if (dttime != null) {
+
+        var theStDate = new Date(dttime)
+
+        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+        theStDate = new Date(theStDate + ' UTC');
+
+        theStDate = theStDate.toLocaleString("en-IN", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        })
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+
 
 //** Delete Files from Blob
 function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
@@ -982,31 +971,6 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
         }
     })
 }
-
-function fnConverToLocalTime(dttime) {
-    var theStDate = new Date(dttime)
-    //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
-    theStDate = new Date(theStDate + ' UTC');
-
-    theStDate = theStDate.toLocaleString("en-IN", {
-        timeZone: sessionStorage.getItem('preferredtimezone'), hour12: false, dateStyle: "long", timeStyle: "short"
-    })
-    return theStDate;
-}
-
-//function fnConverToLocalTime(dttime) {
-//    var theStDate = '';
-//    if (dttime != null && dttime != '') {
-//        theStDate = new Date(dttime)
-//        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
-//        theStDate = new Date(theStDate + ' UTC');
-
-//        theStDate = theStDate.toLocaleString("en-IN", {
-//            timeZone: sessionStorage.getItem('preferredtimezone'), hour12: false, dateStyle: "long", timeStyle: "short"
-//        })
-//    }
-//    return theStDate;
-//}
 
 //function fnFileDeleteLocalfolder(path) {
 //    var formData = new window.FormData();

@@ -153,8 +153,8 @@ function fetchrfqcomprative() {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].responseSubmitDT + "</th>";
-                        strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].responseSubmitDT + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHeadExcel += "<th colspan='4'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
 
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
@@ -946,19 +946,10 @@ function formvalidate() {
         },
         submitHandler: function (form) {
 
-            if ($('#hdnRfqID').val() == "0") {
+            if ($('#hdnRfiRfqID').val() == "0") {
                 gritternotification('Please Select RFQ properly!!!')
             }
             else {
-                fetchReguestforQuotationDetails();
-                if (sessionStorage.getItem('CustomerID') == "32") {
-                    fetchRFQPPCApproverStatus($('#hdnRfqID').val());
-                }
-                else {
-                    fetchRFQApproverStatus($('#hdnRfqID').val());
-                }
-                fetchAttachments();
-                fetchApproverRemarks('C');
                 fetchrfqcomprative()
             }
         }

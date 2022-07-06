@@ -45,7 +45,7 @@ function handleChangePasword() {
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
@@ -83,14 +83,14 @@ function ChangePassword() {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
 
-       
+
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
-            EnableViewState:false,
+            EnableViewState: false,
             success: function (data, status, jqXHR) {
                 if (data.isSuccess == "-1") {
                     jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
@@ -98,7 +98,7 @@ function ChangePassword() {
                     Changepassworderror.fadeOut(5000);
                     jQuery.unblockUI();
                     return false;
-                 }
+                }
                 else {
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
@@ -106,11 +106,11 @@ function ChangePassword() {
                     clearResetForm();
                     jQuery.unblockUI();
                 }
-                
+
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                
+
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -131,36 +131,36 @@ function clearResetForm() {
     $('#oPassword').val('');
 }
 function fnischeckSysGeneratedPass() {
-   
+
     if (sessionStorage.getItem("IsSysPassword") == "Y") {
-            bootbox.dialog({
-                message: "You are using System Generated password. It is recommended to change your password. Please press yes to change your password and no if you want to do it later. ",
-                buttons: {
-                    confirm: {
-                        label: "Yes",
-                        className: "btn-success",
-                        callback: function () {
-                            $('#ChangePassword').modal('show');
-                        }
-                    },
-                    cancel: {
-                        label: "No",
-                        className: "btn-default",
-                        callback: function () {
-                            return;
-                        }
+        bootbox.dialog({
+            message: "You are using System Generated password. It is recommended to change your password. Please press yes to change your password and no if you want to do it later. ",
+            buttons: {
+                confirm: {
+                    label: "Yes",
+                    className: "btn-success",
+                    callback: function () {
+                        $('#ChangePassword').modal('show');
+                    }
+                },
+                cancel: {
+                    label: "No",
+                    className: "btn-default",
+                    callback: function () {
+                        return;
                     }
                 }
-            });
+            }
+        });
 
-       
+
     }
     //else {
 
     //}
 }
 function fetchDashboardData() {
- 
+
     handleChangePasword();
     fetchPendingBid()
     formvalidate()
@@ -170,14 +170,14 @@ function GetDataForCust() {
     sessionStorage.setItem('CustomerID', $('#ULCustomers').val())
     setTimeout(function () {
         fetchPendingBid();
-    },400)
+    }, 400)
 }
 function fetchPendingBid() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     if ($('#ULCustomers').val() == null) {
         $('#ULCustomers').val('0')
-        sessionStorage.setItem('CustomerID','0')
+        sessionStorage.setItem('CustomerID', '0')
     }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -202,32 +202,32 @@ function fetchPendingBid() {
             jQuery('#lblOpnquery').text(data[0].openQuery.noofBid)
             $('#totalrecord').text('');
             jQuery("#UlPendingActivity").empty();
-            
+
             if (data[0].pendingActivity.length > 0) {
-                $('#totalrecord').text('(' +data[0].pendingActivity.length+')')
+                $('#totalrecord').text('(' + data[0].pendingActivity.length + ')')
                 for (var i = 0; i < data[0].pendingActivity.length; i++) {
-                   
-                   
+
+
                     str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + data[0].pendingActivity[i].linkURL + "'\,\'" + data[0].pendingActivity[i].bidID + "'\,\'" + data[0].pendingActivity[i].isTermsConditionsAccepted + "'\,\'" + data[0].pendingActivity[i].bidTypeID + "',\'" + data[0].pendingActivity[i].version + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=icon" + i + "></i></div></div>";
                     str += "<div class='cont-col2'><div class='desc'>" + data[0].pendingActivity[i].activityDescription + "&nbsp;&nbsp;";
-                   
-                   
+
+
                     if (data[0].pendingActivity[i].isTermsConditionsAccepted != "Y") {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + " </span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
-               
+
                     }
                     else {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + "</span>";
                     }
                     str += "</div></div></div></div>";
-                    
+
                     str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
                     str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
                     str += "</a></li>";
                     jQuery('#UlPendingActivity').append(str);
-                   
+
                     if (data[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
                         $('#icon' + i).addClass('fa fa-forward');
                     }
@@ -262,12 +262,12 @@ function fetchPendingBid() {
                 jQuery('#UlPendingActivity').append("<tr><td colspan='8' style='text-align: center; color:red;'>You have no pending activity.</td></tr>");
             }
             jQuery.unblockUI();
-           
+
 
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-          
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -279,10 +279,10 @@ function fetchPendingBid() {
 var _Bidtype = '';
 var EventType = '';
 
-function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
-    
+function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+
     if (isterms != 'Y' && isterms != '') {
         sessionStorage.setItem('BidID', '0')
         sessionStorage.setItem('hddnRFQRFIID', Bidid)
@@ -291,21 +291,21 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
 
     }
     else {
-        
+
         sessionStorage.setItem('hddnRFQRFIID', Bidid)
         sessionStorage.setItem('RFQVersionId', version)
         sessionStorage.setItem('BidID', Bidid)
         //setTimeout(function () {
-            window.location = linkurl;
-       // },1000)
-       
+        window.location = linkurl;
+        // },1000)
+
     }
-   
+
     _Bidtype = bidtype;
-   
+
     if (bidtype == 'VQ' || bidtype == 'RFQ' || bidtype == 'RFI' || bidtype == 'eRFQ') {
         EventType = 'RFX';
-      
+
         $('#div_euctions').addClass('hide')
         $('#spnTypeName').text(bidtype)
         if (bidtype == "eRFQ") {
@@ -313,7 +313,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
             $('#div_RFQ').addClass('hide')
             $('#div_bothRFQ').removeClass('hide')
             $('#div_RFX').addClass('hide')
-            
+
         }
         else if (bidtype == "RFI") {
             $('#div_eRFQ').addClass('hide')
@@ -334,17 +334,17 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
             $('#div_RFX').addClass('hide')
         }
         setTimeout(function () {
-             if (bidtype == "eRFQ") {
+            if (bidtype == "eRFQ") {
                 fetchReguestforQuotationDetailseRFQ();
-             }
-             else if (bidtype == "VQ") {
-                 fetchVQDetails();
-             }
+            }
+            else if (bidtype == "VQ") {
+                fetchVQDetails();
+            }
             else if (bidtype == "RFI") {
                 fetchRFIDetails();
-             }
-            
-           
+            }
+
+
         }, 600);
     }
     else if (bidtype == 'PO') {
@@ -354,7 +354,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
         window.location = linkurl;
     }
     else {
-      
+
         EventType = 'Auction';
         sessionStorage.setItem('BidID', Bidid)
         sessionStorage.setItem('RFQID', '0')
@@ -364,17 +364,17 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype,version) {
             fetchBidHeaderDetails();
         }, 1000);
     }
-    
-    
-    
+
+
+
     jQuery.unblockUI();
 }
 function fetchVQDetails() {
     var attachment = ''
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('hddnRFQRFIID') ,
+        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('hddnRFQRFIID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -383,15 +383,15 @@ function fetchVQDetails() {
         success: function (BidData) {
             sessionStorage.setItem('CustomerID', BidData[0].vqMaster[0].customerID)
             attachment = BidData[0].vqMaster[0].vqAttachment.replace(/\s/g, "%20")
-           
+
             jQuery('#RFISubject').text(BidData[0].vqMaster[0].vqSubject)
-            jQuery('#RFIDeadline').text(BidData[0].vqMaster[0].vqDeadline)
+            jQuery('#RFIDeadline').text(fnConverToLocalTime(BidData[0].vqMaster[0].vqDeadline))
             jQuery('#RFIDescription').text(BidData[0].vqMaster[0].vqDescription)
 
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -401,11 +401,11 @@ function fetchVQDetails() {
     });
 
 }
-function fetchRFIDetails(){
+function fetchRFIDetails() {
     var attachment = ''
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('hddnRFQRFIID') ,
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('hddnRFQRFIID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -415,13 +415,13 @@ function fetchRFIDetails(){
             sessionStorage.setItem('CustomerID', BidData[0].rfxMaster[0].customerID)
             sessionStorage.setItem('CurrentRFXID', BidData[0].rfxMaster[0].rfxid)
             jQuery('#RFISubject').text(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#RFIDeadline').text(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#RFIDeadline').text(fnConverToLocalTime(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#RFIDescription').text(BidData[0].rfxMaster[0].rfxDescription)
 
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -432,8 +432,8 @@ function fetchRFIDetails(){
 }
 
 function fetchReguestforQuotationDetailseRFQ() {
-   
-  
+
+
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -444,21 +444,21 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            
+
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-           
+
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(RFQData[0].general[0].rfqDescription)
-            
-            jQuery('#rfqstartdate').text(RFQData[0].general[0].rfqStartDate)
-            jQuery('#rfqenddate').text(RFQData[0].general[0].rfqEndDate)
+
+            jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
-           
+
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -471,16 +471,16 @@ function fetchReguestforQuotationDetailseRFQ() {
 function acceptBidTermsAuction() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorID = 0;
-  
+
     vendorID = sessionStorage.getItem('VendorId');
-    
+
     var acceptTerms = {
         "BidID": parseInt(sessionStorage.getItem('BidID')),
         "VendorID": vendorID,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
     //alert(JSON.stringify(acceptTerms))
-   // console.log(JSON.stringify(acceptTerms))
+    // console.log(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -488,14 +488,14 @@ function acceptBidTermsAuction() {
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-          
+
             if (data.isSuccess == 'Y') {
                 window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -507,15 +507,15 @@ function acceptBidTermsAuction() {
 function acceptBidTermsRFIVQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorID = 0;
-   
+
     vendorID = sessionStorage.getItem('VendorId');
-   
+
     var acceptTerms = {
         "VQRFIID": _Bidtype + '-' + sessionStorage.getItem('hddnRFQRFIID'),
         "VID": parseInt(vendorID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTermsRFIVQ/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -523,15 +523,15 @@ function acceptBidTermsRFIVQ() {
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           
+
             if (data.isSuccess == 'Y') {
                 window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
-           
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-           
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -543,15 +543,15 @@ function acceptBidTermsRFIVQ() {
 function eRFQAcceptBidTerms() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorID = 0;
-   
+
     vendorID = sessionStorage.getItem('VendorId');
-    
+
     var acceptTerms = {
-        "RFQID":  parseInt(sessionStorage.getItem('hddnRFQRFIID')),
+        "RFQID": parseInt(sessionStorage.getItem('hddnRFQRFIID')),
         "VID": parseInt(vendorID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   // alert(JSON.stringify(acceptTerms))
+    // alert(JSON.stringify(acceptTerms))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQAcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -559,14 +559,14 @@ function eRFQAcceptBidTerms() {
         data: JSON.stringify(acceptTerms),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           
+
             if (data.isSuccess == 'Y') {
                 window.location = data.linkURL
             }
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -576,12 +576,12 @@ function eRFQAcceptBidTerms() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-   var custid=0
+    var custid = 0
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#ULCustomers').val() != null) {
-        custid=$('#ULCustomers').val()
+        custid = $('#ULCustomers').val()
     }
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&RequestType=" + requesttype + "&CustomerID=" + custid,
@@ -598,20 +598,20 @@ function fetchBidDataDashboard(requesttype) {
                 $('#totalrecord').text('(' + BidData.length + ')')
                 if (requesttype == 'OpenBids') {
                     for (var i = 0; i < BidData.length; i++) {
-                     
+
                         str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + BidData[i].linkURL + "'\,\'" + BidData[i].bidID + "'\,\'" + BidData[i].isTermsConditionsAccepted + "'\,\'" + BidData[i].bidTypeID + "'\)>";
 
                         str += "<div class='col1'><div class='cont'>";
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         if (BidData[i].isTermsConditionsAccepted != "Y") {
-                            
+
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
                         }
                         else {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
-                        
+
                         str += "</div></div></div></div>";
 
                         str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
@@ -624,7 +624,7 @@ function fetchBidDataDashboard(requesttype) {
                         } else if (BidData[i].bidTypeName == 'RFI') {
                             jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
                         }
-                       
+
                         else if (BidData[i].bidTypeName == 'Forward Auction') {
 
                             $('#iconbidd' + i).addClass('fa fa-forward');
@@ -706,7 +706,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
-                       
+
                         str += "</a></li>";
                         jQuery('#UlPendingActivity').append(str);
 
@@ -744,7 +744,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
-                        
+
                         str += "</div></div></div></div>";
                         str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
 
@@ -777,7 +777,7 @@ function fetchBidDataDashboard(requesttype) {
                             $('#iconbidd' + i).addClass('fa fa-file');
                         }
                         else if (BidData[i].bidTypeName == 'Technical Query') {
-                           $('#iconbidd' + i).addClass('fa fa-question');
+                            $('#iconbidd' + i).addClass('fa fa-question');
                         }
                     }
                 }
@@ -822,61 +822,61 @@ function fetchBidDataDashboard(requesttype) {
                         else if (BidData[i].bidTypeName == 'PO') {
                             $('#iconbidd' + i).addClass('fa fa-file');
                         }
-                      
+
                     }
                 }
                 else {
-                   
-                for (var i = 0; i < BidData.length; i++) {
-                   
-                    str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + BidData[i].linkURL + "'\,\'" + BidData[i].bidID + "'\,\'" + BidData[i].isTermsConditionsAccepted + "'\,\'" + BidData[i].bidTypeID + "'\,\'" + BidData[i].version + "'\)>";
-                    str += "<div class='col1'><div class='cont'>";
-                    str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
-                    str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
-                    if (BidData[i].isTermsConditionsAccepted != "Y") {
-                        str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
-                    }
-                    else {
-                        str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
-                    }
-                    str += "</div></div></div></div>";
-                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
 
-                    str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
-                    str += "</a></li>";
-                    jQuery('#UlPendingActivity').append(str);
+                    for (var i = 0; i < BidData.length; i++) {
 
-                    if (BidData[i].bidTypeName == 'VQ') {
-                        jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
-                    } else if (BidData[i].bidTypeName == 'RFI') {
-                        jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
-                    } else if (BidData[i].bidTypeName == 'RFQ') {
-                        $('#iconbidd' + i).addClass('icon-envelope');
-                    }
-                    else if (BidData[i].bidTypeName == 'Forward Auction') {
-                        $('#iconbidd' + i).addClass('fa fa-forward');
-                    }
-                    else if (BidData[i].bidTypeName.toLowerCase() == 'french auction') {
-                        $('#iconbidd' + i).addClass('fa fa-forward');
-                    }
-                    else if (BidData[i].bidTypeName == 'Reverse Auction') {
+                        str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + BidData[i].linkURL + "'\,\'" + BidData[i].bidID + "'\,\'" + BidData[i].isTermsConditionsAccepted + "'\,\'" + BidData[i].bidTypeID + "'\,\'" + BidData[i].version + "'\)>";
+                        str += "<div class='col1'><div class='cont'>";
+                        str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
+                        str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
+                        if (BidData[i].isTermsConditionsAccepted != "Y") {
+                            str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
+                        }
+                        else {
+                            str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
+                        }
+                        str += "</div></div></div></div>";
+                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
 
-                        $('#iconbidd' + i).addClass('fa fa-gavel');
+                        str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
+                        str += "</a></li>";
+                        jQuery('#UlPendingActivity').append(str);
+
+                        if (BidData[i].bidTypeName == 'VQ') {
+                            jQuery('#iconbidd' + i).addClass('fa fa-question-circle');
+                        } else if (BidData[i].bidTypeName == 'RFI') {
+                            jQuery('#iconbidd' + i).addClass('fa fa-envelope-o');
+                        } else if (BidData[i].bidTypeName == 'RFQ') {
+                            $('#iconbidd' + i).addClass('icon-envelope');
+                        }
+                        else if (BidData[i].bidTypeName == 'Forward Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-forward');
+                        }
+                        else if (BidData[i].bidTypeName.toLowerCase() == 'french auction') {
+                            $('#iconbidd' + i).addClass('fa fa-forward');
+                        }
+                        else if (BidData[i].bidTypeName == 'Reverse Auction') {
+
+                            $('#iconbidd' + i).addClass('fa fa-gavel');
+                        }
+                        else if (BidData[i].bidTypeName == 'Coal Auction') {
+                            $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');
+                        }
+                        else if (BidData[i].bidTypeName == 'eRFQ') {
+                            $('#iconbidd' + i).addClass('icon-envelope');
+                        }
+                        else if (BidData[i].bidTypeName == 'PO') {
+                            $('#iconbidd' + i).addClass('fa fa-file');
+                        }
+
                     }
-                    else if (BidData[i].bidTypeName == 'Coal Auction') {
-                        $('#iconbidd' + i).addClass('fa fa-fire-extinguisher');
-                    }
-                    else if (BidData[i].bidTypeName == 'eRFQ') {
-                        $('#iconbidd' + i).addClass('icon-envelope');
-                    }
-                    else if (BidData[i].bidTypeName == 'PO') {
-                        $('#iconbidd' + i).addClass('fa fa-file');
-                    }
-                   
                 }
+
             }
-        
-     }
             else {
                 jQuery('#UlPendingActivity').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
             }
@@ -891,13 +891,13 @@ function fetchBidDataDashboard(requesttype) {
                 jQuery("#div_portlet").addClass('portlet box green');
 
             } else if (requesttype == 'CloseBids') {
-                
+
                 jQuery("#iconclass").addClass('fa fa-paperclip');
                 jQuery("#spanPanelCaption").text('Closed eAuctions');
                 jQuery("#div_portlet").addClass('portlet box purple-soft');
 
             } else if (requesttype == 'CloseRFX') {
-                
+
                 jQuery("#iconclass").addClass('fa fa-unlink');
                 jQuery("#spanPanelCaption").text('Submitted RFx');
                 jQuery("#div_portlet").addClass('portlet box green');
@@ -921,7 +921,7 @@ function fetchBidDataDashboard(requesttype) {
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -936,9 +936,9 @@ function fetchBidHeaderDetails() {
     var tncAttachment = '';
     var anyotherAttachment = '';
     var url = '';
-  
+
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + sessionStorage.getItem('BidID') + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -950,13 +950,14 @@ function fetchBidHeaderDetails() {
         success: function (data, status, jqXHR) {
             console.log("dataa > ", data)
             if (data.length == 1) {
+                var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
                 sessionStorage.setItem('CustomerID', data[0].customerID)
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
-                jQuery("#lblbidtime").text(data[0].bidTime);
+                jQuery("#lblbiddate").text(localBidDate);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblbidfor").text(data[0].bidFor);
 
@@ -966,16 +967,16 @@ function fetchBidHeaderDetails() {
                 jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
                 jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
 
-                
+
 
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
-                
+
             }
         },
         error: function (xhr, status, error) {
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -996,7 +997,7 @@ jQuery('#chkIsAccepted').click(function () {
 
 jQuery("#searchPendingActivities").keyup(function () {
 
-    
+
     jQuery("#UlPendingActivity li:has(div)").hide(); // Hide all the rows.
 
     var iCounter = 0;
@@ -1029,19 +1030,19 @@ function formvalidate() {
         errorClass: 'help-block', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
         rules: {
-         },
+        },
 
         messages: {
-           
+
         },
 
         invalidHandler: function (event, validator) { //display error alert on form submit   
-           
+
         },
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
@@ -1054,7 +1055,7 @@ function formvalidate() {
         },
 
         submitHandler: function (form) {
-           
+
             if (EventType == 'RFX') {
                 if (_Bidtype == "eRFQ") {
                     eRFQAcceptBidTerms();
@@ -1062,7 +1063,7 @@ function formvalidate() {
                 } else {
                     acceptBidTermsRFIVQ();
                 }
-               
+
             }
             else {
                 acceptBidTermsAuction()
@@ -1071,11 +1072,11 @@ function formvalidate() {
         }
     });
 
-    
+
 
 }
 function validateBid(bidid) {
-   
+
     $('#validatebidmodal').modal('show')
 }
 function fetchMappedCustomers() {
@@ -1106,7 +1107,7 @@ function fetchMappedCustomers() {
         error: function (xhr, status, error) {
             $('.page-container').show();
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-           
+
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

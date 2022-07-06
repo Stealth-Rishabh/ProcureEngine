@@ -1568,7 +1568,7 @@ function fetchallexportdetails() {
             jQuery('#txtbidDatePrev').html(localBidDate)
             jQuery('#txtbidDatePrevtab_0').html(localBidDate)
             //jQuery('#txtbidTimePrevtab_0').html(localBidTime)
-            jQuery('#txtbidTimePrev').html(localBidTime)
+            //jQuery('#txtbidTimePrev').html(localBidTime)
             jQuery("#dropCurrencyPrev").html(BidData[0].bidDetails[0].currencyName)
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
@@ -2098,7 +2098,7 @@ function fetchallexportdetails() {
             if (BidData[0].bidDetails[0].isRunningBid.toLowerCase() == 'runningbid') {
 
                 $("a.isDisabledClass").removeAttr("onclick");
-                $('#btn-add-new-item').attr("disabled","disabled");
+                $('#btn-add-new-item').attr("disabled", "disabled");
                 isRunningBid = "Y";
                 $('.afterrunning').attr('disabled', 'disabled')
                 if (BidData[0].bidDetails[0].bidClosingType == "S") {
@@ -2792,23 +2792,49 @@ function editValues(divName, rowid) {
             $('#txtUOM').val($("#" + rowid).find("td:eq(6)").text())
 
             $('#txtCeilingPrice').val($("#" + rowid).find("td:eq(7)").text())
-            $('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            //$('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#checkmaskvendor').val($("#checkmaskvendor option:first").val());
+            }
+            else {
+                $('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            }
+
 
             if ($('#hdnClosingval').val() == 'A') {
 
                 hdnSeId = $("#" + rowid).find("td:eq(13)").text()
-
-                $('#checkL1Price').val($("#" + rowid).find("td:eq(14)").text().trim())
-                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(15)").text().trim())
+                if (hdnSeId == 0 || hdnSeId == null) {
+                    $('#checkL1Price').val($("#checkL1Price option:first").val());
+                    $('#checkshowstartPrice').val($("#checkshowstartPrice option:first").val());
+                }
+                else {
+                    $('#checkL1Price').val($("#" + rowid).find("td:eq(14)").text().trim())
+                    $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(15)").text().trim())
+                }
             } else {
                 hdnSeId = $("#" + rowid).find("td:eq(15)").text()
-
-                $('#checkL1Price').val($("#" + rowid).find("td:eq(16)").text().trim())
-                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(17)").text().trim())
+                if (hdnSeId == 0 || hdnSeId == null) {
+                    $('#checkL1Price').val($("#checkL1Price option:first").val());
+                    $('#checkshowstartPrice').val($("#checkshowstartPrice option:first").val());
+                }
+                else {
+                    $('#checkL1Price').val($("#" + rowid).find("td:eq(16)").text().trim())
+                    $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(17)").text().trim())
+                }
+                //$('#checkL1Price').val($("#" + rowid).find("td:eq(16)").text().trim())
+                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(17)").text().trim())
             }
             $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(9)").text())
             $("#txtselectedCurrency").val($("#dropCurrencyPrevtab_0").html());
-            $('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#drpdecreamenton').val($("#drpdecreamenton option:first").val());
+            }
+            else {
+                $('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
+
+            }
+            //$('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
             $('#txtlastinvoiceprice').val($("#" + rowid).find("td:eq(12)").text())
             $('#txtitembidduration').val($("#" + rowid).find("td:eq(13)").text())
             $('#divGST').hide()
@@ -2839,7 +2865,13 @@ function editValues(divName, rowid) {
             $('#txtbiddescriptionP').val($("#" + rowid).find("td:eq(2)").text())
 
             $('#txttargetprice').val($("#" + rowid).find("td:eq(3)").text())
-            $('#checkmaskvendor').val($("#" + rowid).find("td:eq(4)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#checkmaskvendor').val($("#checkmaskvendor option:first").val());
+            }
+            else {
+                $('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            }
+            //('#checkmaskvendor').val($("#" + rowid).find("td:eq(4)").text())
             $('#txtquantitiy').val($("#" + rowid).find("td:eq(5)").text())
             $('#dropuom').val($("#" + rowid).find("td:eq(6)").text())
             $('#txtUOM').val($("#" + rowid).find("td:eq(6)").text())
@@ -2880,23 +2912,50 @@ function editValues(divName, rowid) {
             $('#dropuom').val($("#" + rowid).find("td:eq(7)").text())
             $('#txtUOM').val($("#" + rowid).find("td:eq(7)").text())
             $('#txtCeilingPrice').val($("#" + rowid).find("td:eq(8)").text())
-            $('#checkmaskvendor').val($("#" + rowid).find("td:eq(9)").text())
+            //$('#checkmaskvendor').val($("#" + rowid).find("td:eq(9)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#checkmaskvendor').val($("#checkmaskvendor option:first").val());
+            }
+            else {
+                $('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            }
 
             if ($('#hdnClosingval').val() == 'A') {
 
                 hdnSeId = $("#" + rowid).find("td:eq(14)").text()
-
-                $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
-                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+                if (hdnSeId == 0 || hdnSeId == null) {
+                    $('#checkL1Price').val($("#checkL1Price option:first").val());
+                    $('#checkshowstartPrice').val($("#checkshowstartPrice option:first").val());
+                }
+                else {
+                    $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
+                    $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+                }
+                //$('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
+                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
             } else {
                 hdnSeId = $("#" + rowid).find("td:eq(16)").text()
-
-                $('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
-                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
+                if (hdnSeId == 0 || hdnSeId == null) {
+                    $('#checkL1Price').val($("#checkL1Price option:first").val());
+                    $('#checkshowstartPrice').val($("#checkshowstartPrice option:first").val());
+                }
+                else {
+                    $('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
+                    $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
+                }
+                //$('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
+                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
             }
             $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(10)").text())
             $("#txtselectedCurrency").val($("#dropCurrencyPrevtab_0").html());
-            $('#drpdecreamenton').val($("#" + rowid).find("td:eq(12)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#drpdecreamenton').val($("#drpdecreamenton option:first").val());
+            }
+            else {
+                $('#drpdecreamenton').val($("#" + rowid).find("td:eq(12)").text())
+
+            }
+            //$('#drpdecreamenton').val($("#" + rowid).find("td:eq(12)").text())
             $('#txtlastinvoiceprice').val($("#" + rowid).find("td:eq(13)").text())
             $('#txtitembidduration').val($("#" + rowid).find("td:eq(14)").text())
             $('#divGST').show()
@@ -2918,13 +2977,27 @@ function editValues(divName, rowid) {
             $('#dropuom').val($("#" + rowid).find("td:eq(5)").text())
             $('#txtUOM').val($("#" + rowid).find("td:eq(5)").text())
             $('#txtCeilingPrice').val($("#" + rowid).find("td:eq(6)").text())
-            $('#checkmaskvendor').val($("#" + rowid).find("td:eq(7)").text())
+            //$('#checkmaskvendor').val($("#" + rowid).find("td:eq(7)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#checkmaskvendor').val($("#checkmaskvendor option:first").val());
+            }
+            else {
+                $('#checkmaskvendor').val($("#" + rowid).find("td:eq(8)").text())
+            }
             if ($('#hdnClosingval').val() == 81 || $('#hdnClosingval').val() == 83) {
                 $('#lblshowprice').html("Show H1 Price")
                 hdnSeId = $("#" + rowid).find("td:eq(14)").text()
                 $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(8)").text())
-                $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
-                $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+                if (hdnSeId == 0 || hdnSeId == null) {
+                    $('#checkL1Price').val($("#checkL1Price option:first").val());
+                    $('#checkshowstartPrice').val($("#checkshowstartPrice option:first").val());
+                }
+                else {
+                    $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
+                    $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+                }
+                //$('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
+                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
 
                 $('#lblforonltfaeng').show();
                 $('#RAFAEnglishonly').show();
@@ -2952,7 +3025,14 @@ function editValues(divName, rowid) {
             }
 
             $("#txtselectedCurrency").val($("#dropCurrencyPrevtab_0").html());
-            $('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
+            if (hdnSeId == 0 || hdnSeId == null) {
+                $('#drpdecreamenton').val($("#drpdecreamenton option:first").val());
+            }
+            else {
+                $('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
+
+            }
+            //$('#drpdecreamenton').val($("#" + rowid).find("td:eq(11)").text())
             $('#txtlastinvoiceprice').val($("#" + rowid).find("td:eq(12)").text())
 
             $('#txtpriceincreamentamount').val($("#" + rowid).find("td:eq(16)").text())

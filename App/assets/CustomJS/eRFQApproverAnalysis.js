@@ -51,6 +51,7 @@ else {
 
 var Vendor;
 function fetchApproverRemarks() {
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + AppType,
@@ -75,7 +76,7 @@ function fetchApproverRemarks() {
                     $('#frmdivremarksforward').addClass('col-md-6');
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                     }
                 }
@@ -83,14 +84,14 @@ function fetchApproverRemarks() {
                 $('#frmdivremarksapprover').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                 }
                 $('#frmdivapprove').show()
                 $('#frmdivremarksawarded').removeClass('col-md-12');
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                 }
                 $('#frmdivawarded').show()
