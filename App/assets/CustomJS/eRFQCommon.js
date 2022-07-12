@@ -211,24 +211,19 @@ function checkForSelectedVendors() {
     //getting value for Checked Checheck boxes
     $(".chkReinvitation:checked").each(function (x, i) {
         str += $(this).val() + ',';
-
     });
-
     if (str == '') {
         $("#error").html("PLease select atleast one vendor");
         $(".alert-danger").show();
         Metronic.scrollTo($(".alert-danger"), -200);
         $(".alert-danger").fadeOut(7000);
         return false;
-
     }
     else {
         $("#modalreInviteDate").modal("show");
     }
 
 }
-
-
 function ReInviteVendorsForRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     str = str.substring(0, str.length - 1);
@@ -399,7 +394,7 @@ function fetchReguestforQuotationDetails() {
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
-                
+
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1157,6 +1152,7 @@ function fetchRFQApproverStatus(RFQID) {
 
                     if (counterColor > 1) {
                         if (status == 'Pending') {
+
                             status = 'N/A'
                             jQuery('#divPendingDate' + i).addClass('hide')
                             c = c + 1;
@@ -1199,7 +1195,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1245,24 +1241,32 @@ function fetchRFQPPCApproverStatus(RFQID) {
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
-                    if (data[i].statusCode == 55) {
-
-                        //counterColor = counterColor + 1;
-                        status = 'Forwarded to FC'
-                        jQuery('#divstatus' + i).text(status);
-                        jQuery('#divstatuscolor' + i).addClass('last');
-                    }
-                    if (data[i].statusCode == 50) {
+                    if (data[i].statusCode == 45) {
 
                         //counterColor = counterColor + 1;
                         status = 'Forwarded to PPC'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
+                    if (data[i].statusCode == 50) {
+
+                        //counterColor = counterColor + 1;
+                        status = 'Forwarded to FC'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+
                     if (data[i].statusCode == 60) {
 
                         //counterColor = counterColor + 1;
                         status = 'Pending on comm Approver after Revert'
+                        jQuery('#divstatus' + i).text(status);
+                        jQuery('#divstatuscolor' + i).addClass('last');
+                    }
+                    if (data[i].statusCode == 70) {
+
+                        counterColor = counterColor + 1;
+                        status = 'Pending on comm Approver after Revert by FC'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
@@ -1273,14 +1277,14 @@ function fetchRFQPPCApproverStatus(RFQID) {
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
-                    if (data[i].statusCode == 10 || data[i].statusCode == 60) {
+                    if (data[i].statusCode == 10 || data[i].statusCode == 60 || data[i].statusCode == 70) {
                         jQuery('#divstatuscolor' + i).addClass('error');
                     }
-                    if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40 || data[i].statusCode == 50) {
+                    if (data[i].statusCode == 20 | data[i].statusCode == 30 || data[i].statusCode == 40 || data[i].statusCode == 50 || data[i].statusCode == 45) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
 
-                    if (counterColor > 1 && data[i].pendingSince == '') {//
+                    if (counterColor >= 1 && data[i].pendingSince == '') {//
                         if (status == 'Pending') {
                             status = 'N/A'
                             $('#divPendingDate' + i).addClass('hide')

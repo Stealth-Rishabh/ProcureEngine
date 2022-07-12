@@ -184,11 +184,28 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
+                                                            Country <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" name="ddlCountry" id="ddlCountry" onchange="fetchState()" tabindex="4"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">
+                                                            State <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" name="ddlState" id="ddlState" onchange="fetchCity()" tabindex="4"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">
                                                             City <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
-                                                                   name="txtCity" onkeyup="replaceQuoutesFromString(this)" />
+                                                            <!--<input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
+                    name="txtCity" onkeyup="replaceQuoutesFromString(this)" />-->
+                                                            <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
                                                         </div>
                                                     </div>
 
@@ -198,7 +215,7 @@
                                                         </label>
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
-                                                                   name="txtPanNo"  maxlength="10"/>
+                                                                   name="txtPanNo" maxlength="10" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -250,15 +267,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group hide">
-                    <label class="col-md-3 control-label">
-                        IsActive
-                    </label>
-                    <div class="col-md-9 checkbox-list">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                        </label>
-                    </div>
-                </div>
+                                                        <label class="col-md-3 control-label">
+                                                            IsActive
+                                                        </label>
+                                                        <div class="col-md-9 checkbox-list">
+                                                            <label class="checkbox-inline">
+                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                         <label class="col-md-3 control-label">
                                                             &nbsp;
@@ -456,6 +473,19 @@
           
             fetchBidType();// for serach vendor
             clearform();
+            fetchCountry();
+            $('#ddlCountry').select2({
+                searchInputPlaceholder: "Search Country",
+            });
+
+            $('#ddlState').select2({
+                searchInputPlaceholder: "Search State",
+                allowClear: true
+            });
+            $('#ddlCity').select2({
+                searchInputPlaceholder: "Search City",
+                allowClear: true
+            });
         });
             </script>
 

@@ -77,7 +77,7 @@ function fetchrfqcomprative() {
 
             if (new Date(bidopeningdate) <= new Date()) {
                 ShowPrice = 'Y';
-
+                $('#btnPDF').show()
             }
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprative > thead').empty()
@@ -97,7 +97,6 @@ function fetchrfqcomprative() {
                 Vendor = data[0].vendorNames;
                 $('#displayTable').show();
                 $('#btnExport').show()
-                $('#btnPDF').show()
                 $("#btnDownloadFile").show()
                 if ($('#hdnUserID').val() == sessionStorage.getItem('UserID')) {
                     $('#cancl_btn').show();
