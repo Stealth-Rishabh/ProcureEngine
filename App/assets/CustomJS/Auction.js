@@ -925,6 +925,7 @@ function fnDownloadAttachments(filename, foldername) {
 function fnConverToLocalTime(dttime) {
     if (dttime != null) {
 
+        //alert(dttime)
         var theStDate = new Date(dttime)
 
         //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
@@ -939,6 +940,46 @@ function fnConverToLocalTime(dttime) {
     else return '..'
 }
 
+function fnConverToShortDT(dttime) {
+    if (dttime != null) {
+
+        //alert(dttime)
+        var theStDate = new Date(dttime)
+        theStDate = theStDate.toDateString()
+        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+        theStDate = new Date(theStDate + ' UTC');
+
+        theStDate = theStDate.toLocaleString("en-IN", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
+        })
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+
+function fnConverToTime(dttime) {
+    if (dttime != null) {
+
+        var theStDate = new Date(dttime)
+
+        theStDate = new Date(theStDate + ' UTC');
+
+        theStDate = theStDate.toLocaleString("en-IN", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "full", hourCycle: "h24", timeStyle: "short"
+        })
+        console.log(theStDate)
+
+        theStDate = theStDate.replace('at', ' ');
+
+        var currentDate = new Date(theStDate);
+        var dtst = moment(currentDate).format('HH:mm:ss');
+        console.log(currentDate)
+        //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
+        return dtst;
+    }
+    else return '..'
+}
 
 //** Delete Files from Blob
 function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {

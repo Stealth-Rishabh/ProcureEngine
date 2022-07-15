@@ -46,7 +46,7 @@
                 <a class="navbar-brand" href="index.html" style="padding:4px !important;">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
                 </a>
-                
+
             </div>
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             </a>
@@ -55,7 +55,7 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                           
+
                             <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
                             </span><i class="fa fa-angle-down"></i>
                         </a>
@@ -186,7 +186,7 @@
                                                                        autocomplete="off" name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                     <div class="form-group">
 
@@ -204,6 +204,21 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Bid Date/Time<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                                    <input type="text" size="16" class="form-control" id="txtbidDate" name="txtbidDate" placeholder="Bid Date/Time" autocomplete="off" readonly>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default date-set" type="button" id="btncal">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="inputgroup">
                                                             <label class="control-label col-md-3">
                                                                 Event Date<span class="required"> *</span>
                                                             </label>
@@ -234,7 +249,7 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
@@ -247,7 +262,7 @@
 
                                                                     <option value="81">English</option>
                                                                     <!--<option value="83">Japanese</option>
-                    <option value="82">Dutch(RA)</option>-->
+                                                                    <option value="82">Dutch(RA)</option>-->
 
                                                                 </select>
 
@@ -321,7 +336,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <!--<input type="text" class="form-control" placeholder="None" id="txtBidExtension"
-           autocomplete="off" name="txtBidExtension">-->
+                                                                autocomplete="off" name="txtBidExtension">-->
                                                                 <select class="form-control" id="txtBidExtension">
                                                                 </select>
                                                             </div>
@@ -369,11 +384,11 @@
 
                                                             </div>
                                                             <!--<div class="inputgroup">
-                <div class="col-md-1 ">
+                                                                <div class="col-md-1 ">
 
-                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                </div>
-            </div>-->
+                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                </div>
+                                                            </div>-->
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -449,28 +464,28 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control text-right" id="txtlastinvoiceprice"
-                                                                  name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                                         </div>
                                                         <label class="control-label col-md-2">
                                                             Min_Quan.<span class="required">
-    *
-</span>
+                                                                *
+                                                            </span>
                                                         </label>
                                                         <div class="col-md-1 xyz minq">
                                                             <input type="tel" class="form-control  text-right" id="txtminquantitiy"
                                                                    name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" />
                                                             <span for="txtminquantitiy" class="help-block help-block-error hide" id="spnminq"></span>
-                                           
+
                                                         </div>
                                                         <label class="control-label col-md-1">
                                                             Max_Quan.<span class="required">
-    *
-</span>
+                                                                *
+                                                            </span>
                                                         </label>
                                                         <div class="col-md-2 xyz maxq">
                                                             <input type="tel" class="form-control text-right " id="txtmaxquantitiy"
-                                                                   name="txtmaxquantitiy" autocomplete="off"  onfocusout="CheckmaxQuantity(this)" />
+                                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" />
                                                             <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq"></span><!--onkeyup="thousands_separators_input(this)"-->
                                                         </div>
                                                     </div>
@@ -552,7 +567,7 @@
                                                         </div>
 
                                                     </div>
-                                                 
+
                                                     <div class="table-scrollable display-none" id="wrap_scroller">
                                                         <table class=" table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
                                                     </div>
@@ -1207,7 +1222,7 @@
             fetchParticipantsVender();// fetch all vendors for advance search
             fetchVendorGroup('M', 0); // used to fetch product category
         });
-       $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
+        $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
     </script>
 </body>
 

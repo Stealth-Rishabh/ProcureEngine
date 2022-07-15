@@ -515,19 +515,16 @@ function fetchBidSummary(BidID) {
                     $('#bid_status').hide();
                 }
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
-                //var _bidTime = fnConverToLocalTime(data[0].bidTime);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
                 jQuery("#lblbidSubject").html('<b>' + data[0].bidSubject + '</b>');
                 jQuery("#lblenquirysubject").html('<b>' + data[0].bidSubject + '</b>');
                 jQuery("#lblbiddetails").text(data[0].bidDetails);
-                //jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
+                jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
                 //jQuery("#lblbiddate").text(data[0].bidDate);
-                //jQuery("#lblbidtime").text(data[0].bidTime);
-                jQuery('#RFQConfigueron').html('<b>' + _bidDate + ' ' + _bidTime + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
-                //jQuery("#lblbidtime").text(_bidTime);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblEventID").text(BidID);
                 if (data[0].bidForID == 81) {
@@ -559,8 +556,7 @@ function fetchBidSummary(BidID) {
                 BidID = data[0].bidID
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID
-                //$('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + data[0].bidDate + ' ' + data[0].bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
-                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + _bidDate + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
+                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + data[0].bidDate + ' ' + data[0].bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
                 sessionStorage.setItem('hdnbidtypeid', BidTypeID)
 
                 fetchBidSummaryDetails(BidID, BidForID);
@@ -803,11 +799,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            /* $('.header').css({
-                                 'background-color': '#dff0d8',
-                                 'font-weight': 'bold',
-                                 'color': '#3c763d'
-                             })*/
+                            $('.header').css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -821,17 +817,16 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         }
                         if (data[i].srNo == 'L1') {
-
                             $('#low' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            /* $('.header').css({
-                                 'background-color': '#dff0d8',
-                                 'font-weight': 'bold',
-                                 'color': '#3c763d'
-                             })*/
+                            $('.header').css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -919,16 +914,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            $('#low' + i).css({
+                            $('.header').css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
-                            /*$('.header').css({
-                                'background-color': '#dff0d8',
-                                'font-weight': 'bold',
-                                'color': '#3c763d'
-                            })*/
                             $('#low_str' + i).css({
                                 'background-color': '#dff0d8',
                                 'font-weight': 'bold',
@@ -1167,16 +1157,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('#lowa' + i).css({
+                                $('.header').css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                /* $('.header').css({
-                                     'background-color': '#dff0d8',
-                                     'font-weight': 'bold',
-                                     'color': '#3c763d'
-                                 })*/
                             }
                             $('#itemleftTime' + i).css({
                                 'color': 'Red',
@@ -1187,7 +1172,6 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         else {
 
                             if (data[i].srNo == 'L1') {
-
                                 $('#low_str' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
@@ -1199,16 +1183,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('#lowa' + i).css({
+                                $('.header').css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                /* $('.header').css({
-                                     'background-color': '#dff0d8',
-                                     'font-weight': 'bold',
-                                     'color': '#3c763d'
-                                 })*/
 
                             }
                             if (data[i].srNo == 'H1') {
@@ -1222,16 +1201,11 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('#lowa' + i).css({
+                                $('.header').css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                /*  $('.header').css({
-                                      'background-color': '#dff0d8',
-                                      'font-weight': 'bold',
-                                      'color': '#3c763d'
-                                  })*/
                             }
                         }
 
@@ -1346,11 +1320,6 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
                                 })
-                                $('#lowa' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
                             }
                         }
                         else {
@@ -1361,11 +1330,6 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                     'color': '#3c763d'
                                 })
                                 $('#low' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
-                                $('#lowa' + i).css({
                                     'background-color': '#dff0d8',
                                     'font-weight': 'bold',
                                     'color': '#3c763d'
@@ -1713,26 +1677,6 @@ connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 var display = document.querySelector('#lblTimeLeft');
 var displayForS = "";
 var Url = "";
-connection.on("refreshRAQuotes", function (data) {
-
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
-connection.on("refreshPEFAQuotes", function (data) {
-
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
-connection.on("refreshPEFAQuotes", function (data) {
-
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
-connection.on("refreshFAQuotes", function (data) {
-
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
-connection.on("refreshCAQuotes", function (data) {
-
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
 connection.on("refreshColumnStatus", function (data1) {
 
     if (data1.length > 1) {
@@ -2390,7 +2334,6 @@ connection.on("refreshBidDetailsManage", function (data) {
 
 });
 
-
 /////****** Chat *****************/////
 connection.on("ReceiveMessage", function (objChatmsz) {
 
@@ -2903,11 +2846,12 @@ function fetchApproverStatus() {
                 jQuery('#divappendstatusbar').empty();
                 var counterColor = 0;
                 for (var i = 0; i < data.length; i++) {
-
+                    var _date = new Date(data[i].pendingSince);
+                    _date = fnConverToLocalTime(_date);
                     jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].level);
                     jQuery('#divapprovername' + i).text(data[i].approverStaffName);
-                    jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].pendingSince));
+                    jQuery('#divPendingDate' + i).text(_date);
 
                     if (data[i].statusCode == 10) {
 
@@ -3124,7 +3068,7 @@ function CancelBid(bidid, mailparam) {
         "BidSubj": $('#lblbidSubject').text(),
         "BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
         "BidDate": $('#lblbiddate').html(),
-        "BidTime": $('#lblbidtime').html(),
+        //"BidTime": $('#lblbidtime').html(),
         "BidDuration": $('#lblbidduration').html(),
         "BidTypeID": parseInt(BidTypeID),
         "SendMail": mailparam,
@@ -3219,8 +3163,12 @@ function fetchGraphData(itemId) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
                     _date = new Date(data[i].submissionTime);
+                    //alert(_date);
                     _date = fnConverToLocalTime(_date);
-                    $("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                    //alert(_date);
+
+                    //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                    $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                 }
             }
 

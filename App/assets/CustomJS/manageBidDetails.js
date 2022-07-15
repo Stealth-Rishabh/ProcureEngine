@@ -39,6 +39,7 @@ var errorReOpen = $('#diverrorreopen');
 var successreOpen = $('#successreopen');
 
 var hdnSeId = 0;
+var isNewLineItem = 'N';
 var isBidEventChanged = false;
 var isRunningBid = '';
 var _bidClosingType = '';
@@ -93,6 +94,7 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     jQuery("#divhidevendors").hide();
     jQuery("#divbidextension").hide();
     hdnSeId = 0;
+    isNewLineItem = 'N';
     $(".xyz").removeClass("has-error");
     $('.help-block-error').remove();
     $('.alert-success').hide();
@@ -432,7 +434,6 @@ jQuery("#txtbid").typeahead({
             }
             sessionStorage.setItem("hdnbidtypeid", map[item].bidTypeID)
             sessionStorage.setItem("hdbbidForID", map[item].bidForID)
-
             fetchvendors(map[item].bidId);
             FetchVenderNotInvited(map[item].bidId)
             fetchallexportdetails(); // For Time Extension feature added on 11 Nov
@@ -451,7 +452,15 @@ jQuery("#txtbid").typeahead({
             //$('#inviteVendorBody').hide();
             jQuery("#ddlbid").val(0);
         }
+        if (sessionStorage.getItem("hdnbidtypeid") == 8 || sessionStorage.getItem("hdnbidtypeid") == 9) {
+            $('#btn-add-new-item').hide();
+            $('#btn-add-new-item').attr("disabled", "disabled");
+        }
+        else {
+            $('#btn-add-new-item').show();
 
+            $('#btn-add-new-item').removeAttr("disabled");
+        }
         return item;
     }
 
@@ -1664,7 +1673,16 @@ function fetchallexportdetails() {
                     $('#divreopendttime').show();
                     $('#btnreopendttime').show();
                     $('#btnbidchangedttime').hide();
-                    $('#btn-add-new-item').removeAttr("disabled");
+                    //check 
+                    if (sessionStorage.getItem("hdnbidtypeid") == 8 || sessionStorage.getItem("hdnbidtypeid") == 9) {
+                        $('#btn-add-new-item').hide();
+                        $('#btn-add-new-item').attr("disabled", "disabled");
+                    }
+                    else {
+                        $('#btn-add-new-item').show();
+
+                        $('#btn-add-new-item').removeAttr("disabled");
+                    }
                 }
             }
             //$("#ctrlbidTimeandDate").attr('onclick', "editValues('divbidTimePrevtab_0', 'txtbidDatePrevtab_0')");
@@ -1674,7 +1692,7 @@ function fetchallexportdetails() {
             $("#ctrlShwL1").attr('onclick', "editValues('divbidShowL1L2', '')");
             $("#ctrlhidevendor").attr('onclick', "editValues('divhidevendors', '')");
             $("#ctrlnoofbidextension").attr('onclick', "editValues('divbidextension', '')");
-            $("#btn-add-new-item").attr('onclick', "editValues('divbidItemsPrevtab_0','')");
+            $("#btn-add-new-item").attr('onclick', "editValues('divbidItemsPrevtab_0','New')");
             BidForID = BidData[0].bidDetails[0].bidForID;
             if (BidData[0].bidDetails[0].bidForID == "82") {
                 $("#ctrlShwL1").hide()
@@ -2588,6 +2606,7 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
+    debugger;
     var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
     //s.setMinutes(s.getMinutes() + 5);
     //var datearray = $("#txtbidDate").val().split("/");
@@ -2697,7 +2716,13 @@ function fnTimeUpdateClosedBid(isMailSend) {
 }
 
 function editValues(divName, rowid) {
+    //alert(sessionStorage.getItem("hdnbidtypeid"));
+    //debugger;
     var extval = -1;
+    if (rowid == 'New') {
+        isNewLineItem = 'Y';
+        rowid = '';
+    }
     showhideItemBidDuration();
     isBidEventChanged = true;
 
@@ -3109,11 +3134,14 @@ function fnclearmsz(id) {
 function formSubmitEditEvent() {
 
     var Data = {};
-    if (hdnSeId == null || hdnSeId == 0) {
+    debugger;
+    //(isNewLineItem);
+    if (isNewLineItem == 'Y') {
         addrowfield()
 
     }
     else {
+        isNewLineItem = 'N';
         if ($("#txtinputbidTimePrevtab_0").val() != '' && $('#divbidTimePrevtab_0').is(':visible')) {
             Data = {
                 "QueryString": $("#txtinputbidTimePrevtab_0").val(),
@@ -3155,6 +3183,9 @@ function formSubmitEditEvent() {
                 showrank = $("#drpshowH1H2").val()
             }
             else if (sessionStorage.getItem('hdnbidtypeid') == "7") {
+                showrank = $("#drpshowL1L2").val()
+            }
+            else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
                 showrank = $("#drpshowL1L2").val()
             }
             else {
@@ -4277,6 +4308,7 @@ function UpdShowL1Price() {
             "BidId": parseInt(sessionStorage.getItem('hdnbid')),
             "BidClosingType": 'NA',
             "CAID": parseInt($("#hdnshowL1Price").val()),
+            "DecreamentOn": '',
             "UserID": sessionStorage.getItem('UserID')
         }
         URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
