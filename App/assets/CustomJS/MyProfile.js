@@ -11,12 +11,9 @@ jQuery(document).ready(function () {
         digitsOptional: true,
         allowPlus: false,
         allowMinus: false,
-       'removeMaskOnSubmit': true
+        'removeMaskOnSubmit': true
 
     });
-
-    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
-    $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
 
 function fetchCountry() {
@@ -202,7 +199,7 @@ function fetchPaymentTerms() {
 
     });
 }
-
+var cc = 0;
 function fetchUserDetails() {
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -214,6 +211,7 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            cc = 0;
             if (data.length > 0) {
 
                 let userdetails = JSON.parse(data[0].jsondata);
@@ -222,6 +220,31 @@ function fetchUserDetails() {
                 $('#userEmailID').html(userdetails[0].EmailID)
                 $('#userRole').html(userdetails[0].RoleName)
                 $('#userdesignation').val(userdetails[0].Designation)
+                setTimeout(function () {
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+                }, 800)
+
+                let userOrg = JSON.parse(data[1].jsondata);
+                console.log(userOrg);
+                if (userOrg.length > 0) {
+                    $('#userOrg').removeClass('hide')
+                    $('#tblpurchaseOrg').empty();
+                    $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
+                    for (var i = 0; i < userOrg.length; i++) {
+                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[0].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[0].PurchaseGrpID + '</td><td>' + userOrg[0].PurchaseOrgName + '</td><td>' + userOrg[0].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        cc = cc + 1;
+                    }
+
+                    if (jQuery('#tblpurchaseOrg tr').length > 0) {
+                        $('#theadgroup').removeClass('hide');
+                    }
+                    else {
+                        $('#theadgroup').addClass('hide');
+                    }
+                }
+                else {
+                    $('#userOrg').addClass('hide')
+                }
 
             }
             jQuery.unblockUI();
@@ -241,7 +264,18 @@ function fetchUserDetails() {
     });
 
 }
+function deleterow(trid, rowcount, gid) {
 
+    $('#' + trid.id).remove()
+    cc = cc - 1;
+    if (jQuery('#tblpurchaseOrg tr').length == 1) {
+        $('#theadgroup').addClass('hide');
+    }
+    else {
+        $('#theadgroup').removeClass('hide');
+    }
+
+}
 //vendor myprofile.html
 function fetchVendorDetails() {
 
@@ -269,6 +303,7 @@ function fetchVendorDetails() {
             $('#personname').val(detail[0].ContactPerson)
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")
 
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -286,11 +321,42 @@ function fetchVendorDetails() {
     });
 
 }
+function prefferedTimezone() {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
 
+            let lstTZ = JSON.parse(data[0].jsondata);
+            console.log(lstTZ);
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -302,13 +368,14 @@ function fetchMyProfileVendor() {
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
-
             var vendorCompstxt = ''
             for (var i = 0; i < vendorComps.length; i++) {
-                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + '| ';
+                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + ' | ';
+
             }
 
             $('#vendorComp').val(vendorCompstxt.slice(0, -1));
+
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
             } else {
@@ -320,7 +387,7 @@ function fetchMyProfileVendor() {
             if (vendordetails[0].MSMECheck == 'Y') {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
-                // $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
+                $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
 
                 $('#ddlMSMEClass').val(vendordetails[0].MSMEType)
                 $('#txtUdyam').val(vendordetails[0].MSMENo)
@@ -531,7 +598,7 @@ function fetchMyProfileVendor() {
             else {
                 fnErrorMessageText('errormsg', '');
             }
-            jQuery.unblockUI();
+            //   jQuery.unblockUI();
             return false;
         }
     });
@@ -769,9 +836,10 @@ function updMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": '',
         "Designation": $('#userdesignation').val(),
-        "ContactPerson": ""
+        "ContactPerson": "",
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-    //alert(JSON.stringify(data))
+    // alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -826,7 +894,8 @@ function updVnedorMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": $('#vendoralternateemail').val(),
         "Designation": "",
-        "ContactPerson": $('#personname').val()
+        "ContactPerson": $('#personname').val(),
+        "PrefferedTZ": 0
     }
 
     jQuery.ajax({

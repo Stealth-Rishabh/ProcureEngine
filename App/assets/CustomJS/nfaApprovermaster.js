@@ -128,7 +128,7 @@ $("#tblNBApproverSeq").on("click", ".up,.down", function () {
 
 function bindApproverMaster() {
 
-    var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer);
+    var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
@@ -311,7 +311,7 @@ function CheckDuplicate() {
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
+    var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -335,7 +335,7 @@ function BindPurchaseOrg() {
 
 function bindPurchaseGroupDDL() {
 
-    var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
+    var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val() + "&UserID=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
 
     GetNFAPARAM.success(function (res) {
@@ -639,6 +639,7 @@ function AddWBApprovers() {
     if (validateWBADD()) {
         return false;
     }
+
     if ($("#hdnWBSeqID").val() != -1) {
         var tableName = "tblWBApproverSeq";
         var index = $("#hdnWBSeqID").val();
@@ -649,9 +650,17 @@ function AddWBApprovers() {
         var ApproverID = sessionStorage.getItem("hdnApproverid");
         var ApproverName = $("#txtApprover").val();
         var Seq = $("#txtWBSeq").val();
+
         var EmailID = sessionStorage.getItem("hdnWBApproverEmailid");
+
         if (ApproverType == "S") {
+
+            if (WBSeq < 0) {
+                WBSeq = 0;
+            }
+
             ++WBSeq;
+
         }
         else {
             WBSeq = parseInt(Seq);
@@ -718,6 +727,7 @@ function deleteApprow(rowid) {
             i++;
         });
     }
+
 }
 $("#tblWBApproverSeq").on("click", ".edit", function (e) {
 

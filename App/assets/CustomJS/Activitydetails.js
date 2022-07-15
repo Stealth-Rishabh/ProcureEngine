@@ -217,7 +217,7 @@ function fetchDashboardData() {
             if (BidData[0].pendingActivity.length > 0) {
 
                 for (var i = 0; i < BidData[0].pendingActivity.length; i++) {
-                    
+
                     str = "<li><a style='text-decoration:none;' href='javascript:;' onclick=fnOpenLink(\'" + BidData[0].pendingActivity[i].linkURL + "'\,\'" + BidData[0].pendingActivity[i].isPPCObserver + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=icon" + i + "></i></div></div>";
@@ -282,8 +282,7 @@ function fetchDashboardData() {
                     str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
                     str += "</div></div></div></div>";
                     str += "<div class='col2'>";
-                    //Check here
-                    str += "<div class='date'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
+                    str += "<div class='date'>" + fnConverToLocalTime(BidData[0].todayBidStatus[i].bidStatus) + "</div></div>";
                     str += "</a></li>";
                     jQuery('#all_pending_bids_list').append(str);
 
@@ -333,19 +332,22 @@ function fetchDashboardData() {
                     var _bidStatus = BidData[0].todayBidStatus[i].bidStatus
                     if (_bidStatus == null || _bidStatus == '') {
                         if (BidData[0].todayBidStatus[i].startDate != null || BidData[0].todayBidStatus[i].startDate != '') {
-                            var StartDate = fnConverToLocalTime(BidData[0].todayBidStatus[i].startDate);
+                            var StartDate = fnConverToShortDT(BidData[0].todayBidStatus[i].startDate);
 
                             //StartDate = moment(StartDate).format('DD-MMM');
                             _bidStatus = StartDate;
                         }
+
                         if (BidData[0].todayBidStatus[i].endDate != null || BidData[0].todayBidStatus[i].endDate != '') {
-                            var EndDate = fnConverToLocalTime(BidData[0].todayBidStatus[i].endDate);
-                            alert(EndDate);
+
+                            var EndDate = fnConverToShortDT(BidData[0].todayBidStatus[i].endDate);
+
                             //EndDate = moment(EndDate).format('DD-MMM');
                             _bidStatus = _bidStatus + '-' + EndDate;
                         }
+
+
                     }
-                    
                     str = "<li><a href='" + BidData[0].todayBidStatus[i].linkURL + "'>";
 
                     str += "<div class='col1'><div class='cont'>";
@@ -456,7 +458,7 @@ function fetchBidDataDashboard(requesttype) {
             if (BidData.length > 0) {
                 if (requesttype == 'Today') {
                     for (var i = 0; i < BidData.length; i++) {
-                        Var _bidDateLocal = moment(BidData[i].bidStatus).format('DD MMM YYYY h:mm:ss a')
+
                         str = "<li><a href='" + BidData[i].linkURL + "'>";
 
                         str += "<div class='col1'><div class='cont'>";

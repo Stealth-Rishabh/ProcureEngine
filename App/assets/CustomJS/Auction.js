@@ -943,10 +943,10 @@ function fnConverToLocalTime(dttime) {
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
-        //alert(dttime)
+       
         var theStDate = new Date(dttime)
         theStDate = theStDate.toDateString()
-        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+      
         theStDate = new Date(theStDate + ' UTC');
 
         theStDate = theStDate.toLocaleString("en-IN", {
