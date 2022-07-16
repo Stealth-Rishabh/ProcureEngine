@@ -1,5 +1,4 @@
 ﻿
-var ShowPrice = "Y";
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -122,6 +121,7 @@ function getSummary(vendorid, version) {
 
 }
 
+var ShowPrice = "N";
 function fetchrfqcomprative() {
     var url = '';
 
@@ -170,10 +170,13 @@ function fetchrfqcomprative() {
 
             if (AppType == "T" && FwdTo != 'Admin') {
                 ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                sessionStorage.setItem('ShowPrice', ShowPrice);
+                //sessionStorage.setItem('ShowPrice', ShowPrice);
             }
-
-
+            if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
+                ShowPrice = 'Y';
+            }
+            
+            sessionStorage.setItem('ShowPrice', ShowPrice);
             if (data[0].vendorNames.length > 0) {
                 Vendor = data[0].vendorNames;
                 $('#displayTable').show();
@@ -321,8 +324,13 @@ function fetchrfqcomprative() {
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
-                        RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
-                        str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
+                        if (ShowPrice == 'Y') {
+                            RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
+                            str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
+                        }
+                        else {
+                            str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td>";
+                        }
 
                     }
                     else {
@@ -331,7 +339,12 @@ function fetchrfqcomprative() {
                     }
 
                 }
-                str += "<td class=text-right>" + totallowestValue + "</td><td colspan=6>&nbsp;</td></tr>";
+                if (ShowPrice == 'Y') {
+                    str += "<td class=text-right>" + totallowestValue + "</td><td colspan=6>&nbsp;</td></tr>";
+                }
+                else {
+                    str += "<td class=text-right>Quoted</td><td colspan=6>&nbsp;</td></tr>";
+                }
 
 
                 //For Loading Factor

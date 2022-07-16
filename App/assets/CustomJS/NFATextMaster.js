@@ -63,7 +63,7 @@ $(document).on('change', '.form-control', function () {
 function Validate() {
     var nfaText = false;
 
-
+    
     if ($("#txtParamText").val() == "") {
         $("#txtParamText").css("border-color", "red");
         $("#error").text("Question is required");
@@ -108,7 +108,7 @@ function BindData() {
                     isdefault = "<span>Yes</span>";
                 else
                     isdefault = "<span>No</span>";
-
+                
                 if (value.purchaseOrgName == '')
                     porg = 'ALL';
                 else

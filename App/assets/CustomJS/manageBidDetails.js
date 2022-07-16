@@ -3180,19 +3180,25 @@ function formSubmitEditEvent() {
         if ($('#drpshowL1L2').val() != '' && $('#divbidShowL1L2').is(':visible')) {
             var showrank = "Y"
             if (sessionStorage.getItem('hdnbidtypeid') == "6") {
-                showrank = $("#drpshowH1H2").val()
+
+            showrank = $("#drpshowH1H2").val()
+
             }
             else if (sessionStorage.getItem('hdnbidtypeid') == "7") {
                 showrank = $("#drpshowL1L2").val()
             }
-            else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
-                showrank = $("#drpshowL1L2").val()
-            }
-            else {
+
+        else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
+            showrank = $("#drpshowL1L2").val()
+        }
+        else {
+
                 showrank = $("#drpshowH1H2NA").val()
             }
             Data = {
-                "QueryString": showrank,
+
+            "QueryString": showrank,
+
                 "QueryStringDT": 'NA',
                 "valType": "BAL",
                 "BidId": parseInt(sessionStorage.getItem('hdnbid')),
@@ -4166,6 +4172,7 @@ function updMinDecreament() {
             });
         }
         else {
+
             connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
 
@@ -4308,13 +4315,15 @@ function UpdShowL1Price() {
             "BidId": parseInt(sessionStorage.getItem('hdnbid')),
             "BidClosingType": 'NA',
             "CAID": parseInt($("#hdnshowL1Price").val()),
-            "DecreamentOn": '',
-            "UserID": sessionStorage.getItem('UserID')
+
+            "UserID": sessionStorage.getItem('UserID'),
+            "DecreamentOn": ''
+
         }
-        URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
+        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
 
-
+    //alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
@@ -4323,6 +4332,7 @@ function UpdShowL1Price() {
             });
         }
         else {
+
             connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
                 return console.error(err.toString());
             });
@@ -5138,22 +5148,3 @@ function fnGetPauseHistory() {
     jQuery.unblockUI();
 }
 
-//*** Commented Code
-
-//function pauseaction(index, seaid) {
-//    $('#hdnReopenSeid').val(seaid)
-//    $('#hdnReopenSlectedindex').val(index)
-
-//    if ($('#btnpause' + index).text().toLowerCase() == "open") {
-//       $('#reopenafterPause').modal('show')
-//    }
-//}
-
-//function fnclosepopupApprovers() {
-//    $('#reopenafterPause').modal('hide')
-//}
-//$("#reopenafterPause").on("hidden.bs.modal", function () {
-//    $('#hdnReopenSeid').val('0')
-//    $('#hdnReopenSlectedindex').val('0')
-//    fetchallexportdetails(0);
-//});

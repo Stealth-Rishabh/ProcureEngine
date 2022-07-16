@@ -13,19 +13,23 @@ function fetchCategorymaster1() {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
             if (data.length > 0) {
-            for (var i = 0; i < data.length; i++) {
-                $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-            }
+
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
+                }
+
                 $("#ddlTypeofProduct").trigger("change");
+
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
             }
             jQuery.unblockUI();
         },
+
         error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
+            if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -146,11 +150,12 @@ function fetchVendorRegistrationDetails() {
                 jQuery('#seclastFY').html();
             }
 
-            if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
-                jQuery('#pincode').html(companydetails[0].pinCode);
+            
+            if (companydetails[0].pincode != "" && companydetails[0].pincode != null && companydetails[0].pincode != undefined) {
+                jQuery('#pincode').html(companydetails[0].pincode);
             }
             else {
-                jQuery('#pincode').html();
+                jQuery('#pincode').html('');
             }
 
             jQuery('#gstvendorclass').html(gstclass);
@@ -227,6 +232,9 @@ function ApproveRFI(For) {
 
     if (For == 'A' && $("#ddlTypeofProduct").select2('data').length == 0) {
         $('#requirederror').removeClass('hide');
+        $('#companydetails').removeClass('collapsed');
+        $('#collapse0').removeClass('collapse in');
+        $('#collapse0').removeAttr('style');
         jQuery.unblockUI();
     } else {
         $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
@@ -245,13 +253,13 @@ function ApproveRFI(For) {
             'approverID': sessionStorage.getItem('UserID'),
             'customerID': parseInt(sessionStorage.getItem('CustomerID')),
             'vendorCode': $('#hdnvendorCode').val(),
-            'VRID': parseInt(sessionStorage.getItem('VRID')),
+            'VRID': parseInt(sessionStorage.getItem('VRID')) == null ? parseInt(sessionStorage.getItem('VRID')) : 0,
             'Remarks': remarks,
             'productCat': straddedproduct
 
         }
 
-        //console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "VendorRequest/VRApproval_Reject",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -295,5 +303,7 @@ $('#rejectionReason').on('hidden.bs.modal', function () {
     $("#rejectionForm").find('.has-error').removeClass("has-error");
 });
 
-
+function fnremoveMsz() {
+    $('#requirederror').addClass('hide')
+}
 

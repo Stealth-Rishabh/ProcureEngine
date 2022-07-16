@@ -195,44 +195,23 @@ connection.on("refreshColumnStatus", function (data) {
 });
 connection.on("refreshBidDetailsManage", function (data) {
 
-
-
-    if (data.length > 0) {
-
-        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+        if (data.length > 0) {
+         jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
 
             var JsonMsz = JSON.parse(data[0]);
-
             if (JsonMsz.valType == "BAL") {
-
                 var VRanlList = JSON.parse(data[1]);
-
-                console.log(VRanlList)
-
                 for (var j = 0; j < VRanlList.length; j++) {
-
-
-
-                    if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-
-
-
+                if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
                         $('#lblstatus' + i).html(VRanlList[j].VendorRank)
-
                         if (VRanlList[j].VendorRank == 'L1') {
-
                             jQuery('#lblstatus' + i).css('color', 'Blue');
 
                         }
-
-                        else {
-
+                        else
+                        {
                             jQuery('#lblstatus' + i).css('color', 'Red');
-
                         }
-
-
-
                     }
 
                 }

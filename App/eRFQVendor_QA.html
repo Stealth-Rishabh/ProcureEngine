@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-    <meta http-equiv="Cache-control" content="public">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -455,9 +454,9 @@
                                             </div>
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Reference Number:</label>
-                                                <div class="col-md-8">
-                                                    <p class="form-control-static" id="txtRFQReferencePrev"></p>
+                                                <label class="control-label col-md-3 text-left">Reference Number:</label>
+                                                <div class="col-md-6">
+                                                    <p class="form-control-static text-left" id="txtRFQReferencePrev"></p>
                                                 </div>
 
                                             </div>
@@ -476,9 +475,9 @@
                                             </div>
                                             <div class="col-md-6">
 
-                                                <label class="col-md-4 control-label">RFQ EndDate:</label>
-                                                <div class="col-md-8">
-                                                    <p class="form-control-static" id="lblrfqenddate">
+                                                <label class="control-label col-md-3 text-left">RFQ EndDate:</label>
+                                                <div class="col-md-6">
+                                                    <p class="form-control-static text-left" id="lblrfqenddate">
 
                                                     </p>
                                                 </div>
@@ -515,9 +514,9 @@
                                             <!--/span-->
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Conversion Rate:</label>
-                                                <div class="col-md-8">
-                                                    <p class="form-control-static" id="lblConversionRatePrev">
+                                                <label class="control-label col-md-3 text-left">Conversion Rate:</label>
+                                                <div class="col-md-6">
+                                                    <p class="form-control-static text-left" id="lblConversionRatePrev">
 
                                                     </p>
                                                 </div>
@@ -689,7 +688,7 @@
                                     </b>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="tel" class="form-control text-right thousandseparated" id="txtbasicPrice" autocomplete=off name="txtbasicPrice" placeholder="Basic price" />
+                                    <input type="text" class="form-control text-right thousandseparated" id="txtbasicPrice" autocomplete=off name="txtbasicPrice" placeholder="Basic price" />
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -834,9 +833,9 @@
     <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/components-pickers.js"></script>
     <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
@@ -884,7 +883,6 @@
                 sessionStorage.setItem('hddnRFQID', 0)
             else {
                 var version = 0;
-                //console.log(sessionStorage.getItem('RFQVersionId'))
                 if (sessionStorage.getItem('RFQVersionId') > 0) {
                     version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
 

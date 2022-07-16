@@ -222,28 +222,11 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
-                                                            Country <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlCountry"  id="ddlCountry" onchange="fetchState()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            State <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlState" id="ddlState" onchange="fetchCity()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
                                                             City <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
-                                                            <!--<input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
-                                                                    name="txtCity" onkeyup="replaceQuoutesFromString(this)" />-->
-                                                            <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
+                                                            <input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
+                                                                   name="txtCity" onkeyup="replaceQuoutesFromString(this)" />
                                                         </div>
                                                     </div>
 
@@ -309,10 +292,16 @@
                                                         <label class="col-md-3 control-label">
                                                             IsActive
                                                         </label>
-                                                        <div class="col-md-9 checkbox-list">
+                                                        <div class="col-md-8 checkbox-list">
                                                             <label class="checkbox-inline">
                                                                 <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
                                                             </label>
+                                                        </div>
+                                                        <div class="col-md-1" id="divviewall" style="display:none;">
+                                                            <button href="#viewAllVendorDetails" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to
+                                                                                  View All Details">
+                                                                <i class="fa fa-search"></i> View All Details
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
@@ -637,19 +626,6 @@
 
                     fetchBidType();// for serach vendor
                     clearform();
-                    fetchCountry();
-                    $('#ddlCountry').select2({
-                        searchInputPlaceholder: "Search Country",
-                    });
-
-                    $('#ddlState').select2({
-                        searchInputPlaceholder: "Search State",
-                        allowClear: true
-                    });
-                    $('#ddlCity').select2({
-                        searchInputPlaceholder: "Search City",
-                        allowClear: true
-                    });
                 });
             </script>
 
