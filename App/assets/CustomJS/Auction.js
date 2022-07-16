@@ -930,9 +930,10 @@ function fnConverToLocalTime(dttime) {
 
         //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
         theStDate = new Date(theStDate + ' UTC');
-
+        //alert(sessionStorage.getItem('preferredtimezone'));
         theStDate = theStDate.toLocaleString("en-IN", {
             timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            //timeZone: "Asia/Calcutta", dateStyle: "long", hourCycle: "h24", timeStyle: "short"
         })
         theStDate = theStDate.replace('at', '-');
         return theStDate;
@@ -979,6 +980,35 @@ function fnConverToTime(dttime) {
         return dtst;
     }
     else return '..'
+}
+
+function fnReturnTimeFromDate(dttime) {
+    var dtst = '';
+    if (dttime != null) {
+        //  console.log
+        debugger;
+        dttime = dttime.replace('-', '');
+        dttime = dttime.replace('at', '');
+
+        var theStDate = new Date(dttime);
+
+        theStDate = theStDate.toLocaleString('en-GB');
+
+
+        //theStDate = theStDate.replace('at', ' ');
+        console.log(theStDate)
+        var currentDate = new Date(theStDate);
+        console.log(currentDate)
+        // = theStDate.getHours() + ':' + theStDate.getMinutes() + ':' + theStDate.getSeconds();
+        dtst = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+        // console.log(dtst)
+        //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
+        //return dtst;
+    }
+    else {
+        dtst = '..'
+    }
+    return dtst;
 }
 
 //** Delete Files from Blob

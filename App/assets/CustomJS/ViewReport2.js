@@ -87,15 +87,16 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
                 BidForID = data[0].bidForID
 
                 _bidclosingtype = data[0].bidClosingType;
-                var _bidDate = fnConverToLocalTime(data[0].bidDetails.bidDate);
+                var _bidDate = fnConverToLocalTime(data[0].bidDate);
+
+
 
                 jQuery('#tdtargetprice').css('display', 'none');
                 jQuery('#tblprice').css('display', 'none');
                 jQuery('#thmodelclass').css('display', 'none');
 
-                //jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + _bidDate + ' - ' + data[0].bidTime + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
-                jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + _bidDate + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
                 //jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + data[0].bidDate + ' - ' + data[0].bidTime + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
+                jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + _bidDate + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
                 jQuery('#trtargetprice').css('display', 'none');
 
             }
@@ -751,23 +752,23 @@ function fetchGraphData(itemId, counter) {
                 $("#tblForTrendGraphs" + counter).append('<tr><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th><th style="border:none;">&nbsp;</th><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th><th style="border:none;">&nbsp;</th><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th></tr>');
                 for (var i = 0; i < parseInt(quorem); i++) {
                     _date = new Date(data[i].submissionTime);
-                    _date = fnConverToLocalTime(_date);
-                    _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()));
+                    //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()));
+                    _finaldate = fnConverToLocalTime(_date);
                     str = str + '<tr><td>' + _finaldate + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].vendorName + '</td><td style="border: none;">&nbsp;</td>';
 
                     var z = (parseInt(quorem) + i);
                     if (z <= data.length - 1) {
                         _date = new Date(data[z].submissionTime);
-                        _date = fnConverToLocalTime(_date);
-                        _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[z].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getSeconds()));
+                        //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[z].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getSeconds()));
+                        _finaldate = fnConverToLocalTime(_date);
                         str = str + '<td>' + _finaldate + '</td><td>' + data[z].quotedPrice + '</td><td>' + data[z].vendorName + '</td><td style="border: none;">&nbsp;</td>';
                     }
 
                     var o = (parseInt(quorem) * 2) + i;
                     if (o <= data.length - 1) {
                         _date = new Date(data[o].submissionTime);
-                        _date = fnConverToLocalTime(_date);
-                        _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[o].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getSeconds()));
+                        //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[o].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getSeconds()));
+                        _finaldate = fnConverToLocalTime(_date);
                         str = str + '<td>' + _finaldate + '</td><td>' + data[o].quotedPrice + '</td><td>' + data[o].vendorName + '</td></tr>';
                     }
 
@@ -827,8 +828,8 @@ function linegraphsforItems(itemId, counter) {
                 minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
                 maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
 
-                $('#lblbidstarttime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidStartTime));
-                $('#lblbidendtime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidEndTime));
+                $('#lblbidstarttime').text(data[0].bidStartEndTime[0].bidStartTime);
+                $('#lblbidendtime').text(data[0].bidStartEndTime[0].bidEndTime);
 
                 if (data[0].submissionTime.length > 0) {
 
