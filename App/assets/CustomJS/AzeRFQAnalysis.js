@@ -864,6 +864,17 @@ function formvalidate() {
                 gritternotification('Please Select RFQ properly!!!')
             }
             else {
+
+                fetchReguestforQuotationDetails();
+                if (sessionStorage.getItem('CustomerID') == "32" ) {
+                    fetchRFQPPCApproverStatus($('#hdnRfqID').val());
+                }
+                else {
+                    fetchRFQApproverStatus($('#hdnRfqID').val());
+                }
+                fetchAttachments();
+                fetchApproverRemarks('C');
+
                 fetchAzPPcFormDetails();
                 fetchRFQPPCApproverStatus($('#hdnRfiRfqID').val());
                 fetchrfqcomprative()
@@ -1037,23 +1048,37 @@ function fetchAzPPcFormDetails() {
 
                 //alert(data[0].BiddingVendor.length)
                 var validatescm = "Yes";
+                var TPI = "Yes"
                 if (data[0].biddingVendor.length > 0) {
 
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
+                    $('#tblvendors').append("<tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
+
                         if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
                             validatescm = "Yes";
                         }
-                        if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
                             validatescm = "No";
                         }
                         else {
+
                             validatescm = "NA";
                         }
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td></tr>")
+
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            TPI = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "N") {
+                            TPI = "No";
+                        }
+                        else {
+                            TPI = "NA";
+                        }
+
+                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
 
                     }
-                    $('#tblvendors').append("</tbody>");
+                    // $('#tblvendors').append("</tbody>");
                 }
                 var attach = "";
                 jQuery("#tblPPCAttachments").empty();
@@ -1108,121 +1133,3 @@ function DownloadFilePPC(aID) {
 function fnRemoveClassTab0() {
     $('#tab_0').removeClass('hide')
 }
-
-
-//var rowApp = 0;
-//function addApprovers() {
-//    var status = "true"; var Apptype = ''
-//    $("#tblapprovers tr:gt(0)").each(function () {
-//        var this_row = $(this);
-//        if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
-//            status = "false"
-//        }
-//    });
-//    if ($('#hdnApproverID').val() == "0" || jQuery("#txtApprover").val() == "") {
-//        $('.alert-danger').show();
-//        $('#spandanger').html('Please Select Approver Properly');
-//        Metronic.scrollTo($(".alert-danger"), -200);
-//        $('.alert-danger').fadeOut(7000);
-//        jQuery("#txtApprover").val('')
-//        jQuery("#hdnApproverID").val('0')
-//        return false;
-//    }
-//    else if (status == "false") {
-//        $('.alert-danger').show();
-//        $('#spandanger').html('Technical Approver is already mapped for this RFQ.');
-//        Metronic.scrollTo($(".alert-danger"), -200);
-//        $('.alert-danger').fadeOut(7000);
-//        jQuery("#txtApprover").val('')
-//        jQuery("#hdnApproverID").val('0')
-//        return false;
-//    }
-//    else {
-//        rowApp = rowApp + 1;
-//        if ($('#drp_ShowPrice').val() == "Y") {
-
-//            Apptype = 'Yes';
-//        }
-//        else {
-//            Apptype = 'No';
-//        }
-
-//        if (!jQuery("#tblapprovers thead").length) {
-//            jQuery("#tblapprovers").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Show Price</th><th class='bold' style='width:30%!important'>Sequence</th></thead>");
-//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
-//        }
-//        else {
-//            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td class=hide>' + $('#drp_ShowPrice').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td class=hide>' + Apptype + '</td><td>' + $('#drp_ShowPrice').val() + '</td><td>' + rowApp + '</td></tr>');
-//        }
-
-//        if (jQuery('#tblapprovers tr').length == 1) {
-//            jQuery('#btnTechSubmit').attr("disabled", "disabled");
-//        }
-//        else {
-//            jQuery('#btnTechSubmit').removeAttr("disabled");
-//        }
-//        jQuery("#txtApprover").val('')
-//        jQuery("#drp_ShowPrice").val('N')
-//        jQuery("#hdnApproverID").val('0')
-
-//    }
-//}
-//function deleteApprow(approwid) {
-//    rowApp = rowApp - 1;
-//    $('#' + approwid.id).remove()
-
-//    if (jQuery('#tblapprovers tr').length == 1) {
-//        jQuery('#btnTechSubmit').attr("disabled", "disabled");
-//    }
-//    else {
-//        jQuery('#btnTechSubmit').removeAttr("disabled");
-//    }
-//}
-
-//function fnUpdateApproverFlag() {
-//    var Querystring = '';
-//    var checkedval = '';
-
-//    if ($("#AppYes").is(":checked")) {
-//        checkedval = $("#AppYes").val()
-
-//    }
-//    else {
-//        checkedval = $("#AppNo").val()
-
-//    }
-
-//    Querystring = Querystring + "Update eRFQVendorDetails set IsApproverRequired='" + checkedval + "' where  RFQID=" + $('#hdnRfqID').val() + ";";//VendorID=" + Vendor[i].VendorID + " and
-//    var Attachments = {
-//        "RFQId": parseInt($('#hdnRfqID').val()),
-//        "QueryString": Querystring
-
-//    }
-//    // alert(JSON.stringify(Attachments))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "eRFQReport/eUpdateApproverRequiredNot",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        crossDomain: true,
-//        async: false,
-//        data: JSON.stringify(Attachments),
-//        dataType: "json",
-//        success: function (data) {
-//            return true;
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('error', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-
-//        }
-//    });
-//}

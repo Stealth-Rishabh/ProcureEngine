@@ -514,7 +514,6 @@ function fetchBidSummary(BidID) {
                 else {
                     $('#bid_status').hide();
                 }
-                var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
@@ -3126,7 +3125,7 @@ function CancelBid(bidid, mailparam) {
         "BidSubj": $('#lblbidSubject').text(),
         "BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
         "BidDate": $('#lblbiddate').html(),
-        //"BidTime": $('#lblbidtime').html(),
+        "BidTime": $('#lblbidtime').html(),
         "BidDuration": $('#lblbidduration').html(),
         "BidTypeID": parseInt(BidTypeID),
         "SendMail": mailparam,

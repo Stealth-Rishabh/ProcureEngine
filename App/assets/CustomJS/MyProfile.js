@@ -11,12 +11,9 @@ jQuery(document).ready(function () {
         digitsOptional: true,
         allowPlus: false,
         allowMinus: false,
-       'removeMaskOnSubmit': true
+        'removeMaskOnSubmit': true
 
     });
-
-    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
-    $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
 
 function fetchCountry() {
@@ -202,7 +199,7 @@ function fetchPaymentTerms() {
 
     });
 }
-
+var cc = 0;
 function fetchUserDetails() {
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -214,6 +211,7 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            cc = 0;
             if (data.length > 0) {
 
                 let userdetails = JSON.parse(data[0].jsondata);
@@ -222,6 +220,31 @@ function fetchUserDetails() {
                 $('#userEmailID').html(userdetails[0].EmailID)
                 $('#userRole').html(userdetails[0].RoleName)
                 $('#userdesignation').val(userdetails[0].Designation)
+                setTimeout(function () {
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+                }, 800)
+
+                let userOrg = JSON.parse(data[1].jsondata);
+                console.log(userOrg);
+                if (userOrg.length > 0) {
+                    $('#userOrg').removeClass('hide')
+                    $('#tblpurchaseOrg').empty();
+                    $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
+                    for (var i = 0; i < userOrg.length; i++) {
+                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[0].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[0].PurchaseGrpID + '</td><td>' + userOrg[0].PurchaseOrgName + '</td><td>' + userOrg[0].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        cc = cc + 1;
+                    }
+
+                    if (jQuery('#tblpurchaseOrg tr').length > 0) {
+                        $('#theadgroup').removeClass('hide');
+                    }
+                    else {
+                        $('#theadgroup').addClass('hide');
+                    }
+                }
+                else {
+                    $('#userOrg').addClass('hide')
+                }
 
             }
             jQuery.unblockUI();
@@ -241,7 +264,18 @@ function fetchUserDetails() {
     });
 
 }
+function deleterow(trid, rowcount, gid) {
 
+    $('#' + trid.id).remove()
+    cc = cc - 1;
+    if (jQuery('#tblpurchaseOrg tr').length == 1) {
+        $('#theadgroup').addClass('hide');
+    }
+    else {
+        $('#theadgroup').removeClass('hide');
+    }
+
+}
 //vendor myprofile.html
 function fetchVendorDetails() {
 
@@ -269,6 +303,7 @@ function fetchVendorDetails() {
             $('#personname').val(detail[0].ContactPerson)
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")
 
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -286,11 +321,42 @@ function fetchVendorDetails() {
     });
 
 }
+function prefferedTimezone() {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
 
+            let lstTZ = JSON.parse(data[0].jsondata);
+            console.log(lstTZ);
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -302,13 +368,14 @@ function fetchMyProfileVendor() {
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
-
             var vendorCompstxt = ''
             for (var i = 0; i < vendorComps.length; i++) {
-                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + '| ';
+                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + ' | ';
+
             }
 
             $('#vendorComp').val(vendorCompstxt.slice(0, -1));
+
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
             } else {
@@ -320,7 +387,7 @@ function fetchMyProfileVendor() {
             if (vendordetails[0].MSMECheck == 'Y') {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
-                // $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
+                $('#ddlMSME,#ddlMSMEClass,#txtUdyam').attr("disabled", 'disabled');
 
                 $('#ddlMSMEClass').val(vendordetails[0].MSMEType)
                 $('#txtUdyam').val(vendordetails[0].MSMENo)
@@ -531,7 +598,7 @@ function fetchMyProfileVendor() {
             else {
                 fnErrorMessageText('errormsg', '');
             }
-            jQuery.unblockUI();
+            //   jQuery.unblockUI();
             return false;
         }
     });
@@ -564,6 +631,7 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+
 function formvalidate() {
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -769,9 +837,10 @@ function updMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": '',
         "Designation": $('#userdesignation').val(),
-        "ContactPerson": ""
+        "ContactPerson": "",
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-    //alert(JSON.stringify(data))
+    // alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -826,7 +895,8 @@ function updVnedorMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": $('#vendoralternateemail').val(),
         "Designation": "",
-        "ContactPerson": $('#personname').val()
+        "ContactPerson": $('#personname').val(),
+        "PrefferedTZ": 0
     }
 
     jQuery.ajax({
@@ -1080,9 +1150,8 @@ function fetchMsme() {
         $('input[name="filemsme"]').rules('add', {
             required: true
         });
-        $('input[name="ddlMSMEClass"]').rules('add', {
-            required: true,
-            notEqualTo: 0
+        $('#ddlMSMEClass').rules('add', {
+            required: true
         });
 
 
@@ -1112,7 +1181,14 @@ function fetchCompanyVR() {
         dataType: "json",
         success: function (data) {
             customersForAutoComplete = JSON.parse(data[0].jsondata);
-
+            $("#txtCompanies").empty()
+            $("#txtCompanies").append("<option value=0>Select Companies</option>");
+            if (customersForAutoComplete.length > 0) {
+                
+                for (var i = 0; i < data.length; i++) {
+                    $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
+                }
+            }
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -1131,62 +1207,92 @@ function fetchCompanyVR() {
 
     });
 }
+function fnAddCustomers() {
+    var cusid = $("#txtCompanies option:selected").val();
+    var cusname = $("#txtCompanies option:selected").text();
+    if (cusid != 0) {
+        sessionStorage.setItem('hdnVendorID', $("#txtCompanies option:selected").val());
+        var str = "<tr id=trcomp" + cusid + "><td class='hide'>" + cusid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + cusid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + cusname + "'\,\'" + cusid + "'\)\"; id=\"chkvender" + cusid + "\" value=" + cusid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + cusname + " </td></tr>";
+        jQuery('#tblcompanieslist > tbody').append(str);
+        var arr = $("#tblcompanieslist tr");
+        $.each(arr, function (i, item) {
+            var currIndex = $("#tblcompanieslist tr").eq(i);
+            var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+
+            $(this).nextAll().each(function (i, inItem) {
+
+                if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+                    $(this).remove();
+                }
+
+            });
+
+        });
+        if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+            $("#selectedcompanieslists> tbody > tr").each(function (index) {
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+            });
+        }
+        $("#txtCompanies").val('0')
+    }
+}
 $("#txtCompanies").keypress(function (e) {
     if (e.which == 13) {
         return false;
 
     }
 })
-jQuery("#txtCompanies").typeahead({
-    source: function (query, process) {
-        var data = customersForAutoComplete
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.customername] = username;
-            usernames.push(username.customername);
-        });
+//jQuery("#txtCompanies").typeahead({
+//    source: function (query, process) {
+//        var data = customersForAutoComplete
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            map[username.customername] = username;
+//            usernames.push(username.customername);
+//        });
 
-        process(usernames);
+//        process(usernames);
 
-    },
-    minLength: 0,
-    updater: function (item) {
-        if (map[item].customerid != "0") {
-            sessionStorage.setItem('hdnVendorID', map[item].customerid);
-            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
-            jQuery('#tblcompanieslist > tbody').append(str);
-            var arr = $("#tblcompanieslist tr");
-            $.each(arr, function (i, item) {
-                var currIndex = $("#tblcompanieslist tr").eq(i);
-                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+//    },
+//    minLength: 0,
+//    updater: function (item) {
+//        if (map[item].customerid != "0") {
+//            sessionStorage.setItem('hdnVendorID', map[item].customerid);
+//            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
+//            jQuery('#tblcompanieslist > tbody').append(str);
+//            var arr = $("#tblcompanieslist tr");
+//            $.each(arr, function (i, item) {
+//                var currIndex = $("#tblcompanieslist tr").eq(i);
+//                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
 
-                $(this).nextAll().each(function (i, inItem) {
+//                $(this).nextAll().each(function (i, inItem) {
 
-                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
-                        $(this).remove();
-                    }
+//                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+//                        $(this).remove();
+//                    }
 
-                });
+//                });
 
-            });
-            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
-                $("#selectedcompanieslists> tbody > tr").each(function (index) {
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
-                });
-            }
-        }
-        else {
+//            });
+//            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+//                $("#selectedcompanieslists> tbody > tr").each(function (index) {
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+//                });
+//            }
+//        }
+//        else {
 
-            gritternotification('Please select Vendor  properly!!!');
-        }
+//            gritternotification('Please select Vendor  properly!!!');
+//        }
 
-        return item;
-    }
+//        return item;
+//    }
 
-});
+//});
 
 function Check(event, custName, custID) {
 
@@ -1337,7 +1443,7 @@ function sendToCompanies() {
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
-    //alert(JSON.stringify(datainfo));
+    alert(JSON.stringify(datainfo));
     //console.log(JSON.stringify(datainfo));
     jQuery.ajax({
 

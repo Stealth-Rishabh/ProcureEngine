@@ -73,8 +73,7 @@ function insupdconditionmaster() {
     if (jQuery("#checkboxactive").is(':checked')) {
         status = "Y";
     }
-    else
-    {
+    else {
         status = "N";
     }
 
@@ -104,8 +103,7 @@ function insupdconditionmaster() {
                 fetchConditionmaster();
                 jQuery.unblockUI();
             }
-            else if (data == '2')
-            {
+            else if (data == '2') {
                 $("#success").html("Updation Successfull...");
                 success.show();
                 success.fadeOut(3000);
@@ -113,18 +111,16 @@ function insupdconditionmaster() {
                 jQuery.unblockUI();
 
             }
-            else if (data == '3')
-            {
+            else if (data == '3') {
                 success.hide();
                 $("#error").html("Condition already exists..");
                 error.show();
                 error.fadeOut(3000);
                 jQuery.unblockUI();
             }
-
+            resetform();
         },
-        error: function (xhr, status, error)
-        {
+        error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -139,7 +135,7 @@ function insupdconditionmaster() {
     });
 
     jQuery.unblockUI();
-    resetform();
+    
 
 }
 
@@ -158,7 +154,7 @@ function fetchConditionmaster() {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblPlaceMaster").empty();
             var status = "No";
-            if (data.result.length > 0) {   
+            if (data.result.length > 0) {
                 jQuery("#tblPlaceMaster").append("<thead id='tblheader'><th>#</th><th>Condition Sr.</th><th>Condition</th><th>Status</th></thead>");
                 for (var i = 0; i < data.result.length; i++) {
                     if (data.result[i].isActive == "N") {
@@ -192,7 +188,7 @@ function fetchConditionmaster() {
 }
 
 function updateType(rname, status, id, srno) {
-
+    alert(id)
     $('#hddnConditionID').val(id);
     $('#conditionName').val(rname);
     $('#conditionSr').val(srno);
@@ -239,6 +235,7 @@ jQuery("#search").keyup(function () {
 
 function resetform() {
     $('#conditionName').val('');
+   
     $('#hddnconditionID').val('0');
     $('#conditionSr').val('');
     jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);

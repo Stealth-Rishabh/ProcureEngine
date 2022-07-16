@@ -25,7 +25,7 @@ $(document).ready(function () {
 
         //** Get Query/Response  if any?
         GetQuestions()
-       
+
         if (IsApp == 'N' && FwdTo != 'Admin') {
             jQuery("#divRemarksForward").show();
 
@@ -33,18 +33,18 @@ $(document).ready(function () {
         else if (IsApp == 'Y' && FwdTo == 'Admin') {//&& AppStatus == 'Reverted'
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").show();
-           $('#frmadminbutton').show()
-            
+            $('#frmadminbutton').show()
+
         }
         else {
             jQuery("#divRemarksApp").show();
             jQuery("#frmdivremarksapprover").show();
             $('#frmadminbutton').hide()
         }
-        
-       
+
+
     }
-   
+
 
 });
 
@@ -80,15 +80,15 @@ function fetchRegisterUser() {
 
 }
 function GetOverviewmasterbyId(idx) {
-   
+
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
-            
-      
+
+
                 console.log(res.result[0]);
 
                 if (res.result[0].nfaCategory == "1")
@@ -104,9 +104,11 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount) )//+ " " + res.result[0].currencyNm);
-              
-                $("#lblCurrency").text(res.result[0].currencyNm);
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaBudget))//+ " " + res.result[0].currencyNm);
+
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaAmount))
+
+                $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
@@ -120,11 +122,19 @@ function GetOverviewmasterbyId(idx) {
                     $("#lblEventType").text("Forward Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
+                else if (res.result[0].eventtypeName == "CA") {
+                    $("#lblEventType").text("Coal Auction")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                }
+                else if (res.result[0].eventtypeName == "FF") {
+                    $("#lblEventType").text("French Auction")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                }
                 else {
                     $("#lblEventType").text("RFQ")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventID+"'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventID + "'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
-                
+
                 if (res.result[0].remarks != '') {
                     $(".clsHide").show();
                 }
@@ -132,7 +142,7 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHide").hide();
                 }
                 $("#lblRemark").text(res.result[0].remarks);
-                $("#NFa_ConfiguredBy").html("NFA Request Configured By :"+res.result[0].createdBy);
+                $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
 
             }
         }
@@ -142,7 +152,7 @@ function GetOverviewmasterbyId(idx) {
     });
 };
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
-  
+
     if (RFQID == 0) {
         var encrypdata = fnencrypt("BidID=" + bidid + "&BidTypeID=" + bidtypeid + "&BidForID=" + bidforid)
         window.open("BidSummary.html?param=" + encrypdata, "_blank")
@@ -189,7 +199,7 @@ function BindAttachmentsOfEdit() {
 
 function BindSaveparams() {
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=NFApp";
-    
+
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
 
@@ -198,11 +208,11 @@ function BindSaveparams() {
             if (res.result.length > 0) {
                 $("#tblNFAOverviewParam").append("<thead><tr><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                     $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
+                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
 
                 });
             }
-         }
+        }
         else {
             $("#tblNFAOverviewParam").hide();
         }
@@ -230,7 +240,7 @@ function fetchApproverStatus() {
         success: function (data) {
             var status = '';
             var c = 0;
-           var ApprovalType=""
+            var ApprovalType = ""
             if (data.length > 0) {
                 $('#div_statusbar').removeClass('hide');
                 jQuery('#divappendstatusbar').empty();
@@ -265,7 +275,7 @@ function fetchApproverStatus() {
                     }
                     if (data[i].statusCode == 1) {
                         counterColor = counterColor + 1;
-                        status='N/A'
+                        status = 'N/A'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).removeClass('error')
                         jQuery('#divstatuscolor' + i).addClass('font-yellow')
@@ -294,10 +304,10 @@ function fetchApproverStatus() {
                     if (data[i].statusCode == 10) {
                         jQuery('#divstatuscolor' + i).addClass('error');
                     }
-                    if (data[i].statusCode == 20  || data[i].statusCode == 40 || data[i].statusCode == 0) {
+                    if (data[i].statusCode == 20 || data[i].statusCode == 40 || data[i].statusCode == 0) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
-                   
+
                     //if (ApprovalType != 'P') {
                     //    if (counterColor > 1) {
                     //        if (status == 'Pending') {
@@ -315,7 +325,7 @@ function fetchApproverStatus() {
                     //    }
                     //}
                     //else if (ApprovalType == 'P' && (data[i].approverSeq != prevseq && status == 'Pending')) {
-                       
+
                     //            status = 'N/A'
                     //            jQuery('#divPendingDate' + i).addClass('hide')
                     //            c = c + 1;
@@ -325,13 +335,13 @@ function fetchApproverStatus() {
                     //            jQuery('#divstatuscolor' + i).addClass('last')
                     //            jQuery('#divstatus' + i).addClass('font-yellow')
                     //            jQuery('#divapprovername' + i).addClass('font-yellow')
-                           
-                        
+
+
                     //}
                     //prevseq = data[i].approverSeq;
                 }
             }
-           else {
+            else {
                 $('#div_statusbar').addClass('hide');
 
             }
@@ -350,13 +360,13 @@ function fetchApproverStatus() {
             return false;
             jQuery.unblockUI();
         }
-     });
+    });
 }
 
 sessionStorage.setItem('hdnApproverid', 0);
 jQuery("#txtApprover").keyup(function () {
     sessionStorage.setItem('hdnApproverid', '0');
-   // sessionStorage.setItem('hdnWBApproverEmailid', '');
+    // sessionStorage.setItem('hdnWBApproverEmailid', '');
 });
 
 
@@ -378,8 +388,8 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             $('#hdndelegateuserid').val(map[item].userID)
-           // sessionStorage.setItem('hdndelegateuserid', map[item].userID);
-           
+            // sessionStorage.setItem('hdndelegateuserid', map[item].userID);
+
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
@@ -390,7 +400,7 @@ jQuery("#txtApprover").typeahead({
 
 });
 function FetchRecomendedVendor() {
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -401,11 +411,11 @@ function FetchRecomendedVendor() {
         dataType: "json",
         success: function (data) {
             $('#tblremarksapprover').empty()
-          
+
             if (data.length > 0) {
                 $('#divforapprovalprocess').show()
                 $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-               
+
                 if (AppStatus == 'Reverted') {
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
@@ -439,7 +449,7 @@ function FetchRecomendedVendor() {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
-            
+
         },
         error: function (xhr, status, error) {
 
@@ -464,61 +474,61 @@ var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
 function validateAppsubmitData() {
-    
-       
+
+
     form1.validate({
-            errorElement: 'span',
-            errorClass: 'help-block',
-            focusInvalid: false,
-            ignore: "",
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
 
-            rules: {
-                ddlActionType: {
-                    required: true,
-                },
-                ddlVendors: {
-                    required: true,
-                },
-                txtRemarksApp: {
-                    required: true,
-                }
+        rules: {
+            ddlActionType: {
+                required: true,
             },
-            messages: {
-                ddlActionType: {
-                    required: "Please select Action"
-                },
-               
-                txtRemarksApp: {
-                    required: "Please enter your comment"
-                }
+            ddlVendors: {
+                required: true,
+            },
+            txtRemarksApp: {
+                required: true,
+            }
+        },
+        messages: {
+            ddlActionType: {
+                required: "Please select Action"
             },
 
-            invalidHandler: function (event, validator) { //display error alert on form submit              
-                success1.hide();
-                error1.show();
-                // App.scrollTo(error1, -300);
-            },
+            txtRemarksApp: {
+                required: "Please enter your comment"
+            }
+        },
 
-            highlight: function (element) { // hightlight error inputs
-                $(element)
-                    .closest('.Input-group').addClass('has-error'); // set error class to the control group
-            },
+        invalidHandler: function (event, validator) { //display error alert on form submit              
+            success1.hide();
+            error1.show();
+            // App.scrollTo(error1, -300);
+        },
 
-            unhighlight: function (element) { // revert the change done by hightlight
-                $(element)
-                    .closest('.Input-group').removeClass('has-error'); // set error class to the control group
-            },
+        highlight: function (element) { // hightlight error inputs
+            $(element)
+                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+        },
 
-            success: function (label) {
-                label
-                    .closest('.Input-group').removeClass('has-error'); // set success class to the control group
-            },
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element)
+                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+        },
 
-            submitHandler: function (form) {
-                ApprovalApp();
-             }
-        });
-   
+        success: function (label) {
+            label
+                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+        },
+
+        submitHandler: function (form) {
+            ApprovalApp();
+        }
+    });
+
     form2.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -578,14 +588,14 @@ function validateAppsubmitData() {
             txtRemarksrecall: {
                 required: true,
             }
-            
+
         },
         messages: {
             txtRemarksrecall: {
                 required: "Please select Remarks"
             }
 
-            
+
         },
 
         highlight: function (element) { // hightlight error inputs
@@ -607,11 +617,11 @@ function validateAppsubmitData() {
             fnRecall();
         }
     });
-    
-    }
+
+}
 function ApprovalApp() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
@@ -622,7 +632,7 @@ function ApprovalApp() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
 
-   // alert(JSON.stringify(approvalbyapp))
+    // alert(JSON.stringify(approvalbyapp))
     //console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -659,10 +669,10 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     $('#txtdelegate').val()
 });
 function DelegateUser() {
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#hdndelegateuserid').val() == 0 || $('#hdndelegateuserid').val() == null) {
-        
+
         error2.show();
         $('#errormsg').html('Please Select Approver Properly!');
         error2.fadeOut(3000);
@@ -679,7 +689,7 @@ function DelegateUser() {
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
         };
 
-        
+
         //console.log(JSON.stringify(approvalbyapp))
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
@@ -724,7 +734,7 @@ $("#RaiseQuery").on("hidden.bs.modal", function () {
     PendingOn = 'C'
 });
 function fnRaisequery() {
-   // $('#hdnvendorid').val(vendorid)
+    // $('#hdnvendorid').val(vendorid)
     GetQuestions();
 }
 var queslength = 0;
@@ -743,10 +753,10 @@ function GetQuestions() {
         success: function (data) {
             jQuery("#tblquestions").empty();
             var attach = 'No Attachment';
-           
-           
+
+
             if (data.length > 0) {
-               queslength = data.length;
+                queslength = data.length;
                 sessionStorage.setItem('HeaderID', data[0].headerid)
                 $('#btnTechquery').attr('disabled', 'disabled')
                 jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
@@ -771,22 +781,22 @@ function GetQuestions() {
                     else {
                         $('#Removebtn' + i).show();
                     }
-                   PendingOn = data[i].pendingOn;
+                    PendingOn = data[i].pendingOn;
                 }
-             
+
                 GetQuestionsforCreator(PendingOn);
-               
+
                 if (PendingOn.toLowerCase() == "c") {
                     jQuery('#btnSubmitApp').attr("disabled", 'disabled');
                     $('#btnSubmitApp').removeClass('green').addClass('default')
                     $('#btnwithdraw').show()
                 }
                 else {
-                    
+
                     $('#btnwithdraw').hide()
                 }
-               
-                
+
+
             }
             else {
                 $('#btnwithdraw').hide()
@@ -820,19 +830,19 @@ function GetQuestionsforCreator(pendingon) {
         success: function (data) {
             jQuery("#tblqueryresponse").empty();
             var attach = '';
-           
-                if (data.length > 0) {
+
+            if (data.length > 0) {
 
                 $('#divQuery').removeClass('hide')
                 sessionStorage.setItem('HeaderID', data[0].headerid)
-                    jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
-               
+                jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
+
                 for (var i = 0; i < data.length; i++) {
                     attach = '';
                     if (data[i].attachment != '') {
                         attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
-                  
+
                     if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID')) {
                         $('#btnsubmitquery').removeClass('hide')
                         str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
@@ -856,13 +866,13 @@ function GetQuestionsforCreator(pendingon) {
                         $('#divQuery').addClass('hide')
 
                     }
-                    
 
-                  }
+
+                }
 
             }
             else {
-               
+
             }
         },
         error: function (xhr, status, error) {
@@ -913,8 +923,8 @@ function fnsubmitQueryByCreator() {
             var this_row = $(this);
             attchname = ''; ext = '';
             attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
-           
-           
+
+
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
             attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
             attchname = attchname.replace('.', '@')
@@ -934,7 +944,7 @@ function fnsubmitQueryByCreator() {
             "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
             "PendingOn": "A"
         }
-       // alert(JSON.stringify(data))
+        // alert(JSON.stringify(data))
         console.log(JSON.stringify(data))
         jQuery.ajax({
             type: "POST",
@@ -996,7 +1006,7 @@ function addquestions() {
         str += '<td style="width:5%!important"><button type=button id=Removebtn' + rowques + ' class="btn btn-xs btn-danger"  onclick="deletequesrow(trquesid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
-      
+
         if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && (PendingOn != 'A' && PendingOn != 'X')) {
             $('#btnTechquery').attr('disabled', 'disabled')
             // $('#btnwithdraw').hide()
@@ -1043,7 +1053,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
             //alert(JSON.stringify(data))
-           // console.log(JSON.stringify(data))
+            // console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1061,7 +1071,7 @@ function submitQuery() {
                             $('#btnSubmitApp').attr('disabled', 'disabled')
                             $('#btnSubmitApp').removeClass('green').addClass('default')
                             //$('#btnwithdraw').show()
-                            
+
                             $("#RaiseQuery").modal('hide');
 
                             jQuery.unblockUI();
@@ -1210,8 +1220,8 @@ function DisableActivityRecall() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActivityDescription": jQuery("#lbltitle").text(),
         "Remarks": jQuery("#txtRemarksrecall").val()
-     }
-    
+    }
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

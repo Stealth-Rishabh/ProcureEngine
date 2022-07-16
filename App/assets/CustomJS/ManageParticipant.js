@@ -228,7 +228,12 @@ function RegisterParticipants() {
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
         "ParticipantName": jQuery("#ParticipantName").val(),
         "Address": jQuery("#txtAddress").val(),
-        "City": jQuery("#txtCity").val(),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").text(),
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
         "PanNo": jQuery("#txtPanNo").val(),
         "TinNo": jQuery("#txtTINNo").val(),
         "PhoneNo": jQuery("#txtPhoneNo").val(),
@@ -322,11 +327,11 @@ function fetchParticipantsVenderTable() {
                 jQuery.each(Venderdata, function (key, value) {
                     var str = "";
                     var addr1 = (value.address).replace(/\n/g, " ");
-                    var addr2 = (value.city).replace(/\n/g, " ");
+                    var addr2 = (value.cityName).replace(/\n/g, " ");
                     if (value.mapBtnRequired == 'N') {
                         str = "<tr><td style=\"text-align:center;width:10%!important;\">";
 
-                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                         str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                         if (value.actionType == "EditVendor") {
                             str += "<td style=\"width:10%!important;\">No</td>";
@@ -341,7 +346,7 @@ function fetchParticipantsVenderTable() {
                         str = "<tr><td style=\"text-align:right;width:10%!important;\">";
                         str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                     }
-                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.city + "</td><td style=\"width:10%!important;\">" + value.panNo + "</td><td style=\"width:10%!important;\">" + value.tinNo + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo + "</td><td style=\"width:10%!important;\">" + value.tinNo + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
 
                     str += "</td></tr>";
                     jQuery('#tblParticipantsVender > tbody').append(str);
@@ -366,14 +371,14 @@ function fetchParticipantsVenderTable() {
     });
 }
 
-function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternateemail) {
+function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternateemail, countryid, stateid, cityid) {
 
     $('#hdnFlagType').val(buttonname)
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
     jQuery("#ParticipantName").val(vname)
     jQuery("#txtAddress").val(addr1)
-    jQuery("#txtCity").val(addr2)
+    //jQuery("#txtCity").val(addr2)
     jQuery("#txtPanNo").val(pan)
     jQuery("#txtTINNo").val(gst)
     jQuery("#txtPhoneNo").val(phone)
@@ -388,6 +393,14 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
     else {
         status = 'N';
     }
+    $('#ddlCountry').val(countryid).trigger('change')
+    setTimeout(function () {
+        $('#ddlState').val(stateid).trigger('change')
+    }, 900)
+    setTimeout(function () {
+
+        $('#ddlCity').val(cityid).trigger('change')
+    }, 1500)
     $('#divVendorForm').removeClass('hide')
     fetchMapCategory('Z', vendorid);
 
@@ -444,8 +457,9 @@ function fetchMapCategory(categoryFor, vendorId) {
 function clearform() {
 
     jQuery("#ParticipantName").val('');
+    jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
-    jQuery("#txtCity").val('');
+    // jQuery("#txtCity").val('');
     jQuery("#txtPanNo").val('');
     jQuery("#txtTINNo").val('');
     jQuery("#txtPhoneNo").val('');
@@ -453,6 +467,9 @@ function clearform() {
     jQuery("#ContactName").val('');
     jQuery("#txtcompanyemail").val('');
     jQuery('#hdnParticipantID').val('0');
+    $("#ddlCountry").val('111');
+    $("#ddlState").val('0');
+    $("#ddlCity").val('0');
     // jQuery('#txtUI').val('');
 
     $('.childchkbox').each(function () {
@@ -461,12 +478,16 @@ function clearform() {
     status = "True"
     $('#ParticipantName').removeAttr('disabled')
     $('#txtAddress').removeAttr('disabled')
+    $('#ContactName').removeAttr('disabled')
     $('#txtCity').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
     $('#txtcompanyemail').removeAttr('disabled')
+    $('#ddlCountry').removeAttr('disabled')
+    $('#ddlState').removeAttr('disabled')
+    $('#ddlCity').removeAttr('disabled')
     jQuery("#hdnParticipantID").val(0)
     jQuery("#hdnParticipantCode").val(0)
     jQuery("#hdnFlagType").val(0)
@@ -523,3 +544,131 @@ jQuery("#txtSearchCategory").keyup(function () {
 
     });
 });
+function fetchCountry() {
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlCountry").empty();
+            var vlal = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                }
+
+                $("#ddlCountry").val('111').trigger("change");
+
+            }
+            else {
+                $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
+            }
+            // jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+function fetchState() {
+    var countryid = $('#ddlCountry option:selected').val();
+
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/State/?CountryID=" + countryid + "&StateID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlState").empty();
+            if (data.length > 0) {
+
+                $("#ddlState").append("<option value=0>Select State</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
+                }
+                $("#ddlState").trigger("change");
+            }
+            else {
+                $("#ddlState").append('<tr><td>No state found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+function fetchCity() {
+    var stateid = $('#ddlState').val();
+    //alert(stateid)
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlCity").empty();
+            if (data.length > 0) {
+                $("#ddlCity").append("<option value=0>Select City</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
+                }
+                $("#ddlCity").val('0').trigger("change");
+            }
+            else {
+                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}

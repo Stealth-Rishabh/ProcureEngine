@@ -280,12 +280,12 @@
 
                                                     </div>
                                                     <div class="form-group">
-                                                        <div class="inputgroup" style="display:none">
+                                                        <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Budget Status<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <select id="ddlBudget" name="ddlBudget" class="form-control" disabled>
+                                                                <select id="ddlBudget" name="ddlBudget" class="form-control">
                                                                     <!--<option value="NO">Select</option>-->
                                                                     <option value="WB">Within Budget</option>
                                                                     <option value="OB">Outside Budget</option>
@@ -294,8 +294,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
-                                                            <label class="col-md-3 control-label">
-                                                                <!--col-md-2-->
+                                                            <label class="col-md-2 control-label">
                                                                 Category<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
@@ -405,8 +404,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-10">
-
-                                                                                <table class="table table-striped table-bordered table-hover" id="tblNFAOverviewParam"></table>
+                                                                               <table class="table table-striped table-bordered table-hover" id="tblNFAOverviewParam"></table>
 
                                                                             </div>
                                                                         </div>
@@ -924,6 +922,7 @@
 
     <script>
         jQuery(document).ready(function () {
+            //form.validate();
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);

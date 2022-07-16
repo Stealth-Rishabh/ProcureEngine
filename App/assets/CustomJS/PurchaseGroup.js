@@ -21,18 +21,30 @@ function onGroupSaveClick() {
     }
     SavePurchaseGroup();
 }
-
+$(document).on('keyup', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
+function fnclearcss(aid) {
+   
+    $('#' + aid.id).css("border-color", "");
+}
+$(document).on('onchange', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+       
+    }
+});
 function ValidatePurchaseGroup() {
     var groupName = false;
+   
     var OrgID = false;
     if ($("#txtPurchaseGroup").val() == "") {
         $("#txtPurchaseGroup").css("border-color", "red");
-       
         groupName = true;
     }
     else {
         $("#txtPurchaseGroup").css("border-color", "");
-      
         groupName = false;
     }
     if ($("#ddlPurchaseOrg option:selected").val() == 0) {
@@ -89,7 +101,7 @@ function bindPurchaseGroupData() {
 
         if (res.result.length > 0) {
             $('#searchmaster').show();
-            $('#tblPurchaseGroupMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Group</th><th>Org.</th><th>Status</th></tr></thead>');
+            $('#tblPurchaseGroupMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Org.</th><th>Group</th><th>Status</th></tr></thead>');
 
             $.each(res.result, function (key, value) {
                 
@@ -98,7 +110,7 @@ function bindPurchaseGroupData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.groupName + '</td><td>' + value.orgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.orgName + '</td><td>' + value.groupName + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {

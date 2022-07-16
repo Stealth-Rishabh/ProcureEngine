@@ -139,6 +139,16 @@
                             <div class="portlet-body form">
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-body">
+                                        <div class="alert alert-danger display-hide" id="errordiv">
+                                            <button class="close" data-close="alert"></button>
+                                                <span id="errormsg"></span>
+                                         </div>
+
+                                        <div class="alert alert-success display-hide" id="successdiv">
+                                             <button class="close" data-close="alert"></button>
+                                             <span id="successmsg"></span>
+
+                                        </div>
                                         <div class="tab-pane" id="tab1">
                                             <div class="panel-group accordion" id="accordion1">
                                                 <div class="panel panel-default">
@@ -157,7 +167,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Name : 
+                                                                                        Name :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="primaryname" name="primaryname">
@@ -169,7 +179,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Mobile No : 
+                                                                                        Mobile No :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="primarymobile" name="primarymobile">
@@ -181,7 +191,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Email ID : 
+                                                                                        Email ID :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="primaryemail" name="primaryemail">
@@ -195,7 +205,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Name : 
+                                                                                        Name :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="altname" name="altname">
@@ -207,7 +217,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Mobile No : 
+                                                                                        Mobile No :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="altmobile" name="altmobile">
@@ -219,7 +229,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-lg-12">
                                                                                     <label class="col-md-3 control-label" style="text-align:left">
-                                                                                        Email ID : 
+                                                                                        Email ID :
                                                                                     </label>
                                                                                     <div class="col-md-9">
                                                                                         <label class="control-label" id="altemail" name="altemail">
@@ -238,7 +248,7 @@
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">Company Details </a>
+                                                            <a class="accordion-toggle" id="companydetails" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">Company Details </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse0" class="panel-collapse collapse in">
@@ -247,7 +257,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            Nature of Establishment : 
+                                                                            Nature of Establishment :
                                                                         </label>
                                                                         <div class="col-md-3">
                                                                             <label class=" control-label" id="natureofest" name="natureofest"> </label>
@@ -255,7 +265,7 @@
 
                                                                         <div class="inputgroup">
                                                                             <label class="col-md-3 control-label" style="text-align:left">
-                                                                                Vendor Type : 
+                                                                                Vendor Type :
                                                                             </label>
                                                                             <div class="col-md-3">
                                                                                 <label class="control-label" id="vendortype" name="vendortype"></label>
@@ -270,7 +280,7 @@
                                                                             Tag Items/Services : <span class="required"> *</span>
                                                                         </label>
                                                                         <div class="col-md-9 xyz">
-                                                                            <select class="form-control" name="ddlTypeofProduct" id="ddlTypeofProduct" tabindex="4" multiple></select>
+                                                                            <select class="form-control" name="ddlTypeofProduct" id="ddlTypeofProduct" tabindex="4" multiple onchange="fnremoveMsz()"></select>
                                                                             <span id="requirederror" class="hide error_mess">Please Select Items/Services to proceed</span>
                                                                         </div>
                                                                     </div>
@@ -279,7 +289,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            Product : 
+                                                                            Product :
                                                                         </label>
                                                                         <div class="col-md-9">
                                                                             <label class="control-label" id="product" name="product">
@@ -291,7 +301,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            Company Name : 
+                                                                            Company Name :
                                                                         </label>
                                                                         <div class="col-md-3">
                                                                             <label class="control-label" id="companyname" name="companyname"> </label>
@@ -299,7 +309,7 @@
 
                                                                         <div class="inputgroup">
                                                                             <label class="col-md-3 control-label" style="text-align:left">
-                                                                                Address : 
+                                                                                Address :
                                                                             </label>
                                                                             <div class="col-md-3">
                                                                                 <label class="control-label" id="address" name="address"></label>
@@ -323,7 +333,7 @@
 
                                                                         <div class="inputgroup">
                                                                             <label class="col-md-3 control-label" style="text-align:left">
-                                                                                State : 
+                                                                                State :
                                                                             </label>
                                                                             <div class="col-md-3">
                                                                                 <label class="control-label" id="state" name="state">
@@ -336,7 +346,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            City : 
+                                                                            City :
                                                                         </label>
                                                                         <div class="col-md-3">
                                                                             <label class="control-label" id="city" name="city">
@@ -348,7 +358,7 @@
                                                                                 PIN Code :
                                                                             </label>
                                                                             <div class="col-md-3">
-                                                                                <label class="control-label" id="pincode" name="pincode">                                                                               
+                                                                                <label class="control-label" id="pincode" name="pincode">
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -362,7 +372,7 @@
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">Accounting Details</a>
+                                                            <a class="accordion-toggle collapsed" id="accounting" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">Accounting Details</a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse1" class="panel-collapse collapse" seqno="2" style="height: 0px;">
@@ -391,7 +401,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            Attached GST REG 06GST certificate :                                                                        
+                                                                            Attached GST REG 06GST certificate :
                                                                         </label>
                                                                         <div class="col-md-3">
                                                                             <span class="help-block">
@@ -571,7 +581,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            Last FY Turn Over : 
+                                                                            Last FY Turn Over :
                                                                         </label>
                                                                         <div class="col-md-3 ">
                                                                             <label class="control-label" id="lastFY" name="lastFY">
@@ -580,9 +590,9 @@
 
                                                                         <div class="inputgroup">
                                                                             <label class="col-md-3 control-label" style="text-align:left">
-                                                                                Last FY Turn Over Year : 
+                                                                                Last FY Turn Over Year :
                                                                             </label>
-                                                                            <div class="col-md-3 ">                                                                               
+                                                                            <div class="col-md-3 ">
                                                                                 <label class="control-label" id="txtLastFiscalyear" name="txtLastFiscalyear">
                                                                                 </label>
                                                                             </div>
@@ -593,16 +603,16 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
                                                                         <label class="col-md-3 control-label" style="text-align:left">
-                                                                            2nd Last FY Turn Over : 
+                                                                            2nd Last FY Turn Over :
                                                                         </label>
                                                                         <div class="col-md-3 ">
                                                                             <label class="control-label" id="seclastFY" name="seclastFY">
-                                                                            </label>                                                      
+                                                                            </label>
                                                                         </div>
 
                                                                         <div class="inputgroup">
                                                                             <label class="col-md-3 control-label " style="text-align:left">
-                                                                                2nd Last FY Turn Over Year : 
+                                                                                2nd Last FY Turn Over Year :
                                                                             </label>
                                                                             <div class="col-md-3 ">
                                                                                 <label class="control-label" id="SecondLastTurnoverYear" name="SecondLastTurnoverYear">
@@ -792,18 +802,13 @@
     <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
             type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+   
+   
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    
     <script src="assets/admin/pages/scripts/components-pickers.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
@@ -854,12 +859,9 @@
             }
 
             setInterval(function () { Pageloaded() }, 15000);
-
             if (sessionStorage.getItem("UserType") == "E") {
-
-                $('.page-container').show();
-
-            }
+                 $('.page-container').show();
+               }
             //fetchCategorymaster1();
             fetchVendorRegistrationDetails(); 
             //FormValidate();
