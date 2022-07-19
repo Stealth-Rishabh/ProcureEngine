@@ -455,8 +455,8 @@ function fetchReguestforQuotationDetails() {
 
             jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
 
-            jQuery('#lblrfqstartdate').html(RFQData[0].general[0].rfqStartDate)
-            jQuery('#lblrfqenddate').html(RFQData[0].general[0].rfqEndDate)
+            jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
 
             jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)

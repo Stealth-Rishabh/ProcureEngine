@@ -163,7 +163,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
 
     };
-     //alert(JSON.stringify(Data))
+    //alert(JSON.stringify(Data))
     //console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -378,7 +378,7 @@ function fetchAzPPcFormDetails() {
                             $("#TPIN" + i).removeAttr("checked");
                             $("#TPIY" + i).removeAttr("checked");
                         }
-                        
+
                         else {
                             $("#TPIY" + i).removeAttr("checked");
                             $("#TPIN" + i).attr("checked", "checked");

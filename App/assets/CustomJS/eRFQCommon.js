@@ -227,7 +227,7 @@ function ReInviteVendorsForRFQ() {
     var data = {
         "RFQID": parseInt($("#hdnRfqID").val()),
         "VendorIDs": str,
-        "ExtendedDate": $("#txtextendDate").val(),
+        "ExtendedDate": new Date($("#txtextendDate").val().replace('-', '')),
         "RFQSubject": $("#RFQSubject").html(),
         "UserID": sessionStorage.getItem("UserID"),
         "ReInviteRemarks": $("#txtReInviteRemarks").val(),
@@ -348,13 +348,11 @@ function cancelRFQ(mailparam) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            bootbox.alert("RFQ Cancelled successfully.", function () {
+                window.location = "index.html";
+                return false;
+            });
 
-            if (data == '1') {
-                bootbox.alert("RFQ Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
         },
         error: function (xhr, status, error) {
 
@@ -404,8 +402,8 @@ function fetchReguestforQuotationDetails() {
                 $('#hdnUserID').val(RFQData[0].general[0].userId)
                 $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
-                $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
+                $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
+                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
 
             }
         },
@@ -1109,7 +1107,7 @@ function fetchRFQApproverStatus(RFQID) {
                     jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].level);
                     jQuery('#divapprovername' + i).text(data[i].approverStaffName);
-                    jQuery('#divPendingDate' + i).text(data[i].pendingSince);
+                    jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].pendingSince));
 
                     if (data[i].statusCode == 10) {
 
@@ -1214,7 +1212,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
                     jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].level);
                     jQuery('#divapprovername' + i).text(data[i].approverStaffName);
-                    jQuery('#divPendingDate' + i).text(data[i].pendingSince);
+                    jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].pendingSince));
 
                     if (data[i].statusCode == 10) {
 
@@ -1320,15 +1318,27 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
     });
 }
+$("#modalreInviteDate").on("hidden.bs.modal", function () {
+    jQuery("#txtextendDate").val('')
+    $('#txtReInviteRemarks').val('')
+    str = '';
+    $('.chkReinvitation').prop('checked', false);
+    $('.alert-success').hide();
+    $('.alert-danger').hide();
+    $(".xyz").removeClass("has-error");
+    $('.help-block-error').remove();
+});
 
 function downloadexcel() {
-    var dt = new Date();
-    var day = dt.getDate();
-    var month = dt.getMonth() + 1;
-    var year = dt.getFullYear();
-    var hour = dt.getHours();
-    var mins = dt.getMinutes();
-    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+    //  var dt = new Date();
+    //    var day = dt.getDate();
+    //  var month = dt.getMonth() + 1;
+    //var year = dt.getFullYear();
+    //var hour = dt.getHours();
+    //var mins = dt.getMinutes();
+    //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    var postfix = fnConverToLocalTime(new Date())
 
     //Export To Excel
     var data_type = 'data:application/vnd.ms-excel';

@@ -866,7 +866,7 @@ function formvalidate() {
             else {
 
                 fetchReguestforQuotationDetails();
-                if (sessionStorage.getItem('CustomerID') == "32" ) {
+                if (sessionStorage.getItem('CustomerID') == "32") {
                     fetchRFQPPCApproverStatus($('#hdnRfqID').val());
                 }
                 else {

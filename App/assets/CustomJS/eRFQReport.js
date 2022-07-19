@@ -27,8 +27,8 @@ function fetchReguestforQuotationDetails() {
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate)
             $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
 
-            $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
-            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
+            $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
+            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
 
             jQuery('#refno').html(RFQData[0].general[0].rfqReference)
 
@@ -93,6 +93,7 @@ function RFQFetchQuotedPriceReport() {
                     var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 12, "<br/>\n");
                     var totalamount = 0.0;
                     var bsicpercentageofGST = 0.0;
+                    comments = '';
                     //if (data[i].RFQBoq == 'Y ') { 
                     if (data[0].quotesDetails[i].rfqDescription != "") {
                         description = stringDivider(data[0].quotesDetails[i].rfqDescription, 45, "<br/>\n");

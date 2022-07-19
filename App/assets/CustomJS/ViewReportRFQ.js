@@ -1,13 +1,15 @@
 ﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
+    /*
+      var dt = new Date();
+      var day = dt.getDate();
+      var month = dt.getMonth() + 1;
+      var year = dt.getFullYear();
+      var hour = dt.getHours();
+      var mins = dt.getMinutes();
+      postfix = day + "/" + month + "/" + year;*/
 
-    var dt = new Date();
-    var day = dt.getDate();
-    var month = dt.getMonth() + 1;
-    var year = dt.getFullYear();
-    var hour = dt.getHours();
-    var mins = dt.getMinutes();
-    postfix = day + "/" + month + "/" + year;
+    postfix = new Date()
 
     $('#printed_on').html(postfix);
 }
@@ -33,7 +35,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $('#logo').attr("src", RFQData[0].general[0].logoImage);
                 $('#spnconfiguredby').html(RFQData[0].general[0].rfqConfigureByName)
 
-                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + RFQData[0].general[0].rfqStartDate + ' - ' + RFQData[0].general[0].rfqEndDate + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr>")
+                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' - ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr>")
 
             }
         },
@@ -1253,7 +1255,7 @@ function fetchAttachments() {
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
 function saveAspdf() {
-    
+
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
     var pdf = new jsPDF('l', 'pt', 'a0');
     var options = {

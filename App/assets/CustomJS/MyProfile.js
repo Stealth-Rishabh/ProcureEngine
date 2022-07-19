@@ -231,8 +231,8 @@ function fetchUserDetails() {
                     $('#tblpurchaseOrg').empty();
                     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
                     for (var i = 0; i < userOrg.length; i++) {
-                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[0].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[0].PurchaseGrpID + '</td><td>' + userOrg[0].PurchaseOrgName + '</td><td>' + userOrg[0].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                        cc = cc + 1;
+                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[i].PurchaseGrpID + '</td><td>' + userOrg[i].PurchaseOrgName + '</td><td>' + userOrg[i].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userOrg[i].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                       cc = cc + 1;
                     }
 
                     if (jQuery('#tblpurchaseOrg tr').length > 0) {

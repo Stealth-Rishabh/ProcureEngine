@@ -1250,7 +1250,7 @@ function fnSendActivityToCommercial() {
         "Vendors": '',
         "AwardQuery": ''
     }
-
+    console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

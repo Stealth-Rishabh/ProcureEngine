@@ -595,7 +595,7 @@ function InsUpdRFQDEtailTab1() {
 
     };
 
-    alert(JSON.stringify(Tab1Data))
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

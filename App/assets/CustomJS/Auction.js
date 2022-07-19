@@ -943,10 +943,10 @@ function fnConverToLocalTime(dttime) {
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
-       
+        //alert(dttime)
         var theStDate = new Date(dttime)
         theStDate = theStDate.toDateString()
-      
+        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
         theStDate = new Date(theStDate + ' UTC');
 
         theStDate = theStDate.toLocaleString("en-IN", {
@@ -979,6 +979,34 @@ function fnConverToTime(dttime) {
         return dtst;
     }
     else return '..'
+}
+
+function fnReturnTimeFromDate(dttime) {
+    var dtst = '';
+    if (dttime != null) {
+        //  console.log
+        dttime = dttime.replace('-', '');
+        dttime = dttime.replace('at', '');
+
+        var theStDate = new Date(dttime);
+
+        theStDate = theStDate.toLocaleString('en-GB').trim();
+
+
+        //theStDate = theStDate.replace('at', ' ');
+        console.log(theStDate.trim())
+        var currentDate = new Date(theStDate);
+        console.log(currentDate)
+        dtst = moment(currentDate).format('HH:mm:ss');
+        //dtst = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+        // console.log(dtst)
+        //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
+        //return dtst;
+    }
+    else {
+        dtst = '..'
+    }
+    return dtst;
 }
 
 //** Delete Files from Blob

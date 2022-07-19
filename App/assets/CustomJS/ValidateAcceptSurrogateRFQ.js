@@ -8,50 +8,56 @@ sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
-   
+
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID ,
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            var EndDate = new Date(data[0].rfqEndDate.replace('-', ''));
-            var currentTime = new Date();
-            if (EndDate > currentTime) {
-                sessionStorage.setItem('hddnRFQRFIID', data[0].rfqid)
-                sessionStorage.setItem('CustomerID', data[0].customerID)
-                
-                jQuery('#RFQSubject').text(data[0].rfqSubject)
-                jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
-                
-                $('#Currency').html(data[0].currencyNm)
-                $('#CurrencyTT').html(data[0].currencyNm)
-                jQuery('#RFQDescription').text(data[0].rfqDescription)
-                jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
-                jQuery('#ConversionRate').html(data[0].rfqConversionRate);
-                jQuery('#refno').html(data[0].rfqConversionRate);
-                jQuery('#RFQStartDate').text(data[0].rfqStartDate)
-                jQuery('#RFQStartDateTT').text(data[0].rfqStartDate)
-                jQuery('#RFQEndDate').text(data[0].rfqEndDate)
-                jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
-                $('#bid_EventID').text(RFQID);
-                $('#lblEventID').text(RFQID);
-                
-                jQuery('#TermCondition').html(data[0].rfqTermandCondition)
-            }
-            else {
-                bootbox.alert("This RFQ has already expired !!!", function () {
-                    //   $('.page-container').hide();
-                    $('#btnpassword').attr('disabled', 'disabled')
-                    $('#txtpassword').attr('disabled', 'disabled')
-                   
-                });
-            }
-           
+
+            sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
+
+            setTimeout(function () {
+                var EndDate = fnConverToLocalTime(data[0].rfqEndDate);
+                var currentTime = fnConverToLocalTime(new Date());
+
+                if (EndDate > currentTime) {
+                    sessionStorage.setItem('hddnRFQRFIID', data[0].rfqid)
+                    sessionStorage.setItem('CustomerID', data[0].customerID)
+
+                    jQuery('#RFQSubject').text(data[0].rfqSubject)
+                    jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
+
+                    $('#Currency').html(data[0].currencyNm)
+                    $('#CurrencyTT').html(data[0].currencyNm)
+                    jQuery('#RFQDescription').text(data[0].rfqDescription)
+                    jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
+                    jQuery('#ConversionRate').html(data[0].rfqConversionRate);
+                    jQuery('#refno').html(data[0].rfqConversionRate);
+                    jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
+                    jQuery('#RFQStartDateTT').text(fnConverToLocalTime(data[0].rfqStartDate))
+                    jQuery('#RFQEndDate').text(fnConverToLocalTime(data[0].rfqEndDate))
+                    jQuery('#RFQDeadlineTT').text(fnConverToLocalTime(data[0].rfqEndDate))
+                    $('#bid_EventID').text(RFQID);
+                    $('#lblEventID').text(RFQID);
+
+                    jQuery('#TermCondition').html(data[0].rfqTermandCondition)
+                }
+                else {
+                    bootbox.alert("This RFQ has already expired !!!", function () {
+                        //   $('.page-container').hide();
+                        $('#btnpassword').attr('disabled', 'disabled')
+                        $('#txtpassword').attr('disabled', 'disabled')
+
+                    });
+                }
+            }, 500);
+
 
         }
     });
@@ -81,12 +87,12 @@ function validatepassword() {
         var url = sessionStorage.getItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + RFQID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateRFQ').toLowerCase();
         $.ajax({
             type: "GET",
-                contentType: "application/json; charset=utf-8",
-                url: url,
-                cache: false,
-                crossDomain: true,
-                dataType: "json",
-                success: function (response) {
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (response) {
 
                 sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
@@ -101,12 +107,12 @@ function validatepassword() {
                 App.scrollTo(erroropenbid, -200);
                 jQuery("#txtpassword").val('');
                 jQuery.unblockUI();
-               
+
             }
         });
     }
 
-    function fnGtrTokenValidatePassword(){
+    function fnGtrTokenValidatePassword() {
         var Data = {
             "BidID": parseInt(RFQID),
             "Password": jQuery("#txtpassword").val()
@@ -123,7 +129,7 @@ function validatepassword() {
             success: function (data) {
 
                 if (data[0].flagStatus == "1") {
-                    fetchReguestforQuotationDetailseRFQ(); 
+                    fetchReguestforQuotationDetailseRFQ();
                     sessionStorage.setItem("VendorId", data[0].vendorID)
                     sessionStorage.setItem('RFQVersionId', data[0].version)
                     sessionStorage.setItem("UserType", "V")
@@ -134,7 +140,7 @@ function validatepassword() {
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")
                     //sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
                     sessionStorage.setItem("HomePage", "https://pev3proapp.azurewebsites.net/")
-                    
+
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {
                             $('#termscondition').modal('show');
@@ -144,7 +150,7 @@ function validatepassword() {
                         setTimeout(function () {
                             var encrypdata = fnencrypt("RFQID=" + RFQID)
                             window.location = "eRFQVendor.html?param=" + encrypdata;
-                           
+
                         }, 1000);
                     }
 
@@ -168,7 +174,7 @@ function validatepassword() {
                 if (xhr.status === 401) {
                     error401Messagebox(err.Message);
                 }
-                else{
+                else {
                     sessionStorage.setItem("Token", '')
                     successopenbid.hide();
                     erroropenbid.show();
@@ -179,7 +185,7 @@ function validatepassword() {
                 return false;
                 jQuery.unblockUI();
             }
-            
+
         })
     }
 }
@@ -204,12 +210,12 @@ function formvalidate() {
         },
 
         invalidHandler: function (event, validator) { //display error alert on form submit   
-           
+
         },
 
         highlight: function (element) { // hightlight error inputs
             $(element)
-                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
@@ -222,7 +228,7 @@ function formvalidate() {
         },
 
         submitHandler: function (form) {
-          eRFQAcceptBidTerms()
+            eRFQAcceptBidTerms()
 
         }
     });
@@ -259,14 +265,14 @@ function eRFQAcceptBidTerms() {
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
-               
+            else {
+
                 fnErrorMessageText('erropenbid', '');
             }
             jQuery.unblockUI();
             return false;
-           
+
         }
-       
+
     });
 }

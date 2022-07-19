@@ -23,7 +23,7 @@ function FetchInvitedVendorsForeRFQ() {
 
                 //  $('#rq_deadline').html(data[0].deadline);
                 $('#rq_description').html(data[0].rqDescription);
-                $("#deadlineModal").html(data[0].deadline);
+                $("#deadlineModal").html(fnConverToLocalTime(data[0].deadline));
 
                 for (var i = 0; i < data.length; i++) {
 
