@@ -125,13 +125,19 @@ $("#tblNBApproverSeq").on("click", ".up,.down", function () {
     }
 });
 //end
+function fncheckapprovers() {
+    $('#chkWBCopy').prop('checked', false);
+    $('#chkOBCopy').prop('checked', false);
 
+}
 function bindApproverMaster() {
 
     var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
+
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-        if (res.result != null) {
+
+        if (res.result.length != null) {
             $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
                 Approvermasterdata = res.result;
@@ -139,6 +145,9 @@ function bindApproverMaster() {
                 for (var i = 0; i < res.result.length; i++) {
                     $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td><td>' + res.result[i].deviation + '</td></tr>');
                 }
+            }
+            else {
+                $('#tblAllmatrix').append('<tr><td>No Matrix Found</td></tr>');
             }
         }
     });
@@ -158,6 +167,7 @@ function GetApprovermasterbyId(idx) {
             nfaEditedID = idx;
             nfaApproverIDX = idx;
             if (res.result.length > 0) {
+
                 $("#ddlApproveltype").val(res.result[0].approvalType);
                 $("#txtAmountFrom").val(removeThousandSeperator(res.result[0].amountFrom));
                 $("#txtAmountTo").val(removeThousandSeperator(res.result[0].amountTo));
@@ -190,6 +200,12 @@ function GetApprovermasterbyId(idx) {
                     $('input:checkbox[name=chkIsActive]').attr('checked', false);
                     $('#chkIsActive').parents('span').removeClass('checked');
                 }
+                $('#form_wizard_1').find('.button-previous').hide();
+                if (tabno = 1) {
+                    $('#form_wizard_1').bootstrapWizard('previous')
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                }
+
             }
         }
     });
@@ -478,7 +494,8 @@ function SaveApproverMaster() {
     var amountTo = $("#txtAmountTo").val();
     var p_idx = nfaApproverIDX;
     var deviation = 0
-    if ($("#txtdeviation").val() != null || $("#txtdeviation").val() != "" || $("#txtdeviation").val() != undefined) {
+
+    if ($("#txtdeviation").val() != "" && $("#txtdeviation").val() != null && $("#txtdeviation").val() != undefined) {
         deviation = removeThousandSeperator($("#txtdeviation").val());
     }
     var Model = {
@@ -497,7 +514,7 @@ function SaveApproverMaster() {
         deviation: parseFloat(deviation)
     };
     var url = "NFA/InsertUpdateApprovelMaster";
-    //alert(JSON.stringify(Model))
+    // alert(JSON.stringify(Model))
     var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     SaveApproverMaster.success(function (res) {
         // console.log(res);
@@ -1299,7 +1316,7 @@ function BindPreviewDetails() {
     $("#lblAmountTo").text(to);
 
 }
-
+var tabno = 1;
 var FormWizard = function () {
 
     return {
@@ -1541,9 +1558,8 @@ var FormWizard = function () {
 
                 },
                 onNext: function (tab, navigation, index) {
-
+                    tabno = index;
                     success.hide();
-
                     error.hide();
 
                     if (index == 1) {
@@ -1626,7 +1642,7 @@ var FormWizard = function () {
 
                 },
                 onPrevious: function (tab, navigation, index) {
-
+                    tabno = index;
                     success.hide();
 
                     error.hide();
@@ -1639,7 +1655,7 @@ var FormWizard = function () {
 
                 },
                 onTabShow: function (tab, navigation, index) {
-
+                    tabno = index;
                     var total = navigation.find('li').length;
 
                     var current = index + 1;
@@ -1717,6 +1733,18 @@ function BindApproverSeqOnEdit() {
                 $("#tblWBApproverSeq").append(WBBody);
                 $("#tblOBApproverSeq").append(OBBody);
                 $("#tblNBApproverSeq").append(NBBody);
+                if ($("#tblOBApproverSeq >tbody>tr").length > 0) {
+                    $('#chkWBCopy').prop('checked', true);
+                }
+                else {
+                    $('#chkWBCopy').prop('checked', false);
+                }
+                if ($("#tblNBApproverSeq >tbody>tr").length > 0) {
+                    $('#chkOBCopy').prop('checked', true);
+                }
+                else {
+                    $('#chkOBCopy').prop('checked', false);
+                }
             }
 
         }

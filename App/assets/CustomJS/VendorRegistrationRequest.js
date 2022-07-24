@@ -34,7 +34,7 @@ function fetchCategorymaster1() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
-                $("#ddlTypeofProduct").trigger("change");
+                //$("#ddlTypeofProduct").trigger("change");
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
@@ -81,6 +81,7 @@ function fetchCountry() {
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
             }
+
             // jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -199,7 +200,7 @@ function fetchProduct() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlProduct").append("<option value=" + data[i].productID + ">" + data[i].productName + "</option>");
                 }
-                $("#ddlProduct").trigger("change");
+                //$("#ddlProduct").trigger("change");
             }
             else {
                 $("#ddlProduct").append('<tr><td>No products found..</td></tr>');
@@ -282,7 +283,7 @@ function fetchPaymentTerms() {
                     $("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
 
-                $("#ddPayTerms").trigger("change");
+                //$("#ddPayTerms").trigger("change");
             }
             else {
                 $("#ddPayTerms").append('<tr><td>No payment terms found..</td></tr>');
@@ -315,18 +316,39 @@ function getPan(pan) {
     }
 }
 
-function fetchMsme() {
+/*function fetchMsme() {
     var msmecheck = $("#ddlMSME option:selected").val();
     if (msmecheck == 'Y') {
         $('.hideInput').removeClass('hide');
     } else {
         $('.hideInput').addClass('hide');
     }
-}
+}*/
+function fetchMsme() {
 
+    if (jQuery("#ddlMSME option:selected").val() == 'Y') {
+        $('.hideInput').removeClass('hide');
+        $('#submit_form').validate();
+        $('input[name="txtUdyam"]').rules('add', {
+            required: true
+        });
+        $('input[name="filemsme"]').rules('add', {
+            required: true
+        });
+        $('#ddlMSMEClass').rules('add', {
+            required: true
+        });
+
+
+    } else {
+        $('.hideInput').addClass('hide');
+        $('input[name="filemsme"]').rules('remove');
+        $('input[name="txtUdyam"]').rules('remove');
+        $('input[name="ddlMSMEClass"]').rules('remove');
+    }
+}
 function SubmitVendorRegistration() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
     var selected = [];
     var selectedid = [];
     var selectedidss = '';
@@ -342,19 +364,19 @@ function SubmitVendorRegistration() {
         });
         straddedproduct = result.slice('#', -1);
 
-        var msmetype = $("#ddlMSMEClass option:selected").val().trim();
-        var gstclass = $("#ddlGSTclass option:selected").val().trim();
+        var msmetype = $("#ddlMSMEClass").val().trim();
+        var gstclass = $("#ddlGSTclass").val().trim();
         var tds = $("#ddlTds option:selected").val().trim();
-        var paymentterm = $("#ddPayTerms option:selected").val().trim();
+        var paymentterm = $("#ddPayTerms").val().trim();
         if (msmetype == 'Select') {
             var msmeselectvalue = "";
         } else {
-            var msmeselectvalue = $("#ddlMSMEClass option:selected").val().trim();
+            var msmeselectvalue = $("#ddlMSMEClass").val().trim();
         }
-        if (gstclass == 'Select') {
+        if (gstclass == '') {
             var gstclassvalue = "";
         } else {
-            var gstclassvalue = $("#ddlGSTclass option:selected").val().trim();
+            var gstclassvalue = $("#ddlGSTclass").val().trim();
         }
         if (tds == 0) {
             var tdsvalue = "";
@@ -430,8 +452,8 @@ function SubmitVendorRegistration() {
         }
     };
 
-    //console.log(JSON.stringify(VendorInfo));
-
+    console.log(JSON.stringify(VendorInfo));
+    alert(JSON.stringify(VendorInfo))
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -682,17 +704,21 @@ function FormValidate() {
             txtAdd1: {
                 required: true,
             },
-            ddlCountry: {
+            ddlGSTclass: {
                 required: true,
                 notEqualTo: 0
             },
+            /*ddlCountry: {
+                required: true,
+               notEqualTo: 0
+            },*/
             ddlState: {
                 required: true,
-
+                notEqualTo: 0
             },
             ddlCity: {
                 required: true,
-
+                notEqualTo: 0
             },
             txtPin: {
                 required: true,
@@ -701,14 +727,14 @@ function FormValidate() {
             tblAttachmentsElem: {
                 required: true,
             },
-            txtGst: {
+            /*txtGst: {
                 required: true,
                 maxlength: 15,
             },
             txtPan: {
                 required: true,
                 ValidPAN: true
-            },
+            },*/
             tblAttachmentsElem2: {
                 required: true,
             },
@@ -745,26 +771,26 @@ function FormValidate() {
                 required: true,
                 email: true
             },
-            ddlMSME: {
-                required: true,
-                notEqualTo: 0
-            },
-            ddlMSMEClass: {
-                required: true,
-                notEqualTo: 0
-            },
-            txtUdyam: {
-                required: true,
-            },
-            filegst: {
-                required: true
-            },
+            /* ddlMSME: {
+                 required: true,
+                 notEqualTo: 0
+             },
+             ddlMSMEClass: {
+                 required: true,
+                 notEqualTo: 0
+             },
+             txtUdyam: {
+                 required: true,
+             },
+             filegst: {
+                 required: true
+             },*/
             filecheck: {
                 required: true
             },
-            filepan: {
-                required: true
-            }
+            /*  filepan: {
+                  required: true
+              }*/
 
 
         },
@@ -920,6 +946,15 @@ $('#registerParticipantModal').on("hidden.bs.modal", function () {
     $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
     window.location = window.location.href.split('#')[0];
 })
+function fnClearformfields() {
+    $('#diverrorvendor').fadeOut(7000);
+    $("#txtContName").val('')
+    $("#txtEmail").val('')
+    $("#txtMobile").val('')
+    $("#txtContName2").val('')
+    $("#txtMobile2").val('')
+    $("#txtEmail2").val('')
+}
 
 // make reset Function & call after Details submit ????
 function fnFormClear() {
@@ -929,7 +964,7 @@ function fnFormClear() {
     $("#txtProduct").val('')
     $("#ddlCompanyName").val('')
     $("#txtAdd1").val('')
-    $("#ddlCountry").val('')
+    $("#ddlCountry").val('111').trigger("change");
     $("#ddlState").val(''),
         $("#ddlCity").val('')
     $("#txtPin").val('')
@@ -952,10 +987,10 @@ function fnFormClear() {
     $("#txtContName2").val('')
     $("#txtMobile2").val('')
     $("#txtEmail2").val('')
-    $("#ddlMSMEClass option:selected").val('')
-    $("#ddlGSTclass option:selected").val('')
-    $("#ddlTds option:selected").val('')
-    $("#ddPayTerms option:selected").val('')
+    $("#ddlMSMEClass").val('')
+    $("#ddlGSTclass").val('')
+    $("#ddlTds").val('')
+    $("#ddPayTerms").val('')
     $('#filegst').val('')
     $('#filepan').val('')
     $('#filemsme').val('')
@@ -963,4 +998,38 @@ function fnFormClear() {
     $("#currencyLastFiscal option:selected").val('')
     $("#currency2LastFiscal option:selected").val('')
     $('#diverrorvendor').fadeOut(7000);
+}
+function fnChangeGSTClass() {
+
+    if ($('#ddlGSTclass').val().toLowerCase() == "registered") {
+        $('#submit_form').validate();
+        $('#gstfilespn').html('*');
+        $('#GSTStartspn').html('*');
+        $('#spnpanno').html('*');
+        $('#spanpanfile').html('*');
+        $('#txtGst').rules('add', {
+            required: true,
+            maxlength: 15
+        });
+        $('#filegst').rules('add', {
+            required: true
+        });
+        $('#txtPan').rules('add', {
+            required: true,
+            ValidPAN: true
+        });
+        $('#filepan').rules('add', {
+            required: true
+        });
+    }
+    else {
+        $('#gstfilespn').html('');
+        $('#GSTStartspn').html('');
+        $('#spnpanno').html('');
+        $('#spanpanfile').html('');
+        $('#txtGst').rules('remove');
+        $('#filegst').rules('remove');
+        $('#txtPan').rules('remove');
+        $('#filepan').rules('remove');
+    }
 }

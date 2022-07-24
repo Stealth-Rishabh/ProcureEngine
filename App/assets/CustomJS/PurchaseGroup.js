@@ -196,7 +196,7 @@ function onGroupEdit(rowid, checked, orgid) {
 
     }
     var idxParam = rowid.replace('rowid_', '');
-    $("#txtPurchaseGroup").val(rowID.find('td:eq(2)').text());
+    $("#txtPurchaseGroup").val(rowID.find('td:eq(3)').text());
     $("#hdnPurchaseGroupId").val(idxParam);
     $("#ddlPurchaseOrg").val(orgid);
 

@@ -59,8 +59,6 @@ function fetchVendorRegistrationDetails() {
         success: function (json) {
 
             var companydetails = JSON.parse(json[0].jsondata);
-
-
             if (json.length > 1) {
 
                 var categorydetails = JSON.parse(json[1].jsondata);
@@ -150,9 +148,9 @@ function fetchVendorRegistrationDetails() {
                 jQuery('#seclastFY').html();
             }
 
-            
-            if (companydetails[0].pincode != "" && companydetails[0].pincode != null && companydetails[0].pincode != undefined) {
-                jQuery('#pincode').html(companydetails[0].pincode);
+
+            if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
+                jQuery('#pincode').html(companydetails[0].pinCode);
             }
             else {
                 jQuery('#pincode').html('');

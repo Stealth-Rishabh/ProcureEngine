@@ -549,7 +549,7 @@ function updloadingfactor() {
             success: function (data, status, jqXHR) {
 
                 //if (data[0].LoadingFactor > 0) {
-
+                //  alert(data[0].loadingFactor)
                 var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
                 $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
                 $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))

@@ -232,7 +232,7 @@ function fetchUserDetails() {
                     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
                     for (var i = 0; i < userOrg.length; i++) {
                         $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[i].PurchaseGrpID + '</td><td>' + userOrg[i].PurchaseOrgName + '</td><td>' + userOrg[i].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userOrg[i].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                       cc = cc + 1;
+                        cc = cc + 1;
                     }
 
                     if (jQuery('#tblpurchaseOrg tr').length > 0) {
@@ -1168,7 +1168,7 @@ $("#txtUdyam").keyup(function () {
 $("#filemsme").keyup(function () {
     $("#filemsme").css("border-color", "");
 });
-var customersForAutoComplete;
+var customersForAutoComplete = '';
 
 function fetchCompanyVR() {
     jQuery.ajax({
@@ -1180,13 +1180,16 @@ function fetchCompanyVR() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            customersForAutoComplete = JSON.parse(data[0].jsondata);
-            $("#txtCompanies").empty()
             $("#txtCompanies").append("<option value=0>Select Companies</option>");
-            if (customersForAutoComplete.length > 0) {
-                
-                for (var i = 0; i < data.length; i++) {
-                    $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
+            if (data.length > 1) {
+                customersForAutoComplete = JSON.parse(data[0].jsondata);
+                $("#txtCompanies").empty()
+                $("#txtCompanies").append("<option value=0>Select Companies</option>");
+                if (customersForAutoComplete.length > 0) {
+
+                    for (var i = 0; i < data.length; i++) {
+                        $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
+                    }
                 }
             }
             jQuery.unblockUI();
