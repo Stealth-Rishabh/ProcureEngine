@@ -206,6 +206,18 @@ function fetchPendingBid() {
             if (data[0].pendingActivity.length > 0) {
                 $('#totalrecord').text('(' + data[0].pendingActivity.length + ')')
                 for (var i = 0; i < data[0].pendingActivity.length; i++) {
+                    var _bidStatus = data[0].pendingActivity[i].bidStatus
+                    if (_bidStatus == null || _bidStatus == '') {
+                        if (data[0].pendingActivity[i].startDate != null || data[0].pendingActivity[i].startDate != '') {
+                            var StartDate = fnConverToShortDT(data[0].pendingActivity[i].startDate);
+                            _bidStatus = StartDate;
+                        }
+
+                        if (data[0].pendingActivity[i].endDate != null || data[0].pendingActivity[i].endDate != '') {
+                            var EndDate = fnConverToShortDT(data[0].pendingActivity[i].endDate);
+                            _bidStatus = _bidStatus + '-' + EndDate;
+                        }
+                    }
 
 
                     str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + data[0].pendingActivity[i].linkURL + "'\,\'" + data[0].pendingActivity[i].bidID + "'\,\'" + data[0].pendingActivity[i].isTermsConditionsAccepted + "'\,\'" + data[0].pendingActivity[i].bidTypeID + "',\'" + data[0].pendingActivity[i].version + "'\)>";
@@ -224,7 +236,8 @@ function fetchPendingBid() {
                     str += "</div></div></div></div>";
 
                     str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
-                    str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
+                    //str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
+                    str += "<div class='date'><span class='label label-sm label-warning'>" + _bidStatus + "</span></div></div>";
                     str += "</a></li>";
                     jQuery('#UlPendingActivity').append(str);
 

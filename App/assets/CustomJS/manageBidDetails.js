@@ -549,7 +549,7 @@ function fetchparticationQuotes() {
                     for (var i = 0; i < data.length; i++) {
 
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].psHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].psHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
@@ -560,7 +560,7 @@ function fetchparticationQuotes() {
                     for (var i = 0; i < data.length; i++) {
 
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationCA(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].caid + '\',\'' + data[i].caHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationCA(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].caid + '\',\'' + data[i].caHeaderID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
@@ -570,7 +570,7 @@ function fetchparticationQuotes() {
                     $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
                     for (var i = 0; i < data.length; i++) {
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + 0 + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + 0 + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 9) {
@@ -580,7 +580,7 @@ function fetchparticationQuotes() {
                     $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
                     for (var i = 0; i < data.length; i++) {
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].submissionTime + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].frid + '\',\'' + 0 + '\',\'' + data[i].quantityAllocated + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].quotedPrice + '\',\'' + data[i].submissionTime + '\',\'' + data[i].frid + '\',\'' + 0 + '\',\'' + data[i].quantityAllocated + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
             }
@@ -3181,23 +3181,23 @@ function formSubmitEditEvent() {
             var showrank = "Y"
             if (sessionStorage.getItem('hdnbidtypeid') == "6") {
 
-            showrank = $("#drpshowH1H2").val()
+                showrank = $("#drpshowH1H2").val()
 
             }
             else if (sessionStorage.getItem('hdnbidtypeid') == "7") {
                 showrank = $("#drpshowL1L2").val()
             }
 
-        else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
-            showrank = $("#drpshowL1L2").val()
-        }
-        else {
+            else if (sessionStorage.getItem('hdnbidtypeid') == "8") {
+                showrank = $("#drpshowL1L2").val()
+            }
+            else {
 
                 showrank = $("#drpshowH1H2NA").val()
             }
             Data = {
 
-            "QueryString": showrank,
+                "QueryString": showrank,
 
                 "QueryStringDT": 'NA',
                 "valType": "BAL",
@@ -3963,7 +3963,7 @@ function confirmEditEventAction(eventType) {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     if (Data != '' || Data != null) {
-
+        alert(eventType)
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -5040,13 +5040,14 @@ function fnpauseaction() {
     var s = new Date();
     debugger;
     // s.setMinutes(s.getMinutes() + 5);
-    var datearray = $("#txtreopenDate").val().split("/");
-    var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+    //var datearray = $("#txtreopenDate").val().split("/");
+    //var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+    var selectedtime = new Date($("#txtreopenDate").val().replace('-', ''));
 
-    selectedtime = new Date(selectedtime + ' ' + $("#txreopenTime").val());
+    //selectedtime = new Date(selectedtime + ' ' + $("#txreopenTime").val());
 
     // selectedtime = new Date($("#txtreopenDate").val() + ' ' + $("#txreopenTime").val());
-    if ((jQuery("#txreopenTime").val() == "" || jQuery("#txtreopenDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") && $('#ddlBidStatus').val() != 2) {
+    if ((jQuery("#txtreopenDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") && $('#ddlBidStatus').val() != 2) {
         erroropenbid.show();
         $('#erropenbid').html('Please fill all Details');
         erroropenbid.fadeOut(3000);
@@ -5120,7 +5121,8 @@ function fnGetPauseHistory() {
                 $("#tblbidpauseHistory").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Paused Item</th><th>Pause Date Time</th><th>Re Open Date Time</th><th>Balance Duration (mins)</th></thead>");
                 for (var i = 0; i < data.length; i++) {
                     var bidPauseDate = fnConverToLocalTime(data[i].bidPauseDate);
-                    var bidReopenDate = fnConverToLocalTime(data[i].bidReopenDatetTime);
+                    //var bidReopenDate = fnConverToLocalTime(data[i].bidReopenDatetTime);
+                    var bidReopenDate = data[i].bidReopenDatetTime;
                     //$("#tblbidpauseHistory").append('<tr><td>' + (i + 1) + '</td><td>' + data[i].destinationport + '</td><td>' + data[i].bidPauseDate + '</td><td>' + data[i].bidReopenDatetTime + '</td><td>' + data[i].bidDuration + '</td></tr>');
                     $("#tblbidpauseHistory").append('<tr><td>' + (i + 1) + '</td><td>' + data[i].destinationport + '</td><td>' + bidPauseDate + '</td><td>' + bidReopenDate + '</td><td>' + data[i].bidDuration + '</td></tr>');
                 }

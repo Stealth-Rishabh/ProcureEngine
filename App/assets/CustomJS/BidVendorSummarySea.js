@@ -1606,6 +1606,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
 function fnbidpause() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger;
 
     var url = sessionStorage.getItem("APIPath") + "ConfigureBid/FetchRAItems/?BidID=" + sessionStorage.getItem("BidID");
     jQuery.ajax({
@@ -1651,13 +1652,15 @@ function fnbidpause() {
 }
 function fnpauseaction(index, seid, sno) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    debugger;
+    var _bidDate = new Date();
+    //alert(_bidDate);
     var Data = {
         "BidID": parseInt(sessionStorage.getItem("BidID")),
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": parseInt(seid),
-        "BidDate": '',
-        "BidTime": '',
+        "BidDate": _bidDate,
+        //"BidTime": '',
         "Action": $('#btnpause' + index).text(),
         "UserID": sessionStorage.getItem('UserID')
     }
@@ -2638,11 +2641,11 @@ function FetchRecomendedVendor(bidid) {
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -2657,14 +2660,14 @@ function FetchRecomendedVendor(bidid) {
                         isMappedPPCApp = 'Y'
                     }
                     if (data[i].vendorName != "") {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').removeClass('hide')
                     }
                     if (data[i].eRFQApproverType == "P") {
                         isMappedPPCApp = 'Y'
                     }
                     else {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').addClass('hide')
                     }
                 }
@@ -2673,11 +2676,11 @@ function FetchRecomendedVendor(bidid) {
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').addClass('hide')
                     }
                 }
@@ -2686,11 +2689,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').hide()
                     }
                 }
@@ -3310,14 +3313,18 @@ function linegraphsforItems(itemId) {
                     values = null;;
 
                     for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                        var _subTime = fnConverToLocalTime(data[0].quotesDetails[j].subTime);
                         if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+
+                            //Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+                            Quotes = Quotes + '["' + _subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
 
                             values = data[0].quotesDetails[j].quotedPrice;
                         }
                         else {
 
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                            //Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                            Quotes = Quotes + '["' + _subTime + '",' + values + '],';
                         }
                     }
 

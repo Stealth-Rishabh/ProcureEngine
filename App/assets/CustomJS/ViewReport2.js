@@ -828,13 +828,14 @@ function linegraphsforItems(itemId, counter) {
                 minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
                 maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
 
-                $('#lblbidstarttime').text(data[0].bidStartEndTime[0].bidStartTime);
-                $('#lblbidendtime').text(data[0].bidStartEndTime[0].bidEndTime);
+                $('#lblbidstarttime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidStartTime));
+                $('#lblbidendtime').text((data[0].bidStartEndTime[0].bidEndTime));
 
                 if (data[0].submissionTime.length > 0) {
 
                     for (var x = 0; x < data[0].submissionTime.length; x++) {
-                        graphtime.push(data[0].submissionTime[x].subTime);
+
+                        graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
                     }
 
                 }
@@ -850,13 +851,14 @@ function linegraphsforItems(itemId, counter) {
                         values = null;;
 
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                            var _subTime = fnConverToLocalTime(data[0].quotesDetails[j].subTime);
                             if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+                                Quotes = Quotes + '["' + _subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
                                 values = data[0].quotesDetails[j].quotedPrice;
                             }
                             else {
 
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                                Quotes = Quotes + '["' + _subTime + '",' + values + '],';
                             }
                         }
 
