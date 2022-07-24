@@ -930,9 +930,10 @@ function fnConverToLocalTime(dttime) {
 
         //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
         theStDate = new Date(theStDate + ' UTC');
-
+        //alert(sessionStorage.getItem('preferredtimezone'));
         theStDate = theStDate.toLocaleString("en-IN", {
             timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            //timeZone: "Asia/Calcutta", dateStyle: "long", hourCycle: "h24", timeStyle: "short"
         })
         theStDate = theStDate.replace('at', '-');
         return theStDate;
@@ -943,10 +944,10 @@ function fnConverToLocalTime(dttime) {
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
-        //alert(dttime)
+       
         var theStDate = new Date(dttime)
         theStDate = theStDate.toDateString()
-        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
+      
         theStDate = new Date(theStDate + ' UTC');
 
         theStDate = theStDate.toLocaleString("en-IN", {
@@ -985,20 +986,21 @@ function fnReturnTimeFromDate(dttime) {
     var dtst = '';
     if (dttime != null) {
         //  console.log
+        debugger;
         dttime = dttime.replace('-', '');
         dttime = dttime.replace('at', '');
 
         var theStDate = new Date(dttime);
 
-        theStDate = theStDate.toLocaleString('en-GB').trim();
+        theStDate = theStDate.toLocaleString('en-GB');
 
 
         //theStDate = theStDate.replace('at', ' ');
-        console.log(theStDate.trim())
+        console.log(theStDate)
         var currentDate = new Date(theStDate);
         console.log(currentDate)
-        dtst = moment(currentDate).format('HH:mm:ss');
-        //dtst = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+        // = theStDate.getHours() + ':' + theStDate.getMinutes() + ':' + theStDate.getSeconds();
+        dtst = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
         // console.log(dtst)
         //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
         //return dtst;

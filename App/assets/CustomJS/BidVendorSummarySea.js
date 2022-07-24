@@ -514,15 +514,18 @@ function fetchBidSummary(BidID) {
                 else {
                     $('#bid_status').hide();
                 }
+                var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
                 jQuery("#lblbidSubject").html('<b>' + data[0].bidSubject + '</b>');
                 jQuery("#lblenquirysubject").html('<b>' + data[0].bidSubject + '</b>');
                 jQuery("#lblbiddetails").text(data[0].bidDetails);
-                jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
-                jQuery("#lblbiddate").text(data[0].bidDate);
-                jQuery("#lblbidtime").text(data[0].bidTime);
+                //jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
+                jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
+                jQuery("#lblbiddate").text(_bidDate);
+                //jQuery("#lblbiddate").text(data[0].bidDate);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblEventID").text(BidID);
                 if (data[0].bidForID == 81) {
@@ -554,7 +557,9 @@ function fetchBidSummary(BidID) {
                 BidID = data[0].bidID
                 BidTypeID = data[0].bidTypeID
                 BidForID = data[0].bidForID
-                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + data[0].bidDate + ' ' + data[0].bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
+                //var _bidDate = fnConverToLocalTime(data[0].bidDate);
+                //$('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + data[0].bidDate + ' ' + data[0].bidTime + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
+                $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + _bidDate + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
                 sessionStorage.setItem('hdnbidtypeid', BidTypeID)
 
                 fetchBidSummaryDetails(BidID, BidForID);
@@ -1601,6 +1606,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
 function fnbidpause() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger;
 
     var url = sessionStorage.getItem("APIPath") + "ConfigureBid/FetchRAItems/?BidID=" + sessionStorage.getItem("BidID");
     jQuery.ajax({
@@ -1646,13 +1652,15 @@ function fnbidpause() {
 }
 function fnpauseaction(index, seid, sno) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    debugger;
+    var _bidDate = new Date();
+    //alert(_bidDate);
     var Data = {
         "BidID": parseInt(sessionStorage.getItem("BidID")),
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": parseInt(seid),
-        "BidDate": '',
-        "BidTime": '',
+        "BidDate": _bidDate,
+        //"BidTime": '',
         "Action": $('#btnpause' + index).text(),
         "UserID": sessionStorage.getItem('UserID')
     }
@@ -2633,11 +2641,11 @@ function FetchRecomendedVendor(bidid) {
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -2652,14 +2660,14 @@ function FetchRecomendedVendor(bidid) {
                         isMappedPPCApp = 'Y'
                     }
                     if (data[i].vendorName != "") {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').removeClass('hide')
                     }
                     if (data[i].eRFQApproverType == "P") {
                         isMappedPPCApp = 'Y'
                     }
                     else {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').addClass('hide')
                     }
                 }
@@ -2668,11 +2676,11 @@ function FetchRecomendedVendor(bidid) {
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').addClass('hide')
                     }
                 }
@@ -2681,11 +2689,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').hide()
                     }
                 }
@@ -3121,7 +3129,7 @@ function CancelBid(bidid, mailparam) {
         "BidSubj": $('#lblbidSubject').text(),
         "BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
         "BidDate": $('#lblbiddate').html(),
-        "BidTime": $('#lblbidtime').html(),
+        //"BidTime": $('#lblbidtime').html(),
         "BidDuration": $('#lblbidduration').html(),
         "BidTypeID": parseInt(BidTypeID),
         "SendMail": mailparam,
@@ -3216,8 +3224,10 @@ function fetchGraphData(itemId) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
                     _date = new Date(data[i].submissionTime);
+                    _date = fnConverToLocalTime(_date);
 
-                    $("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                    //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                    $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                 }
             }
 
@@ -3274,16 +3284,21 @@ function linegraphsforItems(itemId) {
         success: function (data, status, jqXHR) {
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
             maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
+            var _startDateTime = new Date(data[0].bidStartEndTime[0].bidStartTime);
+            var _endDateTime = new Date(data[0].bidStartEndTime[0].bidEndTime);
 
-            $('#lblbidstarttime').text(data[0].bidStartEndTime[0].bidStartTime);
-            $('#lblbidendtime').text(data[0].bidStartEndTime[0].bidEndTime);
+            $('#lblbidstarttime').text(fnConverToLocalTime(_startDateTime));
+            $('#lblbidendtime').text(fnConverToLocalTime(_endDateTime));
 
 
             if (data[0].submissionTime.length > 0) {
 
                 for (var x = 0; x < data[0].submissionTime.length; x++) {
 
-                    graphtime.push(data[0].submissionTime[x].subTime);
+
+                    //graphtime.push(data[0].submissionTime[x].subTime);
+                    graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
+
                 }
 
             }
@@ -3298,14 +3313,18 @@ function linegraphsforItems(itemId) {
                     values = null;;
 
                     for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                        var _subTime = fnConverToLocalTime(data[0].quotesDetails[j].subTime);
                         if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+
+                            //Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+                            Quotes = Quotes + '["' + _subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
 
                             values = data[0].quotesDetails[j].quotedPrice;
                         }
                         else {
 
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                            //Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                            Quotes = Quotes + '["' + _subTime + '",' + values + '],';
                         }
                     }
 
