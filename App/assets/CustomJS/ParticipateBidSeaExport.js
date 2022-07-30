@@ -195,21 +195,20 @@ connection.on("refreshColumnStatus", function (data) {
 });
 connection.on("refreshBidDetailsManage", function (data) {
 
-        if (data.length > 0) {
-         jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+    if (data.length > 0) {
+        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
 
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.valType == "BAL") {
                 var VRanlList = JSON.parse(data[1]);
                 for (var j = 0; j < VRanlList.length; j++) {
-                if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
+                    if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
                         $('#lblstatus' + i).html(VRanlList[j].VendorRank)
                         if (VRanlList[j].VendorRank == 'L1') {
                             jQuery('#lblstatus' + i).css('color', 'Blue');
 
                         }
-                        else
-                        {
+                        else {
                             jQuery('#lblstatus' + i).css('color', 'Red');
                         }
                     }
@@ -569,6 +568,12 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
 
                 jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
+                if ($.trim(data[0].bidClosingType) == "A") {
+                    jQuery("#lblbidclosingtype").text("All items in one go");
+                }
+                else {
+                    jQuery("#lblbidclosingtype").text("Stagger at item level");
+                }
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
 
@@ -633,8 +638,8 @@ function fetchBidHeaderDetails(bidId) {
                 else {
 
                     startTimerBeforeBidStart(data[0].timeLeft, display)
-
                     fetchBidSummaryVendorproduct()
+
 
                 }
 
@@ -790,6 +795,13 @@ function fetchVendorDetails() {
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
 
+                if ($.trim(data[0].bidClosingType) == "A") {
+                    jQuery("#lblbidclosingtype").text("All items in one go");
+                }
+                else {
+                    jQuery("#lblbidclosingtype").text("Stagger at item level");
+                }
+
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
 
                 jQuery("#lblbidfor").text('Price (' + data[0].bidFor + ')');
@@ -837,17 +849,10 @@ function fetchVendorDetails() {
                 if (BidForID == 81 || BidForID == 83) {
 
                     display = document.querySelector('#lblTimeLeft');
-
                     $('#bidtimer').show()
-
                     $("#bidtimerdutch").hide();
-
                     $(".lbltimetextdutch").hide();
-
                     fetchBidSummaryVendorproduct()
-
-
-
                     startTimer((parseInt(data[0].timeLeft)), display);
 
                     $('#lblTimeLeftBeforeBid').hide();
@@ -857,21 +862,13 @@ function fetchVendorDetails() {
                 else {
 
                     $('#blTimeLeftBeforeBidD').hide();
-
                     display = document.querySelector('#lblTimeLeftD');
-
                     totalfrequency = parseInt(data[0].priceDecreamentFrequency * 60)
-
                     $('#bidtimer').hide()
-
                     $("#bidtimerdutch").show();
-
                     $(".lbltimetextdutch").show();
-
                     $("#captionAuctionType").html('').html('<i class="fa fa-reorder"></i> Bid Items & Offered price');
-
                     fetchBidSummaryVendorSeaExportDutch();
-
                     startTimerDutch((parseInt(data[0].timeLeft)), display);
 
                 }
@@ -882,18 +879,11 @@ function fetchVendorDetails() {
 
             else {// if (data.length > 1 || data.length == 0) {
 
-
-
                 $('#lblTimeLeftBeforeBid').show();
-
                 $('#blTimeLeftBeforeBidD').show();
-
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is not started.</b>').css('color', 'red');
-
                 $('#blTimeLeftBeforeBidD').html('<b>Bid is not started.</b>').css('color', 'red');
-
                 $('#tblParticipantsService').hide();
-
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
 
                 _isBidStarted = false;
@@ -903,11 +893,7 @@ function fetchVendorDetails() {
                 fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
 
             }
-
-
-
             $(window).focusout();
-
             $(window).blur()
 
         },
@@ -953,15 +939,9 @@ var url = '';
 function fetchBidSummaryVendorproduct() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
     url = '';
-
     count = 0;
-
-
-
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
-
     jQuery.ajax({
 
         type: "GET",
@@ -985,11 +965,10 @@ function fetchBidSummaryVendorproduct() {
             if (data.length > 0) {
 
                 if (_isBidStarted == false) {
-
+                    jQuery("#tblParticipantsService").hide();
+                    jQuery("#tblParticipantsServiceBeforeStartBid").show();
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
-
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Quote*</th><th class=hide>Action</th><th>Remarks</th></thead>");
-
                     for (var i = 0; i < data.length; i++) {
 
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide><span>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
@@ -999,27 +978,20 @@ function fetchBidSummaryVendorproduct() {
                 }
 
                 else {
-
+                    jQuery("#tblParticipantsService").show()
                     jQuery("#tblParticipantsService").empty()
-
+                    jQuery("#tblParticipantsServiceBeforeStartBid").hide()
 
 
                     sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
 
                     if (data[0].bidClosingType == 'A') {
-
-
-
                         jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Enter_Quote*</th><th>Action</th></thead>");
-
-
-
                         for (var i = 0; i < data.length; i++) {
 
 
 
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
-
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
 
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
@@ -1375,28 +1347,18 @@ function InsUpdQuoteSeaExport(index) {
         var QuoteProduct = {
 
             "VendorID": vendorID,
-
             "BidID": parseInt(sessionStorage.getItem("BidID")),
-
             "insertQuery": insertquery,
-
             "EnteredBy": vendorID,
-
             "Quote": parseFloat(removeThousandSeperator($('#txtquote' + index).val())),
-
             "SEID": parseInt($('#seid' + index).html()),
-
             "AdvFactor": parseFloat($("#hdnAdvFactor").val()),
-
             "ForRFQ": "N",
-
             "extendTime": parseInt($('#hdnval').val()),
-
-            "BidClosingType": "A"
+            "BidClosingType": "A",
+            "isPrePricing": "N"
 
         }
-
-
 
         $('#hdnselectedindex').val(index);
 
@@ -1523,7 +1485,7 @@ function closeBidAir() {
 
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            console.log(data)
             if (data == '1') {
 
                 bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
@@ -1617,12 +1579,10 @@ function fetchBidTime() {
 
         success: function (data, status, jqXHR) {
 
-
-            // console.log("data length:"+ data.length)
+            console.log("Time Left:" + data[0].timeLeft)
             if (data.length > 0) {
 
                 if (BidForID == 81 || BidForID == 83) {
-
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
                         bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
@@ -1935,6 +1895,7 @@ function InsUpdQuoteSeaDutch(rowID) {
         "EnteredBy": vendorID,
 
         "IsAcceptedPrice": 'Y'
+
 
 
 

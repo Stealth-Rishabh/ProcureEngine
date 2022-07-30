@@ -3122,13 +3122,16 @@ function cancelBtnclick() {
 
 function CancelBid(bidid, mailparam) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var newBidDate = new Date($('#lblbiddate').html().replace('-', ''));
     var Cancelbid = {
+        
         "BidID": parseInt(bidid),
         "Remarks": jQuery("#txtRemarks").val() == null ? '' : jQuery("#txtRemarks").val(),
         "UserID": sessionStorage.getItem('UserID'),
         "BidSubj": $('#lblbidSubject').text(),
         "BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
-        "BidDate": $('#lblbiddate').html(),
+        //"BidDate": $('#lblbiddate').html(),
+        "BidDate": newBidDate,
         //"BidTime": $('#lblbidtime').html(),
         "BidDuration": $('#lblbidduration').html(),
         "BidTypeID": parseInt(BidTypeID),

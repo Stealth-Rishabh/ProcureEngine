@@ -18,20 +18,22 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
 });
 connection.on("refreshBidDetailsManage", function (data) {
-   if (data.length > 0) {
+    if (data.length > 0) {
 
-            var JsonMsz = JSON.parse(data[0]);
-            if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
-            }
-            if (JsonMsz.valType != "BHV" && JsonMsz.valType != "BAT") {
-                fetchBidSummaryVendorproduct();
-            }
+        var JsonMsz = JSON.parse(data[0]);
+        if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
+            fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
+        }
+        if (JsonMsz.valType != "BHV" && JsonMsz.valType != "BAT") {
+            fetchBidSummaryVendorproduct();
+        }
     }
 
 });
 connection.on("refreshColumnStatusCoal", function (data) {
-    if (data == "-1") {
+
+    var JsonMsz = JSON.parse(data[0]);
+    if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
         $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
         $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
         return false;
@@ -263,6 +265,13 @@ function fetchVendorDetails() {
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
+                if ($.trim(data[0].bidClosingType) == "A") {
+                    jQuery("#lblbidclosingtype").text("All items in one go");
+                }
+                else {
+                    jQuery("#lblbidclosingtype").text("Stagger at item level");
+                }
+
                 jQuery("#lblbidfor").text('Price (' + data[0].bidFor + ')');
 
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
@@ -338,7 +347,8 @@ function fetchBidSummaryVendorproduct() {
 
             if (data.length > 0) {
                 if (_isBidStarted == false) {
-
+                    $('#tblParticipantsService').hide();
+                    $('#tblParticipantsServiceBeforeStartBid').show();
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Current Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
 
@@ -348,6 +358,8 @@ function fetchBidSummaryVendorproduct() {
                 }
                 else {
                     // jQuery("#tblParticipantsService").empty()
+                    $('#tblParticipantsServiceBeforeStartBid').hide();
+                    $('#tblParticipantsService').hide();
                     jQuery("#Coalitems").empty()
                     sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
                     if (data[0].bidClosingType == 'A') {

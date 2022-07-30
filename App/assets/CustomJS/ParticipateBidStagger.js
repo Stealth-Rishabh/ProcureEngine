@@ -55,7 +55,7 @@ function fetchBidSummaryVendorproduct() {
                         jQuery("#tblParticipantsService").append("<tr class=text-center><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + ">" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + " >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td id=itemleft" + i + "></td><td id=itemleftTime" + i + " class=bold></td><td> <input type=text class='form-control txtquote' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=itembtn" + i + " class='btn btn-warning clsdisable' onclick=fninsupdQuotesS(" + i + ")>Submit</button><br/><span class='help-block ' style=color:#a94442 id=spanclosedmsz" + i + ">Bid Item Closed.</span><br/><span id=spanmsz" + i + "   style=color:#a94442></span></td><td class=hide>" + data[i].maskVendor + "</td><td class=hide id=groupno" + i + ">" + data[i].groupNo + "</td></tr>");
 
                         if (data[i].itemStatus == "Close" || data[i].itemStatus == "Inactive" || data[i].itemStatus == "Pause") {
-                            
+
                             jQuery("#txtquote" + i).attr("disabled", true)
                             jQuery("#itembtn" + i).attr("disabled", true)
                             jQuery("#spanclosedmsz" + i).removeClass("hide")
@@ -91,14 +91,14 @@ function fetchBidSummaryVendorproduct() {
                             $("#L1Pricenotdisclosed" + i).css("display", "none");
                         }
                         if (data[i].showStartPrice == 'N') {
-                           
+
                             $("#ceilingprice" + i).css("display", "none");
-                           // $("#CP" + i).css("display", "none");
+                            // $("#CP" + i).css("display", "none");
                             $("#ceilingpricenotdisclose" + i).css("display", "block");
-                          
+
                         }
                         else {
-                             $("#ceilingprice" + i).css("display", "block");
+                            $("#ceilingprice" + i).css("display", "block");
                             //$("#CP" + i).css("display", "block");
                             $("#ceilingpricenotdisclose" + i).css("display", "none");
                         }
@@ -438,7 +438,7 @@ connection.on("refreshBidDetailsManage", function (data) {
             if (JsonMsz.valType != "BAL") {
                 if (JsonMsz.SeId == $('#seid' + i).text()) {
                     if (JsonMsz.valType == "BSPRA") {
-                       // $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
+                        // $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
                         $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
                     }
                     if (JsonMsz.valType == "BMD") {
@@ -736,7 +736,8 @@ function fninsupdQuotesS(index) {
             "AdvFactor": parseFloat($("#hdnAdvFactor").val()),
             "ForRFQ": "N",
             "extendTime": parseInt($('#hdnval').val()),
-            "BidClosingType": "S"
+            "BidClosingType": "S",
+            "isPrePricing": "N"
 
         }
         //alert(JSON.stringify(QuoteProduct))

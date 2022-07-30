@@ -1192,7 +1192,7 @@ function ConfigureBidForSeaExportTab1() {
 
         })
     }
-    debugger;
+    //debugger;
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
@@ -1223,7 +1223,7 @@ function ConfigureBidForSeaExportTab1() {
         "NoOfStaggerItems": parseInt($("#txtStaggerNo").val()),
         "HideVendor": $('#drphideVendor').val()
     };
-    alert(JSON.stringify(Tab1Data));
+    //alert(JSON.stringify(Tab1Data));
 
     //console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
@@ -2777,8 +2777,8 @@ function Dateandtimevalidate(indexNo) {
     //var dtst = jQuery("#txtbidDate").val()
     var dtst = new Date($('#txtbidDate').val().replace('-', ''));
     dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
-    
-    alert(dtst);
+
+    //alert(dtst);
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
@@ -3477,26 +3477,32 @@ function printdataSeaBid(result) {
         } // for loop ends
 
         var excelCorrect = 'N';
+        var excelCorrectUOM = 'N';
         var ErrorUOMMsz = '';
         var ErrorUOMMszRight = '';
         Rowcount = 0;
 
         // check for UOM
+        console.log(allUOM);
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
-            excelCorrect = 'N';
+            excelCorrectUOM = 'N';
             Rowcount = Rowcount + 1;
             for (var i = 0; i < allUOM.length; i++) {
+                console.log(allUOM[i].uom.trim());
+                console.log($.trim(this_row.find('td:eq(7)').html()));
                 if ($.trim(this_row.find('td:eq(7)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
-                    excelCorrect = 'Y';
+                    excelCorrectUOM = 'Y';
                 }
 
             }
+            console.log(excelCorrect);
             var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-            if (excelCorrect == "N") {
+            if (excelCorrectUOM == 'N') {
                 $("#error-excelparameter").show();
                 ErrorUOMMsz = '<b>UOM</b> not filled properly at row no ' + Rowcount + '. Please choose <b>UOM</b> from given below: <br><ul class="col-md-5 text-left">';
                 ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+                console.log(ErrorUOMMsz);
                 for (var i = 0; i < parseInt(quorem); i++) {
                     ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
                     var z = (parseInt(quorem) + i);
@@ -3599,7 +3605,7 @@ function printdataSeaBid(result) {
         });
 
 
-        if (excelCorrect == 'Y') {
+        if (excelCorrect == 'Y' && excelCorrectUOM == 'Y') {
             $('#btnyesno').show();
             $("#error-excelparameter").hide();
             $("#errspan-excelparameter").html('');
@@ -3941,7 +3947,7 @@ function fnfetchRFQVendor() {
                     }
 
                     if (data[i].isFromRFQ == "Y") {
-                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightage' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
+                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightagePrev' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
                     }
                     else {
                         if ($('#ddlAuctiontype').val() == "83" || $('#ddlAuctiontype').val() == "81") {
@@ -4096,7 +4102,3 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
-
-
-
-
