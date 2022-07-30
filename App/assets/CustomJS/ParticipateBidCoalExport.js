@@ -265,13 +265,6 @@ function fetchVendorDetails() {
 
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
-                if ($.trim(data[0].bidClosingType) == "A") {
-                    jQuery("#lblbidclosingtype").text("All items in one go");
-                }
-                else {
-                    jQuery("#lblbidclosingtype").text("Stagger at item level");
-                }
-
                 jQuery("#lblbidfor").text('Price (' + data[0].bidFor + ')');
 
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));

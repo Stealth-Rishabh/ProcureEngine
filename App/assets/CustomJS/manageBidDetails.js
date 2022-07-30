@@ -255,10 +255,7 @@ function FormValidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
-
             formSubmitEditEvent();
-
-
         }
 
     });
@@ -335,7 +332,7 @@ function FormValidate() {
 function fetchUserBids() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    //alert(APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=0&CustomerID=" + sessionStorage.getItem('CustomerID'))
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -350,7 +347,7 @@ function fetchUserBids() {
             }
             else {
                 error1.show();
-                $('#spandanger').html('No pending bids for which you can invite vendors.!');
+                $('#spandanger').html('').html('No pending bids for which you can invite vendors.!');
                 error1.fadeOut(6000);
                 App.scrollTo(error1, -200);
             }
@@ -489,7 +486,7 @@ function fetchvendors(bidid) {
             }
             else {
                 error1.show();
-                $('#spandanger').html('Bid not mapped');
+                $('#spandanger').html('').html('Bid not mapped');
                 error1.fadeOut(3000);
                 App.scrollTo(error1, -200);
             }
@@ -1206,7 +1203,7 @@ function ValidateVendor() {
     });
     if (status == "false") {
         error1.show();
-        $('#spandanger').html('Please select at least one element');
+        $('#spandanger').html('').html('Please select at least one element');
         error1.fadeOut(3000);
         App.scrollTo(error1, -200);
 
@@ -1219,7 +1216,7 @@ function resetpasswordForBidVendor() {
 
     if (sessionStorage.getItem("hdnbid") == '0') {
         error1.show();
-        $('#spandanger').html('Please select Bid...');
+        $('#spandanger').html('').html('Please select Bid...');
         error1.fadeOut(3000);
         App.scrollTo(error1, -200);
         gritternotification('Please select Bid!!!');
@@ -1230,7 +1227,7 @@ function resetpasswordForBidVendor() {
     }
     else if (sessionStorage.getItem("hdnselectedvendor") == "0") {
         error1.show();
-        $('#spandanger').html('Please select Vendor...');
+        $('#spandanger').html('').html('Please select Vendor...');
         error1.fadeOut(3000);
         App.scrollTo(error1, -200);
         jQuery.unblockUI();
@@ -1428,7 +1425,7 @@ function invitevendors() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hdnbid") == '0') {
         error1.show();
-        $('#spandanger').html('Please select Bid...');
+        $('#spandanger').html('').html('Please select Bid...');
         error1.fadeOut(3000);
         App.scrollTo(error1, -200);
         jQuery.unblockUI();
@@ -1548,7 +1545,7 @@ function fetchallexportdetails() {
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
     }
-    debugger;
+    //debugger;
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1816,7 +1813,7 @@ function fetchallexportdetails() {
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Starting Price</th><th>Last Invoice Price</th><th>Floor/ Min. Price</th><th>Price Decrement Frequency</th><th>Price Decrement Amount</th><th class=hide>Show H1 Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
                     var counterReopenbtn = 1;
-                    debugger;
+                    //debugger;
                     for (var i = 0; i < BidData[0].bidSeaExportDetails.length; i++) {
                         var decrementon = ''
 
@@ -2004,7 +2001,7 @@ function fetchallexportdetails() {
 
                 }
             }
-            debugger;
+            //debugger;
             if (sessionStorage.getItem('hdnbidtypeid') == 6) {
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
                 if (BidData[0].bidScrapSalesDetails.length > 0) {
@@ -2606,7 +2603,7 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
-    debugger;
+    //debugger;
     var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
     //s.setMinutes(s.getMinutes() + 5);
     //var datearray = $("#txtbidDate").val().split("/");
@@ -3134,7 +3131,7 @@ function fnclearmsz(id) {
 function formSubmitEditEvent() {
 
     var Data = {};
-    debugger;
+    //debugger;
     //(isNewLineItem);
     if (isNewLineItem == 'Y') {
         addrowfield()
@@ -3304,7 +3301,7 @@ function addrowfield() {
     var pricereductionamount = 0;
     var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
     //alert(jQuery("#txtbidDatePrevtab_0").html());
-    debugger;
+    //debugger;
 
     if ($('#txttargetprice').val() != '') {
         targetprice = $('#txttargetprice').val();
@@ -3963,7 +3960,8 @@ function confirmEditEventAction(eventType) {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     if (Data != '' || Data != null) {
-        alert(eventType)
+        //alert(eventType)
+        debugger;
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -4830,7 +4828,7 @@ function fnsubmitRAPrePrices() {
                 // singleQuery = singleQuery + sessionStorage.getItem('hdnbid') + ",[PE].FN_Now()," + $.trim(this_row.find('td:eq(0)').html()) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + removeThousandSeperator(quote) + ")";
 
                 HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdSeaExport ';
-                HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "','" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'N' ; "
+                HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "','" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'N','Y' ; "
             }
             i++;
         })
@@ -5038,7 +5036,7 @@ function fnsubmitFAPrePrices() {
 function fnpauseaction() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var s = new Date();
-    debugger;
+    //debugger;
     // s.setMinutes(s.getMinutes() + 5);
     //var datearray = $("#txtreopenDate").val().split("/");
     //var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];

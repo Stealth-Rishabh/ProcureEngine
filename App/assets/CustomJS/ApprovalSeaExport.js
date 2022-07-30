@@ -4,7 +4,7 @@ var isPPCSubmit = 'N';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
-    
+
     BidID = getUrlVarsURL(decryptedstring)["BidID"]
     $('#drpVendors').val('');
     //$('#drpVendors').select2({
@@ -14,13 +14,13 @@ jQuery(document).ready(function () {
     FetchVendors(BidID, 'Yes');
     FetchVendors(BidID, 'No');
     Fillhelp(getUrlVarsURL(decryptedstring)["App"]);
-   
+
 });
 $('#txtRemarks,#txtbidspecification,#txtRemarksAward,#txtRemarksApp').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
-function FetchVendors(BidID,Type) {
+function FetchVendors(BidID, Type) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -36,25 +36,27 @@ function FetchVendors(BidID,Type) {
                 jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
                 jQuery("#ddlVendors,#ddlVendorsAdmin").append(jQuery("<option ></option>").val("").html("Select"));
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
-                
+
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").append(jQuery("<option></option>").val(data[i].vendorID).html(data[i].vendorName));
                 }
                 $('#tblvendors').append("</tbody>");
             }
             else {
-                
+
                 $('#tblPPcvendors').empty();
-                $('#tblPPcvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
+                $('#tblPPcvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
-                    
-                    $('#tblPPcvendors').append("<tr><td class=hide>" + data[i].vendorID + "</td><td>" + data[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td></tr>")
+
+                    $('#tblPPcvendors').append("<tr><td class=hide>" + data[i].vendorID + "</td><td>" + data[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
                     $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
                     $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
                     $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + '  /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' checked />No</label></div>')
                     $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+                    $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
 
                 }
+                $('#tblPPcvendors').append("<tr><td colspan=5></td><td><span class='help-block'><b>Note*</b><br>Y - IF TPI ALREADY DONE</br> N - TPI WILL BE DONE WHILE PLACING THE ORDER WITH FINAL VENDOR</br>Not Applicable - TPI not required</span></td></tr>")
                 $('#tblPPcvendors').append("</tbody>");
             }
             // $("#drpVendors").select2("val",selectedValues);
@@ -74,10 +76,10 @@ function FetchVendors(BidID,Type) {
         }
     });
 }
-var rowitems=0
+var rowitems = 0
 function addmorevendorRemarks() {
     var str = '';
-    
+
     var form1 = $('#formAwardedsubmit')
     $('#drpVendors').rules('add', {
         required: true,
@@ -86,7 +88,7 @@ function addmorevendorRemarks() {
         required: true,
     });
     if (form1.valid() == true) {
-        
+
         $('#divtableaward').show()
         rowitems = rowitems + 1;
         if (!jQuery("#tblremarksvendorsawared thead").length) {
@@ -121,7 +123,7 @@ function addmorevendorRemarks() {
 
     }
     else {
-       
+
         form1.validate()
         return false;
     }
@@ -130,8 +132,8 @@ function deleteitem(rowid) {
 
     rowitems = rowitems - 1;
     $('#' + rowid.id).remove();
-   
-    if ($('#tblremarksvendorsawared tr').length ==1) {
+
+    if ($('#tblremarksvendorsawared tr').length == 1) {
         $('#divtableaward').hide()
     }
     else {
@@ -141,7 +143,7 @@ function deleteitem(rowid) {
 var successPPC = $('#successPPC');
 var errorPPC = $('#diverroeppc');
 var FormValidation = function () {
-  
+
     var validateformProductServices = function () {
         var form1 = $('#formsubmitadmin');
         var error1 = $('.alert-danger', form1);
@@ -177,24 +179,24 @@ var FormValidation = function () {
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                        .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                    .closest('.Input-group').addClass('has-error'); // set error class to the control group
             },
 
             unhighlight: function (element) { // revert the change done by hightlight
                 $(element)
-                        .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                    .closest('.Input-group').removeClass('has-error'); // set error class to the control group
             },
 
             success: function (label) {
                 label
-                        .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                    .closest('.Input-group').removeClass('has-error'); // set success class to the control group
             },
 
             submitHandler: function (form) {
                 if (AppStatus == 'Reverted') {
                     if (ButtonType == 'Cancel') {
                         $('#modalcancelremarks').modal('show');
-                       // cancelBtnclick();
+                        // cancelBtnclick();
                     }
                     else {
                         ApprovalAdmin();
@@ -247,23 +249,23 @@ var FormValidation = function () {
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                        .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                    .closest('.Input-group').addClass('has-error'); // set error class to the control group
             },
 
             unhighlight: function (element) { // revert the change done by hightlight
                 $(element)
-                        .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                    .closest('.Input-group').removeClass('has-error'); // set error class to the control group
             },
 
             success: function (label) {
                 label
-                        .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                    .closest('.Input-group').removeClass('has-error'); // set success class to the control group
             },
 
             submitHandler: function (form) {
-                
+
                 ApprovalApp();
-               
+
             }
         });
     }
@@ -329,8 +331,8 @@ var FormValidation = function () {
                 //else {
 
                 //}
-              
-               
+
+
             }
         });
     }
@@ -363,17 +365,17 @@ var FormValidation = function () {
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                        .closest('.col-md-10').addClass('has-error'); // set error class to the control group
+                    .closest('.col-md-10').addClass('has-error'); // set error class to the control group
             },
 
             unhighlight: function (element) { // revert the change done by hightlight
                 $(element)
-                        .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
+                    .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
             },
 
             success: function (label) {
                 label
-                        .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
+                    .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
             },
 
             submitHandler: function (form) {
@@ -382,9 +384,9 @@ var FormValidation = function () {
             }
         });
     }
-    var validateformPPCForm = function() {
+    var validateformPPCForm = function () {
         var form = $('#frmPPcForm');
-       
+
         form.validate({
             doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
             errorElement: 'span', //default input error message container
@@ -455,9 +457,9 @@ var FormValidation = function () {
             errorClass: 'help-block help-block-error', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-               
+
             },
-            
+
             invalidHandler: function (event, validator) {
             },
 
@@ -494,7 +496,7 @@ var FormValidation = function () {
                 else {
                     MapBidapprover();
                 }
-                
+
             }
 
         });
@@ -512,7 +514,7 @@ var FormValidation = function () {
     return {
         init: function () {
             handleWysihtml5();
-          
+
             validateformProductServices();
             validateAppsubmitData();
             validateformAwardedsubmit();
@@ -527,18 +529,18 @@ var FormValidation = function () {
 jQuery("#btnCancelbidAdmin").click(function () {
     ButtonType = 'Cancel'
     $('#modalcancelremarks').modal('show');
-  });
+});
 
 jQuery("#btnCancelbidApp").click(function () {
     ButtonType = 'Cancel'
     $('#modalcancelremarks').modal('show');
-   
+
 });
 
 jQuery("#btnCancelbidAward").click(function () {
     ButtonType = 'Cancel'
     $('#modalcancelremarks').modal('show');
-  });
+});
 
 jQuery("#btnSubmitApp").click(function () {
     ButtonType = ''
@@ -555,7 +557,7 @@ jQuery("#btnSubmitAward").click(function () {
 function Fillhelp(App1) {
     if (App1 == 'N') {
         $('#Approver').show();
-     }
+    }
     else {
         $('#Awarded').show();
     }
@@ -564,14 +566,16 @@ function frmAzurePPCForm() {
 
     var i = 0;
     var AzurevendorDetails = [];
-    $("#tblPPcvendors> tbody > tr").each(function (index) {
+
+    $("#tblPPcvendors> tbody > tr").not(':last').each(function (index) {
         // BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
         var details = {
             "VendorID": parseInt($(this).find("td").eq(0).html()),
             "QuotationReceived": $("input[name=OpQuotation" + index + "]:checked").val(),
             "TexhnicallyAcceptable": $("input[name=OpTechAccep" + index + "]:checked").val(),
             "PoliticallyExposed": $("input[name=politicalyexp" + index + "]:checked").val(),
-            "QuotedValidatedSCM": $("input[name=QuotedSCM" + index + "]:checked").val()
+            "QuotedValidatedSCM": $("input[name=QuotedSCM" + index + "]:checked").val(),
+            "TPI": $("input[name=TPI" + index + "]:checked").val()
         };
         AzurevendorDetails.push(details)
     });
@@ -615,10 +619,10 @@ function frmAzurePPCForm() {
         "PRDetails": jQuery('#txtPRdetails').val(),
         "EnteredBy": sessionStorage.getItem("UserID"),
         "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery,
-        
+
     };
     //alert(JSON.stringify(AzurevendorDetails))
-    //console.log(AzurevendorDetails)
+    console.log(Data)
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -795,13 +799,14 @@ function fetchAzPPcFormDetails() {
 
                 $('#tblPPcvendors').empty();
                 if (data[0].biddingVendor.length > 0) {
-                    $('#tblPPcvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
+                    $('#tblPPcvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
-                        $('#tblPPcvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td></tr>")
+                        $('#tblPPcvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
                         $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y"  id=OpQuotationY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N" id=OpQuotationN' + i + ' />No</label></div>')
                         $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y" id=OpTechAccepY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  id=OpTechAccepN' + i + ' />No</label></div>')
                         $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' />No</label></div>')
                         $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+                        $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
 
                         if (data[0].biddingVendor[i].quotationReceived == "Y") {
                             $("#OpQuotationY" + i).attr("checked", "checked");
@@ -810,6 +815,22 @@ function fetchAzPPcFormDetails() {
                         else {
                             $("#OpQuotationY" + i).removeAttr("checked");
                             $("#OpQuotationN" + i).attr("checked", "checked");
+                        }
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            $("#TPIY" + i).attr("checked", "checked");
+                            $("#TPIN" + i).removeAttr("checked");
+                            $("#TPINA" + i).removeAttr("checked");
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "NA") {
+                            $("#TPINA" + i).attr("checked", "checked");
+                            $("#TPIN" + i).removeAttr("checked");
+                            $("#TPIY" + i).removeAttr("checked");
+                        }
+
+                        else {
+                            $("#TPIY" + i).removeAttr("checked");
+                            $("#TPIN" + i).attr("checked", "checked");
+                            $("#TPINA" + i).removeAttr("checked");
                         }
                         if (data[0].biddingVendor[i].texhnicallyAcceptable == "Y") {
                             $("#OpTechAccepY" + i).attr("checked", "checked");
@@ -841,6 +862,7 @@ function fetchAzPPcFormDetails() {
                         }
 
                     }
+                    $('#tblPPcvendors').append("<tr><td colspan=5></td><td><span class='help-block'><b>Note*</b><br>Y - IF TPI ALREADY DONE</br> N - TPI WILL BE DONE WHILE PLACING THE ORDER WITH FINAL VENDOR</br>Not Applicable - TPI not required</span></td></tr>")
 
                 }
                 var attach = "";
@@ -1012,7 +1034,7 @@ function fnRemoveAttachment(POID, deletionfor) {
         data: JSON.stringify(Attachments),
         dataType: "json",
         success: function (data) {
-            
+
             if (data == "1") {
                 fetchAttachments();
                 $('.alert-success').show();
@@ -1023,7 +1045,7 @@ function fnRemoveAttachment(POID, deletionfor) {
 
                 return false;
             }
-          
+
         },
         error: function (xhr, status, error) {
 
@@ -1138,7 +1160,7 @@ function MapApprover() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            
+
             $('#msgSuccessApp').show();
             $('#msgSuccessApp').html('Activity Forward to PPC Approvers successfully!');
             Metronic.scrollTo($('#msgSuccessApp'), -200);
@@ -1178,7 +1200,7 @@ function MapApprover() {
     });
 }
 
- function fnOpenPopupApprovers() {
+function fnOpenPopupApprovers() {
     fetchRegisterUser('PPC');
     fnGetApprovers();
 }
@@ -1191,14 +1213,14 @@ function fnGetApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID+"&Type=bid",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID + "&Type=bid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
             var str = "";
-           
+
             jQuery("#tblapprovers").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {

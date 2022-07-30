@@ -232,7 +232,7 @@
                         <p id="extendedDurationPara" style="color:white; font-weight: 600;display:none">Time&nbsp;Extended&nbsp;Successfully</p>
                     </div>
                     <div class="col-md-1" style="padding:8px !important;display:none;" id="btnpause">
-                        <button id="btnpause" type="button" class="btn yellow" href="#pauseauction" data-toggle="modal" >
+                        <button id="btnpause" type="button" class="btn yellow" href="#pauseauction" data-toggle="modal">
                             Pause
                         </button>
 
@@ -303,7 +303,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidSubject" style="text-align:left" class="col-md-10 control-label">
+                                                <label id="lblbidSubject" style="text-align:left" class="col-md-10 control-label text-left">
                                                 </label>
                                             </div>
                                         </div>
@@ -315,7 +315,7 @@
                                                     Bid Details:
                                                 </label>
                                                 <!--<div class="col-md-10">-->
-                                                <label id="lblbiddetails" style="text-align:left" class=" col-md-10 control-label">
+                                                <label id="lblbiddetails" style="text-align:left" class=" col-md-10 control-label text-left">
                                                 </label>
                                                 <!--</div>-->
                                             </div>
@@ -327,7 +327,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Event ID:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblEventID">
+                                                <label class="control-label text-left" id="lblEventID">
                                                 </label>
                                             </div>
                                         </div>
@@ -336,9 +336,9 @@
                                                 <label class="col-md-6 control-label">
                                                     Bid Date/Time:
                                                 </label>
-                                                <label class="col-md-3 control-label" id="lblbiddate">
+                                                <label class="control-label text-left" id="lblbiddate">
                                                 </label>
-                                                <label class="col-md-3 control-label" id="lblbidtime">
+                                                <label class="control-label text-left" id="lblbidtime">
                                                 </label>
                                             </div>
                                         </div>
@@ -347,7 +347,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Bid Type:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidtype">
+                                                <label class="control-label text-left" id="lblbidtype">
                                                 </label>
                                             </div>
                                         </div>
@@ -358,7 +358,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Bid For:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidfor">
+                                                <label class="control-label text-left" id="lblbidfor">
                                                 </label>
                                             </div>
                                         </div>
@@ -367,7 +367,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Bid Duration:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidduration">
+                                                <label class="control-label text-left" id="lblbidduration">
                                                 </label>
 
                                             </div>
@@ -377,7 +377,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Currency:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblcurrency">
+                                                <label class="control-label text-left" id="lblcurrency">
                                                 </label>
                                             </div>
                                         </div>
@@ -428,14 +428,14 @@
                                         </label>
                                     </div>
                                     <div class="form-control">
-                                        <label class="col-md-2 control-label">
+                                        <label class="col-md-2 control-label text-left">
                                             Terms & Condition:
                                         </label>
 
                                         <a id="lnkTermsAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
                                     </div>
                                     <div class="form-control">
-                                        <label class="col-md-2 control-label">
+                                        <label class="col-md-2 control-label text-left">
                                             Attachment (Any Other):
                                         </label>
                                         <a id="lnkAnyOtherAttachment" href="javascript:;" onclick="DownloadFile(this)" class="control-label ">No Attachment Found</a>
@@ -841,7 +841,7 @@
                                 <input type="hidden" id="hdnBidApproverEmailID" value="0" />
                                 <input type="hidden" id="hdnBidApproverusername" value="0" />
 
-                                
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-striped table-bordered table-hover" id="tblbiditimes"></table>
@@ -849,10 +849,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </form>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -908,8 +908,7 @@
                 if (_bidClosingType == "S" && BidForID == "7") {
                     fnrefreshStaggerTimerdataonItemClose()
                 }
-                else
-                {
+                else {
                     fetchBidTime();
                 }
 
