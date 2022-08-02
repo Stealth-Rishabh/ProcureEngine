@@ -150,10 +150,9 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
 
-    toastr.clear();
+    //toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-    toastr.success('You have a new message.', 'New Message')
-
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'

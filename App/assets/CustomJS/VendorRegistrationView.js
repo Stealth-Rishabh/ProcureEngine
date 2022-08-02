@@ -13,6 +13,7 @@ function fetchCategorymaster1() {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
             if (data.length > 0) {
+                fetchVendorRegistrationDetails
 
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");

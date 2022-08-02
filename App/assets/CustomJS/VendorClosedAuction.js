@@ -3,10 +3,10 @@ var decryptedstring = fndecrypt(param)
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 function fetchBidHeaderDetails() {
-   
+
     var url = '';
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + BIDID + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -19,7 +19,7 @@ function fetchBidHeaderDetails() {
             console.log("dataa > ", data)
             if (data.length == 1) {
                 sessionStorage.setItem('hdnbidtypeid', data[0].bidTypeID);
-                
+
                 $('#tblParticipantsService').show();
                 $("#hdnAdvFactor").val(data[0].advFactor);
                 jQuery("label#lblitem1").text(data[0].bidFor);
@@ -32,7 +32,7 @@ function fetchBidHeaderDetails() {
 
                 jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
                 jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
-              
+
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);
@@ -59,11 +59,11 @@ function fetchBidHeaderDetails() {
                     if (data[0].bidForID == 81 || data[0].bidForID == 83) {
                         fetchBidSummaryVendorScrap();
                     }
-                    else{
+                    else {
                         fetchBidSummaryVendorScrapDutch();
                     }
                 }
-              
+
             }
         },
         error: function (xhr, status, error) {
@@ -88,9 +88,9 @@ function fetchBidSummaryVendorproduct() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = '';
     count = 0;
-   
-    url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType") + "&AthenticationToken=''&_isBidStarted="+false+"";
-    
+
+    url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType") + "&AthenticationToken=''&_isBidStarted=" + false + "";
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -101,119 +101,119 @@ function fetchBidSummaryVendorproduct() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             if (data.length > 0) {
-               
-                    jQuery("#tblParticipantsService").empty()
 
-                    sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
-                    if (data[0].bidClosingType == 'A') {
+                jQuery("#tblParticipantsService").empty()
 
-                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>Initial Quote</th><th>Last Quote</th></thead>");
-                       
-                        for (var i = 0; i < data.length; i++) {
+                sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
+                if (data[0].bidClosingType == 'A') {
 
-                            var IQuote = data[i].iqQuotedPrice == '0' ? 'Not Quoted' : data[i].iqQuotedPrice;
-                            var LqQuote = data[i].lqQuotedPrice == '0' ? 'Not Quoted' : data[i].lqQuotedPrice;
-                            var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                            jQuery("#tblParticipantsService").append("<tr><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + thousands_separators(IQuote) + "</td><td id=lastQuote" + i + ">" + thousands_separators(LqQuote) + "</td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                    jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>Initial Quote</th><th>Last Quote</th></thead>");
 
-                            $('#spanamount' + i).addClass('hide spanclass');
-                            $('#spanmszA' + i).addClass('hide spanclass');
-                            $('#txtquote' + i).val(thousands_separators(data[i].lqQuotedPrice));
+                    for (var i = 0; i < data.length; i++) {
 
-                            if (data[i].maskVendor == 'Y') {
-                                $("#targetprice" + i).html('Not Disclosed');
-                            }
-                            if (data[i].maskL1Price == 'N') {
-                                $("#L1Price" + i).html('Not Disclosed');
-                            }
-                            if (data[i].showStartPrice == 'N') {
-                                $("#ceilingprice" + i).html('Not Disclosed');
-                            }
+                        var IQuote = data[i].iqQuotedPrice == '0' ? 'Not Quoted' : data[i].iqQuotedPrice;
+                        var LqQuote = data[i].lqQuotedPrice == '0' ? 'Not Quoted' : data[i].lqQuotedPrice;
+                        var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
+                        jQuery("#tblParticipantsService").append("<tr><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + thousands_separators(IQuote) + "</td><td id=lastQuote" + i + ">" + thousands_separators(LqQuote) + "</td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
 
-                            if (data[i].loQuotedPrice == 'L1') {
-                                jQuery('#lblstatus' + i).css({
-                                    'color': 'Blue',
-                                    'vertical-align': 'top'
-                                });
-                            }
-                            else {
+                        $('#spanamount' + i).addClass('hide spanclass');
+                        $('#spanmszA' + i).addClass('hide spanclass');
+                        $('#txtquote' + i).val(thousands_separators(data[i].lqQuotedPrice));
 
-                                jQuery('#lblstatus' + i).css({
-                                    'color': 'Red',
-                                    'vertical-align': 'top'
-                                });
-                            }
-
-                            count = count + 1;
-
+                        if (data[i].maskVendor == 'Y') {
+                            $("#targetprice" + i).html('Not Disclosed');
                         }
-                        
-                    }
-                    else {
-                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>Initial Quote</th><th>Last Quote</th></thead>");
-
-                        for (var i = 0; i < data.length; i++) {
-
-                            var IQuote = data[i].iqQuotedPrice == '0' ? 'Not Quoted' : data[i].iqQuotedPrice;
-                            var LqQuote = data[i].lqQuotedPrice == '0' ? 'Not Quoted' : data[i].lqQuotedPrice;
-                            var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                            jQuery("#tblParticipantsService").append("<tr class=text-center><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + thousands_separators(IQuote) + "</td><td id=lastQuote" + i + ">" + thousands_separators(LqQuote) + "</td><td class=hide>" + data[i].maskVendor + "</td></tr>");
-
-                            if (data[i].itemStatus == "Close" || data[i].itemStatus == "Inactive") {
-                                $("#itemleft" + i).html('')
-                                jQuery("#txtquote" + i).attr("disabled", true)
-                                jQuery("#itembtn" + i).attr("disabled", true)
-                                jQuery("#spanclosedmsz" + i).removeClass("hide")
-                                jQuery("#spanclosedmsz" + i).css("color", "")
-                            }
-                            else {
-                                $("#itemleft" + i).html(data[i].ItemTimeLeft)
-                                jQuery("#txtquote" + i).attr("disabled", false)
-                                jQuery("#itembtn" + i).attr("disabled", false)
-                                jQuery("#spanclosedmsz" + i).addClass("hide")
-
-                            }
-
-                            if (data[i].maskVendor == 'Y') {
-                                $("#targetprice" + i).html('Not Disclosed')
-                            }
-                            if (data[i].maskL1Price == 'N') {
-                                $("#L1Price" + i).html('Not Disclosed');
-                            }
-                            if (data[i].showStartPrice == 'N') {
-                                $("#ceilingprice" + i).html('Not Disclosed');
-                            }
-
-                            $('#spanamount' + i).addClass('hide spanclass');
-                            $('#spanmsz' + i).addClass('hide spanclass');
-                            $('#spanclosedmsz' + i).addClass('hide spanclass');
-                            $('#txtquote' + i).val(thousands_separators(data[i].lqQuotedPrice));
-
-                            if (data[i].loQuotedPrice == 'L1') {
-                                jQuery('#lblstatus' + i).css('color', 'Blue');
-                            }
-                            else {
-
-                                jQuery('#lblstatus' + i).css('color', 'Red');
-                            }
-                          
-                            if (data[i].itemNoOfExtension > 0) {
-                                jQuery('#itemleft' + i).css({
-                                    'color': 'Red',
-                                    'font-weight': '500'
-                                });
-                            }
-
-                            count = count + 1;
-
+                        if (data[i].maskL1Price == 'N') {
+                            $("#L1Price" + i).html('Not Disclosed');
+                        }
+                        if (data[i].showStartPrice == 'N') {
+                            $("#ceilingprice" + i).html('Not Disclosed');
                         }
 
+                        if (data[i].loQuotedPrice == 'L1') {
+                            jQuery('#lblstatus' + i).css({
+                                'color': 'Blue',
+                                'vertical-align': 'top'
+                            });
+                        }
+                        else {
+
+                            jQuery('#lblstatus' + i).css({
+                                'color': 'Red',
+                                'vertical-align': 'top'
+                            });
+                        }
+
+                        count = count + 1;
+
                     }
+
                 }
+                else {
+                    jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>Initial Quote</th><th>Last Quote</th></thead>");
 
-            
+                    for (var i = 0; i < data.length; i++) {
+
+                        var IQuote = data[i].iqQuotedPrice == '0' ? 'Not Quoted' : data[i].iqQuotedPrice;
+                        var LqQuote = data[i].lqQuotedPrice == '0' ? 'Not Quoted' : data[i].lqQuotedPrice;
+                        var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
+                        jQuery("#tblParticipantsService").append("<tr class=text-center><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + thousands_separators(IQuote) + "</td><td id=lastQuote" + i + ">" + thousands_separators(LqQuote) + "</td><td class=hide>" + data[i].maskVendor + "</td></tr>");
+
+                        if (data[i].itemStatus == "Close" || data[i].itemStatus == "Inactive") {
+                            $("#itemleft" + i).html('')
+                            jQuery("#txtquote" + i).attr("disabled", true)
+                            jQuery("#itembtn" + i).attr("disabled", true)
+                            jQuery("#spanclosedmsz" + i).removeClass("hide")
+                            jQuery("#spanclosedmsz" + i).css("color", "")
+                        }
+                        else {
+                            $("#itemleft" + i).html(data[i].ItemTimeLeft)
+                            jQuery("#txtquote" + i).attr("disabled", false)
+                            jQuery("#itembtn" + i).attr("disabled", false)
+                            jQuery("#spanclosedmsz" + i).addClass("hide")
+
+                        }
+
+                        if (data[i].maskVendor == 'Y') {
+                            $("#targetprice" + i).html('Not Disclosed')
+                        }
+                        if (data[i].maskL1Price == 'N') {
+                            $("#L1Price" + i).html('Not Disclosed');
+                        }
+                        if (data[i].showStartPrice == 'N') {
+                            $("#ceilingprice" + i).html('Not Disclosed');
+                        }
+
+                        $('#spanamount' + i).addClass('hide spanclass');
+                        $('#spanmsz' + i).addClass('hide spanclass');
+                        $('#spanclosedmsz' + i).addClass('hide spanclass');
+                        $('#txtquote' + i).val(thousands_separators(data[i].lqQuotedPrice));
+
+                        if (data[i].loQuotedPrice == 'L1') {
+                            jQuery('#lblstatus' + i).css('color', 'Blue');
+                        }
+                        else {
+
+                            jQuery('#lblstatus' + i).css('color', 'Red');
+                        }
+
+                        if (data[i].itemNoOfExtension > 0) {
+                            jQuery('#itemleft' + i).css({
+                                'color': 'Red',
+                                'font-weight': '500'
+                            });
+                        }
+
+                        count = count + 1;
+
+                    }
+
+                }
+            }
+
+
             else {
                 jQuery("#tblParticipantsService").append("<tr><td>Nothing Participation</td></tr>")
             }
@@ -239,9 +239,9 @@ function fetchBidSummaryVendorproduct() {
 function fetchBidSummaryVendorproductFF() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = '';
-   
 
-    url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryFrench/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType") ;
+
+    url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryFrench/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType");
 
     jQuery.ajax({
         type: "GET",
@@ -262,11 +262,11 @@ function fetchBidSummaryVendorproductFF() {
 
 
                     var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
-                    
-                    $("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td>" + data[i].shortName + "</td><td class='text-center'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + " class='text-center' ></td><td class='text-center' id=txtquantity"+i+" ></td><td  class='text-center bold' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
+
+                    $("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td>" + data[i].shortName + "</td><td class='text-center'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + " class='text-center' ></td><td class='text-center' id=txtquantity" + i + " ></td><td  class='text-center bold' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
                     jQuery('#allocatedQuan' + i).css('color', 'Red');
                     $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
-                   
+
                     $('#txtquantity' + i).text(data[i].bidQuantity == '0' ? '' : thousands_separators(data[i].bidQuantity));
                 }
             }
@@ -449,9 +449,9 @@ function fetchBidSummaryVendorproductCoal() {
 function fetchBidSummaryVendorScrap() {
     count = 0;
     var url = '';
-    
+
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryPefa/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType") + "&AthenticationToken=''";
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -463,42 +463,42 @@ function fetchBidSummaryVendorScrap() {
         success: function (data, status, jqXHR) {
 
             jQuery("#tblParticipantsVender").empty();
-          
-           
-                if (data.length > 0) {
 
-                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th>Last Quote</th></thead>");
-                    for (var i = 0; i < data.length; i++) {
 
-                        var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
-                        var MqQuote = data[i].mqQuotedPrice == '0' ? 'Not Quoted' : data[i].mqQuotedPrice;
-                        var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                        jQuery("#tblParticipantsVender").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].psid + ")' style='text-decoration:none;'>" + data[i].shortName + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + ">" + thousands_separators(MqQuote) + "</td></tr>");
+            if (data.length > 0) {
 
-                        $('#spanamount' + i).addClass('hide spanclass');
-                        $('#txtquote' + i).val(thousands_separators(data[i].mqQuotedPrice));
-                        
-                        if (data[i].moQuotedPrice == 'H1') {
-                            jQuery('#lblstatus' + i).css('color', 'Blue');
-                        }
-                        else {
+                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th>Last Quote</th></thead>");
+                for (var i = 0; i < data.length; i++) {
 
-                            jQuery('#lblstatus' + i).css('color', 'Red');
-                        }
-                        if (data[i].showHLPrice == 'N') {
-                            $("#H1Price" + i).html('Not Disclosed');
-                        }
-                        if (data[i].showStartPrice == "N") {
-                            $("#tdBidStartPrice" + i).html('Not Disclosed');
-                        }
-                        count = count + 1;
+                    var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
+                    var MqQuote = data[i].mqQuotedPrice == '0' ? 'Not Quoted' : data[i].mqQuotedPrice;
+                    var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
+                    jQuery("#tblParticipantsVender").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].psid + ")' style='text-decoration:none;'>" + data[i].shortName + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + ">" + thousands_separators(MqQuote) + "</td></tr>");
+
+                    $('#spanamount' + i).addClass('hide spanclass');
+                    $('#txtquote' + i).val(thousands_separators(data[i].mqQuotedPrice));
+
+                    if (data[i].moQuotedPrice == 'H1') {
+                        jQuery('#lblstatus' + i).css('color', 'Blue');
                     }
-                    
+                    else {
+
+                        jQuery('#lblstatus' + i).css('color', 'Red');
+                    }
+                    if (data[i].showHLPrice == 'N') {
+                        $("#H1Price" + i).html('Not Disclosed');
+                    }
+                    if (data[i].showStartPrice == "N") {
+                        $("#tdBidStartPrice" + i).html('Not Disclosed');
+                    }
+                    count = count + 1;
                 }
-                else {
-                    jQuery("#tblParticipantsVender").append("<tr><td>Nothing Participation</td></tr>")
-                }
-            
+
+            }
+            else {
+                jQuery("#tblParticipantsVender").append("<tr><td>Nothing Participation</td></tr>")
+            }
+
         },
         error: function (xhr, status, error) {
 
@@ -520,9 +520,9 @@ function fetchBidSummaryVendorScrap() {
 function fetchBidSummaryVendorScrapDutch() {
     count = 0;
     var url = '';
-    
+
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryPefaDutch/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BIDID + "&UserType=" + sessionStorage.getItem("UserType");
-   // alert(url)
+    // alert(url)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -535,30 +535,30 @@ function fetchBidSummaryVendorScrapDutch() {
             //alert(JSON.stringify(data))
             jQuery("#tblParticipantsVender").empty();
             if (data.length > 0) {
-                
+
                 var _offeredPrice;
                 jQuery("#tblParticipantsVender >tbody").empty();
                 jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th>Accepted Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
                 for (var i = 0; i < data.length; i++) {
-                   
+
                     if (data[i].moQuotedPrice == "H1") {
-                        
+
                         _offeredPrice = thousands_separators(data[i].mqQuotedPrice);
                     }
                     else {
                         _offeredPrice = data[i].moQuotedPrice;
                     }
-                        
-                       
+
+
                     jQuery("#tblParticipantsVender").append("<tr><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id='offeredprice" + i + "'>" + _offeredPrice + "</td></tr>");
 
-                            count = count + 1;
-                     
-                    }
-                }
+                    count = count + 1;
 
-            
-            
+                }
+            }
+
+
+
         },
         error: function (xhr, status, error) {
 
@@ -576,12 +576,12 @@ function fetchBidSummaryVendorScrapDutch() {
 
 }
 function fetchGraphData(itemId) {
-    
+
     var _bidTypeID;
-    
-        _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
-    
-    
+
+    _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
+
+
     graphData = [];
 
     var _date;
@@ -594,7 +594,7 @@ function fetchGraphData(itemId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
+
             $("#tblForTrendGraphs").empty();
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
@@ -606,7 +606,7 @@ function fetchGraphData(itemId) {
                     }
                 }
             }
-           
+
         },
         error: function (xhr, status, error) {
 
@@ -621,9 +621,9 @@ function fetchGraphData(itemId) {
             return false;
         }
     }).done(function () {
-        
+
         $("#graphModalLine").modal('show');
-       
+
         linegraphsforItems(itemId)
     });
 }
@@ -640,8 +640,8 @@ function linegraphsforItems(itemId) {
     var _bidTypeID;
     var _date;
     _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
-  
-    
+
+
     graphtime = [];
     Vendorseries = "";
     dataQuotes = [];
@@ -673,37 +673,37 @@ function linegraphsforItems(itemId) {
             }
             Vendorseries = "";
             var values = 0;
-       
-                if (data[0].vendorNames.length > 0) {
+
+            if (data[0].vendorNames.length > 0) {
 
 
-                    for (var i = 0; i < data[0].vendorNames.length; i++) {
-                       
-                        Quotes = "";
-                        values = null;;
-                       
-                        for (var j = 0; j < data[0].quotesDetails.length; j++) {
-                            if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
-                                
-                                values = data[0].quotesDetails[j].quotedPrice;
-                            }
-                            else {
-                               
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
-                            }
+                for (var i = 0; i < data[0].vendorNames.length; i++) {
+
+                    Quotes = "";
+                    values = null;;
+
+                    for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                        if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
+                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+
+                            values = data[0].quotesDetails[j].quotedPrice;
                         }
+                        else {
 
-                       
-                        Quotes = Quotes.slice(0, -1);
-                       
-                        Vendorseries = '{ "name" :"' + data[0].vendorNames[i].vendorName + '", "color": "' + colorArray[i] + '","data": [' + Quotes + ']}';
-                      
-                        Seriesoption.push(JSON.parse(Vendorseries));
-
+                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                        }
                     }
 
+
+                    Quotes = Quotes.slice(0, -1);
+
+                    Vendorseries = '{ "name" :"' + data[0].vendorNames[i].vendorName + '", "color": "' + colorArray[i] + '","data": [' + Quotes + ']}';
+
+                    Seriesoption.push(JSON.parse(Vendorseries));
+
                 }
+
+            }
 
         },
         error: function (xhr, status, error) {
@@ -718,19 +718,19 @@ function linegraphsforItems(itemId) {
             jQuery.unblockUI();
             return false;
         }
-     })
+    })
 
     setTimeout(function () {
-        
+
         $('#linechart_material').highcharts({
             title: {
                 text: '',
                 style: {
-                    
+
                     fontSize: '15px',
-                    
+
                 },
-               
+
             },
 
             xAxis: {
@@ -748,11 +748,11 @@ function linegraphsforItems(itemId) {
                 title: {
                     text: 'Quoted Price'
                 },
-               
+
             },
-            
+
             series: Seriesoption,
-            
+
             credits: {
                 enabled: false
             }

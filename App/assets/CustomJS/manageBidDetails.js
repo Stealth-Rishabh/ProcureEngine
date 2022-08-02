@@ -191,9 +191,9 @@ function FormValidate() {
             txtshortname: {
                 required: true
             },
-            txtbiddescriptionP: {
-                required: true
-            },
+            /* txtbiddescriptionP: {
+                 required: true
+             },*/
             txtquantitiy: {
                 required: true
             },
@@ -2603,22 +2603,28 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
-    //debugger;
-    var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
-    //s.setMinutes(s.getMinutes() + 5);
-    //var datearray = $("#txtbidDate").val().split("/");
-    //var selectedtime = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
-    //selectedtime = new Date(selectedtime + ' ' + convertTo24Hour($("#txtbidTime").val()));
 
-    //if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
-    if (reopenDate <= s) {
+    var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
+    if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
 
         erroropenbid.show();
-        //$('#erropenbid').html('Please fill all Details');
-        $('#erropenbid').html('Date cannot be less than current date');
+        $('#erropenbid').html('Please fill all Details');
         erroropenbid.fadeOut(3000);
         App.scrollTo(erroropenbid, -200);
 
+    }
+    /* else  if (reopenDate <= s && jQuery("#ddlBidStatus").val()=="1")
+     {
+         erroropenbid.show();
+         $('#erropenbid').html('Date cannot be less than current date');
+         erroropenbid.fadeOut(3000);
+         App.scrollTo(erroropenbid, -200);
+     }*/
+    else if (reopenDate.toLocaleDateString() < s.toLocaleDateString()) {
+        erroropenbid.show();
+        $('#erropenbid').html('Date cannot be less than current date');
+        erroropenbid.fadeOut(3000);
+        App.scrollTo(erroropenbid, -200);
     }
     else {
         fnTimeUpdateClosedBid(ismailsend);

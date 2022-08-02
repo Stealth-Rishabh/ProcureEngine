@@ -1679,7 +1679,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 
 function fetchCoalDetails() {
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
@@ -1853,20 +1853,27 @@ function DownloadFile(aID) {
 
 
 function Dateandtimevalidate(indexNo) {
-    var dtst = new Date($('#txtbidDate').val().replace('-', ''));
-    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
+    var StartDT = new Date();
+    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+
+    }
+    var Tab1Data = {
+        "BidDate": StartDT
+    }
+    //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + dtst,
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(Tab1Data),
         dataType: "json",
-        success: function (RFQData) {
+        success: function (data) {
 
-            if (RFQData[0].bidId == 1) {
+            if (data == '1') {
                 if (indexNo == 'index1') {
                     ConfigureBidForCoalTab1();
                     fetchPSBidDetailsForPreview();

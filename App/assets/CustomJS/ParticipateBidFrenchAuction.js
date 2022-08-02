@@ -224,7 +224,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     //toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-    calltoaster('You have a new message.', 'New Message', 'success');
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
 
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
@@ -247,7 +247,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-    calltoaster('You have a new message.', 'New Message', 'success');
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") == chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -258,8 +258,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
         + '</div>'
         + '</div>');
-    //  }
-    //$(".pulsate-regular").css('animation', 'none');
+
 });
 function sendChatMsgs() {
 

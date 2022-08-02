@@ -465,7 +465,7 @@ function fetchParticipantsVenderTable() {
                         str = "<tr><td style=\"text-align:right;width:10%!important;\">";
                         str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                     }
-                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
                     str += "<td style=\"width:5%!important;\">" + value.isActive + "</td>";
                     str += "</td></tr>";
                     jQuery('#tblParticipantsVender > tbody').append(str);
@@ -473,6 +473,52 @@ function fetchParticipantsVenderTable() {
             }
             else {
                 jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
+            }
+            fetchParticipantsparked();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
+function fetchParticipantsparked() {
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsparkedVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (Venderdata) {
+
+            jQuery("#tblParticipantsparked > tbody").empty();
+
+            if (Venderdata.length > 0) {
+
+                jQuery.each(Venderdata, function (key, value) {
+                    var str = "";
+
+                    // var addr2 = (value.cityName).replace(/\n/g, " ");
+                    str = "<tr><td style=\"text-align:center;width:10%!important;\">";
+                    str += "<a href=\"#\" target=_blank  onclick =\"fnApprove_reject(\'" + value.linkURL + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Action</a></td>";
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td class=bold style=\"width:10%!important;color:darkblue!important;cursor:pointer\" onclick =\"fnViewDetails(\'" + value.participantID + "'\,\'0'\)\" >" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                    str += "</td></tr>";
+                    jQuery('#tblParticipantsparked > tbody').append(str);
+                });
+            }
+            else {
+                jQuery('#tblParticipantsparked > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
             }
         },
         error: function (xhr, status, error) {
@@ -488,6 +534,173 @@ function fetchParticipantsVenderTable() {
             return false;
         }
     });
+}
+function fnViewDetails(tmpvendorid, vendorid) {
+    $('#viewalldetails').modal('show')
+    sessionStorage.setItem('tmpVendorID', tmpvendorid)
+    fetchVendorRegistrationDetails(tmpvendorid, vendorid);
+
+}
+function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + tmpvendorid + "&VendorID=" + vendorid,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (json) {
+
+            var companydetails = JSON.parse(json[0].jsondata);
+            if (json.length > 1) {
+
+                var categorydetails = JSON.parse(json[1].jsondata);
+                //var categoryresult = categorydetails.map(function (val) {
+                //    selectedValues.push(val.CategoryID);
+                //});
+                //$("#ddlTypeofProduct").select2().val(selectedValues).trigger("change");
+
+            }
+
+            sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
+            if (companydetails[0].PM[0].paymentTerm != "" && companydetails[0].PM[0].paymentTerm != null && companydetails[0].PM[0].paymentTerm != undefined) {
+                jQuery('#paymentterms').html(companydetails[0].PM[0].paymentTerm);
+            }
+            else {
+                jQuery('#paymentterms').html();
+            }
+
+            if (companydetails[0].VendorCode != "" && companydetails[0].VendorCode != null && companydetails[0].VendorCode != undefined) {
+                $('#hdnvendorCode').val(companydetails[0].VendorCode);
+                $('#spnvendorcode').text(companydetails[0].VendorCode)
+            } else {
+                var vendorCode = '';
+                $('#hdnvendorCode').val(vendorCode);
+                $('#spnvendorcode').text('')
+            }
+
+            if (companydetails[0].GSTFile != "" && companydetails[0].GSTFile != null && companydetails[0].GSTFile != undefined) {
+                $('#gstattach').show();
+                $('#gstattach').html(companydetails[0].GSTFile);
+
+            } else {
+
+                $('#gstattach').hide();
+            }
+
+            if (companydetails[0].PANFile != "" && companydetails[0].PANFile != null && companydetails[0].PANFile != undefined) {
+                $('#panattach').show();
+                $('#panattach').html(companydetails[0].PANFile);
+
+            } else {
+
+                $('#panattach').hide();
+            }
+
+            if (companydetails[0].MSMEFile != "" && companydetails[0].MSMEFile != null && companydetails[0].MSMEFile != undefined) {
+                $('#msmeattach').show();
+                $('#msmeattach').html(companydetails[0].MSMEFile);
+
+            } else {
+
+                $('#msmeattach').hide();
+            }
+
+            if (companydetails[0].cancelledCheck != "" && companydetails[0].cancelledCheck != null && companydetails[0].cancelledCheck != undefined) {
+                $('#checkattach').show();
+                $('#checkattach').html(companydetails[0].cancelledCheck);
+
+            } else {
+
+                $('#checkattach').hide();
+            }
+
+            if (companydetails[0].MSMECheck == 'Y') {
+                $('.hideInput').removeClass('hide');
+            } else {
+                $('.hideInput').addClass('hide');
+            }
+
+            if (companydetails[0].GSTClass == 0) {
+                var gstclass = '';
+            } else {
+                var gstclass = companydetails[0].GSTClass;
+            }
+
+            if (companydetails[0].PreviousTurnover != "" && companydetails[0].PreviousTurnover != null && companydetails[0].PreviousTurnover != undefined) {
+                jQuery('#lastFY').html(companydetails[0].currencyLastFY + ' ' + companydetails[0].PreviousTurnover);
+            }
+            else {
+                jQuery('#lastFY').html();
+            }
+
+            if (companydetails[0].SecondLastTurnover != "" && companydetails[0].SecondLastTurnover != null && companydetails[0].SecondLastTurnover != undefined) {
+                jQuery('#seclastFY').html(companydetails[0].currencyLast2FY + ' ' + companydetails[0].SecondLastTurnover);
+            }
+            else {
+                jQuery('#seclastFY').html();
+            }
+
+
+            if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
+                jQuery('#pincode').html(companydetails[0].pinCode);
+            }
+            else {
+                jQuery('#pincode').html('');
+            }
+
+            jQuery('#gstvendorclass').html(gstclass);
+            jQuery('#ddlTypeofproduct').html(categorydetails);
+            jQuery('#gstno').html(companydetails[0].ServiceTaxNo);
+            jQuery('#natureofest').html(companydetails[0].EstName);
+            jQuery('#vendortype').html(companydetails[0].VendorCatName);
+            jQuery('#product').html(companydetails[0].product);
+            jQuery('#companyname').html(companydetails[0].VendorName);
+            jQuery('#address').html(companydetails[0].Address1);
+            jQuery('#country').html(companydetails[0].CountryName);
+            jQuery('#state').html(companydetails[0].StateName);
+            jQuery('#city').html(companydetails[0].CityName);
+            //jQuery('#pincode').html(companydetails[0].pincode);
+            jQuery('#panno').html(companydetails[0].PANNo);
+            jQuery('#panfilename').html(companydetails[0].PANFile);
+            jQuery('#TDStype').html(companydetails[0].TDSTypeName);
+            jQuery('#tanno').html(companydetails[0].TAN);
+            jQuery('#bankname').html(companydetails[0].BankName);
+            jQuery('#bankaccountno').html(companydetails[0].BankAccount);
+            jQuery('#ifsccode').html(companydetails[0].IFSCCode);
+            jQuery('#accountholdername').html(companydetails[0].AccountName);
+            jQuery('#primaryname').html(companydetails[0].ContactPerson);
+            jQuery('#primarymobile').html(companydetails[0].MobileNo);
+            jQuery('#primaryemail').html(companydetails[0].EmailID);
+            jQuery('#altname').html(companydetails[0].ContactNameAlt);
+            jQuery('#altmobile').html(companydetails[0].Phone);
+            jQuery('#altemail').html(companydetails[0].AlternateEmailID);
+            jQuery('#msme').html(companydetails[0].MSMECheck);
+            jQuery('#msmeclass').html(companydetails[0].MSMEType);
+            jQuery('#msmeno').html(companydetails[0].MSMENo);
+            jQuery('#msmeattach').html(companydetails[0].MSMEFile);
+            jQuery('#txtLastFiscalyear').html(companydetails[0].PreviousTurnoverYear);
+            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear);
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}
+function fnApprove_reject(linkurl) {
+    window.open(linkurl);
+
 }
 $('#txtcompanyemail').on('keyup', function () {
 
@@ -741,6 +954,17 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
 
     jQuery.each($("#tblParticipantsVender tbody").find("tr"), function () {
+        //console.log($(this).text());
+        if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
+            jQuery(this).hide();
+        else
+            jQuery(this).show();
+    });
+});
+jQuery("#txtSearchparked").keyup(function () {
+    _this = this;
+
+    jQuery.each($("#tblParticipantsparked tbody").find("tr"), function () {
         //console.log($(this).text());
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
@@ -1027,7 +1251,7 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
     $("#hdnParticipantCode").val(vendorcode);
     jQuery("#ParticipantName").val(vname);
     jQuery("#txtAddress").val(decodeURIComponent(addr1));
-    jQuery("#txtCity").val(decodeURIComponent(addr2));
+    // jQuery("#txtCity").val(decodeURIComponent(addr2));
     jQuery("#txtPanNo").val(pan);
     jQuery("#txtTINNo").val(gst);
     jQuery("#txtPhoneNo").val(phone);
