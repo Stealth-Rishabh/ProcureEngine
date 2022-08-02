@@ -123,6 +123,8 @@ function getSummary(vendorid, version) {
 
 var ShowPrice = "N";
 var bidopeningdate = new Date();
+var RFQBidType = '';
+var RFQEndDate = new Date();
 function fetchrfqcomprative() {
     var url = '';
 
@@ -168,13 +170,43 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
+            // To Check With Pooja---What is this check?
+            if (_rfqBidType == 'Open') {
+                if (AppType == "T" && FwdTo != 'Admin') {
+                    ShowPrice = data[0].showPrice[0].showQuotedPrice;
+                    //sessionStorage.setItem('ShowPrice', ShowPrice);
+                }
+                //if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
+                //    ShowPrice = 'Y';
+                //}
 
-            if (AppType == "T" && FwdTo != 'Admin') {
-                ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                //sessionStorage.setItem('ShowPrice', ShowPrice);
+                if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
+                    ShowPrice = 'Y';
+                }
             }
-            if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
-                ShowPrice = 'Y';
+            else {
+                if (bidopeningdate == null || bidopeningdate == '') {
+                    ShowPrice = 'N';
+                }
+                else {
+                    var newDt = fnConverToLocalTime(bidopeningdate);
+                    bidopeningdate = new Date(newDt.replace('-', ''));
+                    if (bidopeningdate < new Date()) {
+                        ShowPrice = 'Y';
+                        ////if (AppType == "T" && FwdTo != 'Admin') {
+                        ////    ShowPrice = data[0].showPrice[0].showQuotedPrice;
+                        ////    //sessionStorage.setItem('ShowPrice', ShowPrice);
+                        ////}
+
+                        ////if (AppType == "C" && AppType != "T") {
+                        ////    ShowPrice = 'Y';
+                        ////}
+
+                    }
+                    else {
+                        ShowPrice = 'N';
+                    }
+                }
             }
 
             sessionStorage.setItem('ShowPrice', ShowPrice);

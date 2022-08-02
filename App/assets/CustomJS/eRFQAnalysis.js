@@ -75,9 +75,16 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
 
-            if (new Date(bidopeningdate) <= new Date()) {
-                ShowPrice = 'Y';
-                $('#btnPDF').show()
+            //if (new Date(bidopeningdate) <= new Date()) {
+            //    ShowPrice = 'Y';
+            //    $('#btnPDF').show()
+            //}
+            if (bidopeningdate != null || bidopeningdate != '') {
+                if (bidopeningdate <= new Date()) {
+                    ShowPrice = 'Y';
+                    $('#btnPDF').show();
+                }
+
             }
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprative > thead').empty()

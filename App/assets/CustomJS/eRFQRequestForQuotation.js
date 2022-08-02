@@ -881,8 +881,7 @@ function fnsavetermscondition(isbuttonclick) {
             "ConditionType": jQuery("#ddlConditiontype").val()
 
         }
-        // console.log(JSON.stringify(Attachments))
-        // alert(JSON.stringify(Attachments))
+
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -2601,7 +2600,7 @@ function handleFileparameter(e) {
                 }
             });
             //Get the first column first cell value
-            //alert(JSON.stringify(result))
+
             printDataparameter(result)
         };
         reader.readAsArrayBuffer(f);
@@ -2690,13 +2689,8 @@ function printDataparameter(result) {
             podate = $.trim(result[i].PoDate);
             // podatejv = new Date(podate);
         }
-        //var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
-        //var formats = [
-        //    moment.ISO_8601,
-        //    "MM/DD/YYYY  :)  HH*mm*ss"
-        //];
 
-        // alert(moment(podatejv, formats, true).isValid())
+
 
         if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
@@ -2709,7 +2703,7 @@ function printDataparameter(result) {
             itemcode = $.trim(result[i].ItemCode);
 
         }
-        //alert($.trim(result[i].Remarks))
+
         if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Item/Service can not be blank or length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2860,7 +2854,7 @@ function printDataparameter(result) {
         }
 
     });
-    // alert(excelCorrect)
+
     if (excelCorrect == "Y") {
         $("#error-excelparameter").hide();
         // $("#errspan-excelparameter").html('');

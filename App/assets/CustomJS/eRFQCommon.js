@@ -371,6 +371,7 @@ function cancelRFQ(mailparam) {
 
 var TechnicalApproval = "";
 var bidopeningdate = new Date();
+var _rfqBidType = '';
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -388,7 +389,7 @@ function fetchReguestforQuotationDetails() {
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
-
+                _rfqBidType = RFQData[0].general[0].rfqBidType;
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
