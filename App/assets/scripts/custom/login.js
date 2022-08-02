@@ -6,6 +6,15 @@ sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
 
 var Login = function () {
    
@@ -152,15 +161,41 @@ var Login = function () {
 
     if (lastPart.toLocaleLowerCase() == "vendor")
     {
-        url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
+       // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
+
+        var data = {
+            "LoginID": LoginID,
+            "Password": Password,
+            "MachineIP": clientIP
+        }
+
+        jQuery.ajax({
+            url: APIPath + "User/validateUser_Vendor",
+            data: JSON.stringify(data),
+            type: "POST",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            contentType: "application/json",
+            success: function (data) {
+                sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                sessionStorage.setItem("Token", data.token)
+                fnGetUserBasicDetails(lastPart)
+            },
+            error: function (xhr, status, error) {
+                sessionStorage.setItem("Token", '')
+                jQuery.unblockUI();
+                $('#alrt1').show();
+                $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
+                App.scrollTo($('#alrt1'), -200);
+                $('#alrt1').fadeOut(5000);
+            }
+        });
+
     }
     else
     {
         url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
-    }
-
       
-    $.ajax({
+         $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: url,
@@ -184,7 +219,9 @@ var Login = function () {
                
             }
     })
-}
+    }
+
+    }
      function fnGetUserBasicDetails(lastPart) {
 
         jQuery.ajax({
