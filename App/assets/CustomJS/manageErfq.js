@@ -12,7 +12,7 @@ var success2 = $('#successmapdiv');
 var successopenbid = $('#successopenbid');
 var succesremainder = $('#successremainder');
 var currentdate = new Date();
-
+var _RFQBidType = "";
 jQuery("#eventDetailstab_0").hide();
 
 
@@ -469,7 +469,10 @@ function fetchReguestforQuotationDetails(RFQID) {
             else {
                 $('#ctrladdapprovers').removeClass('hide')
             }
-
+            var RFQopenDate = "Not Set";
+            
+            sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
+            _RFQBidType = RFQData[0].general[0].rfqBidType
             $("#ctrlFileTerms").attr('onclick', "editRow('divbidTermsFilePrevtab_0', '','')");
             jQuery('#mapedapproverPrevtab_0').html('');
 
@@ -488,6 +491,26 @@ function fetchReguestforQuotationDetails(RFQID) {
             }
             else {
                 jQuery('#lbltechnicalApproval').html("Not Required")
+            }
+            if (_RFQBidType == open) {
+                $("#lblOpenDate").hide();
+                $("#lblRFQOpenDate").hide();
+                $("#txtbidopendatetime").hide();
+                $("#btnUpdateDate").hide();
+            }
+            else {
+                $("#lblOpenDate").show();
+                $("#lblRFQOpenDate").show();
+                if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != "") {
+                    RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
+                    jQuery('#lblRFQOpenDate').html(RFQopenDate);
+                }
+                else {
+                    $("#lblRFQOpenDate").hide();
+                    $("#txtbidopendatetime").show();
+                    $("#btnUpdateDate").show();
+
+                }
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -1056,6 +1079,89 @@ function addmoreattachments() {
                     Metronic.scrollTo($(".alert-success"), -200);
                     $('.alert-success').fadeOut(7000);
                     confirmEditEventAction('File');
+
+                    return false;
+
+                }
+                else if (data == "2") {
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Attachment is already Exists.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    return false;
+                }
+
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+
+                return false;
+                jQuery.unblockUI();
+            }
+
+        });
+    }
+}
+
+function UpdateAndSaveDate() {
+
+    var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+    var CurDateonly = new Date();
+    var EndDate = new Date(jQuery('#RFQEndDate').html.val().replace('-', ''));
+
+    if ($('#txtbidopendatetime').val() == "" || $('#txtbidopendatetime').val() == null) {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter A Valid Date');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
+        $('.alert-danger').show();
+        $('#spandanger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+
+    
+    else {
+        var DateData = {
+
+            "RFQID": parseInt(sessionStorage.getItem('hdnrfqid')),
+            "RFQOpenDate": BidOpenDate
+
+        }
+
+        //alert(JSON.stringify(Attachments))
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQUpdateDate",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(DateData),
+            dataType: "json",
+            success: function (data) {
+                if (data == "1") {
+                    //** Upload Files on Azure PortalDocs folder first Time
+                    //fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
+
+
+                    fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
+                    jQuery("#AttachDescription1").val('')
+                    jQuery('#fileToUpload1').val('')
+                    $('.alert-success').show();
+                    $('#spansuccess1').html('Attachment saved successfully!');
+                    Metronic.scrollTo($(".alert-success"), -200);
+                    $('.alert-success').fadeOut(7000);
+                    //confirmEditEventAction('File');
 
                     return false;
 
@@ -1953,10 +2059,3 @@ function clearSurrogateForm() {
     jQuery("#txtvendorSurrogateBid").val('')
 
 }
-
-
-
-
-
-
-

@@ -1,14 +1,23 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
 
 var Login = function () {
-   
+
     var handleLogin = function () {
 
         $('.login-form').validate({
@@ -45,7 +54,7 @@ var Login = function () {
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
 
             success: function (label) {
@@ -58,9 +67,9 @@ var Login = function () {
             },
 
             submitHandler: function (form) {
-             
+
                 //alert(APIPath)
-                 validateUser();
+                validateUser();
             }
         });
 
@@ -108,16 +117,16 @@ var Login = function () {
                         $('#alrt2').fadeOut(6000)
                     }
                 }
-                
+
             },
 
             invalidHandler: function (event, validator) { //display error alert on form submit   
-               
+
             },
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
 
             success: function (label) {
@@ -138,54 +147,80 @@ var Login = function () {
 
     function validateUser() {
 
-        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-      //  sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-      //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-      
-    var LoginID = encodeURIComponent(jQuery("#username").val().trim());
-    var Password = encodeURIComponent(jQuery("#password").val().trim());
-    var LinkUrl = encodeURIComponent(window.location);
-    var path = window.location.pathname;
-    var url = '';
-    var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-   // lastPart = 'vendor'
+        // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
-    if (lastPart.toLocaleLowerCase() == "vendor")
-    {
-        url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
-    }
-    else
-    {
-        url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
-    }
+        var LoginID = encodeURIComponent(jQuery("#username").val().trim());
+        var Password = encodeURIComponent(jQuery("#password").val().trim());
+        var LinkUrl = encodeURIComponent(window.location);
+        var path = window.location.pathname;
+        var url = '';
+        var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+        // lastPart = 'vendor'
 
-      
-    $.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (response) {
-          // alert(response.token)
-            sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-            sessionStorage.setItem("Token", response.token)
-            fnGetUserBasicDetails(lastPart)
-        },
-        error: function (xhr, status, error) {
-                sessionStorage.setItem("Token", '')
-               // var myObj = JSON.parse(xhr.responseText);
-                jQuery.unblockUI();
-                $('#alrt1').show();
-                $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                App.scrollTo($('#alrt1'), -200);
-                $('#alrt1').fadeOut(5000);
-               
+        if (lastPart.toLocaleLowerCase() == "vendor") {
+            // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
+
+            var data = {
+                "LoginID": jQuery("#username").val().trim(),
+                "Password": jQuery("#password").val().trim(),
+                "MachineIP": clientIP
             }
-    })
-}
-     function fnGetUserBasicDetails(lastPart) {
+
+            jQuery.ajax({
+                url: APIPath + "User/validateUser_Vendor",
+                data: JSON.stringify(data),
+                type: "POST",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                contentType: "application/json",
+                success: function (data) {
+                    sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                    sessionStorage.setItem("Token", data.token)
+                    fnGetUserBasicDetails(lastPart)
+                },
+                error: function (xhr, status, error) {
+                    sessionStorage.setItem("Token", '')
+                    jQuery.unblockUI();
+                    $('#alrt1').show();
+                    $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
+                    App.scrollTo($('#alrt1'), -200);
+                    $('#alrt1').fadeOut(5000);
+                }
+            });
+
+        }
+        else {
+            url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
+
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: url,
+                cache: false,
+                crossDomain: true,
+                dataType: "json",
+                success: function (response) {
+                    // alert(response.token)
+                    sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                    sessionStorage.setItem("Token", response.token)
+                    fnGetUserBasicDetails(lastPart)
+                },
+                error: function (xhr, status, error) {
+                    sessionStorage.setItem("Token", '')
+                    // var myObj = JSON.parse(xhr.responseText);
+                    jQuery.unblockUI();
+                    $('#alrt1').show();
+                    $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
+                    App.scrollTo($('#alrt1'), -200);
+                    $('#alrt1').fadeOut(5000);
+
+                }
+            })
+        }
+
+    }
+    function fnGetUserBasicDetails(lastPart) {
 
         jQuery.ajax({
             type: "GET",
@@ -196,7 +231,7 @@ var Login = function () {
             crossDomain: true,
             dataType: "json",
             success: function (data1) {
-               
+
                 jQuery.each(data1, function (key, value) {
 
                     // if (MemberID != '0') {
@@ -211,6 +246,7 @@ var Login = function () {
                     sessionStorage.setItem("UserType", value.userType);
                     sessionStorage.setItem("VendorId", value.vendorID);
                     sessionStorage.setItem("BidPreApp", value.bidpreapproval);
+                    sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -219,14 +255,14 @@ var Login = function () {
                             }
                         }
                         else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
-                              fnGetUserBasicDetails(lastPart)
+                            fnGetUserBasicDetails(lastPart)
                         }
 
                         else {
                             fetchMenuItemsForSession(lastPart);
                         }
                     }, 800);
-                    
+
                 });
 
             },
@@ -303,7 +339,7 @@ var Login = function () {
                     else {
 
                         fetchMenuItemsForSession(urlLast);
-                       
+
                         return
                     }
                 }, 1200);
@@ -335,7 +371,7 @@ var Login = function () {
     }
 
 
-   
+
     $('#forget-password').click(function () {
         jQuery('.login-form').hide();
         jQuery('.forget-form').show();
@@ -345,7 +381,7 @@ var Login = function () {
         jQuery('.login-form').show();
         jQuery('.forget-form').hide();
     });
-   
+
 
     return {
         //main function to initiate the module
@@ -362,7 +398,7 @@ var Login = function () {
 }();
 function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var custid = 0;
     if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
         custid = sessionStorage.getItem('CustomerID');
@@ -371,16 +407,16 @@ function Changeforgotpasswordfn() {
         "EmailID": $("#txtemail").val(),
         "CustomerID": parseInt(custid)
     }
-   
+
     jQuery.ajax({
-       
+
         url: APIPath + "ChangeForgotPassword/forgotPassword/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
+
             if (data.isSuccess == "-1") {
                 $('#alrt2').show();
                 $('#alertmessage2').html('Email Id does not exists.!');
@@ -389,7 +425,7 @@ function Changeforgotpasswordfn() {
                 resetfileds()
                 jQuery.unblockUI();
             }
-            else { 
+            else {
                 $('#succs2').show();
                 $('#sucssmessage2').html('Your new password is sent to your email address');
                 $('#succs2').fadeOut(6000);
@@ -397,7 +433,7 @@ function Changeforgotpasswordfn() {
                 resetfileds()
                 jQuery.unblockUI();
             }
-            
+
         }
     });
 
@@ -411,7 +447,7 @@ function resetfileds() {
 }
 
 function fetchMapCategory(categoryFor, vendorId) {
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -421,9 +457,9 @@ function fetchMapCategory(categoryFor, vendorId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-         
+
             jQuery("#tblCategoryMaster").empty();
-           
+
             var count = 3;
             var str = '';
             if (data.length > 0) {
@@ -454,8 +490,8 @@ function getIPs(callback) {
     var ip_dups = {};
     //compatibility for firefox and chrome
     var RTCPeerConnection = window.RTCPeerConnection
-              || window.mozRTCPeerConnection
-              || window.webkitRTCPeerConnection;
+        || window.mozRTCPeerConnection
+        || window.webkitRTCPeerConnection;
     var useWebKit = !!window.webkitRTCPeerConnection;
     //bypass naive webrtc blocking using an iframe
     if (!RTCPeerConnection) {
@@ -466,8 +502,8 @@ function getIPs(callback) {
         //
         var win = iframe.contentWindow;
         RTCPeerConnection = win.RTCPeerConnection
-                  || win.mozRTCPeerConnection
-                  || win.webkitRTCPeerConnection;
+            || win.mozRTCPeerConnection
+            || win.webkitRTCPeerConnection;
         useWebKit = !!win.webkitRTCPeerConnection;
     }
     //minimal requirements for data connection

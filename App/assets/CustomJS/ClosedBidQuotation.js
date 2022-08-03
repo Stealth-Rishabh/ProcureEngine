@@ -405,7 +405,7 @@ var FormWizard = function () {
                             $('#txtenddatettime').val('')
                             return false;
                         }
-                        else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
+                        else if ($('#tblapprovers >tbody >tr').length == 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please  Map Commercial Approver.');
                             Metronic.scrollTo($(".alert-danger"), -200);
@@ -413,19 +413,19 @@ var FormWizard = function () {
                             return false;
 
                         }
-                        else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
+                        /*else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Map Approver.');
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(5000);
                             return false;
 
-                        }
+                        }*/
                         //new 
                         else if ($('#txtbidopendatetime').val() != '' && BidOpenDate < EndDT) {
                             $('.alert-danger').show();
                             $('#txtbidopendatetime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('Bid Cannot be opend before Submission Date ');
+                            $('#spandanger').html('Bid Cannot be opened before Submission Date ');
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(7000);
                             $('#txtbidopendatetime').val('')

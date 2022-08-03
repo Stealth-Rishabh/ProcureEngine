@@ -186,7 +186,7 @@
                                         </div>
                                         <!--<div class="form-actions fluid">
 
-                                        </div>-->
+                    </div>-->
                                     </div>
 
                                     <div class="portlet-body display-none" id="displayTable">
@@ -407,6 +407,26 @@
 
                             </div>
 
+                        </div>
+                        <div class="col-md-10">
+                            <div class="display-none" id="displayVendorTable">
+
+
+                                <div class="table-scrollable">
+                                    <table class="table table-striped table-bordered table-hover" id="tblVendorSummary">
+                                        <thead>
+                                            <tr>
+                                                <th>Vendor Name</th>
+                                                <th>Status</th>
+                                                <th>Response Date & Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
                         </div>
 
                     </div>
@@ -895,6 +915,7 @@
             ComponentsPickers.init();
             fetchMenuItemsFromSession(7, 44);
             fetchRegisterUser();
+            FetchInvitedVendorsForeRFQ();
         });
     </script>
 

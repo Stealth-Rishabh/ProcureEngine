@@ -1,12 +1,10 @@
-﻿//$("#ulMain").toggleClass("page-sidebar-menu").toggleClass("page-sidebar-menu page-sidebar-menu-closed");
-//$("#bid").toggleClass("page-header-fixed page-quick-sidebar-over-content").toggleClass("page-header-fixed page-quick-sidebar-over-content page-sidebar-closed");
-function logoutFunction() {
+﻿function logoutFunction() {
     sessionStorage.clear();
     sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 function error401Messagebox(error) {
-    //bootbox.alert(error + "<br> Session has expired Please Login again.", function () {
+
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
         window.location = sessionStorage.getItem('MainUrl');
         sessionStorage.clear();
@@ -23,16 +21,16 @@ function getCurrentFinancialYear() {
     var financial_year = "";
     var today = new Date();
     if ((today.getMonth() + 1) <= 3) {
-        financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
+        financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear() - 1)
     } else {
-        financial_year = today.getFullYear() + "-" + (today.getFullYear() + 1)
+        financial_year = (today.getFullYear() - 1) + "-" + (today.getFullYear())
     }
     return financial_year;
 }
 function getlastFinancialYear() {
     var financial_year = "";
     var today = new Date();
-    financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
+    financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear() - 1)
     return financial_year;
 }
 function fnErrorMessageText(spanid, formid) {
@@ -46,7 +44,6 @@ function fnErrorMessageText(spanid, formid) {
     $('#' + spanid).html('').html('Some error occured . Please contact administrator');
     $('.alert-danger').fadeOut(8000);
 
-    // App.scrollTo(error1, -200);
     jQuery.unblockUI();
     return false;
 
@@ -117,10 +114,7 @@ function calltoaster(msz, title, type) {
         "timeOut": "0",
         "hideDuration": "0",
         "showEasing": "swing"
-        // "showDuration": "1000",
-        //"hideEasing": "linear",
-        //"showMethod": "fadeIn",
-        //"hideMethod": "fadeOut"
+
     }
     if (type == 'success') {
         toastr.success(msz, title, options);
@@ -131,7 +125,7 @@ function calltoaster(msz, title, type) {
     } else {
         toastr.info(msz, 'Information', options);
     }
-    // toastr.success(msz, title)
+
 }
 function setCommonData() {
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
@@ -228,14 +222,13 @@ function CheckOnlineStatus(msg) {
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        //$('#basic').modal('show');
+
         toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
 
 
     }
     else {
 
-        // toastr.clear();
     }
 
 }
@@ -264,7 +257,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblVendorSummary tbody").find("tr"), function () {
-        console.log($(this).text());
+
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -307,7 +300,7 @@ function checkfilesize(fileid) {
         return false;
     }
     else if (size > 7340032) {
-        // $('#spandanger,#spanerrordomestic').html('Filesize must be less than or equal to 5 MB.!')
+
         $('.alert-danger').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
@@ -408,10 +401,6 @@ function addMinutes(time, minsToAdd) {
 function convertTo24Hour(time) {
     var hours = parseInt(time.substr(0, 2));
 
-    //if (hours < 10) {
-    //     hours = parseInt(hours.substr(0, 1))
-    //}
-
     if (time.indexOf('am') != -1 && hours == 12) {
         time = time.replace('12', '0');
     }
@@ -462,7 +451,7 @@ function CancelBidDuringConfig() {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-    //alert(JSON.stringify(Cancelbid))
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -561,8 +550,6 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
         $('#txtChatMsg').removeClass('hide')
 
     }
-    ////updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
-    //$(".pulsate-regular").css('animation', 'none');
 
 }
 
@@ -633,8 +620,6 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //$('#quick_sidebar_tab_1').removeAttr('Class')
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -682,19 +667,16 @@ function fetchvendor() {
                     if (data[i].connected == true) {
                         $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
                         $('#v' + data[i].userID).removeAttr('disabled')
-                        // $('#chatbtn').addClass('hide')
-                        // $('#txtChatMsg').addClass('hide')
+
                     }
                     else {
                         $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
                         $('#v' + data[i].userID).attr('disabled', 'disabled')
-                        // $('#chatbtn').addClass('hide')
-                        //  $('#txtChatMsg').addClass('hide')
 
                     }
                     vName = data[i].vendorName
                 }
-                //  }
+
             }
             QuickSidebar.init();
         },
@@ -789,7 +771,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //fetchvendor(vendorId);
+
             return true;
 
         },
@@ -908,7 +890,7 @@ function fnDownloadAttachments(filename, foldername) {
         crossDomain: true,
         success: function (data) {
 
-            console.log(data)
+
             var downloadwindow = window.open(data, "_blank");
             downloadwindow.focus();
         },
@@ -924,17 +906,20 @@ function fnDownloadAttachments(filename, foldername) {
 }
 function fnConverToLocalTime(dttime) {
     if (dttime != null) {
-
-        //alert(dttime)
         var theStDate = new Date(dttime)
-
-        //theStDate = new Date(theStDate.toLocaleString() + ' UTC');
         theStDate = new Date(theStDate + ' UTC');
-        //alert(sessionStorage.getItem('preferredtimezone'));
-        theStDate = theStDate.toLocaleString("en-IN", {
-            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
-            //timeZone: "Asia/Calcutta", dateStyle: "long", hourCycle: "h24", timeStyle: "short"
-        })
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            })
+        }
+        else {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            })
+
+        }
         theStDate = theStDate.replace('at', '-');
         return theStDate;
     }
@@ -944,15 +929,19 @@ function fnConverToLocalTime(dttime) {
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
-       
+
         var theStDate = new Date(dttime)
         theStDate = theStDate.toDateString()
-      
-        theStDate = new Date(theStDate + ' UTC');
 
-        theStDate = theStDate.toLocaleString("en-IN", {
-            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
-        })
+        theStDate = new Date(theStDate + ' UTC');
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            theStDate = theStDate.toLocaleString("en-IN", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
+            })
+        }
+        else {
+            theStDate = theStDate.toLocaleString("en-IN", { dateStyle: "medium" })
+        }
         theStDate = theStDate.replace('at', '-');
         return theStDate;
     }
@@ -969,13 +958,13 @@ function fnConverToTime(dttime) {
         theStDate = theStDate.toLocaleString("en-IN", {
             timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "full", hourCycle: "h24", timeStyle: "short"
         })
-        console.log(theStDate)
+
 
         theStDate = theStDate.replace('at', ' ');
 
         var currentDate = new Date(theStDate);
         var dtst = moment(currentDate).format('HH:mm:ss');
-        console.log(currentDate)
+
         //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
         return dtst;
     }
@@ -986,24 +975,17 @@ function fnReturnTimeFromDate(dttime) {
     var dtst = '';
     if (dttime != null) {
         //  console.log
-        debugger;
         dttime = dttime.replace('-', '');
         dttime = dttime.replace('at', '');
 
         var theStDate = new Date(dttime);
 
-        theStDate = theStDate.toLocaleString('en-GB');
+        theStDate = theStDate.toLocaleString('en-GB').trim();
 
-
-        //theStDate = theStDate.replace('at', ' ');
-        console.log(theStDate)
         var currentDate = new Date(theStDate);
-        console.log(currentDate)
-        // = theStDate.getHours() + ':' + theStDate.getMinutes() + ':' + theStDate.getSeconds();
-        dtst = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
-        // console.log(dtst)
-        //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
-        //return dtst;
+
+        dtst = moment(currentDate).format('HH:mm:ss');
+
     }
     else {
         dtst = '..'

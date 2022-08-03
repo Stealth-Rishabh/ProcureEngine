@@ -39,7 +39,52 @@ if (window.location.search) {
     fetchApproverRemarks('C');
     fetchAttachments();
 }
+function FetchInvitedVendorsForeRFQ() {
 
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            if (data.length > 0) {
+                $('#tblVendorSummary tbody').empty();
+                $('#displayVendorTable').show();
+                //jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
+
+                //$('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
+                //$('#rq_deadline').html(fnConverToLocalTime(data[0].deadline))
+
+                //  $('#rq_deadline').html(data[0].deadline);
+                //$('#rq_description').html(data[0].rqDescription);
+                //$("#deadlineModal").html(fnConverToLocalTime(data[0].deadline));
+
+                for (var i = 0; i < data.length; i++) {
+
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + fnConverToLocalTime(data[i].responseDate) + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    if (data[i].rqStatus.toLowerCase() != 'close' && data[i].rqStatus.toLowerCase != 'regretted') {
+                        $('#send_remainder').removeClass('hide')
+                    }
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
 
 sessionStorage.setItem("RFQVersionId", "0")
 function getSummary(vendorid, version) {
@@ -75,16 +120,9 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
 
-            //if (new Date(bidopeningdate) <= new Date()) {
-            //    ShowPrice = 'Y';
-            //    $('#btnPDF').show()
-            //}
-            if (bidopeningdate != null || bidopeningdate != '') {
-                if (bidopeningdate <= new Date()) {
-                    ShowPrice = 'Y';
-                    $('#btnPDF').show();
-                }
-
+            if (new Date(bidopeningdate) <= new Date()) {
+                ShowPrice = 'Y';
+                $('#btnPDF').show()
             }
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprative > thead').empty()
