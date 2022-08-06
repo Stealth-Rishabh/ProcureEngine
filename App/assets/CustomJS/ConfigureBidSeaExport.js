@@ -1057,9 +1057,9 @@ var FormWizard = function () {
                                 $('.lambdafactor').removeAttr("disabled", "disabled");
                             }
 
-                            if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null) {
-                                fnfetchRFQVendor();
-                            }
+                            /* if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null) {
+                                 fnfetchRFQVendor();
+                             }*/
                             if ($("#txtBidDuration").val() == '0') {
                                 $('#form_wizard_1').bootstrapWizard('previous');
                                 //$(".alert-danger").find("span").html('').html('Bid Duration can not be zero.')
@@ -1549,7 +1549,10 @@ function ConfigureBidForSeaExportTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-
+            if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null) {
+                console.log($('#hdnRfiRfqID').val())
+                fnfetchRFQVendor();
+            }
             if ($('#ddlbidclosetype').val() == "S") {
                 $('#txtBidDuration').val(BidDuration)
                 fetchSeaExportDetails();
@@ -2770,16 +2773,16 @@ function hideshowDuration() {
     }
 }
 function Dateandtimevalidate(indexNo) {
-
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
 
     }
+    debugger;
     var Tab1Data = {
         "BidDate": StartDT
     }
-    //alert(JSON.stringify(Tab1Data));
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -3355,9 +3358,9 @@ function printdataSeaBid(result) {
                 $("#file-excelparameter").val('');
                 return false;
             }
-            else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length >= 200) {
+            else if ($.trim(result[i].Remarks).length >= 200) {//$.trim(result[i].Remarks) == '' || 
                 $("#error-excelparameter").show();
-                $("#errspan-excelparameter").html('Remarks can not be blank or length should be 200 characters of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#errspan-excelparameter").html('Remarks length should be 200 characters of Item no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#file-excelparameter").val('');
                 return false;
             }
@@ -3621,6 +3624,8 @@ function printdataSeaBid(result) {
     }
 }
 function fnSeteRFQparameterTable() {
+    $('#hdnRfiRfqID').val('0') // Set RFQ ID 0 to remove vendors if already selected on RFQ
+    ispulledrfqcounter = 0;
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
         $("#success-excelparameter").hide();
@@ -3628,7 +3633,6 @@ function fnSeteRFQparameterTable() {
         $("#error-excelparameter").hide();
         $('#loader-msgparameter').html('Processing. Please Wait...!');
         $('#modalLoaderparameter').removeClass('display-none');
-        $('#hdnRfiRfqID').val(0); // Set RFQ ID 0 to remove vendors if already selected on RFQ
         jQuery("#tblServicesProduct").empty();
         jQuery("#tblServicesProductPrev").empty();
 
@@ -3740,7 +3744,7 @@ jQuery("#txtrfirfqsubject").typeahead({
 
         if (map[item].rfqid != '0') {
             $('#hdnRfiRfqID').val(map[item].rfqid);
-
+            fnpulldatafromRFQ();
         }
         else {
             gritternotification('Please Select RFQ properly!!!')
@@ -3792,6 +3796,7 @@ function stringDivider(str, width, spaceReplacer) {
     }
     return str;
 }
+var ispulledrfqcounter = 0;
 function populatetablewithRFQData() {
     totalitemdurationstagger = 0;
     jQuery.ajax({
@@ -3803,78 +3808,83 @@ function populatetablewithRFQData() {
         success: function (data, status, jqXHR) {
 
             if (data.length > 0) {
-                //jQuery("#tblServicesProduct").empty();
-                // jQuery("#tblServicesProductPrev").empty();
-                var i;
-                i = rowAppItems;
-                if (data[0].rfqRemark != "") {
-                    for (var i = 0; i < data.length; i++) {
-                        var decrementon = ''
+                if (ispulledrfqcounter == 0) {
+                    jQuery("#tblServicesProduct").empty();
+                    jQuery("#tblServicesProductPrev").empty();
+                    rowAppItemsrno = 0;
+                    rowAppItems = 0;
+                }
+                //var i;
+                //i = rowAppItems;
+                // if (data[0].rfqRemark != "") {
+                ispulledrfqcounter = ispulledrfqcounter + 1;
+                for (var i = 0; i < data.length; i++) {
+                    var decrementon = ''
 
-                        decrementon = 'Amount'
+                    decrementon = 'Amount'
 
-                        if ($('#ddlAuctiontype').val() == "83") {
-                            ShowL1Price = 'Y';
-                        }
-                        else {
-                            ShowL1Price = 'N';
-
-                        }
-                        if (!jQuery("#tblServicesProduct thead").length) {
-                            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th  class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].itemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + i + '>' + data[i].rfqRemark + '</td><td class=text-right id=TP' + i + ' >' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + i + '>Y</td><td class=text-right id=mindec' + i + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + i + ' >' + decrementon + '</td><td class=hide id=deconval' + i + ' >A</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + i + '>' + 10 + '</td><td id=maskL1' + i + ' >' + ShowL1Price + '</td><td id=showstart' + i + '>N</td><td class=text-right id=unitrate' + i + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + i + ' >' + data[i].poNo + '</td><td id=povendorname' + i + '>' + data[i].poVendorName + '</td><td id=podate' + i + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + i + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + i + '>' + data[i].rfqParameterID + '</td></tr>');
-                        }
-                        else {
-                            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].itemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + i + ' id=TP' + i + ' >' + data[i].rfqRemark + '</td><td class=text-right>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + i + '>Y</td><td class=text-right id=mindec' + i + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + i + ' >' + decrementon + '</td><td class=hide id=deconval' + i + ' >A</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + i + ' >' + 10 + '</td><td id=maskL1' + i + '>' + ShowL1Price + '</td><td id=showstart' + i + '>N</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + i + ' >' + data[i].poNo + '</td><td id=povendorname' + i + '>' + data[i].poVendorName + '</td><td id=podate' + i + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + i + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + i + '>' + data[i].rfqParameterID + '</td></tr>');
-
-                        }
-                        $('#wrap_scroller').show();
-
-                        if (!jQuery("#tblServicesProductPrev thead").length) {
-
-                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + i + '>' + data[i].itemCode + '</td><td id=destinationportprev' + i + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + i + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + i + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + i + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + i + ' >Y</td><td class=text-right id=mindecprev' + i + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + i + '>' + decrementon + '</td><td class=hide id=deconvalprev' + i + ' >A</td><td class="text-right hide" id=LIPprev' + i + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + i + ' >' + 10 + '</td><td id=maskL1prev' + i + ' >' + ShowL1Price + '</td><td id=showstartprev' + i + ' >N</td><td class=text-right id=unitrateprev' + i + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + i + ' >' + data[i].poNo + '</td><td id=povendornameprev' + i + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + i + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + i + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + i + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + i + ' >' + data[i].rfqParameterID + '</td></tr>');
-
-                            totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
-
-                        } else {
-
-                            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + i + ' >' + data[i].itemCode + '</td><td id=destinationportprev' + i + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + i + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + i + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + i + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + i + ' >Y</td><td class=text-right id=mindecprev' + i + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + i + '>' + decrementon + '</td><td class=hide id=deconvalprev' + i + ' >A</td><td class="text-right hide" id=LIPprev' + i + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + i + ' >' + 10 + '</td><td id=maskL1prev' + i + ' >' + ShowL1Price + '</td><td id=showstartprev' + i + ' >N</td><td class=text-right id=unitrateprev' + i + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + i + ' >' + data[i].poNo + '</td><td id=povendornameprev' + i + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + i + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + i + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + i + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + i + ' >' + data[i].rfqParameterID + '</td></tr>');
-                            totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
-
-                        }
-                        sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
-                        if ($('#ddlbidclosetype option:selected').val() == "S") {
-                            $('.itemclass').removeClass('hide')
-                        }
-                        else {
-                            $('.itemclass').addClass('hide')
-                            $('.itemclass').val(0)
-                        }
-                        $('#wrap_scrollerPrev').show();
-                        rowAppItems = rowAppItems + 1;
-                        rowAppItemsrno = rowAppItemsrno + 1;
+                    if ($('#ddlAuctiontype').val() == "83") {
+                        ShowL1Price = 'Y';
+                    }
+                    else {
+                        ShowL1Price = 'N';
 
                     }
-                    jQuery('#divalertpull').slideDown('show');
-                    $('#spansuccess1pull').text('Data pulled successfully.')
+                    if (!jQuery("#tblServicesProduct thead").length) {
+                        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th  class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProduct").append('<tr id=trid' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationport' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TP' + rowAppItems + ' >' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + rowAppItems + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + rowAppItems + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + rowAppItems + '>Y</td><td class=text-right id=mindec' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + rowAppItems + ' >' + decrementon + '</td><td class=hide id=deconval' + rowAppItems + ' >A</td><td class="text-right hide" id=LIP' + rowAppItems + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + rowAppItems + '>' + 10 + '</td><td id=maskL1' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstart' + rowAppItems + '>N</td><td class=text-right id=unitrate' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendorname' + rowAppItems + '>' + data[i].poVendorName + '</td><td id=podate' + rowAppItems + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + rowAppItems + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + rowAppItems + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + rowAppItems + '>' + data[i].rfqParameterID + '</td></tr>');
+                    }
+                    else {
+                        jQuery("#tblServicesProduct").append('<tr id=trid' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationport' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + rowAppItems + ' id=TP' + rowAppItems + ' >' + data[i].rfqRemark + '</td><td class=text-right>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + rowAppItems + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + rowAppItems + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + rowAppItems + '>Y</td><td class=text-right id=mindec' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + rowAppItems + ' >' + decrementon + '</td><td class=hide id=deconval' + rowAppItems + ' >A</td><td class="text-right hide" id=LIP' + rowAppItems + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + rowAppItems + ' >' + 10 + '</td><td id=maskL1' + rowAppItems + '>' + ShowL1Price + '</td><td id=showstart' + rowAppItems + '>N</td><td class=text-right id=unitrate' + rowAppItems + '>' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendorname' + rowAppItems + '>' + data[i].poVendorName + '</td><td id=podate' + rowAppItems + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + rowAppItems + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + rowAppItems + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + rowAppItems + '>' + data[i].rfqParameterID + '</td></tr>');
 
-                    setTimeout(function () {
-                        jQuery('#divalertpull').css('display', 'none');
-                        jQuery('#RFQPullData').modal('hide');
-                    }, 5000);
-                    jQuery.unblockUI();
-                    return true;
+                    }
+                    $('#wrap_scroller').show();
+
+                    if (!jQuery("#tblServicesProductPrev thead").length) {
+
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationportprev' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + rowAppItems + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + rowAppItems + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + rowAppItems + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + rowAppItems + ' >Y</td><td class=text-right id=mindecprev' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + rowAppItems + '>' + decrementon + '</td><td class=hide id=deconvalprev' + rowAppItems + ' >A</td><td class="text-right hide" id=LIPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + rowAppItems + ' >' + 10 + '</td><td id=maskL1prev' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstartprev' + rowAppItems + ' >N</td><td class=text-right id=unitrateprev' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendornameprev' + rowAppItems + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + rowAppItems + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + rowAppItems + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + rowAppItems + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + rowAppItems + ' >' + data[i].rfqParameterID + '</td></tr>');
+
+                        totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
+
+                    } else {
+
+                        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + rowAppItems + ' >' + data[i].itemCode + '</td><td id=destinationportprev' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + rowAppItems + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + rowAppItems + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + rowAppItems + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + rowAppItems + ' >Y</td><td class=text-right id=mindecprev' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + rowAppItems + '>' + decrementon + '</td><td class=hide id=deconvalprev' + rowAppItems + ' >A</td><td class="text-right hide" id=LIPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + rowAppItems + ' >' + 10 + '</td><td id=maskL1prev' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstartprev' + rowAppItems + ' >N</td><td class=text-right id=unitrateprev' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendornameprev' + rowAppItems + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + rowAppItems + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + rowAppItems + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + rowAppItems + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + rowAppItems + ' >' + data[i].rfqParameterID + '</td></tr>');
+                        totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
+
+                    }
+                    sessionStorage.setItem('TotalBidDuration', totalitemdurationstagger)
+                    if ($('#ddlbidclosetype option:selected').val() == "S") {
+                        $('.itemclass').removeClass('hide')
+                    }
+                    else {
+                        $('.itemclass').addClass('hide')
+                        $('.itemclass').val(0)
+                    }
+                    $('#wrap_scrollerPrev').show();
+                    rowAppItems = rowAppItems + 1;
+                    rowAppItemsrno = rowAppItemsrno + 1;
+
                 }
-                else {
-                    jQuery('#divalerterrpull').slideDown('show');
-                    $('#spanerterrpull').text('The RFQ is not configured for Reverse Auction!!!')
-                    setTimeout(function () {
-                        jQuery('#divalerterrpull').css('display', 'none');
-                    }, 5000);
-                    jQuery.unblockUI();
-                    return false;
-                }
+                jQuery('#divalertpull').slideDown('show');
+                $('#spansuccess1pull').text('Data pulled successfully.')
+
+                setTimeout(function () {
+                    jQuery('#divalertpull').css('display', 'none');
+                    jQuery('#RFQPullData').modal('hide');
+                }, 5000);
+                jQuery.unblockUI();
+                return true;
+                //}
+                //else {
+                //    jQuery('#divalerterrpull').slideDown('show');
+                //    $('#spanerterrpull').text('The RFQ is not configured for Reverse Auction!!!')
+                //    setTimeout(function () {
+                //        jQuery('#divalerterrpull').css('display', 'none');
+                //    }, 5000);
+                //    jQuery.unblockUI();
+                //    return false;
+                //}
             }
             else {
                 jQuery('#divalerterrpull').slideDown('show');

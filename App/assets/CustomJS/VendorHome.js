@@ -209,7 +209,9 @@ function fetchPendingBid() {
                     var _bidStatus = data[0].pendingActivity[i].bidStatus
                     if (_bidStatus == null || _bidStatus == '') {
                         if (data[0].pendingActivity[i].startDate != null || data[0].pendingActivity[i].startDate != '') {
+
                             var StartDate = fnConverToShortDT(data[0].pendingActivity[i].startDate);
+
                             _bidStatus = StartDate;
                         }
 
@@ -219,23 +221,26 @@ function fetchPendingBid() {
                         }
                     }
 
-
                     str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + data[0].pendingActivity[i].linkURL + "'\,\'" + data[0].pendingActivity[i].bidID + "'\,\'" + data[0].pendingActivity[i].isTermsConditionsAccepted + "'\,\'" + data[0].pendingActivity[i].bidTypeID + "',\'" + data[0].pendingActivity[i].version + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=icon" + i + "></i></div></div>";
                     str += "<div class='cont-col2'><div class='desc'>" + data[0].pendingActivity[i].activityDescription + "&nbsp;&nbsp;";
 
 
-                    if (data[0].pendingActivity[i].isTermsConditionsAccepted != "Y") {
+                    if (data[0].pendingActivity[i].isTermsConditionsAccepted != "Y" && data[0].pendingActivity[i].rfqStatus == "N") {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + " </span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
 
                     }
-                    else {
+                    else if (data[0].pendingActivity[i].isTermsConditionsAccepted == "Y" && data[0].pendingActivity[i].rfqStatus != "C") {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + "</span>";
+
+                    }
+                    else if (data[0].pendingActivity[i].isTermsConditionsAccepted == "Y" && data[0].pendingActivity[i].rfqStatus == "C") {
+                        str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + " </span>&nbsp;&nbsp;<span class='badge badge-success'> Submitted </span>";
                     }
                     str += "</div></div></div></div>";
 
-                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                    str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
                     //str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
                     str += "<div class='date'><span class='label label-sm label-warning'>" + _bidStatus + "</span></div></div>";
                     str += "</a></li>";
@@ -466,7 +471,6 @@ function fetchReguestforQuotationDetailseRFQ() {
 
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
 
         },
         error: function (xhr, status, error) {
@@ -617,17 +621,20 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='col1'><div class='cont'>";
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
-                        if (BidData[i].isTermsConditionsAccepted != "Y") {
+                        if (BidData[i].isTermsConditionsAccepted != "Y" && BidData[i].rfqStatus == "N") {
 
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
                         }
-                        else {
+                        else if (BidData[i].isTermsConditionsAccepted == "Y" && BidData[0].rfqStatus != "C") {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
+                        else if (BidData[i].isTermsConditionsAccepted == "Y" && BidData[i].rfqStatus == "C") {
 
+                            str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-success'> Submitted </span>";
+                        }
                         str += "</div></div></div></div>";
 
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
                         jQuery('#UlPendingActivity').append(str);
@@ -671,7 +678,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
@@ -716,7 +723,7 @@ function fetchBidDataDashboard(requesttype) {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
 
@@ -759,7 +766,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
 
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
 
@@ -803,7 +810,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
@@ -853,7 +860,7 @@ function fetchBidDataDashboard(requesttype) {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";

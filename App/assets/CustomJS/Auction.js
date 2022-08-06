@@ -117,13 +117,13 @@ function calltoaster(msz, title, type) {
 
     }
     if (type == 'success') {
-        toastr.success(msz, title, options);
+        toastr.success(decodeURIComponent(msz), title, options);
     } else if (type == 'error') {
-        toastr.error(msz, 'Error');
+        toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
-        toastr.warning(msz, 'Warning');
+        toastr.warning(decodeURIComponent(msz), 'Warning');
     } else {
-        toastr.info(msz, 'Information', options);
+        toastr.info(decodeURIComponent(msz), 'Information', options);
     }
 
 }
@@ -917,6 +917,28 @@ function fnConverToLocalTime(dttime) {
         else {
             theStDate = theStDate.toLocaleString("en-GB", {
                 dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            })
+
+        }
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+
+function fnConverToLocalTimeWithSeconds(dttime) {
+    if (dttime != null) {
+        var theStDate = new Date(dttime)
+        theStDate = new Date(theStDate + ' UTC');
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+            })
+        }
+        else {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
             })
 
         }

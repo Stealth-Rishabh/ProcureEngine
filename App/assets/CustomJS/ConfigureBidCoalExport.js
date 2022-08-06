@@ -507,7 +507,7 @@ var FormWizard = function () {
                         maxlength: 2000
                     },
                     txtbiddescriptionP: {
-                        required: false,
+                        //required: false,
                         maxlength: 200
                     },
                     txtquantitiy: {
@@ -1853,27 +1853,20 @@ function DownloadFile(aID) {
 
 
 function Dateandtimevalidate(indexNo) {
-    var StartDT = new Date();
-    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-
-    }
-    var Tab1Data = {
-        "BidDate": StartDT
-    }
-    //alert(JSON.stringify(Tab1Data));
+    var dtst = new Date($('#txtbidDate').val().replace('-', ''));
+    dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
     jQuery.ajax({
-        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + dtst,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
         cache: false,
         crossDomain: true,
-        data: JSON.stringify(Tab1Data),
         dataType: "json",
-        success: function (data) {
+        success: function (RFQData) {
 
-            if (data == '1') {
+            if (RFQData[0].bidId == 1) {
                 if (indexNo == 'index1') {
                     ConfigureBidForCoalTab1();
                     fetchPSBidDetailsForPreview();

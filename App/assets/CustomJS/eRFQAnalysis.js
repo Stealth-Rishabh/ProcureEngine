@@ -119,10 +119,25 @@ function fetchrfqcomprative() {
             var strExcelQ = '';
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
-
-            if (new Date(bidopeningdate) <= new Date()) {
+            var _CurrentDate = new Date();
+            var _RFQOpenDate = new Date(bidopeningdate.replace('-',''));
+            debugger;
+            if (_rfqBidType != 'Open') {
+                if (bidopeningdate != null || bidopeningdate != '') {
+                    if (_RFQOpenDate <= _CurrentDate) {
+                        ShowPrice = 'Y';
+                        $('#btnPDF').show()
+                    }
+                }
+                else {
+                    ShowPrice = 'N';
+                    $('#btnPDF').hide()
+                }
+            }
+            else {
                 ShowPrice = 'Y';
                 $('#btnPDF').show()
+
             }
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprative > thead').empty()

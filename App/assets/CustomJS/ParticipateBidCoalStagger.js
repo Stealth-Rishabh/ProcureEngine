@@ -150,9 +150,10 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
 
-    //toastr.clear();
+    toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+    toastr.success('You have a new message.', 'New Message')
+
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -378,6 +379,7 @@ function fetchBidSummaryVendorproduct() {
                             }
                             else {
                                 $('#txtquote' + i).val('')
+                                $('#txtquote' + i).removeAttr('disabled', 'disabled')
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                             }
                             if (data[i].loQuotedPrice == 'L1') {

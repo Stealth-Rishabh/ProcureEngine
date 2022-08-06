@@ -8,6 +8,8 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var displayForS = "";
 var openlefttime = 0;
+
+
 $(document).on("keyup", "#tblParticipantsService .form-control", function () {
     var txt = this.id
 
@@ -518,7 +520,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     //toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-    calltoaster('You have a new message.', 'New Message', 'success');
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -539,7 +541,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-    calltoaster('You have a new message.', 'New Message', 'success')
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") == chat.fromID) {
     $("#chatList").append('<div class="post out">'

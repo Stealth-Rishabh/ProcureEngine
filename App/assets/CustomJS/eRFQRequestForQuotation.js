@@ -141,7 +141,7 @@ var FormWizard = function () {
                         maxlength: 50
                     },
                     txtItemRemarks: {
-                        required: true,
+                        //required: true,
                         maxlength: 200
                     },
                     //txttat: {
@@ -575,6 +575,7 @@ function InsUpdRFQDEtailTab1() {
 
 
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+    var _RFQBidType = 'Open';
 
     var Tab1Data = {
 
@@ -591,6 +592,7 @@ function InsUpdRFQDEtailTab1() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
+        "RFQBidType": _RFQBidType,
         "TechnicalApproval": $("#drp_TechnicalApp").val()
 
     };

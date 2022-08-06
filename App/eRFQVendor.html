@@ -114,8 +114,10 @@
                 </div>
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
-                        <li>
-                            <i class="fa fa-home"></i><a href="javascript:;" onclick="fnRedirectToHome()">Home</a> <i class="fa fa-angle-right">
+                        <li id="LiISsurrogate" class="hide">Surrogate</li>
+                        <li id="LIVendor">
+                            <i class="fa fa-home"></i>
+                            <a href="javascript:;" onclick="fnRedirectToHome()">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
 
@@ -143,21 +145,22 @@
                                         <div class="form-body">
                                             <ul class="nav nav-pills nav-justified steps">
                                                 <li>
-                                                    <a href="#tab1" data-toggle="tab" class="step">
+                                                    <a href="#tab1" data-toggle="tab" class="step active">
                                                         <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>RFQ Details</span>
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="#tab2" data-toggle="tab" class="step">
-                                                        <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Input Parameters</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#tab3" data-toggle="tab" class="step active">
-                                                        <span class="number">3 </span>
+                                                        <span class="number">2 </span>
                                                         <span class="desc"><i class="fa fa-check"></i>Questions/Attachments </span>
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="#tab3" data-toggle="tab" class="step">
+                                                        <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Input Parameters</span>
+                                                    </a>
+                                                </li>
+
 
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
@@ -320,31 +323,6 @@
 
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="table-scrollable">
-                                                                <table class="table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-12">
-                                                            <table class="table table-striped table-bordered table-hover" id="tblRFQLevelTCForQuot"></table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <label class="control-label col-md-2">
-                                                                Your Remarks (If any):
-                                                            </label>
-                                                            <div class="col-md-8">
-                                                                <textarea id="txtvendorremarks" name="txtvendorremarks" rows="4" class="form-control maxlength" maxlength="2000"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="tab-pane" id="tab3">
                                                     <div class="panel-group accordion" id="acc_TC">
 
                                                         <div class="panel panel-default">
@@ -403,6 +381,32 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="tab-pane" id="tab3">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="table-scrollable">
+                                                                <table class="table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <table class="table table-striped table-bordered table-hover" id="tblRFQLevelTCForQuot"></table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label class="control-label col-md-2">
+                                                                Your Remarks (If any):
+                                                            </label>
+                                                            <div class="col-md-8">
+                                                                <textarea id="txtvendorremarks" name="txtvendorremarks" rows="4" class="form-control maxlength" maxlength="2000"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="form-actions">
@@ -545,7 +549,14 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <h3 class="form-section" id="headerspecificresponse">Specific Desired Response</h3>
+                                        <div class="row hide" id="divspecificresponse">
+                                            <div class="col-md-12">
+                                                <div class="table-scrollable">
+                                                    <table id="tblQuestionsPrev" class="table table-bordered"></table>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!--/row-->
                                         <h3 class="form-section">Input Parameters</h3>
                                         <div class="row">
@@ -571,14 +582,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h3 class="form-section" id="headerspecificresponse">Specific Desired Response</h3>
-                                        <div class="row hide" id="divspecificresponse">
-                                            <div class="col-md-12">
-                                                <div class="table-scrollable">
-                                                    <table id="tblQuestionsPrev" class="table table-bordered"></table>
-                                                </div>
-                                            </div>
-                                        </div>
+
 
 
                                     </div>
@@ -588,7 +592,7 @@
                                                 <div class="row">
                                                     <div class="col-md-offset-11 col-md-9">
                                                         <button type="button" class="btn default" id="back_prev_btn">Back</button>
-                                                        <button type="button" class="btn green" onclick="addQuestionAnswer('Y')"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
+                                                        <button type="button" class="btn green" onclick="fnSubmiteRFQSendmail('Y')"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
 
                                                     </div>
                                                 </div>
@@ -899,7 +903,15 @@
 
                 fetchRFQResponseTocheckVersion('Question', version);
                 fetchRFQResponseTocheckVersion('Attachment', version);
+                if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                    $('#LiISsurrogate').removeClass('hide')
+                    $('#LIVendor').addClass('hide')
 
+                }
+                else {
+                    $('#LiISsurrogate').addClass('hide')
+                    $('#LIVendor').removeClass('hide')
+                }
             }
             Metronic.init();
             Layout.init();

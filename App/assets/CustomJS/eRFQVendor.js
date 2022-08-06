@@ -134,9 +134,7 @@ var FormWizard = function () {
             }
 
             function format(state) {
-
                 if (!state.id) return state.text; // optgroup
-
                 return "<img class='flag' src='assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
 
             }
@@ -145,13 +143,9 @@ var FormWizard = function () {
             form.validate({
 
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-
                 errorElement: 'span', //default input error message container
-
                 errorClass: 'help-block help-block-error', // default input error message class
-
                 focusInvalid: false, // do not focus the last invalid input
-
                 rules: {
 
                 },
@@ -159,84 +153,47 @@ var FormWizard = function () {
                 messages: {
 
                 },
-
                 errorPlacement: function (error, element) {
-
                     if (element.attr("name") == "gender") {
-
                         error.insertAfter("#form_gender_error");
 
                     } else if (element.attr("name") == "payment[]") {
-
                         error.insertAfter("#form_payment_error");
-
                     } else if (element.attr("name") == "txtPODate") {
                         error.insertAfter("#daterr");
                     }
                     else {
-
                         error.insertAfter(element);
 
                     }
 
                     if ($("#txtPODate").closest('.input-group').attr('class') == 'input-group has-error') {
-
                         $("#btncal").css("margin-top", "-22px");
-
                     }
-
                 },
 
                 invalidHandler: function (event, validator) {
-
                 },
 
                 highlight: function (element) {
-
                     $(element)
-
                         .closest('.inputgroup').removeClass('has-success').addClass('has-error');
-
                     $(element)
-
                         .closest('.col-md-4,.xyz').removeClass('has-success').addClass('has-error');
 
                 },
 
                 unhighlight: function (element) {
-
                     $(element)
-
                         .closest('.inputgroup').removeClass('has-error');
                     $(element)
-
                         .closest('.col-md-4,.xyz').removeClass('has-error');
 
                 },
-
                 success: function (label) {
-
-                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") {
-
-                        label.closest('.inputgroup').removeClass('has-error').addClass('has-success');
-                        label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success');
-
-
-
-                        label.remove();
-
-                    } else {
-
-                        label.addClass('valid') // mark the current input as valid and display OK icon
-
-
-
-                            .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                        label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success'); // set success class to the control group
-
-                    }
-
-
+                    label.addClass('valid') // mark the current input as valid and display OK icon
+                        .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    label.closest('.col-md-4,.xyz').removeClass('has-error').addClass('has-success'); // set success class to the control group
 
                 },
 
@@ -246,55 +203,9 @@ var FormWizard = function () {
                 }
             });
 
-
-
-            var displayConfirm = function () {
-                $('#tab4 .form-control-static', form).each(function () {
-
-                    var input = $('[name="' + $(this).attr("data-display") + '"]', form);
-
-                    if (input.is(":radio")) {
-
-                        input = $('[name="' + $(this).attr("data-display") + '"]:checked', form);
-
-                    }
-
-                    if (input.is(":text") || input.is("textarea")) {
-
-                        $(this).html(input.val());
-
-                    } else if (input.is("select")) {
-
-                        $(this).html(input.find('option:selected').text());
-
-                    } else if (input.is(":radio") && input.is(":checked")) {
-
-                        $(this).html(input.attr("data-title"));
-
-                    } else if ($(this).attr("data-display") == 'payment') {
-
-                        var payment = [];
-
-                        $('[name="payment[]"]:checked').each(function () {
-
-                            payment.push($(this).attr('data-title'));
-
-                        });
-
-                        $(this).html(payment.join("<br>"));
-
-                    }
-
-                });
-
-            }
-
-
-
             var handleTitle = function (tab, navigation, index) {
 
                 var total = navigation.find('li').length;
-
                 var current = index + 1;
 
                 // set wizard title
@@ -304,17 +215,11 @@ var FormWizard = function () {
                 // set done steps
 
                 jQuery('li', $('#form_wizard_1')).removeClass("done");
-
                 var li_list = navigation.find('li');
-
                 for (var i = 0; i < index; i++) {
-
                     jQuery(li_list[i]).addClass("done");
 
                 }
-
-
-
                 if (current == 1) {
                     $('#form_wizard_1').find('.button-previous').hide();
 
@@ -326,13 +231,9 @@ var FormWizard = function () {
                 if (current >= total) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-submit').show();
-
-                    displayConfirm();
-
                 } else {
 
                     $('#form_wizard_1').find('.button-next').show();
-
                     $('#form_wizard_1').find('.button-submit').hide();
 
                 }
@@ -361,36 +262,46 @@ var FormWizard = function () {
                     }
                     else if (index == 2) {
 
-                        var flag = "T";
-                        var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
+                        var flagQ = "T";
+                        var rowCountQ = jQuery('#tblquestions tr').length;
 
-                        var count = 1;
-                        for (i = 0; i < rowCount - 1; i++) {
-                            if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
-                                $('#commremarks' + i).removeClass('has-success')
-                                $('#commremarks' + i).css("border", "1px solid red")
-                                flag = "F";
+                        var countQ = 1;
+                        for (i = 0; i < rowCountQ - 1; i++) {
+                            if ($("#answers" + i).val() == "") {
+                                $('#answers' + i).removeClass('has-success')
+                                $('#answers' + i).css("border", "1px solid red")
+                                flagQ = "F";
                                 // $('#form_wizard_1').bootstrapWizard('previous');
                                 $('.alert-danger').show();
-                                $('#spandanger').html('Please fill RFQ Commercial Terms.');
+                                $('#spandanger').html('Please fill RFQ Answer.');
                                 Metronic.scrollTo($(".alert-danger"), -200);
                                 $('.alert-danger').fadeOut(7000);
-                                count = count + 1;
+                                countQ = countQ + 1;
                             }
                             else {
-                                flag = "T"
+                                flagQ = "T"
                             }
                         }
-                        if (flag == "F") {
+                        if (flagQ == "F") {//&& rowCountQ == countQ
                             return false;
                         }
+                        else if (jQuery('#fileToUpload1').val() != "") {
+                            $('.alert-danger').show();
+                            $('#spandanger').text('Your file is not attached. Please do press "+" button after uploading the file.');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
+                            return false;
+                        }
+                        else {
+                            if (flagQ == "T") {
+                                fnsaveAttachmentsquestions();
 
-                        if (flag == "T") {
-                            saveQuotation();
+                            }
                         }
 
                     }
                     else if (index == 3) {
+
                     }
                     handleTitle(tab, navigation, index);
 
@@ -417,47 +328,37 @@ var FormWizard = function () {
             });
 
             $('#form_wizard_1').find('.button-previous').hide();
-
             $('#form_wizard_1 .button-submit').click(function () {
-                var flagQ = "T";
-                var rowCountQ = jQuery('#tblquestions tr').length;
+                var flag = "T";
+                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
 
-                var countQ = 1;
-                for (i = 0; i < rowCountQ - 1; i++) {
-                    if ($("#answers" + i).val() == "") {
-                        $('#answers' + i).removeClass('has-success')
-                        $('#answers' + i).css("border", "1px solid red")
-                        flagQ = "F";
+                var count = 1;
+                for (i = 0; i < rowCount - 1; i++) {
+                    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
+                        $('#commremarks' + i).removeClass('has-success')
+                        $('#commremarks' + i).css("border", "1px solid red")
+                        flag = "F";
                         // $('#form_wizard_1').bootstrapWizard('previous');
                         $('.alert-danger').show();
-                        $('#spandanger').html('Please fill RFQ Answer.');
+                        $('#spandanger').html('Please fill RFQ Commercial Terms.');
                         Metronic.scrollTo($(".alert-danger"), -200);
                         $('.alert-danger').fadeOut(7000);
-                        countQ = countQ + 1;
+                        count = count + 1;
                     }
                     else {
-                        flagQ = "T"
+                        flag = "T"
                     }
                 }
-                if (flagQ == "F") {//&& rowCountQ == countQ
+                if (flag == "F") {
                     return false;
-                }
-                else if (jQuery('#fileToUpload1').val() != "") {
-                    $('.alert-danger').show();
-                    $('#spandanger').text('Your file is not attached. Please do press "+" button after uploading the file.');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    return false;
-                }
-                else {
-                    if (flagQ == "T") {
-                        fnsaveAttachmentsquestions();
-                        $('#BidPreviewDiv').show();
-                        $('#form_wizard_1').hide();
-                        return true;
-                    }
                 }
 
+                if (flag == "T") {
+                    saveQuotation();
+                    $('#BidPreviewDiv').show();
+                    $('#form_wizard_1').hide();
+                    return true;
+                }
 
             }).hide();
 
@@ -859,8 +760,8 @@ function fetchRFQResponse(Flag, version) {
                 if (data.length > 0) {
                     $('#headerspecificresponse').removeClass('hide')
                     $('#divspecificresponse').removeClass('hide')
-                    jQuery('#tblquestions').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
-                    jQuery('#tblQuestionsPrev').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
+                    jQuery('#tblquestions').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th class='bold' style='width:10%!important'>Attachment</th><th style='width:30%!important'>Answer</th></tr></thead>");
+                    jQuery('#tblQuestionsPrev').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th class='bold' style='width:10%!important'>Attachment</th><th style='width:30%!important'>Answer</th></tr></thead>");
 
                     for (var i = 0; i < data.length; i++) {
 
@@ -869,8 +770,10 @@ function fetchRFQResponse(Flag, version) {
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
-                        str += '<td style="width:40%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
-                        strprev += '<td style="width:40%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
+                        str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span></td>';
+                        strprev += '<td style="width:10%!important"><label class="control-label" id=quesattch' + i + '><a href=javascript:; Attachment</a></label></td>';//' + data[i].answer + '
+                        str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
+                        strprev += '<td style="width:30%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
 
 
                         jQuery('#tblquestions').append(str);
@@ -979,6 +882,7 @@ function fnsaveAttachmentsquestions() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+
             fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
         },
         error: function (xhr, status, error) {
@@ -997,7 +901,26 @@ function fnsaveAttachmentsquestions() {
     });
 
 }
-function addQuestionAnswer(ismailsent) {
+
+function fnSubmiteRFQSendmail(ismailsent) {
+    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    var CurDt = new Date();
+    if (EndDT < CurDt) {
+        bootbox.alert("RFQ submission time has ended.", function () {
+
+            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                window.location = sessionStorage.getItem('HomePage');
+                sessionStorage.clear();
+
+            }
+            else {
+                window.location = 'VendorHome.html';
+                jQuery.unblockUI();
+            }
+            return false;
+        });
+
+    }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Tab2data = {
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1082,9 +1005,9 @@ function fetchReguestforQuotationDetails() {
         success: function (RFQData) {
 
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
+            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
 
             jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
             $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1266,6 +1189,7 @@ function fetchRFIParameteronload(ver) {
     fetchRFQLevelTC(ver);
 
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
+    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1284,13 +1208,14 @@ function fetchRFIParameteronload(ver) {
             var totalammwithGST = 0;
 
             if (data.length > 0) {
+
                 if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                 }
                 else {
-                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>HSN Number</th></tr></thead>");
-                    jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>HSN Number</th></tr></thead>");
+                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>HSN/SAC Number</th></tr></thead>");
+                    jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>HSN/SAC Number</th></tr></thead>");
 
                 }
 
@@ -1311,7 +1236,8 @@ function fetchRFIParameteronload(ver) {
                             jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
                         }
                         else {
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal"  data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td><input type = "text" name=vendoritemrem rows=2 class="form-control" maxlength=100  autocomplete=off id=vendoritemrem' + i + ' onkeypress="return isNumber(event)" value=' + data[i].vendorITemRemarks + ' >' + data[i].vendorItemRemarks + '</input></td></tr>').appendTo("#tblServicesProduct");
+                            //jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal"  data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td><textarea name=vendoritemrem rows=2 class="form-control" maxlength=100  autocomplete=off id=vendoritemrem' + i + ' onkeypress="return isNumber(event)" value=' + data[i].vendorITemRemarks + ' >' + data[i].vendorItemRemarks + '</textarea></td></tr>').appendTo("#tblServicesProduct");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal"  data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off onkeyup=thousands_separators_input(this)/></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td><input type ="text" name=vendoritemrem rows=2 class="form-control" maxlength=10  autocomplete=off id=vendoritemrem' + i + ' onkeypress="return isNumberKey(event)" value=' + data[i].vendorITemRemarks + ' >' + data[i].vendorItemRemarks + '</input></td></tr>').appendTo("#tblServicesProduct");
                             jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
 
                         }
@@ -1323,7 +1249,7 @@ function fetchRFIParameteronload(ver) {
                             jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
                         }
                         else {
-                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button"  class="btn default btn-xs red-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off /></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off /></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td><input type = "text" name=comm rows=2 class="form-control" maxlength=100  autocomplete=off id=vendoritemrem' + i + ' onkeypress="return isNumber(event)" value=' + data[i].vendorItemRemarks + '  >' + data[i].vendorItemRemarks + '</input></td></tr>').appendTo("#tblServicesProduct");
+                            jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td data-toggle="popover" data-content="Click here for detailed description" data-trigger="hover"><a  href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class=fit>' + $('#txtcurrency').val() + '</td><td class="hide">' + data[i].rfqDelivery + '</td><td><button type="button"  class="btn default btn-xs red-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion(\'' + data[i].rfqParameterId + '\',\'mkswithoutgst' + i + '\',\'' + data[i].rfQuantity + '\',\'' + ver + '\',\'mkswithgst' + i + '\',\'' + data[i].rfqVendorPrice + '\')">Input Price</button></td><td><input type="text" readonly="true" id="mkswithoutgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqPriceWithoutGST) + '"  autocomplete=off /></td><td><input type="text" readonly="true" id="mkswithgst' + i + '" class="form-control input-circle pricebox text-right" value="' + thousands_separators(data[i].rfqVendorPricewithTax) + '"  autocomplete=off /></td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="hidden">' + data[i].rfqVendorPrice + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td><input type = "text" name=comm rows=2 class="form-control" maxlength=10  autocomplete=off id=vendoritemrem' + i + ' onkeypress="return isNumberKey(event)" value=' + data[i].vendorItemRemarks + '  >' + data[i].vendorItemRemarks + '</input></td></tr>').appendTo("#tblServicesProduct");
                             jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].rfqParameterId + '</td><td class=hidden>' + data[i].rfqid + '</td><td><a href="#responsiveDescModal" data-toggle="modal" onClick="showDetailedDescription(\'' + detailsdesc + '\')" >' + data[i].rfqShortName + '</a></td><td>' + data[i].rfqUomId + '</td><td>' + thousands_separators(data[i].rfQuantity) + '</td><td class="fit hide">' + data[i].tat + '</td><td class="fit hide">' + $('#txtcurrency').val() + '</td><td class="fit hide">' + data[i].rfqDelivery + '</td><td class="text-right">' + thousands_separators(data[i].rfqPriceWithoutGST) + '</td><td class="text-right">' + thousands_separators(data[i].rfqVendorPricewithTax) + '</td><td class="hidden">' + description + '</td><td class="hidden">' + data[i].rfqRemark + '</td><td class="text-right">' + thousands_separators((data[i].rfqPriceWithoutGST * data[i].rfQuantity).round(3)) + '</td><td class="text-right">' + thousands_separators((data[i].rfqVendorPricewithTax * data[i].rfQuantity).round(3)) + '</td><td>' + data[i].rfqDelivery + '</td><td>' + data[i].vendorItemRemarks + '</td></tr>').appendTo("#tblRFQPrev");
 
                         }
@@ -1358,13 +1284,13 @@ function fetchRFIParameteronload(ver) {
     });
 }
 function isNumberKey(evt) {
-    
     var charCode = (evt.which) ? evt.which : event.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57))
         return false;
 
     return true;
 }
+
 function showDetailedDescription(descText) {
     //alert(descText)
     $("#paraItemDescription").html(descText);
@@ -1434,7 +1360,15 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
                 PricewithoutGSTDiscount = PricewithoutGSTDiscount + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
             }
+            _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
+            var vendorRemarks = "";
+            if (_RFQBidType == 'Open') {
+                vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+            }
+            else {
+                vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
+            }
             // Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
             var Pdetails = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
@@ -1450,7 +1384,8 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(2)').html())),
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
-                "VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                "VendorItemRemarks": vendorRemarks
 
             };
             PriceDetails.push(Pdetails)
@@ -1520,8 +1455,18 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 function saveQuotation() {
     var PriceDetails = [];
     var commercialterms = [];
+    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
+    var vendorRemarks = "";
+
     $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
         var this_row = $(this);
+        if (_RFQBidType == 'Open') {
+            vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+        }
+        else {
+            vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
+
+        }
         var quotes = {
             "VendorID": parseInt(sessionStorage.getItem('VendorId')),
             "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1536,7 +1481,8 @@ function saveQuotation() {
             "RFQTCID": 0,
             "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
             "FinalStatus": 'N',
-            "VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+            //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+            "VendorItemRemarks": vendorRemarks
 
         };
 

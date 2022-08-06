@@ -244,7 +244,6 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
     //toastr.clear();
-
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
     calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
@@ -258,7 +257,8 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
         + '</div>'
         + '</div>');
-
+    //  }
+    //$(".pulsate-regular").css('animation', 'none');
 });
 function sendChatMsgs() {
 
@@ -522,6 +522,7 @@ function fetchBidSummaryVendorFrench() {
                         }
                         else {
                             $('#txtquote' + i).val('')
+                            $('#txtquote' + i).removeAttr('disabled', 'disabled')
                             $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                         }
                         count = count + 1;

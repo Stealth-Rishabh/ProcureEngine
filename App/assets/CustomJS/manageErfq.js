@@ -492,15 +492,10 @@ function fetchReguestforQuotationDetails(RFQID) {
             else {
                 jQuery('#lbltechnicalApproval').html("Not Required")
             }
-            if (_RFQBidType == open) {
-                $("#lblOpenDate").hide();
-                $("#lblRFQOpenDate").hide();
-                $("#txtbidopendatetime").hide();
-                $("#btnUpdateDate").hide();
-            }
-            else {
+            if (_RFQBidType == 'Closed') {
                 $("#lblOpenDate").show();
                 $("#lblRFQOpenDate").show();
+
                 if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != "") {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
@@ -511,6 +506,14 @@ function fetchReguestforQuotationDetails(RFQID) {
                     $("#btnUpdateDate").show();
 
                 }
+
+                
+            }
+            else {
+                $("#lblOpenDate").hide();
+                $("#lblRFQOpenDate").hide();
+                $("#txtbidopendatetime").hide();
+                $("#btnUpdateDate").hide();
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)

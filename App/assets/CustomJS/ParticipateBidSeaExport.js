@@ -13,12 +13,12 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     console.log("connection started")
 
 }).catch(function (err) {
-
-    console.log(err.toString())
-
-    bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
+    alert(err.toString())
+    bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page")
 
 });
+
+
 connection.on("refreshRAQuotes", function (data) {
 
     console.log(BidForID)
@@ -159,7 +159,13 @@ connection.on("refreshColumnStatus", function (data) {
                     });
 
                 }
+
+
+
                 //}
+
+
+
             },
 
             error: function (xhr, status, error) {
@@ -355,6 +361,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     // toastr.clear();
 
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
+
     //toastr.success('You have a new message.', 'New Message')
 
     calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
@@ -394,7 +401,8 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
 
     // toastr.success('You have a new message.', 'New Message')
-    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success')
+
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
 
     // if (sessionStorage.getItem("UserID") == chat.fromID) {
@@ -984,12 +992,14 @@ function fetchBidSummaryVendorproduct() {
 
                             var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
 
-
                             jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
 
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(LqQuote))
 
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
+
+
+
                             $('#spanamount' + i).addClass('hide spanclass');
 
                             $('#spanmszA' + i).addClass('hide spanclass');
@@ -1005,6 +1015,8 @@ function fetchBidSummaryVendorproduct() {
                             }
 
                             if (data[i].maskL1Price == 'N') {
+
+
 
                                 $("#L1Price" + i).css("display", "none");//.hide();
 
@@ -1061,6 +1073,7 @@ function fetchBidSummaryVendorproduct() {
                             else {
 
                                 $('#txtquote' + i).val('')
+                                $('#txtquote' + i).removeAttr('disabled', 'disabled')
 
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
 
@@ -1325,6 +1338,7 @@ function InsUpdQuoteSeaExport(index) {
 
 
         insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
+
         var QuoteProduct = {
 
             "VendorID": vendorID,
@@ -1340,11 +1354,15 @@ function InsUpdQuoteSeaExport(index) {
             "isPrePricing": "N"
 
         }
-        //console.log(JSON.stringify(QuoteProduct))
+
         $('#hdnselectedindex').val(index);
+
+        console.log(QuoteProduct);
+
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
 
             return console.error(err.toString());
+
         });
 
         $('#txtquote' + index).val('')
