@@ -44,6 +44,12 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    <style>
+        input#file-excelparameter {
+            position: fixed;
+            top: -120px;
+        }
+    </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -602,6 +608,7 @@
                                                             <input type="hidden" id="rowid" />
                                                             <input type="hidden" id="rowidPrev" />
                                                             <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" href="#FAexcel" id="btnexcel">Excel</button>
                                                             <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
                                                         </div>
 
@@ -934,6 +941,34 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
+    <div class="row hide">
+        <a id="A" style="display:none;"></a>
+        <table id="tblBiddetails" class="table table-striped table-bordered table-hover hide">
+            <thead>
+                <tr id="Trhead">
+
+                    <th data-style="Mandatory">ItemService</th>
+                    <th data-style="NonMandatory">TargetPrice</th>
+                    <th data-style="Mandatory">HideTargetPrice</th>
+                    <th data-style="Mandatory">UOM</th>
+                    <th data-style="Mandatory">Quantity</th>
+
+                    <th data-style="Mandatory">BidStartPrice</th>
+                    <th data-style="Mandatory">MinimumIncreament</th>
+                    <th data-style="Mandatory">IncreamentOn</th>
+                    <th data-style="NonMandatory">LastInvoicePrice</th>
+
+
+                    <th data-style="Mandatory">ShowH1Price</th>
+                    <th data-style="Mandatory">ShowStartPrice</th>
+
+                </tr>
+            </thead>
+        </table>
+
+        <table class="table table-bordered" id="tblUOM"></table>
+
+    </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -1169,6 +1204,198 @@
             </div>
         </div>
     </div>
+    <div id="FAexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Upload Forward Auction Bid Parameter using excel file
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>
+                    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
+                        <div class="form-body">
+
+                            <div class="progress-form display-none" id="modalLoaderparameter">
+
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msgparameter">
+
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter" />
+                                        <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter" style="text-decoration:none;">Instructions</a></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="clearfix"></div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger display-hide" id="error-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="errspan-excelparameter"></span>
+                                    </div>
+                                    <div class="alert alert-success" id="success-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="succspan-excelparameter" class="text-center"></span><br />
+                                        <div class="col-md-12 col-md-offset-5" id="btnyesno">
+                                            <!--<button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>-->
+                                            <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
+                                            <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="instructionsDivParameter">
+                                        <button class="close" data-close="alert"></button>
+
+                                        <div id="instructionSpanParameter" class="text-center">
+                                            <div class="scroller" style="height: 250px; display: block !important; " data-always-visible="1" data-rail-visible="0" id="scrolrUOM">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-12 text-left">
+                                                            1. Open a New Excel Sheet (or download template):
+                                                        </label>
+                                                        <br /><br />
+                                                        <ul class='col-md-6 text-left'>
+
+                                                            <li>ItemService</li>
+                                                            <li>TargetPrice</li>
+                                                            <li>HideTargetPrice</li>
+                                                            <li>Quantity</li>
+                                                            <li>UOM</li>
+                                                            <li>BidStartPrice</li>
+                                                            <li>MinimumIncreament</li>
+
+                                                        </ul>
+
+                                                        <ul class='col-md-6 text-left'>
+
+                                                            <li>IncreamentOn</li>
+                                                            <li>LastInvoicePrice</li>
+                                                            <li class="hide">PoUnitRate</li>
+                                                            <li class="hide">PoNo</li>
+                                                            <li class="hide">PoVendorName</li>
+                                                            <li class="hide">PoDate</li>
+                                                            <li class="hide">PoValue</li>
+                                                            <li>ShowH1Price</li>
+                                                            <li>ShowStartPrice</li>
+
+                                                        </ul>
+                                                        <!--<label class="col-md-12 text-left">
+                                                            Skip this step if you have downloaded Excel Template
+                                                        </label>-->
+
+                                                        <br />
+                                                    </div>
+
+
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-12 text-left">  2. Please enter <b>UOM </b>as given below:</label><br /><br />
+                                                        <div id="ULUOM_instructions"></div>
+
+                                                        <div class='clearfix'></div>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        3. Select <b>HideTargetPrice (Y or N)</b> as under:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>Y for Hide Target Price to all vendors</li>
+                                                        <li>N for Show Target Price to all vendors</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        4. Select <b>IncrementOn (A or P)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>A - to select bid increment in Amount</li>
+                                                        <li>P - to select bid increment in percentage</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        5. Select <b>ShowH1Price (Y or N)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>N - for not showing ongoing H1 Price to all vendor</li>
+                                                        <li>Y - for showing ongoing H1 Price to all vendors</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        6. Select <b>ShowStartPrice (Y or N)</b> as given below:
+                                                    </label><br /><br />
+                                                    <ul class='col-md-12 text-left'>
+                                                        <li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>
+                                                        <li>N for Hide</li>
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        7. Please ensure all <b>Prices</b> and <b>Quantity</b> are in Number format, and <b>Dates</b> in Date format.
+                                    </div>
+
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
@@ -1208,6 +1435,7 @@
     <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
@@ -1268,7 +1496,11 @@
             fetchVendorGroup('M', 0); // used to fetch product category
         });
 
+        document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+            document.getElementById('file-excelparameter').click();
+        });
 
+        $('#file-excelparameter').change(handleFileparameter);
         $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
     </script>
 </body>

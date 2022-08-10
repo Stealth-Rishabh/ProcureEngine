@@ -400,9 +400,6 @@ function ValidateVendor() {
 
 }
 
-
-
-
 $("#chkAll").click(function () {
 
 
@@ -453,17 +450,12 @@ function fetchRegisterUser() {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
-
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
-
         crossDomain: true,
-
         dataType: "json",
-
         success: function (data) {
             if (data.length > 0) {
                 allUsers = data;
@@ -702,7 +694,6 @@ var FormWizard = function () {
                         label
 
                             .addClass('valid') // mark the current input as valid and display OK icon
-
                             .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
 
                     }
@@ -1555,7 +1546,6 @@ function InsUpdProductSevices() {
         $("#tblServicesProduct tr:gt(0)").each(function () {
 
             var this_row = $(this);
-
             if ($.trim(this_row.find('td:eq(1)').html()) == $('#txtshortname').val() && $.trim(this_row.find('td:eq(2)').html()) != $('#txttargetprice').val() && $.trim(this_row.find('td:eq(3)').html()) != $('#txtquantitiy').val() && $.trim(this_row.find('td:eq(4)').html()) != $("#dropuom option:selected").text() && $.trim(this_row.find('td:eq(5)').html()) != $('#txtbiddescriptionP').val() && $.trim(this_row.find('td:eq(6)').html()) != $('#txtContractDuration').val() && $.trim(this_row.find('td:eq(7)').html()) != $('#txtedelivery').val() && $.trim(this_row.find('td:eq(8)').html()) != $('#txtCeilingPrice').val() && $.trim(this_row.find('td:eq(10)').html()) != $('#txtminimumdecreament').val() && $.trim(this_row.find('td:eq(11)').html()) != $("#drpdecreamenton option:selected").text() && $.trim(this_row.find('td:eq(14)').html()) != $("#txtlastinvoiceprice").val()) {
 
                 st = "false"
@@ -3112,3 +3102,489 @@ function cloneBid() {
     window.location = 'cloneBid.html?param=' + encrypdata;
 }
 
+
+//*** FA Upload Excel
+$('#FAexcel').on("hidden.bs.modal", function () {
+    $("#instructionsDivParameter").hide();
+    $("#instructionSpanParameter").hide();
+    $("#error-excelparameter").hide();
+    $("#success-excelparameter").hide();
+    $("#file-excelparameter").val('');
+    $('#btnyesno').show()
+    $('#modalLoaderparameter').addClass('display-none');
+})
+function fnNoUpload() {
+    $("#instructionsDivParameter").hide();
+    $("#instructionSpanParameter").hide();
+    $("#error-excelparameter").hide();
+    $("#success-excelparameter").hide();
+    $("#file-excelparameter").val('');
+    $('#RAexcel').modal('hide');
+    $('#btnyesno').show()
+    $('#modalLoaderparameter').addClass('display-none');
+}
+
+
+$("#btninstructionexcelparameter").click(function () {
+    var ErrorUOMMsz = '<ul class="col-md-3 text-left">';
+    var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+    var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+    for (var i = 0; i < parseInt(quorem); i++) {
+        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+        var z = (parseInt(quorem) + i);
+        if (z <= allUOM.length - 1) {
+            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+        }
+    }
+    ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+    ErrorUOMMszRight = ErrorUOMMszRight + '</ul>'
+
+    // alert(ErrorUOMMsz + ErrorUOMMszRight)
+    $("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
+    $("#instructionsDivParameter").show();
+    $("#instructionSpanParameter").show();
+});
+function handleFileparameter(e) {
+
+    //Get the files from Upload control
+    var files = e.target.files;
+    var i, f;
+    //Loop through files
+
+    for (i = 0, f = files[i]; i != files.length; ++i) {
+        var reader = new FileReader();
+        var name = f.name;
+        reader.onload = function (e) {
+            var data = e.target.result;
+
+            var result;
+            var workbook = XLSX.read(data, { type: 'binary' });
+
+            var sheet_name_list = workbook.SheetNames;
+            sheet_name_list.forEach(function (y) { /* iterate through sheets */
+                //Convert the cell value to Json
+                var sheet1 = workbook.SheetNames[0];
+                //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
+                if (roa.length > 0) {
+                    result = roa;
+                }
+            });
+            //Get the first column first cell value
+            //alert(JSON.stringify(result))
+            printdataSeaBid(result)
+        };
+        reader.readAsArrayBuffer(f);
+    }
+}
+var Rowcount = 0;
+var ShowL1Price = ''
+var BidDuration = 0;
+function printdataSeaBid(result) {
+    var loopcount = result.length; //getting the data length for loop.
+    if (loopcount > 200) {
+        $("#error-excelparameter").show();
+        $("#errspan-excelparameter").html('Only max 200 Items is allowed. Please fill and upload the file again.');
+        $("#file-excelparameter").val('');
+        return false;
+    }
+    else {
+        var ErrorMszDuplicate = '';
+        var i;
+        //var numberOnly = /^[0-9]+$/;
+        var numberOnly = /^[0-9]\d*(\.\d+)?$/;
+        $("#temptableForExcelDataparameter").empty();
+        $("#temptableForExcelDataparameter").append("<tr><th>ItemService</th><th>TargetPrice</th><th>HideTargetPrice</th><th>Quantity</th><th>UOM</th><th>BidStartPrice</th><th>MinimumIncreament</th><th>IncreamentOn</th>th>LastInvoicePrice</th><th>ShowH1Price</th><th>ShowStartPrice</th></tr>");
+        // checking validation for each row
+        var targetPrice = '';
+        var BidstartPrice = 0;
+        var minimuminc = 0;
+        var LastInvoicePrice = 0;
+        var st = 'true'
+
+        
+        //var SelectedCurrency = $('#txtselectedCurrency').val();
+        var z = 0;
+        for (i = 0; i < loopcount; i++) {
+
+          
+            if ($.trim(result[i].TargetPrice) == '') {
+                targetPrice = 0;
+            }
+            else {
+                targetPrice = $.trim(result[i].TargetPrice);
+            }
+            if ($.trim(result[i].LastInvoicePrice) == '') {
+                LastInvoicePrice = 0;
+            }
+            else {
+                LastInvoicePrice = $.trim(result[i].LastInvoicePrice);
+            }
+            if ($.trim(result[i].BidStartPrice) == '') {
+                BidstartPrice = 0;
+            }
+            else {
+                BidstartPrice = $.trim(result[i].BidStartPrice);
+            }
+            if ($.trim(result[i].MinimumIncreament) == '') {
+                minimuminc = 0;
+            }
+            else {
+                minimuminc = $.trim(result[i].MinimumIncreament);
+            }
+            if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 100) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Item/Product/Services can not be blank or length should be 100 characters of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ItemService).toLowerCase() == $.trim(result[i - z].ItemService).toLowerCase() && i > 0) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('ItemService with same name already exists of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            //else if (!result[i].TargetPrice.trim().match(numberOnly) || targetPrice == 0 ) {
+            //    $("#error-excelparameter").show();
+            //    $("#errspan-excelparameter").html('Target Price should be in numbers only of Item no ' + (i + 1) +'.');
+            //    $("#file-excelparameter").val('');
+            //    return false;
+            //}
+            else if ($.trim(result[i].HideTargetPrice) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Hide Target Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ShowH1Price) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Show L1 Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].ShowStartPrice) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Show Start Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '') {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Quantity should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ($.trim(result[i].UOM) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Quantity UOM can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+
+            else if (!result[i].BidStartPrice.trim().match(numberOnly) || BidstartPrice == 0) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Bid Start Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (!result[i].MinimumIncreament.trim().match(numberOnly) || minimuminc == 0) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum Increment Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+
+            else if ($.trim(result[i].IncreamentOn) == '') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('IncreamentOn can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimuminc) < parseInt(BidstartPrice)) {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum increment should be greater than bid start price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimuminc) < parseInt(20) && $.trim(result[i].IncreamentOn) == "P") {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum increment should be greater than 20% of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if (parseInt(minimuminc) < parseFloat(20 * (BidstartPrice) / 100) && $.trim(result[i].IncreamentOn) == "A") {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Minimum increment should be greater than 20% of Bid Start Price of Item no ' + (i + 1) + '. Please fill and upload the file again.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            
+            
+            else {
+               
+                // if values are correct then creating a temp table
+                $("<tr><td id=itemserviceexcel" + i + ">" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td id=TPexcel" + i + ">" + targetPrice + "</td><td id=hideTP" + i + ">" + result[i].HideTargetPrice + "</td><td id=quanexcel" + i + ">" + result[i].Quantity + "</td><td id=uom" + i + ">" + result[i].UOM + "</td><td id=BSPexcel" + i + ">" + BidstartPrice + "</td><td id=mininc" + i + ">" + minimuminc + "</td><td id=incrmenton" + i + ">" + result[i].IncreamentOn + "</td><td id=LIPexcel" + i + ">" + LastInvoicePrice + "</td><td id=showH1" + i + ">" + result[i].ShowH1Price + "</td><td id=showstartprice"+i+">" + result[i].ShowStartPrice + "</td></tr>").appendTo("#temptableForExcelDataparameter");
+                var arr = $("#temptableForExcelDataparameter tr");
+
+                $.each(arr, function (i, item) {
+                    var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
+
+                    var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+                    $(this).nextAll().each(function (i, inItem) {
+
+                        if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
+                            $(this).remove();
+                            st = 'false'
+                            ErrorMszDuplicate = ErrorMszDuplicate + 'Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
+                        }
+                    });
+                });
+            }
+
+            z++;
+
+        } // for loop ends
+
+        var excelCorrect = 'N';
+        var ErrorUOMMsz = '';
+        var ErrorUOMMszRight = '';
+        Rowcount = 0;
+
+        // check for UOM
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function (index) {
+            
+            excelCorrect = 'N';
+            Rowcount = Rowcount + 1;
+            for (var i = 0; i < allUOM.length; i++) {
+                if ($.trim($('#uom'+index).text()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
+                    excelCorrect = 'Y';
+                }
+
+            }
+            var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+            if (excelCorrect == "N") {
+                $("#error-excelparameter").show();
+                ErrorUOMMsz = '<b>UOM</b> not filled properly at row no ' + Rowcount + '. Please choose <b>UOM</b> from given below: <br><ul class="col-md-5 text-left">';
+                ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+                for (var i = 0; i < parseInt(quorem); i++) {
+                    ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+                    var z = (parseInt(quorem) + i);
+                    if (z <= allUOM.length - 1) {
+                        ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+                    }
+                }
+                ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+                ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
+                $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
+
+                return false;
+            }
+
+        });
+
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function (index) {
+            //var this_row = $(this);
+
+            switch ($.trim($('#hideTP'+index).text())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Hide Target Price</b> text not filled properly. Please choose Hide TP from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>Y for Hide Target Price to all vendors</li>'
+                        + '<li>N for Show Target Price to all vendors</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim($('#showH1' + index).text())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Show H1 Price</b> text not filled properly. Please choose Show L1 Price from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>N - for not showing ongoing L1 Price to all vendor</li>'
+                        + '<li>Y - for showing ongoing L1 Price to all vendors</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim($('#showstartprice' + index).text())) {
+                case 'N':
+                    excelCorrect = 'Y';
+                    break;
+                case 'Y':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>Show Start Price</b> text not filled properly. Please choose Show Start Price from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>Y for Show start price to all vendors – vendors can not quote higher than this price</li>'
+                        + '<li>N for Hide</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+            switch ($.trim($('#incrmenton' + index).text())) {
+                case 'A':
+                    excelCorrect = 'Y';
+                    break;
+                case 'P':
+                    excelCorrect = 'Y';
+                    break;
+
+                default:
+                    excelCorrect = 'N';
+                    $("#error-excelparameter").show();
+                    $("#errspan-excelparameter").html('<b>IncrementOn</b> not filled properly. Please choose IncrementOn from given below: <br/><br/>'
+                        + '<ul class="col-md-4 text-left">'
+                        + '<li>A - to select bid incrementOn in Amount</li>'
+                        + '<li>P - to select bid incrementOn in percentage</li>'
+                        + '</ul><div class=clearfix></div>'
+                        + '<br/>and upload the file again.');
+                    $("#file-excelparameter").val('');
+                    return false;
+            }
+        });
+        if (excelCorrect == 'Y') {
+            $('#btnyesno').show();
+            $("#error-excelparameter").hide();
+            $("#errspan-excelparameter").html('');
+            $("#success-excelparameter").show()
+            $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
+            $("#file-excelparameter").val('');
+            excelCorrect = '';
+            if (st == 'false') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html(ErrorMszDuplicate)
+            }
+        }
+    }
+}
+function fnSeteRFQparameterTable() {
+    var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
+    if (rowCount > 0) {
+        $("#success-excelparameter").hide();
+        $('#btnsforYesNo').show()
+        $("#error-excelparameter").hide();
+        $('#loader-msgparameter').html('Processing. Please Wait...!');
+        $('#modalLoaderparameter').removeClass('display-none');
+        jQuery("#tblServicesProduct").empty();
+        jQuery("#tblServicesProductPrev").empty();
+
+        
+        var incon = '';
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function (i) {
+            //var this_row = $(this);
+            if ($.trim($('#incrmenton' + i).text()) == "A") {
+                incon = "Amount";
+            }
+            else {
+                incon = "%age";
+            }
+            if (!jQuery("#tblServicesProduct thead").length) {
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide>FileSeqNo</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><a type="button" class="btn btn-sm btn-success" onclick="editvalues(trid' + i + ',tridPrev' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + $('#itemserviceexcel' + i).text() + '</td><td>' + $('#TPexcel' + i).text() + '</td><td>' + $('#quanexcel' + i).text() + '</td><td>' + $('#uom' + i).text() + '</td><td>' + $('#BSPexcel' + i).text() + '</td><td>' + $.trim($('#hideTP' + i).text())+'</td><td>' + $('#mininc' + i).text() + '</td><td>' + incon + '</td><td class=hide>' + $('#incrmenton' + i).text() + '</td><td>' + $("#LIPexcel" + i).text() + '</td><td>' + $('#showH1' + i).text() + '</td><td>' + $('#showstartprice'+i).text() + '</td></tr>')
+            }
+            else {
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><a type="button" class="btn btn-sm btn-success" onclick="editvalues(trid' + i + ',tridPrev' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + $('#itemserviceexcel' + i).text() + '</td><td>' + $('#TPexcel' + i).text() + '</td><td>' + $('#quanexcel' + i).text() + '</td><td>' + $('#uom' + i).text() + '</td><td>' + $('#BSPexcel' + i).text() + '</td><td>' + $.trim($('#hideTP' + i).text())+'</td><td>' + $('#mininc' + i).text() + '</td><td>' + incon + '</td><td class=hide>' + $('#incrmenton' + i).text() + '</td><td>' + $("#LIPexcel" + i).text() + '</td><td>' + $('#showH1' + i).text() + '</td><td>' + $('#showstartprice' + i).text() + '</td></tr>')
+
+            }
+
+            $('#wrap_scroller').show();
+            if (!jQuery("#tblServicesProductPrev thead").length) {
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + $('#itemserviceexcel' + i).text() + '</td><td>' + $('#TPexcel' + i).text() + '</td><td>' + $('#quanexcel' + i).text() + '</td><td>' + $('#uom' + i).text() + '</td><td>' + $('#BSPexcel' + i).text() + '</td><td>' + $.trim($('#hideTP' + i).text()) + '</td><td>' + $('#mininc' + i).text() + '</td><td>' + incon + '</td><td>' + $("#LIPexcel" + i).text() + '</td><td>' + $('#showH1' + i).text() + '</td><td>' + $('#showstartprice').val() + '</td></tr>')
+            }
+            else {
+                jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + $('#itemserviceexcel' + i).text() + '</td><td>' + $('#TPexcel' + i).text() + '</td><td>' + $('#quanexcel' + i).text() + '</td><td>' + $('#uom' + i).text() + '</td><td>' + $('#BSPexcel' + i).text() + '</td><td>' + $.trim($('#hideTP' + i).text())+ '</td><td>' + $('#mininc' + i).text() + '</td><td>' + incon + '</td><td>' + $("#LIPexcel" + i).text() + '</td><td>' + $('#showH1' + i).text() + '</td><td>' + $('#showstartprice' + i).text() + '</td></tr>')
+            }
+           
+            $('#wrap_scrollerPrev').show();
+         })
+        setTimeout(function () {
+            $('#FAexcel').modal('hide');
+            jQuery.unblockUI();
+        }, 500 * rowCount)
+    }
+    else {
+        $("#error-excelparameter").show();
+        $("#errspan-excelparameter").html('No Items Found in Excel');
+    }
+}
+$("#btndownloadTemplate").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+    
+    tableToExcelMultipleWorkSheet(['tblBiddetails', 'tblUOM'], ['DataTemplate', 'Instructions'], 'FAXLTemplate -' + postfix + '.xls')
+    
+});
+function fnfillInstructionExcel() {
+    $('#tblUOM').empty()
+
+    $('#tblUOM').append('<thead><tr><th data-style="Header" colspan=2>Select HideTargetPrice (Y or N) as under:</th></tr></thead>')
+    $('#tblUOM').append('<tr><td colspan=2>Y for Hide Target Price to all vendors</td></tr>');
+    $('#tblUOM').append('<tr><td colspan=2>N for Show Target Price to all vendors</td></tr>');
+    $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
+
+    $('#tblUOM').append('<tr><th   colspan=2 data-style="Header">Select DecrementOn (A or P) as given below:</th></tr>')
+    $('#tblUOM').append('<tr><td colspan=2>A - to select bid decrement in Amount</td></tr>');
+    $('#tblUOM').append('<tr><td colspan=2>P - to select bid decrement in percentage</td></tr>');
+    $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
+
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Select ShowL1Price (Y or N) as given below:</th></tr>')
+    $('#tblUOM').append('<tr><td  colspan=2>N - for not showing ongoing L1 Price to all vendor</td></tr>');
+    $('#tblUOM').append('<tr><td  colspan=2>Y - for showing ongoing L1 Price to all vendors</td></tr>');
+    $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
+
+    $('#tblUOM').append('<tr><th  colspan=2 data-style="Header">Select ShowStartPrice (Y or N) as given below:</th></tr>')
+    $('#tblUOM').append('<tr><td  colspan=2>Y for Show start price to all vendors – vendors can not quote higher than this price</td></tr>');
+    $('#tblUOM').append('<tr><td  colspan=2>N for Hide</td></tr>');
+    $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
+
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure all Prices and Quantity are in Number format, and Dates in Date format.</th></tr>')
+
+    $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
+
+    $('#tblUOM').append('<tr><th   colspan=2 data-style="Header" colspan=2>Please enter UOM as given below:</th></tr>')
+    var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+    for (var i = 0; i < parseInt(quorem); i++) {
+        $('#tblUOM').append('<tr id=TR' + i + '><td>' + allUOM[i].uom + '</td>');
+        var z = (parseInt(quorem) + i);
+        if (z <= allUOM.length - 1) {
+            $('#TR' + i).append('<td>' + allUOM[z].uom + '</td></tr>')
+        }
+    }
+
+    $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
+}

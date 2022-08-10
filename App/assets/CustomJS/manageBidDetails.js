@@ -4913,7 +4913,7 @@ function fnsubmitCAPrePrices() {
             }
             if (quote != "" && quote != "0") {
                 HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdCoalExport ';
-                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + $.trim($('#vid' + i).text()) + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",0,0,0 ; "
+                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + $.trim($('#vid' + i).text()) + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",0,0,0,'Y' ; "
             }
             i++;
         })
@@ -4991,7 +4991,7 @@ function fnsubmitFAPrePrices() {
             }
             if (quote != "" && quote != "0") {
                 HeaderQuery = HeaderQuery + 'exec PE.ParticipationScrapSaleSingleItem ';
-                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#vid' + i).text()) + " ; "
+                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#vid' + i).text()) + ",'Y' ; "
             }
             i++;
         })

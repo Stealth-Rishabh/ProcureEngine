@@ -953,9 +953,6 @@ function fetchBidSummaryVendorproduct() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
-
-
-
             if (data.length > 0) {
 
                 if (_isBidStarted == false) {
@@ -970,7 +967,6 @@ function fetchBidSummaryVendorproduct() {
                     }
 
                 }
-
                 else {
                     jQuery("#tblParticipantsService").show()
                     jQuery("#tblParticipantsService").empty()
@@ -1009,95 +1005,57 @@ function fetchBidSummaryVendorproduct() {
 
 
                             if (data[i].maskVendor == 'Y') {
-
                                 $("#targetprice" + i).html('Not Disclosed');
 
                             }
-
                             if (data[i].maskL1Price == 'N') {
-
-
-
                                 $("#L1Price" + i).css("display", "none");//.hide();
-
                                 $("#L1Pricenotdisclosed" + i).css("display", "block");
-
                             }
-
                             else {
-
-
-
                                 $("#L1Price" + i).css("display", "block");
-
                                 $("#L1Pricenotdisclosed" + i).css("display", "none");
 
                             }
 
                             if (data[i].showStartPrice == 'N') {
-
                                 $("#ceilingprice" + i).css("display", "none");
-
                                 //$("#CP" + i).css("display", "none");
-
                                 $("#ceilingpricenotdisclose" + i).css("display", "block");
-
-
-
                             }
 
                             else {
-
                                 $("#ceilingprice" + i).css("display", "block");
-
                                 //$("#CP" + i).css("display", "block");
-
                                 $("#ceilingpricenotdisclose" + i).css("display", "none");
 
                             }
 
-
-
-                            if (data[i].itemBlockedRemarks != '') {
-
+                           if (data[i].itemBlockedRemarks != '') {
                                 // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
-
                                 $('#txtquote' + i).val("Restricted")
-
                                 $('#txtquote' + i).attr('disabled', 'disabled')
-
                                 $('#AllItembtn' + i).attr('disabled', 'disabled')
 
                             }
-
                             else {
-
                                 $('#txtquote' + i).val('')
                                 $('#txtquote' + i).removeAttr('disabled', 'disabled')
-
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
 
                             }
-
-
-
                             if (data[i].loQuotedPrice == 'L1') {
 
                                 jQuery('#lblstatus' + i).css({
-
                                     'color': 'Blue',
-
-                                    'vertical-align': 'top'
-
+                                     'vertical-align': 'top'
                                 });
 
                             }
 
                             else {
 
-
-
-                                jQuery('#lblstatus' + i).css({
+                            jQuery('#lblstatus' + i).css({
 
                                     'color': 'Red',
 
@@ -1294,9 +1252,7 @@ function InsUpdQuoteSeaExport(index) {
     else if (parseFloat(value) < parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "81") {
 
         $('#spanamount' + index).removeClass('hide')
-
         $('#spanamount' + index).text('Maximum Bid  = Your last quote minus minimum Decrement Value of ' + Amount + " " + $('#lblcurrency').text())
-
         return false
 
     }
@@ -1392,9 +1348,6 @@ function startTimer(duration, display) {
 
 
         hours = parseInt(timer / 3600, 10)
-
-
-
         minutes = parseInt(timer / 60, 10) - (hours * 60)
 
         seconds = parseInt(timer % 60, 10);
@@ -1440,8 +1393,10 @@ function startTimer(duration, display) {
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
+        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+            $('.clsdisable').removeAttr('disabled')
+        }
         if (--timer < -3) {
-
             timer = -3;
             if (timer == -3) {
                 closeBidAir();
