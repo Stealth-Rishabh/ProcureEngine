@@ -559,7 +559,7 @@ function startTimer(duration, display) {
         else {
             display.textContent = minutes + ":" + seconds;
         }
-        if (timer <= 0) {
+        if (timer < 0) {
             $('.clsdisable').attr('disabled', 'disabled')
 
         }
