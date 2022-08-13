@@ -1385,6 +1385,7 @@ function MapApprover() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var FCCheck = 'N';
+    var PPCCheck = 'N';
     var rowCount = jQuery('#tblapprovers tr').length;
     if (rowCount > 1) {
         $("#tblapprovers tr:gt(0)").each(function () {
@@ -1393,11 +1394,23 @@ function MapApprover() {
             if ($.trim(this_row.find('td:eq(6)').html()) == "F") {
                 FCCheck = "Y";
             }
+            if ($.trim(this_row.find('td:eq(6)').html()) == "P") {
+                PPCCheck = "Y";
+            }
         })
     }
     if (FCCheck == "N") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Select atleast one Finance Controller Approver for RFQ Approval');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        approvers = '';
+        jQuery.unblockUI();
+        return false;
+    }
+    else if (PPCCheck == "N") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Select atleast one PPC Approver for RFQ Approval');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         approvers = '';
@@ -1465,7 +1478,6 @@ function MapApprover() {
         });
     }
 }
-
 
 function fnOpenPopupApprovers() {
     fnGetApprovers();

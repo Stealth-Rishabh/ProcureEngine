@@ -7,11 +7,8 @@ var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getIt
 
 
 console.log("Not Started")
-
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
-
     console.log("connection started")
-
 }).catch(function (err) {
     alert(err.toString())
     bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page")
@@ -63,9 +60,6 @@ connection.on("refreshColumnStatus", function (data) {
             dataType: "json",
 
             success: function (data, status, jqXHR) {
-
-
-
                 if (data.length > 0) {
 
                     // for (var i = 0; i < data.length; i++) {
