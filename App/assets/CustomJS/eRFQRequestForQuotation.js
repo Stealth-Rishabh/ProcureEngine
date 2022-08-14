@@ -2719,9 +2719,9 @@ function printDataparameter(result) {
             return false;
         }
 
-        else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
+        else if ($.trim(result[i].Remarks) != '' && $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Remarks can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Remarks length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }

@@ -793,7 +793,9 @@ function startTimer(duration, display) {
         }
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
-
+        }
+        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+            $('.clsdisable').removeAttr('disabled')
         }
         //setTimeout(function () {
         if (--timer < -3) {

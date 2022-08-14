@@ -579,9 +579,14 @@ function startTimer(duration, display) {
         else {
             display.textContent = minutes + ":" + seconds;
         }
+
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
+        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+            $('.clsdisable').removeAttr('disabled')
+        }
+
         // if (timer == 300) {
         if (timer <= 300 && timer >= 240) {
             if (coutercall == 0) {

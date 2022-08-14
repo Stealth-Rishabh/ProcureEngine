@@ -3321,8 +3321,14 @@ function addrowfield() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-
-    if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7 && BidForID != 82) {
+    if ($('#dropuom').val() == '' || $('#dropuom').val() == '0') {
+        $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
+        $("#msgErrorItemEvent").show();
+        $("#msgErrorItemEvent").fadeOut(5000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7 && BidForID != 82) {
         itemduration = 0;
         _Totalbiddurationfordutch = 0;
     }
@@ -3513,12 +3519,12 @@ function addrowfield() {
                 }
                 fetchallexportdetails();
                 setTimeout(function () {
-                    $("#editValuesModal").modal("hide")
+                    $("#editValuesModal").modal("hide");
                 }, 5000)
 
-                $("#msgSuccessEditEvent").find("span").html('Data Successfully saved.')
-                $("#msgSuccessEditEvent").show();
-                $("#msgSuccessEditEvent").fadeOut(5000);
+                $("#msgSuccessItemEvent").find("span").html('Data Successfully saved.')
+                $("#msgSuccessItemEvent").show();
+                $("#msgSuccessItemEvent").fadeOut(5000);
 
 
                 jQuery.unblockUI();
@@ -3530,9 +3536,9 @@ function addrowfield() {
                     error401Messagebox(err.Message);
                 }
                 else {
-                    $("#msgErrorEditEvent").find("span").html('You have error in saving data.Please try again.')
-                    $("#msgErrorEditEvent").show();
-                    $("#msgErrorEditEvent").fadeOut(5000);
+                    $("#msgErrorItemEvent").find("span").html('You have error in saving data.Please try again.')
+                    $("#msgErrorItemEvent").show();
+                    $("#msgErrorItemEvent").fadeOut(5000);
                 }
 
                 return false;
@@ -3562,8 +3568,14 @@ function editrowfields() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-
-    if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7 && BidForID != 82) {
+    if ($('#dropuom').val() == '' || $('#dropuom').val() == '0') {
+        $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
+        $("#msgErrorItemEvent").show();
+        $("#msgErrorItemEvent").fadeOut(5000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else if ($('#hdnClosingval').val() == 'A' && sessionStorage.getItem("hdnbidtypeid") == 7 && BidForID != 82) {
         itemduration = 0;
         _Totalbiddurationfordutch = 0;
     }
@@ -3740,9 +3752,9 @@ function editrowfields() {
                     $("#editValuesModal").modal("hide")
                 }, 5000)
 
-                $("#msgSuccessEditEvent").find("span").html('Data Successfully saved.')
-                $("#msgSuccessEditEvent").show();
-                $("#msgSuccessEditEvent").fadeOut(5000);
+                $("#msgSuccessItemEvent").find("span").html('Data Successfully saved.')
+                $("#msgSuccessItemEvent").show();
+                $("#msgSuccessItemEvent").fadeOut(5000);
 
 
                 jQuery.unblockUI();
@@ -3754,9 +3766,9 @@ function editrowfields() {
                     error401Messagebox(err.Message);
                 }
                 else {
-                    $("#msgErrorEditEvent").find("span").html('You have error in saving data.Please try again.')
-                    $("#msgErrorEditEvent").show();
-                    $("#msgErrorEditEvent").fadeOut(5000);
+                    $("#msgErrorItemEvent").find("span").html('You have error in saving data.Please try again.')
+                    $("#msgErrorItemEvent").show();
+                    $("#msgErrorItemEvent").fadeOut(5000);
                 }
                 return false;
                 jQuery.unblockUI();
@@ -4913,7 +4925,7 @@ function fnsubmitCAPrePrices() {
             }
             if (quote != "" && quote != "0") {
                 HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdCoalExport ';
-                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + $.trim($('#vid' + i).text()) + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",0,0,0 ; "
+                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + $.trim($('#vid' + i).text()) + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",0,0,0,'Y' ; "
             }
             i++;
         })
@@ -4991,7 +5003,7 @@ function fnsubmitFAPrePrices() {
             }
             if (quote != "" && quote != "0") {
                 HeaderQuery = HeaderQuery + 'exec PE.ParticipationScrapSaleSingleItem ';
-                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#vid' + i).text()) + " ; "
+                HeaderQuery = HeaderQuery + $.trim($('#vid' + i).text()) + "," + sessionStorage.getItem('hdnbid') + "," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#vid' + i).text()) + ",'Y' ; "
             }
             i++;
         })

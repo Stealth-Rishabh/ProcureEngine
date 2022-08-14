@@ -594,9 +594,14 @@ function startTimer(duration, display) {
         else {
             display.textContent = minutes + ":" + seconds;
         }
+
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
+        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+            $('.clsdisable').removeAttr('disabled')
+        }
+
         // if (timer == 300) {
         if (timer <= 300 && timer >= 240) {
             if (coutercall == 0) {
@@ -721,9 +726,9 @@ function InsUpdQuoteScrap(rowID) {
             "QuotedPrice": parseFloat(removeThousandSeperator($('#txtquote' + i).val())),
             "PSID": parseInt($('#psid' + i).html()),
             "EnteredBy": vendorID,
-            "extendTime": parseInt($('#hdnval').val())
-
-        }
+            "extendTime": parseInt($('#hdnval').val()),
+            "isPrePricing":'N'
+        };
         $('#hdnselectedindex').val(i);
         connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
             return console.error(err.toString());
