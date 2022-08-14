@@ -72,7 +72,6 @@ jQuery("#txtrfirfqsubject").typeahead({
                 fetchRFQApproverStatus(map[item].rfqid);
             }
             FetchRFQVersion();
-            FetchRFQVersion();
             fetchAttachments();
             fetchApproverRemarks('C');
 

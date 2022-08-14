@@ -764,14 +764,16 @@ function fetchRFQResponse(Flag, version) {
                     jQuery('#tblQuestionsPrev').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th class='bold' style='width:10%!important'>Attachment</th><th style='width:30%!important'>Answer</th></tr></thead>");
 
                     for (var i = 0; i < data.length; i++) {
-
+                        debugger;
+                        //var attachQA = data[i].attachementQA.replace(/\s/g, "%20");
+                        var attachQA = data[i].attachementQA;
                         str = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
-                        str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span></td>';
-                        strprev += '<td style="width:10%!important"><label class="control-label" id=quesattch' + i + '><a href=javascript:; Attachment</a></label></td>';//' + data[i].answer + '
+                        str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span><br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this)>' + attachQA + '</a> </td>';
+                        strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this)>' + attachQA + '</a></td>';//' + data[i].answer + '
                         str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
                         strprev += '<td style="width:30%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
 
@@ -852,60 +854,98 @@ function fnsaveAttachmentsquestions() {
     var attchquery = '';
     var quesquery = '';
     var i = 1;
-    $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
+    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    var CurDt = new Date();
+    var validateSubmit = true;
+    if (EndDT < CurDt) {
+        validateSubmit = false;
+        bootbox.alert("RFQ submission time has ended.", function () {
 
-        var this_row = $(this);
-        attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim($('#eRFQVFilesPrev' + i).text()) + '#';
-        i++;
-    });
-    i = 0;
-    $("#tblquestions> tbody > tr").each(function (index) {
-        var this_row = $(this);
-        quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '#';
-        i++;
-    });
-    var data = {
-        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "AttachString": attchquery,
-        "QuesString": quesquery,
-        "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-        "Version": parseInt(sessionStorage.getItem('RFQVersionId'))
-    }
-    // console.log(JSON.stringify(data))
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQVendor/inseRFQVendorQusetionAnswerAttachment",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
+            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                window.location = sessionStorage.getItem('HomePage');
+                sessionStorage.clear();
 
-            fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                window.location = 'VendorHome.html';
+                jQuery.unblockUI();
             }
-            jQuery.unblockUI();
             return false;
-        }
+        });
 
-    });
+    }
+    if (validateSubmit) {
+        $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
+
+            var this_row = $(this);
+            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim($('#eRFQVFilesPrev' + i).text()) + '#';
+            i++;
+        });
+        i = 0;
+        var attchname = '';
+        $("#tblquestions> tbody > tr").each(function (index) {
+            var this_row = $(this);
+
+            if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '') {
+                attchname = jQuery('#fileToUploadques' + index).val().substring(jQuery('#fileToUploadques' + index).val().lastIndexOf('\\') + 1)
+                fnUploadFilesonAzure('fileToUploadques' + index, attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
+            }
+            if (attchname == null || attchname == '') {
+                if (jQuery('#eRFQVFilesques' + index).val() != null || jQuery('#eRFQVFilesques' + index).val() != '') {
+                    attchname = jQuery('#eRFQVFilesques' + index).val();
+
+                }
+
+            }
+            quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
+            i++;
+        });
+        debugger;
+        var data = {
+            "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
+            "AttachString": attchquery,
+            "QuesString": quesquery,
+            "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+            "Version": parseInt(sessionStorage.getItem('RFQVersionId'))
+        }
+        // console.log(JSON.stringify(data))
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRFQVendor/inseRFQVendorQusetionAnswerAttachment",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (data) {
+
+                fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+
+        });
+    }
 
 }
 
 function fnSubmiteRFQSendmail(ismailsent) {
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
+    var validateSubmit = true;
     if (EndDT < CurDt) {
+        validateSubmit = false;
         bootbox.alert("RFQ submission time has ended.", function () {
 
             if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
@@ -922,70 +962,72 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
     }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var Tab2data = {
-        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-        "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-        "IsMailsent": ismailsent,
-        "UserName": sessionStorage.getItem('UserName'),
-        "UserEmail": sessionStorage.getItem('EmailID'),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-    }
-    // console.log(JSON.stringify(Tab2data))
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQRespnsesubmit/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Tab2data),
-        dataType: "json",
-        success: function (data) {
-
-            setTimeout(function () {
-                // if (data[0].RFQID > 0) {
-
-                fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
-                if (ismailsent == "Y") {
-                    jQuery.unblockUI();
-                    bootbox.alert("RFQ response submitted and forwarded to company.", function () {
-
-                        if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                            window.location = sessionStorage.getItem('HomePage');
-                            sessionStorage.clear();
-
-                        }
-                        else {
-                            window.location = 'VendorHome.html';
-                            jQuery.unblockUI();
-                        }
-                        return false;
-                    });
-                    return true;
-                }
-
-                //}
-                //else {
-                //    return false;
-                //}
-
-            }, 500)
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-            return false;
+    if (validateSubmit) {
+        var Tab2data = {
+            "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
+            "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+            "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
+            "IsMailsent": ismailsent,
+            "UserName": sessionStorage.getItem('UserName'),
+            "UserEmail": sessionStorage.getItem('EmailID'),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-    });
+        // console.log(JSON.stringify(Tab2data))
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQRespnsesubmit/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Tab2data),
+            dataType: "json",
+            success: function (data) {
+
+                setTimeout(function () {
+                    // if (data[0].RFQID > 0) {
+
+                    fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
+                    if (ismailsent == "Y") {
+                        jQuery.unblockUI();
+                        bootbox.alert("RFQ response submitted and forwarded to company.", function () {
+
+                            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                                window.location = sessionStorage.getItem('HomePage');
+                                sessionStorage.clear();
+
+                            }
+                            else {
+                                window.location = 'VendorHome.html';
+                                jQuery.unblockUI();
+                            }
+                            return false;
+                        });
+                        return true;
+                    }
+
+                    //}
+                    //else {
+                    //    return false;
+                    //}
+
+                }, 500)
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+        });
+    }
 
 }
 
@@ -1332,7 +1374,7 @@ var PricewithoutGST = 0;
 var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
-
+    //CHECK HERE 
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
@@ -1340,28 +1382,168 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
     PricewithoutGSTDiscount = 0.0;
 
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
+    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    var CurDt = new Date();
+    var validateSubmit = true;
+    if (EndDT < CurDt) {
+        validateSubmit = false;
+        bootbox.alert("RFQ submission time has ended.", function () {
 
-    $('#loader-msg').html('Processing. Please Wait...!');
-    $('.progress-form').show();
-    PriceDetails = [];
-    if (jQuery('#tblRFQParameterComponet  tr').length > 0) {
-        $("#tblRFQParameterComponet tr:gt(0)").each(function () {
+            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                window.location = sessionStorage.getItem('HomePage');
+                sessionStorage.clear();
+
+            }
+            else {
+                window.location = 'VendorHome.html';
+                jQuery.unblockUI();
+            }
+            return false;
+        });
+
+    }
+    if (validateSubmit) {
+        $('#loader-msg').html('Processing. Please Wait...!');
+        $('.progress-form').show();
+        PriceDetails = [];
+        if (jQuery('#tblRFQParameterComponet  tr').length > 0) {
+            $("#tblRFQParameterComponet tr:gt(0)").each(function () {
+                var this_row = $(this);
+                if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "gst" && $.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "discount") {
+
+                    PricewithoutGST = PricewithoutGST + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
+                }
+                if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "gst") {
+
+                    PriceGSTOnly = (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
+                }
+                if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "discount") {
+
+
+                    PricewithoutGSTDiscount = PricewithoutGSTDiscount + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
+                }
+                _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
+                var vendorRemarks = "";
+                if (_RFQBidType == 'Open') {
+                    vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                }
+                else {
+                    vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
+
+                }
+                // Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
+                var Pdetails = {
+                    "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+                    "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
+                    "RFQId": parseInt($.trim(this_row.find('td:eq(1)').html())),
+                    "RFQShortName": '',
+                    "RFQUomId": '',
+                    "RFQuantity": 0,
+                    "RFQDelivery": '',
+                    "RFQVendorPricewithTax": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4) input[type="text"]').val()))),
+                    "RFQPriceWithoutGST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4) input[type="text"]').val()))),
+                    "RFQVendorPrice": 0,
+                    "RFQTCID": parseInt($.trim(this_row.find('td:eq(2)').html())),
+                    "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
+                    "FinalStatus": 'N',
+                    //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                    "VendorItemRemarks": vendorRemarks
+
+                };
+                PriceDetails.push(Pdetails)
+
+
+            });
+
+            //PricewithoutGST = (removeThousandSeperator(basicprice) * (PricewithoutGST + 1));
+            PricewithoutGST = ((removeThousandSeperator(basicprice) * (PricewithoutGST + 1))) * (1 - PricewithoutGSTDiscount);
+            Price = (removeThousandSeperator(PricewithoutGST) * (PriceGSTOnly + 1));
+
+
+            var Tab2data = {
+                "PriceDetails": PriceDetails,
+                "RFQparameterID": parseInt($('#txtRFQParameterId').val()),
+                "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
+                "VendorId": parseInt(sessionStorage.getItem('VendorId')),
+                "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
+                "Price": parseFloat(Price),
+                "PricewithoutGST": parseFloat(PricewithoutGST),
+                "PriceBasic": parseFloat(basicprice)
+            };
+            //console.log(JSON.stringify(Tab2data))
+            // alert(JSON.stringify(Tab2data))
+            jQuery.ajax({
+
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedTCPriceSave/",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                crossDomain: true,
+                async: false,
+                data: JSON.stringify(Tab2data),
+                dataType: "json",
+                success: function (data) {
+
+
+                    $("#" + $('#texttblidwithGST').val()).val(Price);
+                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
+
+                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    Price = 0;
+                    if (issubmitbuttonclick == "Y") {
+                        $('#responsive').modal('hide');
+                    }
+
+
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
+                    jQuery.unblockUI();
+                    return false;
+                }
+            });
+        }
+        $('.progress-form').hide()
+    }
+
+}
+
+function saveQuotation() {
+    var PriceDetails = [];
+    var commercialterms = [];
+    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
+    var vendorRemarks = "";
+
+    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    var CurDt = new Date();
+    var validateSubmit = true;
+    if (EndDT < CurDt) {
+        validateSubmit = false;
+        bootbox.alert("RFQ submission time has ended.", function () {
+
+            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                window.location = sessionStorage.getItem('HomePage');
+                sessionStorage.clear();
+
+            }
+            else {
+                window.location = 'VendorHome.html';
+                jQuery.unblockUI();
+            }
+            return false;
+        });
+
+    }
+    if (validateSubmit) {
+        $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
-            if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "gst" && $.trim(this_row.find('td:eq(3)').html()).toLowerCase() != "discount") {
-
-                PricewithoutGST = PricewithoutGST + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
-            }
-            if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "gst") {
-
-                PriceGSTOnly = (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
-            }
-            if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "discount") {
-
-
-                PricewithoutGSTDiscount = PricewithoutGSTDiscount + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
-            }
-            _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
-            var vendorRemarks = "";
             if (_RFQBidType == 'Open') {
                 vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
             }
@@ -1369,52 +1551,56 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
-            // Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
-            var Pdetails = {
+            var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQId": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "RFQShortName": '',
-                "RFQUomId": '',
-                "RFQuantity": 0,
-                "RFQDelivery": '',
-                "RFQVendorPricewithTax": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4) input[type="text"]').val()))),
-                "RFQPriceWithoutGST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4) input[type="text"]').val()))),
-                "RFQVendorPrice": 0,
-                "RFQTCID": parseInt($.trim(this_row.find('td:eq(2)').html())),
+                "RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
+                "RFQUomId": removeThousandSeperator($.trim(this_row.find('td:eq(3)').html())),
+                "RFQuantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
+                "RFQDelivery": $.trim(this_row.find('td:eq(7)').html()),
+                "RFQVendorPricewithTax": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(10) input[type="text"]').val()))),
+                "RFQPriceWithoutGST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(9) input[type="text"]').val()))),
+                "RFQVendorPrice": parseFloat($.trim(this_row.find('td:eq(13)').html())),
+                "RFQTCID": 0,
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
                 //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
                 "VendorItemRemarks": vendorRemarks
 
             };
-            PriceDetails.push(Pdetails)
 
-
+            PriceDetails.push(quotes)
         });
 
-        //PricewithoutGST = (removeThousandSeperator(basicprice) * (PricewithoutGST + 1));
-        PricewithoutGST = ((removeThousandSeperator(basicprice) * (PricewithoutGST + 1))) * (1 - PricewithoutGSTDiscount);
-        Price = (removeThousandSeperator(PricewithoutGST) * (PriceGSTOnly + 1));
-
+        $("#tblRFQLevelTCForQuot > tbody > tr").each(function () {
+            var this_row = $(this);
+            var comm = {
+                "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+                "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
+                "RFQID": parseInt($.trim(this_row.find('td:eq(1)').html())),
+                "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"),
+                "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
+                "FinalStatus": 'N'
+            };
+            commercialterms.push(comm)
+        });
 
         var Tab2data = {
             "PriceDetails": PriceDetails,
-            "RFQparameterID": parseInt($('#txtRFQParameterId').val()),
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
             "VendorId": parseInt(sessionStorage.getItem('VendorId')),
             "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
-            "Price": parseFloat(Price),
-            "PricewithoutGST": parseFloat(PricewithoutGST),
-            "PriceBasic": parseFloat(basicprice)
+            "CommercialTerms": commercialterms,
+            "VendorRemarks": $('#txtvendorremarks').val()
         };
-        //console.log(JSON.stringify(Tab2data))
-        // alert(JSON.stringify(Tab2data))
+        // console.log(JSON.stringify(Tab2data))
+        //alert(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedTCPriceSave/",
+            url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedPriceSave/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             crossDomain: true,
             async: false,
@@ -1422,17 +1608,16 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             dataType: "json",
             success: function (data) {
 
+                setTimeout(function () {
+                    if (parseInt(data) != 0) {
+                        fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    }
+                    return true;
+                }, 500)
 
-                $("#" + $('#texttblidwithGST').val()).val(Price);
-                $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
-
-                fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                Price = 0;
-                if (issubmitbuttonclick == "Y") {
-                    $('#responsive').modal('hide');
+                if (parseInt(data) == 0) {
+                    bootbox.alert("Error connecting server. Please try later.");
                 }
-
-
             },
             error: function (xhr, status, error) {
 
@@ -1448,106 +1633,6 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             }
         });
     }
-    $('.progress-form').hide()
-
-}
-
-function saveQuotation() {
-    var PriceDetails = [];
-    var commercialterms = [];
-    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
-    var vendorRemarks = "";
-
-    $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
-        var this_row = $(this);
-        if (_RFQBidType == 'Open') {
-            vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
-        }
-        else {
-            vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
-
-        }
-        var quotes = {
-            "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-            "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
-            "RFQId": parseInt($.trim(this_row.find('td:eq(1)').html())),
-            "RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
-            "RFQUomId": removeThousandSeperator($.trim(this_row.find('td:eq(3)').html())),
-            "RFQuantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
-            "RFQDelivery": $.trim(this_row.find('td:eq(7)').html()),
-            "RFQVendorPricewithTax": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(10) input[type="text"]').val()))),
-            "RFQPriceWithoutGST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(9) input[type="text"]').val()))),
-            "RFQVendorPrice": parseFloat($.trim(this_row.find('td:eq(13)').html())),
-            "RFQTCID": 0,
-            "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-            "FinalStatus": 'N',
-            //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
-            "VendorItemRemarks": vendorRemarks
-
-        };
-
-        PriceDetails.push(quotes)
-    });
-
-    $("#tblRFQLevelTCForQuot > tbody > tr").each(function () {
-        var this_row = $(this);
-        var comm = {
-            "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-            "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
-            "RFQID": parseInt($.trim(this_row.find('td:eq(1)').html())),
-            "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"),
-            "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-            "FinalStatus": 'N'
-        };
-        commercialterms.push(comm)
-    });
-
-    var Tab2data = {
-        "PriceDetails": PriceDetails,
-        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "VendorId": parseInt(sessionStorage.getItem('VendorId')),
-        "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
-        "CommercialTerms": commercialterms,
-        "VendorRemarks": $('#txtvendorremarks').val()
-    };
-    // console.log(JSON.stringify(Tab2data))
-    //alert(JSON.stringify(Tab2data))
-    jQuery.ajax({
-
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedPriceSave/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Tab2data),
-        dataType: "json",
-        success: function (data) {
-
-            setTimeout(function () {
-                if (parseInt(data) != 0) {
-                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                }
-                return true;
-            }, 500)
-
-            if (parseInt(data) == 0) {
-                bootbox.alert("Error connecting server. Please try later.");
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    });
 
 
 
@@ -1588,54 +1673,75 @@ function fnReplicateToAllItems() {
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
+    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    var CurDt = new Date();
+    var validateSubmit = true;
+    if (EndDT < CurDt) {
+        validateSubmit = false;
+        bootbox.alert("RFQ submission time has ended.", function () {
 
-    $('#loader-msg').html('Processing. Please Wait...!');
-    $('.progress-form').show();
+            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                window.location = sessionStorage.getItem('HomePage');
+                sessionStorage.clear();
 
-    RFQinsertItemsTC('N');
-    PriceDetails = [];
-    var Tab2data = {
-        "PriceDetails": PriceDetails,
-        "RFQparameterID": parseInt($('#txtRFQParameterId').val()),
-        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "VendorId": parseInt(sessionStorage.getItem('VendorId')),
-        "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
-        "Price": parseFloat(Price),
-        "PricewithoutGST": parseFloat(PricewithoutGST),
-        "PriceBasic": parseFloat(basicprice)
-    };
-    // console.log(JSON.stringify(Tab2data))
-    //alert(JSON.stringify(Tab2data))
-    jQuery.ajax({
-
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedTCPriceSave/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Tab2data),
-        dataType: "json",
-        success: function (data) {
-            $('#responsive').modal('hide');
-            fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                window.location = 'VendorHome.html';
+                jQuery.unblockUI();
             }
-            jQuery.unblockUI();
             return false;
-        }
-    })
-    $('.progress-form').hide()
+        });
+
+    }
+    if (validateSubmit) {
+        $('#loader-msg').html('Processing. Please Wait...!');
+        $('.progress-form').show();
+
+        RFQinsertItemsTC('N');
+        PriceDetails = [];
+        var Tab2data = {
+            "PriceDetails": PriceDetails,
+            "RFQparameterID": parseInt($('#txtRFQParameterId').val()),
+            "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
+            "VendorId": parseInt(sessionStorage.getItem('VendorId')),
+            "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
+            "Price": parseFloat(Price),
+            "PricewithoutGST": parseFloat(PricewithoutGST),
+            "PriceBasic": parseFloat(basicprice)
+        };
+        // console.log(JSON.stringify(Tab2data))
+        //alert(JSON.stringify(Tab2data))
+        jQuery.ajax({
+
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRFQVendor/eRFQQuotedTCPriceSave/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Tab2data),
+            dataType: "json",
+            success: function (data) {
+                $('#responsive').modal('hide');
+                fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+        })
+        $('.progress-form').hide()
+    }
 }
 $('#back_prev_btn').click(function () {
     $('#BidPreviewDiv').hide();

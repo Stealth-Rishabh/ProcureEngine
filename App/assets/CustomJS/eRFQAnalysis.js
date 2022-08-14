@@ -672,9 +672,11 @@ function fetchrfqcomprative() {
                                     //  q = q + 1;
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
                                         if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
+                                            var attachQA = data[0].questions[s].attachementQA;
 
                                             if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
-                                                strQ += "<td>" + data[0].questions[s].answer + "</td>";
+                                                //strQ += "<td>" + data[0].questions[s].answer + "</td>";
+                                                strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
                                                 strExcelQ += "<td>" + data[0].questions[s].answer + "</td>";
 
                                             }
@@ -1298,6 +1300,17 @@ function formvalidate() {
         }
     });
 }
+function DownloadFileVendor(aID, vId) {
+    var version = 0;
+    if (sessionStorage.getItem('RFQVersionId') == "99") {
+        version = max;
+    }
+    else {
+        version = sessionStorage.getItem('RFQVersionId');
+    }
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/' + vId + '/' + version);
+}
+
 function fnSendActivityToCommercial() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
