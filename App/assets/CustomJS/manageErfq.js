@@ -39,15 +39,12 @@ function formValidation() {
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
-
         rules: {
             txtextendDate: {
                 required: true
             }
-
         },
         messages: {
-
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
 
@@ -74,13 +71,10 @@ function formValidation() {
                 error.insertAfter(element);
             }
         },
-
         success: function (label) {
             label.closest('.col-md-6').removeClass('has-error');
             label.remove();
         },
-
-
         submitHandler: function (form) {
             var EndDT = new Date($('#txtextendDate').val().replace('-', ''));
             if (EndDT < currentdate) {
@@ -359,6 +353,10 @@ function FormValidate() {
 
                 InsUpdRFQDEtailTab1();
             }
+            else if ($("#txtbidopendatetime").val() != '' && $('#divRFQOpenAfterClosedRFQ_0').is(':visible')) {
+
+                UpdateRFQOPenDateAfterClose();
+            }
             else {
                 if ($('#dropuom').val() == '') {
                     $('.alert-danger').show();
@@ -470,10 +468,11 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $('#ctrladdapprovers').removeClass('hide')
             }
             var RFQopenDate = "Not Set";
-            
+
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType
             $("#ctrlFileTerms").attr('onclick', "editRow('divbidTermsFilePrevtab_0', '','')");
+            $("#ctrlRFQOpenDates").attr('onclick', "editRow('divRFQOpenAfterClosedRFQ_0', '','')");
             jQuery('#mapedapproverPrevtab_0').html('');
 
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
@@ -492,28 +491,23 @@ function fetchReguestforQuotationDetails(RFQID) {
             else {
                 jQuery('#lbltechnicalApproval').html("Not Required")
             }
-            if (_RFQBidType == 'Closed') {
-                $("#lblOpenDate").show();
-                $("#lblRFQOpenDate").show();
+            if (_RFQBidType.toLocaleLowerCase() == 'closed') {
+                $("#divRFQOpenDate").show();
 
-                if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != "") {
+                if (RFQData[0].general[0].bidopeningdate != null && RFQData[0].general[0].bidopeningdate != "") {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
+                    jQuery('#lblRFQOpenDate').show();
+                    $("#lblopenpencil").hide();
                 }
                 else {
-                    $("#lblRFQOpenDate").hide();
-                    $("#txtbidopendatetime").show();
-                    $("#btnUpdateDate").show();
+                    $('#lblRFQOpenDate').hide();
+                    $("#lblopenpencil").show();
 
                 }
-
-                
             }
             else {
-                $("#lblOpenDate").hide();
-                $("#lblRFQOpenDate").hide();
-                $("#txtbidopendatetime").hide();
-                $("#btnUpdateDate").hide();
+                $("#divRFQOpenDate").hide();
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -609,9 +603,13 @@ function fetchReguestforQuotationDetails(RFQID) {
             }
 
             var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));
+
             if (isrunnigRFQ == 'Y' || EndDT < currentdate) {
                 $("a.isDisabledClass").removeAttr("onclick");
                 $("button.isDisabledClass").removeAttr("onclick");
+            }
+            else {
+                $("a.isDisabledOpenClass").removeAttr("onclick");
             }
 
             if (RFQData[0].general[0].finalStatus.toLowerCase() != "not forwarded") {
@@ -689,12 +687,21 @@ function editRow(divName, RFQParameterId, rowid) {
     if (divName == 'divParameter') {
         $('#divParameter').removeClass('hide');
         $('#divbidTermsFilePrevtab_0').addClass('hide');
+        $('#divRFQOpenAfterClosedRFQ_0').addClass('hide');
         $('#btnclear').removeClass('hide');
+
+    }
+    else if (divName == 'divRFQOpenAfterClosedRFQ_0') {
+        $('#divRFQOpenAfterClosedRFQ_0').removeClass('hide');
+        $('#divParameter').addClass('hide');
+        $('#divbidTermsFilePrevtab_0').addClass('hide');
+        $('#btnclear').addClass('hide');
 
     }
     else {
 
         $('#divParameter').addClass('hide');
+        $('#divRFQOpenAfterClosedRFQ_0').addClass('hide');
         $('#divbidTermsFilePrevtab_0').removeClass('hide');
         $('#btnclear').addClass('hide');
         // $('#btnsubmit').text('Submit');
@@ -726,8 +733,6 @@ function editRow(divName, RFQParameterId, rowid) {
     $('#txtPODate').val($("#" + rowid).find("td:eq(13)").text())
     $('#txtpovalue').val($("#" + rowid).find("td:eq(14)").text())
     $('#add_or').text('Modify');
-
-
 }
 function InsUpdProductSevices() {
     var TP = 0;
@@ -1005,6 +1010,7 @@ $('#responsive').on("hidden.bs.modal", function () {
     $('#txtedelivery').closest('.col-md-4').removeClass('has-error');
     $('#txtItemRemarks').closest('.col-md-4').removeClass('has-error');
     $('#txtbiddescriptionP').closest('.col-md-10').removeClass('has-error');
+    $('#txtbidopendatetime').val('')
     $('.help-block').hide();
 
 });
@@ -1111,37 +1117,32 @@ function addmoreattachments() {
     }
 }
 
-function UpdateAndSaveDate() {
+function UpdateRFQOPenDateAfterClose() {
 
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
-    var EndDate = new Date(jQuery('#RFQEndDate').html.val().replace('-', ''));
+    var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
 
     if ($('#txtbidopendatetime').val() == "" || $('#txtbidopendatetime').val() == null) {
         $('.alert-danger').show();
-        $('#spandanger').html('Please Enter A Valid Date');
+        $('.alert-danger').html('Please Enter A Valid Date');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
     }
     else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
         $('.alert-danger').show();
-        $('#spandanger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
+        $('.alert-danger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
     }
-
-    
     else {
         var DateData = {
-
             "RFQID": parseInt(sessionStorage.getItem('hdnrfqid')),
             "RFQOpenDate": BidOpenDate
-
         }
-
-        //alert(JSON.stringify(Attachments))
+        // alert(JSON.stringify(DateData))
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1152,46 +1153,41 @@ function UpdateAndSaveDate() {
             data: JSON.stringify(DateData),
             dataType: "json",
             success: function (data) {
+
                 if (data == "1") {
-                    //** Upload Files on Azure PortalDocs folder first Time
-                    //fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'));
-
-
                     fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
-                    jQuery("#AttachDescription1").val('')
-                    jQuery('#fileToUpload1').val('')
                     $('.alert-success').show();
-                    $('#spansuccess1').html('Attachment saved successfully!');
+                    $('.alert-success').html('RFQ Open Date updated successfully');
                     Metronic.scrollTo($(".alert-success"), -200);
                     $('.alert-success').fadeOut(7000);
-                    //confirmEditEventAction('File');
+                    //confirmEditEventAction('RFQOpenDate');
+                    setTimeout(function () {
+                        $('#responsive').modal('hide');
+                    }, 2000)
 
                     return false;
-
                 }
                 else if (data == "2") {
                     $('.alert-danger').show();
-                    $('#spandanger').html('Attachment is already Exists.');
+                    $('.alert-danger').html('You have some error.Please try again!');
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(7000);
                     return false;
                 }
 
-
             },
             error: function (xhr, status, error) {
-
-                var err = eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
-
                 return false;
                 jQuery.unblockUI();
             }
 
         });
     }
+    jQuery.unblockUI();
 }
 
 

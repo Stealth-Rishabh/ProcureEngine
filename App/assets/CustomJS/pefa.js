@@ -225,9 +225,7 @@ function FetchCurrency(CurrencyID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
-
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchCurrency/?CurrencyID=" + CurrencyID + "&excludeStatus=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -237,11 +235,8 @@ function FetchCurrency(CurrencyID) {
         success: function (data) {
 
             jQuery("#dropCurrency").empty();
-
             jQuery("#dropCurrency").append(jQuery("<option ></option>").val("").html("Select"));
-
             for (var i = 0; i < data.length; i++) {
-
                 jQuery("#dropCurrency").append(jQuery("<option></option>").val(data[i].currencyId).html(data[i].currencyNm));
 
             }
