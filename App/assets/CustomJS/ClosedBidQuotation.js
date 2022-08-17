@@ -607,7 +607,7 @@ function InsUpdRFQDEtailTab1() {
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
-        "BidOpenDate": BidOpenDate,
+        "bidopeningdate": BidOpenDate,
         "RFQBidType": RFQBidType,
         "RFQApprovers": approvers,
         //"TechnicalApproval": $("#drp_TechnicalApp").val()
