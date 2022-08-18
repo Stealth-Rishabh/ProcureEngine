@@ -498,11 +498,11 @@ function fetchReguestforQuotationDetails(RFQID) {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
                     jQuery('#lblRFQOpenDate').show();
-                    $("#lblopenpencil").hide();
+                    $("#ctrlRFQOpenDates").show();
                 }
                 else {
                     $('#lblRFQOpenDate').hide();
-                    $("#lblopenpencil").show();
+                    $("#ctrlRFQOpenDates").show();
 
                 }
             }
@@ -608,9 +608,9 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $("a.isDisabledClass").removeAttr("onclick");
                 $("button.isDisabledClass").removeAttr("onclick");
             }
-            else {
-                $("a.isDisabledOpenClass").removeAttr("onclick");
-            }
+            //else{
+            //    $("a.isDisabledOpenClass").removeAttr("onclick");
+            //}
 
             if (RFQData[0].general[0].finalStatus.toLowerCase() != "not forwarded") {
                 $("a.ctrladdapprovers").removeAttr("onclick");
@@ -696,6 +696,7 @@ function editRow(divName, RFQParameterId, rowid) {
         $('#divParameter').addClass('hide');
         $('#divbidTermsFilePrevtab_0').addClass('hide');
         $('#btnclear').addClass('hide');
+        $('#txtbidopendatetime').val($('#lblRFQOpenDate').text());
 
     }
     else {
