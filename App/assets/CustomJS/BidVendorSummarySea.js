@@ -512,7 +512,8 @@ function fetchBidSummary(BidID) {
                     $('.forbtnpause').hide()
                 }
                 else {
-                    $('#bid_status').hide();
+                    $('#bid_status').html('Open/Bid Time Expired');
+                    $('#bid_status').show();// show for Bid Expire But Status is still open
                 }
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
