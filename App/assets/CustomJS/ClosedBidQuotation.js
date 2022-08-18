@@ -607,7 +607,7 @@ function InsUpdRFQDEtailTab1() {
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
-        "BidOpenDate": BidOpenDate,
+        "bidopeningdate": BidOpenDate,
         "RFQBidType": RFQBidType,
         "RFQApprovers": approvers,
         //"TechnicalApproval": $("#drp_TechnicalApp").val()
@@ -2373,8 +2373,8 @@ function fetchReguestforQuotationDetails() {
 
             var dtst = (fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             var dtend = (fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            if (RFQData[0].general[0].bidOpenDate != null || RFQData[0].general[0].bidOpenDate != '') {
-                var bidOpenDate = (fnConverToLocalTime(RFQData[0].general[0].bidOpenDate))
+            if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != '') {
+                var bidOpenDate = (fnConverToLocalTime(RFQData[0].general[0].bidopeningdate))
                 jQuery('#txtbidopendatetime').val(bidOpenDate);
             }
 
@@ -2540,7 +2540,7 @@ function fetchPSBidDetailsForPreview() {
     jQuery('#lblConversionRatePrev').html($('#txtConversionRate').val())
     jQuery("#txtRFQReferencePrev").html($('#txtRFQReference').val());
     jQuery("#lbltechnicalApproval").html($('#drp_TechnicalApp option:selected').text());
-
+    jQuery('#lblbidopendate').html($('#txtbidopendatetime').val())
     if ($('#attach-file').html() != '' && ($('#file1').val() == '')) {
         $('#filepthtermsPrev').html($('#attach-file').html())
     }

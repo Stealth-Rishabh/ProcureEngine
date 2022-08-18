@@ -1639,7 +1639,7 @@ function fetchCity() {
             else {
                 $("#ddlCity").append('<tr><td>No city found..</td></tr>');
             }
-            jQuery.unblockUI();
+            jQuery.unblockUI(); 
         },
         error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
