@@ -139,6 +139,7 @@ function fetchCountry(continentID, countryID) {
     });
 }
 function fetchBidTypeMapping() {
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -170,6 +171,7 @@ function fetchBidTypeMapping() {
 }
 
 function fetchBidFor(BidTypeID) {
+    debugger;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -252,7 +254,8 @@ function formvalidate() {
             if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
 
 
-                dtfrom = '01/01/1900';
+                //dtfrom = '01/01/1900';
+                dtfrom = formatDate(new Date(2000, 01, 01));
 
             }
             else {
@@ -261,13 +264,14 @@ function formvalidate() {
 
             if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
                 var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                var yyyy = today.getFullYear();
+                //var dd = String(today.getDate()).padStart(2, '0');
+                //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                //var yyyy = today.getFullYear();
 
-                today = mm + '/' + dd + '/' + yyyy;
-                dtto = today;
+                //today = mm + '/' + dd + '/' + yyyy;
+                //dtto = today;
                 //dtto = '01/01/1900';
+                dtto = formatDate(new Date());
 
             }
             else {
@@ -1018,7 +1022,6 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
-
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
