@@ -255,27 +255,22 @@ function formvalidate() {
 
 
                 //dtfrom = '01/01/1900';
-                dtfrom = formatDate(new Date(2000, 01, 01));
+                dtfrom = new Date(2000, 01, 01);
 
             }
             else {
-                dtfrom = $("#txtFromDate").val()
+                var dateParts = $("#txtFromDate").val().split("/");
+                dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             }
 
             if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-                var today = new Date();
-                //var dd = String(today.getDate()).padStart(2, '0');
-                //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                //var yyyy = today.getFullYear();
-
-                //today = mm + '/' + dd + '/' + yyyy;
-                //dtto = today;
-                //dtto = '01/01/1900';
-                dtto = formatDate(new Date());
+                //var today = new Date();
+                dtto = new Date();
 
             }
             else {
-                dtto = $("#txtToDate").val()
+                var dateParts = $("#txtToDate").val().split("/");
+                dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             }
             if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
                 subject = jQuery("#txtbidsubject").val()
@@ -351,7 +346,8 @@ function formvalidate() {
 var BidDate = "";
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
     var url = '';
-    debugger;
+    
+    
     var BidTypeID = $("#ddlBidtype option:selected").val();
     if (BidTypeID == 7) {
         if (jQuery("#ddlBidFor option:selected").val() == 81) {
@@ -360,18 +356,34 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
     }
 
     if ($('#ddlreporttype option:selected').val() == "List") {
-        url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummary/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+        //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummary/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+        url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummary/";
     }
     else {
-        url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryRFQ/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+        //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryRFQ/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+        url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryRFQ/";
     }
+
+    var Tab1Data = {
+        "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
+        "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
+        "VendorId": parseInt(jQuery("#hdnVendorID").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "BidSubject": subject,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     // alert(url)
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         url: url,
-
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -486,13 +498,29 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
+    
+
+    var Tab1Data = {
+        "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
+        "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
+        "VendorId": parseInt(jQuery("#hdnVendorID").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "BidSubject": subject,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     //alert(sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailed/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailed/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailed/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailed/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -679,12 +707,28 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
+    
+
+    var Tab1Data = {
+        "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
+        "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
+        "VendorId": parseInt(jQuery("#hdnVendorID").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "BidSubject": subject,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfull/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfull/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfull/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -809,13 +853,29 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
+    
+
+    var Tab1Data = {
+        "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
+        "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
+        "VendorId": parseInt(jQuery("#hdnVendorID").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "BidSubject": subject,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailedFA/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailedFA/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailedFA/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -1022,12 +1082,28 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
+    
+
+    var Tab1Data = {
+        "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
+        "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
+        "VendorId": parseInt(jQuery("#hdnVendorID").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "BidSubject": subject,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfullFA/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfullFA/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryfullFA/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
