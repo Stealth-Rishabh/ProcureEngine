@@ -194,7 +194,12 @@
                                                                                         <label class="col-md-3 control-label" style="text-align:left">
                                                                                             Mobile No
                                                                                         </label>
-                                                                                        <div class="col-md-9 xyz">
+                                                                                        <div class="col-md-2 xyz">
+                                                                                            <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
+                                                                                                <option Value="">Select</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-7 xyz">
                                                                                             <input type="text" class="form-control"
                                                                                                    id="vendormobileno" name="vendormobileno" autocomplete="off" maxlength="10" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
@@ -232,7 +237,12 @@
                                                                                         <label class="col-md-3 control-label" style="text-align:left">
                                                                                             Mobile No
                                                                                         </label>
-                                                                                        <div class="col-md-9">
+                                                                                        <div class="col-md-2">
+                                                                                            <select id="ddlCountryAltCd" name="ddlCountryAltCd" class="form-control">
+                                                                                                <option Value="">Select</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-7">
                                                                                             <input type="text" class="form-control"
                                                                                                    id="vendoraltmobileno" name="vendoraltmobileno" autocomplete="off" maxlength="10" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
@@ -250,6 +260,17 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-3">Preferred Time/Zone:</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
+                                                                                                <option Value="">Select</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -680,7 +701,7 @@
                                                                                 </div>
                                                                                 <div class="col-md-2 xyz">
                                                                                     <input type="text" class="form-control selectno thousand"
-                                                                                           id="txtLastFiscal" name="txtLastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                           id="txtLastFiscal" name="txtLastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled/>
                                                                                 </div>
                                                                             </div>
 
@@ -690,7 +711,7 @@
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
                                                                                     <input type="text" class="form-control selectno "
-                                                                                           id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                           id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled/>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

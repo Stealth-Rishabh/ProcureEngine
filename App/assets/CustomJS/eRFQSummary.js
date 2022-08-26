@@ -31,7 +31,7 @@ function fetchregisterusers() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
     });
 }
@@ -113,38 +113,55 @@ function formvalidate() {
 }
 var rfqdeadline = '';
 function fetchRFQVendorSummary() {
-    var dtfrom='', dtto='', subject = 'X-X';
+    debugger;
+    var dtfrom = '', dtto = '', subject = 'X-X';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        dtfrom = '1900/01/01';
+        dtfrom = new Date(2000, 01, 01);
 
     }
     else {
-        dtfrom = $("#txtFromDate").val()
+        var dateParts = $("#txtFromDate").val().split("/");
+        dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = '1900/01/01';
+        dtto = new Date();
 
     }
     else {
-        dtto = $("#txtToDate").val()
+        var dateParts = $("#txtToDate").val().split("/");
+        dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        
     }
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
         subject = jQuery("#txtbidsubject").val()
     }
+    debugger;
+    var Tab1Data = {
+
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     //alert(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
 
-           
+
             jQuery("#tblVendorSummary").empty();
             jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
@@ -153,12 +170,10 @@ function fetchRFQVendorSummary() {
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
-                    var datearray = BidData[i].rfqEndDate.split("/");
-                    
-                    rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
-                   
-                    str += "<td class=hide>" + BidData[i].rfqStartDate + "</td>";
-                   
+                    rfqdeadline = fnConverToLocalTime(BidData[i].rfqEndDate);
+
+                    str += "<td class=hide>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
+
                     str += "<td>" + rfqdeadline + "</td>"
 
                     str += "<td>" + BidData[i].currencyName + "</td>";
@@ -179,7 +194,7 @@ function fetchRFQVendorSummary() {
                     "bAutoWidth": false,
 
                     "aaSorting": [[0, 'asc']],
-                    
+
                     "iDisplayLength": 10,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     dom: 'Bfrtip',
@@ -201,7 +216,7 @@ function fetchRFQVendorSummary() {
                     ],
                     initComplete: function () {
 
-                       
+
                         $('.dataTables_filter input[type="search"]').removeClass('input-small')
                         $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search  ....').css({ 'width': '450px' });
 
@@ -240,54 +255,68 @@ function fetchRFQVendorSummary() {
             }
             jQuery.unblockUI();
             return false;
-          
+
         }
     });
 }
 function getSummary(RFQID, subject) {
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + (subject))
     if (sessionStorage.getItem("CustomerID") != 32) {
-        
+
         window.open("eRFQAnalysis.html?param=" + encrypdata, "_blank")
-       
+
     }
     else {
         window.open("AzeRFQAnalysis.html?param=" + encrypdata, "_blank")
     }
-    
+
 }
 function fetchBidVendorSummaryDetail() {
+    debugger;
     var dtfrom = '', dtto = '', subject = 'X-X';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        dtfrom = '1900/01/01';
+        dtfrom = new Date(2000, 01, 01);
+
     }
     else {
-        dtfrom = $("#txtFromDate").val()
+        var dateParts = $("#txtFromDate").val().split("/");
+        dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = '1900/01/01';
+        dtto = new Date();
 
     }
     else {
-        dtto = $("#txtToDate").val()
+        var dateParts = $("#txtToDate").val().split("/");
+        dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
     }
-    if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
-        subject = jQuery("#txtbidsubject").val()
-    }
+    var Tab1Data = {
+
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryDetailed/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" +subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryDetailed/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryDetailed/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+
             var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-          
+
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
 
@@ -302,10 +331,11 @@ function fetchBidVendorSummaryDetail() {
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 
-                    var datearray = BidData[i].rfqDeadline.split("/");
-                  
-                    rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
-                   
+                    //var datearray = BidData[i].rfqDeadline.split("/");
+
+                    //rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
+                    rfqdeadline = fnConverToLocalTime(BidData[i].rfqDeadline);
+
                     str += "<td>" + rfqdeadline + "</td>";
 
                     var RFQShortName = BidData[i].rfqShortName.replace(/<br\s*\/?>/gi, ' '); //remove br
@@ -372,7 +402,7 @@ function fetchBidVendorSummaryDetail() {
                     fixedColumns: true,
                     "bAutoWidth": false,
                     "aaSorting": [[0, 'asc']],
-                   
+
                     "iDisplayLength": 10,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     dom: 'Bfrtip',
@@ -386,7 +416,7 @@ function fetchBidVendorSummaryDetail() {
                                 format: {
                                     body: function (data, column, node) {
                                         return column === 4 ?
-                                         data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
+                                            data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
                                         data.replace(/<br\s*\/?>/ig, "\r\n");
                                         data;
 
@@ -510,47 +540,63 @@ function updlastinvoiceprice() {
             }
             jQuery.unblockUI();
             return false;
-          
+
         }
-       
+
     });
 
 }
 $('#editLastInvoiceprice').on("hidden.bs.modal", function () {
     $('#txtlastinvoiceprice').val('')
     $('#hddnBidID').val(0),
-     $("#hddnItemID").val(0),
+        $("#hddnItemID").val(0),
 
-     $('#hddfieldName').val('')
+        $('#hddfieldName').val('')
 })
 
 
 function fetchBidVendorSummarySummarization() {
+    debugger;
     var dtfrom = '', dtto = '', subject = 'X-X';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        dtfrom = '1900/01/01';
+        dtfrom = new Date(2000, 01, 01);
 
     }
     else {
-        dtfrom = $("#txtFromDate").val()
+        var dateParts = $("#txtFromDate").val().split("/");
+        dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = '1900/01/01';
+        dtto = new Date();
 
     }
     else {
-        dtto = $("#txtToDate").val()
+        var dateParts = $("#txtToDate").val().split("/");
+        dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
     }
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
         subject = jQuery("#txtbidsubject").val()
     }
+    var Tab1Data = {
+
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
+        "RFQSubject": subject,
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+    };
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryfull/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryfull/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val(),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchAdmineRFQSummaryfull/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -572,10 +618,10 @@ function fetchBidVendorSummarySummarization() {
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 
-                    var datearray = BidData[i].rfqDeadline.split("/");
-                   
-                    rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
-                    
+                    //var datearray = BidData[i].rfqDeadline.split("/");
+
+                    rfqdeadline = fnConverToLocalTime(BidData[i].rfqDeadline);
+
                     str += "<td>" + rfqdeadline + "</td>";
 
                     str += "<td>" + BidData[i].currencyName + "</td>";
@@ -606,12 +652,12 @@ function fetchBidVendorSummarySummarization() {
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
-                    
+
                     "oLanguage": { "sSearch": "", "sLengthMenu": "\_MENU_" },
                     fixedColumns: true,
                     "bAutoWidth": false,
                     "aaSorting": [[0, 'asc']],
-                    
+
                     "iDisplayLength": 10,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     dom: 'Bfrtip',
@@ -672,7 +718,7 @@ function fetchBidVendorSummarySummarization() {
             }
             jQuery.unblockUI();
             return false;
-            
+
         }
     })
 
