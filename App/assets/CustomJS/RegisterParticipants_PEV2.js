@@ -42,6 +42,9 @@ var FormValidation = function () {
                 txtCity: {
                     required: true
                 },
+                txtZipCd: {
+                    required: true
+                },
                 txtPanNo: {
                     required: true
                 },
@@ -71,7 +74,15 @@ var FormValidation = function () {
                     required: true,
                     email: true
                 },
+                ddlCountryCd: {
+                    required: true,
+                    notEqualTo: 0
+                },
                 ddlCountry: {
+                    required: true,
+                    notEqualTo: 0
+                },
+                ddlCountryCdPhone: {
                     required: true,
                     notEqualTo: 0
                 },
@@ -236,12 +247,17 @@ function RegisterParticipants() {
         "StateName": jQuery("#ddlState option:selected").text(),
         "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
         "CityName": jQuery("#ddlCity option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
         "PanNo": jQuery("#txtPanNo").val(),
         "TinNo": jQuery("#txtTINNo").val(),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
         "PhoneNo": jQuery("#txtPhoneNo").val(),
         "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        //New Check
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "IsActive": status,
         "UserID": sessionStorage.getItem('UserID'),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
         "MobileNo": jQuery("#txtMobileNo").val(),
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
@@ -433,13 +449,13 @@ function fetchParticipantsVenderTable() {
                         if (sessionStorage.getItem('UserID') == value.createdBy) {
 
                             if (value.actionType == "EditVendor") {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.dialingCode + "'\,\'" + value.dialingCodePhone + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">No</td>";
 
                             }
                             else {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\ )\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";//Edit
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.dialingCode + "'\,\'" + value.dialingCodePhone + "'\ )\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";//Edit
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">Yes</td>";
 
@@ -448,13 +464,13 @@ function fetchParticipantsVenderTable() {
                         else {
                             if (value.actionType == "EditVendor") {
                                 //str += "<a href=\"#\"   class=\"btn btn-xs grey\">Not Editable</a>&nbsp;&nbsp;";
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.dialingCode + "'\,\'" + value.dialingCodePhone + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">No</td>";
 
                             }
                             else {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.dialingCode + "'\,\'" + value.dialingCodePhone + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">External</td>";
                                 str += "<td style=\"width:10%!important;\">Yes</td>";
 
@@ -728,6 +744,8 @@ function EditProduct(ctrl) {
     jQuery("#txtcompanyemail").closest('.form-group').removeClass('has-error')//.find('span').hide()
     jQuery("#txtAlternateeMailID").val(jQuery(ctrl).closest('tr').find("td").eq(11).html());
     jQuery("#txtAlternateeMailID").closest('.form-group').removeClass('has-error')//.find('span').hide()
+    jQuery("#ddlpreferredTime").val(jQuery(ctrl).closest('tr').find("td").eq(10).html());
+    jQuery("#ddlpreferredTime").closest('.form-group').removeClass('has-error').find('span').hide()
     var VendorID = jQuery(ctrl).closest('tr').find("td").eq(2).html();
     $('#hdnParticipantID').val(VendorID);
 
@@ -1217,7 +1235,9 @@ function AddVendor() {
     // $('#txtCity').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
+    $('#ddlCountryCd').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
     $('#txtcompanyemail').removeAttr('disabled')
     $('#chkalternatemail').removeAttr('disabled')
@@ -1244,7 +1264,7 @@ function AddVendor() {
 $("#txtUI").keyup(function () {
     clearform();
 });
-function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternatemailid, countryid, stateid, cityid) {
+function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternatemailid, countryid, stateid, cityid, countrycdid, countrycdphoneid) {
 
     $('#hdnFlagType').val(buttonname);
     jQuery("#hdnParticipantID").val(vendorid);
@@ -1273,6 +1293,8 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
     setTimeout(function () {
         $('#ddlState').val(stateid).trigger('change')
     }, 500)
+    $('#ddlCountryCd').val(countrycdid)
+    $('#ddlCountryCd').val(countrycdphoneid)
     setTimeout(function () {
 
         $('#ddlCity').val(cityid).trigger('change')
@@ -1284,9 +1306,12 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
         $('#ParticipantName').attr('disabled', 'disabled');
         $('#txtAddress').attr('disabled', 'disabled');
         $('#txtCity').attr('disabled', 'disabled');
+        $('#txtZipCd').attr('disabled', 'disabled');
         $('#txtPanNo').attr('disabled', 'disabled');
         $('#txtTINNo').attr('disabled', 'disabled');
+        $('#ddlCountryCdPhone').attr('disabled', 'disabled');
         $('#txtPhoneNo').attr('disabled', 'disabled');
+        $('#ddlCountryCd').attr('disabled', 'disabled');
         $('#txtMobileNo').attr('disabled', 'disabled');
         $('#txtcompanyemail').attr('disabled', 'disabled');
         $('#chkalternatemail').attr('disabled', 'disabled');
@@ -1301,9 +1326,12 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
         $('#ParticipantName').removeAttr('disabled');
         $('#txtAddress').removeAttr('disabled');
         $('#txtCity').removeAttr('disabled');
+        $('#txtZipCd').removeAttr('disabled');
         $('#txtPanNo').removeAttr('disabled');
         $('#txtTINNo').removeAttr('disabled');
+        $('#ddlCountryCdPhone').removeAttr('disabled');
         $('#txtPhoneNo').removeAttr('disabled');
+        $('#ddlCountryCd').removeAttr('disabled');
         $('#txtMobileNo').removeAttr('disabled');
         $('#txtcompanyemail').removeAttr('disabled');
         $('#chkalternatemail').removeAttr('disabled');
@@ -1315,7 +1343,7 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
         $('#lbl_panmsz').addClass('hide');
     }
 }
-function ExtendVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid) {
+function ExtendVendor(vendorid, vname, contactp, emailid, phone,cntryCd, mobile, addr1, addr2,zipCd, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid) {
 
     $("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
@@ -1323,9 +1351,11 @@ function ExtendVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, 
     $("#ParticipantName").val(vname);
     $("#txtAddress").val(addr1);
     $("#txtCity").val(addr2);
+    $("#txtZipCdy").val(zipCd);
     $("#txtPanNo").val(pan);
     $("#txtTINNo").val(gst);
     $("#txtPhoneNo").val(phone);
+    $("#ddlCountryCd").val(cntryCd);
     $("#txtMobileNo").val(mobile);
     $("#ContactName").val(contactp);
 
@@ -1442,6 +1472,7 @@ function clearform() {
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
     jQuery("#txtCity").val('');
+    jQuery("#txtZipCd").val('');
     jQuery("#txtPanNo").val('');
     jQuery("#txtTINNo").val('');
     jQuery("#txtPhoneNo").val('');
@@ -1450,6 +1481,8 @@ function clearform() {
     jQuery("#txtcompanyemail").val('');
     jQuery('#hdnParticipantID').val('0');
     $("#ddlCountry").val('111');
+    $("#ddlCountryCd").val('0');
+    $("#ddlCountryCdPhone").val('0');
     $("#ddlState").val('0');
     $("#ddlCity").val('0');
 
@@ -1462,9 +1495,12 @@ function clearform() {
     $('#txtAddress').removeAttr('disabled')
     $('#ContactName').removeAttr('disabled')
     //$('#txtCity').removeAttr('disabled')
+    $('#txtZipCd').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
+    $('#ddlCountryCd').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
     $('#txtcompanyemail').removeAttr('disabled')
     $('#chkalternatemail').removeAttr('disabled')
@@ -1541,6 +1577,8 @@ function fetchCountry() {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                    $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
 
                 $("#ddlCountry").val('111').trigger("change");
@@ -1564,6 +1602,38 @@ function fetchCountry() {
             jQuery.unblockUI();
         }
 
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+            console.log(lstTZ);
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
     });
 }
 

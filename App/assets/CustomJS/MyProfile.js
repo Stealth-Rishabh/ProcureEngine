@@ -19,6 +19,7 @@ jQuery(document).ready(function () {
 function fetchCountry() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
+        
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
@@ -33,6 +34,8 @@ function fetchCountry() {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    jQuery("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                    jQuery("#ddlCountryAltCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
                 jQuery("#ddlCountry").val('111').trigger("change");
 
@@ -55,6 +58,38 @@ function fetchCountry() {
             jQuery.unblockUI();
         }
 
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+            console.log(lstTZ);
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
     });
 }
 
@@ -292,15 +327,19 @@ function fetchVendorDetails() {
             let detail = JSON.parse(data[0].jsondata);
 
             $('#vendorname').html(detail[0].VendorName)
+            $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
             $('#vendorEmailID').html(detail[0].EmailID)
             $('#vendoraddress').val(detail[0].Address1 + detail[0].Address2)
             $('#vendorCity').val(detail[0].CityName)
+            $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
             $('#vendorpanno').html(detail[0].PANNo)
             $('#vendorservicetaxno').html(detail[0].ServiceTaxNo)
             $('#vendoralternateemail').val(detail[0].AlternateEmailID)
             $('#personname').val(detail[0].ContactPerson)
+            //$('#ddlpreferredTime').val(detail[0].preferredtimezone)
+            $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")
 
 
@@ -357,6 +396,8 @@ function prefferedTimezone() {
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var tzID = parseInt(sessionStorage.getItem("timezoneid"));
+    $("#ddlpreferredTime").val(tzID)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -368,6 +409,7 @@ function fetchMyProfileVendor() {
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
+            //console.log(vendordetails[a].preferredtimezone);
             var vendorCompstxt = ''
             for (var i = 0; i < vendorComps.length; i++) {
                 vendorCompstxt = vendorCompstxt + vendorComps[i].customername + ' | ';
@@ -553,16 +595,21 @@ function fetchMyProfileVendor() {
             $('#personname').val(vendordetails[0].ContactPerson)
             $('#personnamealt').val(vendordetails[0].ContactNameAlt)
             $('#vendorname').html(vendordetails[0].VendorName)
+            $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile)
             $('#vendormobileno').val(vendordetails[0].MobileNo)
             $('#vendorEmailID').html(vendordetails[0].EmailID)
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
+            $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
             $('#vendoraddress').val(vendordetails[0].Address1 + vendordetails[0].Address2)
             // $('#vendorCity').val(data[0].city)
+            //SET HERE
+            
             $('#vendorphone').val(data[0].phone)
             $('#vendorpanno').html(vendordetails[0].PANNo)
             $('#vendorservicetaxno').html(vendordetails[0].ServiceTaxNo)
             $('#vendoralternateemail').val(data[0].alternateEmailID)
+            //$('#ddlpreferredTime').val(sessionStorage.getItem("preferredtimezone"))
             $('#pincode').val(vendordetails[0].pincode)
             $('#product').val(vendordetails[0].product)
             $('#txtLastFiscal').val(vendordetails[0].PreviousTurnover)
@@ -896,7 +943,7 @@ function updVnedorMobileNo() {
         "AlternateEmailID": $('#vendoralternateemail').val(),
         "Designation": "",
         "ContactPerson": $('#personname').val(),
-        "PrefferedTZ": 0
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
 
     jQuery.ajax({
@@ -950,6 +997,9 @@ function updateVendor() {
     var vendorcatname = jQuery("#ddlVendorType option:selected").text().trim();
     var statename = jQuery("#ddlState option:selected").text().trim();
     var cityname = jQuery("#ddlCity option:selected").text().trim();
+    var preferredTZ = jQuery("#ddlpreferredTime option:selected").val().trim();
+    var dialingCd = jQuery("#ddlCountryCd option:selected").val().trim();
+    var dialingCdAlt = jQuery("#ddlCountryAltCd option:selected").val().trim();
     var tdstype = 0;
     var tdsname = '';
     var paymenttermvalue = 0;
@@ -1075,6 +1125,9 @@ function updateVendor() {
         "pANFile": panfilename,
         "mSMEFile": msmefilename,
         "cancelledCheck": checkfilename,
+        "DialingCodeMobile": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryAltCd option:selected").val()),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val())
     }
     console.log(JSON.stringify(data));
     jQuery.ajax({
