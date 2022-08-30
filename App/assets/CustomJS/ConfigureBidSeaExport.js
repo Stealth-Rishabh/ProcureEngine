@@ -1193,6 +1193,7 @@ function ConfigureBidForSeaExportTab1() {
         })
     }
     //debugger;
+
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
