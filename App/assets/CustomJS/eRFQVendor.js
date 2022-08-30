@@ -1075,7 +1075,7 @@ function fetchReguestforQuotationDetails() {
 
             jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate));
+            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-',''));
             if (currentdate < StartDT) {
                 $('#form_wizard_1').find('.button-next').hide();
                 $('#regretrfq').hide();
