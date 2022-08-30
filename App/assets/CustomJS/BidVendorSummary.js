@@ -254,7 +254,6 @@ function formvalidate() {
             if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
 
 
-                //dtfrom = '01/01/1900';
                 dtfrom = new Date(2000, 01, 01);
 
             }
@@ -264,8 +263,8 @@ function formvalidate() {
             }
 
             if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-                //var today = new Date();
-                dtto = new Date();
+                //dtto = new Date();
+                dtto = null;
 
             }
             else {
@@ -346,8 +345,8 @@ function formvalidate() {
 var BidDate = "";
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
     var url = '';
-    
-    
+
+
     var BidTypeID = $("#ddlBidtype option:selected").val();
     if (BidTypeID == 7) {
         if (jQuery("#ddlBidFor option:selected").val() == 81) {
@@ -375,7 +374,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     // alert(url)
     jQuery.ajax({
@@ -498,7 +497,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
-    
+
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -511,7 +510,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     //alert(sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryDetailed/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
     jQuery.ajax({
@@ -707,7 +706,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
-    
+
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -720,7 +719,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     jQuery.ajax({
         type: "POST",
@@ -853,7 +852,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
-    
+
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -866,7 +865,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
 
     jQuery.ajax({
@@ -1082,7 +1081,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
-    
+
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -1095,7 +1094,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     jQuery.ajax({
         type: "POST",
