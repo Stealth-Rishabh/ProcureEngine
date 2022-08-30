@@ -392,7 +392,7 @@ function fetchRFXDetails() {
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
             jQuery('#txtRFXSubject').val(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#txtRFXdeadline').val(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#txtRFXdeadline').val(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#txtRFXdescription').val(BidData[0].rfxMaster[0].rfxDescription)
             jQuery('#txtattachdescription').val(BidData[0].rfxMaster[0].rfxAttachmentDescription)
             jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
