@@ -1860,7 +1860,8 @@ function editvalues(icount) {
     $('#txtminimumdecreament').val(removeThousandSeperator($("#minincrement" + icount).text()))
     $('#drpdecreamenton').val(removeThousandSeperator($("#inconval" + icount).text()))
     $('#txtlastinvoiceprice').val($("#LIPrice" + icount).text())
-    $('#txtStartingPrice').val($("#" + rowid.id).find("td:eq(13)").text())
+    //$('#txtStartingPrice').val($("#" + rowid.id).find("td:eq(13)").text())
+    $('#txtStartingPrice').val(removeThousandSeperator($("#starttingprice" + icount).text()))
     $('#showhlprice').val($("#showhlprice" + icount).text())
     $('#showstartprice').val($("#showstartprice" + icount).text())
 

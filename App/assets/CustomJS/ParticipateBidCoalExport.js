@@ -392,13 +392,13 @@ function fetchBidSummaryVendorproduct() {
                             }
                             if (data[i].itemBlockedRemarks != '') {
                                 // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
-                                $('#txtquote' + i).val("Restricted")
-                                $('#txtquote' + i).attr('disabled', 'disabled')
+                                // $('#txtquote' + i).val("Restricted")
+                                //  $('#txtquote' + i).attr('disabled', 'disabled')
                                 $('#AllItembtn' + i).attr('disabled', 'disabled')
                             }
                             else {
-                                $('#txtquote' + i).val('')
-                                $('#txtquote' + i).removeAttr('disabled', 'disabled')
+                                //  $('#txtquote' + i).val('')
+                                //  $('#txtquote' + i).removeAttr('disabled', 'disabled')
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                             }
                             if (data[i].loQuotedPrice == 'L1') {
@@ -444,7 +444,7 @@ function fetchBidSummaryVendorproduct() {
 function onkeyCess(index) {
 
     $('#spanamount' + index).addClass('hide')
-    $('#txtquote' + index).val('');
+    $('#txtquote' + index).html('');
     if ($('#cess' + index).val().indexOf(".") > -1 && ($('#cess' + index).val().split('.')[1].length > 2)) {
         $('#spanmszC' + index).text($('#cess' + index).val() + ' must three decimal places');
         $('#spanmszC' + index).removeClass('hide')
@@ -470,7 +470,7 @@ function onkeyCess(index) {
 function onkeyNCV(index) {
 
     $('#spanamount' + index).addClass('hide')
-    $('#txtquote' + index).val('');
+    $('#txtquote' + index).html('');
     $('#spanmszN' + index).addClass('hide');
     $('#spanmszN' + index).text('')
     if ($('#ncv' + index).val().indexOf(".") > -1 && ($('#ncv' + index).val().split('.')[1].length > 2)) {
@@ -515,6 +515,11 @@ function calCostNCV(txtid, index) {
         // $('#spanmszC' + index).text('Please Enter Cess')
     }
 
+    if ($('#delquan' + index).val() != '') {
+        cess = $('#delquan' + index).val();
+        //$('#spanmszC' + index).removeClass('hide');
+        $('#spanmszC' + index).text('Please Enter Quantity')
+    }
     if ($('#ncv' + index).val() == '') {
         $('#spanmszN' + index).removeClass('hide');
         $('#spanmszN' + index).text('Please Enter NCV')
@@ -615,24 +620,24 @@ function InsUpdQuoteSeaExport(index) {
         }
         else {
 
-            value = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3)
-            valuejap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3)
+            value = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).html()))).toFixed(3)
+            valuejap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).html()))).toFixed(3)
         }
 
     }
     else {
         if (jQuery("#lastQuote" + index).text() == '' || jQuery("#lastQuote" + index).text() == '0') {
             value = ((parseFloat(Amount) / 100) * (parseFloat(jQuery("#txtquote" + index).html()))).toFixed(3);
-            v = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
+            v = parseFloat(removeThousandSeperator($('#txtquote' + index).html()))
             valuejap = ((parseFloat(Amount) / 100) * (parseFloat(jQuery("#txtquote" + index).html()))).toFixed(3);
             vjap = parseFloat($('#txtquote' + index).html())
         }
         else {
             value = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())))).toFixed(3);
-            v = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3);
+            v = (parseFloat(removeThousandSeperator(jQuery("#lastQuote" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).html()))).toFixed(3);
 
             valuejap = ((parseFloat(Amount) / 100) * (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())))).toFixed(3);
-            vjap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).val()))).toFixed(3);
+            vjap = (parseFloat(removeThousandSeperator(jQuery("#L1Price" + index).text())) - parseFloat(removeThousandSeperator($('#txtquote' + index).html()))).toFixed(3);
         }
     }
 
@@ -702,7 +707,7 @@ function InsUpdQuoteSeaExport(index) {
             "Cess": parseFloat(removeThousandSeperator(cess)),
             "NCV": parseFloat(removeThousandSeperator($('#ncv' + index).val())),
             "LandedPrice": parseFloat(removeThousandSeperator($('#landedp' + index).val())),
-            "isPrepricing":'Y',
+            "isPrepricing": 'Y',
             "extendTime": parseInt($('#hdnval').val())
         }
         //alert(JSON.stringify(QuoteProduct))
