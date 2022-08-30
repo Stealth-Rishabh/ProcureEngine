@@ -122,17 +122,18 @@ function fetchRFQVendorSummary() {
     else {
         var dateParts = $("#txtFromDate").val().split("/");
         dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-        
+
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = new Date();
+        //dtto = new Date();
+        dtto = null;
 
     }
     else {
         var dateParts = $("#txtToDate").val().split("/");
         dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-        
+
     }
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
         subject = jQuery("#txtbidsubject").val()
@@ -146,7 +147,7 @@ function fetchRFQVendorSummary() {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     //alert(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
     jQuery.ajax({
@@ -285,7 +286,8 @@ function fetchBidVendorSummaryDetail() {
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = new Date();
+        //dtto = new Date();
+        dtto = null;
 
     }
     else {
@@ -301,7 +303,7 @@ function fetchBidVendorSummaryDetail() {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     jQuery.ajax({
         type: "POST",
@@ -569,7 +571,8 @@ function fetchBidVendorSummarySummarization() {
     }
 
     if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-        dtto = new Date();
+        //dtto = new Date();
+        dtto = null;
 
     }
     else {
@@ -588,7 +591,7 @@ function fetchBidVendorSummarySummarization() {
         "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID'))
+        "UserID": sessionStorage.getItem('UserID')
     };
     jQuery.ajax({
         type: "POST",
