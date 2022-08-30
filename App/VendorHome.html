@@ -92,11 +92,18 @@
         .tableFont {
             font-size: 12px !important;
         }
-
+        /*@abheedev*/
         .changeLanguage {
             position: absolute;
             right: 160px;
             top: 11px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .changeLanguage {
+                position: absolute;
+                right: 3%;
+            }
         }
     </style>
 </head>
@@ -109,7 +116,7 @@
                 </a>
 
             </div>
-
+            <!--@abheedev-->
             <div class="changeLanguage">
                 <select class="navbar-language" href="index.html" style="padding:4px !important;">
                     <option data-locale="en" value="en">English</option>
@@ -133,13 +140,13 @@
                             </span><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="MyProfile_vendor.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="MyProfile_vendor.html"><i class="icon-user" ></i><span data-i18n="myprofile">My Profile</span> </a></li>
                             <li>
-                                <a href="#ChangePassword" data-toggle="modal">
+                                <a href="#ChangePassword" data-toggle="modal" data-i18n="changepassword">
                                     <i class="fa fa-lock"></i> Change Password
                                 </a>
                             </li>
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                            <li><a href="javascript:;" id="logOut_btn" data-i18n="logout"><i class="fa fa-key"></i>Log Out </a></li>
                         </ul>
 
                     </li>
@@ -158,7 +165,7 @@
                         <div class="sidebar-toggler hidden-phone">
                         </div>
                     </li>
-                    <br />
+                   
                 </ul>
             </div>
         </div>
@@ -202,7 +209,7 @@
                         <li>
                             <a href="javascript:;"  data-i18n="openevents" style="text-decoration:none;" onclick="fetchPendingBid()">Open Events</a>
                             </li>
-                        </li>
+                        
                     </ul>
                     <div class="page-toolbar">
 
@@ -396,7 +403,7 @@
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
                 <div class="portlet-title">
-                    <div class="caption">
+                    <div class="caption" data-i18n="help">
                         <i class="fa fa-reorder"></i>Help
                     </div>
                     <div class="tools">
@@ -877,10 +884,10 @@
 
 
     <script>
-
+        
 
         // translation code begin -abhi@dev
-
+        
         var set_locale_to = function (locale) {
             if (locale) {
                 $.i18n().locale = locale;
@@ -910,8 +917,6 @@
                     History.pushState(null, null, "?locale=" + $.i18n().locale);
                    
 
-
-                   
                     
                 });
             });
@@ -921,8 +926,8 @@
 
 
        
+        /*
 
-/*
         jQuery(function () {
             $.i18n().locale = $(".navbar-language").children("option").val();
             
@@ -943,9 +948,8 @@
                 });
 
 
-        })
-        */
- //translation code end - abhi@dev
+        }) */
+         //translation code end - abhi@dev
 
 
 
@@ -980,6 +984,25 @@
             fetchMenuItemsFromSession(0, 0)
         });
     </script>
+
+<script>
+    /*
+    //removing cookies on unload -@abheedev
+    $(window).load(function () {
+        // Remove the cookie
+        var cookies = document.cookie.split(";");
+       // for (var i = 0; i < cookies.length; i++) {
+         //   var cookie = cookies[i];
+           // $.removeCookie(cookie);
+            console.log(cookies);
+           
+       // }
+
+        
+    }); 
+    */
+</script>
+
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
