@@ -513,8 +513,9 @@ function fetchReguestforQuotationDetails(RFQID) {
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
             jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            var CurDateonly = new Date(currentdate.toDateString())
-            var ENDDTdateonly = new Date(new Date(RFQData[0].general[0].rfqEndDate.replace('-', '')).toDateString())
+            var CurDateonly = new Date()
+            var ENDDTdateonly = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate).replace('-', ''))    
+            sessionStorage.setItem("rfqEndDate", ENDDTdateonly)
 
             if (ENDDTdateonly < CurDateonly) {
                 $('#sendremainder').attr("disabled", "disabled");
@@ -1564,49 +1565,61 @@ function openVendorsQuotes() {
             }
         });
 
+        var _RfqEndDt = new Date(sessionStorage.getItem("rfqEndDate"));
+        var _CurrDt = new Date();
+        if (_RfqEndDt < _CurrDt) {
+            error1.show();
+            $('#spandanger').html('The Rfq Date has ended. Please extend Rfq deadline before reopening quotes...');
+            error1.fadeOut(3000);
+            App.scrollTo(error1, -200);
+            jQuery.unblockUI();
+            gritternotification('The Rfq Date has ended. Please extend Rfq deadline before reopening quotes!!!');
+            return false;
 
-
-        var data = {
-            "QueryString": checkedValue,
-            "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
-            "VersionID": parseInt($('#ddlrfqVersion').val()),
-            "UserID": sessionStorage.getItem("UserID"),
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-
-        jQuery.ajax({
-            url: APIPath + "eRFQReport/eRFQOpenQuotesOfSelectedVendor",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            data: JSON.stringify(data),
-            type: "POST",
-            contentType: "application/json",
-            success: function (data) {
-
-                // if (data[0].IsSuccess == "1") {
-                success1.show();
-                $('#spansuccess1').html("Quotes has been opened Successfully..'");
-                success1.fadeOut(6000);
-                App.scrollTo(success1, -200);
-                FetchVendorsubmittedQuotes(sessionStorage.getItem("hdnrfqid"));
-                clearsession();
-                jQuery.unblockUI();
-                return true;
-                // }
-            },
-
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText//xhr.responseText//eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('spandanger', '');
-                }
-                jQuery.unblockUI();
-                return false;
+        else {
+            var data = {
+                "QueryString": checkedValue,
+                "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
+                "VersionID": parseInt($('#ddlrfqVersion').val()),
+                "UserID": sessionStorage.getItem("UserID"),
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
             }
-        });
+
+            jQuery.ajax({
+                url: APIPath + "eRFQReport/eRFQOpenQuotesOfSelectedVendor",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                data: JSON.stringify(data),
+                type: "POST",
+                contentType: "application/json",
+                success: function (data) {
+
+                    // if (data[0].IsSuccess == "1") {
+                    success1.show();
+                    $('#spansuccess1').html("Quotes has been opened Successfully..'");
+                    success1.fadeOut(6000);
+                    App.scrollTo(success1, -200);
+                    FetchVendorsubmittedQuotes(sessionStorage.getItem("hdnrfqid"));
+                    clearsession();
+                    jQuery.unblockUI();
+                    return true;
+                    // }
+                },
+
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText//xhr.responseText//eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('spandanger', '');
+                    }
+                    jQuery.unblockUI();
+                    return false;
+                }
+            });
+        }
 
 
     }
@@ -1885,6 +1898,7 @@ function invitevendors() {
 function ExtendDuration() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidData = '';
+    var _ExtendedDate = new Date($('#txtextendDate').val().replace('-', ''))
 
     BidData = {
         "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
@@ -1911,6 +1925,8 @@ function ExtendDuration() {
                 success1.fadeOut(6000);
                 App.scrollTo(success1, -200);
                 $("#txtextendDate").val('');
+                sessionStorage.removeItem("rfqEndDate");
+                sessionStorage.setItem("rfqEndDate", _ExtendedDate)
                 jQuery.unblockUI();
                 return true;
 

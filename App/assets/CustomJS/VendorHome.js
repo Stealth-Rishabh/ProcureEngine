@@ -403,7 +403,7 @@ function fetchVQDetails() {
             attachment = BidData[0].vqMaster[0].vqAttachment.replace(/\s/g, "%20")
 
             jQuery('#RFISubject').text(BidData[0].vqMaster[0].vqSubject)
-            jQuery('#RFIDeadline').text(fnConverToLocalTime(BidData[0].vqMaster[0].vqDeadline))
+            jQuery('#RFIDeadline').text(fnConverToShortDT(BidData[0].vqMaster[0].vqDeadline))
             jQuery('#RFIDescription').text(BidData[0].vqMaster[0].vqDescription)
 
         },
@@ -433,7 +433,7 @@ function fetchRFIDetails() {
             sessionStorage.setItem('CustomerID', BidData[0].rfxMaster[0].customerID)
             sessionStorage.setItem('CurrentRFXID', BidData[0].rfxMaster[0].rfxid)
             jQuery('#RFISubject').text(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#RFIDeadline').text(fnConverToLocalTime(BidData[0].rfxMaster[0].rfxDeadline))
+            jQuery('#RFIDeadline').text(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#RFIDescription').text(BidData[0].rfxMaster[0].rfxDescription)
 
         },
@@ -450,8 +450,6 @@ function fetchRFIDetails() {
 }
 
 function fetchReguestforQuotationDetailseRFQ() {
-
-
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
