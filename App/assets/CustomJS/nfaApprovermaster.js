@@ -141,9 +141,9 @@ function bindApproverMaster() {
             $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
                 Approvermasterdata = res.result;
-                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Deviation %</th></thead>")
+                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
                 for (var i = 0; i < res.result.length; i++) {
-                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td><td>' + res.result[i].deviation + '</td></tr>');
+                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
                 }
             }
             else {
@@ -306,11 +306,11 @@ function CheckDuplicate() {
 
     };
 
-    //alert(JSON.stringify(Model))
+
     var url = "NFA/VerifyExistingApprover";
     var VerifyApproverMatrix = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     VerifyApproverMatrix.success(function (res) {
-
+        debugger;
         if (res.status != "E") {
 
             verifyApproverMatrix = res.result;
@@ -527,7 +527,7 @@ function SaveApproverMaster() {
             if (ApproverType == "S") {
                 $(".clsHide").hide();
                 isHide = '';
-                isEditAllowed = 'hide'
+                isEditAllowed = ' hide'
             }
             else {
                 isHide = 'hide'
@@ -618,7 +618,7 @@ jQuery("#txtApprover").typeahead({
 
 });
 function validateWBADD() {
-
+    debugger;
     var idx = false;
     var Seq = false;
 
@@ -723,10 +723,10 @@ function fnApproversQuery(EmailID, UserID, UserName, rownum) {
         rowApp = rownum;
         if (!jQuery("#tblWBApproverSeq thead").length) {
             jQuery("#tblWBApproverSeq").append("<thead><tr><th style='width:10%'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:10%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary  ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary  ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
     }
 }
@@ -1528,7 +1528,6 @@ var FormWizard = function () {
                 } else {
 
                     $('#form_wizard_1').find('.button-previous').show();
-
                 }
 
 
