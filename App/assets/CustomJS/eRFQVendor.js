@@ -2,6 +2,9 @@
 var error = $('.alert-danger');
 var success = $('.alert-success');
 
+
+
+
 var form = $('#submit_form');
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -1025,11 +1028,12 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
 }
 
-var currentdate = new Date();
+
 function fetchReguestforQuotationDetails() {
+
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced1 = '';
-
+    var currentdate = new Date();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1075,7 +1079,7 @@ function fetchReguestforQuotationDetails() {
 
             jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-',''));
+            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
             if (currentdate < StartDT) {
                 $('#form_wizard_1').find('.button-next').hide();
                 $('#regretrfq').hide();
@@ -1222,6 +1226,7 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
+    //alert("Called")
     fetchRFQLevelTC(ver);
 
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
@@ -1244,7 +1249,8 @@ function fetchRFIParameteronload(ver) {
             var totalammwithGST = 0;
 
             if (data.length > 0) {
-                   if (_RFQBidType == 'Open') {
+
+                if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                 }
@@ -1375,6 +1381,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
     PricewithoutGSTDiscount = 0.0;
 
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
+
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
     var validateSubmit = true;
@@ -1479,9 +1486,14 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
-                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
 
-                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
+                    //$(this_row.find('td:eq(13)').html(Price))
+                    (async () => {
+                        await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
+                    })();
+
+                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
                     Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
@@ -1504,6 +1516,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
+        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
