@@ -1787,6 +1787,7 @@ function fetchallexportdetails() {
             jQuery("#tblServicesProductPrev").empty();
             jQuery("#tblServicesProductPrevtab_0").empty();
             if (sessionStorage.getItem('hdnbidtypeid') == 7) {
+                $('#txtBidType').text("Reverse Auction");
                 if (BidData[0].bidSeaExportDetails.length > 0) {
 
                     $('#wrap_scrollerPrev').show();
@@ -1932,6 +1933,7 @@ function fetchallexportdetails() {
                 }
             }
             if (sessionStorage.getItem('hdnbidtypeid') == 8) {
+                $('#txtBidType').text("Coal Auction");
                 if (BidData[0].bidCoalDetails.length > 0) {
 
                     $('#wrap_scrollerPrev').show();
@@ -2003,6 +2005,7 @@ function fetchallexportdetails() {
             }
             //debugger;
             if (sessionStorage.getItem('hdnbidtypeid') == 6) {
+                $('#txtBidType').text("Forward Auction");
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
                 if (BidData[0].bidScrapSalesDetails.length > 0) {
                     var max = BidData[0].bidScrapSalesDetails[0].attachmentSeqID;
@@ -2071,6 +2074,7 @@ function fetchallexportdetails() {
                 }
             }
             if (sessionStorage.getItem('hdnbidtypeid') == 9) {
+                $('#txtBidType').text("French Auction");
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
                 if (BidData[0].bidFrenchDetails.length > 0) {
 
@@ -3112,7 +3116,7 @@ function CheckminQuantity(id) {
 }
 function CheckmaxQuantity(id) {
     var biddidval = $('#' + id.id).val();
-    if (parseFloat(removeThousandSeperator(biddidval)) < parseFloat(removeThousandSeperator($('#txtquantitiyfrench').val())) || $('#txtmaxquantitiy').val() == "") {
+    if (parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiyfrench').val())) || $('#txtmaxquantitiy').val() == "" || parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiyfrench').val()))) {
         $('#' + id.id).closest('.maxq').removeClass('has-success').addClass('has-error');
         $('#spnmaxq').removeClass('hide');
         $('#spnmaxq').text('Max Quantity should not be greater than Quantity');
@@ -3321,7 +3325,14 @@ function addrowfield() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-    if ($('#dropuom').val() == '' || $('#dropuom').val() == '0') {
+    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid") != 9) {
+        $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
+        $("#msgErrorItemEvent").show();
+        $("#msgErrorItemEvent").fadeOut(5000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);
@@ -3568,7 +3579,14 @@ function editrowfields() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-    if ($('#dropuom').val() == '' || $('#dropuom').val() == '0') {
+    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid") != 9) {
+        $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
+        $("#msgErrorItemEvent").show();
+        $("#msgErrorItemEvent").fadeOut(5000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);

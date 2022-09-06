@@ -1447,40 +1447,50 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
+    if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
+        $('#spandanger').html('You can not add more than one item for French Auction.');
+        //$(".alert-danger").find("span").html('').html('You can not add more than one item for Dutch Auction.')
+        Metronic.scrollTo(error, -200);
+        $(".alert-danger").show();
+        $(".alert-danger").fadeOut(5000);
+        resetfun();
+        return false;
+    } else {
+        var i;
+        i = rowAppItems;
+        var status = "";
+        var status = $('#checkmaskvendor option:selected').val();
+        // var ShowHlPrice = $('#showhlprice option:selected').val();
+        //var ShowStartPrice = $('#showstartprice option:selected').val();
 
-    var i;
-    i = rowAppItems;
-    var status = "";
-    var status = $('#checkmaskvendor option:selected').val();
-    // var ShowHlPrice = $('#showhlprice option:selected').val();
-    //var ShowStartPrice = $('#showstartprice option:selected').val();
+        if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
+            $("#txttargetprice").val('0')
+        }
+        if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
+            $("#txtlastinvoiceprice").val('0')
+        }
+        if (!jQuery("#tblServicesProduct thead").length) {
 
-    if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
-        $("#txttargetprice").val('0')
-    }
-    if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
-        $("#txtlastinvoiceprice").val('0')
-    }
-    if (!jQuery("#tblServicesProduct thead").length) {
+            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        else {
+            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        $('#wrap_scroller').show();
+        if (!jQuery("#tblServicesProductPrev thead").length) {
+            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        else {
+            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        $('#wrap_scrollerPrev').show();
+        rowAppItems = rowAppItems + 1;
+        rowAppItemsrno = rowAppItemsrno + 1;
+        resetfun()
 
-        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
     }
-    else {
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    $('#wrap_scroller').show();
-    if (!jQuery("#tblServicesProductPrev thead").length) {
-        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    else {
-        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    $('#wrap_scrollerPrev').show();
-    rowAppItems = rowAppItems + 1;
-    rowAppItemsrno = rowAppItemsrno + 1;
-    resetfun()
     jQuery.unblockUI();
 }
 
@@ -1542,7 +1552,7 @@ function resetfun() {
     $('#txtUOM').val('')
     $('#txtedelivery').val('')
     $('#txtCeilingPrice').val('')
-    $('#txtminimumdecreament').val
+    $('#txtminimumdecreament').val('')
     $('#txtminquantitiy').val('')
     $('#txtmaxquantitiy').val('')
     $('#drpdecreamenton').val('A')
