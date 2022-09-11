@@ -388,6 +388,7 @@ function InsUpdRFQDEtailTab1() {
     }
 
     var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));
+    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     //** delete Existing File (if any) on Azure
     //fnFileDeleteAzure(TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'))
     var Tab1Data = {
@@ -404,6 +405,7 @@ function InsUpdRFQDEtailTab1() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").text(),
         "RFQApprovers": [],
+        "RFQBidType": _RFQBidType,
         "TechnicalApproval": sessionStorage.getItem('techapp')
 
     };

@@ -23,8 +23,9 @@ function fetchReguestforQuotationDetailseRFQ() {
             sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
 
             setTimeout(function () {
-                var EndDate = fnConverToLocalTime(data[0].rfqEndDate);
-                var currentTime = fnConverToLocalTime(new Date());
+                var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-',''));
+                //var currentTime = fnConverToLocalTime(new Date());
+                var currentTime = new Date();
 
                 if (EndDate > currentTime) {
                     sessionStorage.setItem('hddnRFQRFIID', data[0].rfqid)
