@@ -15,15 +15,15 @@
           type="text/css" />
     <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
           type="text/css" />
-          
-       <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-		  <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
-    
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
@@ -32,7 +32,9 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-    .date-picker{z-index:1151 !important;}
+        .date-picker {
+            z-index: 1151 !important;
+        }
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -121,38 +123,51 @@
                                         <input type='hidden' value='' id="hddn_RQID_txt" />
                                         <div class="form-group">
 
-                                            <div class="col-md-6">
-                                                <label class="col-md-6 control-label">
+                                            <div class="col-md-12">
+                                                <label class="col-md-3 control-label">
                                                     Subject:
                                                 </label>
-                                                <p class="form-control-static col-md-6" id="rq_subject"></p>
+                                                <p class="form-control-static col-md-9 " id="rq_subject"></p>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <label class="col-md-3 control-label">
-                                                    Start Date:
-                                                </label>
-                                                <p class="form-control-static col-md-6" id="rq_STDate"></p>
-                                                
 
-                                            </div>
 
-                                            <div class="col-md-6">
+                                            <!--<div class="col-md-6">
                                                 <label class="col-md-3 control-label">
                                                     Deadline:
                                                 </label>
                                                 <p class="form-control-static col-md-6" id="rq_deadline"></p>
-                                                <div class="margin-top-10 col-md-3">
-                                                    <a class="btn btn-xs green" href="#extendDate" data-toggle="modal"><i class="fa fa-plus"></i> Modify Date</a>
+
+
+                                            </div>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-6 control-label">
+                                                        Start Date:
+                                                    </label>
+                                                    <p class="form-control-static col-md-6" id="rq_STdate"></p>
                                                 </div>
 
-                                            </div>
 
+                                                <div class="col-md-6">
+                                                    <label class="col-md-3 control-label">
+                                                        End Date:
+                                                    </label>
+                                                    <p class="form-control-static col-md-4" id="rq_deadline"></p>
+                                                    <div class="margin-top-10 col-md-1">
+                                                        <a class="btn btn-xs green" href="#extendDate" data-toggle="modal"><i class="fa fa-plus"></i> Modify Date</a>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
 
                                             <div class="col-md-12">
-                                                <label class="col-md-3 control-label" style="padding-right: 22px !important;">
+                                                <label class="col-md-3 control-label">
                                                     Description:
                                                 </label>
                                                 <p class="form-control-static col-md-9" style="padding-left: 8px; !important;" id="rq_description"></p>
@@ -303,63 +318,63 @@
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js">
-        </script>
+    </script>
 
-        <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-        <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-        <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-        <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-        <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-        <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-        <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-        <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js" type="text/javascript"></script>
-        <script src="assets/scripts/aes.js"></script>
-        <script src="assets/CustomJS/TypeaHead.js"></script>
-        <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-        <script src="assets/CustomJS/eRFQStatus.js" type="text/javascript"></script>
-        <script>
-            jQuery(document).ready(function () {
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/eRFQStatus.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
 
-                formValidation()
-                $(function () {
-                    $('#datetimepicker').datetimepicker({
-                        minDate: new Date()
-                    });
+            formValidation()
+            $(function () {
+                $('#datetimepicker').datetimepicker({
+                    minDate: new Date()
                 });
-                ComponentsPickers.init();
+            });
+            ComponentsPickers.init();
 
-                if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                    bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                        window.location = sessionStorage.getItem('MainUrl');
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+                    window.location = sessionStorage.getItem('MainUrl');
+                    return false;
+                });
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not authorize to view this page", function () {
+                        parent.history.back();
                         return false;
                     });
                 }
-                else {
-                    if (sessionStorage.getItem("UserType") == "E") {
-                        $('.page-container').show();
-                    }
-                    else {
-                        bootbox.alert("You are not authorize to view this page", function () {
-                            parent.history.back();
-                            return false;
-                        });
-                    }
-                }
-                Metronic.init();
-                Layout.init();
+            }
+            Metronic.init();
+            Layout.init();
 
-                setCommonData();
-                fetchMenuItemsFromSession(0, 0);
-                FetchInvitedVendorsForeRFQ();
+            setCommonData();
+            fetchMenuItemsFromSession(0, 0);
+            FetchInvitedVendorsForeRFQ();
 
-            });
+        });
 
 
-        </script>
+    </script>
 
-        <!-- END JAVASCRIPTS -->
+    <!-- END JAVASCRIPTS -->
 </body>
 
 <!-- END BODY -->

@@ -2230,7 +2230,7 @@ function getCategoryWiseVendors(categoryID) {
 
                 });
             }
-        },
+        },  
         error: function (xhr, status, error) {
 
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");

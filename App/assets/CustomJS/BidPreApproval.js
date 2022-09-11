@@ -453,10 +453,18 @@ function ApprovalApp() {
                 });
             }
             else {
-                bootbox.alert("Bid successfully approved and communicated to all the selected vendors.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
+                if ($("#ddlActionType option:selected").text().toLowerCase() == "approved") {
+                    bootbox.alert("Bid successfully approved and communicated to all the selected vendors.", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+                }
+                else {
+                    bootbox.alert("Bid successfully reverted!!", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+                }
             }
 
         },
