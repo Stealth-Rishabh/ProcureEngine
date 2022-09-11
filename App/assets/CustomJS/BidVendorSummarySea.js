@@ -398,6 +398,7 @@ function DownloadFile(aID) {
 function fetchBidSummary(BidID) {
     var tncAttachment, anyotherAttachment;
 
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -485,7 +486,7 @@ function fetchBidSummary(BidID) {
                     $('#btndiv').hide()
                     $('#spinnerBidclosingTab').hide()
 
-                    if (data[0].status.toLocaleLowerCase() == 'Close' && BidTypeID != 9) {
+                    if (data[0].status.toLocaleLowerCase() == 'close' && BidTypeID != 9) {
                         fnfetchvendortotalSummary(BidID, BidTypeID)
                         $('#btn_invite_vendors').hide();
                     }
@@ -511,10 +512,10 @@ function fetchBidSummary(BidID) {
                     $('#bid_status').html('Bid is paused from the selected Item / Service.<b> Serial No: ' + data[0].pausedSno + '</b>.');
                     $('.forbtnpause').hide()
                 }
-                else {
-                    $('#bid_status').html('Open/Bid Time Expired');
+                /*  else {
+                     $('#bid_status').html('Open/Bid Time Expired');
                     $('#bid_status').show();// show for Bid Expire But Status is still open
-                }
+                }*/
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -2642,11 +2643,11 @@ function FetchRecomendedVendor(bidid) {
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -2668,7 +2669,7 @@ function FetchRecomendedVendor(bidid) {
                         isMappedPPCApp = 'Y'
                     }
                     else {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').addClass('hide')
                     }
                 }
@@ -2677,11 +2678,11 @@ function FetchRecomendedVendor(bidid) {
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thaward').addClass('hide')
                     }
                 }
@@ -2690,11 +2691,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').hide()
                     }
                 }

@@ -19,7 +19,11 @@ $(".thousandsep").inputmask({
     digitsOptional: true,
     allowPlus: false,
     allowMinus: false,
-    'removeMaskOnSubmit': true
+    autoUnmask: true,
+    positionCaretOnTab: false,
+    numericInput: false,
+    positionCaretOnClick: "none",
+   'removeMaskOnSubmit': true
 
 });
 CommonGenricAjax = function (url, type, data, async, token) {
@@ -80,7 +84,7 @@ callajaxReturnSuccess = function (url, type, data) {
     });
 };
 
-function SearchInGridview(tableName,value) {
+function SearchInGridview(tableName, value) {
     $("#" + tableName + " tr:has(td)").hide(); // Hide all the rows.
 
     var iCounter = 0;

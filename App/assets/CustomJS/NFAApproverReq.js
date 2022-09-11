@@ -36,6 +36,12 @@ $(document).ready(function () {
             $('#frmadminbutton').show()
 
         }
+        else if (FwdTo == 'View') {//&& AppStatus == 'Reverted'
+            jQuery("#frmdivremarksapprover").hide();
+            jQuery("#divRemarksApp").hide();
+            $('#frmadminbutton').hide()
+
+        }
         else {
             jQuery("#divRemarksApp").show();
             jQuery("#frmdivremarksapprover").show();
@@ -238,6 +244,7 @@ function fetchApproverStatus() {
         processData: true,
         dataType: "json",
         success: function (data) {
+
             var status = '';
             var c = 0;
             var ApprovalType = ""

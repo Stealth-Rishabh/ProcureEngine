@@ -18,6 +18,7 @@ var nfaEditedID = 0;
 var isHide = 'hide';
 var isEditAllowed = '';
 var verifyApproverMatrix = '';
+
 var MoveSeqData = '<a style="cursor:pointer" class="up"><i class="fa fa-arrow-up" aria-hidden="true"></i></a><a style="cursor:pointer" class="down"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>';
 
 $(document).ready(function () {
@@ -141,9 +142,9 @@ function bindApproverMaster() {
             $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
                 Approvermasterdata = res.result;
-                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Deviation %</th></thead>")
+                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
                 for (var i = 0; i < res.result.length; i++) {
-                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td><td>' + res.result[i].deviation + '</td></tr>');
+                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
                 }
             }
             else {
@@ -305,8 +306,8 @@ function CheckDuplicate() {
         amountTo: parseFloat(removeThousandSeperator(amountTo))
 
     };
-
-    //alert(JSON.stringify(Model))
+    debugger;
+    console.log(JSON.stringify(Model))
     var url = "NFA/VerifyExistingApprover";
     var VerifyApproverMatrix = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     VerifyApproverMatrix.success(function (res) {
@@ -378,9 +379,10 @@ function bindConditionDDL() {
 
         if (res.result != null) {
             $("#ddlCondition").empty();
+            $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
             if (res.result.length > 0) {
                 //conditionData = res.result;
-                $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
+
                 for (var i = 0; i < res.result.length; i++) {
                     $("#ddlCondition").append(jQuery("<option></option>").val(res.result[i].conditionID).html(res.result[i].conditionName));
                 }
@@ -527,7 +529,7 @@ function SaveApproverMaster() {
             if (ApproverType == "S") {
                 $(".clsHide").hide();
                 isHide = '';
-                isEditAllowed = 'hide'
+                isEditAllowed = ' hide'
             }
             else {
                 isHide = 'hide'
@@ -672,15 +674,13 @@ function AddWBApprovers() {
 
         if (ApproverType == "S") {
 
-            if (WBSeq < 0) {
-                WBSeq = 0;
+            if (WBSeq <= 0) {
+                WBSeq = 1;
             }
-
             ++WBSeq;
-
         }
         else {
-            WBSeq = parseInt(Seq);
+            WBSeq = parseInt(Seq == 0 ? 1 : Seq);
         }
         fnApproversQuery(EmailID, ApproverID, ApproverName, WBSeq)
     }
@@ -721,23 +721,35 @@ function fnApproversQuery(EmailID, UserID, UserName, rownum) {
     }
     else {
         rowApp = rownum;
+        var num = 0;
+        var maxidnum = 0;
+        $("#tblWBApproverSeq tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(9)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+
+        rownum = parseInt(maxidnum) + 1;
         if (!jQuery("#tblWBApproverSeq thead").length) {
             jQuery("#tblWBApproverSeq").append("<thead><tr><th style='width:10%'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:10%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
     }
 }
-function deleteApprow(rowid) {
+function deleteApprow(icount) {
 
     --WBSeq;
-    $('#' + rowid.id).remove();
-    // $('#' + rowidPrev.id).remove();
-    var rowCount = jQuery('#tblWBApproverSeq tr').length;
+    // $('#' + rowid.id).remove();
+    $('#trWBAppid' + icount).remove();
+    var rowCount = jQuery('#tblWBApproverSeq >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1 && ApproverType == 'S') {
+    if (rowCount >= 1 && ApproverType == 'S') {
         $("#tblWBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(3)').html(i));
@@ -761,11 +773,7 @@ $("#tblWBApproverSeq").on("click", ".edit", function (e) {
 function UpdateSeq(tableName, index, NewSeq) {
     var id;
     id = NewSeq;
-
     $('#' + tableName + ' tbody tr').eq(index).find('td').eq(3).html(id);
-
-
-
 };
 
 
@@ -848,7 +856,7 @@ function AddOBApprovers() {
             ++OBSeq;
         }
         else {
-            OBSeq = parseInt(Seq);
+            OBSeq = parseInt(Seq == 0 ? 1 : Seq);
         }
         fnApproversOBQuery(obEmail, ApproverID, ApproverName, OBSeq);
     }
@@ -892,23 +900,35 @@ function fnApproversOBQuery(EmailID, UserID, UserName, rownum) {
     }
     else {
         var rowApp = rownum;
+        var maxidnum = 0; var num = 0;
+        $("#tblOBApproverSeq tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(9)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+
+        rownum = parseInt(maxidnum) + 1;
         if (!jQuery("#tblOBApproverSeq thead").length) {
             jQuery("#tblOBApproverSeq").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(trOBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(trOBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
     }
 }
-function deleteOBApprow(rowid) {
+function deleteOBApprow(IDCount) {
 
     --OBSeq;
-    $('#' + rowid.id).remove();
+    //$('#' + rowid.id).remove();
     // $('#' + rowidPrev.id).remove();
-    var rowCount = jQuery('#tblOBApproverSeq tr').length;
+    $('#trOBAppid' + IDCount).remove();
+    var rowCount = jQuery('#tblOBApproverSeq >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1 && ApproverType == 'S') {
+    if (rowCount >= 1 && ApproverType == 'S') {
         $("#tblOBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(3)').html(i));
@@ -1009,7 +1029,7 @@ function AddNBApprovers() {
             ++NBSeq;
         }
         else {
-            NBSeq = parseInt(Seq);
+            NBSeq = parseInt(Seq == 0 ? 1 : Seq);
         }
         fnApproversNBQuery(NBEmailID, ApproverID, ApproverName, NBSeq);
     }
@@ -1048,23 +1068,35 @@ function fnApproversNBQuery(EmailID, UserID, UserName, rownum) {
     }
     else {
         var rowApp = rownum;
+        var maxidnum = 0; var num = 0;
+        $("#tblNBApproverSeq tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(9)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+
+        rownum = parseInt(maxidnum) + 1;
         if (!jQuery("#tblNBApproverSeq thead").length) {
             jQuery("#tblNBApproverSeq").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(trNBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + IDCount + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(trNBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + IDCount + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
     }
 }
-function deleteNBApprow(rowid) {
+function deleteNBApprow(IDCount) {
 
     --NBSeq;
-    $('#' + rowid.id).remove();
+    $('#trNBAppid' + IDCount).remove();
+    //$('#' + rowid.id).remove();
     // $('#' + rowidPrev.id).remove();
-    var rowCount = jQuery('#tblNBApproverSeq tr').length;
+    var rowCount = jQuery('#tblNBApproverSeq >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1 && ApproverType == 'S') {
+    if (rowCount >= 1 && ApproverType == 'S') {
         $("#tblNBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(3)').html(i));
@@ -1083,28 +1115,35 @@ $("#tblNBApproverSeq").on("click", ".edit", function (e) {
     $("#txtNBApprover").val($(td).eq(1).html());
 });
 
-$('#chkWBCopy').change(function () {
-    if ($(this).is(":checked")) {
+$('#chkWBCopy').click(function () {
+    if ($(this).closest("span").attr('class') == 'checked') {
+        $(this).closest("span").removeClass("checked")
+    }
+    else {
+        $(this).closest("span").addClass("checked")
         saveSameWB();
     }
-
+    //if ($(this).is(":checked")) {
+    //    saveSameWB();
+    //}
 });
 
 
 function saveSameWB() {
     $("#tblOBApproverSeq").empty();
-    var rowCount = $('#tblWBApproverSeq tr').length;
-    if (rowCount > 1) {
+    var rowCount = $('#tblWBApproverSeq >tbody>tr').length;
+    if (rowCount >= 1) {
         $("#tblOBApproverSeq").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
         $("#tblWBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
             // approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+            var rowAppsq = (this_row.closest('tr').attr('id')).substring(9);
             var rowApp = parseInt($.trim(this_row.find('td:eq(3)').html()));
             var UserID = $.trim(this_row.find('td:eq(4)').html());
             var UserName = $.trim(this_row.find('td:eq(1)').html());
             var EmailID = $.trim(this_row.find('td:eq(2)').html());
 
-            $("#tblOBApproverSeq").append('<tr id=trOBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(trOBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></button><button class="btn  btn-xs btn-primary edit' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            $("#tblOBApproverSeq").append('<tr id=trOBAppid' + rowAppsq + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rowAppsq + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></button><button class="btn  btn-xs btn-primary edit' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
             if (ApproverType == "S") {
                 OBSeq = parseInt(rowApp);
             }
@@ -1131,15 +1170,16 @@ function copyObSame() {
             var this_row = $(this);
             // approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
             var rowApp = parseInt($.trim(this_row.find('td:eq(3)').html()));
+            var rowAppsq = (this_row.closest('tr').attr('id')).substring(9);
             var UserID = $.trim(this_row.find('td:eq(4)').html());
             var UserName = $.trim(this_row.find('td:eq(1)').html());
             var EmailID = $.trim(this_row.find('td:eq(2)').html());
 
-            $("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(trNBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            $("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowAppsq + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rowAppsq + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
             if (ApproverType == "S") {
                 NBSeq = parseInt(rowApp);
             }
-            // console.log(approvers);
+
         })
     }
 };
@@ -1528,7 +1568,6 @@ var FormWizard = function () {
                 } else {
 
                     $('#form_wizard_1').find('.button-previous').show();
-
                 }
 
 
@@ -1722,11 +1761,11 @@ function BindApproverSeqOnEdit() {
                 $.each(res.result, function (key, value) {
                     rowApp = ++key;
                     if (value.budgetType == "WB")
-                        WBBody += '<tr id=trWBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trWBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
+                        WBBody += '<tr id=trWBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
                     if (value.budgetType == "OB")
-                        OBBody += '<tr id=trOBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(trOBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
+                        OBBody += '<tr id=trOBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
                     if (value.budgetType == "NB")
-                        NBBody += '<tr id=trNBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(trNBAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
+                        NBBody += '<tr id=trNBAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '" ><i class="fa fa-pencil"></i></button></td><td>' + value.approverName + '</td><td>' + value.emailID + '</td><td>' + value.seq + '</td><td class=hide>' + value.userID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>';
 
                 });
 

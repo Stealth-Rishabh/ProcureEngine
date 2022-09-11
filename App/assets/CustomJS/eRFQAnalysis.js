@@ -218,7 +218,7 @@ function fetchrfqcomprative() {
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>Not Started</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>Intent To Participate</th>";
                         strHeadExcel += "<th colspan='4'>Intent To Participate</th>";
 
                     }
