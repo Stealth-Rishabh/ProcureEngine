@@ -378,9 +378,9 @@ function bindConditionDDL() {
 
         if (res.result != null) {
             $("#ddlCondition").empty();
+            $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
             if (res.result.length > 0) {
                 //conditionData = res.result;
-                $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
                 for (var i = 0; i < res.result.length; i++) {
                     $("#ddlCondition").append(jQuery("<option></option>").val(res.result[i].conditionID).html(res.result[i].conditionName));
                 }

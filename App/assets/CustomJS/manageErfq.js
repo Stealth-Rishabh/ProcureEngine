@@ -447,7 +447,7 @@ function InsUpdRFQDEtailTab1() {
     });
     jQuery.unblockUI();
 }
-var isrunnigRFQ = 'Y';
+var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
 
 
@@ -594,8 +594,8 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery("#selectedvendorlistsPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Vendor</th></tr></thead>");
                 for (var i = 0; i < RFQData[0].vendors.length; i++) {
                     jQuery('<tr id=trid' + i + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td></tr>').appendTo("#selectedvendorlistsPrev");
-                    if (RFQData[0].vendors[i].rfqStatus != 'C') {
-                        isrunnigRFQ = 'N';
+                    if (RFQData[0].vendors[i].rfqStatus == 'C') {
+                        isrunnigRFQ = 'Y';
                         //
                     }
 

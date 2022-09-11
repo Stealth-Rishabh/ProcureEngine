@@ -1339,58 +1339,58 @@ function ConfigureBidInsPefaTab3() {
         return false;
     }
     else {
-        if (sessionStorage.getItem("BidPreApp") == "N") {
-            var Tab3data = {
+        //if (sessionStorage.getItem("BidPreApp") == "N") {
+        var Tab3data = {
 
-                "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
-                "UserID": sessionStorage.getItem('UserID'),
-                "BidTypeID": 6,
-                "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-            };
-            //alert(JSON.stringify(Tab3data))
+            "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
+            "UserID": sessionStorage.getItem('UserID'),
+            "BidTypeID": 6,
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        };
+        //alert(JSON.stringify(Tab3data))
 
-            jQuery.ajax({
+        jQuery.ajax({
 
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsPefaTab3/",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                crossDomain: true,
-                async: false,
-                data: JSON.stringify(Tab3data),
-                dataType: "json",
-                success: function (data) {
-                    jQuery.unblockUI();
-                    bootbox.alert("Bid Configured Successfully.", function () {
-                        sessionStorage.removeItem('CurrentBidID');
-                        window.location = sessionStorage.getItem("HomePage")
-                        return false;
-                    });
-
-
-                },
-                error: function (xhr, status, error) {
-
-                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                    if (xhr.status == 401) {
-                        error401Messagebox(err.Message);
-                    }
-                    else {
-                        fnErrorMessageText('spandanger', 'form_wizard_1');
-                    }
-                    jQuery.unblockUI();
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsPefaTab3/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Tab3data),
+            dataType: "json",
+            success: function (data) {
+                jQuery.unblockUI();
+                bootbox.alert("Bid Configured Successfully.", function () {
+                    sessionStorage.removeItem('CurrentBidID');
+                    window.location = sessionStorage.getItem("HomePage")
                     return false;
+                });
 
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
                 }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
 
-            });
-        }
-        else {
-            fnOpenPopupBidpreApprover();
-            jQuery.unblockUI();
-        }
+            }
+
+        });
     }
-
+    /* else {
+         fnOpenPopupBidpreApprover();
+         jQuery.unblockUI();
+     }
+ }*/
+    jQuery.unblockUI();
 
 }
 
@@ -1860,8 +1860,8 @@ function editvalues(icount) {
     $('#txtminimumdecreament').val(removeThousandSeperator($("#minincrement" + icount).text()))
     $('#drpdecreamenton').val(removeThousandSeperator($("#inconval" + icount).text()))
     $('#txtlastinvoiceprice').val($("#LIPrice" + icount).text())
-    //$('#txtStartingPrice').val($("#" + rowid.id).find("td:eq(13)").text())
     $('#txtStartingPrice').val(removeThousandSeperator($("#starttingprice" + icount).text()))
+    // $('#txtStartingPrice').val($("#" + rowid.id).find("td:eq(13)").text())
     $('#showhlprice').val($("#showhlprice" + icount).text())
     $('#showstartprice').val($("#showstartprice" + icount).text())
 
@@ -2198,14 +2198,14 @@ function fetchScrapSalesBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-            setTimeout(function () {
+            /*setTimeout(function () {
                 if (sessionStorage.getItem("BidPreApp") == "N" || sessionStorage.getItem("BidPreApp") == undefined || sessionStorage.getItem("BidPreApp") == null) {
                     $('#btnsubmit').text("Submit")
                 }
                 else {
                     $('#btnsubmit').text("Submit for PreApproval")
                 }
-            }, 800);
+            }, 800);*/
 
         },
         error: function (xhr, status, error) {
@@ -2876,6 +2876,7 @@ function printdataSeaBid(result) {
             else {
                 minimuminc = $.trim(result[i].MinimumIncreament);
             }
+
             if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 100) {
                 $("#error-excelparameter").show();
                 $("#errspan-excelparameter").html('Item/Product/Services can not be blank or length should be 100 characters of Item no ' + (i + 1) + ' . Please fill and upload the file again.');
@@ -2941,14 +2942,14 @@ function printdataSeaBid(result) {
                 $("#file-excelparameter").val('');
                 return false;
             }
-            else if (!LastInvoicePrice.match(numberOnly) && LastInvoicePrice != 0) {
+            else if (LastInvoicePrice != 0 && !(result[i].LastInvoicePrice.trim().match(numberOnly))) {
 
                 $("#error-excelparameter").show();
                 $("#errspan-excelparameter").html('Last Invoice Price should be in numbers only of Item no ' + (i + 1) + '.');
-                $("#file-excelparameter").val('');
+                $("#fLastInvoicePrice != 0 && ile-excelparameter").val('');
                 return false;
             }
-            else if (!targetPrice.match(numberOnly) && targetPrice != 0) {
+            else if (!$.trim(result[i].TargetPrice) && targetPrice != 0) {
 
                 $("#error-excelparameter").show();
                 $("#errspan-excelparameter").html('TargetPrice should be in numbers only of Item no ' + (i + 1) + '.');
@@ -3241,5 +3242,6 @@ function fnfillInstructionExcel() {
             $('#TR' + i).append('<td>' + allUOM[z].uom + '</td></tr>')
         }
     }
+
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }

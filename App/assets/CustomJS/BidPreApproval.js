@@ -14,7 +14,7 @@ if (window.location.search) {
         jQuery("#frmdivapprove").hide();
     }
     else {
-        $('#divlastcomment').removeClass('hide')
+        //$('#divlastcomment').removeClass('hide')
         jQuery("#frmdivapprove").show();
     }
     if (_BidTypeID == "7") {
@@ -435,7 +435,7 @@ function ApprovalApp() {
     };
 
     //alert(JSON.stringify(approvalbyapp))
-    // console.log(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/PreApprovalApp",
