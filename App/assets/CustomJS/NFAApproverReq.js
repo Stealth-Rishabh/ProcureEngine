@@ -110,9 +110,9 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaBudget))//+ " " + res.result[0].currencyNm);
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
-                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaAmount))
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);

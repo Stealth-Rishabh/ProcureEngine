@@ -2624,7 +2624,7 @@ function DateandtimevalidateForBidOpen(ismailsend) {
          erroropenbid.fadeOut(3000);
          App.scrollTo(erroropenbid, -200);
      }*/
-    else if (reopenDate.toLocaleDateString() < s.toLocaleDateString()) {
+    else if (reopenDate < s) {
         erroropenbid.show();
         $('#erropenbid').html('Date cannot be less than current date');
         erroropenbid.fadeOut(3000);
@@ -3325,14 +3325,14 @@ function addrowfield() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid")!=9 ) {
+    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid") != 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);
         jQuery.unblockUI();
         return false;
     }
-   else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
+    else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);
