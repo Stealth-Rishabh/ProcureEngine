@@ -14,7 +14,7 @@ if (window.location.search) {
         jQuery("#frmdivapprove").hide();
     }
     else {
-        $('#divlastcomment').removeClass('hide')
+        //$('#divlastcomment').removeClass('hide')
         jQuery("#frmdivapprove").show();
     }
     if (_BidTypeID == "7") {
@@ -435,7 +435,7 @@ function ApprovalApp() {
     };
 
     //alert(JSON.stringify(approvalbyapp))
-    // console.log(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/PreApprovalApp",
@@ -453,10 +453,18 @@ function ApprovalApp() {
                 });
             }
             else {
-                bootbox.alert("Bid successfully approved and communicated to all the selected vendors.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
+                if ($("#ddlActionType option:selected").text().toLowerCase() == "approved") {
+                    bootbox.alert("Bid successfully approved and communicated to all the selected vendors.", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+                }
+                else {
+                    bootbox.alert("Bid successfully reverted!!", function () {
+                        window.location = "index.html";
+                        return false;
+                    });
+                }
             }
 
         },

@@ -1096,56 +1096,57 @@ function ConfigureBidInsFrenchTab3() {
         return false;
     }
     else {
-        if (sessionStorage.getItem("BidPreApp") == "N") {
-            var Tab3data = {
-                "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
-                "UserID": sessionStorage.getItem('UserID'),
-                "BidTypeID": 9,
-                "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-            };
-            //alert(JSON.stringify(Tab3data))
+        // if (sessionStorage.getItem("BidPreApp") == "N") {
+        var Tab3data = {
+            "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
+            "UserID": sessionStorage.getItem('UserID'),
+            "BidTypeID": 9,
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        };
+        alert(JSON.stringify(Tab3data))
 
-            jQuery.ajax({
+        jQuery.ajax({
 
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsFrenchTab3/",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                crossDomain: true,
-                async: false,
-                data: JSON.stringify(Tab3data),
-                dataType: "json",
-                success: function (data) {
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsFrenchTab3/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Tab3data),
+            dataType: "json",
+            success: function (data) {
 
-                    jQuery.unblockUI();
-                    bootbox.alert("Bid Configured Successfully.", function () {
-                        sessionStorage.removeItem('CurrentBidID');
-                        window.location = sessionStorage.getItem("HomePage")
-                        return false;
-                    });
-
-                },
-                error: function (xhr, status, error) {
-
-                    var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                    if (xhr.status == 401) {
-                        error401Messagebox(err.Message);
-                    }
-                    else {
-                        fnErrorMessageText('spandanger', 'form_wizard_1');
-                    }
-                    jQuery.unblockUI();
+                jQuery.unblockUI();
+                bootbox.alert("Bid Configured Successfully.", function () {
+                    sessionStorage.removeItem('CurrentBidID');
+                    window.location = sessionStorage.getItem("HomePage")
                     return false;
+                });
 
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
                 }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
 
-            });
-        }
-        else {
-            fnOpenPopupBidpreApprover();
-            jQuery.unblockUI();
-        }
+            }
+
+        });
     }
+    //else {
+    //    fnOpenPopupBidpreApprover();
+    //    jQuery.unblockUI();
+    //}
+    jQuery.unblockUI();
+
 }
 
 var appbtnTypeSubmit = "keepsame";
@@ -1552,7 +1553,7 @@ function resetfun() {
     $('#txtUOM').val('')
     $('#txtedelivery').val('')
     $('#txtCeilingPrice').val('')
-    $('#txtminimumdecreament').val('')
+    $('#txtminimumdecreament').val('');
     $('#txtminquantitiy').val('')
     $('#txtmaxquantitiy').val('')
     $('#drpdecreamenton').val('A')
@@ -2229,7 +2230,7 @@ function getCategoryWiseVendors(categoryID) {
 
                 });
             }
-        },
+        },  
         error: function (xhr, status, error) {
 
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");

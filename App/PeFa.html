@@ -1490,6 +1490,7 @@
             setTimeout(function () {
                 $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
                 $('#txtConversionRate').val(1);
+                fnfillInstructionExcel();
 
             }, 2000);
             fetchParticipantsVender();// fetch all vendors for advance search

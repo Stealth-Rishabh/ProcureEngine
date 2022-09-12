@@ -202,9 +202,6 @@ var FormWizard = function () {
 
                 success: function (label) {
                 },
-
-
-
                 submitHandler: function (form) {
                     error.hide();
 
@@ -603,6 +600,7 @@ $("#txtEventref").keyup(function () {
     $("#txtEventref").css("border-color", "");
 });
 $("#txtBudget").focusout(function () {
+
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
         $('#ddlBudget').val('NB');
     }

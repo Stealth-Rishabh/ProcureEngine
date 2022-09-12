@@ -17,11 +17,11 @@ function FetchInvitedVendorsForeRFQ() {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayTable').show();
                 jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
-                
 
                 $('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
                 $('#rq_deadline').html(fnConverToLocalTime(data[0].deadline))
-                $('#rq_STDate').html(fnConverToLocalTime(data[0].rfqStartDate))
+                $('#rq_STdate').html(fnConverToLocalTime(data[0].rfqStartDate))
+
 
                 //  $('#rq_deadline').html(data[0].deadline);
                 $('#rq_description').html(data[0].rqDescription);

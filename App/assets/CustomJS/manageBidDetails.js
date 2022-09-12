@@ -2624,7 +2624,7 @@ function DateandtimevalidateForBidOpen(ismailsend) {
          erroropenbid.fadeOut(3000);
          App.scrollTo(erroropenbid, -200);
      }*/
-    else if (reopenDate.toLocaleDateString() < s.toLocaleDateString()) {
+    else if (reopenDate < s) {
         erroropenbid.show();
         $('#erropenbid').html('Date cannot be less than current date');
         erroropenbid.fadeOut(3000);

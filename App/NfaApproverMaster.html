@@ -282,7 +282,7 @@
                                                                 Amount From<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" onkeyup="thousands_separators_input(this)" class="text-right form-control MaxLength" maxlength="18" />
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -290,7 +290,7 @@
                                                                 Amount To<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="text" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
+                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" onkeyup="thousands_separators_input(this)" class="text-right form-control MaxLength" maxlength="18" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -307,7 +307,7 @@
                                                                     Deviation (%)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="tel" id="txtdeviation" name="txtdeviation" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="5" />
+                                                                    <input type="tel" id="txtdeviation" name="txtdeviation" autocomplete="off" onkeyup="thousands_separators_input(this)" class="text-left form-control MaxLength" maxlength="5" />
                                                                 </div>
                                                             </div>
                                                         </div>
