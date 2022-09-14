@@ -57,6 +57,8 @@ jQuery("#txtApprover").typeahead({
 });
 var rowApp = 0;
 var rowpreBidApp = 0;
+var rownum = 0;
+var rownumprebid = 0;
 function fnApproversQuery(EmailID, UserID, UserName) {
     var status = "true";
     $("#tblapprovers tr:gt(0)").each(function () {
@@ -83,61 +85,71 @@ function fnApproversQuery(EmailID, UserID, UserName) {
     else {
 
 
-        //rowApp = rowApp + 1;
-        // rowpreBidApp = rowpreBidApp + 1;
+        rowApp = rowApp + 1;
+        rowpreBidApp = rowpreBidApp + 1;
+        var num = 0;
+        var maxidnum = 0;
         $("#tblapprovers tr:gt(0)").each(function () {
-            if ($('#trAppid' + rowApp).length) {
-                rowApp = rowApp + 2;
-            }
-            else {
-                rowApp = rowApp + 1;
-            }
-        });
-        $("#tblpreBidapprovers tr:gt(0)").each(function () {
-            if ($('#trpreAppid' + rowpreBidApp).length) {
-                rowpreBidApp = rowpreBidApp + 2;
-            }
-            else {
-                rowpreBidApp = rowpreBidApp + 1;
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(7)
+            if (num > maxidnum) {
+                maxidnum = num;
             }
         });
+
+        rownum = parseInt(maxidnum) + 1;
+
         if (!jQuery("#tblapprovers thead").length) {
             jQuery("#tblapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
 
 
-
+        //** Preview
         $('#wrap_scrollerPrevApp').show();
 
         if (!jQuery("#tblapproversPrev thead").length) {
 
             jQuery("#tblapproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
         }
         else {
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
         }
 
 
         //** Pre Approvers
+        num = 0;
+        maxidnum = 0;
+        $("#tblpreBidapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+
+        rownumprebid = parseInt(maxidnum) + 1;
+
         if (!jQuery("#tblpreBidapprovers thead").length) {
             jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rowpreBidApp + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rowpreBidApp + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
+
         if (!jQuery("#tblpreBidapprovers1 thead").length) {
 
             jQuery("#tblpreBidapprovers1").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rowpreBidApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+            jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rownumprebid + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
         }
         else {
-            jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rowpreBidApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+            jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rownumprebid + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
         }
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
         var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
@@ -166,7 +178,7 @@ function fnApproversQuery(EmailID, UserID, UserName) {
 }
 function deleteApprow(IDcount) {
 
-    //rowApp = rowApp - 1;
+    rowApp = rowApp - 1;
     $('#trAppid' + IDcount).remove();
     $('#trAppidPrev' + IDcount).remove();
     $('#trpreAppidPrev' + IDcount).remove();
@@ -266,24 +278,25 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
         return false;
     }
     else {
-
-        var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
-        //rowpreBidApp = rowpreBidApp + 1;
+        rowpreBidApp = rowpreBidApp + 1;
+        num = 0;
+        maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
-            if ($('#trpreAppid' + rowpreBidApp).length) {
-                rowpreBidApp = rowpreBidApp + 2;
-            }
-            else {
-                rowpreBidApp = rowpreBidApp + 1;
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10)
+            if (num > maxidnum) {
+                maxidnum = num;
             }
         });
+        rownumprebid = parseInt(maxidnum) + 1;
         if (!jQuery("#tblpreBidapprovers thead").length) {
             jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rowpreBidApp + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rowpreBidApp + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
+        var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
         if (rowcountPre >= 1) {
             $("#tblpreBidapprovers tr:gt(0)").each(function (index) {
                 var this_row = $(this);
@@ -298,7 +311,7 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
     }
 }
 function deletepreApprow(IDcount) {
-
+    rowpreBidApp = rowpreBidApp - 1;
     $('#trpreAppidPrev' + IDcount).remove();
     $('#trpreAppid' + IDcount).remove();
 
@@ -593,18 +606,7 @@ function ValidateVendor() {
 
     //if ($("#selectedvendorlists > tbody > tr").length > 0) {
     if ($("#ddlAuctiontype option:selected").val() == 81 || $("#ddlAuctiontype option:selected").val() == 83) {
-        //$("#selectedvendorlists> tbody > tr").each(function (index) {
 
-        //    i = i + 1;
-        //    if (i >= 2) {
-
-        //        status = "True";
-        //    }
-        //    else {
-        //        status == "false";
-        //    }
-
-        //});
         if ($("#selectedvendorlists> tbody > tr").length < 2) {
             status == "false";
         }
@@ -613,21 +615,7 @@ function ValidateVendor() {
         }
     }
     else {
-        //$("#tblvendorlist> tbody > tr").each(function (index) {
 
-        //    if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-        //        i = i + 1;
-        //        if (i >= 2) {
-
-        //            status = "True";
-        //        }
-        //        else {
-        //            status == "false";
-        //        }
-
-        //    }
-
-        //});
         if ($("#selectedvendorlists> tbody > tr").length < 1) {
             status == "false";
         }
@@ -1145,11 +1133,11 @@ var FormWizard = function () {
                             var i = 0;
                             $("#tblServicesProduct tr:gt(0)").each(function () {
                                 // var this_row = $(this); 
-                                if ($.trim($('#maskL1' + i).html()) == "Y") {
+                                if ($.trim($('#maskL1' + i).text()) == "Y") {
                                     FlagForCheckShowPrice = 'Y';
-                                    i++;
                                     return false;
                                 }
+                                i++;
                             })
 
                             if (FlagForCheckShowPrice == "Y") {
@@ -1340,6 +1328,7 @@ function ConfigureBidForSeaExportTab1() {
         dataType: "json",
 
         success: function (data) {
+            //alert(sessionStorage.getItem('CurrentBidID'))
             if ($('#ddlAuctiontype option:selected').val() == "83") {
                 $('#checkmaskL1price').val("Y").attr("disabled", true);
                 var i = 0;
@@ -1838,8 +1827,8 @@ function MapBidapprover() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     if (appbtnTypeSubmit == "keepsame") {
-        var rowCount = jQuery('#tblpreBidapprovers1 tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblpreBidapprovers1 >tbody>tr').length;
+        if (rowCount >= 1) {
             $("#tblpreBidapprovers1 tr:gt(0)").each(function () {
                 var this_row = $(this);
                 approvers = approvers + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
@@ -1848,8 +1837,8 @@ function MapBidapprover() {
         }
     }
     else {
-        var rowCount = jQuery('#tblpreBidapprovers tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblpreBidapprovers>tbody tr').length;
+        if (rowCount >= 1) {
             $("#tblpreBidapprovers tr:gt(0)").each(function () {
                 var this_row = $(this);
                 approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
@@ -1866,6 +1855,7 @@ function MapBidapprover() {
         "BidTypeID": 7,
     }
     // alert(JSON.stringify(Approvers))
+    console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -2551,7 +2541,8 @@ function fetchSeaExportDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            var str = '';
+            var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
             jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)

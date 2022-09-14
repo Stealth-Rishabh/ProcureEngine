@@ -2607,6 +2607,7 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
+    debugger;
 
     var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
     if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
@@ -2624,7 +2625,7 @@ function DateandtimevalidateForBidOpen(ismailsend) {
          erroropenbid.fadeOut(3000);
          App.scrollTo(erroropenbid, -200);
      }*/
-    else if (reopenDate.toLocaleDateString() < s.toLocaleDateString()) {
+    else if (reopenDate < s) {
         erroropenbid.show();
         $('#erropenbid').html('Date cannot be less than current date');
         erroropenbid.fadeOut(3000);
@@ -3325,14 +3326,14 @@ function addrowfield() {
     if ($('#txtlastinvoicepricefrench').val() != '') {
         lastinvoicefrench = $('#txtlastinvoicepricefrench').val();
     }
-    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid")!=9 ) {
+    if (($('#dropuom').val() == '' || $('#dropuom').val() == '0') && sessionStorage.getItem("hdnbidtypeid") != 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);
         jQuery.unblockUI();
         return false;
     }
-   else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
+    else if (($('#dropuomfrench').val() == '' || $('#dropuomfrench').val() == '0') && sessionStorage.getItem("hdnbidtypeid") == 9) {
         $("#msgErrorItemEvent").find("span").html('Please select UOM properly.')
         $("#msgErrorItemEvent").show();
         $("#msgErrorItemEvent").fadeOut(5000);
@@ -3997,7 +3998,6 @@ function confirmEditEventAction(eventType) {
     }
     if (Data != '' || Data != null) {
         //alert(eventType)
-        debugger;
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -5035,6 +5035,7 @@ function fnsubmitFAPrePrices() {
         };
         // alert(JSON.stringify(Data))
         //console.log(JSON.stringify(Data))
+
         jQuery.ajax({
 
             type: "POST",

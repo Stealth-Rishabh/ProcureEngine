@@ -40,6 +40,20 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+
+        #divvendorlist {
+            width: 60%;
+        }
+
+
+
+        .tab-content > .active {
+            margin-right: 10%;
+        }
+
+
+
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -286,8 +300,8 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left;" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
+                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left; margin-top:9px" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:3px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -728,7 +742,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
                                                                         <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
@@ -1366,7 +1380,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1656,6 +1670,9 @@
     <script>
         jQuery(document).ready(function () {
             $('[data-toggle="popover"]').popover({})
+
+
+
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
