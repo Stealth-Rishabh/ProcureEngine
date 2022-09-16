@@ -508,6 +508,7 @@ function fetchvendors(bidid) {
     });
 }
 function fetchparticationQuotes() {
+    debugger;
     var url = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -2607,6 +2608,7 @@ function fnshowDatetime() {
 
 function DateandtimevalidateForBidOpen(ismailsend) {
     var s = new Date();
+    debugger;
 
     var reopenDate = new Date($('#txtbidDate').val().replace('-', ''));
     if (jQuery("#txtbidTime").val() == "" || jQuery("#txtbidDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
@@ -3997,7 +3999,6 @@ function confirmEditEventAction(eventType) {
     }
     if (Data != '' || Data != null) {
         //alert(eventType)
-        debugger;
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -5035,6 +5036,7 @@ function fnsubmitFAPrePrices() {
         };
         // alert(JSON.stringify(Data))
         //console.log(JSON.stringify(Data))
+
         jQuery.ajax({
 
             type: "POST",

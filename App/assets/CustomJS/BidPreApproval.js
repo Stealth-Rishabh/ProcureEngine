@@ -5,13 +5,20 @@ if (window.location.search) {
     var decryptedstring = fndecrypt(param);
 
     _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+
     _BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
 
     var FwdBy = getUrlVarsURL(decryptedstring)["FwdBy"]
+
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
     sessionStorage.setItem('CurrentBidID', _BidID)
     if (FwdBy == 'config') {
         jQuery("#frmdivapprove").hide();
+    }
+    else if (FwdBy == 'userview') {
+        jQuery("#divRemarksApp").hide();
+        $('#h3Preapprovalhistory').show();
+        $('#divPreapprovalhistory').show();
     }
     else {
         //$('#divlastcomment').removeClass('hide')
@@ -65,6 +72,7 @@ function fetchSeaExportDetails(bidid) {
         dataType: "json",
         success: function (BidData) {
             var bidclosingtype = "A";
+            jQuery('#bid_EventID').html("Event ID : " + bidid);
             $("#txtbidDate").val(fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             //$("#txtbidTime").val(fnConverToLocalTime(BidData[0].bidDetails[0].bidTime))
             jQuery('#mapedapproverPrev').html('');
@@ -93,13 +101,16 @@ function fetchSeaExportDetails(bidid) {
 
             $('#filepthtermsPrev').html(BidData[0].bidDetails[0].termsConditions);
             $('#filepthattachPrev').html(BidData[0].bidDetails[0].attachment);
+
+            //**Post approvers
             jQuery("#tblapproversPrev").empty();
             $('#wrap_scrollerPrevApp').show();
-
+            jQuery('#tblapproversPrev').append("<thead><tr><th class='bold text-center' colspan=3>Post Approvers</th></tr></thead>");
             jQuery('#tblapproversPrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            strp = '';
 
             for (var i = 0; i < BidData[0].bidApproverDetails.length; i++) {
-                //** Pre Approver
+
                 strp = '<tr id=trAppidPrev' + (i + 1) + '>';
                 strp += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
                 strp += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
@@ -108,7 +119,23 @@ function fetchSeaExportDetails(bidid) {
 
 
             }
+            //** Pre Approver
 
+            jQuery("#tblapproversPrePrev").empty();
+            $('#wrap_scrollerprePrevApp').show();
+            jQuery('#tblapproversPrePrev').append("<thead><tr><th class='bold text-center' colspan=3>Pre Approvers</th></tr></thead>");
+            jQuery('#tblapproversPrePrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            strp = '';
+            for (var i = 0; i < BidData[0].bidPreApproverDetails.length; i++) {
+
+                strp = '<tr id=trPreAppidPrev' + (i + 1) + '>';
+                strp += '<td>' + BidData[0].bidPreApproverDetails[i].approverName + '</td>'
+                strp += "<td>" + BidData[0].bidPreApproverDetails[i].emailID + "</td>";
+                strp += "<td>" + BidData[0].bidPreApproverDetails[i].adMinSrNo + "</td></tr>";
+                jQuery('#tblapproversPrePrev').append(strp);
+
+
+            }
             totalitemdurationstagger = 0;
 
             jQuery("#tblServicesProductPrev").empty();
@@ -194,7 +221,7 @@ function fetchScrapSalesBidDetails(bidid) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            jQuery('#bid_EventID').html("Event ID : " + bidid);
             $("#txtbidDate").val(fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             //$("#txtbidTime").val(BidData[0].bidDetails[0].bidTime)
             jQuery('#mapedapproverPrev').html('');
@@ -226,7 +253,7 @@ function fetchScrapSalesBidDetails(bidid) {
             }
             jQuery("#tblapproversPrev").empty();
             $('#wrap_scrollerPrevApp').show();
-
+            jQuery('#tblapproversPrev').append("<thead><tr><th class='bold text-center' colspan=3 >Post Approvers</th></tr></thead>");
             jQuery('#tblapproversPrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
 
             for (var i = 0; i < BidData[0].bidApproverDetails.length; i++) {
@@ -239,7 +266,22 @@ function fetchScrapSalesBidDetails(bidid) {
 
             }
 
+            //Post approvers
+            jQuery("#tblapproversPrePrev").empty();
+            $('#wrap_scrollerprePrevApp').show();
+            jQuery('#tblapproversPrePrev').append("<thead><tr><th class='bold text-center' colspan=3>Pre Approvers</th></tr></thead>");
+            jQuery('#tblapproversPrePrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            strp = '';
+            for (var i = 0; i < BidData[0].bidPreApproverDetails.length; i++) {
+                //** Pre Approver
+                strp = '<tr id=trPreAppidPrev' + (i + 1) + '>';
+                strp += '<td>' + BidData[0].bidPreApproverDetails[i].approverName + '</td>'
+                strp += "<td>" + BidData[0].bidPreApproverDetails[i].emailID + "</td>";
+                strp += "<td>" + BidData[0].bidPreApproverDetails[i].adMinSrNo + "</td></tr>";
+                jQuery('#tblapproversPrePrev').append(strp);
 
+
+            }
 
             jQuery("#tblServicesProductPrev").empty();
             if (BidData[0].bidScrapSalesDetails.length > 0) {
@@ -495,11 +537,14 @@ function FetchRecomendedVendor(bidid) {
         dataType: "json",
         success: function (data) {
 
+
             $('#tblremarksapprover').empty()
+            $('#tblBidPreapprovalHistory').empty()
+
             if (data.length > 0) {
 
-                $('#tblremarksapprover').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
                 if (AppStatus == 'Reverted') {
+
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
                     $('#frmdivremarksforward').removeClass('col-md-12');
@@ -518,12 +563,35 @@ function FetchRecomendedVendor(bidid) {
 
                     }
                 }
-                $('#frmdivremarksapprover').removeClass('col-md-12');
-                $('#frmdivremarksapprover').addClass('col-md-6');
+                $('#frmdivremarksapprover').removeClass('col-md-6');
+                $('#frmdivremarksapprover').addClass('col-md-12');
+                $('#frmdivapprove').addClass('hide');
+                var counthead = 0;
                 for (var i = 0; i < data.length; i++) {
+                    if (data[i].finalStatus == "A") {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                    $('#thapprover').removeClass('hide')
+                        if (!jQuery("#tblremarksapprover thead").length && counthead == 0) {
+                            counthead = counthead + 1;
+                            $('#frmdivremarksapprover').removeClass('col-md-12');
+                            $('#frmdivremarksapprover').addClass('col-md-6');
+                            $('#frmdivapprove').removeClass('hide');
+                            $('#tblremarksapprover').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
+                        }
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        counthead = counthead + 1;
+                    }
+                }
+                counthead = 0;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].finalStatus == "H") {
+                        if (!jQuery("#tblBidPreapprovalHistory thead").length && counthead == 0) {
+                            $('#tblBidPreapprovalHistory').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th> Action Taken On</th></tr>')
+                        }
+                        $('#tblBidPreapprovalHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        counthead = counthead + 1;
+
+                    }
+
 
                 }
 
@@ -534,8 +602,8 @@ function FetchRecomendedVendor(bidid) {
 
             else {
 
-                $('#frmdivremarksapprover').removeClass('col-md-6');
-                $('#frmdivremarksapprover').addClass('col-md-12');
+                $('#divRemarksApp').removeClass('col-md-6');
+                $('#divRemarksApp').addClass('col-md-12');
             }
 
 

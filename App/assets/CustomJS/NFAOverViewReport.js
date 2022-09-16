@@ -21,9 +21,9 @@ function formvalidate() {
 
         rules: {
 
-            ddlEventType: {
-                required: true
-            }
+            /* ddlEventType: {
+                 required: true
+             }*/
 
         },
 

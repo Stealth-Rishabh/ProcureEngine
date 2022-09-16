@@ -12,6 +12,7 @@ $(document).ready(function () {
         FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"]
         AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
         $('#lblNFAID').html('NFA ID :' + idx)
+        $('#divRemarksApp').hide();
     }
 
     if (idx != null) {
@@ -86,7 +87,7 @@ function fetchRegisterUser() {
 
 }
 function GetOverviewmasterbyId(idx) {
-
+    jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
@@ -231,7 +232,7 @@ function DownloadFile(aID) {
 
 function fetchApproverStatus() {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
     jQuery.ajax({
@@ -456,7 +457,7 @@ function FetchRecomendedVendor() {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
