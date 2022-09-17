@@ -11,7 +11,10 @@ jQuery(document).ready(function () {
         digitsOptional: true,
         allowPlus: false,
         allowMinus: false,
-        'removeMaskOnSubmit': true
+        clearMaskOnLostFocus: true,
+        supportsInputType: ["text", "tel", "password"],
+        'removeMaskOnSubmit': true,
+        autoUnmask: true
 
     });
 
@@ -799,7 +802,7 @@ var FormWizard = function () {
                     txtCeilingPrice: {
                         required: true,
                         notEqualTo: 0,
-                        maxlength: 50,
+                        maxlength: 50
 
                     },
                     txtminimumdecreament: {
@@ -1491,16 +1494,18 @@ function ConfigureBidForSeaExportTab2() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     totalitemdurationstagger = 0;
-    var rowCount = jQuery('#tblServicesProduct tr').length;
-    if (rowCount > 1) {
+    var rowCount = jQuery('#tblServicesProduct >tbody>tr').length;
+    if (rowCount >= 1) {
         if ($('#ddlAuctiontype option:selected').val() == "81" || $('#ddlAuctiontype option:selected').val() == "83") {
             var ItemStatus = 'Open';
             $("#tblServicesProduct tr:gt(0)").each(function () {
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
 
                 targetPrice = 0
                 unitrate = 0;
-                povalue = 0, i = 1, itmduartion = 0; tab2Data = '';
-                var this_row = $(this);
+                povalue = 0,  itmduartion = 0; tab2Data = '';
+               
 
 
                 if ($.trim(this_row.find('td:eq(6)').html()) != '') {
@@ -1569,6 +1574,8 @@ function ConfigureBidForSeaExportTab2() {
                 BidDuration = $("#txtBidDuration").val();
             }
             $("#tblServicesProduct> tbody > tr").each(function (index) {
+                var this_row = $(this);
+                index = (this_row.closest('tr').attr('id')).substring(4);
                 targetPrice = 0
                 unitrate = 0;
                 povalue = 0, tab2Data = '', ItemStatus = '', itmduartion = 0;;
@@ -2259,8 +2266,19 @@ function ParametersQuery() {
 
     }
 
-    var i;
-    i = rowAppItems;
+    
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(4)
+        if (num > maxinum) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
     var status = $('#checkmaskvendor option:selected').val();
     var MaskL1Price = $('#checkmaskL1price option:selected').val();
     var ShowStartPrice = $('#checkshowstartprice option:selected').val();
@@ -2564,6 +2582,7 @@ function fetchSeaExportDetails() {
             $('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
 
             $('#ddlAuctiontype').val(BidData[0].bidDetails[0].bidForID)
+
             jQuery('#ddlbidclosetype').val(BidData[0].bidDetails[0].bidClosingType.trim())
             $("#cancelBidBtn").show();
             _bidType = BidData[0].bidDetails[0].bidForID;

@@ -170,8 +170,8 @@ function GetApprovermasterbyId(idx) {
             if (res.result.length > 0) {
 
                 $("#ddlApproveltype").val(res.result[0].approvalType);
-                $("#txtAmountFrom").val(removeThousandSeperator(res.result[0].amountFrom));
-                $("#txtAmountTo").val(removeThousandSeperator(res.result[0].amountTo));
+                $("#txtAmountFrom").val((removeThousandSeperator(res.result[0].amountFrom)));
+                $("#txtAmountTo").val((removeThousandSeperator(res.result[0].amountTo)));
 
                 $("#txtdeviation").val(res.result[0].deviation);
                 $("#ddlPurchaseOrg").val(res.result[0].orgID);
@@ -663,7 +663,7 @@ function AddWBApprovers() {
         var tableName = "tblWBApproverSeq";
         var index = $("#hdnWBSeqID").val();
         var newSeq = $("#txtWBSeq").val();
-        UpdateSeq(tableName, index, newSeq);
+        UpdateSeq(tableName, index, newSeq == 0 ? 1 : newSeq);
     }
     else {
         var ApproverID = sessionStorage.getItem("hdnApproverid");
@@ -756,6 +756,8 @@ function deleteApprow(icount) {
             i++;
         });
     }
+    //$('#chkWBCopy').prop('disabled', false);
+    $('#chkWBCopy').prop('checked', false);
 
 }
 $("#tblWBApproverSeq").on("click", ".edit", function (e) {
@@ -767,6 +769,8 @@ $("#tblWBApproverSeq").on("click", ".edit", function (e) {
     sessionStorage.setItem("hdnApproverid", parseInt($(td).eq(4).html()))
     $("#txtWBSeq").val(parseInt($(td).eq(3).html()));
     $("#txtApprover").val($(td).eq(1).html());
+    // $('#chkWBCopy').prop('disabled', false);
+    $('#chkWBCopy').prop('checked', false);
 });
 
 //Update User seq 
@@ -845,7 +849,7 @@ function AddOBApprovers() {
         var tableName = "tblOBApproverSeq";
         var index = $("#hdnOBSeqID").val();
         var newSeq = $("#txtOBSeq").val();
-        UpdateSeq(tableName, index, newSeq);
+        UpdateSeq(tableName, index, newSeq == 0 ? 1 : newSeq);
     } else {
         var ApproverID = sessionStorage.getItem("hdnOBApproverid");
         var ApproverName = $("#txtOBApprover").val();
@@ -935,6 +939,8 @@ function deleteOBApprow(IDCount) {
             i++;
         });
     }
+    // $('#chkWBCopy').prop('disabled', false);
+    $('#chkWBCopy').prop('checked', false);
 }
 $("#tblOBApproverSeq").on("click", ".edit", function (e) {
 
@@ -944,6 +950,8 @@ $("#tblOBApproverSeq").on("click", ".edit", function (e) {
     sessionStorage.setItem("hdnOBApproverid", parseInt($(td).eq(4).html()))
     $("#txtOBSeq").val(parseInt($(td).eq(3).html()));
     $("#txtOBApprover").val($(td).eq(1).html());
+    //  $('#chkWBCopy').prop('disabled', false);
+    $('#chkWBCopy').prop('checked', false);
 });
 
 //NB Approver Logic
@@ -1016,7 +1024,7 @@ function AddNBApprovers() {
         var tableName = "tblNBApproverSeq";
         var index = $("#hdnNBSeqID").val();
         var newSeq = $("#txtNBSeq").val();
-        UpdateSeq(tableName, index, newSeq);
+        UpdateSeq(tableName, index, newSeq == 0 ? 1 : newSeq);
     } else {
 
 
@@ -1103,6 +1111,7 @@ function deleteNBApprow(IDCount) {
             i++;
         });
     }
+    $('#chkOBCopy').prop('checked', false);
 }
 $("#tblNBApproverSeq").on("click", ".edit", function (e) {
 
@@ -1113,14 +1122,18 @@ $("#tblNBApproverSeq").on("click", ".edit", function (e) {
     sessionStorage.setItem("hdnNBApproverid", parseInt($(td).eq(4).html()))
     $("#txtNBSeq").val(parseInt($(td).eq(3).html()));
     $("#txtNBApprover").val($(td).eq(1).html());
+    $('#chkOBCopy').prop('checked', false);
 });
 
 $('#chkWBCopy').click(function () {
     if ($(this).closest("span").attr('class') == 'checked') {
         $(this).closest("span").removeClass("checked")
+        $('#chkWBCopy').prop('checked', false);
     }
     else {
         $(this).closest("span").addClass("checked")
+        $('#chkWBCopy').prop('checked', true);
+        //$('#chkWBCopy').prop('disabled', true);
         saveSameWB();
     }
     //if ($(this).is(":checked")) {
@@ -1153,13 +1166,28 @@ function saveSameWB() {
 
 }
 
-
-$('#chkOBCopy').change(function () {
-    if ($(this).is(":checked")) {
+$('#chkOBCopy').click(function () {
+    if ($(this).closest("span").attr('class') == 'checked') {
+        $(this).closest("span").removeClass("checked")
+        $('#chkOBCopy').prop('checked', false);
+    }
+    else {
+        $(this).closest("span").addClass("checked")
+        $('#chkOBCopy').prop('checked', true);
+        //$('#chkWBCopy').prop('disabled', true);
         copyObSame();
     }
-
+    //if ($(this).is(":checked")) {
+    //    saveSameWB();
+    //}
 });
+
+//$('#chkOBCopy').change(function () {
+//    if ($(this).is(":checked")) {
+//        copyObSame();
+//    }
+
+//});
 
 function copyObSame() {
     $("#tblNBApproverSeq").empty();

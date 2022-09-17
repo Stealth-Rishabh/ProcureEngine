@@ -578,7 +578,7 @@ function FetchRecomendedVendor(bidid) {
                             $('#tblremarksapprover').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
                         }
                         $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-
+                        counthead = counthead + 1;
                     }
                 }
                 counthead = 0;
@@ -588,7 +588,8 @@ function FetchRecomendedVendor(bidid) {
                             $('#tblBidPreapprovalHistory').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th> Action Taken On</th></tr>')
                         }
                         $('#tblBidPreapprovalHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                        // $('#thapprover').removeClass('hide')
+                        counthead = counthead + 1;
+
                     }
 
 

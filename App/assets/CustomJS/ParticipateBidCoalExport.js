@@ -346,7 +346,7 @@ function fetchBidSummaryVendorproduct() {
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Current Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
 
                     for (var i = 0; i < data.length; i++) {
-                        jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <label   id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
+                        jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <label   id=txtquote" + i + " name=txtquote" + i + " /> </td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span><span id=spanamount" + i + "   style=color:#a94442; display:inline-block; width:150px></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
                     }
                 }
                 else {
@@ -391,14 +391,11 @@ function fetchBidSummaryVendorproduct() {
                                 $("#ceilingprice" + i).html('Not Disclosed');
                             }
                             if (data[i].itemBlockedRemarks != '') {
-                                // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
-                                // $('#txtquote' + i).val("Restricted")
-                                //  $('#txtquote' + i).attr('disabled', 'disabled')
+
                                 $('#AllItembtn' + i).attr('disabled', 'disabled')
                             }
                             else {
-                                //  $('#txtquote' + i).val('')
-                                //  $('#txtquote' + i).removeAttr('disabled', 'disabled')
+
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                             }
                             if (data[i].loQuotedPrice == 'L1') {
@@ -515,11 +512,12 @@ function calCostNCV(txtid, index) {
         // $('#spanmszC' + index).text('Please Enter Cess')
     }
 
-    if ($('#delquan' + index).val() != '') {
-        cess = $('#delquan' + index).val();
-        //$('#spanmszC' + index).removeClass('hide');
-        $('#spanmszC' + index).text('Please Enter Quantity')
-    }
+    // if ($('#delquan' + index).val() == '') {
+    //     cess = $('#delquan' + index).val();
+    //     $('#spanmszQ' + index).removeClass('hide');
+    //     $('#spanmszQ' + index).text('Please Enter Quantity')
+    //  }
+
     if ($('#ncv' + index).val() == '') {
         $('#spanmszN' + index).removeClass('hide');
         $('#spanmszN' + index).text('Please Enter NCV')
@@ -580,6 +578,9 @@ function startTimer(duration, display) {
             $('.clsdisable').attr('disabled', 'disabled')
 
         }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
+        }
         if (timer == 300) {
             $('#pleft5mins').removeClass('hide')
         }
@@ -612,6 +613,24 @@ function InsUpdQuoteSeaExport(index) {
 
     var Amount = $('#minimumdec' + index).text()
 
+    if (($('#delquan' + index).val() == '') || (parseFloat($('#delquan' + index).val()) <= 0)) {
+        $('#spanmszQ' + index).removeClass('hide')
+        $('#spanmszQ' + index).text('Please Enter Quantity')
+        return false
+    }
+    if (($('#ncv' + index).val() == '') || (parseFloat($('#ncv' + index).val()) <= 0)) {
+        $('#spanmszN' + index).removeClass('hide');
+        $('#spanmszN' + index).text('Please Enter NCV')
+        return false
+    }
+    if (($('#landedp' + index).val() == '') || (parseFloat($('#landedp' + index).val()) <= 0)) {
+
+        $('#spanmszL' + index).removeClass('hide');
+        $('#spanmszL' + index).text('Please Enter Landed Price per MT')
+        return false
+    }
+
+
     if ($('#decon' + index).text() == "A") {
         if (jQuery("#lastQuote" + index).text() == '' || jQuery("#lastQuote" + index).text() == '0') {
 
@@ -641,21 +660,7 @@ function InsUpdQuoteSeaExport(index) {
         }
     }
 
-    if ($('#delquan' + index).val() == '') {
-        $('#spanmszQ' + index).removeClass('hide')
-        $('#spanmszQ' + index).text('Enter Quantity')
-        return false
-    }
-    if ($('#ncv' + index).val() == '') {
-        $('#spanmszN' + index).removeClass('hide');
-        $('#spanmszN' + index).text('Please Enter NCV')
-        return false
-    }
-    if ($('#landedp' + index).val() == '') {
-        $('#spanmszL' + index).removeClass('hide');
-        $('#spanmszL' + index).text('Please Enter Landed Price per MT')
-        return false
-    }
+
     //if ((removeThousandSeperator($('#txtquote' + index).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,3})?$/.test(removeThousandSeperator($('#txtquote' + index).val())))) {
 
     //    $('#spanamount' + index).removeClass('hide')
