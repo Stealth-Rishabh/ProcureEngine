@@ -1387,7 +1387,7 @@ function startTimer(duration, display) {
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
-        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
             $('.clsdisable').removeAttr('disabled')
         }
         if (--timer < -3) {
@@ -1629,70 +1629,125 @@ function fetchBidSummaryVendorSeaExportDutch() {
     url = ''
 
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+
+
     count = 0;
+
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExportDutch/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType")
+
     jQuery.ajax({
 
         type: "GET",
+
         contentType: "application/json; charset=utf-8",
+
         url: url,
+
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+
         cache: false,
+
         crossDomain: true,
+
         dataType: "json",
+
         success: function (data, status, jqXHR) {
+
+
+
             jQuery("#tblParticipantsService").empty();
 
             if (data.length > 0) {
+
+
+
                 var _offeredPrice;
+
                 jQuery("#tblParticipantsService >tbody").empty();
 
                 if (_isBidStarted == false) {
+
+
+
                     jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class=hide>Offered Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
+
+
+
                     for (var i = 0; i < data.length; i++) {
 
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : thousands_separators(data[i].offeredPrice);
+
                         jQuery("#tblParticipantsService").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id='offeredprice" + i + "' class=hide>" + _offeredPrice + "</td></tr>");
 
                     }
+
                     $(".lbltimetextdutch").hide()
 
                 }
 
                 else {
 
+
+
                     jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id=THTarget>Target Price</th><th class=hide>Show L1 Price</th><th style='width:20%!important'>Offered Unit Price (" + $('#lblcurrency').text() + ")</th><th>Action</th></thead>");
-                        for (var i = 0; i < data.length; i++) {
+
+                    for (var i = 0; i < data.length; i++) {
+
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : thousands_separators(data[i].offeredPrice);
+
                         if (data[i].isAcceptedPrice != 'Y') {
 
                             jQuery("#tblParticipantsService").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=tdtarget" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td id=L1Price" + i + " class=hide>" + thousands_separators(data[i].l1Quote) + "</td><td id='offeredprice" + i + "' class='text-right bold  font-red'>" + _offeredPrice + "</td><td><button id='btnsubmit' type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteSeaDutch(" + i + ")' onkeyup='thousands_separators_input(this)'>Accept </button></td></tr>");
-                             $('#spanamount' + i).addClass('hide spanclass');
+
+
+
+                            $('#spanamount' + i).addClass('hide spanclass');
 
                             if (data[i].maskVendor == "Y") {
+
                                 $('#tdtarget' + i).addClass('hide')
+
                                 $('#THTarget').addClass('hide')
+
                             }
+
                             else {
+
                                 $('#tdtarget' + i).removeClass('hide')
+
                                 $('#THTarget').removeClass('hide')
 
                             }
 
                             if (data[i].maskL1Price == "N") {
+
                                 $("#L1Price" + i).html('Not Disclosed');
 
                             }
 
+
+
                             $('#txtquote' + i).val(thousands_separators(data[i].lqQuotedPrice));
+
+
+
                             if (data[i].loQuotedPrice == 'L1') {
-                                     jQuery('#lblstatus' + i).css('color', 'Blue');
+
+                                jQuery('#lblstatus' + i).css('color', 'Blue');
 
                             }
+
                             else {
+
+
+
                                 jQuery('#lblstatus' + i).css('color', 'Red');
 
                             }
+
+
+
                             count = count + 1;
 
                         }
@@ -1701,9 +1756,14 @@ function fetchBidSummaryVendorSeaExportDutch() {
 
                 }
 
+
+
             }
 
             else {
+
+
+
                 closeBidAir();
 
             }

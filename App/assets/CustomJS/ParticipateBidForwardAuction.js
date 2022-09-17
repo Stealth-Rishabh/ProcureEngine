@@ -595,12 +595,6 @@ function startTimer(duration, display) {
             display.textContent = minutes + ":" + seconds;
         }
 
-        if (timer <= 0) {
-            $('.clsdisable').attr('disabled', 'disabled')
-        }
-        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
-            $('.clsdisable').removeAttr('disabled')
-        }
 
         // if (timer == 300) {
         if (timer <= 300 && timer >= 240) {
@@ -616,7 +610,12 @@ function startTimer(duration, display) {
             $('.toast-info').hide();
             coutercall = 0;
         }
-
+        if (timer <= 0) {
+            $('.clsdisable').attr('disabled', 'disabled')
+        }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
+        }
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {
@@ -727,7 +726,7 @@ function InsUpdQuoteScrap(rowID) {
             "PSID": parseInt($('#psid' + i).html()),
             "EnteredBy": vendorID,
             "extendTime": parseInt($('#hdnval').val()),
-            "isPrePricing":'N'
+            "isPrePricing": 'N'
         };
         $('#hdnselectedindex').val(i);
         connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
