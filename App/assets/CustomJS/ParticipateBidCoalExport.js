@@ -578,6 +578,9 @@ function startTimer(duration, display) {
             $('.clsdisable').attr('disabled', 'disabled')
 
         }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
+        }
         if (timer == 300) {
             $('#pleft5mins').removeClass('hide')
         }

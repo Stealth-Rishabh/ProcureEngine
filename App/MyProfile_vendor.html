@@ -49,7 +49,6 @@
                 right: 3%;
             }
         }
-
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
@@ -61,16 +60,6 @@
                 </a>
             </div>
 
-            <!--@abheedev-->
-            <div class="changeLanguage">
-                <select class="navbar-language" href="index.html" style="padding:4px !important;">
-                    <option data-locale="en" value="en">English</option>
-                    <option data-locale="fr" value="fr">French</option>
-
-
-                </select>
-
-            </div>
 
 
 
@@ -115,14 +104,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title"  data-i18n="modaltitle">
+                                <h4 class="modal-title" data-i18n="modaltitle">
                                     Modal title
                                 </h4>
                             </div>
                             <div class="modal-body" data-i18n="widgetsetting">
                                 Widget settings form goes here
                             </div>
-                            <div class="modal-footer" >
+                            <div class="modal-footer">
                                 <button type="button" class="btn yellow" data-i18n="savechanges">
                                     Save changes
                                 </button>
@@ -136,11 +125,11 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="javascript:;" onclick=fnredirecttoHome()><span  data-i18n="home">Home</span></a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="javascript:;" onclick=fnredirecttoHome()><span data-i18n="home">Home</span></a> <i class="fa fa-angle-right">
                             </i>
                         </li>
                         <li>
-                            <a href="#"  data-i18n="myprofile" >My Profile</a>
+                            <a href="#" data-i18n="myprofile">My Profile</a>
 
                         </li>
                     </ul>
@@ -285,7 +274,7 @@
                                                                                             Email ID
                                                                                         </label>
                                                                                         <div class="col-md-9">
-                                                                                            <input type="text" class="form-control" 
+                                                                                            <input type="text" class="form-control"
                                                                                                    id="vendorAltEmailID" name="vendorAltEmailID" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
                                                                                     </div>
@@ -295,7 +284,7 @@
                                                                                         <label class="control-label col-md-3" style="text-align:left" data-i18n="preferredzone">Preferred Time/Zone:</label>
                                                                                         <div class="col-md-9">
                                                                                             <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
-                                                                                                <option Value="">Select</option>
+                                                                                                <option>Select</option>
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
@@ -312,8 +301,8 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0" >
-                                                                    <span data-i18n="companydetails" >Company Details</span>
+                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
+                                                                    <span data-i18n="companydetails">Company Details</span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="companyspan" name="companyspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="company_chart" data-percent=""></div>
@@ -419,8 +408,8 @@
                                                                                 PIN Code
                                                                             </label>
                                                                             <div class="col-md-3 ">
-                                                                                <input type="text" class="form-control"
-                                                                                       id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                <input type="text" class="form-control numberonly"
+                                                                                       id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength=9 />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -832,7 +821,7 @@
                                                                 <select class="form-control" id="txtCompanies" name="txtCompanies" onchange="fnAddCustomers()"></select>
                                                             </div>
                                                         </div>
-                                                        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                             <div id="divcompanieslist" class="portlet-body flip-scroll table-scrollable">
                                                                 <table style="width:100%;" id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content">
                                                                     <thead class="flip-content">
@@ -924,7 +913,7 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                     </div>
                 </div>
             </div>
@@ -962,19 +951,6 @@
     <script src="assets/CustomJS/MyProfile.js"></script>
     <script src="assets/CustomJS/progress.js"></script>
 
-    <!--translating file for i18n plugin - abhi@dev-->
-
-    <script type="module" src="jquery.i18n/CLDRPluralRuleParser.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.messagestore.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.fallbacks.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.language.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.parser.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.emitter.js"></script>
-    <script type="module" src="jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
-    <script type="module" src="jquery.i18n/history.js"></script>
-    <script type="module" src="jquery.i18n/url.js"></script>
-
 
 
 
@@ -991,6 +967,15 @@
             fetchCountry();
             fetchPaymentTerms();
 
+
+            function numberonly() {
+                $(".numberonly").keyup(function () {
+                    $(".numberonly").val(this.value.match(/[0-9]*/));
+                });
+
+            }
+            numberonly();
+
             $('#ddlTypeofProduct').select2({
                 placeholder: "Type of Product",
                 allowClear: true
@@ -1003,6 +988,7 @@
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
+
             $('#ddlState').select2({
                 searchInputPlaceholder: "Search State",
                 //placeholder: "Select State",
@@ -1040,47 +1026,9 @@
     </script>
 
 
-    <script>
-
-
-        // translation code begin -abhi@dev
-
-        var set_locale_to = function (locale) {
-            if (locale) {
-                $.i18n().locale = locale;
-            }
-            $('body').i18n();
-        };
-        jQuery(function () {
-            $.i18n().load({
-                'en': 'jquery.i18n/language/en/translation.json', // Messages for english
-                'fr': 'jquery.i18n/language/fr/translation.json' // message for french
-            }).done(function () {
-
-                set_locale_to(url('?locale'));
-                console.log($.i18n().locale)
-                $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
-
-
-                //   <option data-locale="en" value="en">English</option>
-
-                History.Adapter.bind(window, 'statechange', function () {
-                    set_locale_to(url('?locale'));
-                    console.log("i am here")
-                });
-                $('.navbar-language').change(function (e) {
-                    e.preventDefault();
-                    $.i18n().locale = $('option:selected', this).data("locale");
-                    History.pushState(null, null, "?locale=" + $.i18n().locale);
 
 
 
-                });
-            });
-        });
-
-
-    </script>
 
 
 
