@@ -78,7 +78,8 @@ else {
     $('#litab4').hide()
     $('#litab5').hide()
     $('#tab_6').addClass('active')
-    $('#tab_0').show().removeClass('active')
+    $('#div_surrogate').show()
+    $('#tab_0').removeClass('active')
 
 }
 
@@ -508,6 +509,7 @@ function fetchvendors(bidid) {
     });
 }
 function fetchparticationQuotes() {
+    debugger;
     var url = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1927,7 +1929,10 @@ function fetchallexportdetails() {
 
                     if (FlagForCheckShowPrice == "Y") {
                         $("a.lambdafactor").removeAttr("onclick");
-
+                        $('.lambdafactor').attr('disabled', 'disabled')
+                    }
+                    else {
+                        $('.lambdafactor').removeAttr('disabled')
                     }
 
                 }
