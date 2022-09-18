@@ -2,6 +2,9 @@
 var error = $('.alert-danger');
 var success = $('.alert-success');
 
+
+
+
 var form = $('#submit_form');
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -846,6 +849,7 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
+    debugger;
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -1025,11 +1029,12 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
 }
 
-var currentdate = new Date();
+
 function fetchReguestforQuotationDetails() {
+
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced1 = '';
-
+    var currentdate = new Date();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1039,53 +1044,71 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+            if (RFQData[0].general.length) {
+                sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
+                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+                sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
+                _RFQBidType = RFQData[0].general[0].rfqBidType
 
-            sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-            sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
-            _RFQBidType = RFQData[0].general[0].rfqBidType
+                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                $('#Currency').html(RFQData[0].general[0].currencyNm)
+                $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
+                jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
+                jQuery('#refno').html(RFQData[0].general[0].rfqReference);
+                jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
+                // jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
+                // jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
 
-            jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
-            $('#Currency').html(RFQData[0].general[0].currencyNm)
-            $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
-            jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
-            jQuery('#refno').html(RFQData[0].general[0].rfqReference);
-            jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
-            // jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-            // jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
+                jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+                // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
+                //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
 
-            jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
-            jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
-            //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
-
-            jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
-            $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition)
-            //Preview Details
+                jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
+                $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition)
+                //Preview Details
 
 
-            jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
+                jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
 
-            jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
-            jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
+                jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+                jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
 
-            jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
-            jQuery('#lblConversionRatePrev').html(RFQData[0].general[0].rfqConversionRate)
+                jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
+                jQuery('#lblConversionRatePrev').html(RFQData[0].general[0].rfqConversionRate)
 
-            jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
+                jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-',''));
-            if (currentdate < StartDT) {
-                $('#form_wizard_1').find('.button-next').hide();
-                $('#regretrfq').hide();
-                $('#lblRFQMessage').show();
+                var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
+                if (currentdate < StartDT) {
+                    $('#form_wizard_1').find('.button-next').hide();
+                    $('#regretrfq').hide();
+                    $('#lblRFQMessage').show();
+                }
+                else {
+                    $('#regretrfq').show();
+                    $('#form_wizard_1').find('.button-next').show();
+                    $('#lblRFQMessage').hide();
+                }
             }
-            else {
-                $('#regretrfq').show();
-                $('#form_wizard_1').find('.button-next').show();
-                $('#lblRFQMessage').hide();
+            if (RFQData[0].vendors.length) {
+                for (var i = 0; i < RFQData[0].vendors.length; i++) {
+                    if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
+
+                        // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
+                        fetchRFIParameteronload(RFQData[0].vendors[i].version);
+
+                        // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
+                        //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Question', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
+                        sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
+                    }
+                }
+
             }
+
         },
         error: function (xhr, status, error) {
 
@@ -1222,6 +1245,7 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
+    //alert("Called")
     fetchRFQLevelTC(ver);
 
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
@@ -1244,7 +1268,8 @@ function fetchRFIParameteronload(ver) {
             var totalammwithGST = 0;
 
             if (data.length > 0) {
-                   if (_RFQBidType == 'Open') {
+
+                if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                 }
@@ -1368,6 +1393,7 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
+    debugger;
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
@@ -1375,6 +1401,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
     PricewithoutGSTDiscount = 0.0;
 
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
+
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
     var validateSubmit = true;
@@ -1479,9 +1506,14 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
-                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
 
-                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
+                    //$(this_row.find('td:eq(13)').html(Price))
+                    (async () => {
+                        await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
+                    })();
+
+                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
                     Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
@@ -1504,6 +1536,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
+        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
