@@ -112,7 +112,7 @@ function fetchrfqcomprative(RFQID) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].responseSubmitDT + "</th>";
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
 
@@ -1287,7 +1287,7 @@ function fetchApproverRemarks(RFQID) {
                 $('#tblapprovalprocess').append('<tr style="background: #44b6ae;"><th colspan="5" style="font-size: 19px; text-align: left;color: #FFF;">Approval Details</th></tr><tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
 
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                    $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
                 }
 
 

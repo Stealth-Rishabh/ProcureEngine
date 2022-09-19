@@ -27,6 +27,7 @@ if (window.location.search) {
         GetOverviewmasterbyId(idx);
     }, 1000)
 }
+
 $("#cancelNFABtn").hide();
 function FetchRecomendedVendor() {
 
@@ -150,19 +151,6 @@ var FormWizard = function () {
                 messages: {
 
 
-                    //ddlPurchaseOrg: {
-                    //    required: "Please select purchase org."
-                    //},
-
-                    //ddlPurchasegroup: {
-                    //    required: "Please select purchase group"
-                    //},
-                    //txtAmountFrom: {
-                    //    required: "Please Enter Amount from."
-                    //},
-                    //txtAmountTo: {
-                    //    required: "Please Enter Amount To."
-                    //}
                 },
 
                 errorPlacement: function (error, element) {
@@ -290,25 +278,7 @@ var FormWizard = function () {
                     error.hide();
 
                     var flag = "T";
-                    //var rowCount = jQuery('#tblNFAOverviewParam >tbody> tr').length;
 
-                    //var count = 1;
-                    //for (i = 0; i < rowCount - 1; i++) {
-                    //    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
-                    //        $('#commremarks' + i).removeClass('has-success')
-                    //        $('#commremarks' + i).css("border", "1px solid red")
-                    //        flag = "F";
-                    //        // $('#form_wizard_1').bootstrapWizard('previous');
-                    //        $('.alert-danger').show();
-                    //        $('#spandanger').html('Please fill RFQ Commercial Terms.');
-                    //        Metronic.scrollTo($(".alert-danger"), -200);
-                    //        $('.alert-danger').fadeOut(7000);
-                    //        count = count + 1;
-                    //    }
-                    //    else {
-                    //        flag = "T"
-                    //    }
-                    //}
 
 
                     if (index == 1) {
@@ -327,13 +297,7 @@ var FormWizard = function () {
                             FetchMatrixApprovers();
                         }
 
-                        //if (ValidTeTab1()) {
-                        //    $('.alert-danger').show();
-                        //    $('#spandanger').html('Please Check Highlighted Fileds');
-                        //    Metronic.scrollTo($(".alert-danger"), -200);
-                        //    $('.alert-danger').fadeOut(5000);
-                        //    return false;
-                        //}
+
                         if (ApproverCtr == 0) {
                             $('#form_wizard_1').bootstrapWizard('previous');
                             $('#form_wizard_1').find('.button-previous').hide();
@@ -530,9 +494,7 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
-                //sessionStorage.setItem('hdnPurchaseORGID', res.result[0].purchaseOrg);
-                //sessionStorage.setItem('hdnPurchaseGroupID', res.result[0].purchaseGroup);
-                // sessionStorage.setItem('hdnConditionID', res.result[0].conditionID);
+
                 $("#txtAmountFrom").val(res.result[0].nfaAmount);
                 $("#txtBudget").val(res.result[0].nfaBudget);
                 $("#ddlCategory").val(res.result[0].nfaCategory);
@@ -660,58 +622,13 @@ $("#txtEventref").typeahead({
 });
 
 
-//jQuery("#ddlCondition").keyup(function () {
-//    sessionStorage.setItem('hdnConditionID', '0');
-
-//});
-//sessionStorage.setItem('hdnConditionID', 0);
-
-//jQuery("#ddlCondition").typeahead({
-//    source: function (query, process) {
-
-//        var data = conditionData;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            console.log(data);
-//            map[username.conditionName] = username;
-//            usernames.push(username.conditionName);
-//        });
-//        process(usernames);
-//    },
-
-//    minLength: 2,
-//    updater: function (item) {
-
-//        if (map[item].conditionID != "0") {
-//            sessionStorage.setItem('hdnConditionID', map[item].conditionID);
-//        }
-//        else {
-//            gritternotification('Condition Not selected!!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-
-
 function fnaddQuestion() {
     fnApproversNBQuery(parseInt($("#ddlNFAParam option:selected").val()), $("#ddlNFAParam option:selected").text());/*, $("#txtNfaParamAns").val()*/
 }
 
 function fnApproversNBQuery(rownum, question) {
 
-    //if ($("#txtNfaParamAns").val() == "") {
-    //    $('#errordivSeq').show();
-    //    $('#errorSeq').html('Please specify Response for Question');
-    //    Metronic.scrollTo($("#errordivSeq"), -200);
-    //    $('#errordivSeq').fadeOut(7000);
-
-    //    return false;
-    //}
-    if (rownum == "0" || jQuery("#ddlNFAParam").val() == "") {
+    if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Question not selected. Please press + Button after selecting Approver');
         Metronic.scrollTo($("#errordivSeq"), -200);
@@ -737,27 +654,38 @@ function fnApproversNBQuery(rownum, question) {
         return false;
     }
     else {
-        var rowApp = rownum;
+       
+        /*var num = 0;
+        var maxidnum = 0;
+        $("#tblNFAOverviewParam tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(10)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+
+        rownum = parseInt(maxidnum) + 1;*/
         if (!jQuery("#tblNFAOverviewParam thead").length) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rowApp + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rowApp + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
 
-        // sessionStorage.setItem("hdnParamIdx", 0);
+
         $("#ddlNFAParam").val('');
         $('#nfaparamoption' + rownum).remove();
-        //$("#txtNfaParamAns").val('');
-        //$("#txtNFAParam").select();
+
     }
     form.validate();
-    $('#paramremark' + rowApp).rules('add', {
+    $('#paramremark' + rownum).rules('add', {
         minlength: 50,
         maxlength: 1000,
     });
-    $('#paramremark' + rowApp).maxlength({
+    $('#paramremark' + rownum).maxlength({
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
@@ -790,17 +718,6 @@ function addmoreattachments() {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         rowAttach = rowAttach + 1;
-        //if (!jQuery("#tblAttachmentsPrev thead").length) {
-        //    jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
-        //    var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
-        //}
-        //else {
-        //    var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
-        //}
-
-
-        //strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
-        //jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
@@ -931,66 +848,6 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
 }
 
 
-//var NfaParams = [];
-//function GetNfaOverviewParams() {
-//    var url = "NFA/GetNfaParams?CustomerID=" + parseInt(CurrentCustomer);
-
-
-//    var GetData = callajaxReturnSuccess(url, "Get", {});
-//    GetData.success(function (res) {
-//        if (res.result != null) {
-
-//            if (res.result.length > 0) {
-//                NfaParams = res.result;
-//            }
-//        }
-//    });
-//    GetData.error(function (res) {
-//        jQuery.unblockUI();
-//    });
-
-
-//};
-//$("#txtNFAParam").keyup(function () {
-//    sessionStorage.setItem("hdnParamIdx", 0);
-
-//});
-
-
-//sessionStorage.setItem("hdnParamIdx", 0);
-//$("#txtNFAParam").typeahead({
-//    source: function (query, process) {
-//        var data = NfaParams;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            // console.log(data);
-//            map[username.paramtext] = username;
-
-//            usernames.push(username.paramtext);
-//        });
-
-//        process(usernames);
-
-//    },
-//    minLength: 2,
-//    updater: function (item) {
-//        if (map[item].idx != "0") {
-
-
-//            sessionStorage.setItem('hdnParamIdx', map[item].idx);
-
-//            $("#txtNfaParamAns").select();
-//            // GetApprovermasterbyId(nfaApproverIDX);
-//        }
-//        else {
-//            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
-//        }
-
-//        return item;
-//    }
-//});
 
 
 jQuery("#txtDetails").keyup(function () {
@@ -1045,7 +902,7 @@ function BindPurchaseOrg() {
         $('#ddlModelOrg').append('<option value="0">Select</option>');
         $('#ddlPurchaseOrg').append('<option value="0">Select</option>');
         if (res.result.length > 0) {
-            //orgData = res.result;
+
             $.each(res.result, function (key, value) {
                 $('#ddlModelOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
                 $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
@@ -1084,87 +941,7 @@ function bindPurchaseGroupDDL() {
     });
 
 };
-//jQuery("#txtPurcOrg").keyup(function () {
-//    sessionStorage.setItem('hdnPurchaseORGID', '0');
 
-//});
-//sessionStorage.setItem('hdnPurchaseORGID', '0');
-//jQuery("#txtPurcOrg").typeahead({
-//    source: function (query, process) {
-//        var data = orgData;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            // console.log(data);
-//            map[username.purchaseOrgName] = username;
-
-//            usernames.push(username.purchaseOrgName);
-//        });
-
-//        process(usernames);
-
-//    },
-//    minLength: 2,
-//    updater: function (item) {
-//        if (map[item].purchaseOrgID != "0") {
-
-
-//            sessionStorage.setItem('hdnPurchaseORGID', map[item].purchaseOrgID);
-//            bindPurchaseGroupDDL(map[item].purchaseOrgID);
-//        }
-//        else {
-//            gritternotification('Purchase Group not selected. !!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-//jQuery("#txtPurcGroup").keyup(function () {
-//    sessionStorage.setItem('txtPurcGroup', '0');
-
-//});
-//sessionStorage.setItem('hdnPurchaseGroupID', '0');
-//jQuery("#txtPurcGroup").typeahead({
-//    source: function (query, process) {
-//        var data = Groupdata;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            // console.log(data);
-//            map[username.groupName] = username;
-
-//            usernames.push(username.groupName);
-//        });
-
-//        process(usernames);
-
-//    },
-//    minLength: 2,
-//    updater: function (item) {
-//        if (map[item].idx != "0") {
-
-
-//            sessionStorage.setItem('hdnPurchaseGroupID', map[item].idx);
-
-//        }
-//        else {
-//            gritternotification('Please select Purchase Group!!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-
-//$("#txtPurcOrg").on("keyup", function () {
-//    $("#txtPurcOrg").css("border-color", "");
-//});
-//$("#txtPurcGroup").on("keyup", function () {
-//    $("#txtPurcGroup").css("border-color", "");
-//});
 $("#txtProjectName").on("keyup", function () {
     $("#txtProjectName").css("border-color", "");
 });
@@ -1219,9 +996,7 @@ function Savedata() {
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
-    // var p_org = sessionStorage.getItem('hdnPurchaseORGID');;
-    //  var p_Group = sessionStorage.getItem('hdnPurchaseGroupID');
-    // var p_conditionId = sessionStorage.getItem('hdnConditionID');
+
     var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
     var p_Budget = removeThousandSeperator($("#txtBudget").val());
     var p_category = $("#ddlCategory option:selected").val();
@@ -1257,15 +1032,14 @@ function Savedata() {
     var url = "NFA/InsUpdateNfaoverview";
 
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
-    // alert(JSON.stringify(overviewList))
-    // console.log(JSON.stringify(overviewList))
+
     GetData.success(function (res) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
 
                 idx = res.result[0].nfaID;
-                // console.log(idx);
+
             }
         }
         if (idx == 0) {
@@ -1286,7 +1060,7 @@ function Savetab2Data() {
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
         var this_row = $(this);
         var remarks = $.trim(this_row.find('td:eq(2)').find('textarea').val()).replace(/'/g, "''");
-        // if (remarks != '' && remarks != null) {
+
         objData = {
             Paramidx: parseInt($.trim(this_row.find('td:eq(3)').html())),
             paramtext: $.trim(this_row.find('td:eq(1)').html()),
@@ -1294,7 +1068,7 @@ function Savetab2Data() {
 
         };
         Paramdata.push(objData);
-        // }
+
 
     });
 
@@ -1322,6 +1096,9 @@ function GetNfaOverviewParams() {
                 $.each(res.result, function (key, value) {
                     $('#ddlNFAParam').append('<option value=' + value.idx + ' id=nfaparamoption' + value.idx + ' >' + value.paramtext + '</option>');
                 });
+            }
+            else {
+                $("#ddlNFAParam").append("<option value=0>Select</option>");
             }
         }
         else {
@@ -1379,9 +1156,9 @@ function BindParamsForpreview() {
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
         var this_row = $(this);
         var Nfidvalue = parseInt($.trim(this_row.find('td:eq(3)').html()))
-        // if ($('#paramremark' + Nfidvalue).val() != "" && $('#paramremark' + Nfidvalue).val() != null) {
+
         $("#tblOBpreview").append('<tr id=trNFAOverviewParam' + Nfidvalue + '><td>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td>' + $('#paramremark' + Nfidvalue).val() + '</td><td class=hide>' + Nfidvalue + '</td></tr>');
-        // }
+
     });
 
 }
@@ -1466,10 +1243,6 @@ function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
                 ApproverCtr = 0;
                 bootbox.alert("No Approver(s) find for selected Apprval matrix(BudgetType: " + $("#ddlBudget option:selected").text() + ", Amount: " + $("#txtAmountFrom").val() + ", Org: " + $("#ddlPurchaseOrg option:selected").text() + ", Group: " + $("#ddlPurchasegroup option:selected").text())
 
-                //$("#errorApproverdivSeq").show();
-                //$("#errorApproverSeq").html("No Approver(s) find for selected Apprval matrix (BudgetType: " + $("#ddlBudget option:selected").text() + ",Amount: " + $("#txtAmountFrom").val() + ",Org: " + $("#ddlPurchaseOrg option:selected").text() + ",Group: " + $("#ddlPurchasegroup option:selected").text() + ")");
-                //Metronic.scrollTo($("#errorApproverdivSeq"), -200);
-                //$('#errorApproverdivSeq').fadeOut(15000);
             }
         }
     });
@@ -1486,17 +1259,7 @@ function SaveApproversConfirmation() {
 
 
     var url = "NFA/InsUpdateOverViewApprovers?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx) + "&isReverted=" + isReverted;
-    // var isActive = $("#chkPrevIsActive").is(':checked');
-    //if (isActive == false) {
 
-    //    $("#errorApproverdivSeq").show();
-    //    $("#errorApproverSeq").html('Please Check confirmation checkbox for Approvers');
-
-
-    //    Metronic.scrollTo($("#errorApproverdivSeq"), -200);
-    //    $('#errorApproverdivSeq').fadeOut(5000);
-    //    return false;
-    //}
     $("#tblApproversPrev tr:gt(0)").each(function () {
         var this_row = $(this);
 
@@ -1579,7 +1342,7 @@ function SaveAttechmentinDB() {
     var objFiles = {};
 
 
-    $("#tblAttachments > tbody  > tr").each(function () {
+    $("#tblAttachments > tbody > tr").each(function () {
         var this_row = $(this);
 
 
@@ -1594,7 +1357,7 @@ function SaveAttechmentinDB() {
         lstFiles.push(objFiles);
 
     });
-
+    console.log(JSON.stringify(lstFiles))
     var SaveFiles = callajaxReturnSuccess(url, "Post", JSON.stringify(lstFiles));
     SaveFiles.success(function (res) {
 
@@ -1917,23 +1680,3 @@ function viewallmatrix() {
     $('#viewAllMatrix').modal('show');
     bindApproverMaster();
 }
-//function UpdateFirstTabActivity() {
-
-//    objActivity = {
-//        FromUserId: UserID,
-//        ToUserId: UserID,
-//        ActivityDescription: $("#txtTitle").val(),
-//        /* LinkURL: "Y",*/
-//        NfaIdx: parseInt(idx)
-//    }
-//    var url = "NFA/InsertFirstTabActivity";
-
-//    var firstTab = callajaxReturnSuccess(url, "Post", JSON.stringify(objActivity));
-//    firstTab.success(function (res) {
-
-//    });
-//    firstTab.error(function (error) {
-
-//    });
-
-//}
