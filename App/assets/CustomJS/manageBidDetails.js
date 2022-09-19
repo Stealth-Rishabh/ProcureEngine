@@ -59,26 +59,30 @@ jQuery("#divbidShowL1L2").hide();
 jQuery("#divhidevendors").hide();
 jQuery("#divbidextension").hide();
 $('#div_surrogate').hide()
+$('#divremovequotes').hide();
+$('#prebid').hide();
 
 if (sessionStorage.getItem("BidPreApp") == "N" || sessionStorage.getItem("BidPreApp") == undefined || sessionStorage.getItem("BidPreApp") == null || sessionStorage.getItem("BidPreApp") == '') {
-    $('#tab_0').show().addClass('active')
-    $('#litab1').show()
-    $('#litab2').show()
-    $('#litab3').show()
-    $('#litab4').show()
-    $('#litab5').show()
-    $('#tab_6').removeClass('active')
+    $('#litab0').show().addClass('active');
+    $('#litab1').show();
+    $('#litab2').show();
+    $('#litab3').show();
+    $('#litab4').show();
+    $('#litab5').show();
+    //$('#tab_6').removeClass('active')
+    $('#litab3').removeClass('active');
 
 }
 else {
-    $('#litab0').hide()
-    $('#litab1').hide()
-    $('#litab2').hide()
-    $('#litab3').hide()
-    $('#litab4').hide()
-    $('#litab5').hide()
-    $('#tab_6').addClass('active')
-    $('#tab_0').show().removeClass('active')
+    $('#litab0').hide();
+    $('#litab1').hide();
+    $('#litab2').hide();
+    $('#litab4').hide();
+    $('#litab5').hide();
+    //$('#tab_6').addClass('active')
+    $('#litab3').show().addClass('active')
+    //$('#div_surrogate').show()
+    $('#litab0').removeClass('active')
 
 }
 
@@ -413,22 +417,62 @@ jQuery("#txtbid").typeahead({
             jQuery("#btnuserConfirmation").hide();
             sessionStorage.setItem('hdnbid', map[item].bidId);
             jQuery("#ddlbid").val(map[item].bidId);
-            if ((map[item].bidTypeID == "6" || map[item].bidTypeID == "7") && map[item].bidForID == 82) {
-                $('#litab8').addClass('hide');
-                $('#tab_8').addClass('hide');
-            }
-            else if (map[item].bidTypeID == "9") {
-                $('#litab8').addClass('hide');
-                $('#tab_8').addClass('hide');
-                $('#litab3').addClass('hide');
-                $('#tab_3').addClass('hide');
+
+
+            if (sessionStorage.getItem("BidPreApp") == "N" || sessionStorage.getItem("BidPreApp") == undefined || sessionStorage.getItem("BidPreApp") == null || sessionStorage.getItem("BidPreApp") == '') {
+
+                $("#eventDetailstab_0").show();
+                $('#div_surrogate').show();
+                $('#prebid').show();
+                $('#divremovequotes').show();
+                //$('.nav-tabs').find('li').removeClass('active')
+                // $('.tab-pane').removeClass('active')
+
+                if ((map[item].bidTypeID == "6" || map[item].bidTypeID == "7") && map[item].bidForID == 82) {
+                    $('#litab8').hide();
+                    $('#tab_8').hide();
+
+                }
+                else if (map[item].bidTypeID == "9") {
+                    $('#litab8').hide();
+                    $('#tab_8').hide();
+                    $('#litab3').hide();
+                    $('#tab_3').hide();
+                }
+                /* else{
+                      $('#litab0,#tab_0').addClass('active');
+                 }*/
+
+
             }
             else {
-                $('#litab8').removeClass('hide');
-                $('#tab_8').removeClass('hide');
-                $('#litab3').removeClass('hide');
-                $('#tab_3').removeClass('hide');
+                $("#eventDetailstab_0").hide();
+                $('#div_surrogate').show();
+                $('#prebid').show();
+                $('#divremovequotes').show();
+                $('.nav-tabs').find('li').removeClass('active')
+                $('.tab-pane').removeClass('active')
+
+
+                if ((map[item].bidTypeID == "6" || map[item].bidTypeID == "7") && map[item].bidForID == 82) {
+                    $('#litab3,#tab_3').addClass('active');
+                    $('#tab_3').show();
+                    $('#litab3').show();
+                }
+                else if (map[item].bidTypeID == "9") {
+                    $('#litab3').hide();
+                    $('#tab_3').hide();
+                    $('#litab6,#tab_6').addClass('active');
+                    $('#divremovequotes').hide();
+                }
+                else {
+                    $('#litab3,#tab_3').addClass('active');
+                }
+
+
+
             }
+
             sessionStorage.setItem("hdnbidtypeid", map[item].bidTypeID)
             sessionStorage.setItem("hdbbidForID", map[item].bidForID)
             fetchvendors(map[item].bidId);
@@ -508,7 +552,7 @@ function fetchvendors(bidid) {
     });
 }
 function fetchparticationQuotes() {
-    debugger;
+
     var url = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1526,14 +1570,7 @@ var FlagForCheckShowPrice = "N";
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
     $('#extendedDurationPara').hide();
-    if (sessionStorage.getItem("BidPreApp") == "N" || sessionStorage.getItem("BidPreApp") == undefined || sessionStorage.getItem("BidPreApp") == null) {
-        $("#eventDetailstab_0").show();
-        $('#div_surrogate').show()
-    }
-    else {
-        $("#eventDetailstab_0").hide();
-        $('#div_surrogate').hide()
-    }
+
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
     }
@@ -1928,7 +1965,10 @@ function fetchallexportdetails() {
 
                     if (FlagForCheckShowPrice == "Y") {
                         $("a.lambdafactor").removeAttr("onclick");
-
+                        $('.lambdafactor').attr('disabled', 'disabled')
+                    }
+                    else {
+                        $('.lambdafactor').removeAttr('disabled')
                     }
 
                 }

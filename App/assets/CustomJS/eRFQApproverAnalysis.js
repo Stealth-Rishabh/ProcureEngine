@@ -171,7 +171,6 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             // To Check With Pooja---What is this check?
-            var _rfqBidType = sessionStorage.getItem("RFQBIDType");
             if (_rfqBidType == 'Open') {
                 if (AppType == "T" && FwdTo != 'Admin') {
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
@@ -1361,7 +1360,6 @@ function fetchReguestforQuotationDetails() {
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
-                sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
                 jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)

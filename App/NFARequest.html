@@ -272,6 +272,7 @@
                                                             <div class="col-md-2">
                                                                 <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" onkeyup="thousands_separators_input(this)" maxlength="18" />
                                                             </div>
+
                                                             <div class="col-md-1">
                                                                 <select id="dropCurrency" name="dropCurrency" class="form-control">
                                                                 </select>
@@ -280,7 +281,7 @@
 
                                                     </div>
                                                     <div class="form-group">
-                                                        <div class="inputgroup" style="display:none">
+                                                        <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Budget Status<span class="required"> *</span>
                                                             </label>
@@ -294,8 +295,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
-                                                            <label class="col-md-3 control-label">
-                                                                <!--col-md-2-->
+                                                            <label class="col-md-2 control-label">
                                                                 Category<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
@@ -405,7 +405,6 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-10">
-
                                                                                 <table class="table table-striped table-bordered table-hover" id="tblNFAOverviewParam"></table>
 
                                                                             </div>
@@ -465,7 +464,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-4">
-                                                                                <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                <input type="text" maxlength="100" class="form-control MaxLength" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off"  onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
@@ -924,6 +923,7 @@
 
     <script>
         jQuery(document).ready(function () {
+            //form.validate();
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);

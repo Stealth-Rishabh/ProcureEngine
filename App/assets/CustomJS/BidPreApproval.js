@@ -92,12 +92,12 @@ function fetchSeaExportDetails(bidid) {
             }
             isLastPreApprover = BidData[0].bidDetails[0].isLastPreApprover;
 
-            if (isLastPreApprover == "Y") {
-                $('#divTimeChange').removeClass('hide')
-            }
-            else {
-                $('#divTimeChange').addClass('hide')
-            }
+            //if (isLastPreApprover == "Y") {
+            //    $('#divTimeChange').removeClass('hide')
+            //}
+            //else {
+            //    $('#divTimeChange').addClass('hide')
+            //}
 
             $('#filepthtermsPrev').html(BidData[0].bidDetails[0].termsConditions);
             $('#filepthattachPrev').html(BidData[0].bidDetails[0].attachment);
@@ -245,12 +245,14 @@ function fetchScrapSalesBidDetails(bidid) {
             $('#filepthterms').html(BidData[0].bidDetails[0].termsConditions);
             $('#filepthattach').html(BidData[0].bidDetails[0].attachment);
             isLastPreApprover = BidData[0].bidDetails[0].isLastPreApprover;
-            if (isLastPreApprover == "Y") {
-                $('#divTimeChange').removeClass('hide')
-            }
-            else {
-                $('#divTimeChange').addClass('hide')
-            }
+
+            //if (isLastPreApprover == "Y") {
+            //    $('#divTimeChange').removeClass('hide')
+            //}
+            //else {
+            //    $('#divTimeChange').addClass('hide')
+            //}
+
             jQuery("#tblapproversPrev").empty();
             $('#wrap_scrollerPrevApp').show();
             jQuery('#tblapproversPrev').append("<thead><tr><th class='bold text-center' colspan=3 >Post Approvers</th></tr></thead>");

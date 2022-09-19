@@ -1262,7 +1262,7 @@ function ConfigureBidInsPefaTab2() {
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
                 i = (this_row.closest('tr').attr('id')).substring(4);
-
+               
                 targetPrice = 0
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
