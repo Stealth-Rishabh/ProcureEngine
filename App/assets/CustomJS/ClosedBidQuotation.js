@@ -140,10 +140,10 @@ var FormWizard = function () {
                         // required: true,
                         maxlength: 50
                     },
-                    txtItemRemarks: {
-                        required: true,
-                        maxlength: 200
-                    },
+                    //txtItemRemarks: {
+                    //    required: true,
+                    //    maxlength: 200
+                    //},
                     //txttat: {
                     //    digits: true,
                     //    maxlength: 4,
