@@ -120,10 +120,10 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
-            var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-            debugger;
+            
             if (_rfqBidType != 'Open') {
                 if (bidopeningdate != null || bidopeningdate != '') {
+                    var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
                     if (_RFQOpenDate <= _CurrentDate) {
                         ShowPrice = 'Y';
                         $('#btnPDF').show()
