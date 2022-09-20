@@ -896,6 +896,13 @@
                 sessionStorage.setItem('hddnRFQID', _RFQid)
                 fetchReguestforQuotationDetails();
                 fetchAttachments();
+
+                setTimeout(function () {
+                    fetchRFQParameterlastquotesonload(version)
+                }, 1000);
+
+                fetchRFQResponseTocheckVersion('Question', version);
+                fetchRFQResponseTocheckVersion('Attachment', version);
                 if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
                     $('#LiISsurrogate').removeClass('hide')
                     $('#LIVendor').addClass('hide')
