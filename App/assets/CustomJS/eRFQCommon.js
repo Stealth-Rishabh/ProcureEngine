@@ -389,22 +389,11 @@ function fetchReguestforQuotationDetails() {
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
-                _rfqBidType = RFQData[0].general[0].rfqBidType;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
-                if (_rfqBidType == 'Closed') {
-                    $('#div_bidopendate').show()
-                    if (bidopeningdate != null || bidopeningdate != '') {
-                        bidopeningdate = fnConverToLocalTime(bidopeningdate);
-                        jQuery('#lblrfqopendate').html(bidopeningdate)
-                    }
-                    else {
-                        jQuery('#lblrfqopendate').html('Not Set')
-                    }
+                if (bidopeningdate != null || bidopeningdate != '') {
+                    bidopeningdate = fnConverToLocalTime(bidopeningdate);
                 }
-                else {
-                    $('#div_bidopendate').hide()
-                }
-                //_rfqBidType = RFQData[0].general[0].rfqBidType;
+                _rfqBidType = RFQData[0].general[0].rfqBidType;
 
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)

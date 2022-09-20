@@ -849,7 +849,6 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
-    debugger;
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -1359,8 +1358,14 @@ function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, 
     $('#texttblidwithGST').val(withgst);
     $('#texttblidwithoutGST').val(mskwithoutgst);
     $('#txtRFQParameterId').val(RFQParameterId);
-    saveQuotation();
-    fncheckItemWiseTC(version, RFQParameterId)
+    if (basicprice >= 0) {
+        saveQuotation();
+        fncheckItemWiseTC(version, RFQParameterId)
+    }
+    else {
+        bootbox.alert('Basic Price Must be a value greater than 0');
+        return false;
+    }
 
 }
 $('#responsive').on("hidden.bs.modal", function () {
