@@ -342,9 +342,9 @@ function fetchVendorDetails() {
             $('#personname').val(detail[0].ContactPerson)
             //$('#ddlpreferredTime').val(detail[0].preferredtimezone)           
             $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
-            setTimeout(function () {
-                $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
-            }, 800)
+            //setTimeout(function () {
+            //    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+            //}, 800)
 
 
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")

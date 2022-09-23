@@ -13,8 +13,8 @@ jQuery(document).ready(function () {
         allowMinus: false,
         clearMaskOnLostFocus: true,
         supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true,
-        autoUnmask: true
+        'removeMaskOnSubmit': true
+        //autoUnmask: true
 
     });
 
@@ -1504,8 +1504,8 @@ function ConfigureBidForSeaExportTab2() {
 
                 targetPrice = 0
                 unitrate = 0;
-                povalue = 0,  itmduartion = 0; tab2Data = '';
-               
+                povalue = 0, itmduartion = 0; tab2Data = '';
+
 
 
                 if ($.trim(this_row.find('td:eq(6)').html()) != '') {
@@ -1916,7 +1916,7 @@ $('#addapprovers').on("hidden.bs.modal", function () {
     fetchSeaExportDetails();
 })
 function fnclosepopupApprovers() {
-    $('#addapprovers').modal('hide');
+    //  $('#addapprovers').modal('hide');
 }
 
 
@@ -2266,7 +2266,7 @@ function ParametersQuery() {
 
     }
 
-    
+
     var num = 0, i = 0;
     var maxinum = -1;
     $("#tblServicesProduct tr:gt(0)").each(function () {
@@ -2804,25 +2804,26 @@ function fetchSeaExportDetails() {
                     }
                 }
                 if (BidData[0].bidVendorDetails.length > 0) {
-                    jQuery('#selectedvendorlists').empty();
-                    jQuery('#selectedvendorlistsPrev').empty();
-                    for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
-                        vCount = vCount + 1;
-                        if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
-                            $('.THLoading').show()
-                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
-                        }
-                        else {
-                            $('.THLoading').hide()
-                            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
-                            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
-                        }
-
-                    }
-
-                    jQuery('#selectedvendorlists').show()
-                    jQuery('#selectedvendorlistsPrev').show()
+                    /* jQuery('#selectedvendorlists').empty();
+                     jQuery('#selectedvendorlistsPrev').empty();
+                     for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
+                         vCount = vCount + 1;
+                         if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
+                             $('.THLoading').show()
+                             jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                             jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class=tblcolweightage>' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
+                         }
+                         else {
+                             $('.THLoading').hide()
+                             jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightage' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a href="javascript:;" class="btn btn-xs btn-success lambdafactor hide" title="Add Weightage" onclick="addWeightageToVendor(' + BidData[0].bidVendorDetails[i].vendorID + ')"><i class="glyphicon glyphicon-filter"></i></a></td></tr>')
+                             jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].bidVendorDetails[i].vendorID + ' class="hide tblcolweightage">' + BidData[0].bidVendorDetails[i].advFactor + '</td></tr>')
+                         }
+ 
+                     }
+ 
+                     jQuery('#selectedvendorlists').show()
+                     jQuery('#selectedvendorlistsPrev').show()*/
+                    fnfetchRFQVendor();
 
                 }
 
@@ -4139,7 +4140,7 @@ function fnfetchRFQVendor() {
                     }
 
                     if (data[i].isFromRFQ == "Y") {
-                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightagePrev' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td data-toggle="popover" data-trigger="hover" data-content="View RFQ Quotes" id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal" data-placement="left"  onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>')
+                        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + data[i].vendorID + '><td class=hide>' + data[i].vendorID + '</td><td>' + data[i].vendorName + '</td><td class="tblcolweightage" id=tblcolweightagePrev' + data[i].vendorID + '>' + data[i].advFactor + '</td><td class=hide>' + data[i].isFromRFQ + '</td><td id=td' + i + '><a id=btnviewquotes' + data[i].vendorID + ' class="btn btn-xs btn-success" href="#viewvendorRFQprice" data-toggle="modal"   onclick="viewRFQQuotes(' + data[i].vendorID + ')"><i class="glyphicon glyphicon-asterisk"></i></a></td></tr>') /*data - toggle="popover" data - trigger="hover" data - content="View RFQ Quotes" data-placement="left"*/
                     }
                     else {
                         if ($('#ddlAuctiontype').val() == "83" || $('#ddlAuctiontype').val() == "81") {
