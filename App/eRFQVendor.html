@@ -38,7 +38,15 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
         .has-success {
             border-color: #27a4b0 !important;
         }
@@ -693,7 +701,8 @@
                                     </b>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="tel" class="form-control text-right thousandseparated" id="txtbasicPrice" autocomplete=off name="txtbasicPrice" placeholder="Basic price" />
+                                    <!--<input type="tel" class="form-control text-right thousandseparated" id="txtbasicPrice" autocomplete=off name="txtbasicPrice" placeholder="Basic price" />-->
+                                    <input type="number" min="0" step="any" inputmode="decimal" class="form-control text-right" id="txtbasicPrice" autocomplete=off name="txtbasicPrice" placeholder="Basic price" />
                                 </div>
                             </div>
                             <div class="col-md-12">

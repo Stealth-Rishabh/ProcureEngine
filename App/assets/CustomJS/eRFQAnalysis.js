@@ -40,9 +40,12 @@ if (window.location.search) {
     fetchAttachments();
 }
 function FetchInvitedVendorsForeRFQ() {
+    debugger;
+    var verId = parseInt($('#ddlrfqVersion').val());
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID') + '&Version=' + verId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -120,10 +123,10 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
-            var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-            debugger;
+
             if (_rfqBidType != 'Open') {
                 if (bidopeningdate != null || bidopeningdate != '') {
+                    var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
                     if (_RFQOpenDate <= _CurrentDate) {
                         ShowPrice = 'Y';
                         $('#btnPDF').show()
@@ -1086,7 +1089,9 @@ function formvalidate() {
                 fetchApproverRemarks('C');
                 setTimeout(function () {
                     fetchrfqcomprative();
-                    FetchInvitedVendorsForeRFQ();
+                    if (sessionStorage.getItem('RFQBidType') == 'Closed') {
+                        FetchInvitedVendorsForeRFQ();
+                    }
                 }, 400)
 
             }
@@ -1349,7 +1354,9 @@ function fnSendActivityToCommercial() {
             setTimeout(function () {
                 $("#FwdCommercialApprover").modal('hide');
                 fetchrfqcomprative();
-                FetchInvitedVendorsForeRFQ();
+                if (sessionStorage.getItem('RFQBidType') == 'Closed') {
+                    FetchInvitedVendorsForeRFQ();
+                }
             }, 1000)
             // }
             // }
