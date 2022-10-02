@@ -516,7 +516,8 @@ function RFQFetchL1Package(VendorID, Counter) {
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#withGSTL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#totL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
 
 
@@ -712,7 +713,8 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
 
             $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));

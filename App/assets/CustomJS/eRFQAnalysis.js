@@ -105,7 +105,7 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
-
+    debugger;
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -215,7 +215,7 @@ function fetchrfqcomprative() {
                 strHeadQ += "</tr>"
                 strHeadExcelQ += "</tr>"
 
-                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
@@ -243,7 +243,7 @@ function fetchrfqcomprative() {
                 strHead += "</tr>"
                 strHeadExcel += "</tr>"
 
-                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
 
                 var taxHRTextinc = stringDivider("Landed Unit Price (With GST)", 18, "<br/>\n");
@@ -387,7 +387,7 @@ function fetchrfqcomprative() {
 
                 }
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td>";
                 strExcel += "<tr><td colspan=5><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -421,7 +421,7 @@ function fetchrfqcomprative() {
 
 
                 //For Loading Factor
-                str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
@@ -453,7 +453,7 @@ function fetchrfqcomprative() {
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
                 //For Loading Factor reason Row
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Loading Reason</b></td>";
                 strExcel += "<tr><td colspan=5 ><b>Loading Reason</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
@@ -478,7 +478,7 @@ function fetchrfqcomprative() {
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
                 ////For Commercial Rank
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=5 ><b>Commercial Rank (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].lStatus.length; k++) {
@@ -514,7 +514,7 @@ function fetchrfqcomprative() {
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
                 ////For L1 Package
-                str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=6 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -554,7 +554,7 @@ function fetchrfqcomprative() {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
                     strExcel += " <tr>";
-                    str += "<td><b>SrNo</b></td><td colspan=4><b>Other Commercial Terms</b></td>";
+                    str += "<td><b>SrNo</b></td><td colspan=5><b>Other Commercial Terms</b></td>";
                     strExcel += "<td>SrNo</td><td colspan=4><b>Other Commercial Terms</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
@@ -591,7 +591,7 @@ function fetchrfqcomprative() {
 
                         if (flag1 == 'T') {
 
-                            str += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
+                            str += "<tr><td>" + (p + 1) + "</td><td colspan=5>" + data[0].commercialTerms[p].termName + "</td>";
                             strExcel += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
 
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
@@ -638,7 +638,7 @@ function fetchrfqcomprative() {
 
                 //////For Vendor Comments
 
-                str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
+                str += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
                 strExcel += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
 
@@ -843,7 +843,7 @@ function fetchrfqcomprative() {
 
                 //** Add row Reinvitation Remarks & status
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
-                    str += "<tr id='reinvitationTRRem'><td colspan=5><b>Re-Invitation Remarks</b></td>";
+                    str += "<tr id='reinvitationTRRem'><td colspan=6><b>Re-Invitation Remarks</b></td>";
                     strExcel += "<tr><td colspan=5><b>Re-Invitation Remarks</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
@@ -1522,5 +1522,3 @@ function CloseForwardpopup() {
 //        }
 //        });
 //}
-
-
