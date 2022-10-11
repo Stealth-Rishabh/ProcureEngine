@@ -386,14 +386,26 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
-                bidopeningdate = RFQData[0].general[0].bidopeningdate;
-                if (bidopeningdate != null || bidopeningdate != '') {
-                    bidopeningdate = fnConverToLocalTime(bidopeningdate);
-                }
                 _rfqBidType = RFQData[0].general[0].rfqBidType;
+                bidopeningdate = RFQData[0].general[0].bidopeningdate;
+                sessionStorage.setItem('RFQBidType', _rfqBidType)
+                if (_rfqBidType == 'Closed') {
+                    $('#div_bidopendate').show()
+                    if (bidopeningdate != null || bidopeningdate != '') {
+                        bidopeningdate = fnConverToLocalTime(bidopeningdate);
+                        jQuery('#lblrfqopendate').html(bidopeningdate)
+                    }
+                    else {
+                        jQuery('#lblrfqopendate').html('Not Set')
+                    }
+                }
+                else {
+                    $('#div_bidopendate').hide()
+                }
 
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
@@ -404,7 +416,7 @@ function fetchReguestforQuotationDetails() {
                 jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
                 jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
                 jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
-
+                //jQuery('#lblrfqopendate').html(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate))
                 $('#hdnUserID').val(RFQData[0].general[0].userId)
                 $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
@@ -504,7 +516,8 @@ function RFQFetchL1Package(VendorID, Counter) {
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#withGSTL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#totL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
 
 
@@ -700,7 +713,8 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
 
             $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));

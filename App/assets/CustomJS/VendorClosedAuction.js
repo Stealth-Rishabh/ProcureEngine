@@ -16,9 +16,10 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            console.log("dataa > ", data)
             if (data.length == 1) {
                 sessionStorage.setItem('hdnbidtypeid', data[0].bidTypeID);
+
                 $('#tblParticipantsService').show();
                 $("#hdnAdvFactor").val(data[0].advFactor);
                 jQuery("label#lblitem1").text(data[0].bidFor);

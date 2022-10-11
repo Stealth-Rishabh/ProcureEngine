@@ -95,7 +95,24 @@ connection.on("refreshColumnStatusCoal", function (data) {
                             jQuery('#lblstatus' + i).css('color', 'Red');
 
                         }
-
+                        if (data[i].itemBlockedRemarks != '') {
+                            $('#AllItembtn' + i).attr('disabled', 'disabled')
+                            $('#txtquote' + i).text("Restricted")
+                            $('#txtquote' + i).attr('disabled', 'disabled')
+                            $('#delquan' + i).attr('disabled', 'disabled')
+                            $('#cess' + i).attr('disabled', 'disabled')
+                            $('#ncv' + i).attr('disabled', 'disabled')
+                            $('#landedp' + i).attr('disabled', 'disabled')
+                        }
+                        else {
+                            $('#txtquote' + i).text("")
+                            $('#txtquote' + i).removeAttr('disabled', 'disabled')
+                            $('#delquan' + i).removeAttr('disabled', 'disabled')
+                            $('#cess' + i).removeAttr('disabled', 'disabled')
+                            $('#ncv' + i).removeAttr('disabled', 'disabled')
+                            $('#landedp' + i).removeAttr('disabled', 'disabled')
+                            $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
+                        }
                         if (data[i].itemNoOfExtension > 0) {
                             jQuery('#itemleft' + i).css({
                                 'color': 'Red',
@@ -371,7 +388,7 @@ function fetchBidSummaryVendorproduct() {
                             $('#itemquotes' + i).append('<tr id=trquotes' + i + '><td><label class="control-label text-left" style="width:120px!important;">Offered Quantity</label></td><td> <input type="number" onkeyup="CheckQCondition(this,' + data[i].quantity + ',' + i + ')" class="form-control" id=delquan' + i + ' name=delquan' + i + ' placeholder="Offered Quantity" autocomplete="off" maxlength="8" value=' + data[i].offeredQuan + ' /><span id=spanmszQ' + i + ' style=color:#a94442></span></td>');
                             $('#trquotes' + i).append('<td><label class="control-label text-left">Cess</label></td><td> <input type="number" class="form-control threedecimal" onkeyup=onkeyCess(' + i + ') id=cess' + i + ' name=cess' + i + ' value=' + data[i].cess + ' placeholder="Cess per MT" autocomplete="off"  /><span id=spanmszC' + i + ' style=color:#a94442></span></td>');
                             $('#trquotes' + i).append('<td><label class="control-label">NCV</label></td><td> <input type="number" onkeyup="onkeyNCV(' + i + ')" class="form-control threedecimal" id=ncv' + i + ' name=ncv' + i + ' value=' + data[i].ncv + ' placeholder="NCV" autocomplete="off"  /><span id=spanmszN' + i + ' style=color:#a94442></span></td>');
-                            $('#trquotes' + i).append('<td><label class="control-label text-left">Price</label></td><td> <input type="number"  onkeyup="calCostNCV(this,' + i + ')"  class="form-control threedecimal" id=landedp' + i + ' name=landedp' + i + ' placeholder="Landed Price Per MT" autocomplete="off" value=' + data[i].landedPrice + ' /><span id=spanmszL' + i + ' style=color:#a94442></span></td><td><label class="form-control" id=txtquote' + i + ' name=txtquote' + i + ' placeholder="Cost/NCV" /><span id=spanamount' + i + '   style=color:#a94442></span></td>');
+                            $('#trquotes' + i).append('<td><label class="control-label text-left">Price</label></td><td> <input type="number"  onkeyup="calCostNCV(this,' + i + ')"  class="form-control threedecimal" id=landedp' + i + ' name=landedp' + i + ' placeholder="Landed Price Per MT" autocomplete="off" value=' + data[i].landedPrice + ' /><span id=spanmszL' + i + ' style=color:#a94442></span></td><td><label class="form-control number" id=txtquote' + i + ' name=txtquote' + i + ' placeholder="Cost/NCV" /><span id=spanamount' + i + '   style=color:#a94442></span></td>');
                             $('#trquotes' + i).append('<td><button type=button id=AllItembtn' + i + ' class="btn btn-warning clsdisable" onclick=InsUpdQuoteSeaExport(' + i + ')>Submit</button><br/><span id=spanmszA' + i + ' style=color:#a94442>Ok</span></td></tr>');
 
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
@@ -390,12 +407,24 @@ function fetchBidSummaryVendorproduct() {
                             if (data[i].showStartPrice == 'N') {
                                 $("#ceilingprice" + i).html('Not Disclosed');
                             }
-                            if (data[i].itemBlockedRemarks != '') {
 
+                            if (data[i].itemBlockedRemarks != '') {
                                 $('#AllItembtn' + i).attr('disabled', 'disabled')
+                                $('#txtquote' + i).text("Restricted")
+                                $('#txtquote' + i).attr('disabled', 'disabled')
+                                $('#delquan' + i).attr('disabled', 'disabled')
+                                $('#cess' + i).attr('disabled', 'disabled')
+                                $('#ncv' + i).attr('disabled', 'disabled')
+                                $('#landedp' + i).attr('disabled', 'disabled')
                             }
                             else {
 
+                                $('#txtquote' + i).text("")
+                                $('#txtquote' + i).removeAttr('disabled', 'disabled')
+                                $('#delquan' + i).removeAttr('disabled', 'disabled')
+                                $('#cess' + i).removeAttr('disabled', 'disabled')
+                                $('#ncv' + i).removeAttr('disabled', 'disabled')
+                                $('#landedp' + i).removeAttr('disabled', 'disabled')
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                             }
                             if (data[i].loQuotedPrice == 'L1') {
@@ -577,6 +606,9 @@ function startTimer(duration, display) {
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
 
+        }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.number').closest('label').text() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
         }
         if (timer == 300) {
             $('#pleft5mins').removeClass('hide')

@@ -10,6 +10,17 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 $(".thousandsep").inputmask({
+    /*alias: "decimal",
+    rightAlign: false,
+    groupSeparator: ",",
+    radixPoint: ".",
+    autoGroup: true,
+    integerDigits: 40,
+    digitsOptional: true,
+    allowPlus: false,
+    allowMinus: false,
+  
+    'removeMaskOnSubmit': true*/
     alias: "decimal",
     rightAlign: false,
     groupSeparator: ",",
@@ -19,12 +30,10 @@ $(".thousandsep").inputmask({
     digitsOptional: true,
     allowPlus: false,
     allowMinus: false,
-    autoUnmask: true,
-    positionCaretOnTab: false,
-    numericInput: false,
-    positionCaretOnClick: "none",
-   'removeMaskOnSubmit': true
-
+    clearMaskOnLostFocus: true,
+    supportsInputType: ["text", "tel", "password"],
+    'removeMaskOnSubmit': true,
+    autoUnmask: true
 });
 CommonGenricAjax = function (url, type, data, async, token) {
     return $.ajax({

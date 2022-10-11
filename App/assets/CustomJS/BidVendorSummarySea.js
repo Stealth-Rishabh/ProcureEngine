@@ -629,7 +629,6 @@ function fetchBidSummaryDetails(BidID, BidForID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
             jQuery("#tblBidSummary > thead").empty();
             jQuery("#tblBidSummary > tbody").empty();
             jQuery("#tblbidsummarypercentagewise > thead").empty();
@@ -2703,6 +2702,7 @@ function FetchRecomendedVendor(bidid) {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
+
             if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
                 $('#btnPPCF').show()
                 $('#btnPPCA').show()
@@ -2714,7 +2714,7 @@ function FetchRecomendedVendor(bidid) {
                 }
             }
             else {
-                $('#btnPPC').hide()
+                $('#btnPPCF').hide()
                 $('#btnPPCA').hide()
                 $('#btn_mapaaprover').hide()
             }

@@ -24,8 +24,8 @@ jQuery(document).ready(function () {
         allowMinus: false,
         clearMaskOnLostFocus: true,
         supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true,
-        autoUnmask: true
+        'removeMaskOnSubmit': true
+        //autoUnmask: true
     });
 
 
@@ -1251,15 +1251,18 @@ function ConfigureBidInsPefaTab1() {
 function ConfigureBidInsPefaTab2() {
     var targetPrice;
     var lastInvoiceprice = 0;
-    var mininc = 0;
+    var mininc = 0; i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tab2Items = '', PriceDetails = [];
 
-    var rowCount = jQuery('#tblServicesProduct tr').length;
-    if (rowCount > 1) {
+    var rowCount = jQuery('#tblServicesProduct >tbody>tr').length;
+    if (rowCount >= 1) {
         if ($("#ddlAuctiontype option:selected").val() == 81 || $("#ddlAuctiontype option:selected").val() == 83) {
 
-            $("#tblServicesProduct tr:gt(0)").each(function (i) {
+            $("#tblServicesProduct tr:gt(0)").each(function () {
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
+               
                 targetPrice = 0
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
@@ -1296,8 +1299,9 @@ function ConfigureBidInsPefaTab2() {
             if ($("#txtBidDuration").val() != '0') {
                 _BidDuration = $("#txtBidDuration").val();
             }
-            $("#tblServicesProduct tr:gt(0)").each(function (i) {
-
+            $("#tblServicesProduct tr:gt(0)").each(function () {
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
                     t = 'P'
@@ -1908,8 +1912,18 @@ function ParametersQuery() {
 
     }
 
-    var i;
-    i = rowAppItems + 1;
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(4)
+        if (num > maxinum) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
     var status = $('#checkmaskvendor option:selected').val();
     var showHLPrice = $('#showhlprice option:selected').val();
     var ShowStartPrice = $('#showstartprice option:selected').val();

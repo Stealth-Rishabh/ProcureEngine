@@ -211,6 +211,19 @@
 
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
+                                                            Zip Code <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-9">
+
+                                                            <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
+                                                                   name="txtZipCd" maxlength="10" />
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">
                                                             PAN No. <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
@@ -222,7 +235,12 @@
                                                         <label class="col-md-3 control-label">
                                                             Mobile No <span class="required">*</span>
                                                         </label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-2">
+                                                            <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
+                                                                <option Value="">Select</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-7">
                                                             <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo"
                                                                    name="txtMobileNo">
                                                         </div>
@@ -240,7 +258,12 @@
                                                         <label class="col-md-3 control-label">
                                                             Company Phone <span class="required">*</span>
                                                         </label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-2">
+                                                            <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
+                                                                <option Value="">Select</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-7">
                                                             <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
                                                                    name="txtPhoneNo">
                                                         </div>
@@ -266,7 +289,32 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="form-group hide">
+
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">
+                                                            Preferred Time/Zone<span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
+                                                                <option Value="">Select</option>
+                                                            </select>
+                                                        </div>
+                                                        <label class="col-md-2 control-label">
+                                                            IsActive
+                                                        </label>
+                                                        <div class="col-md-1 checkbox-list">
+                                                            <label class="checkbox-inline">
+                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+                                                    <!--                                                    <div class="form-group hide">
                                                         <label class="col-md-3 control-label">
                                                             IsActive
                                                         </label>
@@ -275,7 +323,8 @@
                                                                 <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
                                                             </label>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
+
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                         <label class="col-md-3 control-label">
                                                             &nbsp;
@@ -475,7 +524,15 @@
             clearform();
             fetchCountry();
             $('#ddlCountry').select2({
+
                 searchInputPlaceholder: "Search Country",
+            });
+            $('#ddlCountryCd').select2({
+                searchInputPlaceholder: "Dialing Code",
+            });
+
+            $('#ddlCountryCdPhone').select2({
+                searchInputPlaceholder: "Dialing Code",
             });
 
             $('#ddlState').select2({
