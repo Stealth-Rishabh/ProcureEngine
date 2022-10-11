@@ -270,6 +270,7 @@ function formvalidate() {
             else {
                 var dateParts = $("#txtToDate").val().split("/");
                 dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+                dtto.setDate(dtto.getDate() + 1);
             }
             if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
                 subject = jQuery("#txtbidsubject").val()
@@ -1081,7 +1082,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
-
+    debugger;
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -1153,18 +1154,32 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].bidValueAsPrice) + "</td>";
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].bidValueAsLIP != 0) {
+                            var _wrtSP = BidData[i].bidValueAsPrice - BidData[i].bidValueAsLIP
+                            if (_wrtSP < 0) {
+                                _wrtSP = 0
+                            }
 
-                            str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsLIP).round(2)) + "</td>"
+                            //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsLIP).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators((_wrtSP).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
+                        var _wrtSP1 = BidData[i].bidValueAsPrice - BidData[i].bidValueAsStartPrice
+                        if (_wrtSP1 < 0) {
+                            _wrtSP1 = 0
+                        }
 
-
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsStartPrice).round(2)) + "</td>";
+                        //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsStartPrice).round(2)) + "</td>";
+                        str += "<td class=text-right>" + thousands_separators((_wrtSP1).round(2)) + "</td>";
                         if (BidData[i].bidValueAsTargetPrice != 0) {
+                            var _wrtSP2 = BidData[i].bidValueAsPrice - BidData[i].bidValueAsTargetPrice
+                            if (_wrtSP2 < 0) {
+                                _wrtSP2 = 0
+                            }
 
-                            str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsTargetPrice).round(2)) + "</td>";
+                            //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsPrice - BidData[i].bidValueAsTargetPrice).round(2)) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators((_wrtSP2).round(2)) + "</td>";
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
@@ -1172,18 +1187,32 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     }
                     else {
                         if (BidData[i].bidValueAsLIP != 0) {
+                            var _wrtSP3 = BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice
+                            if (_wrtSP3 < 0) {
+                                _wrtSP3 = 0
+                            }
 
-                            str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)) + "</td>"
+                            //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)) + "</td>"
+                            str += "<td class=text-right>" + thousands_separators((_wrtSP3).round(2)) + "</td>"
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
+                        var _wrtSP4 = BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice
+                        if (_wrtSP4 < 0) {
+                            _wrtSP4 = 0
+                        }
 
-
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                        //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                        str += "<td class=text-right>" + thousands_separators((_wrtSP4).round(2)) + "</td>";
                         if (BidData[i].bidValueAsTargetPrice != 0) {
+                            var _wrtSP5 = BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice
+                            if (_wrtSP5 < 0) {
+                                _wrtSP5 = 0
+                            }
 
-                            str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                            //str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators((_wrtSP5).round(2)) + "</td>";
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"

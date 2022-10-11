@@ -2767,6 +2767,7 @@ function fnTimeUpdateClosedBid(isMailSend) {
 function editValues(divName, rowid) {
     //alert(sessionStorage.getItem("hdnbidtypeid"));
     //debugger;
+    var isEditable = true;
     var extval = -1;
     if (rowid == 'New') {
         isNewLineItem = 'Y';
@@ -2838,6 +2839,14 @@ function editValues(divName, rowid) {
 
     }
     if (divName == 'divbidItemsPrevtab_0') {
+        var chkBidDate = new Date($("#txtbidDatePrevtab_0").html().replace('-', ''));
+        var currDt = new Date();
+        if (chkBidDate < currDt) {
+            isEditable = true;
+        }
+        else {
+            isEditable = false;
+        }
         $('#nonFrenchdiv').addClass('hide')
         $('#divfrench').addClass('hide')
         if (sessionStorage.getItem('hdnbidtypeid') == 7 && (BidForID == 81 || BidForID == 83)) {
@@ -3140,8 +3149,9 @@ function editValues(divName, rowid) {
             $('#txtlastinvoicepricefrench').val($("#" + rowid).find("td:eq(14)").text())
         }
     }
-
-    $("#editValuesModal").modal('show');
+    if (isEditable) {
+        $("#editValuesModal").modal('show');
+    }
 }
 function CheckminQuantity(id) {
     var biddidval = $('#' + id.id).val();
@@ -4748,7 +4758,9 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
 
             var pullRFQ = 0;
             $('#tblprebidvendors').empty();
+            $('#tblBiddetailsPreprice').empty();
             $('#tblprebidvendors').append("<thead><tr><th style='width:10%'>Vendor</th><th style='width:20%'>Item/Services</th><th>Participation</th><th style='width:10%'>Pre-Bid Price</th></tr>")
+            $('#tblBiddetailsPreprice').append("<thead><tr><th style='width:5%'>VendorID</th><th style='width:10%'>Vendor</th><th style='width:5%'>ItemID</th><th style='width:20%'>ItemName</th><th style='width:10%'>Price</th></tr>")
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].price != 0) {
@@ -4758,6 +4770,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
 
 
                     $('#tblprebidvendors').append("<tr><td class=hide id=vid" + i + " >" + data[i].vendorID + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class=hide id=advfactor" + i + ">" + data[i].advFactor + "</td><td id=vname" + i + " >" + data[i].vendorName + "</td><td id=shortname" + i + ">" + data[i].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + i + "  ></input></td></table></td><td><input type=tel onkeyup='thousands_separators_input(this)' number='true' class='form-control text-right clsisdisabled' id='txtpreprice" + i + "' name='txtpreprice" + i + "' value=" + (data[i].price == 0 ? '' : thousands_separators(data[i].price)) + " ></input></td></tr>")
+                    $('#tblBiddetailsPreprice').append("<tr><td id=videxcel" + i + " >" + data[i].vendorID + "</td><td id=vnameexcel" + i + " >" + data[i].vendorName + "</td><td id=seidexcel" + i + " >" + data[i].seid + "</td><td id=shortnameexcel" + i + ">" + data[i].destinationPort + "</td><td></td></tr>")
                     if (data[i].remarks != "") {
                         $('#spancheckedTerms' + i).removeClass("checked")
                         $("#chkTerms" + i).removeAttr('checked')
@@ -4772,6 +4785,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                                 flagEditbtn = "Y";
                             }
                             $('#tblprebidvendors').append("<tr><td class=hide id=vid" + j + " >" + data[j].vendorID + "</td><td class=hide id=seid" + j + ">" + data[j].seid + "</td><td class=hide id=advfactor" + j + " >" + data[j].advFactor + "</td><td id=vname" + j + "></td><td id=shortname" + j + " >" + data[j].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + j + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + j + "'\)\"; id=\"chkTerms" + j + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + j + " ></input></td></table></td><td><input type=tel number='true' onkeyup='thousands_separators_input(this)' class='form-control text-right clsisdisabled' id='txtpreprice" + j + "' name='txtpreprice" + j + "' value=" + (data[j].price == 0 ? '' : thousands_separators(data[j].price)) + " ></input></td></tr>")
+                            $('#tblBiddetailsPreprice').append("<tr><td id=videxcel" + j + "  >" + data[j].vendorID + "</td><td id=vnameexcel" + j + "></td><td id=seidexcel" + j + ">" + data[j].seid + "</td><td id=shortnameexcel" + j + " >" + data[j].destinationPort + "</td><td></td></tr>")
                             i = j;
                             if (data[j].remarks != "") {
                                 $('#spancheckedTerms' + j).removeClass("checked")
@@ -4807,17 +4821,20 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                 if (pullRFQ == 0) {
                     clsisdisabled = ''
                     $('#btnprebid').removeClass('hide');
+                    $('#btnprebidexcel').removeClass('hide');
                 }
                 else {
                     errorprebid.show();
                     $('#errpre').html('Bid is pulled from RFQ.So can not do Pre Pricing.');
                     clsisdisabled = 'disabled'
                     $('#btnprebid').addClass('hide');
+                    $('#btnprebidexcel').addClass('hide');
                 }
 
                 if (isRunningBid == "Y" || BidForID == 82) {
                     $('.clsisdisabled').attr('disabled', true)
                     $('#btnprebid').addClass('hide');
+                    $('#btnprebidexcel').addClass('hide');
                     $('#btn-add-new-item').hide();
                 }
 
@@ -5226,3 +5243,239 @@ function fnGetPauseHistory() {
     jQuery.unblockUI();
 }
 
+$('#PrePriciing').on("hidden.bs.modal", function () {
+    $("#instructionsDivParameter").hide();
+    $("#instructionSpanParameter").hide();
+    $("#error-excelparameter").hide();
+    $("#success-excelparameter").hide();
+    $("#file-excelparameter").val('');
+    $('#btnyesno').show()
+    $('#modalLoaderparameter').addClass('display-none');
+})
+function fnNoUpload() {
+    $("#instructionsDivParameter").hide();
+    $("#instructionSpanParameter").hide();
+    $("#error-excelparameter").hide();
+    $("#success-excelparameter").hide();
+    $("#file-excelparameter").val('');
+    $('#PrePriciing').modal('hide');
+    $('#btnyesno').show()
+    $('#modalLoaderparameter').addClass('display-none');
+}
+
+
+$("#btninstructionexcelparameter").click(function () {
+    //var ErrorUOMMsz = '<ul class="col-md-3 text-left">';
+    //var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+    //var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+    //for (var i = 0; i < parseInt(quorem); i++) {
+    //    ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+    //    var z = (parseInt(quorem) + i);
+    //    if (z <= allUOM.length - 1) {
+    //        ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+    //    }
+    //}
+    //ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+    //ErrorUOMMszRight = ErrorUOMMszRight + '</ul>'
+
+
+    //$("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
+    //if ($('#ddlbidclosetype').val() == "S") {
+    //    $('#libidduraion').show()
+    //}
+    //else {
+    //    $('#libidduraion').hide()
+    //}
+    $("#instructionsDivParameter").show();
+    $("#instructionSpanParameter").show();
+});
+function handleFileparameter(e) {
+
+    //Get the files from Upload control
+    var files = e.target.files;
+    var i, f;
+    //Loop through files
+
+    for (i = 0, f = files[i]; i != files.length; ++i) {
+        var reader = new FileReader();
+        var name = f.name;
+        reader.onload = function (e) {
+            var data = e.target.result;
+
+            var result;
+            var workbook = XLSX.read(data, { type: 'binary' });
+
+            var sheet_name_list = workbook.SheetNames;
+            sheet_name_list.forEach(function (y) { /* iterate through sheets */
+                //Convert the cell value to Json
+                var sheet1 = workbook.SheetNames[0];
+                //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
+                if (roa.length > 0) {
+                    result = roa;
+                }
+            });
+            //Get the first column first cell value
+            //alert(JSON.stringify(result))
+            printdataSeaBid(result)
+        };
+        reader.readAsArrayBuffer(f);
+    }
+}
+function printdataSeaBid(result) {
+    var loopcount = result.length; //getting the data length for loop.
+    if (loopcount > 200) {
+        $("#error-excelparameter").show();
+        $("#errspan-excelparameter").html('Only max 200 Items is allowed. Please fill and upload the file again.');
+        $("#file-excelparameter").val('');
+        return false;
+    }
+    else {
+        var ErrorMszDuplicate = '';
+        var i;
+        //var numberOnly = /^[0-9]+$/;
+        var numberOnly = /^[0-9]\d*(\.\d+)?$/;
+        var numberOnlythree = /^\d{0,4}(\.\d{0,3})?$/i;
+        $("#temptableForExcelDataparameter").empty();
+        $("#temptableForExcelDataparameter").append("<tr><th style='width:20%!important;'>VendorID</th><th>Vendor</th><th>ItemID</th><th>ItemName</th><th>Price</th></tr>");
+        var st = 'true'
+
+
+        var z = 0;
+        for (i = 0; i < loopcount; i++) {
+
+            if ((!result[i].Price.trim().match(numberOnly) || result[i].Price.trim() == '' || result[i].Price.trim() == '0') && sessionStorage.getItem("hdnbidtypeid") == 7) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else if ((!result[i].Price.trim().match(numberOnly) || result[i].Price.trim() == '' || result[i].Price.trim() == '0') && sessionStorage.getItem("hdnbidtypeid") == 8) {
+
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html('Price should be in numbers only of Item no ' + (i + 1) + '.');
+                $("#file-excelparameter").val('');
+                return false;
+            }
+            else {
+
+                // if values are correct then creating a temp table
+                $("<tr><td>" + result[i].VendorID + "</td><td>" + result[i].Vendor + "</td><td>" + result[i].ItemID + "</td><td>" + result[i].ItemName + "</td><td>" + result[i].Price + "</td></tr>").appendTo("#temptableForExcelDataparameter");
+                //var arr = $("#temptableForExcelDataparameter tr");
+
+                //$.each(arr, function (i, item) {
+                //    var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
+
+                //    var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+                //    $(this).nextAll().each(function (i, inItem) {
+
+                //        if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
+                //            $(this).remove();
+                //            st = 'false'
+                //            ErrorMszDuplicate = ErrorMszDuplicate + ' RA Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
+                //        }
+                //    });
+                //});
+            }
+
+            z++;
+
+        } // for loop ends
+
+        var excelCorrect = 'N';
+        Rowcount = 0;
+
+        excelCorrect = 'Y';
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+            var this_row = $(this);
+            Rowcount = Rowcount + 1;
+            //for (var i = 0; i < allUOM.length; i++) {
+            //    console.log(allUOM[i].uom.trim());
+            //    console.log($.trim(this_row.find('td:eq(7)').html()));
+            //    if ($.trim(this_row.find('td:eq(7)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
+            //        excelCorrectUOM = 'Y';
+            //    }
+
+            //}
+
+
+            //if (excelCorrectUOM == 'N') {
+            //    $("#error-excelparameter").show();
+            //    ErrorUOMMsz = '<b>UOM</b> not filled properly at row no ' + Rowcount + '. Please choose <b>UOM</b> from given below: <br><ul class="col-md-5 text-left">';
+            //    ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
+            //    console.log(ErrorUOMMsz);
+            //    for (var i = 0; i < parseInt(quorem); i++) {
+            //        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
+            //        var z = (parseInt(quorem) + i);
+            //        if (z <= allUOM.length - 1) {
+            //            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
+            //        }
+            //    }
+            //    ErrorUOMMsz = ErrorUOMMsz + '</ul>'
+            //    ErrorUOMMszRight = ErrorUOMMszRight + '</ul><div class=clearfix></div><br/>and upload the file again.'
+            //    $("#errspan-excelparameter").html(ErrorUOMMsz + ErrorUOMMszRight);
+
+            //    return false;
+            //}
+
+        });
+
+
+        if (excelCorrect == 'Y') {
+            $('#btnyesno').show();
+            $("#error-excelparameter").hide();
+            $("#errspan-excelparameter").html('');
+            $("#success-excelparameter").show()
+            $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
+            $("#file-excelparameter").val('');
+            excelCorrect = '';
+            if (st == 'false') {
+                $("#error-excelparameter").show();
+                $("#errspan-excelparameter").html(ErrorMszDuplicate)
+            }
+        }
+    }
+}
+function fnSeteRFQparameterTable() {
+
+
+    var rowCount = jQuery('#temptableForExcelDataparameter >tbody>tr').length;
+    if (rowCount >= 1) {
+        $("#success-excelparameter").hide();
+        $('#btnsforYesNo').show()
+        $("#error-excelparameter").hide();
+        $('#loader-msgparameter').html('Processing. Please Wait...!');
+        $('#modalLoaderparameter').removeClass('display-none');
+        jQuery("#tblServicesProduct").empty();
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function (index) {
+            var this_row = $(this);
+            if ($('#vid' + index).text() == $.trim(this_row.find('td:eq(0)').html()) && $('#seid' + index).text() == $.trim(this_row.find('td:eq(2)').html())) {
+                $('#txtpreprice' + index).val(thousands_separators($.trim(this_row.find('td:eq(4)').html())))
+            }
+        });
+        setTimeout(function () {
+            $('#PrePriciing').modal('hide');
+            submitprebidprice();
+            jQuery.unblockUI();
+        }, 500 * rowCount)
+    }
+    else {
+        $("#error-excelparameter").show();
+        $("#errspan-excelparameter").html('No Items Found in Excel');
+    }
+}
+$("#btndownloadTemplate").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    //tableToExcelMultipleWorkSheet(['tblBiddetails', 'tblUOM'], ['DataTemplate', 'Instructions'], 'PrePricingXLTemplate -' + postfix + '.xls')
+    tableToExcelMultipleWorkSheet(['tblBiddetailsPreprice'], ['DataTemplate'], 'PrePricingXLTemplate -' + postfix + '.xls')
+
+});
