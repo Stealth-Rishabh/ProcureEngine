@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
@@ -17,6 +17,7 @@ jQuery(document).ready(function () {
 });
 
 function fetchCountry() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         
@@ -72,7 +73,7 @@ function fetchCountry() {
             let lstTZ = JSON.parse(data[0].jsondata);
            
             jQuery("#ddlpreferredTime").empty();
-          //  jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
+           jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
 
                 jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
@@ -236,7 +237,9 @@ function fetchPaymentTerms() {
 }
 var cc = 0;
 function fetchUserDetails() {
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+  
+   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -246,6 +249,7 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            
             cc = 0;
             if (data.length > 0) {
 
@@ -255,12 +259,11 @@ function fetchUserDetails() {
                 $('#userEmailID').html(userdetails[0].EmailID)
                 $('#userRole').html(userdetails[0].RoleName)
                 $('#userdesignation').val(userdetails[0].Designation)
-                //@abheedev
-              //  $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+                $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
                setTimeout(function () {
-                   $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
+                   //abheedev
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
-
                 let userOrg = JSON.parse(data[1].jsondata);
                 
                 if (userOrg.length > 0) {
@@ -327,12 +330,11 @@ function fetchVendorDetails() {
         dataType: "json",
         success: function (data) {
             let detail = JSON.parse(data[0].jsondata);
-           
             $('#vendorname').html(detail[0].VendorName)
             $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
             $('#vendorEmailID').html(detail[0].EmailID)
-            $('#vendoraddress').val(detail[0].Address1 + detail[0].Address2)
+            $('#vendoraddress').val(detail[0].Address1)
             $('#vendorCity').val(detail[0].CityName)
             $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
@@ -342,6 +344,11 @@ function fetchVendorDetails() {
             $('#personname').val(detail[0].ContactPerson)
             //$('#ddlpreferredTime').val(detail[0].preferredtimezone)           
             $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
+              setTimeout(function () {
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+                }, 800)
+          
+                
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")
 
 
@@ -375,7 +382,7 @@ function prefferedTimezone() {
             let lstTZ = JSON.parse(data[0].jsondata);
           
             jQuery("#ddlpreferredTime").empty();
-           // jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
+            jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
 
                 jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
@@ -452,7 +459,7 @@ function fetchMyProfileVendor() {
                 $('#ddlNatureEstaiblishment').val(vendordetails[0].EstTypeID);
 
             } else {
-                $('#ddlNatureEstaiblishment').val(0);
+                $('#ddlNatureEstaib lishment').val(0);
             }
 
             if (vendordetails[0].VendorCatID != "" && vendordetails[0].VendorCatID != undefined) {
@@ -589,6 +596,21 @@ function fetchMyProfileVendor() {
                 }, 1500)
 
             }
+            if (vendordetails[0].DialingCodeMobile != "" && vendordetails[0].DialingCodeMobile != undefined && vendordetails[0].DialingCodeMobile != null) {
+                $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
+                
+            } 
+
+            if (vendordetails[0].DialingCodePhone != "" && vendordetails[0].DialingCodePhone != undefined && vendordetails[0].DialingCodePhone != null) {
+                $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
+                
+            } 
+
+
+            if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
+                $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
+               
+            } 
             ///@abhhedev
 
 
@@ -631,7 +653,6 @@ function fetchMyProfileVendor() {
                 $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear);
                 $('#txtLastFiscalyear').attr("disabled", 'disabled');
             } else {
-
                 $('#txtLastFiscalyear').val();
             }
 
@@ -670,7 +691,7 @@ function fetchMyProfileVendor() {
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
             $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
-            $('#vendoraddress').val(vendordetails[0].Address1 + vendordetails[0].Address2)
+            $('#vendoraddress').val(vendordetails[0].Address1)
            
             $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
             // $('#vendorCity').val(data[0].city)
@@ -950,9 +971,10 @@ function formvalidatevendor() {
 }
 
 function updMobileNo() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+   jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+     
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
@@ -963,10 +985,9 @@ function updMobileNo() {
         "AlternateEmailID": '',
         "Designation": $('#userdesignation').val(),
         "ContactPerson": "",
-        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val().attr("selected", "selected"))
+         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-    // alert(JSON.stringify(data)) 
-   
+    console.log(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1592,7 +1613,7 @@ function sendToCompanies() {
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
-    alert(JSON.stringify(datainfo));
+ 
     //console.log(JSON.stringify(datainfo));
     jQuery.ajax({
 
@@ -1638,20 +1659,36 @@ var businesspercent = 0;
 
 
 function CalContactDetailPercent() {
-    //alert("contact");
+   
     var div = document.getElementById("tab1check");
-    var inputs = div.getElementsByTagName('input');
+    var inputs = div.querySelectorAll('input.form-control')
+    var selects = div.getElementsByTagName('select')
+
+    var totalSelect = selects.length;
     var totalInputs = inputs.length;
+    var totalFields = totalInputs + totalSelect
 
     var inputsWithValue = 0;
     for (var i = 0; i < totalInputs; i++) {
         if (inputs[i].value !== '' && inputs[i].value !== null && inputs[i].value !== undefined) {
             inputsWithValue = inputsWithValue + 1;
+            console.log(inputs[i]);
         }
     }
 
+    var selectsWithValue = 0;
+    for (var j = 0; j < totalSelect; j++) {
+        if (selects[j].options.selectedIndex == 0 || selects[j].options.selectedIndex == -1) {
+        } else {
+            selectsWithValue += 1;
+        }
+    }
+
+
+
     var filledPercentage = 0;
-    filledPercentage = (inputsWithValue / totalInputs) * 100;
+    var totalFilledValue = inputsWithValue + selectsWithValue;
+    filledPercentage = (totalFilledValue / totalFields) * 100;
     contactpercent = Math.round(filledPercentage);
 
     $('#totalcontactpercent').val(contactpercent);
@@ -1661,7 +1698,7 @@ function CalContactDetailPercent() {
 }
 
 function calCompanyDetailPercent() {
-    //alert("company");
+  
     var div = document.getElementById("collapse0");
     var selects = div.getElementsByTagName('select');
     var inputs = div.querySelectorAll('input.form-control');

@@ -1,4 +1,4 @@
-﻿var form = $('#frmbidsummaryreport');
+var form = $('#frmbidsummaryreport');
 $(document).ready(function () {
 
     fetchregisterusers();
@@ -133,6 +133,7 @@ function fetchRFQVendorSummary() {
     else {
         var dateParts = $("#txtToDate").val().split("/");
         dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        dtto.setDate(dtto.getDate() + 1);
 
     }
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
@@ -293,6 +294,7 @@ function fetchBidVendorSummaryDetail() {
     else {
         var dateParts = $("#txtToDate").val().split("/");
         dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        dtto.setDate(dtto.getDate() + 1);
 
     }
     var Tab1Data = {
@@ -578,6 +580,7 @@ function fetchBidVendorSummarySummarization() {
     else {
         var dateParts = $("#txtToDate").val().split("/");
         dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        dtto.setDate(dtto.getDate() + 1);
 
     }
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {

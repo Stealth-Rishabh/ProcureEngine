@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -18,7 +18,7 @@ $.getJSON("https://api.ipify.org?format=json", function (data) {
 
 
 var Login = function () {
-
+   
     var handleLogin = function () {
 
         $('.login-form').validate({
@@ -147,9 +147,9 @@ var Login = function () {
     }
 
     function validateUser() {
-
-        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        debugger
+      // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
         var LoginID = encodeURIComponent(jQuery("#username").val().trim());
@@ -158,11 +158,11 @@ var Login = function () {
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-        lastPart = 'vendor'
+     lastPart = 'vendor'
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
             // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
-
+            //alert(url)
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
                 "Password": jQuery("#password").val().trim(),
@@ -193,7 +193,7 @@ var Login = function () {
         }
         else {
             url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
-
+            alert(url);
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -234,7 +234,7 @@ var Login = function () {
             success: function (data1) {
 
                 jQuery.each(data1, function (key, value) {
-                    
+
                     // if (MemberID != '0') {
                     sessionStorage.setItem("CustomerID", value.customerID);
                     sessionStorage.setItem("UserID", value.userID);

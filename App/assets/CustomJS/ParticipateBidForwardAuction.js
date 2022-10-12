@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var form1 = $('#FormparticipateAir');
@@ -13,8 +13,19 @@ $(document).on("keyup", "#tblParticipantsVender .form-control", function () {
 
 });
 
+
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
+
 /////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
@@ -595,13 +606,7 @@ function startTimer(duration, display) {
             display.textContent = minutes + ":" + seconds;
         }
 
-        if (timer <= 0) {
-            $('.clsdisable').attr('disabled', 'disabled')
-        }
-        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
-            $('.clsdisable').removeAttr('disabled')
-        }
-
+       
         // if (timer == 300) {
         if (timer <= 300 && timer >= 240) {
             if (coutercall == 0) {
@@ -616,7 +621,12 @@ function startTimer(duration, display) {
             $('.toast-info').hide();
             coutercall = 0;
         }
-
+        if (timer <= 0) {
+            $('.clsdisable').attr('disabled', 'disabled')
+        }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
+        }
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {

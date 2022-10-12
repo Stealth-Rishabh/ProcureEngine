@@ -1,73 +1,73 @@
-﻿var selectedgroup = [];
-var selectedgroupid = [];
-var cc = 0;
-/* if ($("#ddlTypeofProduct").select2('data').length) {
-    $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
-        selectedid.push(item.id);
-        selected.push(item.text);
-        $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
-        result += selectedidss.concat(item.id, "#");
+    var selectedgroup = [];
+    var selectedgroupid = [];
+    var cc=0;
+    /* if ($("#ddlTypeofProduct").select2('data').length) {
+        $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
+            selectedid.push(item.id);
+            selected.push(item.text);
+            $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
+            result += selectedidss.concat(item.id, "#");
 
-    });
-    straddedproduct = result.slice('#', -1);*/
+        });
+        straddedproduct = result.slice('#', -1);*/
 function fnaddPurchaseOrg() {
     selectedgroup = [];
     selectedgroupid = [];
-
-
+    
+ 
     if ($("#ddlPurchasegroup").select2('data').length) {
-        $.each($("#ddlPurchasegroup").select2('data'), function (key, item) {
+       $.each($("#ddlPurchasegroup").select2('data'), function (key, item) {
             selectedgroupid.push(item.id);
             selectedgroup.push(item.text);
         });
     }
-    if ($('#tddlPurchaseOrg').val == "" || selectedgroupid.length == 0) {
-        $('.alert-danger').show();
-        $('#spanerror1').html('Please Map Purchase Org/Purchase Group.');
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(5000);
-        return false;
-    }
-    else if (selectedgroupid.length > 0) {
-        for (var i = 0; i < selectedgroupid.length; i++) {
-            $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + $('#ddlPurchaseOrg option:selected').val() + '</td><td class=hide id=GrpId' + cc + '>' + selectedgroupid[i] + '</td><td>' + $('#ddlPurchaseOrg option:selected').text() + '</td><td>' + selectedgroup[i] + '</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + selectedgroupid[i] + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-            cc = cc + 1;
+     if ($('#tddlPurchaseOrg').val == "" || selectedgroupid.length==0) {
+                            $('.alert-danger').show();
+                            $('#spanerror1').html('Please Map Purchase Org/Purchase Group.');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
+                        }
+        else if(selectedgroupid.length>0){
+         for(var i=0;i<selectedgroupid.length;i++){
+            $('#tblpurchaseOrg').append('<tr id=TRgroup'+cc+'><td id=OrgId'+cc+' class=hide >'+$('#ddlPurchaseOrg option:selected').val()+'</td><td class=hide id=GrpId'+cc+'>'+selectedgroupid[i]+'</td><td>'+$('#ddlPurchaseOrg option:selected').text()+'</td><td>'+selectedgroup[i]+'</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ','+cc+','+selectedgroupid[i]+')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+            cc=cc+1;
         }
-
-
-        if (jQuery('#tblpurchaseOrg tr').length > 0) {
+    
+    
+        if(jQuery('#tblpurchaseOrg tr').length>0){
             $('#theadgroup').removeClass('hide');
         }
-        else {
+        else{
             $('#theadgroup').addClass('hide');
         }
-
+       
     }
-    $("#ddlPurchaseOrg").val('')
-    $('#ddlPurchasegroup').val('').trigger('change');
-    $('#ddlPurchasegroup').empty();
-    $('#ddlPurchasegroup').select2({
-        placeholder: "Select Purchase Group",
-        allowClear: true
-    });
-
-
+        $("#ddlPurchaseOrg").val('')
+        $('#ddlPurchasegroup').val('').trigger('change');
+        $('#ddlPurchasegroup').empty();
+        $('#ddlPurchasegroup').select2({
+                placeholder: "Select Purchase Group",
+                allowClear: true
+            });
+       
+        
 }
-function deleterow(trid, rowcount, gid) {
-
-    $('#' + trid.id).remove()
-    cc = cc - 1;
-    /* selectedgroupid = jQuery.grep(selectedgroupid, function(value) {
-         return value != gid;
-     });
-     $("#ddlPurchasegroup").val(selectedgroupid).trigger('change')*/
-    if (jQuery('#tblpurchaseOrg tr').length == 1) {
+function deleterow(trid,rowcount,gid){
+    
+    $('#'+trid.id).remove()
+    cc=cc-1;
+   /* selectedgroupid = jQuery.grep(selectedgroupid, function(value) {
+        return value != gid;
+    });
+    $("#ddlPurchasegroup").val(selectedgroupid).trigger('change')*/
+    if(jQuery('#tblpurchaseOrg tr').length==1){
         $('#theadgroup').addClass('hide');
     }
-    else {
+    else{
         $('#theadgroup').removeClass('hide');
     }
-
+    
 }
 function bindPurchaseGroupDDL() {
     // alert(sessionStorage.getItem("APIPath") + "NFA/GetPurchaseGroupByUserID?CustomerId=" + sessionStorage.getItem("CustomerID") + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")))
@@ -158,18 +158,18 @@ function RegisterUser() {
     else {
         status = 'N';
     }
-
+ 
     var purOrg = [];
     var rowCount = jQuery('#tblpurchaseOrg >tbody >tr').length;
     if (rowCount >= 1) {
         jQuery('#tblpurchaseOrg >tbody >tr').each(function () {
             var this_row = $(this);
-
-
+           
+            
             var app = {
                 "OrgId": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "GrpId": parseInt($.trim(this_row.find('td:eq(1)').html()))
-
+               
             };
             purOrg.push(app)
         })
@@ -186,10 +186,10 @@ function RegisterUser() {
         "IsActive": status,
         "CreatedBy": sessionStorage.getItem('UserID'),
         "Designation": jQuery('#txtdesignation').val(),
-        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()), 
         "purOrg": purOrg
     };
-    alert(JSON.stringify(RegisterUser))
+     //alert(JSON.stringify(RegisterUser))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterUser/RegisterUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -282,7 +282,7 @@ function fetchRegisterUser() {
 }
 
 function EditUser(ctrl) {
-
+    
     jQuery("#txtUsername").val(jQuery(ctrl).closest('tr').find("td").eq(1).html());
     jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td").eq(2).html());
@@ -312,9 +312,9 @@ function EditUser(ctrl) {
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
     fetchUserDetails(UserID);
-
-
-
+    
+    
+    
 
 }
 
@@ -347,9 +347,9 @@ function fetchRoleMaster() {
             return false;
         }
     });
-
-
-
+    
+ 
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -358,13 +358,13 @@ function fetchRoleMaster() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            
             let lstTZ = JSON.parse(data[0].jsondata);
             console.log(lstTZ);
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
-
+              
                 jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
             }
         },
@@ -395,8 +395,8 @@ function clearform() {
     $('#tblpurchaseOrg').empty();
     selectedgroup = [];
     selectedgroupid = [];
-    cc = 0;
-
+    cc=0;
+    
     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>');
     jQuery('div#divrblist span').each(function () {
         $(this).attr('class', '');
@@ -499,16 +499,16 @@ var FormValidation = function () {
                 var status = 'True';
                 if (status == 'True') {
                     if ($('#tblpurchaseOrg >tbody >tr').length == 0) {
-                        $('.alert-danger').show();
-                        $('#spanerror1').html('Please Map Purchase Org/Purchase Group.');
-                        Metronic.scrollTo($(".alert-danger"), -200);
-                        $('.alert-danger').fadeOut(5000);
-                        return false;
-                    }
-                    else {
-                        RegisterUser();
-                    }
-
+                            $('.alert-danger').show();
+                            $('#spanerror1').html('Please Map Purchase Org/Purchase Group.');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
+                        }
+                        else{
+                            RegisterUser();
+                        }
+                    
                 }
                 App.scrollTo(error1, -100);
             }
@@ -536,7 +536,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblRegisterUsers tbody").find("tr"), function () {
-
+      
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -549,28 +549,28 @@ function fetchUserDetails(UserID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + UserID + "&UserType=R",
+        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID="+UserID + "&UserType=R",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            cc = 0;
+            cc=0;
             if (data.length > 0) {
-
+              
                 let userdetails = JSON.parse(data[1].jsondata);
                 console.log(userdetails);
                 $('#tblpurchaseOrg').empty();
-                if (userdetails.length > 0 && userdetails != null) {
+                if(userdetails.length>0 && userdetails!=null){
                     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>');
-                    for (var i = 0; i < userdetails.length; i++) {
-                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userdetails[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userdetails[i].PurchaseGrpID + '</td><td>' + userdetails[i].PurchaseOrgName + '</td><td>' + userdetails[i].PurchaseGrpName + '</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                        cc = cc + 1;
-                    }
-                    if (jQuery('#tblpurchaseOrg tr').length > 0) {
+                for(var i=0;i<userdetails.length;i++){
+                   $('#tblpurchaseOrg').append('<tr id=TRgroup'+cc+'><td id=OrgId'+cc+' class=hide >'+userdetails[i].PurchaseOrgID+'</td><td class=hide id=GrpId'+cc+'>'+userdetails[i].PurchaseGrpID+'</td><td>'+userdetails[i].PurchaseOrgName+'</td><td>'+userdetails[i].PurchaseGrpName+'</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ','+cc+','+userdetails[0].PurchaseGrpID+')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                    cc=cc+1;
+                }
+                if(jQuery('#tblpurchaseOrg tr').length>0){
                         $('#theadgroup').removeClass('hide');
                     }
-                    else {
+                    else{
                         $('#theadgroup').addClass('hide');
                     }
 

@@ -1,4 +1,4 @@
-﻿var param = getUrlVars()["param"]
+var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
@@ -84,6 +84,45 @@ function fetchBidHeaderDetails() {
                 }
                 else {
                     bootbox.alert("This bid has already expired !!!", function () {
+                        
+                        
+                        //@abheedev bug 360 surrogate start
+                    $('#btnpassword').removeAttr('disabled');
+                    $('#txtpassword').removeAttr('disabled');
+                    jQuery('#lblEventID').html(BIDID);
+                    jQuery('#bid_EventID').html("Event ID : " + BIDID);
+
+                    jQuery("#lblbidsubject").text(data[0].bidSubject);
+                    jQuery("#lblbidDetails").text(data[0].bidDetails);
+                    //jQuery("#lblbiddate").text(data[0].bidDate);
+                    jQuery("#lblbiddate").text(BidStartDatetime);
+                    //jQuery("#lblbidtime").text(data[0].bidTime);
+                    jQuery("#lblbidtype").text(data[0].bidTypeName);
+                    jQuery("#lblbidfor").text(data[0].bidFor);
+                    jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
+                    jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
+                    //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                    jQuery("#lblbiddateTT").text(BidStartDatetime);
+                    //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                    jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                    jQuery("#lblbidforTT").text(data[0].bidFor);
+                    BIDTypeID = data[0].bidTypeID;
+                    BidClosingType = data[0].bidClosingType;
+
+                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+
+
+                    jQuery("#lblbidduration").text(data[0].bidDuration);
+                    jQuery("#lblcurrency").text(data[0].currencyName);
+                    jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                    jQuery("#lblcurrencyTT").text(data[0].currencyName);
+                    jQuery("#lblConvRate").text(data[0].conversionRate);
+                    jQuery("#lblstatus").text(data[0].conversionRate);
+                    jQuery("#lblConvRate").text(data[0].conversionRate);
+                      //@abheedev bug 360 surrogate end
+                        
+                        
 
                         $('#btnpassword').attr('disabled', 'disabled')
                         $('#txtpassword').attr('disabled', 'disabled')

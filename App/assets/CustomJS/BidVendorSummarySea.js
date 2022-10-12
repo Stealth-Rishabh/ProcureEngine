@@ -1,4 +1,4 @@
-﻿
+
 var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
@@ -398,6 +398,7 @@ function DownloadFile(aID) {
 function fetchBidSummary(BidID) {
     var tncAttachment, anyotherAttachment;
 
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -485,7 +486,7 @@ function fetchBidSummary(BidID) {
                     $('#btndiv').hide()
                     $('#spinnerBidclosingTab').hide()
 
-                    if (data[0].status.toLocaleLowerCase() == 'Close' && BidTypeID != 9) {
+                    if (data[0].status.toLocaleLowerCase() == 'close' && BidTypeID != 9) {
                         fnfetchvendortotalSummary(BidID, BidTypeID)
                         $('#btn_invite_vendors').hide();
                     }
@@ -511,10 +512,10 @@ function fetchBidSummary(BidID) {
                     $('#bid_status').html('Bid is paused from the selected Item / Service.<b> Serial No: ' + data[0].pausedSno + '</b>.');
                     $('.forbtnpause').hide()
                 }
-                else {
-                    $('#bid_status').html('Open/Bid Time Expired');
+                /*  else {
+                     $('#bid_status').html('Open/Bid Time Expired');
                     $('#bid_status').show();// show for Bid Expire But Status is still open
-                }
+                }*/
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -525,6 +526,8 @@ function fetchBidSummary(BidID) {
                 //jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
+                jQuery("#txtbidDate").val(_bidDate);
+                
                 //jQuery("#lblbiddate").text(data[0].bidDate);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
@@ -628,8 +631,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
-            jQuery("#tblBidSummary > thead").empty();
+             jQuery("#tblBidSummary > thead").empty();
             jQuery("#tblBidSummary > tbody").empty();
             jQuery("#tblbidsummarypercentagewise > thead").empty();
             jQuery("#tblbidsummarypercentagewise > tbody").empty();
@@ -1682,8 +1684,14 @@ function fnpauseaction(index, seid, sno) {
 }
 ///////////////////////----************************************signal R Start****************************************************
 
+var clientIP = "11.11";
+
+
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
+
+
 //$(window).load(function () {
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + parseInt(sessionStorage.getItem('BidID')) + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 console.log('Not Started')
 
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
@@ -2646,7 +2654,7 @@ function FetchRecomendedVendor(bidid) {
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' +fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -2661,7 +2669,7 @@ function FetchRecomendedVendor(bidid) {
                         isMappedPPCApp = 'Y'
                     }
                     if (data[i].vendorName != "") {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').removeClass('hide')
                     }
                     if (data[i].eRFQApproverType == "P") {
@@ -2702,6 +2710,7 @@ function FetchRecomendedVendor(bidid) {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
+           
             if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
                 $('#btnPPCF').show()
                 $('#btnPPCA').show()
@@ -2713,7 +2722,7 @@ function FetchRecomendedVendor(bidid) {
                 }
             }
             else {
-                $('#btnPPC').hide()
+                $('#btnPPCF').hide()
                 $('#btnPPCA').hide()
                 $('#btn_mapaaprover').hide()
             }

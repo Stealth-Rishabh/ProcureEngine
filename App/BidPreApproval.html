@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,6 +39,26 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    
+    <style>
+        
+        
+        
+       body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
+        }
+   
+   
+       .form-horizontal .form-control-static {
+          
+          width: 100%;
+        }
+   
+        
+    </style>
+    
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
@@ -106,6 +126,7 @@
                                 </div>
 
                                 <div class="tools">
+                                    <span id="bid_EventID" class="align-right"></span>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
@@ -244,9 +265,14 @@
 
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-md-6">
                                                 <div class="display-none" id="wrap_scrollerPrevApp">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblapproversPrev"></table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="display-none" id="wrap_scrollerprePrevApp">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblapproversPrePrev"></table>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,6 +301,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <h3 class="form-section display-none" id="h3Preapprovalhistory">Pre Approval History</h3>
+                                        <div class="row display-none" id="divPreapprovalhistory">
+                                            <div class="col-md-7">
+
+
+                                                <table class="table table-bordered" id="tblBidPreapprovalHistory">
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                                 <div id="divRemarksApp" class="col-md-12">
@@ -297,7 +332,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group hide" id="divTimeChange">
+                                                        <div class="form-group" id="divTimeChange">
                                                             <div class="Input-group">
                                                                 <label class="control-label col-md-2">
                                                                     Bid Date/Time<span class="required"> *</span>
@@ -313,7 +348,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>-->
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-5">
                                                                     <div class="input-group date form_datetime form_datetime bs-datetime ">
                                                                         <input type="text" size="16" class="form-control" id="txtbidDate" name="txtbidDate" placeholder="Bid Date/Time" autocomplete="off" readonly>
                                                                         <span class="input-group-btn">
@@ -584,6 +619,7 @@
             Layout.init();
             ComponentsPickers.init();
             FormValidation.init();
+            setCommonData();
 
         });
     </script>

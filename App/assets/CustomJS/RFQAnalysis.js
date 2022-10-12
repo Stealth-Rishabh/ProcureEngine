@@ -13,7 +13,7 @@ if (window.location.search) {
 function fetchRFIRFQSubjectforReport(subjectFor) {
     
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFIRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFIRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -61,6 +61,19 @@ jQuery("#txtrfirfqsubject").keyup(function () {
  sessionStorage.setItem("RFQVersionId", "0")
 
 
+function stringDivider(str, width, spaceReplacer) {
+    if (str.length > width) {
+        var p = width
+        for (; p > 0 && str[p] != ' '; p--) {
+        }
+        if (p > 0) {
+            var left = str.substring(0, p);
+            var right = str.substring(p + 1);
+            return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
+        }
+    }
+    return str;
+}
 function getSummary(vendorid) {
     var encrypdata = fnencrypt("RFQID=" + $('#hdnRfiRfqID').val() + "&VendorId=" + vendorid + "&max=" + max + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=" + $("#ddlrfqVersion option:selected").text().replace(' ', '%20'))
     window.open("RFQReport.html?param=" + encrypdata, "_blank")
@@ -89,7 +102,7 @@ function getSummary(vendorid) {
     }
     
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQComprativeDetails/?RFQID=" + $('#hdnRfiRfqID').val() + "&dateTo=" + dtto + "&dateFrom=" + dtfrom + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFQComprativeDetails/?RFQID=" + $('#hdnRfiRfqID').val() + "&dateTo=" + dtto + "&dateFrom=" + dtfrom + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -110,26 +123,26 @@ function getSummary(vendorid) {
             $('#tblRFQComprative > tbody').empty();
             $('#tblRFQComprativetest > tbody').empty();
             jQuery("#tblRFQComprativeForExcel > tbody").empty();
-            if (data[0].vendorNames.length > 0) {
+            if (data[0].VendorNames.length > 0) {
                 $('#displayTable').show();
                 $('#btnExport').show()
                
                 //For Printing Header
                 strHead = "<tr  style='background:#f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>Short Name</th><th>Quantity</th><th>UOM</th>"
                 strHeadExcel = "<tr  style='background: grey; color:light black;'><th>Short Name</th><th>Quantity</th><th>UOM</th>"
-                for (var i = 0; i < data[0].vendorNames.length; i++) {
+                for (var i = 0; i < data[0].VendorNames.length; i++) {
                    
-                    if (data[0].vendorNames[i].seqNo != 0) {
+                    if (data[0].VendorNames[i].SeqNo != 0) {
                        
-                        strHead += "<th colspan='3' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
-                            strHeadExcel += "<th colspan='3' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                        strHead += "<th colspan='3' style='text-align:center;'><a onclick=getSummary(\'" + data[0].VendorNames[i].VendorID + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].VendorNames[i].VendorName; +"</a></th>";
+                            strHeadExcel += "<th colspan='3' style='text-align:center;'>" + data[0].VendorNames[i].VendorName; +"</th>";
                       
                         }
                     else
                     {
                        
-                            strHead += "<th colspan='3' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                            strHeadExcel += "<th colspan='3' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                            strHead += "<th colspan='3' style='text-align:center;'>" + data[0].VendorNames[i].VendorName; +"</th>";
+                            strHeadExcel += "<th colspan='3' style='text-align:center;'>" + data[0].VendorNames[i].VendorName; +"</th>";
 
                         
                            
@@ -144,7 +157,7 @@ function getSummary(vendorid) {
                 var taxHRTextinc = stringDivider("Total Amount (Inc. Taxes)", 12, "<br/>\n");
                 var taxHRTextEx = stringDivider("Total Amount (Ex. Taxes)", 12, "<br/>\n");
                 var HRUnitRate = stringDivider("Unit Rate (Ex. Taxes)", 12, "<br/>\n");
-                for (var j = 0; j < data[0].vendorNames.length; j++) {
+                for (var j = 0; j < data[0].VendorNames.length; j++) {
                   
                     strHead += "<th>" + HRUnitRate+"</th><th>" + taxHRTextEx + "</th><th>" + taxHRTextinc + "</th>";
                         strHeadExcel += "<th>Unit Rate (Ex. Taxes)</th><th>Total Amount (Ex. Taxes)</th><th>Total Amount (Inc. Taxes)</th>"
@@ -160,13 +173,13 @@ function getSummary(vendorid) {
                 var x = 0;
               
                 var unitrate = 0;
-                for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
+                for (var i = 0; i < data[0].NoofQuotes[0].NoofRFQParameter; i++) {
                     unitrate = 0;
                         var flag = 'T';
                         $("#tblRFQComprativetest > tbody > tr").each(function (index) {
                             var this_row = $(this);
                            
-                            if ($.trim(this_row.find('td:eq(1)').html()) == data[0].quotesDetails[i].rfqParameterId) {
+                            if ($.trim(this_row.find('td:eq(1)').html()) == data[0].QuotesDetails[i].RFQShortName) {
                                 flag = 'F';
                                 
                             }
@@ -178,20 +191,20 @@ function getSummary(vendorid) {
                         if (flag == 'T') {
                           
                            
-                            str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
-                            strExcel += "<tr><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
+                            str += "<tr><td class='hide'>" + data[0].QuotesDetails[i].VendorID + "</td><td>" + data[0].QuotesDetails[i].RFQShortName + "</td><td class=text-right>" + thousands_separators(data[0].QuotesDetails[i].Quantity) + "</td><td>" + data[0].QuotesDetails[i].UOM + "</td>";
+                            strExcel += "<tr><td>" + data[0].QuotesDetails[i].RFQShortName + "</td><td>" + data[0].QuotesDetails[i].Quantity + "</td><td>" + data[0].QuotesDetails[i].UOM + "</td>";
 
-                            for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                            for (var j = 0; j < data[0].QuotesDetails.length; j++) {
 
-                                if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
+                                if ((data[0].QuotesDetails[i].RFQParameterId) == (data[0].QuotesDetails[j].RFQParameterId)) {// true that means reflect on next vendor
                                     x = x + 1;
-                                    if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                        if (data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPrice != 0 && data[0].quotesDetails[j].rfqVendorPrice != -1) {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPrice) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithTax) + "</td>";
-                                            strExcel += "<td>" + data[0].quotesDetails[j].unitRate + "</td><td>" + data[0].quotesDetails[j].rfqVendorPrice + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithTax + "</td>";
+                                    if (data[0].QuotesDetails[j].VendorID == data[0].VendorNames[x].VendorID) {
+                                        if (data[0].QuotesDetails[j].UnitRate != 0 && data[0].QuotesDetails[j].RFQVendorPrice != 0 && data[0].QuotesDetails[j].RFQVendorPrice != -1) {
+                                            str += "<td class='text-right' id=unitrate" + i + x+">" + thousands_separators(data[0].QuotesDetails[j].UnitRate) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].QuotesDetails[j].RFQVendorPrice) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].QuotesDetails[j].RFQVendorPricewithTax) + "</td>";
+                                            strExcel += "<td>" + data[0].QuotesDetails[j].UnitRate + "</td><td>" + data[0].QuotesDetails[j].RFQVendorPrice + "</td><td>" + data[0].QuotesDetails[j].RFQVendorPricewithTax + "</td>";
                                              
                                         }
-                                        else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPrice ==-1) {
+                                        else if(data[0].QuotesDetails[j].UnitRate == -1 && data[0].QuotesDetails[j].RFQVendorPrice ==-1) {
                                             str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
                                             strExcel += "<td colspan=3 >Not Invited </td>";
                                         }
@@ -219,9 +232,9 @@ function getSummary(vendorid) {
              
                 str += "<tr><td>Total</td><td>&nbsp;</td><td>&nbsp;</td>";
                 strExcel += "<tr><td>Total</td><td>&nbsp;</td><td>&nbsp;</td>";
-                for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqNo != 0) {
-                        RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
+                for (var k = 0; k < data[0].VendorNames.length; k++) {
+                    if (data[0].VendorNames[k].SeqNo != 0) {
+                        RFQFetchTotalPriceForReport(data[0].VendorNames[k].VendorID, k)
                         str += "<td id=unitrate" + k + " class=text-right></td><td id=totBox" + k + " class=text-right></td><td id=totBoxTax" + k + " class=text-right></td>";
                         strExcel += "<td id=unitrateExcel" + k + "></td><td id=totBoxExcel" + k + "></td><td id=totBoxTaxExcel" + k + "></td>";
                     }
@@ -239,10 +252,10 @@ function getSummary(vendorid) {
               
                 str += "<tr><td colspan=3><b>Vendor Remarks :</b></td>";
                 strExcel += "<tr><td colspan=3><b>Vendor Remarks :</b></td>";
-                for (var k = 0; k < data[0].vendorNames.length; k++) {
+                for (var k = 0; k < data[0].VendorNames.length; k++) {
 
-                    if (data[0].vendorNames[k].vendorRemarks != "") {
-                        var VRemarks = stringDivider(data[0].vendorNames[k].vendorRemarks , 40, "<br/>\n");
+                    if (data[0].VendorNames[k].VendorRemarks != "") {
+                        var VRemarks = stringDivider(data[0].VendorNames[k].VendorRemarks , 40, "<br/>\n");
                         str += "<td colspan='3' class='text-left' >" + VRemarks + "</td>";
                         strExcel += "<td colspan='3' class='text-left' >" + VRemarks + "</td>";
                     }
@@ -258,7 +271,7 @@ function getSummary(vendorid) {
                     //For ReInvite Row
                     str += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
                     var maxValue = -1;
-                    for (var k = 0; k < data[0].vendorNames.length; k++) {
+                    for (var k = 0; k < data[0].VendorNames.length; k++) {
                         $("#ddlrfqVersion option").each(function () {
                             var thisVal = $(this).val();
 
@@ -274,7 +287,7 @@ function getSummary(vendorid) {
                         if (maxValue == $("#ddlrfqVersion option:selected").val()) {
 
                             $("#btn-reInvite").attr('disabled', false)
-                            str += "<td colspan='3' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].vendorNames[k].vendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
+                            str += "<td colspan='3' class='text-center'><label class='checkbox-inline'><input type='checkbox' class='chkReinvitation' style='position:relative;margin-right:5px;' value=" + data[0].VendorNames[k].VendorID + " />Re-Invite Vendor For Fresh Quote</label></td>"; //<a class='btn green'>Re-Invite Vendor</a>
 
 
                         }
@@ -323,7 +336,7 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
 //alert(sessionStorage.getItem("APIPath") + "RFI_RFQReport/RFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfiRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId"))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/RFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfiRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId"),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/RFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfiRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -331,10 +344,10 @@ function RFQFetchTotalPriceForReport(VendorID,Counter) {
         dataType: "json",
         success: function(data) {
             
-            $("#totBox" + Counter).html(thousands_separators(data[0].totalPriceExTax));
-            $("#totBoxTax" + Counter).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxExcel" + Counter).html(data[0].totalPriceExTax);
-            $("#totBoxTaxExcel" + Counter).html(data[0].totalPriceIncTax);
+            $("#totBox" + Counter).html(thousands_separators(data[0].TotalPriceExTax));
+            $("#totBoxTax" + Counter).html(thousands_separators(data[0].TotalPriceIncTax));
+            $("#totBoxExcel" + Counter).html(data[0].TotalPriceExTax);
+            $("#totBoxTaxExcel" + Counter).html(data[0].TotalPriceIncTax);
 
 
         }, error: function() {
@@ -348,7 +361,7 @@ function FetchRFQVersion() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQVersions/?RFQID=" + $('#hdnRfiRfqID').val(),
+        url: sessionStorage.getItem("APIPath") + "RFI_RFQReport/fetchRFQVersions/?RFQID=" + $('#hdnRfiRfqID').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -358,10 +371,10 @@ function FetchRFQVersion() {
             $("#ddlrfqVersion").empty();
             if (data.length > 0) {
                 $('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
-                 $('#ddlrfqVersion').append('<option  value=' + data[0].rfqVersionId + '>' + (data[0].rfqVersionId + 1)  + ' Quote</option>');
+                 $('#ddlrfqVersion').append('<option  value=' + data[0].RFQVersionId + '>' + (data[0].RFQVersionId + 1)  + ' Quote</option>');
                
-                 max = data[0].rfqVersionId;
-                for (var i = 0; i < data[0].rfqVersionId; i++) {
+                 max = data[0].RFQVersionId;
+                for (var i = 0; i < data[0].RFQVersionId; i++) {
 
                     $('#ddlrfqVersion').append(jQuery('<option ></option>').val(i).html((i + 1) + " Quote"));
                 }
@@ -405,34 +418,32 @@ function fetchReguestforQuotationDetails() {
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
 
-                attachment = RFQData[0].rfqAttachment.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
-                termattach = RFQData[0].rfqTermandCondition.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
+                attachment = RFQData[0].RFQAttachment.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
+                termattach = RFQData[0].RFQTermandCondition.replace(/%20/g, " ").replace(/'&amp;'/g, "&");
 
             } else {
                 attachment = attachment;
                 termattach = termattach;
             }
 
-            jQuery('#RFQSubject').html(RFQData[0].rfqSubject)
+            jQuery('#RFQSubject').html(RFQData[0].RFQSubject)
 
-            $('#Currency').html(RFQData[0].currencyNm)
-            jQuery('#RFQDescription').html(RFQData[0].rfqDescription)
-            jQuery('#RFQDeadline').html(RFQData[0].rfqDeadline)
-            $('#TermCondition').html(RFQData[0].rfqTermandCondition)
-            jQuery('#lblrfqconfigby').html(RFQData[0].rfqConfigureByName)
-            jQuery('#ConversionRate').html(RFQData[0].rfqConversionRate)
-            //$('#TermCondition').attr('href', 'PortalDocs/RFQ/' + $('#hdnRfiRfqID').val() + '/' + termattach + '').html(RFQData[0].rfqTermandCondition)
-            $('#Attachment').attr('href', 'PortalDocs/RFQ/' + $('#hdnRfiRfqID').val() + '/' + attachment + '').html(RFQData[0].rfqAttachment)
-            $('#tbldetails').append("<tr><td>" + RFQData[0].rfqSubject + "</td><td>" + RFQData[0].RFQDescription + "</td><td>" + RFQData[0].currencyNm + "</td><td >" + RFQData[0].rfqConversionRate + "</td><td>" + RFQData[0].rfqDeadline + "</td></tr>")
-            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].rfqSubject + "</td><td>" + RFQData[0].rfqDescription + "</td><td>" + RFQData[0].currencyNm + "</td><td >" + RFQData[0].rfqConversionRate + "</td><td>" + RFQData[0].rfqDeadline + "</td></tr>")
+            $('#Currency').html(RFQData[0].CurrencyNm)
+            jQuery('#RFQDescription').html(RFQData[0].RFQDescription)
+            jQuery('#RFQDeadline').html(RFQData[0].RFQDeadline)
+
+            jQuery('#lblrfqconfigby').html(RFQData[0].RFQConfigureByName)
+            jQuery('#ConversionRate').html(RFQData[0].RFQConversionRate)
+            $('#TermCondition').attr('href', 'PortalDocs/RFQ/' + $('#hdnRfiRfqID').val() + '/' + termattach + '').html(RFQData[0].RFQTermandCondition)
+            $('#Attachment').attr('href', 'PortalDocs/RFQ/' + $('#hdnRfiRfqID').val() + '/' + attachment + '').html(RFQData[0].RFQAttachment)
+            $('#tbldetails').append("<tr><td>" + RFQData[0].RFQSubject + "</td><td>" + RFQData[0].RFQDescription + "</td><td>" + RFQData[0].CurrencyNm + "</td><td >" + RFQData[0].RFQConversionRate + "</td><td>" + RFQData[0].RFQDeadline + "</td></tr>")
+            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].RFQSubject + "</td><td>" + RFQData[0].RFQDescription + "</td><td>" + RFQData[0].CurrencyNm + "</td><td >" + RFQData[0].RFQConversionRate + "</td><td>" + RFQData[0].RFQDeadline + "</td></tr>")
 
         }
     });
 
 }
-function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'RFQ/' + $('#hdnRfiRfqID').val());
-}
+
 
 var form = $('#RFIRFQREport');
 function formvalidate() {
@@ -495,6 +506,66 @@ function formvalidate() {
 
 });
 
+$("#frmReInvite").validate({
+
+    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+
+    errorElement: 'span', //default input error message container
+
+    errorClass: 'help-block help-block-error', // default input error message class
+
+    focusInvalid: false, // do not focus the last invalid input
+
+    rules: {
+
+        txtextendDate: {
+            required: true
+        }
+
+    },
+
+    messages: {
+
+},
+
+
+
+invalidHandler: function(event, validator) {
+
+},
+
+highlight: function(element) {
+
+    $(element).closest('.col-md-8').addClass('has-error');
+
+},
+
+unhighlight: function(element) {
+
+    $(element).closest('.col-md-8').removeClass('has-error');
+
+},
+errorPlacement: function(error, element) {
+
+    if (element.attr("name") == "txtextendDate") {
+
+        error.insertAfter("#daterr");
+
+    }
+    else {
+
+        error.insertAfter(element);
+    }
+},
+success: function(label) {
+
+
+},
+submitHandler: function(form) {
+ReInviteVendorsForRFQ();
+}
+
+});
 
 
 }

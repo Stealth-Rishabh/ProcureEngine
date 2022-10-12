@@ -1,4 +1,4 @@
-﻿
+
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var rqid = getUrlVarsURL(decryptedstring)["RQID"];

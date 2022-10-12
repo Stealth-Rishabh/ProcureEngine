@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -210,7 +210,7 @@
                                                                 Purchase Org.<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <select id="ddlPurchaseOrg" class="form-control" onchange="bindPurchaseGroupDDL()"></select>
+                                                                <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" class="form-control" onchange="bindPurchaseGroupDDL()"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
                                                                 data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
                                                             </div>
@@ -282,7 +282,8 @@
                                                                 Amount From<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="form-control MaxLength thousandsep" maxlength="18" />
+                                                               
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -290,7 +291,7 @@
                                                                 Amount To<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="text" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="18" />
+                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="form-control MaxLength thousandsep" maxlength="18" /><!--onkeyup="thousands_separators_input(this)"-->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -307,7 +308,7 @@
                                                                     Deviation (%)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="tel" id="txtdeviation" name="txtdeviation" autocomplete="off" class="thousandsep form-control MaxLength" maxlength="5" />
+                                                                    <input type="tel" id="txtdeviation" name="txtdeviation" autocomplete="off" onkeyup="thousands_separators_input(this)" class="text-right form-control MaxLength" maxlength="5" />
                                                                 </div>
                                                             </div>
                                                         </div>

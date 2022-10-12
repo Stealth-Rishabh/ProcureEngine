@@ -1,4 +1,4 @@
-﻿if (window.location.search) {
+if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
 

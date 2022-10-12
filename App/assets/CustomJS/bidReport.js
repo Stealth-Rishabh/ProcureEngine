@@ -1,4 +1,4 @@
-﻿function fillBidTypedropdown(bidtypeid) {
+function fillBidTypedropdown(bidtypeid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

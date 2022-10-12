@@ -1,4 +1,4 @@
-﻿var BidID = "";
+var BidID = "";
 var ButtonType = '';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]

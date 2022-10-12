@@ -1,4 +1,4 @@
-﻿
+
 
 var _RFQBidType = "";
 function GetQuestions() {
@@ -562,13 +562,17 @@ function fetchRFIParameteronload(ver) {
 function ReSubmitQuotes() {
     var encrypdata = fnencrypt("RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQSubject=" + ($('#rq_subject').text()) + "Type=");//encodeURIComponent
     if (sessionStorage.getItem('CustomerID') != "32") {
-
-        window.open("eRFQVendor.html?param=" + encrypdata, "_blank")
+        if (confirm("WARNING!!! Re-submission of Quotes will overwrite your previous attachments and Quotes. Are you sure you want to proceed with Re-submission?")) {
+            window.open("eRFQVendor.html?param=" + encrypdata, "_blank")
+            //function() {
+            //    window.open("eRFQVendor.html?param=" + encrypdata, "_blank")
+            //}
+        }
+        //bootbox.alert("WARNING!!! Re-submission of Quotes will delete your previous attachments and Quotes. Are you sure you want to proceed with Re-submission?", function () {
+        //    window.open("eRFQVendor.html?param=" + encrypdata, "_blank")
+        //});
+        
     }
-    //else {
-    //    window.open("AzeRFQAnalysis.html?param=" + encrypdata, "_blank")
-
-    //}
 }
 function showDetailedDescription(descText) {
 

@@ -1,4 +1,4 @@
-﻿var idx = 0;
+var idx = 0;
 var allUsers = [];
 $(document).ready(function () {
 
@@ -12,6 +12,7 @@ $(document).ready(function () {
         FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"]
         AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
         $('#lblNFAID').html('NFA ID :' + idx)
+        $('#divRemarksApp').hide();
     }
 
     if (idx != null) {
@@ -34,6 +35,12 @@ $(document).ready(function () {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").show();
             $('#frmadminbutton').show()
+
+        }
+        else if (FwdTo == 'View') {//&& AppStatus == 'Reverted'
+            jQuery("#frmdivremarksapprover").hide();
+            jQuery("#divRemarksApp").hide();
+            $('#frmadminbutton').hide()
 
         }
         else {
@@ -80,7 +87,8 @@ function fetchRegisterUser() {
 
 }
 function GetOverviewmasterbyId(idx) {
-
+    console.log(parseInt(CurrentCustomer) + "&idx=" + parseInt(idx));
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
@@ -104,9 +112,9 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaBudget))//+ " " + res.result[0].currencyNm);
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
-                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaAmount))
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
@@ -116,23 +124,23 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblGroup").text(res.result[0].groupName);
                 if (res.result[0].eventtypeName == "RA") {
                     $("#lblEventType").text("Reverse Auction")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\,\'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\,\'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else if (res.result[0].eventtypeName == "FA") {
                     $("#lblEventType").text("Forward Auction")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else if (res.result[0].eventtypeName == "CA") {
                     $("#lblEventType").text("Coal Auction")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else if (res.result[0].eventtypeName == "FF") {
                     $("#lblEventType").text("French Auction")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventID + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else {
                     $("#lblEventType").text("RFQ")
-                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventID + "'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventRefernce + "'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
 
                 if (res.result[0].remarks != '') {
@@ -225,7 +233,7 @@ function DownloadFile(aID) {
 
 function fetchApproverStatus() {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
     jQuery.ajax({
@@ -238,6 +246,7 @@ function fetchApproverStatus() {
         processData: true,
         dataType: "json",
         success: function (data) {
+
             var status = '';
             var c = 0;
             var ApprovalType = ""
@@ -449,7 +458,7 @@ function FetchRecomendedVendor() {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -753,8 +762,6 @@ function GetQuestions() {
         success: function (data) {
             jQuery("#tblquestions").empty();
             var attach = 'No Attachment';
-
-
             if (data.length > 0) {
                 queslength = data.length;
                 sessionStorage.setItem('HeaderID', data[0].headerid)
@@ -764,7 +771,7 @@ function GetQuestions() {
                     rowques = rowques + 1;
                     attach = '';
                     if (data[i].attachment != '') {
-                        attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
+                        attach = '<a style="pointer: cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
                     str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td>';
@@ -795,8 +802,6 @@ function GetQuestions() {
 
                     $('#btnwithdraw').hide()
                 }
-
-
             }
             else {
                 $('#btnwithdraw').hide()
@@ -843,31 +848,37 @@ function GetQuestionsforCreator(pendingon) {
                         attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
-                    if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID')) {
+                    if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID') && FwdTo == 'Admin') {
                         $('#btnsubmitquery').removeClass('hide')
                         str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
                         str += '<td><textarea onkeyup="replaceQuoutesFromString(this)" name=answer rows=2 class="form-control" maxlength=1000  autocomplete=off id=answer' + i + ' >' + data[i].answer + '</textarea></td>';
-                        str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span></td>";
+                        str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span><br>" + attach + "</td>";
                         jQuery('#tblqueryresponse').append(str);
+                        if (data[i].answer.toLowerCase() == "withdraw") {
+
+                            $('#answer' + i).prop("disabled", true);
+                            $('#fileToUpload' + i).prop('disabled', 'disbaled');
+                        }
+                        else {
+                            $('#answer' + i).prop("disabled", false);
+                            $('#fileToUpload' + i).prop("disabled", false);
+                        }
+
                         $('#answer' + i).maxlength({
                             limitReachedClass: "label label-danger",
                             alwaysShow: true
                         });
-
                     }
-                    else if ((pendingon.toLowerCase() == "a" || pendingon.toLowerCase() == "x") && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID')) {
+                    else {//if ((pendingon.toLowerCase() == "a" || pendingon.toLowerCase() == "x") && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID')) {
                         $('#btnsubmitquery').addClass('hide')
                         str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
                         str += '<td>' + data[i].answer + '</td>';
                         str += '<td>' + attach + '</td>';
                         jQuery('#tblqueryresponse').append(str);
                     }
-                    else {
-                        $('#divQuery').addClass('hide')
-
-                    }
-
-
+                    //else {
+                    //    $('#divQuery').addClass('hide')
+                    //}
                 }
 
             }
@@ -901,8 +912,8 @@ $(document).on('keyup', '.form-control', function () {
 function fnsubmitQueryByCreator() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var flag = "T";
-    var rowCount = jQuery('#tblqueryresponse tr').length;
-    for (i = 0; i < rowCount - 1; i++) {
+    var rowCount = jQuery('#tblqueryresponse >tbody>tr').length;
+    for (i = 0; i < rowCount; i++) {
         if ($("#answer" + i).val() == "" || $("#answer" + i).val() == "0") {
             $('#answer' + i).removeClass('has-success')
             $('#answer' + i).css("border", "1px solid red")
@@ -923,17 +934,20 @@ function fnsubmitQueryByCreator() {
             var this_row = $(this);
             attchname = ''; ext = '';
             attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
-
-
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
-            attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-            attchname = attchname.replace('.', '@')
-            quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
-
-            //Upload Files on aZURE bLOB
+            
             if (attchname != "" && attchname != null && attchname != undefined) {
+                attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+                attchname = attchname.replace('.', '@')
+                 //Upload Files on aZURE bLOB
                 fnUploadFilesonAzure('fileToUpload' + i, $('#fileToUpload' + i).val(), 'NFA/' + idx + '/NFAQuery');
             }
+            else {
+                if ($('#eRFQVQueryFiles' + i).text() != '' && $('#eRFQVQueryFiles' + i).text() != null && $('#eRFQVQueryFiles' + i).text() != 'undefined') {
+                    attchname = $('#eRFQVQueryFiles' + i).text()
+                }
+            }
+            quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
             i++;
         });
         var data = {
@@ -1007,7 +1021,7 @@ function addquestions() {
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
 
-        if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && (PendingOn != 'A' && PendingOn != 'X')) {
+        if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength >= 0) && (PendingOn != 'A' && PendingOn != 'X')) {
             $('#btnTechquery').attr('disabled', 'disabled')
             // $('#btnwithdraw').hide()
         }
@@ -1021,7 +1035,7 @@ function deletequesrow(rowid) {
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
-    if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
+    if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength >= 0) {
         $('#btnTechquery').attr('disabled', 'disabled')
         // $('#btnwithdraw').hide()
     }
@@ -1052,7 +1066,7 @@ function submitQuery() {
                 "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
                 "PendingOn": "C"
             }
-            //alert(JSON.stringify(data))
+
             // console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
@@ -1065,7 +1079,7 @@ function submitQuery() {
                 dataType: "json",
                 success: function (data) {
 
-                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .", function () {
+                    bootbox.alert("Approval can now be enabled after Approver response or query withdrawal .", function () {
                         setTimeout(function () {
                             $('#btnTechquery').attr('disabled', 'disabled')
                             $('#btnSubmitApp').attr('disabled', 'disabled')
@@ -1073,7 +1087,7 @@ function submitQuery() {
                             //$('#btnwithdraw').show()
 
                             $("#RaiseQuery").modal('hide');
-
+                            GetQuestionsforCreator(PendingOn)
                             jQuery.unblockUI();
                         }, 1000);
                     });
@@ -1116,7 +1130,7 @@ function submitQuery() {
 }
 function fnquerywithdaw() {
     bootbox.dialog({
-        message: "Do you want to withdraw query from vendor, Click Yes for  Continue ",
+        message: "Do you want to withdraw query from Approver, Click Yes for  Continue ",
         // title: "Custom title",
         buttons: {
             confirm: {
@@ -1236,7 +1250,7 @@ function DisableActivityRecall() {
             bootbox.alert("NFA ReCalled successfully .", function () {
                 window.location.href = "index.html";
                 //setTimeout(function () {
-                //    $('#btnSubmitApp').removeAttr('disabled')
+                //    $('#btnSubmitApp').removeAttr('disabled') 
                 //    $('#btnSubmitApp').addClass('green').removeClass('default')
 
                 //    $("#RaiseQuery").modal('hide');

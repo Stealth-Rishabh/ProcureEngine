@@ -1,15 +1,15 @@
-﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
+$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
-    /*
-      var dt = new Date();
-      var day = dt.getDate();
-      var month = dt.getMonth() + 1;
-      var year = dt.getFullYear();
-      var hour = dt.getHours();
-      var mins = dt.getMinutes();
-      postfix = day + "/" + month + "/" + year;*/
-
-    postfix = new Date()
+  /*
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    postfix = day + "/" + month + "/" + year;*/
+    
+    postfix= new Date()
 
     $('#printed_on').html(postfix);
 }
@@ -112,7 +112,7 @@ function fetchrfqcomprative(RFQID) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].responseSubmitDT + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
 
@@ -1255,7 +1255,7 @@ function fetchAttachments() {
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
 function saveAspdf() {
-
+    
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
     var pdf = new jsPDF('l', 'pt', 'a0');
     var options = {
@@ -1287,7 +1287,7 @@ function fetchApproverRemarks(RFQID) {
                 $('#tblapprovalprocess').append('<tr style="background: #44b6ae;"><th colspan="5" style="font-size: 19px; text-align: left;color: #FFF;">Approval Details</th></tr><tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
 
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                 }
 
 

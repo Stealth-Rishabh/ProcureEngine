@@ -1,4 +1,4 @@
-﻿var BidID = "";
+var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
 
@@ -834,7 +834,7 @@ function linegraphsforItems(itemId, counter) {
                 if (data[0].submissionTime.length > 0) {
 
                     for (var x = 0; x < data[0].submissionTime.length; x++) {
-
+                        
                         graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
                     }
 

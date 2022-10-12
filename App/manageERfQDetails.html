@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -187,7 +187,7 @@
                                                         Add Vendors
                                                     </a>
                                                 </li>
-                                                <li id="litab1">
+                                                <li id="litab2">
                                                     <a href="#tab_3" data-toggle="tab">
                                                         Reopen Quotes
                                                     </a>
@@ -353,7 +353,7 @@
                                                                                         <div class="col-md-8">
                                                                                             <label id="lblRFQOpenDate" class="control-label" style="text-align:left">
                                                                                             </label>&nbsp;
-                                                                                            <a class="isDisabledOpenClass" id="ctrlRFQOpenDates" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                            <a class="isDisabledOpenClass" id="ctrlRFQOpenDates" style="cursor:pointer" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                                                         </div>
 
                                                                                     </div>
@@ -1045,7 +1045,7 @@
                                         RFQ Open Date<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-4">
-                                        <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                        <div class="input-group date form_datetime form_datetime bs-datetime " >
                                             <input type="text" class="form-control" id="txtbidopendatetime" name="txtbidopendatetime" placeholder="If required" autocomplete="off" readonly>
                                             <span class="input-group-btn">
                                                 <button class="btn default date-set" type="button" id="btncal">
@@ -1244,6 +1244,7 @@
             Metronic.init();
             ComponentsPickers.init();
             setCommonData();
+           fetchParticipantsVenderTable()//abheedev
             fetchMenuItemsFromSession(9, 42);
             fetchRFIRFQSubjectforReport()
             FormValidate();

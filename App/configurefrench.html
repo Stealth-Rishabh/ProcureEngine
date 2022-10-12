@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,7 +22,7 @@
     <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-
+  
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -38,6 +38,31 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    
+    <style>
+        
+   
+       body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
+        }
+   
+   
+       .form-horizontal .form-control-static {
+          
+          width: 100%;
+        }
+   
+        
+        
+     .tab-content>.active {
+
+             margin-right: 10%;
+        }
+   
+    </style>
+    
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -306,8 +331,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left; word-break:break-all !important;" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
+                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left; word-break:break-all !important; margin-top:9px" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:3px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -594,7 +619,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
                                                                         <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
@@ -1009,7 +1034,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1065,7 +1090,7 @@
                                                    data-provide="typeahead" autocomplete="off" name="txtpreApproverBid" />
                                         </label>
                                         <div class="col-md-1 ">
-                                            <button type="button" id="Addbtn1" onclick="addBidpreApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                            <button type="button" id="Addbtn1" onclick="addBidpreApprovers()" class="btn green-haze btn-sm hide"><i class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1171,6 +1196,13 @@
 
         jQuery(document).ready(function () {
             Pageloaded()
+            
+            
+ 
+
+
+            
+            
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');

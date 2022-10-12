@@ -1,4 +1,4 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 $("#spnParamAttach").hide();
 var error = $('.alert-danger');
 
@@ -140,10 +140,10 @@ var FormWizard = function () {
                         // required: true,
                         maxlength: 50
                     },
-                    txtItemRemarks: {
-                        required: true,
-                        maxlength: 200
-                    },
+                    //txtItemRemarks: {
+                    //    required: true,
+                    //    maxlength: 200
+                    //},
                     //txttat: {
                     //    digits: true,
                     //    maxlength: 4,

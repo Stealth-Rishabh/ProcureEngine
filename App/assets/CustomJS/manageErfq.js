@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 formValidation();
 //var form1 = $('#entryForm');
@@ -231,8 +231,8 @@ jQuery("#txtRFQ").typeahead({
 
             setTimeout(function () {
                 FetchVendorNotsubmittedQuotesPassreset(map[item].rfqid)
-                FetchVendorsubmittedQuotes(map[item].rfqid)
-            }, 4000)
+                
+            }, 1000)
             $('#ddlrfq').val(map[item].rfqid)
             $('#hdnDeadline').val(map[item].rfqDeadline)
             $('#deadlineModal').text(fnConverToLocalTime(map[item].rfqDeadline))
@@ -388,6 +388,7 @@ function InsUpdRFQDEtailTab1() {
     }
 
     var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));
+    _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     //** delete Existing File (if any) on Azure
     //fnFileDeleteAzure(TermsConditionFileName, 'eRFQ/' + sessionStorage.getItem('hdnrfqid'))
     var Tab1Data = {
@@ -404,6 +405,7 @@ function InsUpdRFQDEtailTab1() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").text(),
         "RFQApprovers": [],
+        "RFQBidType": _RFQBidType,
         "TechnicalApproval": sessionStorage.getItem('techapp')
 
     };
@@ -447,9 +449,9 @@ function InsUpdRFQDEtailTab1() {
     });
     jQuery.unblockUI();
 }
-var isrunnigRFQ = 'Y';
+var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
-
+    
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -493,7 +495,8 @@ function fetchReguestforQuotationDetails(RFQID) {
             }
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
                 $("#divRFQOpenDate").show();
-
+                $("#litab2").hide();
+                $("#litab2").attr("disabled", "disabled");
                 if (RFQData[0].general[0].bidopeningdate != null && RFQData[0].general[0].bidopeningdate != "") {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
@@ -508,13 +511,15 @@ function fetchReguestforQuotationDetails(RFQID) {
             }
             else {
                 $("#divRFQOpenDate").hide();
+                $("#litab2").show();
+                $("#litab2").removeAttr("disabled");
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
             jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             var CurDateonly = new Date()
-            var ENDDTdateonly = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate).replace('-', ''))    
+            var ENDDTdateonly = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate).replace('-', ''))
             sessionStorage.setItem("rfqEndDate", ENDDTdateonly)
 
             if (ENDDTdateonly < CurDateonly) {
@@ -536,9 +541,10 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $('#wrap_scrollerPrev').show();
                 jQuery("#tblServicesProduct").empty();
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                //for (var i = 0; i < 1; i++) {
                 for (var i = 0; i < RFQData[0].parameters.length; i++) {
-                    jQuery('<tr id=trid' + i + '><td style="width:70px;!important"><button type="button" style="text-decoration:none;cursur:pointer;" class="btn btn-xs btn-success isDisabledClass" onclick="editRow(\'divParameter\',\'' + RFQData[0].parameters[i].rfqParameterId + '\',\'trid' + i + '\')" ><i class="fa fa-pencil" style="margin-top: 0px !important;"></i></button><td>' + RFQData[0].parameters[i].rfqItemCode + '</td><td>' + RFQData[0].parameters[i].rfqShortName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfQuantity) + '</td><td>' + RFQData[0].parameters[i].rfqUomId + '</td><td>' + RFQData[0].parameters[i].rfqDescription + '</td><td>' + RFQData[0].parameters[i].rfqDelivery + '</td><td class=text-right>' + RFQData[0].parameters[i].tat + '</td><td>' + RFQData[0].parameters[i].rfqRemark + '</td><td>' + RFQData[0].parameters[i].rfqPoNo + '</td><td>' + RFQData[0].parameters[i].rfqVendorName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqUnitRate) + '</td><td>' + RFQData[0].parameters[i].rfqpoDate + '</td><td>' + thousands_separators(RFQData[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblServicesProduct");
 
+                    jQuery('<tr id=trid' + i + '><td style="width:70px;!important"><button type="button" style="text-decoration:none;cursur:pointer;" class="btn btn-xs btn-success isDisabledClass" onclick="editRow(\'divParameter\',\'' + RFQData[0].parameters[i].rfqParameterId + '\',\'trid' + i + '\')" ><i class="fa fa-pencil" style="margin-top: 0px !important;"></i></button><td>' + RFQData[0].parameters[i].rfqItemCode + '</td><td>' + RFQData[0].parameters[i].rfqShortName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfQuantity) + '</td><td>' + RFQData[0].parameters[i].rfqUomId + '</td><td>' + RFQData[0].parameters[i].rfqDescription + '</td><td>' + RFQData[0].parameters[i].rfqDelivery + '</td><td class=text-right>' + RFQData[0].parameters[i].tat + '</td><td>' + RFQData[0].parameters[i].rfqRemark + '</td><td>' + RFQData[0].parameters[i].rfqPoNo + '</td><td>' + RFQData[0].parameters[i].rfqVendorName + '</td><td class=text-right>' + thousands_separators(RFQData[0].parameters[i].rfqUnitRate) + '</td><td>' + RFQData[0].parameters[i].rfqpoDate + '</td><td>' + thousands_separators(RFQData[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblServicesProduct");
                 }
 
             }
@@ -594,9 +600,9 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery("#selectedvendorlistsPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Vendor</th></tr></thead>");
                 for (var i = 0; i < RFQData[0].vendors.length; i++) {
                     jQuery('<tr id=trid' + i + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td></tr>').appendTo("#selectedvendorlistsPrev");
-                    if (RFQData[0].vendors[i].rfqStatus != 'C') {
-                        isrunnigRFQ = 'N';
-                        //
+                    if (RFQData[0].vendors[i].rfqStatus == 'C') {
+                        isrunnigRFQ = 'Y';
+
                     }
 
                 }
@@ -606,6 +612,7 @@ function fetchReguestforQuotationDetails(RFQID) {
             var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));
 
             if (isrunnigRFQ == 'Y' || EndDT < currentdate) {
+
                 $("a.isDisabledClass").removeAttr("onclick");
                 $("button.isDisabledClass").removeAttr("onclick");
             }
@@ -684,7 +691,6 @@ function fnRemoveAttachmentQues(srno, deletionfor) {
 
 function editRow(divName, RFQParameterId, rowid) {
     isRFQChanged = true;
-
     if (divName == 'divParameter') {
         $('#divParameter').removeClass('hide');
         $('#divbidTermsFilePrevtab_0').addClass('hide');
@@ -1209,8 +1215,9 @@ function FetchRFQVersion(RFQID) {
             if (data.length > 0) {
 
                 $('#ddlrfqVersion').append(jQuery('<option ></option>').val(data[0].rfqVersionId).html(parseInt(data[0].rfqVersionId) + 1));
-
+                FetchVendorsubmittedQuotes(RFQID);
             }
+            
 
         }, error: function (xhr, status, error) {
 
@@ -1395,6 +1402,13 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").keyup(function () {
     sessionStorage.setItem('hdnselectedEmail', '');
 });
 
+
+
+
+
+
+//abheedev surrogate bug 360 start
+
 jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     source: function (query, process) {
         var data = sessionStorage.getItem('hdnAllRFQInvitedVendorNotSubmitQ');
@@ -1425,6 +1439,11 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     }
 
 });
+
+//abheedev surrogate bug 360  end
+
+
+
 function resetpasswordForBidVendor() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1564,7 +1583,6 @@ function openVendorsQuotes() {
                 checkedValue = checkedValue + temp[0] + '#';
             }
         });
-
         var _RfqEndDt = new Date(sessionStorage.getItem("rfqEndDate"));
         var _CurrDt = new Date();
         if (_RfqEndDt < _CurrDt) {
@@ -1919,7 +1937,6 @@ function ExtendDuration() {
             if (data == '1') {
                 $('#deadlineModal').text($("#txtextendDate").val())
 
-
                 success1.show();
                 $('#spansuccess1').html("Date extended successfully..");
                 success1.fadeOut(6000);
@@ -2035,10 +2052,9 @@ function saveBidSurrogate() {
             url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RFQSurrogateSave",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
-            data: JSON.stringify(Data),
+            data: JSON.stringify(Data), 
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
                 // if (data == "1") {
                 success1.show();
                 $('#spansuccess1').html("Data Successfully saved");

@@ -1,4 +1,4 @@
-﻿var apiURL = sessionStorage.getItem("APIPath");
+var apiURL = sessionStorage.getItem("APIPath");
 var token = sessionStorage.getItem("Token");
 var UserID = sessionStorage.getItem('UserID');
 var Mainurl = sessionStorage.getItem('MainUrl');
@@ -9,17 +9,33 @@ $('.MaxLength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
 $(".thousandsep").inputmask({
-    alias: "decimal",
-    rightAlign: false,
-    groupSeparator: ",",
-    radixPoint: ".",
-    autoGroup: true,
-    integerDigits: 40,
-    digitsOptional: true,
-    allowPlus: false,
-    allowMinus: false,
-    'removeMaskOnSubmit': true
+
+        alias: "decimal",
+        rightAlign: false,
+
+        groupSeparator: ",",
+
+        radixPoint: ".",
+
+        autoGroup: true,
+
+        integerDigits: 40,
+
+        digitsOptional: true,
+
+        allowPlus: false,
+
+        allowMinus: false,
+
+        clearMaskOnLostFocus: true,
+
+        supportsInputType: ["text", "tel", "password"],
+
+        removeMaskOnSubmit:true,
+
+        //autoUnmask: true
 
 });
 CommonGenricAjax = function (url, type, data, async, token) {
@@ -106,6 +122,41 @@ function SearchInGridview(tableName,value) {
 
     });
 }
+function bindApproverMaster(edit) {
+  
+    var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
+
+    var GetData = callajaxReturnSuccess(url, "Get", {});
+    GetData.success(function (res) {
+           
+        if (res.result.length != null) {
+            $('#tblAllmatrix').empty();
+            if (res.result.length > 0) {
+                Approvermasterdata = res.result;
+              if (edit=='Y')
+                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
+               else
+                 $('#tblAllmatrix').append("<thead><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
+
+                for (var i = 0; i < res.result.length; i++) {
+                  if (edit=='Y')
+                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success " href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil" ></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
+                 else 
+                  $('#tblAllmatrix').append('<tr><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
+
+                }
+            }
+            else {
+                $('#tblAllmatrix').append('<tr><td>No Matrix Found</td></tr>');
+            }
+        }
+    });
+    GetData.error(function (res) {
+
+    });
+
+};
+
 function onlyNumberKey(evt) {
 
     // Only ASCII character in that range allowed

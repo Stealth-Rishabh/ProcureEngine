@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
@@ -652,6 +652,10 @@ function ins_updCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
     var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
+    var dateParts = $("#from").val().split("/");
+    var dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    var dateParts = $("#to").val().split("/");
+    var dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();
@@ -701,8 +705,10 @@ function ins_updCustomer() {
             'AdminEmail': $('#txtUserEmailID').val(),
             'AdminMobile': $('#txtmobileNo').val(),
             'SubscriptionType': '',
-            'SubscriptionFrom': $('#from').val(),
-            'SubscriptionTo': $('#to').val(),
+            //'SubscriptionFrom': $('#from').val(),
+            'SubscriptionFrom': dtfrom,
+            //'SubscriptionTo': $('#to').val(),
+            'SubscriptionTo': dtto,
             'CustomerID': parseInt(sessionStorage.getItem("hdnCustomerID")),
             'UserID': sessionStorage.getItem('UserID'),
             'AdminID': parseInt(sessionStorage.getItem("hdnAdminID")),
@@ -728,6 +734,7 @@ function ins_updCustomer() {
 
     }
     console.log(JSON.stringify(data))
+    debugger;
     jQuery.ajax({
         url: APIPath + "CustomerRegistration/InsCustomerRegistration",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -735,7 +742,7 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
+           debugger;
             if (data.isSuccess == '1') {
                 sessionStorage.setItem("hdnCustomerID", data.customerID)
                 sessionStorage.setItem("hdnAdminID", data.adminID)
