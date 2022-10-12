@@ -1,6 +1,9 @@
-﻿
+
 var error = $('.alert-danger');
 var success = $('.alert-success');
+
+
+
 
 var form = $('#submit_form');
 $(".thousandseparated").inputmask({
@@ -16,7 +19,6 @@ $(".thousandseparated").inputmask({
     clearMaskOnLostFocus: true,
     supportsInputType: ["text", "tel", "password"],
     'removeMaskOnSubmit': false
-
 });
 var _RFQBidType = "";
 var Vehicleerror1 = $('#errordiv1');
@@ -251,35 +253,36 @@ var FormWizard = function () {
                 onTabClick: function (tab, navigation, index, clickedIndex) {
                     return false;
                 },
-
+//abheedev bug347 start
                 onNext: function (tab, navigation, index) {
 
                     if (index == 1) {
 
                     }
                     else if (index == 2) {
+       
+                var flag = "T";
+                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
 
-                        var flagQ = "T";
-                        var rowCountQ = jQuery('#tblquestions tr').length;
-
-                        var countQ = 1;
-                        for (i = 0; i < rowCountQ - 1; i++) {
-                            if ($("#answers" + i).val() == "") {
-                                $('#answers' + i).removeClass('has-success')
-                                $('#answers' + i).css("border", "1px solid red")
-                                flagQ = "F";
-                                // $('#form_wizard_1').bootstrapWizard('previous');
-                                $('.alert-danger').show();
-                                $('#spandanger').html('Please fill RFQ Answer.');
-                                Metronic.scrollTo($(".alert-danger"), -200);
-                                $('.alert-danger').fadeOut(7000);
-                                countQ = countQ + 1;
-                            }
+                var count = 1;
+                for (i = 0; i < rowCount - 1; i++) {
+                    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
+                        $('#commremarks' + i).removeClass('has-success')
+                        $('#commremarks' + i).css("border", "1px solid red")
+                        flag = "F";
+                        // $('#form_wizard_1').bootstrapWizard('previous');
+                        $('.alert-danger').show();
+                        $('#spandanger').html('Please fill RFQ Commercial Terms.');
+                        Metronic.scrollTo($(".alert-danger"), -200);
+                        $('.alert-danger').fadeOut(7000);
+                        count = count + 1;
+                    }
+                 
                             else {
-                                flagQ = "T"
+                                flag = "T"
                             }
                         }
-                        if (flagQ == "F") {//&& rowCountQ == countQ
+                        if (flag == "F") {//&& rowCountQ == countQ
                             return false;
                         }
                         else if (jQuery('#fileToUpload1').val() != "") {
@@ -290,7 +293,7 @@ var FormWizard = function () {
                             return false;
                         }
                         else {
-                            if (flagQ == "T") {
+                            if (flag == "T") {
                                 fnsaveAttachmentsquestions();
 
                             }
@@ -326,31 +329,36 @@ var FormWizard = function () {
 
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
-                var flag = "T";
-                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
+                
+                var flagQ = "T";
+                        var rowCountQ = jQuery('#tblquestions tr').length;
 
-                var count = 1;
-                for (i = 0; i < rowCount - 1; i++) {
-                    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
-                        $('#commremarks' + i).removeClass('has-success')
-                        $('#commremarks' + i).css("border", "1px solid red")
-                        flag = "F";
-                        // $('#form_wizard_1').bootstrapWizard('previous');
-                        $('.alert-danger').show();
-                        $('#spandanger').html('Please fill RFQ Commercial Terms.');
-                        Metronic.scrollTo($(".alert-danger"), -200);
-                        $('.alert-danger').fadeOut(7000);
-                        count = count + 1;
-                    }
-                    else {
-                                
-                    }
+                        var countQ = 1;
+                        for (i = 0; i < rowCountQ - 1; i++) {
+                            if ($("#answers" + i).val() == "") {
+                                $('#answers' + i).removeClass('has-success')
+                                $('#answers' + i).css("border", "1px solid red")
+                                flagQ = "F";
+                                // $('#form_wizard_1').bootstrapWizard('previous');
+                                $('.alert-danger').show();
+                                $('#spandanger').html('Please fill RFQ Answer.');
+                                Metronic.scrollTo($(".alert-danger"), -200);
+                                $('.alert-danger').fadeOut(7000);
+                                countQ = countQ + 1;
+                            }
+                            else {
+
+
+                                flagQ == "T";
+                            }        
+                    
                 }
-                if (flag == "F") {
+                if (flagQ == "F") {
                     return false;
                 }
 
-                if (flag == "T") {
+                if (flagQ == "T") {
+                    fnsaveAttachmentsquestions();
                     saveQuotation();
                     $('#BidPreviewDiv').show();
                     $('#form_wizard_1').hide();
@@ -368,7 +376,7 @@ var FormWizard = function () {
     };
 
 }();
-
+//abheedev bug 347 end
 
 sessionStorage.setItem('CurrentrfiID', 0)
 sessionStorage.setItem('CurrentRFQParameterId', 0)
@@ -380,7 +388,7 @@ $(document).on('keyup', '.form-control', function () {
 
 
 function fncheckItemWiseTC(ver, BoqPID) {
-
+    debugger;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -540,8 +548,8 @@ function fetchRFQLevelTC(ver) {
                 jQuery("#tbltermsconditionprev").append("<thead><tr style='background: gray; color: #FFF;'><th>Other Commercial Terms</th><th>Our Requirement</th><th>Your Offer</th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
 
-                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>' + data[i].requirement + '</td><td><textarea name=comm rows=2 class="form-control" maxlength=1000  autocomplete=off id=commremarks' + i + ' >' + data[i].rfqRemark + '</textarea></td></tr>').appendTo("#tblRFQLevelTCForQuot");
-                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>' + data[i].requirement + '</td><td><label class="control-label" >' + data[i].rfqRemark + '</label></td></tr>').appendTo("#tbltermsconditionprev");
+                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>' + data[i].requirement + '</td><td><textarea name=comm rows=2 class="form-control" maxlength=1000  autocomplete=off id=commremarks' + i + ' >' + data[i].rfqRemark + '</textarea></td><td class=hide>' + data[i].otherTermsCondition + '</td></tr>').appendTo("#tblRFQLevelTCForQuot");
+                    jQuery('<tr id=trid' + i + '><td class=hidden>' + data[i].tcid + '</td><td class=hidden >' + data[i].rfqid + '</td><td class=hide>' + data[i].conditionType + '</td><td style="width:20%">' + data[i].tcName + '</td><td>' + data[i].requirement + '</td><td><label class="control-label" >' + data[i].rfqRemark + '</label></td><td class=hide>' + data[i].otherTermsCondition + '</td></tr>').appendTo("#tbltermsconditionprev");
 
                     $('#commremarks' + i).maxlength({
                         limitReachedClass: "label label-danger",
@@ -590,6 +598,16 @@ function addmoreattachments() {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         rowAttach = rowAttach + 1;
+        var num = 0;
+        var maxinum = -1;
+        $("#tblAttachmentsresponse >tbody>tr").each(function () {
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+             if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+        rowAttach = parseInt(maxinum) + 1;
         $('#headerresposeatt').removeClass('hide')
         $('#dicresponseatt').removeClass('hide')
         if (!jQuery("#tblAttachmentsPrev thead").length) {
@@ -605,7 +623,7 @@ function addmoreattachments() {
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFiles' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
+        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',\'VAttachment\',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachmentsresponse').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
@@ -750,6 +768,7 @@ function fetchRFQResponse(Flag, version) {
         cache: false,
         dataType: "json",
         success: function (data) {
+            debugger
             if (Flag == 'Question') {
                 jQuery("#tblquestions").empty();
                 jQuery("#tblQuestionsPrev").empty();
@@ -764,6 +783,7 @@ function fetchRFQResponse(Flag, version) {
                         var attachQA = data[i].attachementQA;
                         str = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
+                       // strprev = "<tr><td style='width:30%!important'>" +"hello" + "</td>";
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
@@ -771,6 +791,7 @@ function fetchRFQResponse(Flag, version) {
                         strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this)>' + attachQA + '</a></td>';//' + data[i].answer + '
                         str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
                         strprev += '<td style="width:30%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
+                       // strprev += "<td style='width:20%!important'>" +  data[i].answer  + "</td></tr>";//' + data[i].answer + '
 
 
                         jQuery('#tblquestions').append(str);
@@ -808,7 +829,7 @@ function fetchRFQResponse(Flag, version) {
                         jQuery('#tblAttachmentsPrev').append(strprev);
 
                         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[i].attachmentdescription + '</td>';
-                        str += '<td class=style="width:47%!important"><a id=eRFQVFiles' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
+                        str += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
@@ -846,6 +867,7 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
+ 
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -870,29 +892,36 @@ function fnsaveAttachmentsquestions() {
 
     }
     if (validateSubmit) {
+     
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
-
+         
             var this_row = $(this);
-            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim($('#eRFQVFilesPrev' + i).text()) + '#';
+            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
             i++;
         });
-        i = 0;
+        i=0
         var attchname = '';
         $("#tblquestions> tbody > tr").each(function (index) {
             var this_row = $(this);
 
-            if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '') {
+            if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '' && $('#fileToUploadques' + index).val() != 'undefined') {
                 attchname = jQuery('#fileToUploadques' + index).val().substring(jQuery('#fileToUploadques' + index).val().lastIndexOf('\\') + 1)
                 fnUploadFilesonAzure('fileToUploadques' + index, attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
             }
-            if (attchname == null || attchname == '') {
+            else {
+                if ($('#eRFQVFilesques' + index).text() != '' && $('#eRFQVFilesques' + index).text() != null && $('#eRFQVFilesques' + index).text() != 'undefined') {
+                    attchname = $('#eRFQVFilesques' + index).text()
+                }
+            }
+            /*if (attchname == null || attchname == '') {
                 if (jQuery('#eRFQVFilesques' + index).val() != null || jQuery('#eRFQVFilesques' + index).val() != '') {
                     attchname = jQuery('#eRFQVFilesques' + index).val();
 
                 }
 
-            }
+            }*/
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
+         
             i++;
         });
         var data = {
@@ -1025,11 +1054,12 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
 }
 
-var currentdate = new Date();
+
 function fetchReguestforQuotationDetails() {
+
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced1 = '';
-
+    var currentdate = new Date();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1040,52 +1070,72 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
 
-            sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-            sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
-            _RFQBidType = RFQData[0].general[0].rfqBidType
+            if (RFQData[0].general.length) {
+                sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
+                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+                sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
+                _RFQBidType = RFQData[0].general[0].rfqBidType
 
-            jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
-            $('#Currency').html(RFQData[0].general[0].currencyNm)
-            $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
-            jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
-            jQuery('#refno').html(RFQData[0].general[0].rfqReference);
-            jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
-            // jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
-            // jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
+                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                $('#Currency').html(RFQData[0].general[0].currencyNm)
+                $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
+                jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
+                jQuery('#refno').html(RFQData[0].general[0].rfqReference);
+                jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
+                // jQuery('#RFQStartDate').html(RFQData[0].general[0].rfqStartDate)
+                // jQuery('#RFQEndDate').html(RFQData[0].general[0].rfqEndDate)
 
-            jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
-            jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
-            //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
+                jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#RFQEndDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+                // jQuery('#TermCondition').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition)
+                //$('#filepthtermsPrev').attr('href', 'PortalDocs/eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + replaced1).html(RFQData[0].general[0].rfqTermandCondition);
 
-            jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
-            $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition)
-            //Preview Details
+                jQuery('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
+                $('#filepthtermsPrev').html(RFQData[0].general[0].rfqTermandCondition)
+                //Preview Details
 
 
-            jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
+                jQuery('#lblRfqsubject').html(RFQData[0].general[0].rfqSubject)
 
-            jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
-            jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
+                jQuery('#lblrfqstartdate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+                jQuery('#lblrfqenddate').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+                jQuery('#lblrfqdescription').html(RFQData[0].general[0].rfqDescription)
 
-            jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
-            jQuery('#lblConversionRatePrev').html(RFQData[0].general[0].rfqConversionRate)
+                jQuery("#dropCurrencyPrev").html(RFQData[0].general[0].currencyNm)
+                jQuery('#lblConversionRatePrev').html(RFQData[0].general[0].rfqConversionRate)
 
-            jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
+                jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-            var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-',''));
-            if (currentdate < StartDT) {
-                $('#form_wizard_1').find('.button-next').hide();
-                $('#regretrfq').hide();
-                $('#lblRFQMessage').show();
+                var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
+                if (currentdate < StartDT) {
+                    $('#form_wizard_1').find('.button-next').hide();
+                    $('#regretrfq').hide();
+                    $('#lblRFQMessage').show();
+                }
+                else {
+                    $('#regretrfq').show();
+                    $('#form_wizard_1').find('.button-next').show();
+                    $('#lblRFQMessage').hide();
+                }
             }
-            else {
-                $('#regretrfq').show();
-                $('#form_wizard_1').find('.button-next').show();
-                $('#lblRFQMessage').hide();
+            if (RFQData[0].vendors.length) {
+                for (var i = 0; i < RFQData[0].vendors.length; i++) {
+                    if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
+
+                        // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
+                        fetchRFIParameteronload(RFQData[0].vendors[i].version);
+
+                        // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
+                        //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Question', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
+                      
+                        sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
+                    }
+                }
+
             }
+
         },
         error: function (xhr, status, error) {
 
@@ -1222,8 +1272,9 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
+    //alert("Called")
+   
     fetchRFQLevelTC(ver);
-
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     jQuery.ajax({
@@ -1242,9 +1293,10 @@ function fetchRFIParameteronload(ver) {
             var description = "";
             var totalammwithoutGST = 0;
             var totalammwithGST = 0;
-
+          
             if (data.length > 0) {
-                   if (_RFQBidType == 'Open') {
+
+                if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                 }
@@ -1335,16 +1387,23 @@ setTimeout(function () { sessionStorage.removeItem('selectedboqtxtboxid') }, 500
 sessionStorage.removeItem('selectedboqtxtboxidTax');
 
 function DownloadFile(aID) {
+ 
+    
 
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 function DownloadFileVendor(aID) {
+    
+    
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-
-    $('#txtbasicPrice').val(thousands_separators(basicprice))
+    
+   // $('#txtbasicPrice').val(thousands_separators(basicprice))
+   //abheedev
+    $('#txtbasicPrice').val((basicprice))
+     
     $("#hddnBoqParamQuantity").val(quantity);
 
     $('#texttblidwithGST').val(withgst);
@@ -1368,13 +1427,17 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
+   
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
-    basicprice = 0;
+    basicprice = 0.0;
     PricewithoutGSTDiscount = 0.0;
 
+      
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
+   
+
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
     var validateSubmit = true;
@@ -1418,7 +1481,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
                 var vendorRemarks = "";
                 if (_RFQBidType == 'Open') {
-                    vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                    vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val())//.replace(/'/g, "''")
                 }
                 else {
                     vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
@@ -1479,10 +1542,15 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
-                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
 
-                    fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                    Price = 0;
+                    $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
+                    //$(this_row.find('td:eq(13)').html(Price))
+                    (async () => {
+                        await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
+                    })();
+
+                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    //Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
                     }
@@ -1504,6 +1572,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
+        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
@@ -1544,6 +1613,7 @@ function saveQuotation() {
                 vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
+           
             var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1572,9 +1642,10 @@ function saveQuotation() {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQID": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"),
+                "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-                "FinalStatus": 'N'
+                "FinalStatus": 'N',
+                "OtherTermCondition":parseInt($.trim(this_row.find('td:eq(6)').html()))
             };
             commercialterms.push(comm)
         });
@@ -1587,8 +1658,7 @@ function saveQuotation() {
             "CommercialTerms": commercialterms,
             "VendorRemarks": $('#txtvendorremarks').val()
         };
-        // console.log(JSON.stringify(Tab2data))
-        //alert(JSON.stringify(Tab2data))
+      
         jQuery.ajax({
 
             type: "POST",
@@ -1663,6 +1733,7 @@ function shwconfirmationtoreplicate() {
 
 }
 function fnReplicateToAllItems() {
+    
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
