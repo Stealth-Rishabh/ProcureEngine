@@ -1442,6 +1442,53 @@ function fnSendActivityToCommercial() {
 function CloseForwardpopup() {
     $('#FwdCommercialApprover').modal('hide')
 }
+
+//FOR LOADING FACTOR TABLE
+var rowques = 0;
+function addLoadingFactor() {
+    //jQuery("#tblLoadingFactor").empty();
+    if (jQuery("#txtloadingfactor").val() == "" && jQuery("#txtloadingfactorPer").val() == "") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Either Loading Factor Percenatge or Absolute value');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else if (jQuery("#txtloadingfactorreason").val() == "") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Reason');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else {
+        rowques = rowques + 1;
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th></tr></thead>");
+        }
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactor").val() + '</td>';
+        strprev += "<td>" + jQuery("#txtloadingfactorreason").val() + "</td></tr>"
+        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td></tr>"
+        strprev += "<td>" + jQuery("#txtloadingfactorPer").val() + "</td></tr>"
+
+        jQuery('#tblLoadingFactor').append(strprev);
+        //TODO
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th></tr></thead>");
+        }
+        var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
+        str += "<td>" + jQuery("#txtreq").val() + "</td>"
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblLoadingFactor').append(str);
+        jQuery("#tblLoadingFactor").val('')
+        //jQuery("#txtreq").val('')
+    }
+}
+function deleteLFrow(rowid) {
+    rowques = rowques - 1;
+    $('#' + rowid.id).remove();
+    
+}
 //var rowApp = 0;
 //function addApprovers() {
 //    var status = "true"; var Apptype = ''

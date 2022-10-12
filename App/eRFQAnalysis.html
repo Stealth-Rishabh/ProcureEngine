@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
+    <meta content="Cache-Control: no-cache, no-store, must-revalidate" />;
     <meta content="" name="description" />
     <meta content="" name="author" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
@@ -54,6 +55,52 @@
         .bluecls {
             color: blue !important;
         }
+
+        /*abheedev backlog 333*/
+        thead {
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            z-index: 1;
+            top: 0;
+            border: 2px solid darkgrey;
+        }
+
+
+        .table-scrollable {
+            overflow-y: auto !important;
+            max-height: 500px;
+        }
+
+
+
+
+        /*abhhedev backlog335*/
+        .hovertext {
+            position: relative;
+        }
+
+            .hovertext:before {
+                content: attr(data-hover);
+                visibility: hidden;
+                opacity: 0;
+                width: 300px;
+                opacity: .9;
+                color: rgb(6, 6, 6);
+                background-color: #ff7;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 5px;
+                transition: opacity 1s ease-in-out;
+                position: absolute;
+                z-index: .5;
+                left: 100%;
+                bottom: 0%;
+            }
+
+            .hovertext:hover:before {
+                opacity: .9;
+                visibility: visible;
+            }
     </style>
 
 </head>
@@ -74,7 +121,6 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-
                             <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
                             </span><i class="fa fa-angle-down"></i>
                         </a>
@@ -339,6 +385,9 @@
                                     <li>
                                         <a href="#tab_2" data-toggle="tab">RFQ Attachments </a>
                                     </li>
+
+
+
                                     <!--<l1 class="pull-right"><a href="#MapTechnicalApprover" onclick="fnUpdateApproverFlag()" class="btn  yellow hide" id="btn_mapaaprover" data-toggle="modal" disabled data-backdrop="static" data-keyboard="false"> Technical Approval</a></l1>-->
                                     <l1 class="pull-right"><a href="#FwdCommercialApprover" class="btn  blue hide" id="btn_commercial" data-toggle="modal" data-backdrop="static" data-keyboard="false"> Commercial Approval</a></l1>
                                 </ul>
@@ -609,6 +658,7 @@
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
         </div>
+
     </div>
     <div id="editloadingfactor" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -655,6 +705,41 @@
 
                                     </div>
 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label col-md-3">
+                                        Loading Factor Type
+                                    </label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="ddlLFType">
+                                            <!--<option value="">Select All</option>-->
+                                            <option value="1" id="optA">Absolute</option>
+                                            <option value="2">Percentage</option>
+                                            <!--<option value="3" id="opPauseval" class="hide">PAUSE</option>-->
+                                        </select>
+                                    </div>
+                                    <label class="control-label col-md-3">
+                                        Percenatge Value
+                                    </label>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control " id="txtloadingfactorPer" name="txtloadingfactorPer" maxlength="2" autocomplete="off" />
+                                    </div>
+                                    <div class="inputgroup">
+                                        <div class="col-md-1">
+                                            <button type="button" id="Addbtn1" onclick="addLoadingFactor()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="table-scrollable">
+                                    <table id="tblLoadingFactor" class="table table-bordered"></table>
                                 </div>
                             </div>
                         </div>
@@ -906,7 +991,9 @@
     <script src="assets/CustomJS/eRFQCommon.js" type="text/javascript"></script>
     <script src="assets/CustomJS/eRFQAnalysis.js" type="text/javascript"></script>
     <script>
+
         jQuery(document).ready(function () {
+
             var $table = $('#tblRFQComprative');
             $table.floatThead({
                 position: 'fixed'
@@ -935,13 +1022,15 @@
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
 
             fetchRFIRFQSubjectforReport('RFQ')
-
             formvalidate();
             ComponentsPickers.init();
             fetchMenuItemsFromSession(7, 44);
             fetchRegisterUser();
             //FetchInvitedVendorsForeRFQ();
         });
+
+
+
     </script>
 
 
