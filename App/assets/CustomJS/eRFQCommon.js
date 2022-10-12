@@ -1,4 +1,4 @@
-$(".thousandseparated").inputmask({
+﻿$(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
     groupSeparator: ",",
@@ -386,7 +386,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            
+
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
@@ -604,6 +604,7 @@ $("#editloadingfactor").on("hidden.bs.modal", function () {
     $("#hdnvendorid").val('');
     $("#txtloadingfactorreason").val('');
 });
+
 function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
@@ -1357,14 +1358,14 @@ function downloadexcel() {
     //var hour = dt.getHours();
     //var mins = dt.getMinutes();
     //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-debugger
+    debugger
     var postfix = fnConverToLocalTime(new Date())
 
     //Export To Excel
     var data_type = 'data:application/vnd.ms-excel';
-  // var table_div = document.getElementById('');
-  var table_div = document.getElementById('table_wrapper');
-    
+    // var table_div = document.getElementById('');
+    var table_div = document.getElementById('table_wrapper');
+
     var table_html = table_div.outerHTML.replace(/ /g, '%20');
 
     var a = document.createElement('a');
@@ -1374,4 +1375,49 @@ debugger
     a.click();
     //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
     // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
+}
+
+function fnAddUpdLoadingFactor() {
+    var quesquery = '';
+    $("#tblLoadingFactor> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+    });
+    var data = {
+        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "AttachString": attchquery,
+        "QuesString": quesquery
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            fetchAttachments();
+            GetQuestions();
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
 }
