@@ -512,8 +512,11 @@ function replaceQuoutesFromString(ele) {
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-    str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
+    //@abheedev bug368 start
+    //str = str.replace(/#/g, '');
+   // str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
     str = str.replace(/~/g, '');
     ele.value = str;
     //return val;

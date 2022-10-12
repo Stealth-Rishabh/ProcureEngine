@@ -212,7 +212,7 @@
                                                             <div class="col-md-3">
                                                                 <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" class="form-control" onchange="bindPurchaseGroupDDL()"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
-                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
+                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
                                                             </div>
 
                                                             <div class="col-12 col-md-2 hide">
@@ -228,7 +228,7 @@
                                                                     <option value="0">Select</option>
                                                                 </select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="ddlPurchasegroup"
-                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchasegroup" />-->
+                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchasegroup" />-->
                                                             </div>
 
 
@@ -246,7 +246,7 @@
                                                             <div class="col-md-9">
                                                                 <select class="form-control" id="ddlCondition" name="ddlCondition"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Condition" id="ddlCondition"
-                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
+                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -281,20 +281,24 @@
                                                             <label class="col-md-3 control-label">
                                                                 Amount From<span class="required"> *</span>
                                                             </label>
+                                                          
+                                                            <!-- @abheedev bug 368 start-->
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="form-control MaxLength thousandsep" maxlength="18" />
-                                                               
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength" onkeyup="thousands_separators_input(this)" maxlength="18" />
                                                             </div>
+
                                                         </div>
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Amount To<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="form-control MaxLength thousandsep" maxlength="18" /><!--onkeyup="thousands_separators_input(this)"-->
+                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="text-right form-control MaxLength" onkeyup="thousands_separators_input(this)" maxlength="18" /><!--onkeyup="thousands_separators_input(this)"-->
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!--@abheedev bug 368 end-->
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
