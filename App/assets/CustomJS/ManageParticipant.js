@@ -197,6 +197,7 @@ function FetchAllCustomer() {
 }
 var status = "";
 function RegisterParticipants() {
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
@@ -223,7 +224,7 @@ function RegisterParticipants() {
             jQuery('#divalerterr').css('display', 'none');
         }, 5000);
     }
-    var RegisterParticipants = {
+  /*  var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
         "ParticipantName": jQuery("#ParticipantName").val(),
@@ -246,8 +247,47 @@ function RegisterParticipants() {
         "AlternateEmailID": $('#txtAlternateeMailID').val(),
         "ProductCatID": InsertQuery
 
+    };*/
+    var RegisterParticipants = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ParticipantName": jQuery("#ParticipantName").val(),
+        "Address": jQuery("#txtAddress").val(),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").text(),
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "PanNo": jQuery("#txtPanNo").val(),
+        "TinNo": jQuery("#txtTINNo").val(),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        //New Check
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        // "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val().attr("selected", "selected")) ,
+        "IsActive": status,
+        "UserID": sessionStorage.getItem('UserID'),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "ActionType": $('#hdnFlagType').val(),
+        "ContactPerson": $('#ContactName').val(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ProductCatID": InsertQuery
+
+
     };
-    // alert(JSON.stringify(RegisterParticipants))
+
+
+    sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
+
+
+
+
+
+   // alert(JSON.stringify(RegisterParticipants))
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -331,7 +371,9 @@ function fetchParticipantsVenderTable() {
                     if (value.mapBtnRequired == 'N') {
                         str = "<tr><td style=\"text-align:center;width:10%!important;\">";
 
-                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                       // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+
+                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                         str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                         if (value.actionType == "EditVendor") {
                             str += "<td style=\"width:10%!important;\">No</td>";
@@ -371,8 +413,8 @@ function fetchParticipantsVenderTable() {
     });
 }
 
-function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternateemail, countryid, stateid, cityid) {
-
+function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid) {
+    
     $('#hdnFlagType').val(buttonname)
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
@@ -385,7 +427,12 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
     jQuery("#txtMobileNo").val(mobile)
     jQuery("#ContactName").val(contactp)
     jQuery("#txtcompanyemail").val(emailid)
-    jQuery("#txtAlternateeMailID").val(alternateemail)
+    jQuery("#txtAlternateeMailID").val(alternateemailid)
+    $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
+
+    jQuery("#txtZipCd").val(zipcode)
+    $('#ddlCountryCd').val(dialingcode).trigger('change')
+    $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
 
     if (isactive == "Y" || isactive.toLowerCase() == "yes") {
         status = 'Y';
@@ -554,6 +601,7 @@ function fetchCountry() {
         data: "{}",
         cache: false,
         async: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlCountry").empty();
@@ -561,6 +609,8 @@ function fetchCountry() {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                    $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
 
                 $("#ddlCountry").val('111').trigger("change");
@@ -584,6 +634,38 @@ function fetchCountry() {
             jQuery.unblockUI();
         }
 
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+
+            jQuery("#ddlpreferredTime").empty();
+             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
     });
 }
 

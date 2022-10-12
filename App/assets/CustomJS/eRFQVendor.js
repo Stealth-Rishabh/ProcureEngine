@@ -343,7 +343,7 @@ var FormWizard = function () {
                         count = count + 1;
                     }
                     else {
-                        flag = "T"
+                                
                     }
                 }
                 if (flag == "F") {
