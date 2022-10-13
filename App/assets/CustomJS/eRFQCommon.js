@@ -1389,7 +1389,7 @@ function addLoadingFactor() {
     var _LoadingAmount = 0;
     var isSubmitActive = true;
     var vId = parseInt($("#hdnvendorid").val());
-    var totalPriceWithutGst = parseFloat($("#totBoxwithoutgst" + vId).val());
+    var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
     //jQuery("#tblLoadingFactor").empty();
     if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
         if ($("#txtloadingfactorPer").val() == "" || $("#txtloadingfactorPer").val() == null || $("#txtloadingfactorPer").val() == 'undefined') {
