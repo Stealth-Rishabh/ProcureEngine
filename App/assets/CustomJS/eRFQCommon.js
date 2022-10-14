@@ -538,23 +538,33 @@ function RFQFetchL1Package(VendorID, Counter) {
 }
 function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     $("#editloadingfactor").modal('show');
+    $("#tblLoadingFactor").empty();
     $("#hdngstprice").val(pricewithgst);
     $("#hdnvendorid").val(vendorid);
+    var Data = {
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
+        "VendorID": parseInt($("#hdnvendorid").val())
+    }
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQfetchLoadingFactor/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(Data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            //WRITE HERE
+        }
+    })
 }
 function updloadingfactor() {
-    var _LoadinAmount = 0;
     if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
-        if ($("#txtloadingfactorPer").val() == "" || $("#txtloadingfactorPer").val() == null || $("#txtloadingfactorPer").val() == 'undefined') {
-            $('.alert-danger').show();
-            $('#msgErrorL1').html('Please Enter Loading factor');
-            Metronic.scrollTo($(".alert-danger"), -200);
-            $('.alert-danger').fadeOut(7000);
-            $("#txtloadingfactor").val('')
-            return false;
-        }
-        else {
-            _LoadinAmount = 0
-        }
+        $('.alert-danger').show();
+        $('#msgErrorL1').html('Please Enter Loading factor');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        $("#txtloadingfactor").val('')
+        return false;
     }
     else {
         var Data = {
@@ -610,7 +620,6 @@ $("#editloadingfactor").on("hidden.bs.modal", function () {
     $("#hdnvendorid").val('');
     $("#txtloadingfactorreason").val('');
 });
-
 function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
@@ -1386,6 +1395,7 @@ function downloadexcel() {
 //FOR LOADING FACTOR TABLE
 var rowques = 0;
 function addLoadingFactor() {
+    debugger;
     var _LoadingAmount = 0;
     var isSubmitActive = true;
     var vId = parseInt($("#hdnvendorid").val());
