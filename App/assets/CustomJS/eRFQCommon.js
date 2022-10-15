@@ -511,15 +511,16 @@ function RFQFetchL1Package(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+             //abheedev bug 349 start
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#withGSTL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
             //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-            $("#totL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-
+            
+            $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
+             //abheedev bug 349 end
 
         }, error: function (xhr, status, error) {
 
@@ -536,11 +537,31 @@ function RFQFetchL1Package(VendorID, Counter) {
         }
     });
 }
+
 function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     $("#editloadingfactor").modal('show');
+    $("#tblLoadingFactor").empty();
     $("#hdngstprice").val(pricewithgst);
     $("#hdnvendorid").val(vendorid);
+    var Data = {
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
+        "VendorID": parseInt($("#hdnvendorid").val())
+    }
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQfetchLoadingFactor/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(Data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            //WRITE HERE 
+            console.log(data);
+
+        }
+    })
 }
+
 function updloadingfactor() {
     if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
         $('.alert-danger').show();
@@ -566,20 +587,21 @@ function updloadingfactor() {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
+                //abheedev bug 349 start
                 //if (data[0].LoadingFactor > 0) {
                 //  alert(data[0].loadingFactor)
                 var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
                 $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
                 $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
                 $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                $('#LFactorexcel' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(thousands_separators(price))
+                $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
+                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
                 $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
                 }, 1000)
+                //abheedev bug 349 end
                 // }
             },
             error: function (xhr, status, error) {
@@ -709,16 +731,17 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            //abheedev bug 349 start
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            $("#totBoxwithgstExcel" + VendorID).html(data[0].totalPriceIncTax);
             //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
-
-            $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            
+            $("#totBoxTaxExcel" + VendorID).html(data[0].totalPriceExTax);
+             //abheedev bug 349 end
             if ($("#ddlrfqVersion option:selected").val() == 99) {
 
 
@@ -1375,6 +1398,130 @@ function downloadexcel() {
     a.click();
     //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
     // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
+}
+
+function fnAddUpdLoadingFactor() {
+    var quesquery = '';
+    $("#tblLoadingFactor> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+    });
+    var data = {
+        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "AttachString": attchquery,
+        "QuesString": quesquery
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            fetchAttachments();
+            GetQuestions();
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
+
+
+//FOR LOADING FACTOR TABLE
+var rowques = 0;
+function addLoadingFactor() {
+    
+    var _LoadingAmount = 0;
+    var isSubmitActive = true;
+    var vId = parseInt($("#hdnvendorid").val());
+    var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
+    //jQuery("#tblLoadingFactor").empty();
+    if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
+        if ($("#txtloadingfactorPer").val() == "" || $("#txtloadingfactorPer").val() == null || $("#txtloadingfactorPer").val() == 'undefined') {
+            isSubmitActive = false;
+            $('.alert-danger').show();
+            $('#spandanger').html('Please Enter Either Loading Factor Percenatge or Absolute value');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else {
+            isSubmitActive = true;
+            if ($(ddlLFType).val() == "P") {
+                _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactorPer").val())) / 100;
+                alert(_LoadingAmount);
+            }
+            else {
+                _LoadingAmount = $("#txtloadingfactor").val();
+                
+            }
+        }
+    }
+    else {
+        isSubmitActive = true;
+        _LoadingAmount = parseFloat($("#txtloadingfactor").val());
+    }
+    if (jQuery("#txtloadingfactorreason").val() == "") {
+        isSubmitActive = false;
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Reason');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    if (isSubmitActive) {
+        //_LoadingAmount = parseFloat()
+
+         //abheedev loading factor start
+        rowques = rowques + 1;
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+        }
+       
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + _LoadingAmount + '</td>';
+        strprev += "<td>" + jQuery("#txtloadingfactorreason").val() + "</td>"
+        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
+        strprev += "<td>" + jQuery("#txtloadingfactorPer").val() + "</td>"
+
+       // jQuery('#tblLoadingFactor').append(strprev);
+        //TODO
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+        }
+       // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
+     //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
+     //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
+        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblLoadingFactor').append(strprev);
+        jQuery("#tblLoadingFactor").val('')
+        
+        //abheedev loading factor End
+    }
+}
+
+function deleteLFrow(rowid) {
+    rowques = rowques - 1;
+    $('#' + rowid.id).remove();
+
 }
 
 function fnAddUpdLoadingFactor() {
