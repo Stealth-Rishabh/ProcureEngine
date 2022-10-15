@@ -545,8 +545,8 @@ function fetchrfqcomprative() {
                         if (data[0].lStatus[k].vendorID == data[0].vendorNames[l].vendorID) {
                             if (ShowPrice == "Y") {
                                 if (data[0].lStatus[k].status != 'N/A') {
-                                    str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
-                                    strExcel += "<td colspan=4>" + data[0].lStatus[l].status + "</td>";
+                                    str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[k].status + "</td>";
+                                    strExcel += "<td colspan=4>" + data[0].lStatus[k].status + "</td>";
                                 }
                                 else {
                                     str += "<td colspan=4 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
