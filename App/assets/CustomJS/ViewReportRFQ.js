@@ -1,15 +1,15 @@
-$('#printed_by').html(sessionStorage.getItem('UserName'));
+﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
-  /*
-    var dt = new Date();
-    var day = dt.getDate();
-    var month = dt.getMonth() + 1;
-    var year = dt.getFullYear();
-    var hour = dt.getHours();
-    var mins = dt.getMinutes();
-    postfix = day + "/" + month + "/" + year;*/
-    
-    postfix= new Date()
+    /*
+      var dt = new Date();
+      var day = dt.getDate();
+      var month = dt.getMonth() + 1;
+      var year = dt.getFullYear();
+      var hour = dt.getHours();
+      var mins = dt.getMinutes();
+      postfix = day + "/" + month + "/" + year;*/
+
+    postfix = new Date()
 
     $('#printed_on').html(postfix);
 }
@@ -53,7 +53,7 @@ function fetchReguestforQuotationDetails(RFQID) {
 
 }
 function fetchrfqcomprative(RFQID) {
-    
+
     var reInvited = '';
 
     jQuery.ajax({
@@ -96,7 +96,7 @@ function fetchrfqcomprative(RFQID) {
 
                 //For Printing Header
                 //@abheedev bug349 start
-                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target price</th>"
                 //@abheedev bug349 end
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
 
@@ -1273,7 +1273,7 @@ function fetchAttachments() {
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
 function saveAspdf() {
-    
+
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
     var pdf = new jsPDF('l', 'pt', 'a0');
     var options = {

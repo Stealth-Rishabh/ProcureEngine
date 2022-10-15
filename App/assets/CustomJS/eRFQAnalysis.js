@@ -359,7 +359,7 @@ function fetchrfqcomprative() {
                                             str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
 
                                         }
-                                            //abheedev backlog 335 end part 2
+                                        //abheedev backlog 335 end part 2
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + _totalWithoutGst + "</td>";
@@ -545,8 +545,8 @@ function fetchrfqcomprative() {
                         if (data[0].lStatus[k].vendorID == data[0].vendorNames[l].vendorID) {
                             if (ShowPrice == "Y") {
                                 if (data[0].lStatus[k].status != 'N/A') {
-                                    str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[l].status + "</td>";
-                                    strExcel += "<td colspan=4>" + data[0].lStatus[l].status + "</td>";
+                                    str += "<td colspan=4 style='text-align:center;color: blue!important;'>" + data[0].lStatus[k].status + "</td>";
+                                    strExcel += "<td colspan=4>" + data[0].lStatus[k].status + "</td>";
                                 }
                                 else {
                                     str += "<td colspan=4 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
