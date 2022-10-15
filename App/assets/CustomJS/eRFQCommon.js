@@ -538,52 +538,132 @@ function RFQFetchL1Package(VendorID, Counter) {
 }
 function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     $("#editloadingfactor").modal('show');
+    $("#tblLoadingFactor").empty();
     $("#hdngstprice").val(pricewithgst);
     $("#hdnvendorid").val(vendorid);
-}
-function updloadingfactor() {
-    if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
-        $('.alert-danger').show();
-        $('#msgErrorL1').html('Please Enter Loading factor');
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(7000);
-        $("#txtloadingfactor").val('')
-        return false;
+    var Data = {
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
+        "VendorID": parseInt($("#hdnvendorid").val())
     }
-    else {
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQfetchLoadingFactor/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(Data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            //WRITE HERE
+        }
+    })
+}
+
+
+function updloadingfactor() {
+    //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
+    //    $('.alert-danger').show();
+    //    $('#msgErrorL1').html('Please Enter Loading factor');
+    //    Metronic.scrollTo($(".alert-danger"), -200);
+    //    $('.alert-danger').fadeOut(7000);
+    //    $("#txtloadingfactor").val('')
+    //    return false;
+    //}
+    //else {
+    //    var Data = {
+    //        "RFQID": parseInt($('#hdnRfqID').val()),
+    //        "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
+    //        "VendorID": parseInt($("#hdnvendorid").val()),
+    //        "LoadingFactor": parseFloat(removeThousandSeperator($("#txtloadingfactor").val())),
+    //        "LoadingFactorReason": $("#txtloadingfactorreason").val()
+    //    }
+    //    // alert(JSON.stringify(Data))
+    //    jQuery.ajax({
+    //        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
+    //        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+    //        type: "POST",
+    //        data: JSON.stringify(Data),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data, status, jqXHR) {
+
+    //            //if (data[0].LoadingFactor > 0) {
+    //            //  alert(data[0].loadingFactor)
+    //            var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
+    //            $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+    //            $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
+    //            $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+    //            $('#LFactorexcel' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+    //            $('#LoadingFexcel' + $("#hdnvendorid").val()).html(thousands_separators(price))
+    //            $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+    //            setTimeout(function () {
+    //                $("#editloadingfactor").modal('hide');
+    //                fetchrfqcomprative();
+    //            }, 1000)
+    //            // }
+    //        },
+    //        error: function (xhr, status, error) {
+
+    //            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+    //            if (xhr.status == 401) {
+    //                error401Messagebox(err.Message);
+    //            }
+    //            else {
+    //                fnErrorMessageText('spnerror', '');
+    //            }
+    //            jQuery.unblockUI();
+    //            return false;
+
+    //        }
+    //    })
+    //}
+    debugger;
+    var tabItems = '', eRFQLoadingTerms = [];
+    var oTable = document.getElementById('tblLoadingFactor');
+    var rowCount = oTable.rows.length;
+    //var rowCount = jQuery('#tblLoadingFactor >tbody>tr').length;
+    var isSubmit = false;
+    if (rowCount >= 1) {
+        //var this_row = $(this);
+        for (i = 1; i < rowCount; i++) {
+            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML);
+            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+            var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+            if (_LFPer == '' || _LFPer == null || _LFPer == 'undefined') {
+                _LFPer = 0;
+            }
+            else {
+                _LFPer = parseFloat(_LFPer);
+            }
+            tabItems = {
+                "LoadingFactor": _LF,
+                "LoadingFactorReason": _LFReason,
+                "LoadingFactorType": _LFType,
+                "LoadingFactorPer":_LFPer
+            }
+            eRFQLoadingTerms.push(tabItems);
+            isSubmit = true;
+        }
+    }
+    if (isSubmit) {
         var Data = {
             "RFQID": parseInt($('#hdnRfqID').val()),
             "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
             "VendorID": parseInt($("#hdnvendorid").val()),
-            "LoadingFactor": parseFloat(removeThousandSeperator($("#txtloadingfactor").val())),
-            "LoadingFactorReason": $("#txtloadingfactorreason").val()
+            "ERFQLoadingTerms": eRFQLoadingTerms
         }
-        // alert(JSON.stringify(Data))
         jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
+            url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQSetLoadingFactor/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-                //if (data[0].LoadingFactor > 0) {
-                //  alert(data[0].loadingFactor)
-                var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                $('#LFactorexcel' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
                 }, 1000)
-                // }
             },
             error: function (xhr, status, error) {
-
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -593,9 +673,11 @@ function updloadingfactor() {
                 }
                 jQuery.unblockUI();
                 return false;
-
             }
         })
+    }
+    else {
+
     }
 }
 $("#editloadingfactor").on("hidden.bs.modal", function () {
@@ -1375,6 +1457,129 @@ function downloadexcel() {
     a.click();
     //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
     // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
+}
+
+function fnAddUpdLoadingFactor() {
+    var quesquery = '';
+    $("#tblLoadingFactor> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+    });
+    var data = {
+        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "AttachString": attchquery,
+        "QuesString": quesquery
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            fetchAttachments();
+            GetQuestions();
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
+
+
+//FOR LOADING FACTOR TABLE
+var rowques = 0;
+function addLoadingFactor() {
+
+    var _LoadingAmount = 0;
+    var _loadingPer = 0;
+    var isSubmitActive = true;
+    var vId = parseInt($("#hdnvendorid").val());
+    var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
+    //jQuery("#tblLoadingFactor").empty();
+    if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
+        isSubmitActive = false;
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Either Loading Factor Percenatge or Absolute value');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+        
+    }
+    else {
+        isSubmitActive = true;
+        //_LoadingAmount = parseFloat($("#txtloadingfactor").val());
+        isSubmitActive = true;
+        if ($(ddlLFType).val() == "P") {
+            _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
+            _loadingPer = $("#txtloadingfactor").val();
+
+        }
+        else {
+            _LoadingAmount = $("#txtloadingfactor").val();
+
+        }
+    }
+    if (jQuery("#txtloadingfactorreason").val() == "") {
+        isSubmitActive = false;
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Enter Reason');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    if (isSubmitActive) {
+        //_LoadingAmount = parseFloat()
+
+        //abheedev loading factor start
+        rowques = rowques + 1;
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+        }
+
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + _LoadingAmount + '</td>';
+        strprev += "<td>" + jQuery("#txtloadingfactorreason").val() + "</td>"
+        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
+        strprev += "<td>" + _loadingPer + "</td>"
+
+        // jQuery('#tblLoadingFactor').append(strprev);
+        //TODO
+        if (!jQuery("#tblLoadingFactor thead").length) {
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+        }
+        // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
+        //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
+        //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
+        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        jQuery('#tblLoadingFactor').append(strprev);
+        jQuery("#tblLoadingFactor").val('')
+
+        //abheedev loading factor End
+    }
+}
+
+function deleteLFrow(rowid) {
+    rowques = rowques - 1;
+    $('#' + rowid.id).remove();
+
 }
 
 function fnAddUpdLoadingFactor() {
