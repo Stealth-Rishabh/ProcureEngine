@@ -1523,6 +1523,8 @@ function fnAddUpdLoadingFactor() {
 //FOR LOADING FACTOR TABLE
 var rowques = 0;
 function addLoadingFactor() {
+     //abheedev loading factor start
+
 
     var _LoadingAmount = 0;
     var _loadingPer = 0;
@@ -1564,16 +1566,17 @@ function addLoadingFactor() {
     if (isSubmitActive) {
         //_LoadingAmount = parseFloat()
 
-        //abheedev loading factor start
+       
+       
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + _LoadingAmount + '</td>';
-        strprev += "<td>" + jQuery("#txtloadingfactorreason").val() + "</td>"
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>" 
         strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
-        strprev += "<td>" + _loadingPer + "</td>"
+       // strprev += "<td>" + _loadingPer + "</td>"
+        strprev += '<td>' + _LoadingAmount + '</td>';
 
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
@@ -1586,6 +1589,10 @@ function addLoadingFactor() {
         strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblLoadingFactor').append(strprev);
         jQuery("#tblLoadingFactor").val('')
+
+        jQuery("#txtloadingfactorreason").val('')
+        jQuery("#ddlLFType").val('')
+        jQuery("#txtloadingfactor").val('')
 
         //abheedev loading factor End
     }
