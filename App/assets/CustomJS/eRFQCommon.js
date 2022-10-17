@@ -511,15 +511,16 @@ function RFQFetchL1Package(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            //abheedev bug 349 start
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#withGSTL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
+            $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
             //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-            $("#totL1RankExcel" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
 
+            $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
+            //abheedev bug 349 end
 
         }, error: function (xhr, status, error) {
 
@@ -536,6 +537,7 @@ function RFQFetchL1Package(VendorID, Counter) {
         }
     });
 }
+
 function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     $("#editloadingfactor").modal('show');
     $("#tblLoadingFactor").empty();
@@ -638,7 +640,7 @@ function updloadingfactor() {
                 "LoadingFactor": _LF,
                 "LoadingFactorReason": _LFReason,
                 "LoadingFactorType": _LFType,
-                "LoadingFactorPer":_LFPer
+                "LoadingFactorPer": _LFPer
             }
             eRFQLoadingTerms.push(tabItems);
             isSubmit = true;
@@ -658,10 +660,22 @@ function updloadingfactor() {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
+                //abheedev bug 349 start
+                //if (data[0].LoadingFactor > 0) {
+                //  alert(data[0].loadingFactor)
+                var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
+                $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+                $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
+                $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+                $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
+                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
+                $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
                 }, 1000)
+                //abheedev bug 349 end
+                // }
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -791,16 +805,17 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            //abheedev bug 349 start
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxwithgstExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            $("#totBoxwithgstExcel" + VendorID).html(data[0].totalPriceIncTax);
             //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
 
-            $("#totBoxTaxExcel" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
+            $("#totBoxTaxExcel" + VendorID).html(data[0].totalPriceExTax);
+            //abheedev bug 349 end
             if ($("#ddlrfqVersion option:selected").val() == 99) {
 
 
@@ -1522,7 +1537,7 @@ function addLoadingFactor() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
-        
+
     }
     else {
         isSubmitActive = true;

@@ -158,8 +158,8 @@ var Login = function () {
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-        lastPart = 'vendor'
-
+        //lastPart = 'vendor'
+        debugger;
         if (lastPart.toLocaleLowerCase() == "vendor") {
             // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
 
