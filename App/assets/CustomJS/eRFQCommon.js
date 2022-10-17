@@ -626,15 +626,20 @@ function updloadingfactor() {
     if (rowCount >= 1) {
         //var this_row = $(this);
         for (i = 1; i < rowCount; i++) {
-            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML);
-            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-            var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
-            if (_LFPer == '' || _LFPer == null || _LFPer == 'undefined') {
-                _LFPer = 0;
+            var _LFPer = 0;
+            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML;
+            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML);
+            //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+            //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+            if (_LFType == 'P') {
+                var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+                perVal = perVal.replace('%', '');
+                _LFPer = parseFloat(perVal);
             }
             else {
-                _LFPer = parseFloat(_LFPer);
+                _LFPer = 0;
             }
             tabItems = {
                 "LoadingFactor": _LF,
@@ -1570,11 +1575,18 @@ function addLoadingFactor() {
 
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+            //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
         }
 
         var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>"
-        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
+        strprev += "<td style='display:none;'>" + jQuery("#ddlLFType").val() + "</td>"
+        if ($("#ddlLFType").val() == 'P') {
+            strprev += "<td>" + $("#txtloadingfactor").val() + "%</td>"
+        }
+        else {
+            strprev += "<td>" + $("#txtloadingfactor").val() + "INR</td>"
+        }
         // strprev += "<td>" + _loadingPer + "</td>"
         strprev += '<td>' + _LoadingAmount + '</td>';
 
