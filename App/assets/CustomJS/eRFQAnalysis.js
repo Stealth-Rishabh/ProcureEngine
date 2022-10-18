@@ -767,7 +767,7 @@ function fetchrfqcomprative() {
                                                 strQ += "<td colspan=4 style='color: red!important; text-align: center;' >Not Quoted</td>";
                                                 strExcelQ += "<td colspan=4>Not Quoted </td>";
                                             }
-                                     //abheedev bug 349 part2  end
+                                     //abheedev bug 349 part2  end is done
                                         }
 
                                     }
