@@ -556,6 +556,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
             //WRITE HERE
+            alert(data[0].loadingFactor);
         }
     })
 }
@@ -668,13 +669,14 @@ function updloadingfactor() {
                 //abheedev bug 349 start
                 //if (data[0].LoadingFactor > 0) {
                 //  alert(data[0].loadingFactor)
-                var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
-                $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
-                $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+                //debugger;
+                //var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
+                //$('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+                //$('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
+                //$('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+                //$('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
+                //$('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
+                //$('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
