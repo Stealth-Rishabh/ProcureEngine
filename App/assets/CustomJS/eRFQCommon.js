@@ -1581,7 +1581,7 @@ function addLoadingFactor() {
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
         }
         // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
