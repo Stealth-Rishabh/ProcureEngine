@@ -511,16 +511,16 @@ function RFQFetchL1Package(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-             //abheedev bug 349 start
+            
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
             //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-            
+
             $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
-             //abheedev bug 349 end
+          
 
         }, error: function (xhr, status, error) {
 
@@ -537,7 +537,7 @@ function RFQFetchL1Package(VendorID, Counter) {
         }
     });
 }
-
+var rowques = 0;
 function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     $("#editloadingfactor").modal('show');
     $("#tblLoadingFactor").empty();
@@ -555,8 +555,42 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //WRITE HERE
-            alert(data[0].loadingFactor);
+           
+            console.log(data);
+            
+            
+            if (data.length > 0) {
+
+                if (!jQuery("#tblLoadingFactor thead").length) {
+                    //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+                }
+            }
+            for (i = 0; i < data.length; i++) {
+                rowques=i+1
+                var strprev = '<tr id=trLFid' + rowques + ' ><td>' + data[i].loadingFactorReason + "</td>"
+                strprev += "<td style='display:none;'>" + data[i].loadingFactorType + "</td>"
+                if (data[i].loadingFactorType == 'P') {
+                    strprev += "<td>" + data[i].loadingFactorPer + "%</td>"
+                }
+                else {
+                    strprev += "<td>" + data[i].loadingFactor + "INR</td>"
+                }
+                
+                strprev += '<td>' + data[i].loadingFactor + '</td>';
+
+                
+                if (!jQuery("#tblLoadingFactor thead").length) {
+                    jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+                }
+                
+                strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                jQuery('#tblLoadingFactor').append(strprev);
+
+
+
+
+            }
         }
     })
 }
@@ -627,21 +661,26 @@ function updloadingfactor() {
     if (rowCount >= 1) {
         //var this_row = $(this);
         for (i = 1; i < rowCount; i++) {
-            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML);
-            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-            var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
-            if (_LFPer == '' || _LFPer == null || _LFPer == 'undefined') {
-                _LFPer = 0;
+            var _LFPer = 0;
+            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML;
+            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML);
+            //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+            //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+            if (_LFType == 'P') {
+                var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+                perVal = perVal.replace('%', '');
+                _LFPer = parseFloat(perVal);
             }
             else {
-                _LFPer = parseFloat(_LFPer);
+                _LFPer = 0;
             }
             tabItems = {
                 "LoadingFactor": _LF,
                 "LoadingFactorReason": _LFReason,
                 "LoadingFactorType": _LFType,
-                "LoadingFactorPer":_LFPer
+                "LoadingFactorPer": _LFPer
             }
             eRFQLoadingTerms.push(tabItems);
             isSubmit = true;
@@ -662,20 +701,20 @@ function updloadingfactor() {
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
                 //abheedev bug 349 start
-                //if (data[0].LoadingFactor > 0) {
-                //  alert(data[0].loadingFactor)
-                //debugger;
-                //var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                //$('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                //$('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                //$('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                //$('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
-                //$('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
-                //$('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+               // if (data[0].LoadingFactor > 0) {
+                // alert(data[0].loadingFactor)
+                // var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
+               //   $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+               // $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
+              //  $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+             //   $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
+             //   $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
+            //   $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
                 }, 1000)
+                rowques = 0;
                 //abheedev bug 349 end
                 // }
             },
@@ -815,9 +854,9 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
             //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
-            
+
             $("#totBoxTaxExcel" + VendorID).html(data[0].totalPriceExTax);
-             //abheedev bug 349 end
+            //abheedev bug 349 end
             if ($("#ddlrfqVersion option:selected").val() == 99) {
 
 
@@ -1523,9 +1562,9 @@ function fnAddUpdLoadingFactor() {
 
 
 //FOR LOADING FACTOR TABLE
-var rowques = 0;
+
 function addLoadingFactor() {
-     //abheedev loading factor start
+    //abheedev loading factor start
 
 
     var _LoadingAmount = 0;
@@ -1541,7 +1580,7 @@ function addLoadingFactor() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
-        
+
     }
     else {
         isSubmitActive = true;
@@ -1568,22 +1607,29 @@ function addLoadingFactor() {
     if (isSubmitActive) {
         //_LoadingAmount = parseFloat()
 
-       
-       
+
+
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+            //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>" 
-        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
-       // strprev += "<td>" + _loadingPer + "</td>"
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>"
+        strprev += "<td style='display:none;'>" + jQuery("#ddlLFType").val() + "</td>"
+        if ($("#ddlLFType").val() == 'P') {
+            strprev += "<td>" + $("#txtloadingfactor").val() + "%</td>"
+        }
+        else {
+            strprev += "<td>" + $("#txtloadingfactor").val() + "INR</td>"
+        }
+        // strprev += "<td>" + _loadingPer + "</td>"
         strprev += '<td>' + _LoadingAmount + '</td>';
 
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
         }
         // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
@@ -1593,7 +1639,7 @@ function addLoadingFactor() {
         jQuery("#tblLoadingFactor").val('')
 
         jQuery("#txtloadingfactorreason").val('')
-        jQuery("#ddlLFType").val('')
+        jQuery("#ddlLFType").val('A')
         jQuery("#txtloadingfactor").val('')
 
         //abheedev loading factor End
@@ -1601,6 +1647,7 @@ function addLoadingFactor() {
 }
 
 function deleteLFrow(rowid) {
+    debugger
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 

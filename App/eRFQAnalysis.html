@@ -86,15 +86,15 @@
                 width: 300px;
                 opacity: .9;
                 color: rgb(6, 6, 6);
-                background-color: #ff7;
+                background-color: #44b6ae;
                 text-align: center;
                 border-radius: 5px;
                 padding: 5px 5px;
                 transition: opacity 1s ease-in-out;
                 position: absolute;
-                z-index: .5;
-                left: 100%;
-                bottom: 0%;
+                z-index: 1;
+                right: 100%;
+                bottom: 20px;
             }
 
             .hovertext:hover:before {
@@ -678,7 +678,7 @@
     </div>
     <div id="editloadingfactor" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
         <!--abheedev loading factor start-->
-        <div class="modal-dialog modal-md" style=" width:1200px;">
+        <div class="modal-dialog modal-md" style=" width:800px;">
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
@@ -716,16 +716,16 @@
 
                                     </div>
 
-                                    <div class="col-md-4 xyz">
+                                    <div class="col-md-3 xyz">
                                         <label class="control-label">
                                             Loading Factor Type
                                         </label>
 
                                         <select class="form-control" id="ddlLFType">
-                                            <option value="">Select All</option>
+                                            <!--   <option value="">Select All</option>-->
                                             <option value="A" id="optA">Absolute</option>
                                             <option value="P">Percentage</option>
-                                            <option value="3" id="opPauseval" class="hide">PAUSE</option>
+                                            <!--  <option value="3" id="opPauseval" class="hide">PAUSE</option>-->
                                         </select>
                                     </div>
 
@@ -734,7 +734,7 @@
                                             Loading Factor<span class="required"> *</span>
                                         </label>
 
-                                        <input type="text" class="form-control thousandseparated" id="txtloadingfactor" name="txtloadingfactor" autocomplete="off" /><!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="text" class="form-control"  id="txtloadingfactor" name="txtloadingfactor"   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off"  /><!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
 
@@ -748,7 +748,7 @@
                                         <!--<input type="text" class="form-control " id="txtloadingfactorPer" name="txtloadingfactorPer" maxlength="2" autocomplete="off" />-->
                                     <!-- </div>-->
 
-                                    <div class="col-md-1 xyz " style="margin:30px auto">
+                                    <div class="col-md-2 xyz " style="margin:30px auto">
 
 
                                         <button type="button" id="Addbtn1" onclick="addLoadingFactor()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
