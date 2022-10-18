@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -114,7 +114,7 @@
 
                         <li><a href="#">RFX Closed Details</a> </li>
                     </ul>
-
+                   
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
@@ -210,7 +210,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                       
                                     </div>
 
 
@@ -232,15 +232,15 @@
                                 <div class="caption">
                                     <i class="fa fa-reorder"></i>RFQ Parameters
                                 </div>
-
+                               
                             </div>
 
 
                             <div id="divdomestic" class="portlet-body form" style="display: none;">
                                 <!-- BEGIN FORM-->
                                 <form action="#" id="formdomestic" class="form-horizontal">
-
-
+                                   
+                                    
                                     <div class="form-body">
                                         <div class="form-group">
                                             <div class="col-md-12">
@@ -262,9 +262,9 @@
                                             </div>
                                         </div>
 
-
+                                       
                                     </div>
-
+                                   
                                 </form>
                                 <!-- END FORM-->
                             </div>
@@ -347,7 +347,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-
+                   
                     <form action="#" id="mapsections" class="form-horizontal" role="form">
                         <div class="form-body">
                             <input type="hidden" id="hddnBoqParamQuantity" value="0" />
@@ -358,12 +358,12 @@
                                 </div>
 
                             </div>
-
+                            
 
                             <input type="hidden" id="txtRFQParameterId" name="txtRFQParameterId" autocomplete="off" value="0" />
                             <input type="hidden" id="txtRFQId" name="txtRFQId" autocomplete="off" value="0" />
 
-
+                           
 
                     </form>
                 </div>
@@ -448,21 +448,21 @@
             var param = getUrlVars()["param"];
             var decryptedstring = fndecrypt(param);
             var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+           
+                var version = 0;
+                if (sessionStorage.getItem('RFQVersionId') > 0) {
+                    version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
 
-            var version = 0;
-            if (sessionStorage.getItem('RFQVersionId') > 0) {
-                version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
-
-            }
-            sessionStorage.setItem('hddnRFQID', _RFQid)
-            fetchReguestforQuotationDetails();
-            fetchRFIParameteronload(getUrlVarsURL(decryptedstring)["Ver"]);
-
+                }
+                sessionStorage.setItem('hddnRFQID', _RFQid)
+                fetchReguestforQuotationDetails();
+                fetchRFIParameteronload(getUrlVarsURL(decryptedstring)["Ver"]);
+             
             Metronic.init();
-            setCommonData();
-
+           setCommonData();
+           
         });
-
+       
 
     </script>
 

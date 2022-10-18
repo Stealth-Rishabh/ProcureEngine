@@ -1,4 +1,4 @@
-﻿var param = getUrlVars()["param"]
+var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
@@ -163,7 +163,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
 
     };
-    //alert(JSON.stringify(Data))
+     //alert(JSON.stringify(Data))
     //console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -172,7 +172,7 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-
+            
             if (data == '1') {
                 $('#spansuccess1').html("PPC Form Saved Successfully...");
                 success.show();
@@ -378,7 +378,7 @@ function fetchAzPPcFormDetails() {
                             $("#TPIN" + i).removeAttr("checked");
                             $("#TPIY" + i).removeAttr("checked");
                         }
-
+                        
                         else {
                             $("#TPIY" + i).removeAttr("checked");
                             $("#TPIN" + i).attr("checked", "checked");

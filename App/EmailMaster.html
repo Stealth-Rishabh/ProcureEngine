@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
-
+   
     <link rel="shortcut icon" href="../favicon.ico" />
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -152,7 +152,7 @@
                                             <label class="col-lg-4 col-sm-2 control-label text-left">
                                                 Email Event Name :<span class="required"> *</span>
                                             </label>
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-8 xyz">
                                                 <input type="text" id="emailEventName" name="emailEventName" class="form-control" rows="6"
                                                        autocomplete="off" placeholder="Email Event Name" onkeyup="replaceQuoutesFromString(this)" />
                                             </div>
@@ -195,13 +195,10 @@
                                             <div class="col-lg-8" style="padding-top: 7px;">
                                                 <span style="color:red;">Please use prefix in given form eg. Vendor Registration Request : ~VendorName</span>
                                             </div>
-                                            <div class="col-lg-12 margin-top-10">
+                                            <div class="col-lg-12 margin-top-10 xyz">
                                                 <input type="text" id="emailSubject" name="emailSubject" class="form-control" rows="6"
-                                                       autocomplete="off" placeholder="Email Subject" onkeyup="replaceQuoutesFromString(this)" />
-
-                                                <br />
-
-
+                                                autocomplete="off" placeholder="Email Subject" onkeyup="replaceQuoutesFromString(this)" />
+                                             
                                             </div>
                                         </div>
 
@@ -326,8 +323,8 @@
     <script src="assets/scripts/core/app.js"></script>
     <script src="assets/scripts/custom/components-pickers.js"></script>
     <script src="assets/scripts/aes.js"></script>
-    <!-- END PAGE LEVEL SCRIPTS -->
-    <script src="assets/CustomJS/ckeditor.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS --> 
+    <script src="assets/CustomJS/ckeditor.js"></script>  
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js"></script>
     <script src="assets/CustomJS/EmailMaster.js"></script>
@@ -352,13 +349,13 @@
                 }
             }
             App.init();
-
+           
             CKEDITOR.replace('emailBody');
             CKEDITOR.replace('emailFooter');
             CKEDITOR.replace('emailSignature');
 
             setCommonData();
-
+    
             FormValidate();
             fetchEmailMasters();
             fetchMenuItemsFromSession(19, 62);
@@ -369,7 +366,7 @@
     </script>
     <script>
 
-
+                
     </script>
     <!-- END JAVASCRIPTS -->
 </body>

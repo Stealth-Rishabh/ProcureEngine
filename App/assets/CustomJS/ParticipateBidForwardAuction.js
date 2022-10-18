@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var form1 = $('#FormparticipateAir');
@@ -13,8 +13,19 @@ $(document).on("keyup", "#tblParticipantsVender .form-control", function () {
 
 });
 
+
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
+
 /////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
@@ -595,7 +606,7 @@ function startTimer(duration, display) {
             display.textContent = minutes + ":" + seconds;
         }
 
-
+       
         // if (timer == 300) {
         if (timer <= 300 && timer >= 240) {
             if (coutercall == 0) {
@@ -726,7 +737,7 @@ function InsUpdQuoteScrap(rowID) {
             "PSID": parseInt($('#psid' + i).html()),
             "EnteredBy": vendorID,
             "extendTime": parseInt($('#hdnval').val()),
-            "isPrePricing": 'N'
+            "isPrePricing":'N'
         };
         $('#hdnselectedindex').val(i);
         connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {

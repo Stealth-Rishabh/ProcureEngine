@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var _isBidStarted = true;
@@ -16,7 +16,7 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
 }).catch(function (err) {
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
-});
+}); 
 connection.on("refreshColumnStatusCoal", function (data) {
     if (data == "-1") {
         $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')

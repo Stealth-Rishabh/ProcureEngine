@@ -1,10 +1,10 @@
-﻿var error = $('#errordiv');
+var error = $('#errordiv');
 var success = $('#successdiv');
 var subcaterror = $('#errordiv1');
 var subcatsuccess = $('#successdiv1');
 
 function FormValidate() {
-
+ 
     $('#Emailmaster').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
@@ -14,17 +14,17 @@ function FormValidate() {
             emailEventName: {
                 required: true
             },
-
+            
             emailSubject: {
                 required: true
-            },
+            },            
 
             emailBody: {
                 required: true
             }
 
         },
-        messages: {
+        messages: {            
 
             emailEventName: {
                 required: "Event Name is required"
@@ -33,24 +33,24 @@ function FormValidate() {
             emailSubject: {
                 required: "Email Subject is required"
             },
-
+            
             emailBody: {
                 required: "Email Body is required"
             }
-
+            
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
             subcatsuccess.hide();
             jQuery("#errormsg").text("You have some form errors. Please check below.");
             subcaterror.show();
-            subcaterror.fadeOut(6000)
-            App.scrollTo(subcaterror, -300);
+            subcaterror.fadeOut(6000)              
+             App.scrollTo(subcaterror, -300);
         },
 
         highlight: function (element) { // hightlight error inputs
             $(element).closest('.xyz').addClass('has-error'); // set error class to the control group
             $(element).closest('.xyz').addClass('has-error'); // set error class to the control group
-
+            
         },
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
@@ -65,9 +65,9 @@ function FormValidate() {
             label.remove();
         },
 
-        submitHandler: function (form) {
+        submitHandler: function (form) {    
             var id = document.activeElement.getAttribute('id');
-
+            
             if (id.trim() == "submitbtnmaster") {
                 emailMaster();
             } else {
@@ -83,8 +83,8 @@ function emailMaster() {
     debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     //debugger;
-    // var emailSubject_data = CKEDITOR.instances['emailSubject'].getData();
-    // var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
+   // var emailSubject_data = CKEDITOR.instances['emailSubject'].getData();
+   // var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let regex = /&(nbsp|amp|quot|lt|gt);/g;
     let mailsubdata = mailsubdata1.replace(regex, "");
     var emailBody_data = CKEDITOR.instances['emailBody'].getData();
@@ -127,66 +127,66 @@ function emailMaster() {
         }
 
     }
+    
+        var data = {
+            "emailEvent": $('#emailEventName').val(),
+            "emailSubject": $('#emailSubject').val(),        
+            "mailTo": $('#emailTo').val(),
+            "mailCC": $('#emailCc').val(),
+            "mailBCC": $('#emailBcc').val(),            
+            "emailBody1": emailBody_data,
+            "footer": emailFooter_data,
+            "emailSig": emailSignature_data,
+            "subvariableName": subjectVariables,
+            "bodyvariableName": bodyVariables,  
+            "createdBy": sessionStorage.getItem('UserID')
 
-    var data = {
-        "emailEvent": $('#emailEventName').val(),
-        "emailSubject": $('#emailSubject').val(),
-        "mailTo": $('#emailTo').val(),
-        "mailCC": $('#emailCc').val(),
-        "mailBCC": $('#emailBcc').val(),
-        "emailBody1": emailBody_data,
-        "footer": emailFooter_data,
-        "emailSig": emailSignature_data,
-        "subvariableName": subjectVariables,
-        "bodyvariableName": bodyVariables,
-        "createdBy": sessionStorage.getItem('UserID')
-
-    }
-    console.log(JSON.stringify(data));
-
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "EmailMaster/EmailMasterSubmit",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: JSON.stringify(data),
-        type: "POST",
-        cache: false,
-        crossDomain: true,
-        processData: true,
-        dataType: "json",
-        contentType: "application/json",
-        success: function (json) {
-            //alert("success");
-            subcaterror.hide();
-            $("#successmsg").html("Email Event Submitted Successfully.");
-            subcatsuccess.show();
-            subcatsuccess.fadeOut(5000);
-            App.scrollTo(subcatsuccess, -200);
-            setTimeout(function () {
-                resetMailmaster();
-                fetchEmailMasters();
-            }, 5000)
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                $('#error').html('You have some errors')
-                error.show();
-                error.fadeOut(5000)
-            }
-            return false;
-            jQuery.unblockUI();
         }
+    console.log(JSON.stringify(data)); 
 
-    });
+        jQuery.ajax({
+            url: sessionStorage.getItem("APIPath") + "EmailMaster/EmailMasterSubmit",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            data: JSON.stringify(data),
+            type: "POST",
+            cache: false,
+            crossDomain: true,
+            processData: true,
+            dataType: "json",
+            contentType: "application/json",
+            success: function (json) {
+                //alert("success");
+                subcaterror.hide();
+                $("#successmsg").html("Email Event Submitted Successfully.");
+                subcatsuccess.show();
+                subcatsuccess.fadeOut(5000);
+                App.scrollTo(subcatsuccess, -200);
+                setTimeout(function () {
+                    resetMailmaster();
+                    fetchEmailMasters();
+                }, 5000)
+               
+            },
+            error: function (xhr, status, error) {
 
-    jQuery.unblockUI();
-
-
+                var err = eval("(" + xhr.responseText + ")");
+                if (xhr.status === 401) {
+                    error401Messagebox(err.Message);
+                }
+                else{
+                    $('#error').html('You have some errors')
+                    error.show();
+                    error.fadeOut(5000)
+                }
+                return false;
+                jQuery.unblockUI();
+            }
+           
+        });
+        
+        jQuery.unblockUI();
+   
+    
 }
 
 function fetchEmailMasters() {
@@ -195,7 +195,7 @@ function fetchEmailMasters() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "EmailMaster/FetchEmailMaster",
+        url: sessionStorage.getItem("APIPath") + "EmailMaster/FetchEmailMaster" ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -208,7 +208,7 @@ function fetchEmailMasters() {
                 $('#searchmaster').show();
                 $('#tblFetchEmailMastr').append('<thead><tr><th>Actions</th><th>Email Event</th></tr></thead>')
                 for (var i = 0; i < fetchEmail.length; i++) {
-
+                   
                     $('#tblFetchEmailMastr').append('<tr id=rowid' + i + '><td><a href=# class="btn btn-xs yellow" onclick="editemailEvent(\'' + fetchEmail[i].emailMstID + '\')"><i class="fa fa-pencil"></i> Edit</a></td><td >' + fetchEmail[i].emailEvent + '</td></tr>')
 
                 }
@@ -253,8 +253,8 @@ function editemailEvent(emailMstID) {
             $('#submitbtnmaster').addClass('hide');
             $('#emailEventName').val(fetchEmail[0].emailEvent);
             $('#emailEventName').attr('disabled', 'disabled');
-
-            $('#emailSubject').val(fetchEmail[0].emailSubject);
+            
+             $('#emailSubject').val(fetchEmail[0].emailSubject);
             $('#emailTo').val(fetchEmail[0].mailTo);
             $('#emailCc').val(fetchEmail[0].mailCC);
             $('#emailBcc').val(fetchEmail[0].mailBCC);
@@ -280,7 +280,7 @@ function editemailEvent(emailMstID) {
 function updateEmailMaster() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    // debugger;
+   // debugger;
     var emailSubject_data = $('#emailSubject').val();
     var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let regex = /&(nbsp|amp|quot|lt|gt);/g;
@@ -308,7 +308,7 @@ function updateEmailMaster() {
         } else {
             var subjectVariables = '';
         }
-
+        
     }
 
     if (arrStrBody.length > 0) {
@@ -323,12 +323,12 @@ function updateEmailMaster() {
         } else {
             var bodyVariables = '';
         }
-
+        
     }
 
     var data = {
         "emailMstID": parseInt($('#emailMstID').val().trim()),
-        "emailSubject": $('#emailSubject').val(),
+        "emailSubject":  $('#emailSubject').val(),
         "mailTo": $('#emailTo').val(),
         "mailCC": $('#emailCc').val(),
         "mailBCC": $('#emailBcc').val(),
@@ -360,10 +360,10 @@ function updateEmailMaster() {
             subcatsuccess.fadeOut(5000);
             App.scrollTo(subcatsuccess, -200);
             setTimeout(function () {
-                resetEmailmaster();
-                fetchEmailMasters();
+            resetEmailmaster();
+            fetchEmailMasters();
             }, 5000)
-
+           
         },
         error: function (xhr, status, error) {
 
@@ -387,14 +387,14 @@ function updateEmailMaster() {
 
 }
 
-function resetEmailmaster() {
-
+function resetEmailmaster(){ 
+    
     $('#submitbtnmaster').removeClass('hide');
     $('#updatebtnmaster').addClass('hide');
     $('#emailEventName').val('');
     $('#emailEventName').removeAttr('disabled', 'disabled');
-    $('#emailSubject').val('');
-
+     $('#emailSubject').val('');
+    
     $('#emailTo').val('');
     $('#emailCc').val('');
     $('#emailBcc').val('');
@@ -404,10 +404,10 @@ function resetEmailmaster() {
 
 }
 
-function resetMailmaster() {
+function resetMailmaster() {    
     $('#emailEventName').val('');
     $('#emailEventName').removeAttr('disabled', 'disabled');
-    $('#emailSubject').val('');
+     $('#emailSubject').val('');
     $('#emailTo').val('');
     $('#emailCc').val('');
     $('#emailBcc').val('');

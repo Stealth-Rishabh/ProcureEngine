@@ -1,4 +1,4 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 
 jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
@@ -13,8 +13,8 @@ jQuery(document).ready(function () {
         allowMinus: false,
         clearMaskOnLostFocus: true,
         supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true
-        // autoUnmask: true
+        'removeMaskOnSubmit': true,
+        autoUnmask: true
 
     });
 });
@@ -123,8 +123,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(7)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -155,8 +155,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+           num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -305,8 +305,8 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -1360,10 +1360,13 @@ function InsUpdProductSevices() {
         if ($('#add_or').text() == "Modify") {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
-                if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#txtUOM").val() && $.trim($('#BSP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mininc' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val()) {
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
+               // if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#txtUOM").val() && $.trim($('#BSP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mininc' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val()) {
+                if ($.trim($('#itemname' + i).html()) == $.trim($('#txtshortname').val())) {
                     st = "false"
                 }
-                i++;
+                //i++;
             });
 
             if ($('#dropuom').val() == '') {
@@ -1459,7 +1462,7 @@ function InsUpdProductSevices() {
         }
 
         else {
-            st = "true"; i = 0;
+            st = "true"; 
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
@@ -1498,14 +1501,15 @@ function InsUpdProductSevices() {
                 }
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
-
+                        
                         var this_row = $(this);
-                        if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val()) {
-                            status = "false"
+                        i = (this_row.closest('tr').attr('id')).substring(4);
+                        if ($.trim($('#itemname' + i).html()) == $.trim($('#txtshortname').val())) {
+                            st = "false"
                         }
-                        i++;
+                        //i++;
                     });
-                    if (status == "false") {
+                    if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -1551,8 +1555,8 @@ function ParametersQuery() {
         $("#tblServicesProduct tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(4)
-            if (num > maxinum) {
+           num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
                 maxinum = num;
             }
         });
@@ -2155,6 +2159,9 @@ function fetchPSBidDetailsForPreview() {
         $('#filepthattachPrev').html(AttachementFileName);
 
     }
+
+
+
 
 }
 

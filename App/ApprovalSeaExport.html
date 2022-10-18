@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="Cache-Control: no-cache, no-store, must-revalidate"/>; <!--abheedev for cache-->
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -37,7 +38,6 @@
                 width: 1200px;
             }
         }
-
         .container {
             height: 95px;
             display: flex;
@@ -52,8 +52,16 @@
             tr.header {
                 cursor: pointer;
             }
+       /*abheedev bug 340*/     
+     body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }        
+            
+        
     </style>
     <style>
+
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
@@ -178,7 +186,7 @@
                                                 <label class="col-md-6 control-label">
                                                     Bid Duration :
                                                 </label>
-                                                <label class="control-label text-left" id="lblbidduration">
+                                                <label class="control-label text-left"  id="lblbidduration">
                                                 </label>
                                             </div>
                                         </div>
@@ -376,6 +384,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+                                                      
                                                         <div class="form-group">
                                                             <div class="Input-group">
                                                                 <label class="col-md-4 control-label">
@@ -1271,18 +1280,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                     <!--Bug 370 start abheedev -->
                                     <div class="col-md-6">
-                                        <div class="col-md-3">
+                                        <div class="form-group">
                                             <label class="control-label col-md-3">Attachments:</label>
-                                        </div>
+                                        
                                         <div class="col-md-9">
                                             <span class="btn blue" style="width:350px!important"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
                                             &nbsp;<button type="button" id="Addbtn1" onclick="addmoreattachments()" class="btn green-haze"><i class="fa fa-plus"></i></button>
                                         </div>
-
-
-                                    </div>
+                                        </div>
+                                     </div>
                                 </div>
+                                <!--Bug 370 end abheedev -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         &nbsp;
@@ -1431,14 +1442,14 @@
         jQuery(document).ready(function () {
             var param = getUrlVars()["param"];
             var decryptedstring = fndecrypt(param);
-
+          
             jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
-
+                
                 if (getUrlVarsURL(decryptedstring)["App"] == 'N') {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+                     tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
                 }
                 else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Approver") {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+                   tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
                 }
                 else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Admin") {
                     tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
@@ -1471,7 +1482,7 @@
             FormValidation.init();
         });
     </script>
-
+    
 </body>
 <!-- END BODY -->
 </html>

@@ -1,4 +1,4 @@
-﻿
+
 var max = getUrlVarsURL(decryptedstring)["max"];
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));

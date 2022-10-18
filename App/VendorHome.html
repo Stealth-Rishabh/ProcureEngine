@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,7 +33,23 @@
 
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-        .tileDesign {
+    
+    
+   
+       body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
+        }
+   
+   
+       .form-horizontal .form-control-static {
+          padding-top: 7px;
+          width: 100%;
+        }
+   
+    
+         .tileDesign {
             padding: 10px;
             width: 90% !important;
             text-align: left;
@@ -45,7 +61,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .tblwidth {
             /*table-layout: fixed;*/
             width: 100% !important;
@@ -64,8 +79,7 @@
             width: 10%;
             text-align: right;
         }
-
-        .H-90PX {
+         .H-90PX {
             height: 90px;
             margin-bottom: 10px !important;
         }
@@ -171,7 +185,7 @@
                         <li><a href="#">Dashboard</a> <i class="fa fa-angle-right"></i></li>
                         <li>
                             <a href="javascript:;" style="text-decoration:none;" onclick="fetchPendingBid()">Open Events</a>
-                            </i>
+                            
                         </li>
                     </ul>
                     <div class="page-toolbar">
@@ -180,7 +194,7 @@
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <div class="btn-group">
                                 <select id="ULCustomers" class="select2-container form-control" onchange="GetDataForCust()"></select>
-
+                               
                             </div>
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
@@ -195,7 +209,7 @@
                                 <i class="fa fa-paperclip"></i>
                             </div>
                             <div class="details tileDesign container">
-
+                               
                                 <div class="desc">
                                     <table class="tblwidth">
 
@@ -214,9 +228,9 @@
                             </div>
                             <a class="more" href="javascript:;">
                                 <span style="visibility:hidden!important">TT</span>
-
+                                
                             </a>
-
+                            
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
@@ -224,7 +238,7 @@
                             <div class="visual">
                                 <i class="fa fa-unlink"></i>
                             </div>
-
+                           
                             <div class="details tileDesign container">
 
                                 <div class="desc">
@@ -255,7 +269,7 @@
                                 <i class="fa fa-check-square-o"></i>
                             </div>
                             <div class="details tileDesign container">
-
+                                
                                 <div class="desc">
                                     <table class="tblwidth">
 
@@ -276,7 +290,7 @@
                                 <span style="visibility:hidden!important">TT</span>
 
                             </a>
-
+                           
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -285,9 +299,9 @@
                                 <i class="fa fa-trophy"></i>
                             </div>
                             <div class="details tileDesign container">
-
+                               
                                 <div class="desc">
-
+                                    
                                     <table class="tblwidth">
 
 
@@ -308,7 +322,7 @@
 
                             </a>
                         </div>
-
+                       
                     </div>
                 </div>
                 <!-- END DASHBOARD STATS -->
@@ -405,7 +419,7 @@
                         <div class="portlet-body form">
                             <form action="#" id="AccprtGNc" class="form-horizontal" role="form">
 
-                                <div class="form-body">
+                                <div class="form-body" >
                                     <div class="hide" id="div_euctions">
                                         <div class="row">
                                             <div class="col-md-12 ">
@@ -442,13 +456,13 @@
                                                 <!--</div>-->
                                             </div>
                                             <!--<div class="col-md-4 ">-->
-                                            <!--<div class="form-control">-->
-                                            <!--<label class="col-md-6 control-label" style="text-align:left">
-                                                Bid Time:
-                                            </label>
-                                            <label class="col-md-6 control-label" id="lblbidtime" style="text-align:left">
-                                            </label>-->
-                                            <!--</div>-->
+                                                <!--<div class="form-control">-->
+                                                <!--<label class="col-md-6 control-label" style="text-align:left">
+                                                    Bid Time:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidtime" style="text-align:left">
+                                                </label>-->
+                                                <!--</div>-->
                                             <!--</div>-->
                                             <div class="col-md-4 ">
                                                 <!--<div class="form-control">-->
@@ -491,94 +505,95 @@
                                         </div>
 
 
-                                    </div>
+                                        </div>
                                     <div class="hide" id="div_bothRFQ">
-                                        <!--form-body-->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        RFQ Subject:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="RFQSubject" class="control-label" style="text-align:left">
+                                            <!--form-body-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            RFQ Subject:
                                                         </label>
+                                                        <div class="col-md-8">
+                                                            <label id="RFQSubject" class="control-label" style="text-align:left">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Currency:
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <label id="Currency" class="control-label" style="text-align:left">
+                                                            </label>
+                                                            <input type="hidden" id="texttblid" value="" />
+                                                            <input type="hidden" id="texttblidTax" value="" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        Currency:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="Currency" class="control-label" style="text-align:left">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">
+                                                            RFQ Description:
                                                         </label>
-                                                        <input type="hidden" id="texttblid" value="" />
-                                                        <input type="hidden" id="texttblidTax" value="" />
+                                                        <div class="col-md-10">
+                                                            <label id="RFQDescription" style="text-align:left" class="control-label">
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row" id="div_RFQ">
+                                               
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            RFQ Deadline:
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <label id="RFQDeadline" class="control-label" style="text-align:left">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row hide" id="div_eRFQ">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            RFQ StartDate:
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <label id="rfqstartdate" class="control-label" style="text-align:left">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            RFQ End Date:
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <label id="rfqenddate" class="control-label" style="text-align:left">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-2">
-                                                        RFQ Description:
-                                                    </label>
-                                                    <div class="col-md-10">
-                                                        <label id="RFQDescription" style="text-align:left" class="control-label">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="div_RFQ">
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        RFQ Deadline:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="RFQDeadline" class="control-label" style="text-align:left">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row hide" id="div_eRFQ">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        RFQ StartDate:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="rfqstartdate" class="control-label" style="text-align:left">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        RFQ End Date:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="rfqenddate" class="control-label" style="text-align:left">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="hide" id="div_RFX">
                                         <!--form-body-->
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
-                                                        Subject:
+                                                         Subject:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="RFISubject" class="control-label" style="text-align:left">
@@ -589,7 +604,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
-                                                        Deadline:
+                                                         Deadline:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="RFIDeadline" class="control-label" style="text-align:left">
@@ -602,7 +617,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-2">
-                                                        Description:
+                                                         Description:
                                                     </label>
                                                     <div class="col-md-10">
                                                         <label id="RFIDescription" style="text-align:left" class="control-label">
@@ -611,30 +626,41 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
+                                    
+                                    
                                     </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-11 control-label">I accept the above Bid Details and agree to  participate in this bid as per above terms. &nbsp; <input type="checkbox" id="chkIsAccepted" name="chkIsAccepted"></label>
-                                    <div class="col-md-1">
-
-                                        <!--<label class="checkbox-inline">-->
-                                        <!--</label>-->
+                                  
                                     </div>
-                                </div>
-
-                                <div class="form-actions fluid">
-                                    <div class="col-md-offset-3 col-md-6" style="text-align: center">
-                                        <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled">
-                                            Continue
-                                        </button>
-
-
-
+                                    <div class="form-group">
+                                        <label class="col-md-11 control-label rfqtc" style="display:none;">I hereby accept the 
+                                         <a  id="rfqTermandCondition" href="javascript:;" onclick="DownloadFile(this)">Terms and Conditions </a>
+                                        of this RFQ and agree to participate as per above RFQ details.  &nbsp; <input type="checkbox" id="chkIsAccepted" name="rfqchkIsAccepted"></label>
+                                      
+                                      
+                                       <label class="col-md-11 control-label bidtc" style="display:none;">I hereby accept the 
+                                         <a  id="bidTermandCondition" href="javascript:;" onclick="DownloadbidFile(this)">Terms and Conditions </a>
+                                        of this bid  and agree to participate as per above bid details.  &nbsp; <input type="checkbox" id="bidchkIsAccepted" name="bidchkIsAccepted"></label>
+                                      
+                                        <div class="col-md-1">
+                                              <!--<label class="checkbox-inline">-->
+                                               
+                                            <!--</label>-->
+                                        </div>
                                     </div>
-                                </div>
+                                   
+                                    
+                                    
+
+                                    <div class="form-actions fluid">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled" >
+                                                Continue
+                                            </button>
+
+
+
+                                        </div>
+                                    </div>
                             </form>
 
                         </div>
@@ -855,6 +881,8 @@
             }, 1000)
 
             // fetchPendingRFQ();
+            
+            
 
             fetchMenuItemsFromSession(0, 0)
         });

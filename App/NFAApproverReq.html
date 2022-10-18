@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,6 +36,7 @@
             position: fixed;
             top: -120px;
         }
+
         .container {
             height: 95px;
             display: flex;
@@ -136,7 +137,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-control">
                                                 <label class="col-md-3 control-label">Amount:</label>
                                                 <label class="col-md-9 control-label" style="text-align:left">
@@ -145,23 +146,15 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-control">
-                                                <label class="col-md-3 control-label">Budget:</label>
-                                                <label class="col-md-9 control-label" style="text-align:left">
-                                                    <span class="thousandsep" id="lblbudgetamount"></span>&nbsp;<span id="lblCurrencybud"></span>
-                                                </label>
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-control">
                                                 <label class="col-md-3 control-label">Category:</label>
                                                 <label class="col-md-9 control-label" id="lblCategory" style="text-align:left!important"></label>
 
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-control">
                                                 <label class="col-md-5 control-label">Budget Status:</label>
                                                 <label class="col-md-7 control-label" id="lblbudget" style="text-align:left"></label>
@@ -439,11 +432,11 @@
                                         <button id="btnsubmitquery" type="button" onclick="fnsubmitQueryByCreator()" class="btn green-haze hide">
                                             Submit Query
                                         </button>
-                                       
+
                                         <button id="btnCancelbidApp" type="button" class="btn red hide" href="#delegatemodal" data-toggle="modal">
                                             Delegate User
                                         </button>
-                                       
+
                                         <button id="btnBack" type="button" class="btn yellow" onclick="Fnback()">
                                             Close
                                         </button>
@@ -593,9 +586,9 @@
                                     </div>
 
                                     <!--<div class="inputgroup">-->
-                                        <div class="col-md-1">
-                                            <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                        </div>
+                                    <div class="col-md-1">
+                                        <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
                                     <!--</div>-->
                                 </div>
                             </div>
@@ -645,7 +638,7 @@
                     </div>
                     <form id="frmadminbuttonsrecall" class="form-horizontal" role="form">
                         <div class="form-body">
-                            
+
                             <div class="form-group">
                                 <label class="col-md-4 control-label">
                                     Remarks<span class="required">*</span>

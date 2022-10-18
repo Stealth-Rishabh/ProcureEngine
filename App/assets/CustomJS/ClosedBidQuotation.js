@@ -1,4 +1,4 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 $("#spnParamAttach").hide();
 var error = $('.alert-danger');
 

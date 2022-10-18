@@ -40,29 +40,21 @@ function FetchAllCustomer() {
 }
 function FetchAllOpenBids() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var Fromdate = new Date("2000-01-01 01:00:00");
-    var Todate = new Date();
+    var Fromdate = "1900-01-01";
+    var Todate = "1900-01-01";
     if (jQuery("#txtFromDate").val() != "" && jQuery("#txtFromDate").val()==null) {
-        Fromdate = new Date($("#txtFromDate").val().replace('-',''));
+        Fromdate = jQuery("#txtFromDate").val();
     }
     if (jQuery("#txtToDate").val() != "" && jQuery("#txtToDate").val() == null) {
-        Todate = new Date($("#txtToDate").val().replace('-', ''));
-    }
-    var TabData = {
-        "CustomerId": jQuery("#ddlCustomer option:selected").val(),
-        "FromDate": Fromdate,
-        "ToDate": Todate
+        Todate = jQuery("#txtFromDate").val();
     }
    // alert(APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val())
     jQuery.ajax({
-        //type: "GET",
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
-        url: APIPath + "BidVendorSummary/fetchAllOpenBids/",
+        url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //data: '',
-        data: JSON.stringify(TabData),
+        data: '',
         cache: false,
         crossDomain: true,
         dataType: "json",

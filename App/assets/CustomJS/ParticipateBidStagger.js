@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var _isBidStarted = true;
@@ -124,7 +124,7 @@ function fetchBidSummaryVendorproduct() {
                         }
                         else {
                             $('#txtquote' + i).val('')
-                            //$('#itembtn' + i).removeAttr('disabled', 'disabled')
+                            $('#itembtn' + i).removeAttr('disabled', 'disabled')
                         }
                         if (data[i].itemNoOfExtension > 0) {
                             jQuery('#itemleft' + i).css({
@@ -267,9 +267,18 @@ function fetchVendorDetails() {
 
 }
 
-/////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
+
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP=" + clientIP).withAutomaticReconnect().build();
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
@@ -345,7 +354,7 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                                 displayForS = document.querySelector('#itemleftTime' + i);
-                                console.log(data[0].itemLeft)
+                                //console.log(data[0].itemLeft)
                                 startTimerForStaggerItem((parseInt(data[0].itemLeft)), displayForS);
                                 openlefttime = data[0].itemLeft;
 
@@ -389,11 +398,13 @@ connection.on("refreshColumnStatus", function (data) {
                         console.log($('#groupno' + i).text())
                         if (data[0].groupNo == $('#groupno' + i).text()) {
                             $("#itemleft" + i).html(data[0].itemTimeLeft)
+
                         }
                         else {
                             $("#itemleft" + i).html('')
+
                         }
-                        $("#itemleftTime" + i).html('')
+
                     });
                 }
 
@@ -794,7 +805,7 @@ function startTimer(duration, display) {
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
-        else if (timer > 0 && $('.clsdisable').is(':disabled')) {
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
             $('.clsdisable').removeAttr('disabled')
         }
         //setTimeout(function () {
@@ -832,7 +843,7 @@ function startTimerForStaggerItem(duration, displayS) {
         if (--timer <= 0) {//button disabled at 2 sec or <=0 if at 1 sec
             timer = 0;
             if (timer == 0) {
-                $('.clsdisable').attr('disabled', 'disabled')
+                //$('.clsdisable').attr('disabled', 'disabled')
                 fetchBidSummaryVendorproduct();
 
             }

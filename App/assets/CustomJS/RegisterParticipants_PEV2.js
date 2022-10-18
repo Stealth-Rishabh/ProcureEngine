@@ -1,5 +1,6 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
     jQuery("#btnsumbit").click(function () {
+        
         dynamiccontrolvalidation();
     });
 });
@@ -16,7 +17,7 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
-
+var _vendorId = "";
 var FormValidation = function () {
 
 
@@ -215,6 +216,8 @@ var FormValidation = function () {
 
 function RegisterParticipants() {
     
+    
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
 
@@ -274,12 +277,6 @@ function RegisterParticipants() {
     };
 
     //sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
-
-
-
-
-
-
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -289,7 +286,7 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-
+           
 
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
@@ -328,7 +325,7 @@ function RegisterParticipants() {
 }
 var dataforExistedEmailforExtend = "";
 function fnshowexistedVendorForextend() {
-
+debugger
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -458,7 +455,7 @@ function fetchParticipantsVenderTable() {
         dataType: "json",
         success: function (Venderdata) {
 
-
+            
             jQuery("#tblParticipantsVender > tbody").empty();
             if (Venderdata.length > 0) {
                 vendorsForAutoComplete = Venderdata;
@@ -490,8 +487,10 @@ function fetchParticipantsVenderTable() {
                             if (value.actionType == "EditVendor") {
                                 //str += "<a href=\"#\"   class=\"btn btn-xs grey\">Not Editable</a>&nbsp;&nbsp;";
                                 // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.zipCode + "'\,\'"  + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.dialingCode + "'\,\'" + value.dialingCodePhone + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + "'\,\'EditCustomerVendor'\,\'" + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
-                                str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
+                               //abheedev
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo +   "'\,\'EditCustomerVendor'\,\'"  + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                               //abheedev
+                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">No</td>";
 
                             }
@@ -597,7 +596,7 @@ function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
         crossDomain: true,
         dataType: "json",
         success: function (json) {
-
+         
             var companydetails = JSON.parse(json[0].jsondata);
             if (json.length > 1) {
 
@@ -608,7 +607,7 @@ function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
                 //$("#ddlTypeofProduct").select2().val(selectedValues).trigger("change");
 
             }
-
+            _vendorId=companydetails[0].VendorID;
             sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
             if (companydetails[0].PM[0].paymentTerm != "" && companydetails[0].PM[0].paymentTerm != null && companydetails[0].PM[0].paymentTerm != undefined) {
                 jQuery('#paymentterms').html(companydetails[0].PM[0].paymentTerm);
@@ -1266,6 +1265,7 @@ function fnfetchfoundVendors() {
     }, 5000);
 }
 function AddVendor() {
+
     clearform();
     $('#divVendorForm').removeClass('hide')
     $('#ParticipantName').removeAttr('disabled')
@@ -1353,7 +1353,7 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     $('#divVendorForm').removeClass('hide');
     fetchMapCategory('Z', vendorid);
 
-    if (buttonname == "EditCustomerVendor") {
+    if (buttonname == "EditCustomerVendor" ) {
         $('#ParticipantName').attr('disabled', 'disabled');
         $('#txtAddress').attr('disabled', 'disabled');
         $('#txtCity').attr('disabled', 'disabled');
@@ -1398,7 +1398,7 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     }
 }
 function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
-    debugger
+    
     $("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
     $('#hdnFlagType').val(buttonname);
@@ -1498,7 +1498,7 @@ function ExtendParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+              debugger
             if (data.isSuccess == '1') {
                 $("#hdnParticipantID").val(data.participantID)
                 $('#divalertsucess').slideDown('show');
@@ -1797,4 +1797,11 @@ function fetchCity() {
         }
 
     });
+}
+
+
+
+function DownloadFile(aID) {
+    
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + _vendorId);
 }

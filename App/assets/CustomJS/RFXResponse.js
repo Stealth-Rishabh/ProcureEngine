@@ -1,4 +1,4 @@
-﻿var error = $('.alert-danger');
+var error = $('.alert-danger');
 
 var success = $('.alert-success');
 

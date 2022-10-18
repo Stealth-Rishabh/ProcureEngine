@@ -1,4 +1,4 @@
-﻿
+
 var WBSeq = 0;
 var NBSeq = 0;
 var OBSeq = 0;
@@ -24,10 +24,11 @@ var MoveSeqData = '<a style="cursor:pointer" class="up"><i class="fa fa-arrow-up
 $(document).ready(function () {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    bindApproverMaster();
+    bindApproverMaster('Y');
     BindPurchaseOrg();
     bindConditionDDL();
     fetchRegisterUser();
+
     jQuery.unblockUI();
     //  BindApprovers();
 });
@@ -133,32 +134,7 @@ function fncheckapprovers() {
     $('#chkOBCopy').prop('checked', false);
 
 }
-function bindApproverMaster() {
 
-    var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
-
-    var GetData = callajaxReturnSuccess(url, "Get", {});
-    GetData.success(function (res) {
-
-        if (res.result.length != null) {
-            $('#tblAllmatrix').empty();
-            if (res.result.length > 0) {
-                Approvermasterdata = res.result;
-                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
-                for (var i = 0; i < res.result.length; i++) {
-                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success" href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil"></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
-                }
-            }
-            else {
-                $('#tblAllmatrix').append('<tr><td>No Matrix Found</td></tr>');
-            }
-        }
-    });
-    GetData.error(function (res) {
-
-    });
-
-};
 
 function GetApprovermasterbyId(idx) {
 
@@ -255,46 +231,8 @@ $("#txtDetails").typeahead({
 })
 
 
-//jQuery("#ddlCondition").keyup(function () {
-//    sessionStorage.setItem('hdnConditionID', '0');
-
-//});
-//sessionStorage.setItem('hdnConditionID', 0);
-//jQuery("#ddlCondition").typeahead({
-//    source: function (query, process) {
-
-//        var data = conditionData;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            console.log(data);
-//            map[username.conditionName] = username;
-//            usernames.push(username.conditionName);
-//        });
-//        process(usernames);
-//    },
-
-//    minLength: 2,
-//    updater: function (item) {
-
-//        if (map[item].conditionID != "0") {
-//            sessionStorage.setItem('hdnConditionID', map[item].conditionID);
-//        }
-//        else {
-//            gritternotification('Condition Not selected!!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-
 function CheckDuplicate() {
 
-    //var p_orgId = sessionStorage.getItem('hdnPurchaseORGID');
-    //var p_groupId = sessionStorage.getItem('hdnPurchaseGroupID');
-    //var p_conditionId = sessionStorage.getItem('hdnConditionID');
     var amountFrom = $("#txtAmountFrom").val();
     var amountTo = $("#txtAmountTo").val();
 
@@ -308,8 +246,8 @@ function CheckDuplicate() {
         amountTo: parseFloat(removeThousandSeperator(amountTo))
 
     };
-    debugger;
-    console.log(JSON.stringify(Model))
+
+    //console.log(JSON.stringify(Model))
     var url = "NFA/VerifyExistingApprover";
     var VerifyApproverMatrix = callajaxReturnSuccess(url, "Post", JSON.stringify(Model));
     VerifyApproverMatrix.success(function (res) {
@@ -330,7 +268,7 @@ function CheckDuplicate() {
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
-    var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -354,7 +292,7 @@ function BindPurchaseOrg() {
 
 function bindPurchaseGroupDDL() {
 
-    var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val() + "&UserID=" + encodeURIComponent(UserID);
+    var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
 
     GetNFAPARAM.success(function (res) {
@@ -397,79 +335,6 @@ function bindConditionDDL() {
 };
 
 
-//jQuery("#ddlPurchaseOrg").keyup(function () {
-//    sessionStorage.setItem('hdnPurchaseORGID', '0');
-
-//});
-//sessionStorage.setItem('hdnPurchaseORGID', '0');
-//jQuery("#ddlPurchaseOrg").typeahead({
-//    source: function (query, process) {
-
-//        var data = orgData;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            // console.log(data);
-//            map[username.purchaseOrgName] = username;
-//            usernames.push(username.purchaseOrgName);
-//        });
-
-//        process(usernames);
-
-//    },
-//    minLength: 2,
-//    updater: function (item) {
-//        if (map[item].purchaseOrgID != "0") {
-//            sessionStorage.setItem('hdnPurchaseORGID', map[item].purchaseOrgID);
-//            bindPurchaseGroupDDL(map[item].purchaseOrgID);
-//        }
-//        else {
-//            gritternotification('Purchase Group not selected!!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-//jQuery("#ddlPurchasegroup").keyup(function () {
-//    sessionStorage.setItem('hdnPurchaseGroupID', '0');
-
-//});
-//sessionStorage.setItem('hdnPurchaseGroupID', '0');
-//jQuery("#ddlPurchasegroup").typeahead({
-//    source: function (query, process) {
-//        var data = Groupdata;
-//        usernames = [];
-//        map = {};
-//        var username = "";
-//        jQuery.each(data, function (i, username) {
-//            // console.log(data);
-//            map[username.groupName] = username;
-
-//            usernames.push(username.groupName);
-//        });
-
-//        process(usernames);
-
-//    },
-//    minLength: 2,
-//    updater: function (item) {
-//        if (map[item].idx != "0") {
-
-
-//            sessionStorage.setItem('hdnPurchaseGroupID', map[item].idx);
-
-//        }
-//        else {
-//            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
-//        }
-
-//        return item;
-//    }
-
-//});
-
 //Second tab controls
 $("#txtApprover").on("keyup", function () {
     $("#txtApprover").css("border-color", "");
@@ -488,6 +353,12 @@ $("#txtNBApprover").on("keyup", function () {
 });
 $("#txtNBSeq").on("keyup", function () {
     $("#txtNBSeq").css("border-color", "");
+});
+$("#txtAmountFrom").on("keyup", function () {
+    $("#txtAmountFrom").css("border-color", "");
+});
+$("#txtAmountTo").on("keyup", function () {
+    $("#txtAmountTo").css("border-color", "");
 });
 
 
@@ -527,7 +398,7 @@ function SaveApproverMaster() {
             nfaApproverIDX = parseInt(res.result[0].idx);
             nfaEditedID = parseInt(res.result[0].idx);
             ApproverType = p_approvaltype;
-            bindApproverMaster();
+            bindApproverMaster('Y');
             if (ApproverType == "S") {
                 $(".clsHide").hide();
                 isHide = '';
@@ -634,14 +505,7 @@ function validateWBADD() {
         $("#txtApprover").css("border-color", "");
         idx = false;
     }
-    //if ($("#ddlWBApprover option:selected").val() == 0 || $("#ddlWBApprover option:selected").val() == null) {
-    //    $("#ddlWBApprover").css("border-color", "red");
-    //    idx = true;
-    //}
-    //else {
-    //    $("#ddlWBApprover").css("border-color", "");
-    //    idx = false;
-    //}
+
     if (ApproverType != "S") {
         if ($("#txtWBSeq").val() == "") {
             $("#txtWBSeq").css("border-color", "red");
@@ -657,6 +521,7 @@ function validateWBADD() {
     else return false;
 }
 function AddWBApprovers() {
+    
     if (validateWBADD()) {
         return false;
     }
@@ -673,7 +538,7 @@ function AddWBApprovers() {
         var Seq = $("#txtWBSeq").val();
 
         var EmailID = sessionStorage.getItem("hdnWBApproverEmailid");
-
+       
         if (ApproverType == "S") {
 
             if (WBSeq <= 0) {
@@ -723,33 +588,35 @@ function fnApproversQuery(EmailID, UserID, UserName, rownum) {
         return false;
     }
     else {
-        rowAppWB = rowAppWB + 1;
+        //rowAppWB = rowAppWB + 1;
         var num = 0;
         var maxidnum = 0;
         $("#tblWBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(9)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(9, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
 
-        rownum = parseInt(maxidnum) + 1;
+        rowAppWB = parseInt(maxidnum) + 1;
         if (!jQuery("#tblWBApproverSeq thead").length) {
             jQuery("#tblWBApproverSeq").append("<thead><tr><th style='width:10%'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:10%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppWB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowAppWB + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowAppWB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppWB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowAppWB + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowAppWB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
+        if (ApproverType == "S") {
         var rowcount = jQuery('#tblWBApproverSeq >tbody>tr').length;
-        if (rowcount >= 1) {
-            $("#tblWBApproverSeq tr:gt(0)").each(function (index) {
-                var this_row = $(this);
-                $.trim(this_row.find('td:eq(3)').html(index + 1));
-            });
+            if (rowcount >= 1) {
+                $("#tblWBApproverSeq tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(3)').html(index + 1));
+                });
 
+            }
         }
     }
 }
@@ -918,32 +785,34 @@ function fnApproversOBQuery(EmailID, UserID, UserName, rownum) {
         return false;
     }
     else {
-        rowAppOB = rowAppOB + 1;
+       // rowAppOB = rowAppOB + 1;
         var maxidnum = 0; var num = 0;
         $("#tblOBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(9)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(9, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
 
-        rownum = parseInt(maxidnum) + 1;
+        rowAppOB = parseInt(maxidnum) + 1;
         if (!jQuery("#tblOBApproverSeq thead").length) {
             jQuery("#tblOBApproverSeq").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppOB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rowAppOB + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rowAppOB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppOB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblOBApproverSeq").append('<tr id=trOBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteOBApprow(' + rowAppOB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
-        var rowcount = jQuery('#tblOBApproverSeq >tbody>tr').length;
-        if (rowcount >= 1) {
-            $("#tblOBApproverSeq tr:gt(0)").each(function (index) {
-                var this_row = $(this);
-                $.trim(this_row.find('td:eq(3)').html(index + 1));
-            });
+        if (ApproverType == "S") {
+            var rowcount = jQuery('#tblOBApproverSeq >tbody>tr').length;
+            if (rowcount >= 1) {
+                $("#tblOBApproverSeq tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(3)').html(index + 1));
+                });
 
+            }
         }
     }
 }
@@ -1103,32 +972,34 @@ function fnApproversNBQuery(EmailID, UserID, UserName, rownum) {
         return false;
     }
     else {
-        rowAppNB = rowAppNB + 1;
+        //rowAppNB = rowAppNB + 1;
         var maxidnum = 0; var num = 0;
         $("#tblNBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(9)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(9, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
 
-        rownum = parseInt(maxidnum) + 1;
+        rowAppNB = parseInt(maxidnum) + 1;
         if (!jQuery("#tblNBApproverSeq thead").length) {
             jQuery("#tblNBApproverSeq").append("<thead><tr><th style='width:10%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th><th class='" + isHide + "'></th></tr></thead>");
-            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppNB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowAppNB + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + rowAppNB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         else {
-            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowAppNB + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
+            jQuery("#tblNBApproverSeq").append('<tr id=trNBAppid' + rowAppNB + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNBApprow(' + rowAppNB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button><button class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"  ><i class="fa fa-pencil"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
-        var rowcount = jQuery('#tblNBApproverSeq >tbody>tr').length;
-        if (rowcount >= 1) {
-            $("#tblNBApproverSeq tr:gt(0)").each(function (index) {
-                var this_row = $(this);
-                $.trim(this_row.find('td:eq(3)').html(index + 1));
-            });
+        if (ApproverType == "S") {
+            var rowcount = jQuery('#tblNBApproverSeq >tbody>tr').length;
+            if (rowcount >= 1) {
+                $("#tblNBApproverSeq tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(3)').html(index + 1));
+                });
 
+            }
         }
     }
 }
@@ -1423,6 +1294,7 @@ function BindPreviewDetails() {
     $("#lblAmountTo").text(to);
 
 }
+
 var tabno = 1;
 jQuery.validator.addMethod(
     "notEqualTo",
@@ -1465,11 +1337,13 @@ var FormWizard = function () {
                 rules: {
 
                     ddlPurchaseOrg: {
-                        required: true
+                        required: true,
+                        notEqualTo: 0
                     },
 
                     ddlPurchasegroup: {
-                        required: true
+                        required: true,
+                        notEqualTo: 0
                     },
                     ddlApproveltype: {
                         required: true
@@ -1497,16 +1371,6 @@ var FormWizard = function () {
 
                 messages: {
 
-                    //'payment[]': {
-
-                    //    required: "Please select at least one option",
-
-                    //    minlength: jQuery.validator.format("Please select at least one option")
-
-                    //},
-                    //txtitembidduration: {
-                    //    required: "Please Enter Bid Duration."
-                    //}
                     ddlPurchaseOrg: {
                         required: "Please select purchase org."
                     },
@@ -1523,28 +1387,6 @@ var FormWizard = function () {
                 },
 
                 errorPlacement: function (error, element) {
-
-                    //if (element.attr("name") == "gender") {
-
-                    //    error.insertAfter("#form_gender_error");
-
-                    //} else if (element.attr("name") == "payment[]") {
-
-                    //    error.insertAfter("#form_payment_error");
-
-                    //} else {
-
-                    //    error.insertAfter(element);
-
-                    //}
-
-
-
-                    //if ($("#txtbidDate").closest('.inputgroup').attr('class') == 'inputgroup has-error') {
-
-                    //    $("#btncal").css("margin-top", "-22px");
-
-                    //}
 
                 },
 
@@ -1576,36 +1418,6 @@ var FormWizard = function () {
                 },
 
                 success: function (label) {
-
-                    //if (label.attr("for") == "gender" || label.attr("for") == "payment[]") {
-
-                    //    label
-
-                    //        .closest('.inputgroup').removeClass('has-error').addClass('has-success');
-
-                    //    label.remove();
-
-                    //} else {
-
-                    //    label
-
-                    //        .addClass('valid') // mark the current input as valid and display OK icon
-
-                    //        .closest('.inputgroup').removeClass('has-error').addClass('has-success'); // set success class to the control group
-
-                    //}
-
-                    //if ($("#txtbidDate").closest('.inputgroup').attr('class') == 'inputgroup has-error') {
-
-                    //    $("#btncal").css("margin-top", "-22px");
-
-                    //}
-
-                    //else {
-
-                    //    $("#btncal").css("margin-top", "0px");
-
-                    //}
 
                 },
                 submitHandler: function (form) {
@@ -1690,14 +1502,15 @@ var FormWizard = function () {
                             return false;
 
                         }
-                        //if (validateApproverMaster()) {
-                        //    $('.alert-danger').show();
-                        //    $('#spandanger').html('Please check highlighted fileds');
-                        //    Metronic.scrollTo($(".alert-danger"), -200);
-                        //    $('.alert-danger').fadeOut(5000);
-                        //    return false;
-                        //}
-
+                        else if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
+                            $("#txtAmountFrom").css("border-color", "#ebccd1");
+                            $("#txtAmountTo").css("border-color", "#ebccd1");
+                            $('.alert-danger').show();
+                            $('#spandanger').html('Amount From should be less than Amount To value');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
+                        }
                         CheckDuplicate();
                         if (verifyApproverMatrix == "1" && nfaEditedID == '0') {
                             $('.alert-danger').show();
@@ -2029,22 +1842,6 @@ function SaveUpdateData() {
 //COmplete Process Function
 function CompleteProcess() {
 
-    //var url = "NFA/CompleteAprroverSeq";
-
-    //var model = { cusID: parseInt(CurrentCustomer), idx: parseInt(nfaApproverIDX) }
-
-    //var Save = callajaxReturnSuccess(url, "Post", JSON.stringify(model));
-    //Save.success(function (res) {
-    //    if (confirm('Do you want to continue ')) {
-    //        window.location.reload();
-    //    } else {
-    //        window.location.href = "index.html";
-    //    }
-
-    //});
-    //Save.error(function (error) {
-
-    //});
     bootbox.dialog({
         message: "Do you want to continue?",
         // title: "Custom title",
@@ -2257,6 +2054,7 @@ $("#searchPopGrp-up").keyup(function () {
     SearchInGridview("tblmodelPurchaseGroup", SearchTerm);
 
 });
+
 jQuery("#txtSearchmatrix").keyup(function () {
 
     jQuery("#tblAllmatrix tr:has(td)").hide(); // Hide all the rows.
@@ -2285,51 +2083,3 @@ jQuery("#txtSearchmatrix").keyup(function () {
 
     });
 });
-//function validateApproverMaster() {
-//    var v_org = false;
-//    var v_group = false;
-//    var v_approverType = false;
-//    var amountfrom = false;
-//    var amountto = false;
-//    var amountCompare = false;
-//    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchaseOrg").val() == "") {
-//        $("#ddlPurchaseOrg").css("border-color", "red");
-//        v_org = true;
-//    }
-//    else {
-//        $("#ddlPurchaseOrg").css("border-color", "");
-//        v_org = false;
-//    }
-//    if (sessionStorage.getItem("hdnPurchaseORGID") == "0" || $("#ddlPurchasegroup").val() == "") {
-//        $("#ddlPurchasegroup").css("border-color", "red");
-//        v_group = true;
-//    }
-//    else {
-//        $("#ddlPurchasegroup").css("border-color", "");
-//        v_group = false;
-//    }
-//    if ($("#ddlApproveltype option:selected").val() == "") {
-//        $("#ddlApproveltype").css("border-color", "red");
-//        v_approverType = true;
-//    }
-//    else {
-//        $("#ddlApproveltype").css("border-color", "");
-//        v_approverType = false;
-//    }
-//    if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
-//        $("#txtAmountFrom").css("border-color", "red");
-//        $("#txtAmountTo").css("border-color", "red");
-//        amountCompare = true;
-//    }
-//    else {
-//        $("#txtAmountFrom").css("border-color", "");
-//        $("#txtAmountTo").css("border-color", "");
-//        amountCompare = false;
-//    }
-
-//    if (v_org || v_group || v_approverType || amountCompare)
-//        return true;
-//    else
-//        return false;
-
-//};

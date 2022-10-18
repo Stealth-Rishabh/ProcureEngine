@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
@@ -48,16 +48,16 @@ var FormWizard = function () {
                     },
                     to: {
                         required: true
-
+                        
                     },
                     txturlextension: {
                         required: true,
-                        maxlength: 30
+                        maxlength:30
                     },
 
                     txtnobids: {
                         required: true,
-                        number: true
+                        number:true
                     },
 
                     dropcurrency: {
@@ -83,7 +83,7 @@ var FormWizard = function () {
                     },
                     txtmobileNo: {
                         maxlength: 10,
-                        number: true
+                        number:true
                     },
 
                 },
@@ -119,7 +119,7 @@ var FormWizard = function () {
 
                     }
 
-                },
+            },
 
                 invalidHandler: function (event, validator) {
                     success.hide();
@@ -167,7 +167,7 @@ var FormWizard = function () {
 
 
                 },
-                submitHandler: function (form) {
+             submitHandler: function (form) {
 
                     error.hide();
 
@@ -218,11 +218,11 @@ var FormWizard = function () {
 
             }
 
-            var handleTitle = function (tab, navigation, index) {
+         var handleTitle = function (tab, navigation, index) {
 
-                var total = navigation.find('li').length;
-                var current = index + 1;
-
+             var total = navigation.find('li').length;
+                 var current = index + 1;
+             
                 // set wizard title
 
                 $('.step-title', $('#form_wizard_1')).text('Step ' + (index + 1) + ' of ' + total);
@@ -251,7 +251,7 @@ var FormWizard = function () {
 
                 }
 
-
+          
                 if (current >= total) {
 
                     $('#form_wizard_1').find('.button-next').hide();
@@ -297,7 +297,7 @@ var FormWizard = function () {
                     var ulrlength = countWords($('#txturlextension').val());
                     var format = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]+/;
 
-
+                   
                     if (index == 1) {
                         if (form.valid() == false) {
 
@@ -321,8 +321,8 @@ var FormWizard = function () {
 
                             return false;
                         }
-                        else {
-
+                    else {
+                         
                         }
 
                     }
@@ -333,13 +333,13 @@ var FormWizard = function () {
                             return false;
 
                         }
-
+                       
                         else {
                             ins_updCustomer();
-
+                            
 
                         }
-
+                       
                     }
 
                     handleTitle(tab, navigation, index);
@@ -347,7 +347,7 @@ var FormWizard = function () {
                 },
 
                 onPrevious: function (tab, navigation, index) {
-
+                   
                     success.hide();
 
                     error.hide();
@@ -378,7 +378,7 @@ var FormWizard = function () {
 
             $('#form_wizard_1 .button-submit').click(function () {
 
-                fnMapMenus()
+                   fnMapMenus()
 
 
             }).hide();
@@ -433,17 +433,17 @@ function fillCountryDropDown(dropdownID, countryid) {
             jQuery.unblockUI();
             return false;
         }
-    });
+      });
 }
 function fillStateDropDown(dropdownID, stateid) {
 
     var countryid = '0';
     if (dropdownID == "dropState") {
         if (jQuery('#dropCountry').val() != null) {
-            countryid = jQuery('#dropCountry').val();
+             countryid = jQuery('#dropCountry').val();
         }
     }
-
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -454,7 +454,7 @@ function fillStateDropDown(dropdownID, stateid) {
         processData: true,
         dataType: "json",
         success: function (data) {
-            var appenddata;
+             var appenddata;
             appenddata += "<option value='0'>Select</option>";
 
             jQuery.each(data, function (key, value) {
@@ -495,7 +495,7 @@ function fillCityDropDown(dropdownID, cityid) {
         }
 
     }
-
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -506,22 +506,22 @@ function fillCityDropDown(dropdownID, cityid) {
         processData: true,
         dataType: "json",
         success: function (data) {
-
+            
             var appenddata;
             appenddata += "<option value='0'>Select</option>";
             jQuery.each(data, function (key, value) {
                 appenddata += "<option value = '" + value.cityID + "'>" + value.cityName + " </option>";
             });
             jQuery('#' + dropdownID).html(appenddata);
-
+           
             if (cityid != '0') {
                 jQuery('#' + dropdownID).val(cityid);
             }
         },
         error: function (xhr, status, error) {
-
+          
             var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
+           if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
@@ -573,10 +573,10 @@ function FetchCurrency(CurrencyID) {
 
 }
 function fetchALLmenuitems() {
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = APIPath + "RoleMenus/fetchALLMenus/?ActiveYNFlag=N&For=CustAdm&RoleID=0&CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&MenuType=0";
-
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -631,10 +631,10 @@ function paintmenus() {
             for (var x = 0; x < jQuery.parseJSON(data1).length; x++) {
                 i = i + jQuery.parseJSON(data)[x].menuID;
                 if (jQuery.parseJSON(data)[y].menuID == jQuery.parseJSON(data1)[x].parentMenuID) {
-
-                    $('#childUL' + y).append("<li role='treeitem' id=j1_" + (y + x + i) + " class='jstree-node jstree-leaf'><div class='jstree-wholerow'></div><i class='jstree-icon jstree-ocl'></i>");
-                    $('#j1_' + (y + x + i)).append("<a style='text-decoration:none' class='jstree-anchor' href='javascript:;'><input id=checkbox" + x + " name=checkbox" + x + "  type='checkbox' value=" + jQuery.parseJSON(data1)[x].menuID + " />&nbsp;&nbsp;" + jQuery.parseJSON(data1)[x].menuName + "</a></li>");
-
+                   
+                    $('#childUL' + y).append("<li role='treeitem' id=j1_" + (y + x+i) + " class='jstree-node jstree-leaf'><div class='jstree-wholerow'></div><i class='jstree-icon jstree-ocl'></i>");
+                    $('#j1_' + (y + x+i)).append("<a style='text-decoration:none' class='jstree-anchor' href='javascript:;'><input id=checkbox" + x + " name=checkbox" + x + "  type='checkbox' value=" + jQuery.parseJSON(data1)[x].menuID + " />&nbsp;&nbsp;" + jQuery.parseJSON(data1)[x].menuName + "</a></li>");
+                   
                 }
 
 
@@ -656,7 +656,7 @@ function ins_updCustomer() {
     var dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     var dateParts = $("#to").val().split("/");
     var dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-
+    
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();
     } else {
@@ -719,7 +719,7 @@ function ins_updCustomer() {
             "LogoFileName": logo,
             "GeneralConditions": $('#txttermscondition').val(),
             "URLExtension": $('#txturlextension').val().trim()
-
+    
         }
     }
     else {
@@ -727,8 +727,8 @@ function ins_updCustomer() {
         $('#spandanger').html('Please Select jpg/jpeg/png image...');
         Metronic.scrollTo(error, -200);
         error.fadeOut(3000);
-
-        $('#file1').val('');
+       
+       $('#file1').val('');
         jQuery.unblockUI();
         return false;
 
@@ -742,19 +742,19 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            debugger;
+           debugger;
             if (data.isSuccess == '1') {
                 sessionStorage.setItem("hdnCustomerID", data.customerID)
                 sessionStorage.setItem("hdnAdminID", data.adminID)
                 error.hide();
                 success.hide();
-
+               
                 fileUploader($('#txturlextension').val())
                 fnFetchMenusonRoleBased();
                 return true;
-
+               
             }
-            else if (data.isSuccess == '2') {
+           else if (data.isSuccess == '2') {
                 error.hide();
                 success.hide();
                 fnFetchMenusonRoleBased();
@@ -762,20 +762,20 @@ function ins_updCustomer() {
 
             }
             else if (data.isSuccess == '-1') {
-
+                
                 success.hide();
                 error.show();
                 $('#spandanger').html("This Admin Email ID already exists..")
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(9000);
-
+               
                 setTimeout(function () {
                     $('#form_wizard_1').bootstrapWizard('previous');
-                }, 1000)
-
+                },1000)
+             
                 return false;
             }
-
+           
             else if (data.isSuccess == '0') {
                 success.hide();
                 error.show();
@@ -802,14 +802,14 @@ function ins_updCustomer() {
 
     });
     jQuery.unblockUI();
-
+   
 }
 
 function resetregistrationForm() {
     sessionStorage.setItem("hdnCustomerID", "0")
     sessionStorage.setItem("hdnAdminID", "0")
     $('#btn_submit').html('Submit');
-
+  
     $('#txttermscondition').val('');
     $('#dropcurrency').val('');
     $('#txtnobids').val('');
@@ -847,12 +847,12 @@ function FetchAllCustomer() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             if (data.length > 0) {
-
+               
                 sessionStorage.setItem('hdnAllCustomers', JSON.stringify(data))
             }
-
+           
         },
         error: function (xhr, status, error) {
 
@@ -914,7 +914,7 @@ function fetchCustomerDetails(customerid) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+          
             if (data.length > 0) {
                 sessionStorage.setItem("hdnCustomerID", data[0].customerID)
                 sessionStorage.setItem("hdnAdminID", data[0].adminID)
@@ -933,24 +933,24 @@ function fetchCustomerDetails(customerid) {
                 $('#phoneno').val(data[0].phoneNo);
 
                 $('#pincode').val(data[0].pinCode);
-
+               
                 $('#dropCountry').val(data[0].countryID);
                 fillStateDropDown('dropState', '0')
                 setTimeout(function () {
-
+                   
                     $('#dropState').val(data[0].stateID);
                     fillCityDropDown('dropCity', '0')
                 }, 700)
-
+              
                 setTimeout(function () {
                     $('#dropCity').val(data[0].cityID);
                 }, 1000)
-
+               
                 if (data[0].logoImageName != '') {
                     $('#file1').removeAttr('required')
                 }
                 $('#filepthterms').attr('href', data[0].logoImage).html(data[0].logoImageName);
-
+                
                 if (data[0].customerIsActive == "Y") {
                     jQuery('input:checkbox[name=checkboxcustomeractive]').attr('checked', true);
 
@@ -990,16 +990,16 @@ function fetchCustomerDetails(customerid) {
             jQuery.unblockUI();
             return false;
         }
-
+         
 
     });
-
+   
 
 }
 function fnFetchMenusonRoleBased() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-    var url = APIPath + "RoleMenus/fetchMenuCodeRoles/?UserID=" + sessionStorage.getItem("hdnAdminID") + "&CustomerID=" + sessionStorage.getItem("hdnCustomerID") + "&RoleID=0";
+   
+    var url = APIPath + "RoleMenus/fetchMenuCodeRoles/?UserID=" + sessionStorage.getItem("hdnAdminID") + "&CustomerID=" + sessionStorage.getItem("hdnCustomerID")+"&RoleID=0";
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1056,17 +1056,17 @@ function fnFetchMenusonRoleBased() {
 }
 function fileUploader(CustomerName) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+  
     var fileTerms = $('#file1');
     var fileDataTerms = fileTerms.prop("files")[0];
 
-
+  
     var formData = new window.FormData();
 
     formData.append("fileTerms", fileDataTerms);
     formData.append("AttachmentFor", "Customer");
     formData.append("CustomerName", CustomerName.trim());
-
+   
     $.ajax({
 
         url: 'ConfigureFileAttachment.ashx',
@@ -1099,7 +1099,7 @@ function CheckAll(qw, divid) {
 
             $('#' + qw.id).closest('ul').find(':checkbox').prop('checked', true);
             $('#' + divid.id).addClass('jstree-wholerow-clicked');
-
+            
         }
         else {
 
@@ -1127,7 +1127,7 @@ function uncheck() {
 
         }
     }
-
+   
 
 }
 function fnMapMenus() {
@@ -1156,11 +1156,11 @@ function fnMapMenus() {
                     sessionStorage.removeItem('hdnCustomerID');
                     sessionStorage.removeItem('hdnAdminID');
                     resetregistrationForm();
-                    window.location = "RegisterCustomerRoleUser.html";
+                    window.location = "RegisterCustomerRoleUser.html"; 
                     return false;
                 });
             }
-            else {
+           else {
                 jQuery("#diverror").text("Error");
                 error.show();
                 error.fadeOut(5000)
@@ -1180,7 +1180,7 @@ function fnMapMenus() {
             jQuery.unblockUI();
             return false;
         }
-
+       
     });
-
+   
 }

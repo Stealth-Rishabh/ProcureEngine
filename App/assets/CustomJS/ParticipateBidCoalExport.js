@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var _isBidStarted = true;
@@ -8,9 +8,21 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var displayForS = "";
 /////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
+
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+  alert(data.ip)
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
 
 console.log("Not Started")
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
+
+
+
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
@@ -97,21 +109,21 @@ connection.on("refreshColumnStatusCoal", function (data) {
                         }
                         if (data[i].itemBlockedRemarks != '') {
                             $('#AllItembtn' + i).attr('disabled', 'disabled')
-                            $('#txtquote' + i).text("Restricted")
-                            $('#txtquote' + i).attr('disabled', 'disabled')
-                            $('#delquan' + i).attr('disabled', 'disabled')
-                            $('#cess' + i).attr('disabled', 'disabled')
-                            $('#ncv' + i).attr('disabled', 'disabled')
-                            $('#landedp' + i).attr('disabled', 'disabled')
+                                $('#txtquote'+i).text("Restricted")
+                                $('#txtquote'+i).attr('disabled', 'disabled')
+                                $('#delquan'+i).attr('disabled', 'disabled')
+                                $('#cess'+i).attr('disabled', 'disabled')
+                                $('#ncv'+i).attr('disabled', 'disabled')
+                                $('#landedp'+i).attr('disabled', 'disabled')
                         }
                         else {
-                            $('#txtquote' + i).text("")
-                            $('#txtquote' + i).removeAttr('disabled', 'disabled')
-                            $('#delquan' + i).removeAttr('disabled', 'disabled')
-                            $('#cess' + i).removeAttr('disabled', 'disabled')
-                            $('#ncv' + i).removeAttr('disabled', 'disabled')
-                            $('#landedp' + i).removeAttr('disabled', 'disabled')
-                            $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
+                                $('#txtquote'+i).text("")
+                                $('#txtquote'+i).removeAttr('disabled', 'disabled')
+                                $('#delquan'+i).removeAttr('disabled', 'disabled')
+                                $('#cess'+i).removeAttr('disabled', 'disabled')
+                                $('#ncv'+i).removeAttr('disabled', 'disabled')
+                                $('#landedp'+i).removeAttr('disabled', 'disabled')
+                                $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                         }
                         if (data[i].itemNoOfExtension > 0) {
                             jQuery('#itemleft' + i).css({
@@ -407,24 +419,24 @@ function fetchBidSummaryVendorproduct() {
                             if (data[i].showStartPrice == 'N') {
                                 $("#ceilingprice" + i).html('Not Disclosed');
                             }
-
+                           
                             if (data[i].itemBlockedRemarks != '') {
                                 $('#AllItembtn' + i).attr('disabled', 'disabled')
-                                $('#txtquote' + i).text("Restricted")
-                                $('#txtquote' + i).attr('disabled', 'disabled')
-                                $('#delquan' + i).attr('disabled', 'disabled')
-                                $('#cess' + i).attr('disabled', 'disabled')
-                                $('#ncv' + i).attr('disabled', 'disabled')
-                                $('#landedp' + i).attr('disabled', 'disabled')
+                                $('#txtquote'+i).text("Restricted")
+                                $('#txtquote'+i).attr('disabled', 'disabled')
+                                $('#delquan'+i).attr('disabled', 'disabled')
+                                $('#cess'+i).attr('disabled', 'disabled')
+                                $('#ncv'+i).attr('disabled', 'disabled')
+                                $('#landedp'+i).attr('disabled', 'disabled')
                             }
                             else {
-
-                                $('#txtquote' + i).text("")
-                                $('#txtquote' + i).removeAttr('disabled', 'disabled')
-                                $('#delquan' + i).removeAttr('disabled', 'disabled')
-                                $('#cess' + i).removeAttr('disabled', 'disabled')
-                                $('#ncv' + i).removeAttr('disabled', 'disabled')
-                                $('#landedp' + i).removeAttr('disabled', 'disabled')
+                               
+                               $('#txtquote'+i).text("")
+                               $('#txtquote'+i).removeAttr('disabled', 'disabled')
+                                $('#delquan'+i).removeAttr('disabled', 'disabled')
+                                $('#cess'+i).removeAttr('disabled', 'disabled')
+                                $('#ncv'+i).removeAttr('disabled', 'disabled')
+                                $('#landedp'+i).removeAttr('disabled', 'disabled')
                                 $('#AllItembtn' + i).removeAttr('disabled', 'disabled')
                             }
                             if (data[i].loQuotedPrice == 'L1') {

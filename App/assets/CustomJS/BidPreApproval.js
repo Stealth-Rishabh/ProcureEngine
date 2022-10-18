@@ -1,4 +1,4 @@
-﻿var _BidID;
+var _BidID;
 var _BidTypeID;
 if (window.location.search) {
     var param = getUrlVars()["param"]
@@ -32,22 +32,21 @@ if (window.location.search) {
     }
     FetchRecomendedVendor(_BidID);
     setTimeout(function () {
-        if (isLastPreApprover == "Y") {
-            $('#txtbidDate').rules('add', {
-                required: true,
-            });
-            //$('#txtbidTime').rules('add', {
-            //    required: true,
-            //});
-        }
-        else {
-            $('#txtbidDate').rules('add', {
-                required: false,
-            });
-            //$('#txtbidTime').rules('add', {
-            //    required: false,
-            //});
-        }
+        //if (isLastPreApprover == "Y") {
+        //    $('#txtbidDate').rules('add', {
+        //        required: true,
+        //    });
+           
+        //}
+        //else {
+        //    $('#txtbidDate').rules('add', {
+        //        required: false,
+        //    });
+            
+        //}
+        $('#txtbidDate').rules('add', {
+            required: true,
+        });
     }, 1000)
 
 }
@@ -91,14 +90,6 @@ function fetchSeaExportDetails(bidid) {
                 jQuery('#ddlbidclosetypePrev').html("Stagger");
             }
             isLastPreApprover = BidData[0].bidDetails[0].isLastPreApprover;
-
-            //if (isLastPreApprover == "Y") {
-            //    $('#divTimeChange').removeClass('hide')
-            //}
-            //else {
-            //    $('#divTimeChange').addClass('hide')
-            //}
-
             $('#filepthtermsPrev').html(BidData[0].bidDetails[0].termsConditions);
             $('#filepthattachPrev').html(BidData[0].bidDetails[0].attachment);
 
@@ -246,13 +237,7 @@ function fetchScrapSalesBidDetails(bidid) {
             $('#filepthattach').html(BidData[0].bidDetails[0].attachment);
             isLastPreApprover = BidData[0].bidDetails[0].isLastPreApprover;
 
-            //if (isLastPreApprover == "Y") {
-            //    $('#divTimeChange').removeClass('hide')
-            //}
-            //else {
-            //    $('#divTimeChange').addClass('hide')
-            //}
-
+            
             jQuery("#tblapproversPrev").empty();
             $('#wrap_scrollerPrevApp').show();
             jQuery('#tblapproversPrev').append("<thead><tr><th class='bold text-center' colspan=3 >Post Approvers</th></tr></thead>");
@@ -422,11 +407,9 @@ var FormValidation = function () {
 
             submitHandler: function (form) {
 
-                //var datearray = $("#txtbidDate").val().split("/");
-                //var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
-                //new Date($('#txtbidDate').val().replace('-', ''));
+               
                 var BidDate = new Date($('#txtbidDate').val().replace('-', ''));//new Date(newdate + ' ' + $("#txtbidTime").val())
-                if (isLastPreApprover == "Y") {
+                //if (isLastPreApprover == "Y") {
                     if (BidDate < new Date()) {
                         bootbox.alert("Date and Time should not be less than current date and time.");
                         return false;
@@ -434,10 +417,10 @@ var FormValidation = function () {
                     else {
                         ApprovalApp();
                     }
-                }
-                else {
-                    ApprovalApp();
-                }
+                //}
+                //else {
+                //    ApprovalApp();
+                //}
 
             }
         });
@@ -464,6 +447,7 @@ var FormValidation = function () {
 function ApprovalApp() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+    alert(BidDate)
     var approvalbyapp = {
         "BidID": parseInt(BidID),
         "FromUserId": sessionStorage.getItem("UserID"),

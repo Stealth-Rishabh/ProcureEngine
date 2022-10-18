@@ -1,4 +1,4 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 
 jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount,#txtlastinvoiceprice").inputmask({
@@ -24,11 +24,10 @@ jQuery(document).ready(function () {
         allowMinus: false,
         clearMaskOnLostFocus: true,
         supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true
-        //autoUnmask: true
+        'removeMaskOnSubmit': true,
+         autoUnmask: true
     });
-
-
+   
 });
 
 $('#txtBidSubject,#txtshortname,#txtConversionRate,.maxlength').maxlength({
@@ -105,8 +104,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(7)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -136,8 +135,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -286,8 +285,8 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -833,49 +832,49 @@ var FormWizard = function () {
                 }
 
             });
-            var formApprover = $('#frmApprover');
-            formApprover.validate({
-
-                doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                rules: {
-
-                },
-
-                invalidHandler: function (event, validator) {
-                },
-                highlight: function (element) {
-                    $(element).closest('.col-md-7').addClass('has-error');
-
-                },
-                unhighlight: function (element) {
-                    $(element).closest('.col-md-7').removeClass('has-error');
-
-                },
-                errorPlacement: function (error, element) {
-
-                },
-                success: function (label) {
-                },
-                submitHandler: function (form) {
-
-
-                    if ($('#tblpreBidapprovers >tbody >tr').length == 0) {
-                        $('.alert-danger').show();
-                        $('#spandangerapp').html('Please Map Approver.');
-                        $('.alert-danger').fadeOut(5000);
-                        return false;
-
-                    }
-                    else {
-                        MapBidapprover();
-                    }
-
-                }
-
-            });
+            /* var formApprover = $('#frmApprover');
+             formApprover.validate({
+ 
+                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+                 errorElement: 'span', //default input error message container
+                 errorClass: 'help-block help-block-error', // default input error message class
+                 focusInvalid: false, // do not focus the last invalid input
+                 rules: {
+ 
+                 },
+ 
+                 invalidHandler: function (event, validator) {
+                 },
+                 highlight: function (element) {
+                     $(element).closest('.col-md-7').addClass('has-error');
+ 
+                 },
+                 unhighlight: function (element) {
+                     $(element).closest('.col-md-7').removeClass('has-error');
+ 
+                 },
+                 errorPlacement: function (error, element) {
+ 
+                 },
+                 success: function (label) {
+                 },
+                 submitHandler: function (form) {
+ 
+ 
+                     if ($('#tblpreBidapprovers >tbody >tr').length == 0) {
+                         $('.alert-danger').show();
+                         $('#spandangerapp').html('Please Map Approver.');
+                         $('.alert-danger').fadeOut(5000);
+                         return false;
+ 
+                     }
+                     else {
+                         MapBidapprover();
+                     }
+ 
+                 }
+ 
+             });*/
 
             var handleTitle = function (tab, navigation, index) {
 
@@ -1262,7 +1261,7 @@ function ConfigureBidInsPefaTab2() {
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
                 i = (this_row.closest('tr').attr('id')).substring(4);
-               
+
                 targetPrice = 0
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
@@ -1649,11 +1648,16 @@ function InsUpdProductSevices() {
         if ($('#add_or').text() == "Modify") {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
-                if ($.trim($('#shortname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
-                    st = "false"
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
+                //if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val()) && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
+                 if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
+                    st = "false";
+                    
                 }
 
             });
+            
             if ($('#dropuom').val() == '') {
                 $('.alert-danger').show();
                 $('#spandanger').html('Please Select UOM Properly');
@@ -1779,7 +1783,7 @@ function InsUpdProductSevices() {
         }
 
         else {
-            st = "true"; i = 0;
+            st = "true";
             if ($('#txtStartingPrice').is(":visible") && parseInt($.trim(removeThousandSeperator($('#txtCeilingPrice').val()))) > parseInt($.trim(removeThousandSeperator($('#txtStartingPrice').val()))) && $("#ddlAuctiontype option:selected").val() != '82') {
                 error.show();
                 $('#spandanger').html('Starting price should not be less than Bid start price...');
@@ -1864,12 +1868,15 @@ function InsUpdProductSevices() {
                 }
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
-                        if ($.trim($('#shortname' + i).html()) == $('#txtshortname').val()) {
-                            status = "false"
+                        var this_row = $(this);
+                        i = (this_row.closest('tr').attr('id')).substring(4);
+                        if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
+                            st = "false"
                         }
-                        i++;
+                        
                     });
-                    if (status == "false") {
+                    
+                    if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -1917,8 +1924,8 @@ function ParametersQuery() {
     $("#tblServicesProduct tr:gt(0)").each(function () {
         var this_row = $(this);
 
-        num = (this_row.closest('tr').attr('id')).substring(4)
-        if (num > maxinum) {
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
             maxinum = num;
         }
     });
@@ -1937,7 +1944,7 @@ function ParametersQuery() {
     if ($("#ddlAuctiontype").val() == 81 || $("#ddlAuctiontype").val() == 83) {
         if (!jQuery("#tblServicesProduct thead").length) {
 
-            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
             jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><a type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td id=shortname' + i + '>' + $('#txtshortname').val() + '</td><td id=TP' + i + ' class=text-right>' + thousands_separators($('#txttargetprice').val()) + '</td><td id=quantity' + i + ' class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=dropuom' + i + '>' + $('#dropuom').val() + '</td><td id=CP' + i + ' class=text-right>' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=minincrement' + i + ' class=text-right >' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=incontext' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIPrice' + i + ' class=text-right>' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td id=showhlprice' + i + '>' + showHLPrice + '</td><td id=showstartprice' + i + '>' + ShowStartPrice + '</td></tr>');
 
         } else {
@@ -1946,7 +1953,7 @@ function ParametersQuery() {
 
         $('#wrap_scroller').show();
         if (!jQuery("#tblServicesProductPrev thead").length) {
-            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td id=shortnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + ' class=text-right>' + thousands_separators($('#txttargetprice').val()) + '</td><td id=quantityprev' + i + ' class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=dropuomprev' + i + '>' + $('#dropuom').val() + '</td><td id=CPprev' + i + ' class=text-right>' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincrementprev' + i + '>' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=incontextprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconvalprev' + i + '>' + $("#drpdecreamenton").val() + '</td><td  id=LIPriceprev' + i + ' class=text-right >' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td id=showhlpriceprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartpriceprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
 
         } else {
@@ -1960,7 +1967,7 @@ function ParametersQuery() {
         //If Dutch Bid
 
         if (!jQuery("#tblServicesProduct thead").length) {
-            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Mask Vendor</th><th class='hide'>Minimum Increment</th><th class='hide'>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 price</th><th class=hide>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Hide Target Price</th><th class='hide'>Minimum Increment</th><th class='hide'>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 price</th><th class=hide>Show Start price</th></tr></thead>");
             jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><a type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td id=shortname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + $('#txttargetprice').val() + '</td><td class=text-right id=quantity' + i + '>' + $('#txtquantitiy').val() + '</td><td id=dropuom' + i + '>' + $('#dropuom').val() + '</td><td class=text-right id=CP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td class="hide" id=minincrement' + i + '>' + $('#txtminimumdecreament').val() + '</td><td class="hide" id=incontext' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td class=text-right id=LIPrice' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td class=text-right id=starttingprice' + i + ' >' + $("#txtStartingPrice").val() + '</td><td class=text-right id=pricereductionfrequency' + i + '>' + $("#txtPriceReductionFrequency").val() + '</td><td class=text-right id=pricereductionamount' + i + '>' + $("#txtPriceReductionAmount").val() + '</td><td class=hide id=showhlprice' + i + '>' + $("#showhlprice").val() + '</td><td class=hide id=showstartprice' + i + '>' + $("#showstartprice").val() + '</td></tr>');
 
         } else {
@@ -1972,7 +1979,7 @@ function ParametersQuery() {
         $('#wrap_scroller').show();
         if (!jQuery("#tblServicesProductPrev thead").length) {
 
-            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Mask Vendor</th><th class='hide'>Minimum Increment</th><th class='hide'>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 price</th><th class=hide>Show start price</th></tr></thead>");
+            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Hide Target Price</th><th class='hide'>Minimum Increment</th><th class='hide'>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 price</th><th class=hide>Show start price</th></tr></thead>");
             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td id=shortnameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + ' class=text-right>' + $('#txtquantitiy').val() + '</td><td id=dropuomprev' + i + '>' + $('#dropuom').val() + '</td><td class=text-right id=CPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td class=hide id=minincrementprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td class=hide id=incontextprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconvalprev' + i + '>' + $("#drpdecreamenton").val() + '</td><td class=text-right id=LIPriceprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td class=text-right id=starttingprice' + i + '>' + $("#txtStartingPrice").val() + '</td><td class=text-right id=pricereductionfrequency' + i + '>' + $("#txtPriceReductionFrequency").val() + '</td><td id=pricereductionamount' + i + '>' + $("#txtPriceReductionAmount").val() + '</td><td class=hide id=showhlprice' + i + '>' + $("#showhlprice").val() + '</td><td class=hide id=showstartprice' + i + '>' + $("#showstartprice").val() + '</td></tr>');
 
         } else {
@@ -2293,8 +2300,8 @@ function fetchScrapSalesBidDetails() {
                 rowAppItems = rowAppItems + 1
                 rowAppItemsrno = rowAppItemsrno + 1;
                 if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
-                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     for (var i = 0; i < BidData[0].bidScrapSalesDetails.length; i++) {
 
 
@@ -2310,8 +2317,8 @@ function fetchScrapSalesBidDetails() {
                     }
                 }
                 else { // for dutch
-                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Mask Vendor</th><th class=hide>Minimum Increment</th><th class=hide>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 Price</th><th class=hide>Show Start Price</th></tr></thead>");
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Mask Vendor</th><th class=hide>Minimum Increment</th><th class=hide>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 Price</th><th class=hide>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Hide Target Price</th><th class=hide>Minimum Increment</th><th class=hide>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 Price</th><th class=hide>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Ceiling/ Max Price</th><th>Hide Target Price</th><th class=hide>Minimum Increment</th><th class=hide>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Starting Price</th><th>Price Increment Frequency (mins)</th><th>Price Increment Amount</th><th class=hide>Show L1 Price</th><th class=hide>Show Start Price</th></tr></thead>");
                     for (var i = 0; i < BidData[0].bidScrapSalesDetails.length; i++) {
 
 
@@ -3309,7 +3316,7 @@ function fnSeteRFQparameterTable() {
                 incon = "%age";
             }
             if (!jQuery("#tblServicesProduct thead").length) {
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
                 jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><a type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td id=shortname' + i + '>' + $('#itemserviceexcel' + i).text() + '</td><td id=TP' + i + ' class=text-right>' + thousands_separators($('#TPexcel' + i).text()) + '</td><td id=quantity' + i + ' class=text-right>' + thousands_separators($('#quanexcel' + i).text()) + '</td><td id=dropuom' + i + '>' + $('#uom' + i).text() + '</td><td id=CP' + i + ' class=text-right>' + thousands_separators($('#BSPexcel' + i).text()) + '</td><td id=maskvendor' + i + '>' + $.trim($('#hideTP' + i).text()) + '</td><td id=minincrement' + i + ' class=text-right>' + thousands_separators($('#mininc' + i).text()) + '</td><td id=incontext' + i + '>' + incon + '</td><td class=hide id=inconval' + i + '>' + $('#incrmenton' + i).text() + '</td><td id=LIPrice' + i + ' class=text-right>' + thousands_separators($("#LIPexcel" + i).text()) + '</td><td id=showhlprice' + i + '>' + $('#showH1' + i).text() + '</td><td id=showstartprice' + i + '>' + $('#showstartprice' + i).text() + '</td></tr>')
             }
             else {
@@ -3319,7 +3326,7 @@ function fnSeteRFQparameterTable() {
 
             $('#wrap_scroller').show();
             if (!jQuery("#tblServicesProductPrev thead").length) {
-                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
                 jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + $('#itemserviceexcel' + i).text() + '</td><td id=TPprev' + i + ' class=text-right>' + thousands_separators($('#TPexcel' + i).text()) + '</td><td id=quantityprev' + i + ' class=text-right>' + thousands_separators($('#quanexcel' + i).text()) + '</td><td id=dropuomprev' + i + '>' + $('#uom' + i).text() + '</td><td id=CPprev' + i + ' class=text-right>' + thousands_separators($('#BSPexcel' + i).text()) + '</td><td id=maskvendorprev' + i + '>' + $.trim($('#hideTP' + i).text()) + '</td><td id=minincrementprev' + i + ' class=text-right>' + thousands_separators($('#mininc' + i).text()) + '</td><td>' + incon + '</td><td id=LIPriceprev' + i + ' class=text-right>' + thousands_separators($("#LIPexcel" + i).text()) + '</td><td id=showhlpriceprev' + i + '>' + $('#showH1' + i).text() + '</td><td id=showstartpriceprev' + i + '>' + $('#showstartprice').val() + '</td></tr>')
             }
             else {

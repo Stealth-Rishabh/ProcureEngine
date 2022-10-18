@@ -1,4 +1,4 @@
-﻿
+
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -866,7 +866,7 @@ function formvalidate() {
             else {
 
                 fetchReguestforQuotationDetails();
-                if (sessionStorage.getItem('CustomerID') == "32") {
+                if (sessionStorage.getItem('CustomerID') == "32" || sessionStorage.getItem('CustomerID') == "29") {
                     fetchRFQPPCApproverStatus($('#hdnRfqID').val());
                 }
                 else {

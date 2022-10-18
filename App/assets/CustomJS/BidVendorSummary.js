@@ -1,4 +1,4 @@
-﻿var BidID = "";
+var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
 
@@ -346,8 +346,8 @@ function formvalidate() {
 var BidDate = "";
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
     var url = '';
-
-
+    
+    
     var BidTypeID = $("#ddlBidtype option:selected").val();
     if (BidTypeID == 7) {
         if (jQuery("#ddlBidFor option:selected").val() == 81) {
@@ -498,7 +498,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
-
+    
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -707,7 +707,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
     }
-
+    
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -853,7 +853,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
-
+    
 
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
@@ -1155,7 +1155,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
                         if (BidData[i].bidValueAsLIP != 0) {
                             var _wrtSP = BidData[i].bidValueAsPrice - BidData[i].bidValueAsLIP
-                            if (_wrtSP < 0) {
+                            if(_wrtSP < 0){
                                 _wrtSP = 0
                             }
 
@@ -1166,7 +1166,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
                         var _wrtSP1 = BidData[i].bidValueAsPrice - BidData[i].bidValueAsStartPrice
-                        if (_wrtSP1 < 0) {
+                        if(_wrtSP1 < 0){
                             _wrtSP1 = 0
                         }
 
@@ -1174,7 +1174,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                         str += "<td class=text-right>" + thousands_separators((_wrtSP1).round(2)) + "</td>";
                         if (BidData[i].bidValueAsTargetPrice != 0) {
                             var _wrtSP2 = BidData[i].bidValueAsPrice - BidData[i].bidValueAsTargetPrice
-                            if (_wrtSP2 < 0) {
+                            if(_wrtSP2 < 0){
                                 _wrtSP2 = 0
                             }
 
@@ -1188,7 +1188,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     else {
                         if (BidData[i].bidValueAsLIP != 0) {
                             var _wrtSP3 = BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice
-                            if (_wrtSP3 < 0) {
+                            if(_wrtSP3 < 0){
                                 _wrtSP3 = 0
                             }
 
@@ -1199,7 +1199,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
                         var _wrtSP4 = BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice
-                        if (_wrtSP4 < 0) {
+                        if(_wrtSP4 < 0){
                             _wrtSP4 = 0
                         }
 
@@ -1207,7 +1207,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                         str += "<td class=text-right>" + thousands_separators((_wrtSP4).round(2)) + "</td>";
                         if (BidData[i].bidValueAsTargetPrice != 0) {
                             var _wrtSP5 = BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice
-                            if (_wrtSP5 < 0) {
+                            if(_wrtSP5 < 0){
                                 _wrtSP5 = 0
                             }
 

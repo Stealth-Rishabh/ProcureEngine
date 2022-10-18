@@ -1,4 +1,4 @@
-﻿var error = $('.alert-danger');
+var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
 var NFAOverviewDetails = [];
@@ -164,7 +164,8 @@ var FormWizard = function () {
                 highlight: function (element) {
 
                     $(element)
-                        .closest('.inputgroup').removeClass('has-success').addClass('has-error');
+                        .closest('.inputgroup,.clsTA').removeClass('has-success').addClass('has-error');
+
                     $(element)
                         .closest('.col-md-4').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-3').removeClass('has-success').addClass('has-error');
@@ -175,8 +176,9 @@ var FormWizard = function () {
 
                 unhighlight: function (element) {
 
+
                     $(element)
-                        .closest('.inputgroup').removeClass('has-error');
+                        .closest('.inputgroup,.clsTA').removeClass('has-error');
                     $(element)
                         .closest('.col-md-4').removeClass('has-error');
                     $(element)
@@ -285,6 +287,7 @@ var FormWizard = function () {
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
+
                         if (form.valid() == false) {
                             form.validate();
                             $('.alert-danger').show();
@@ -318,12 +321,13 @@ var FormWizard = function () {
 
                     }
                     else if (index == 2) {
-                        form.validate();
-                        $('.paramremark').rules('add', {
-                            minlength: 50,
-                            maxlength: 1000
-
-                        });
+                        /*    form.validate();
+                            $('.paramremark').rules('add', {
+                                required:true,
+                                minlength: 50,
+                                maxlength: 1000
+    
+                            });*/
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
                             $('#errorSeq').html('You have Some error. Please Check Below!')
                             $('#errordivSeq').show();
@@ -332,7 +336,7 @@ var FormWizard = function () {
                             return false;
                         }
                         if (form.valid() == false) {
-                            form.validate();
+                            //  form.validate();
                             flag = 'F';
                             $('.alert-danger').show();
                             $('#errorSeq').text('Remarks should be minimum 50 characters & maximum 1000 characters.');
@@ -386,8 +390,9 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             $('#form_wizard_1 .button-submit').click(function () {
-                SaveApproversConfirmation();
 
+                //SaveApproversConfirmation();
+                ConfirmSaveApprovers();
                 // CompleteProcess();
 
             }).hide();
@@ -495,8 +500,8 @@ function GetOverviewmasterbyId(idx) {
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
 
-                $("#txtAmountFrom").val(res.result[0].nfaAmount);
-                $("#txtBudget").val(res.result[0].nfaBudget);
+                $("#txtAmountFrom").val(thousands_separators(res.result[0].nfaAmount));
+                $("#txtBudget").val(thousands_separators(res.result[0].nfaBudget));
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
 
@@ -561,12 +566,13 @@ $("#txtEventref").keyup(function () {
     sessionStorage.setItem("hdnEventForID", 0);
     $("#txtEventref").css("border-color", "");
 });
+//abheedev amountbudget start
 $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
         $('#ddlBudget').val('NB');
     }
-    else if (parseFloat($('#txtBudget').val()) < parseFloat($('#txtAmountFrom').val())) {
+    else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
         $('#ddlBudget').val('OB');
     }
     else {
@@ -577,13 +583,14 @@ $("#txtAmountFrom").focusout(function () {
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
         $('#ddlBudget').val('NB');
     }
-    else if (parseFloat($('#txtBudget').val()) < parseFloat($('#txtAmountFrom').val())) {
+    else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
         $('#ddlBudget').val('OB');
     }
     else {
         $('#ddlBudget').val('WB');
     }
 });
+//abheedev amountbudget end
 sessionStorage.setItem("hdnEventrefId", 0);
 sessionStorage.setItem("hdnEventForID", 0);
 $("#txtEventref").typeahead({
@@ -647,32 +654,21 @@ function fnApproversNBQuery(rownum, question) {
 
     if (status == false) {
         $('#errordivSeq').show();
-        $('#errorSeq').html('NFA param is already mapped for this NFA overview.');
+        $('#errorSeq').html('NFA Question is already mapped for this NFA overview.');
         Metronic.scrollTo($("#errordivSeq"), -200);
         $('#errordivSeq').fadeOut(7000);
 
         return false;
     }
     else {
-       
-        /*var num = 0;
-        var maxidnum = 0;
-        $("#tblNFAOverviewParam tr:gt(0)").each(function () {
-            var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
-                maxidnum = num;
-            }
-        });
 
-        rownum = parseInt(maxidnum) + 1;*/
         if (!jQuery("#tblNFAOverviewParam thead").length) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td  class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
 
 
@@ -680,8 +676,10 @@ function fnApproversNBQuery(rownum, question) {
         $('#nfaparamoption' + rownum).remove();
 
     }
+
     form.validate();
     $('#paramremark' + rownum).rules('add', {
+        required: true,
         minlength: 50,
         maxlength: 1000,
     });
@@ -900,7 +898,7 @@ function BindPurchaseOrg() {
 
         $("#ddlModelOrg,#ddlPurchaseOrg").empty();
         $('#ddlModelOrg').append('<option value="0">Select</option>');
-        $('#ddlPurchaseOrg').append('<option value="0">Select</option>');
+        //$('#ddlPurchaseOrg').append('<option value="0">Select</option>');
         if (res.result.length > 0) {
 
             $.each(res.result, function (key, value) {
@@ -908,6 +906,9 @@ function BindPurchaseOrg() {
                 $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
 
             });
+            setTimeout(function () {
+                bindPurchaseGroupDDL();
+            }, 500);
         }
 
     });
@@ -927,7 +928,7 @@ function bindPurchaseGroupDDL() {
         if (res.result.length > 0) {
 
             $("#ddlPurchasegroup").empty();
-            $('#ddlPurchasegroup').append('<option value="0">Select</option>');
+            //$('#ddlPurchasegroup').append('<option value="0">Select</option>');
             if (res.result.length > 0) {
                 $.each(res.result, function (key, value) {
                     $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
@@ -946,8 +947,8 @@ $("#txtProjectName").on("keyup", function () {
     $("#txtProjectName").css("border-color", "");
 });
 
-function ValidTeTab1() {
-
+/*function ValidTeTab1() {
+    debugger;
     var v_org = false;
     var v_group = false;
     var ProjectName = false;
@@ -990,7 +991,7 @@ function ValidTeTab1() {
     else
         return false;
 }
-
+*/
 function Savedata() {
 
     var overviewList = [];
@@ -1028,7 +1029,7 @@ function Savedata() {
         UpdatedBy: UserID
     }
     overviewList.push(model);
-    console.log(overviewList)
+
     var url = "NFA/InsUpdateNfaoverview";
 
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
@@ -1084,7 +1085,8 @@ function Savetab2Data() {
 
 };
 function GetNfaOverviewParams() {
-    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=0";
+
+    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
@@ -1107,21 +1109,29 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
-    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=NFRequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
+
+    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
 
         if (res != null) {
+
             $("#tblNFAOverviewParam").empty();
             if (res.result.length > 0) {
                 $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td><textarea name=paramremark rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+
+
+                    if (value.flDefault == 'Y')
+                        $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+                    else
+                        $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + ' rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=1000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
+
                     form.validate();
 
                     $('#paramremark' + value.idx).rules('add', {
-
+                        required: true,
                         minlength: 50,
                         maxlength: 1000
 
@@ -1166,8 +1176,8 @@ function BindParamsForpreview() {
 function Bindtab1DataforPreview() {
     $("#lbltitle").text($("#txtTitle").val());
     $("#lblDetails").text($("#txtNFADetail").val());
-    $("#lblAmount").text($("#txtAmountFrom").val());
-    $("#lblbudgetamount").text($("#txtBudget").val());
+    $("#lblAmount").text($("#txtAmountFrom").val().toLocaleString());
+    $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString());
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
     $("#lblCategory").text($("#ddlCategory option:selected").text());
     $("#lblProjectName").text($("#txtProjectName").val());
@@ -1224,7 +1234,7 @@ function FetchMatrixApprovers() {
 function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
 
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
-    console.log(url)
+
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         $("#tblApproversPrev").empty();
@@ -1252,8 +1262,31 @@ function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
     });
 
 }
-
+function ConfirmSaveApprovers() {
+    bootbox.dialog({
+        message: "Do you want to continue?",
+        // title: "Custom title",
+        buttons: {
+            confirm: {
+                label: "Yes",
+                className: "btn-success",
+                callback: function () {
+                    SaveApproversConfirmation();
+                }
+            },
+            cancel: {
+                label: "No",
+                className: "btn-default",
+                callback: function () {
+                    return true;
+                    //window.location.href = "index.html";
+                }
+            }
+        }
+    });
+}
 function SaveApproversConfirmation() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approversData = [];
     var _data = {};
 
@@ -1299,41 +1332,24 @@ function SaveApproversConfirmation() {
         SaveActivityDetails(lstActivityData);
         //UpdateFirstTabActivity();
         if (res.status == "S") {
-            bootbox.dialog({
-                message: "Do you want to continue?",
-                // title: "Custom title",
-                buttons: {
-                    confirm: {
-                        label: "Yes",
-                        className: "btn-success",
-                        callback: function () {
-                            bootbox.alert("NFA Request Submitted Successfully.", function () {
-                                window.location.href = "index.html";
-                                return false;
-                            });
-
-                        }
-                    },
-                    cancel: {
-                        label: "No",
-                        className: "btn-default",
-                        callback: function () {
-                            window.location.href = "index.html";
-                        }
-                    }
-                }
-            });
+            bootbox.alert("NFA Request Submitted Successfully.", function () {
+                        window.location.href = "index.html";
+                        return false;
+                    });
         }
         else {
-            alert("Error: " + res.error);
+            bootbox.alert("Error: " + res.error, function () {
+               return false;
+            });
         }
-
+        jQuery.unblockUI();
     });
     SubmitData.error(function (error) {
-
+        bootbox.alert("Error: " + error, function () {
+            return false;
+        });
     });
-
-
+    jQuery.unblockUI();
 }
 
 function SaveAttechmentinDB() {
@@ -1355,9 +1371,8 @@ function SaveAttechmentinDB() {
 
         }
         lstFiles.push(objFiles);
-
     });
-    console.log(JSON.stringify(lstFiles))
+
     var SaveFiles = callajaxReturnSuccess(url, "Post", JSON.stringify(lstFiles));
     SaveFiles.success(function (res) {
 
@@ -1445,7 +1460,7 @@ function SaveActivityDetails(data) {
         return details.apprSeq == ApprSeqval.min();
     });
 
-    // console.log(aquaticCreatures);
+
     var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
 
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
@@ -1612,7 +1627,7 @@ function bindConditionDDL() {
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlCondition").empty();
-        $("#ddlCondition").append(jQuery("<option></option>").val("0").html("Select"));
+        $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No condition selected"));
         if (res.result != null) {
             if (res.result.length > 0) {
                 //conditionData = res.result;
@@ -1655,11 +1670,14 @@ jQuery("#txtSearchmatrix").keyup(function () {
 
     });
 });
+/*
 function bindApproverMaster() {
 
     var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer);
+    alert(url)
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
+        debugger;
         if (res.result != null) {
             $('#tblAllmatrix').empty();
 
@@ -1676,7 +1694,8 @@ function bindApproverMaster() {
     });
 
 };
+*/
 function viewallmatrix() {
     $('#viewAllMatrix').modal('show');
-    bindApproverMaster();
+    bindApproverMaster('N');
 }

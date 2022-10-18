@@ -348,7 +348,7 @@ var FormValidation = function () {
                     required: true
                 },
                 drpVendors: {
-                    required: false
+                    required: true
                 }
             },
             messages: {

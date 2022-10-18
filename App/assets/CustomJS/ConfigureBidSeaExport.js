@@ -1,7 +1,8 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 
 jQuery(document).ready(function () {
     $("#txtWeightageval,#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtitembidduration,#txtfloorPrice,#txtPriceReductionAmount").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
+       
         alias: "decimal",
         rightAlign: false,
         groupSeparator: ",",
@@ -13,8 +14,8 @@ jQuery(document).ready(function () {
         allowMinus: false,
         clearMaskOnLostFocus: true,
         supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true
-        //autoUnmask: true
+        'removeMaskOnSubmit': true,
+         autoUnmask: true
 
     });
 
@@ -95,8 +96,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(7)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -130,8 +131,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -286,8 +287,8 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            num = (this_row.closest('tr').attr('id')).substring(10)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -802,7 +803,7 @@ var FormWizard = function () {
                     txtCeilingPrice: {
                         required: true,
                         notEqualTo: 0,
-                        maxlength: 50
+                        maxlength: 50,
 
                     },
                     txtminimumdecreament: {
@@ -1648,6 +1649,7 @@ function ConfigureBidForSeaExportTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
+            //alert($('#hdnRfiRfqID').val())
             if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null) {
                 console.log($('#hdnRfiRfqID').val())
                 fnfetchRFQVendor();
@@ -1657,8 +1659,6 @@ function ConfigureBidForSeaExportTab2() {
                 fetchSeaExportDetails();
             }
             return true;
-
-
 
         },
         error: function (xhr, status, error) {
@@ -1950,11 +1950,13 @@ function InsUpdSeaExport() {
             st = "true";
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
-
-                if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val()) {
-                    st = "false"
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4);
+                if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
+                //if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val()) {
+                    st = "false";
                 }
-                i++;
+                //i++;
             });
 
             if ($('#dropuom').val() == '') {
@@ -2130,7 +2132,7 @@ function InsUpdSeaExport() {
         }
 
         else {
-            st = "true"; i = 0;
+            st = "true"; 
 
             if (parseFloat(removeThousandSeperator($('#txtminimumdecreament').val())) > parseFloat(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
@@ -2209,16 +2211,15 @@ function InsUpdSeaExport() {
                 }
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
-
+                        var this_row = $(this);
+                        i = (this_row.closest('tr').attr('id')).substring(4);
                         var this_row = $(this);
                         if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
-                            status = "false"
+                            st = "false"
                         }
-                        i++;
+                        
                     });
-
-
-                    if (status == "false") {
+                    if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -2272,10 +2273,10 @@ function ParametersQuery() {
     $("#tblServicesProduct tr:gt(0)").each(function () {
         var this_row = $(this);
 
-        num = (this_row.closest('tr').attr('id')).substring(4)
-        if (num > maxinum) {
-            maxinum = num;
-        }
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
     });
 
     i = parseInt(maxinum) + 1;
@@ -4185,7 +4186,8 @@ function viewRFQQuotes(vendorid) {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchQuotedPriceReport/?VendorID=" + vendorid + "&RFQId=" + $('#hdnRfiRfqID').val() + "&RFQVersionId=99",
+       // url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchQuotedPriceReport/?VendorID=" + vendorid + "&RFQId=" + $('#hdnRfiRfqID').val() + "&RFQVersionId=99",
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/BidPulledRFQVendorReport/?BidID=" + sessionStorage.getItem('CurrentBidID')+"VendorID=" + vendorid ,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -4195,21 +4197,21 @@ function viewRFQQuotes(vendorid) {
             var quotes = '';
 
             jQuery("#tblServicesProductVendor").empty();
-            if (data[0].quotesDetails.length > 0) {
+            if (data.length > 0) {
 
-                for (var i = 0; i < data[0].quotesDetails.length; i++) {
+                for (var i = 0; i < data.length; i++) {
                     if (i == 0) {
                         jQuery('#tblServicesProductVendor').append('<thead><tr style="background: grey; color:light black;"><th>Item/Product/Services</th><th>Quoted Landed Unit Price (Without GST)</th></tr></thead>');
 
                     }
-                    if (data[0].quotesDetails[i].rfqtcid == 0) {
-                        if (data[0].quotesDetails[i].rfqVendorPricewithoutGST != 0) {
-                            quotes = thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithoutGST)
+                    if (data[i].rfqtcid == 0) {
+                        if (data[i].rfqVendorPricewithoutGST != 0) {
+                            quotes = thousands_separators(data[i].rfqVendorPricewithoutGST)
                         }
                         else {
                             quotes = 'Not Quoted';
                         }
-                        jQuery('#tblServicesProductVendor').append('<thead id=headid' + i + '><tr><td>' + data[0].quotesDetails[i].rfqShortName + '</td><td class=text-right>' + quotes + '</td></tr></thead>');
+                        jQuery('#tblServicesProductVendor').append('<thead id=headid' + i + '><tr><td>' + data[i].rfqShortName + '</td><td class=text-right>' + quotes + '</td></tr></thead>');
 
                     }
                 }

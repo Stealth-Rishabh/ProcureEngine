@@ -1,18 +1,43 @@
-﻿var url = '';
+var url = '';
 
 /////****** Chat Start*****************/////
 
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
 
 
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
+    alert("connection started")
     console.log("connection started")
 }).catch(function (err) {
     alert(err.toString())
     bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page")
 
+});
+
+connection.onclose(error => {
+    alert('You are not connected to the Bid as Your Internet connection is unstable or due to multiple logins, please refresh the page!!')
+});
+
+connection.onreconnected(connectionId => {
+  
+    alert('Connection reconnected')
+});
+
+
+connection.on("disconnectSR", function (connectionId) {
+   alert('disconnecting');
+   connection.stop();
 });
 
 
@@ -344,7 +369,7 @@ connection.on("refreshTimer", function () {
 
 })
 connection.on("refreshTimeronClients", function () {
-
+    
     fetchBidTime();
 
 });
@@ -1025,7 +1050,7 @@ function fetchBidSummaryVendorproduct() {
 
                             }
 
-                            if (data[i].itemBlockedRemarks != '') {
+                           if (data[i].itemBlockedRemarks != '') {
                                 // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
                                 $('#txtquote' + i).val("Restricted")
                                 $('#txtquote' + i).attr('disabled', 'disabled')
@@ -1042,14 +1067,14 @@ function fetchBidSummaryVendorproduct() {
 
                                 jQuery('#lblstatus' + i).css({
                                     'color': 'Blue',
-                                    'vertical-align': 'top'
+                                     'vertical-align': 'top'
                                 });
 
                             }
 
                             else {
 
-                                jQuery('#lblstatus' + i).css({
+                            jQuery('#lblstatus' + i).css({
 
                                     'color': 'Red',
 
@@ -1383,11 +1408,11 @@ function startTimer(duration, display) {
             coutercall = 0;
 
         }
-
+        
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
-        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !=="Restricted") {
             $('.clsdisable').removeAttr('disabled')
         }
         if (--timer < -3) {
