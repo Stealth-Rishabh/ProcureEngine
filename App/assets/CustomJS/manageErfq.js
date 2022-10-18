@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 formValidation();
 //var form1 = $('#entryForm');
@@ -231,8 +231,8 @@ jQuery("#txtRFQ").typeahead({
 
             setTimeout(function () {
                 FetchVendorNotsubmittedQuotesPassreset(map[item].rfqid)
-                FetchVendorsubmittedQuotes(map[item].rfqid)
-            }, 4000)
+                
+            }, 1000)
             $('#ddlrfq').val(map[item].rfqid)
             $('#hdnDeadline').val(map[item].rfqDeadline)
             $('#deadlineModal').text(fnConverToLocalTime(map[item].rfqDeadline))
@@ -451,7 +451,7 @@ function InsUpdRFQDEtailTab1() {
 }
 var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
-    debugger;
+    
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -1215,8 +1215,9 @@ function FetchRFQVersion(RFQID) {
             if (data.length > 0) {
 
                 $('#ddlrfqVersion').append(jQuery('<option ></option>').val(data[0].rfqVersionId).html(parseInt(data[0].rfqVersionId) + 1));
-
+                FetchVendorsubmittedQuotes(RFQID);
             }
+            
 
         }, error: function (xhr, status, error) {
 
@@ -1401,6 +1402,13 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").keyup(function () {
     sessionStorage.setItem('hdnselectedEmail', '');
 });
 
+
+
+
+
+
+//abheedev surrogate bug 360 start
+
 jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     source: function (query, process) {
         var data = sessionStorage.getItem('hdnAllRFQInvitedVendorNotSubmitQ');
@@ -1431,6 +1439,11 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     }
 
 });
+
+//abheedev surrogate bug 360  end
+
+
+
 function resetpasswordForBidVendor() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -2039,10 +2052,9 @@ function saveBidSurrogate() {
             url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RFQSurrogateSave",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             type: "POST",
-            data: JSON.stringify(Data),
+            data: JSON.stringify(Data), 
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
                 // if (data == "1") {
                 success1.show();
                 $('#spansuccess1').html("Data Successfully saved");

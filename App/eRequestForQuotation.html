@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,6 +39,26 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+
+
+
+        body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }
+
+
+        .form-horizontal .form-control-static {
+            width: 100%;
+        }
+
+
+        .tab-content > .active {
+            padding-right: 10%;
+        }
+
+
+
         input#file3 {
             position: fixed;
             top: -100px;
@@ -53,6 +73,61 @@
             position: fixed;
             top: -120px;
         }
+
+
+/*abhhedev*/
+        .hovertext {
+            position: relative;
+        }
+
+            .hovertext:before {
+                content: attr(data-hover);
+                visibility: hidden;
+                opacity: 0;
+                width:200px;
+                opacity: .9;
+                color: rgb(6, 6, 6);
+                background-color: #ff7;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 5px;
+                transition: opacity 1s ease-in-out;
+                position: absolute;
+                z-index: 2;
+              
+                right: 100%;
+                bottom: 110%;
+            }
+
+            .hovertext:hover:before {
+                opacity: .9;
+                visibility: visible;
+            }
+            
+            
+            
+            
+    /*abheedev bug laptop responsive issue*/
+    .addmorebutton {
+                margin-left:85%;
+            }
+    
+    
+    
+  @media only screen and (max-width: 750px) {
+            .addmorebutton {
+                margin-left:65%;
+            }
+        }
+        
+     @media only screen and (min-width: 1250px){
+    .table .btn
+    {
+        margin-right:-23% !important;
+    }    
+    
+     }       
+            
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -136,7 +211,7 @@
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
-                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" style=" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help </a>
                         </div>
                     </div>
                 </div>
@@ -165,23 +240,35 @@
                                                         <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>General</span>
                                                     </a>
                                                 </li>
-                                                <li>
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                 <li>
                                                     <a href="#tab2" data-toggle="tab" class="step">
                                                         <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Items/Services</span>
                                                     </a>
                                                 </li>
+                                                
+                                                
                                                 <li>
                                                     <a href="#tab3" data-toggle="tab" class="step">
                                                         <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Additional Details</span>
                                                     </a>
                                                 </li>
 
+                                              
+                                                
                                                 <li>
                                                     <a href="#tab4" data-toggle="tab" class="step active">
                                                         <span class="number">4 </span>
                                                         <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
                                                     </a>
                                                 </li>
+                                                
+                                                 
 
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
@@ -199,11 +286,12 @@
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
-                                                                RFQ Subject<span class="required"> *</span>
+                                                                RFQ Subject
+                                                                <span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                       maxlength="100" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                                       maxlength="50" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
 
@@ -295,8 +383,8 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="attach-file" style="text-decoration: none !important; float:left;" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
+                                                                <a href="javascript:;" id="attach-file" style="text-decoration: none !important; float:left; margin-top:9px" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:3px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -342,9 +430,14 @@
                                                                 </label>
 
                                                             </div>
+                                                        
                                                             <div class="inputgroup">
                                                                 <div class="col-md-1 pull-right">
                                                                     <button type="button" id="Addbtn1" onclick="fnApproversQuery()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                    
+                                                                     <span class="hovertext" data-hover="Enter approver name on select approver input then click plus button">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                             <div class="inputgroup">
@@ -375,15 +468,20 @@
                                                     <div class="form-group">
 
                                                         <label class="control-label col-md-2">
-                                                            Item/Service Name  <span class="required">
+                                                            Item/Service Name
+                                                             <span class="hovertext" data-hover="please add short name for the respective item">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                    </span>
+                                                            
+                                                            <span class="required">
                                                                 *
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <input type="text" class="form-control" id="txtshortname" name="txtshortname"
                                                                    autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
-
-                                                        </div>
+                                                      </div>
+                                                      
 
                                                         <label class="control-label col-md-2">
                                                             Item Code  <span class="required">
@@ -402,7 +500,12 @@
                                                     <div class="form-group">
 
                                                         <label class="control-label col-md-2">
-                                                            Description<span class="required"> *</span>
+                                                            Description
+                                                            <span class="hovertext" data-hover="please provide the bid description of the Item/Service">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                    </span>
+                                                            <span class="required"> *</span>
+                                                            
                                                         </label>
                                                         <div class="col-md-10 xyz">
                                                             <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
@@ -528,8 +631,13 @@
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" href="#RfqParameterexcel">Excel Upload</button>
-                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add 
+                                                                </button>
+                                                                 
                                                                 <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                                <span class="hovertext" data-hover="click add button once u have submitted all required details">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                    </span>
 
                                                             </div>
                                                         </div>
@@ -551,11 +659,7 @@
                                                             </div>
                                                             <div id=collapse1 class="panel-collapse collapse">
                                                                 <div class="panel-body">
-
-
                                                                     <div class="col-md-12">
-
-
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-2">
                                                                                 <select class="form-control" onchange="fnGetTermsCondition()" id="ddlConditiontype" name="ddlConditiontype">
@@ -563,20 +667,32 @@
 
 
                                                                                 </select>
+
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-9">
                                                                                 <table class="table table-striped table-bordered table-hover" id="tblTermsCondition"></table>
+
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-1">
                                                                                 <input type="button" id="btnS" value="Save" class="btn btn-primary" onclick="fnsavetermscondition('Y')" />
+
                                                                             </div>
                                                                         </div>
-
-
+                                                                     
+                                                                     
+                                                                        <label class="addmorebutton" > 
+                                                                            <a href="javascript:;" class="btn btn-primary" onclick="addMoreTermsCondition()">
+                                                                                Add more <i class="m-icon-swapright m-icon-white">
+                                                                                </i>
+                                                                            </a>
+                                                                        </label>
+                                                                      
 
                                                                     </div>
                                                                 </div>
@@ -584,7 +700,6 @@
 
 
                                                             </div>
-
 
                                                         </div>
                                                         <div class="panel panel-default">
@@ -603,7 +718,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-3">
                                                                                 <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                         </div>
@@ -613,10 +728,16 @@
                                                                             </div>
                                                                         </div>
 
+                                                                       
                                                                         <div class="col-md-1">
                                                                             <button type="button" id="Addbtn1" onclick="addmoreattachments(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                                         </div>
-
+                                                                       
+                                                                        <div class="col-md-1">
+                                                                        <span class="hovertext" data-hover="please add short name for the respective item">
+                                                                            <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                        </span> 
+                                                                        </div>
                                                                     </div>
                                                                     <div class="clearfix">&nbsp;</div>
                                                                     <div class="col-md-12">
@@ -712,14 +833,14 @@
                                                                     </div>
 
                                                                 </div>
-                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
                                                                         <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                                                             <thead class="flip-content">
-                                                                                <tr>
+                                                                                <tr width="50%">
                                                                                     <th width="20%">
-                                                                                        <div class="col-md-10 checkbox-list">
+                                                                                        <div class="col-md-8 checkbox-list">
                                                                                             <label class="checkbox-inline" style="margin-left: -16px;">
                                                                                                 <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
                                                                                             </label>
@@ -791,7 +912,7 @@
                                             <div class="col-md-6">
 
                                                 <label class="col-md-4 control-label">
-                                                    RFQ Subject:
+                                                    RFQ Subject :
                                                 </label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblRfqsubject">
@@ -1276,7 +1397,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1339,6 +1460,8 @@
             var date = new Date();
             date.setDate(date.getDate() - 1);
             $('#txtPODate').datepicker({ startDate: "-1d" });
+
+
 
             Pageloaded()
 

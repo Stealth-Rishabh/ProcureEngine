@@ -193,10 +193,10 @@ function fetchrfqcomprative() {
                         //abheedev bug 349 part2  start
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
-
+                         
                         strHeadQ += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
                         strHeadExcelQ += "<th colspan='4'>" + data[0].vendorNames[i].vName; +"</th>";
-
+                         
                     }
                     else {
                         allvendorresponse = 'N';
@@ -718,6 +718,8 @@ function fetchrfqcomprative() {
 
                 ////////For Qusetion table
                 //////// ***************** Start  Answer Question Row
+
+                //abheedev bug 410 start
                 if (data[0].questions.length > 0) {
 
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
@@ -735,13 +737,13 @@ function fetchrfqcomprative() {
 
 
                         if (flag2 == 'T') {
-
+                            
                             strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  start
                             strExcelQ += "<tr><td colspan=5>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  end
                             for (var s = 0; s < data[0].questions.length; s++) {
-
+                                
                                 if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
 
                                     //  q = q + 1;
@@ -752,26 +754,26 @@ function fetchrfqcomprative() {
 
                                             if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
                                                 //strQ += "<td>" + data[0].questions[s].answer + "</td>";
-                                                strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
+                                                strQ += '<td colspan=4>' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
                                                 strExcelQ += "<td colspan=4>" + data[0].questions[s].answer + "</td>";
 
                                             }
                                             else if (data[0].questions[s].answer == 'Rejected') {
-                                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;'>Regretted</td>"
                                                 strExcelQ += "<td colspan=4>Regretted</td>";
 
                                             }
                                             else {
-                                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;' >Not Quoted</td>";
                                                 strExcelQ += "<td colspan=4>Not Quoted </td>";
                                             }
-                                            //abheedev bug 349 part2  end
+                                     //abheedev bug 349 part2  end is done
                                         }
 
                                     }
                                 }
                             }
-
+                            //abheedev bug 410 end
 
                             strQ += " </tr>";
                             strExcelQ += " </tr>";

@@ -1,4 +1,4 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 $("#spnParamAttach").hide();
 var error = $('.alert-danger');
 
@@ -205,11 +205,9 @@ var FormWizard = function () {
                 highlight: function (element) {
 
                     $(element)
-
                         .closest('.inputgroup').removeClass('has-success').addClass('has-error');
 
                     $(element)
-
                         .closest('.col-md-4,.xyz,.col-md-2').removeClass('has-success').addClass('has-error');
 
                 },
@@ -426,6 +424,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
+                      
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
@@ -441,6 +440,7 @@ var FormWizard = function () {
                     }
                     else if (index == 3) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                         
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
                             Metronic.scrollTo($(".alert-danger"), -200);
@@ -488,6 +488,7 @@ var FormWizard = function () {
 
             $('#form_wizard_1 .button-submit').click(function () {
                 if ($('#tblServicesProduct > tbody >tr').length == 0) {
+                 
                     $('#form_wizard_1').bootstrapWizard('previous');
                     error.show();
 
@@ -638,7 +639,6 @@ function InsUpdRFQDEtailTab1() {
 }
 function InsUpdRFQDEtailTab2() {
 
-
     var tab2Items = '', ItemDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var rowCount = jQuery('#tblServicesProduct tr').length;
@@ -759,21 +759,32 @@ function fnGetTermsCondition() {
                 for (var i = 0; i < data.length; i++) {
 
                     var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
-                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
-                    str += "<td>" + data[i].name + "</td>";
+                    if (data[i].id != 0) {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                    }
+                    else {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick = 'deleteterms(" + i +")' > <i class='glyphicon glyphicon-remove-circle'></i></button ></td>";
+                    }
+                   
+                    if (data[i].id != 0) {
+                        str += "<td>" + data[i].name + "</td>";
+                    }
+                    else {
+                        str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=50 value='" + data[i].name + "'   autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+                    }
 
 
-                    var strPrev = "<tr><td>" + data[i].name + "</td>";
+                    var strPrev = "<tr id=trTermsprev" + i + "><td>" + data[i].name + "</td>";
 
                     str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
-                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
 
 
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
                         jQuery('#tblTermsCondition').append(str);
 
                     }
-                    $('#rem' + i).maxlength({
+                    $('.maxlength').maxlength({
                         limitReachedClass: "label label-danger",
                         alwaysShow: true
                     });
@@ -867,11 +878,15 @@ function CheckTerms(event, ID) {
 }
 function fnsavetermscondition(isbuttonclick) {
     var checkedValue = '2~I~#';
+    var checkedOtherTerms = '';
     $("#tblTermsCondition> tbody > tr").each(function (index) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
-            if ($.trim(this_row.find('td:eq(0)').text()) != '2') {
+            if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
+                checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
@@ -880,7 +895,8 @@ function fnsavetermscondition(isbuttonclick) {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QueryString": checkedValue,
-            "ConditionType": jQuery("#ddlConditiontype").val()
+            "ConditionType": jQuery("#ddlConditiontype").val(),
+            "OtherTermsCondition": checkedOtherTerms
 
         }
 
@@ -1001,6 +1017,20 @@ function addmoreattachments() {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         rowAttach = rowAttach + 1;
+
+        var num = 0;
+        var maxinum = 0;
+        $("#tblAttachments tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowAttach = parseInt(maxinum) + 1;
+
         if (!jQuery("#tblAttachmentsPrev thead").length) {
             jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
@@ -1008,8 +1038,6 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-
-
         strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
@@ -1021,6 +1049,7 @@ function addmoreattachments() {
 
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach + ',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
+
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 
         //** function to insert record in DB after file upload on Blob
@@ -1135,6 +1164,19 @@ function addquestions() {
     }
     else {
         rowques = rowques + 1;
+        var num = 0;
+        var maxinum = 0;
+        $("#tblquestions tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
+
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowques = parseInt(maxinum) + 1;
         if (!jQuery("#tblQuestionsPrev thead").length) {
             jQuery('#tblQuestionsPrev').append("<thead><tr><th class='bold' style='width:50%!important'>Questions</th><th class='bold' style='width:50%!important'>Requirement</th></tr></thead>");
         }
@@ -1330,6 +1372,8 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
+    var num = 0;
+    var maxinum = 0;
     var status = "true";
     var UserID = sessionStorage.getItem('hdnApproverid');
     var UserName = jQuery("#txtApprover").val();
@@ -1370,15 +1414,27 @@ function fnApproversQuery() {
     else {
 
         if ($('#ddlapprovertype').val() == "C") {
-            commApp = commApp + 1;
+            //commApp = commApp + 1;
             commAppsrno = commAppsrno + 1;
+            num = 0;
+            maxinum = 0;
+            $("#tblapprovers >tbody>tr").each(function (i) {
 
+                var this_row = $(this);
+                num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+
+                if (parseInt(num) > parseInt(maxinum)) {
+                    maxinum = num;
+                }
+            });
+
+            commApp = parseInt(maxinum) + 1;
             if (!jQuery("#tblapprovers thead").length) {
                 jQuery("#tblapprovers").append("<thead><tr><th colspan=4  style='text-align:center;' class='bold'>Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commAppsrno + '</td><td class=hide>' + UserID + '</td></tr>');
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
             }
             else {
-                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commAppsrno + '</td><td class=hide>' + UserID + '</td></tr>');
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
             }
 
             $('#wrap_scrollerPrevApp').show();
@@ -1386,23 +1442,49 @@ function fnApproversQuery() {
             if (!jQuery("#tblapproversPrev thead").length) {
 
                 jQuery("#tblapproversPrev").append("<thead><tr><th colspan=2  style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td></td></tr>');
             }
             else {
-                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td></td></tr>');
             }
+            var rowcount = jQuery('#tblapprovers >tbody>tr').length;
+
+            if (rowcount >= 1) {
+                $("#tblapprovers tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(index));
+                });
+                $("#tblapproversPrev tr:gt(0)").each(function (i) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(1)').html(i));
+                });
+            }
+
         }
         else {
-            TechApp = TechApp + 1;
+
+            //TechApp = TechApp + 1;
             TechAppsrno = TechAppsrno + 1;
+            num = 0;
+            maxinum = 0;
+            $("#tblapproverstech >tbody>tr").each(function () {
+                var this_rowtech = $(this);
+                num = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
+
+                if (parseInt(num) > parseInt(maxinum)) {
+                    maxinum = num;
+                }
+            });
+
+            TechApp = parseInt(maxinum) + 1;
             jQuery("#tblapproverstech").removeClass('hide')
             jQuery("#tblapproversPrevtech").removeClass('hide')
             if (!jQuery("#tblapproverstech thead").length) {
                 jQuery("#tblapproverstech").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
-                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
             }
             else {
-                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
             }
 
             $('#wrap_scrollerPrevApptech').show();
@@ -1410,12 +1492,25 @@ function fnApproversQuery() {
             if (!jQuery("#tblapproversPrevtech thead").length) {
 
                 jQuery("#tblapproversPrevtech").append("<thead><tr><th colspan=3  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold'>Show Price</th></tr></thead>");
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td></td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             else {
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td></td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             $('#tdshowp' + TechApp).text('No');
+            var rowcount = jQuery('#tblapproverstech >tbody>tr').length;
+
+            if (rowcount >= 1) {
+                $("#tblapproverstech tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(index));
+                });
+                $("#tblapproversPrevtech tr:gt(0)").each(function (i) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(1)').html(i));
+                });
+            }
+
         }
         jQuery("#txtApprover").val('');
         sessionStorage.setItem('hdnApproverid', '0')
@@ -1430,8 +1525,8 @@ function deleteApprow(rowid, rowidPrev, apptype) {
     if (apptype == "C") {
         //commApp = commApp - 1;
         commAppsrno = commAppsrno - 1;
-        var rowCount = jQuery('#tblapprovers tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblapprovers >tbody>tr').length;
+        if (rowCount >= 1) {
             i = 0;
             $("#tblapprovers tr:gt(0)").each(function () {
                 var this_row = $(this);
@@ -1449,8 +1544,8 @@ function deleteApprow(rowid, rowidPrev, apptype) {
     else {
         // TechApp = TechApp - 1;
         TechAppsrno = TechAppsrno - 1;
-        var rowCount = jQuery('#tblapproverstech tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblapproverstech >tbody> tr').length;
+        if (rowCount >= 1) {
             i = 0;
             $("#tblapproverstech tr:gt(0)").each(function () {
                 var this_row = $(this);
@@ -1795,6 +1890,18 @@ function ParametersQuery() {
     //quan=thousands_separators(parseFloat(removeThousandSeperator($('#txtquantitiy').val())).round(3))
     quan = thousands_separators($('#txtquantitiy').val())
 
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+    i = parseInt(maxinum) + 1;
+
     if (!jQuery("#tblServicesProduct thead").length) {
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
         jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
@@ -1854,9 +1961,9 @@ function deleterow(TrId, Trprevid) {
     rowAppItemsrno = rowAppItemsrno - 1;
     $('#' + TrId.id).remove();
     $('#' + Trprevid.id).remove();
-    var rowCount = jQuery('#tblServicesProduct tr').length;
+    var rowCount = jQuery('#tblServicesProduct >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1) {
+    if (rowCount >= 1) {
         $("#tblServicesProduct tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(0)').html(i));
@@ -2067,6 +2174,8 @@ function FetchCurrency(CurrencyID) {
 
 }
 function RFQInviteVendorTab3() {
+    
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var InsertQuery = '';
@@ -2114,6 +2223,7 @@ function RFQInviteVendorTab3() {
         dataType: "json",
         success: function (data) {
 
+
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
             jQuery.unblockUI();
@@ -2135,6 +2245,8 @@ function RFQInviteVendorTab3() {
     });
 }
 function fnsubmitRFQ() {
+    
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
         var Tab3data = {
@@ -3097,7 +3209,6 @@ function getCategoryWiseVendors(categoryID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
 
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
@@ -3181,3 +3292,35 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
 }
 
+function addMoreTermsCondition() {
+
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblTermsCondition tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(2, (this_row.closest('tr').attr('id')).length)
+
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
+    //Metronic.scrollTo($("#tr" + i), 350);
+    var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
+    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms("+i+")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
+    str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled checked/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
+    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+    jQuery('#tblTermsCondition').append(str);
+    $('.maxlength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
+
+}
+function deleteterms(icount) {
+    $('#tr' + icount).remove();
+    $('#trTermsprev' + icount).remove();
+}

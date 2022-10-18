@@ -1,4 +1,4 @@
-﻿
+
 $("#cancelBidBtn").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
@@ -388,7 +388,7 @@ function fetchRFXDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-           
+        
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
             jQuery('#txtRFXSubject').val(BidData[0].rfxMaster[0].rfxSubject)
@@ -933,7 +933,6 @@ function Searchquestion(inputID, tblID) {
 
             jQuery(this).parent().show();
             iCounter++;
-
             return true;
         }
 
@@ -2031,7 +2030,7 @@ function RFXInsUpdConfigurationSubmit() {
             'UserId': sessionStorage.getItem('UserID')
             
         };
-       
+      
         jQuery.ajax({
 
             type: "POST",

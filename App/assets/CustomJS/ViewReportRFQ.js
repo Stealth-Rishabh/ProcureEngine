@@ -102,10 +102,10 @@ function fetchrfqcomprative(RFQID) {
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-
+                   
                     strHeadQ += "<th colspan='5' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-
-
+                    
+                      
                 }
                 strHead += "<th>Line-wise Lowest Quote</th><th colspan='5' style='text-align:center;'>Last PO Details</th><th>Delivery Location</th>";
                 strHead += "</tr>"
@@ -174,8 +174,8 @@ function fetchrfqcomprative(RFQID) {
 
                         //@abheedev bug349 part2 start
                         str += "<tr><td style='display:none'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td style='display:none'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";
-
-
+                        
+                       
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
 
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
@@ -285,7 +285,7 @@ function fetchrfqcomprative(RFQID) {
                 ////For Loading Factor reason Row
                 //abheedev bug 349 part2 start
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Loading Reason</b></td>";
-                //abheedev bug 349 part2 start
+                 //abheedev bug 349 part2 start
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
@@ -672,7 +672,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                 //@abheedev bug349 start
                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th><th colspan='6'>Our Requirement</th>"
-                //@abheedev bug349 end
+                 //@abheedev bug349 end
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
 
@@ -904,7 +904,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                         str += "<td colspan=4 style='text-align:center;'><b>" + data[0].vendorNames[k].vName; +"</b></td>";
-                    }
+                 }
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
 
 

@@ -511,16 +511,16 @@ function RFQFetchL1Package(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            //abheedev bug 349 start
+             //abheedev bug 349 start
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
             //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-
+            
             $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
-            //abheedev bug 349 end
+             //abheedev bug 349 end
 
         }, error: function (xhr, status, error) {
 
@@ -627,26 +627,21 @@ function updloadingfactor() {
     if (rowCount >= 1) {
         //var this_row = $(this);
         for (i = 1; i < rowCount; i++) {
-            var _LFPer = 0;
-            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML;
-            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML);
-            //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-            //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
-            if (_LFType == 'P') {
-                var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-                perVal = perVal.replace('%', '');
-                _LFPer = parseFloat(perVal);
+            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML);
+            var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
+            var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
+            var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+            if (_LFPer == '' || _LFPer == null || _LFPer == 'undefined') {
+                _LFPer = 0;
             }
             else {
-                _LFPer = 0;
+                _LFPer = parseFloat(_LFPer);
             }
             tabItems = {
                 "LoadingFactor": _LF,
                 "LoadingFactorReason": _LFReason,
                 "LoadingFactorType": _LFType,
-                "LoadingFactorPer": _LFPer
+                "LoadingFactorPer":_LFPer
             }
             eRFQLoadingTerms.push(tabItems);
             isSubmit = true;
@@ -820,9 +815,9 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
             //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
-
+            
             $("#totBoxTaxExcel" + VendorID).html(data[0].totalPriceExTax);
-            //abheedev bug 349 end
+             //abheedev bug 349 end
             if ($("#ddlrfqVersion option:selected").val() == 99) {
 
 
@@ -1530,7 +1525,7 @@ function fnAddUpdLoadingFactor() {
 //FOR LOADING FACTOR TABLE
 var rowques = 0;
 function addLoadingFactor() {
-    //abheedev loading factor start
+     //abheedev loading factor start
 
 
     var _LoadingAmount = 0;
@@ -1546,7 +1541,7 @@ function addLoadingFactor() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
-
+        
     }
     else {
         isSubmitActive = true;
@@ -1573,29 +1568,22 @@ function addLoadingFactor() {
     if (isSubmitActive) {
         //_LoadingAmount = parseFloat()
 
-
-
+       
+       
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
-            //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>"
-        strprev += "<td style='display:none;'>" + jQuery("#ddlLFType").val() + "</td>"
-        if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "%</td>"
-        }
-        else {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "INR</td>"
-        }
-        // strprev += "<td>" + _loadingPer + "</td>"
+        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>" 
+        strprev += "<td>" + jQuery("#ddlLFType").val() + "</td>"
+       // strprev += "<td>" + _loadingPer + "</td>"
         strprev += '<td>' + _LoadingAmount + '</td>';
 
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
         if (!jQuery("#tblLoadingFactor thead").length) {
-            jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Percentage</th><th></th></tr></thead>");
         }
         // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"

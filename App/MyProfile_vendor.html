@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+        <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <title>Sourcing Portal</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -49,6 +50,7 @@
                 right: 3%;
             }
         }
+
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
@@ -60,7 +62,7 @@
                 </a>
             </div>
 
-
+           
 
 
             <div class="top-menu">
@@ -104,14 +106,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title" data-i18n="modaltitle">
+                                <h4 class="modal-title"  data-i18n="modaltitle">
                                     Modal title
                                 </h4>
                             </div>
                             <div class="modal-body" data-i18n="widgetsetting">
                                 Widget settings form goes here
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" >
                                 <button type="button" class="btn yellow" data-i18n="savechanges">
                                     Save changes
                                 </button>
@@ -125,11 +127,11 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="javascript:;" onclick=fnredirecttoHome()><span data-i18n="home">Home</span></a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="javascript:;" onclick=fnredirecttoHome()><span  data-i18n="home">Home</span></a> <i class="fa fa-angle-right">
                             </i>
                         </li>
                         <li>
-                            <a href="#" data-i18n="myprofile">My Profile</a>
+                            <a href="#"  data-i18n="myprofile" >My Profile</a>
 
                         </li>
                     </ul>
@@ -274,7 +276,7 @@
                                                                                             Email ID
                                                                                         </label>
                                                                                         <div class="col-md-9">
-                                                                                            <input type="text" class="form-control"
+                                                                                            <input type="text" class="form-control" 
                                                                                                    id="vendorAltEmailID" name="vendorAltEmailID" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
                                                                                     </div>
@@ -301,8 +303,8 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
-                                                                    <span data-i18n="companydetails">Company Details</span>
+                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0" >
+                                                                    <span data-i18n="companydetails" >Company Details</span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="companyspan" name="companyspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="company_chart" data-percent=""></div>
@@ -720,7 +722,7 @@
                                                                                 </div>
                                                                                 <div class="col-md-2 xyz">
                                                                                     <input type="text" class="form-control selectno thousand"
-                                                                                           id="txtLastFiscal" name="txtLastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                           id="txtLastFiscal" name="txtLastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
                                                                                 </div>
                                                                             </div>
 
@@ -966,12 +968,12 @@
             setCommonData();
             fetchCountry();
             fetchPaymentTerms();
-
-
-            function numberonly() {
-                $(".numberonly").keyup(function () {
-                    $(".numberonly").val(this.value.match(/[0-9]*/));
-                });
+            
+            
+            function numberonly(){
+            $(".numberonly").keyup(function () {
+                $(".numberonly").val(this.value.match(/[0-9]*/));
+            });
 
             }
             numberonly();
@@ -1028,7 +1030,7 @@
 
 
 
-
+    
 
 
 

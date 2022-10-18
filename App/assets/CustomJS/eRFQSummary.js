@@ -1,4 +1,4 @@
-﻿var form = $('#frmbidsummaryreport');
+var form = $('#frmbidsummaryreport');
 $(document).ready(function () {
 
     fetchregisterusers();

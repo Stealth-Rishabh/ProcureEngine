@@ -1,10 +1,11 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 var biddatetime = getCurrentDateddmmyyyy();
 var currentdate = new Date();
 //$('#txtreopenDate').val(biddatetime);
 $('#txreopenTime').val('')
-$(".thousandseparated").inputmask({
+function thouandseparator(){
+   $(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
     groupSeparator: ",",
@@ -16,7 +17,9 @@ $(".thousandseparated").inputmask({
     allowMinus: false,
     'removeMaskOnSubmit': true
 
-});
+}); 
+}
+thouandseparator();
 $('#txtbid,#txtvendor,#txtBidDurationPrev,#txtvendorSurrogateBid,#txtdestinationPort,#txtshortname,#txtpricefrequency').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -374,6 +377,10 @@ function fetchUserBids() {
 
     });
 }
+
+
+
+
 var connection;
 jQuery("#txtbid").typeahead({
     source: function (query, process) {
@@ -400,7 +407,9 @@ jQuery("#txtbid").typeahead({
                 });
             }
             setTimeout(function () {
-                connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + map[item].bidId + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
+               var clientIP ="User";
+               
+                connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" +  map[item].bidId  + "&userType=E" + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP=" + clientIP).withAutomaticReconnect().build();
                 console.log('Not Started')
                 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
                     console.log("connection started")
@@ -1671,12 +1680,15 @@ function fetchallexportdetails() {
             $('#btncalopendate').show()
             $('#btnopentime').show()
 
-
+            $('#btnprebid').removeAttr("disabled")
+            $('#btnprebidexcel').removeAttr("disabled")
 
             if (BidData[0].bidDetails[0].status.toLowerCase() == "close") {
                 $("#ddlBidStatus").val(2);
                 $('#optopen').removeClass('hide')
                 $('#btnsendreminder').attr("disabled", "disabled")
+                $('#btnprebid').attr("disabled", "disabled")
+                $('#btnprebidexcel').attr("disabled", "disabled")
             }
             else if (BidData[0].bidDetails[0].status.toLowerCase() == "pause") {
                 $("#ddlBidStatus").val(1);
@@ -2766,7 +2778,7 @@ function fnTimeUpdateClosedBid(isMailSend) {
 
 function editValues(divName, rowid) {
     //alert(sessionStorage.getItem("hdnbidtypeid"));
-    //debugger;
+    debugger;
     var isEditable = true;
     var extval = -1;
     if (rowid == 'New') {
@@ -2841,7 +2853,7 @@ function editValues(divName, rowid) {
     if (divName == 'divbidItemsPrevtab_0') {
         var chkBidDate = new Date($("#txtbidDatePrevtab_0").html().replace('-', ''));
         var currDt = new Date();
-        if (chkBidDate < currDt) {
+        if (currDt < chkBidDate) {
             isEditable = true;
         }
         else {
@@ -4769,7 +4781,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                     pullRFQ = data[0].pullRFQID;
 
 
-                    $('#tblprebidvendors').append("<tr><td class=hide id=vid" + i + " >" + data[i].vendorID + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class=hide id=advfactor" + i + ">" + data[i].advFactor + "</td><td id=vname" + i + " >" + data[i].vendorName + "</td><td id=shortname" + i + ">" + data[i].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + i + "  ></input></td></table></td><td><input type=tel onkeyup='thousands_separators_input(this)' number='true' class='form-control text-right clsisdisabled' id='txtpreprice" + i + "' name='txtpreprice" + i + "' value=" + (data[i].price == 0 ? '' : thousands_separators(data[i].price)) + " ></input></td></tr>")
+                    $('#tblprebidvendors').append("<tr><td class=hide id=vid" + i + " >" + data[i].vendorID + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class=hide id=advfactor" + i + ">" + data[i].advFactor + "</td><td id=vname" + i + " >" + data[i].vendorName + "</td><td id=shortname" + i + ">" + data[i].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + i + "  ></input></td></table></td><td><input type=tel onkeyup='fncleanmsz("+i+")' number='true' class='form-control  clsisdisabled thousandseparated' id='txtpreprice" + i + "' name='txtpreprice" + i + "' value=" + (data[i].price == 0 ? '' : (data[i].price)) + " ></input><span id=spanmsz" + i + " style=color:#a94442></span></td></tr>")//thousands_separators
                     $('#tblBiddetailsPreprice').append("<tr><td id=videxcel" + i + " >" + data[i].vendorID + "</td><td id=vnameexcel" + i + " >" + data[i].vendorName + "</td><td id=seidexcel" + i + " >" + data[i].seid + "</td><td id=shortnameexcel" + i + ">" + data[i].destinationPort + "</td><td></td></tr>")
                     if (data[i].remarks != "") {
                         $('#spancheckedTerms' + i).removeClass("checked")
@@ -4784,7 +4796,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                             if (data[j].price != 0) {
                                 flagEditbtn = "Y";
                             }
-                            $('#tblprebidvendors').append("<tr><td class=hide id=vid" + j + " >" + data[j].vendorID + "</td><td class=hide id=seid" + j + ">" + data[j].seid + "</td><td class=hide id=advfactor" + j + " >" + data[j].advFactor + "</td><td id=vname" + j + "></td><td id=shortname" + j + " >" + data[j].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + j + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + j + "'\)\"; id=\"chkTerms" + j + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + j + " ></input></td></table></td><td><input type=tel number='true' onkeyup='thousands_separators_input(this)' class='form-control text-right clsisdisabled' id='txtpreprice" + j + "' name='txtpreprice" + j + "' value=" + (data[j].price == 0 ? '' : thousands_separators(data[j].price)) + " ></input></td></tr>")
+                            $('#tblprebidvendors').append("<tr><td class=hide id=vid" + j + " >" + data[j].vendorID + "</td><td class=hide id=seid" + j + ">" + data[j].seid + "</td><td class=hide id=advfactor" + j + " >" + data[j].advFactor + "</td><td id=vname" + j + "></td><td id=shortname" + j + " >" + data[j].destinationPort + "</td><td style='width:15%'><table><tr><td><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + j + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + j + "'\)\"; id=\"chkTerms" + j + "\"  style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></td><td><input name=comm type=text class='hide form-control maxlength' maxlength=25  autocomplete=off id=remarks" + j + " ></input></td></table></td><td><input type=tel number='true' onkeyup='fncleanmsz("+j+")' class='form-control  clsisdisabled thousandseparated' id='txtpreprice" + j + "' name='txtpreprice" + j + "' value=" + (data[j].price == 0 ? '' : (data[j].price)) + " ></input><span id=spanmsz" + j + " style=color:#a94442></span></td></tr>")
                             $('#tblBiddetailsPreprice').append("<tr><td id=videxcel" + j + "  >" + data[j].vendorID + "</td><td id=vnameexcel" + j + "></td><td id=seidexcel" + j + ">" + data[j].seid + "</td><td id=shortnameexcel" + j + " >" + data[j].destinationPort + "</td><td></td></tr>")
                             i = j;
                             if (data[j].remarks != "") {
@@ -4803,6 +4815,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
 
 
                 }
+                thouandseparator();
                 $('.maxlength').maxlength({
                     limitReachedClass: "label label-danger",
                     alwaysShow: true
@@ -4829,6 +4842,7 @@ function fetchItemsforPreBidPrices(BidID, BidTypeID, BidForID) {
                     clsisdisabled = 'disabled'
                     $('#btnprebid').addClass('hide');
                     $('#btnprebidexcel').addClass('hide');
+                    errorprebid.fadeOut(7000);
                 }
 
                 if (isRunningBid == "Y" || BidForID == 82) {
@@ -4862,17 +4876,48 @@ function CheckTerms(event, ID) {
     }
 
 }
+function fncleanmsz(icount){
+   $('#spanmsz'+icount).text('');
+}
 function submitprebidprice() {
-    if (sessionStorage.getItem("hdnbidtypeid") == 7) {
-        fnsubmitRAPrePrices()
+    var seid = 0; var flag = true;
+    var price = 0;var y=0;
+    var rowcount=$("#tblprebidvendors >tbody>tr").length;
+    //$("#tblprebidvendors >tbody>tr").each(function (x) {
+    for(x=0; x < rowcount; x++){
+        seid = $('#seid' + x).text();
+        price = $.trim($('#txtpreprice' + x).val())
+        //$("#tblprebidvendors >tbody>tr").each(function () {
+        for(y=x+1; y< rowcount; y++){
+            if ($('#seid' + y).text() == seid) {
+               if (price == $.trim($('#txtpreprice' + y).val()) && $('#txtpreprice' + y).val() != '' && y!=0 ) {
+                    //console.log(y)
+                    //console.log(price)
+                    //console.log($.trim($('#txtpreprice' + y).val()))
+                    $('#spanmsz' + x).text('already quoted by someone.')
+                    flag = false;
+                    //return false;
+                }
+            }
+           
+        }
+       
     }
-    else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
-        fnsubmitCAPrePrices()
-    }
+   
+   // alert(flag)
+    if (flag == true) {
+        if (sessionStorage.getItem("hdnbidtypeid") == 7) {
+            fnsubmitRAPrePrices()
+        }
+        else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
+            fnsubmitCAPrePrices()
+        }
 
-    else {
-        fnsubmitFAPrePrices()
+        else {
+            fnsubmitFAPrePrices()
+        }
     }
+    
 }
 $(document).on('keyup', '.form-control', function () {
     if ($.trim($('.form-control').val()).length) {
@@ -5092,7 +5137,7 @@ function fnsubmitFAPrePrices() {
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         };
         // alert(JSON.stringify(Data))
-        //console.log(JSON.stringify(Data))
+        console.log(JSON.stringify(Data))
 
         jQuery.ajax({
 

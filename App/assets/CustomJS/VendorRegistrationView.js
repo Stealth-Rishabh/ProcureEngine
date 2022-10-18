@@ -1,4 +1,4 @@
-﻿
+
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -12,8 +12,7 @@ function fetchCategorymaster1() {
         success: function (data) {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
-            if (data.length > 0) {
-                fetchVendorRegistrationDetails
+            if (data.length > 0) {fetchVendorRegistrationDetails
 
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
@@ -149,7 +148,7 @@ function fetchVendorRegistrationDetails() {
                 jQuery('#seclastFY').html();
             }
 
-
+            
             if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
                 jQuery('#pincode').html(companydetails[0].pinCode);
             }
@@ -245,19 +244,22 @@ function ApproveRFI(For) {
 
         });
         straddedproduct = result.slice('#', -1);
-
+        var VRID=0
+        if(sessionStorage.getItem('VRID')!=null){
+            VRID=sessionStorage.getItem('VRID');
+        }
         var data = {
             "tmpVendorID": parseInt(sessionStorage.getItem('tmpVendorID')),
             "status": For,
             'approverID': sessionStorage.getItem('UserID'),
             'customerID': parseInt(sessionStorage.getItem('CustomerID')),
             'vendorCode': $('#hdnvendorCode').val(),
-            'VRID': parseInt(sessionStorage.getItem('VRID')) == null ? parseInt(sessionStorage.getItem('VRID')) : 0,
+            'VRID': parseInt(VRID),
             'Remarks': remarks,
             'productCat': straddedproduct
 
         }
-
+       // alert(JSON.stringify(data))
         console.log(JSON.stringify(data));
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "VendorRequest/VRApproval_Reject",

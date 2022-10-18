@@ -1,4 +1,4 @@
-﻿
+
 var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
@@ -103,7 +103,7 @@ function startTimer(duration, display) {
                  return;
              }
          }*/
-        console.log(timer)
+        //console.log(timer)
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {

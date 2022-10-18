@@ -1,4 +1,4 @@
-﻿
+
 var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
@@ -526,6 +526,8 @@ function fetchBidSummary(BidID) {
                 //jQuery('#RFQConfigueron').html('<b>' + data[0].bidDate + ' ' + data[0].bidTime + '</b>')
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
+                jQuery("#txtbidDate").val(_bidDate);
+                
                 //jQuery("#lblbiddate").text(data[0].bidDate);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
@@ -629,7 +631,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            jQuery("#tblBidSummary > thead").empty();
+             jQuery("#tblBidSummary > thead").empty();
             jQuery("#tblBidSummary > tbody").empty();
             jQuery("#tblbidsummarypercentagewise > thead").empty();
             jQuery("#tblbidsummarypercentagewise > tbody").empty();
@@ -1682,8 +1684,14 @@ function fnpauseaction(index, seid, sno) {
 }
 ///////////////////////----************************************signal R Start****************************************************
 
+var clientIP = "11.11";
+
+
+
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
+
+
 //$(window).load(function () {
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + parseInt(sessionStorage.getItem('BidID')) + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 console.log('Not Started')
 
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
@@ -2642,11 +2650,11 @@ function FetchRecomendedVendor(bidid) {
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' +fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -2661,14 +2669,14 @@ function FetchRecomendedVendor(bidid) {
                         isMappedPPCApp = 'Y'
                     }
                     if (data[i].vendorName != "") {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').removeClass('hide')
                     }
                     if (data[i].eRFQApproverType == "P") {
                         isMappedPPCApp = 'Y'
                     }
                     else {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thapprover').addClass('hide')
                     }
                 }
@@ -2677,11 +2685,11 @@ function FetchRecomendedVendor(bidid) {
                 $('#frmdivremarksawarded').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thaward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksawared').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thaward').addClass('hide')
                     }
                 }
@@ -2690,11 +2698,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + (data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thapprovalprocess').hide()
                     }
                 }
@@ -2702,7 +2710,7 @@ function FetchRecomendedVendor(bidid) {
             else {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
-
+           
             if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
                 $('#btnPPCF').show()
                 $('#btnPPCA').show()

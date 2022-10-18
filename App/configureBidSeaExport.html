@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,18 +40,32 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-
-
-
-
-
-        .tab-content > .active {
-            margin-right: 10%;
+        
+   
+       body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
         }
+   
+   
+       .form-horizontal .form-control-static {
+          
+          width: 100%;
+        }
+   
 
+    
+        .tab-content>.active {
 
-
-
+             margin-right: 10%;
+        }
+        
+       
+   
+     
+    
+    
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -836,7 +850,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-2">Bid Description:</label>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-8" >
                                                         <p class="form-control-static" id="txtbiddescriptionPrev">
 
                                                         </p>
@@ -1578,7 +1592,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-4 col-md-9">
                                                     <button type="button" class="btn green" id="btnbidapproversubmit" onclick="fncheckbtntext(this)">Submit</button>
-                                                    <button type="button" class="btn yellow-crusta" data-dismiss="modal" aria-hidden="true" id="btnClose">Close</button>
+                                                    <button type="button" class="btn yellow-crusta"  data-dismiss="modal" aria-hidden="true"  id="btnClose">Close</button>
 
                                                 </div>
                                             </div>
@@ -1668,9 +1682,9 @@
     <script>
         jQuery(document).ready(function () {
             $('[data-toggle="popover"]').popover({})
-
-
-
+            
+            
+            
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {

@@ -1,8 +1,8 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 
 jQuery(document).ready(function () {
     $("#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtitembidduration").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
-        alias: "decimal",
+       alias: "decimal",
         rightAlign: false,
         groupSeparator: ",",
         radixPoint: ".",
@@ -88,8 +88,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(7)
-            if (num > maxidnum) {
+            num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
         });
@@ -1458,10 +1458,13 @@ function InsUpdSeaExport() {
             st = "true";
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
-                if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val() && $.trim($('#gst' + i).html()) != $("#txtGST").val()) {
+                 var this_row = $(this);
+                 i = (this_row.closest('tr').attr('id')).substring(4);
+                 if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
+               // if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val() && $.trim($('#gst' + i).html()) != $("#txtGST").val()) {
                     st = "false"
                 }
-                i++;
+                //i++;
             });
 
             if ($('#dropuom').val() == '') {
@@ -1574,7 +1577,7 @@ function InsUpdSeaExport() {
         }
 
         else {
-            st = "true"; i = 0;
+            st = "true";
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
@@ -1617,14 +1620,15 @@ function InsUpdSeaExport() {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
 
                         var this_row = $(this);
+                        i = (this_row.closest('tr').attr('id')).substring(4);
                         if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
-                            status = "false"
+                            st = "false"
                         }
-                        i++;
+                       // i++;
                     });
 
 
-                    if (status == "false") {
+                    if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -1660,10 +1664,10 @@ function ParametersQuery() {
     $("#tblServicesProduct tr:gt(0)").each(function () {
         var this_row = $(this);
 
-        num = (this_row.closest('tr').attr('id')).substring(4)
-        if (num > maxinum) {
-            maxinum = num;
-        }
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
     });
 
     i = parseInt(maxinum) + 1;

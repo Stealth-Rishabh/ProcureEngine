@@ -26,8 +26,11 @@ function BindPurchaseOrg() {
 
 };
 function onSave() {
+    
     var str = $('#txtParamText').val();
-    if (/^[a-zA-Z0-9- ]*$/.test(str) == false) {
+    //@abheedev bug368 startS
+    if (/^[a-zA-Z0-9-@/*/$#&;:@%-]*$/.test(str) == false) 
+    {
         $('.alert-danger').show();
         $('#error').text('Special characters not allowed.');
         Metronic.scrollTo($(".alert-danger"), -200);
@@ -39,6 +42,7 @@ function onSave() {
     }
     SaveUpdate();
 };
+ //@abheedev bug368 end
 
 function onClear() {
     $("#txtParamText").val('');
@@ -169,6 +173,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";
@@ -189,10 +194,11 @@ function SaveUpdate() {
         createdUser: UserID,
         updatedUser: UserID
     };
-    //alert(JSON.stringify(Data))
+   
     var SaveParam = callajaxReturnSuccess(url, "Post", JSON.stringify(Data));
+    
     SaveParam.success(function (res) {
-
+        
         if (res == '1') {
             $('.alert-success').show();
             $('#success').text('Qusetion saved Successfully.');

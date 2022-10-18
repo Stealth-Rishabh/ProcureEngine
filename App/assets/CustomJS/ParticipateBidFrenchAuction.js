@@ -1,4 +1,4 @@
-﻿var BidTypeID = 0;
+var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
 var form1 = $('#FormparticipateAir');
@@ -13,8 +13,16 @@ $(document).on("keyup", "#tblParticipantsVender .form-control", function () {
 
 });
 
-/////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
+var clientIP = "";
+
+$.getJSON("https://api.ipify.org?format=json", function (data) {
+
+    // Setting text of element P with id gfg
+    clientIP = data.ip;
+
+});
+clientIP = "11.11";
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
 
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
