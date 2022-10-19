@@ -481,7 +481,7 @@ function fetchrfqcomprative() {
 
                 //For Loading Factor
                 str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
+                strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
@@ -1061,9 +1061,7 @@ function fetchrfqcomprative() {
                 $('<tr><td style="color:red !important; text-align: center;" colspan="5"> No results </td></tr>').appendTo("#tblRFQComprativeForExcel")
 
             }
-        }
-
-        ,
+        },
         error: function (xhr, status, error) {
 
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
