@@ -184,6 +184,7 @@ function fetchrfqcomprative() {
                 if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
                     ShowPrice = 'Y';
                 }
+                ShowPrice = 'Y';
             }
             else {
                 if (bidopeningdate == null || bidopeningdate == '') {
