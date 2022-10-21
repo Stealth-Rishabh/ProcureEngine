@@ -29,6 +29,23 @@ if (window.location.search) {
 }
 
 $("#cancelNFABtn").hide();
+jQuery(document).ready(function () {
+    $(".thousand").inputmask({
+        alias: "decimal",
+        rightAlign: false,
+        groupSeparator: ",",
+        radixPoint: ".",
+        autoGroup: true,
+        integerDigits: 40,
+        digitsOptional: true,
+        allowPlus: false,
+        allowMinus: false,
+        'removeMaskOnSubmit': true
+
+    });
+
+});
+
 function FetchRecomendedVendor() {
 
     jQuery.ajax({
@@ -45,7 +62,7 @@ function FetchRecomendedVendor() {
             if (data.length > 0) {
                 $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                 }
             }
             else {
@@ -321,13 +338,13 @@ var FormWizard = function () {
 
                     }
                     else if (index == 2) {
-                        /*    form.validate();
-                            $('.paramremark').rules('add', {
-                                required:true,
-                                minlength: 50,
-                                maxlength: 1000
-    
-                            });*/
+                        form.validate();
+                        $('.paramremark').rules('add', {
+                            required: true,
+                            //    minlength: 50,
+                            maxlength: 1000
+
+                        });
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
                             $('#errorSeq').html('You have Some error. Please Check Below!')
                             $('#errordivSeq').show();
@@ -335,15 +352,15 @@ var FormWizard = function () {
                             $('#errordivSeq').fadeOut(8000);
                             return false;
                         }
-                        if (form.valid() == false) {
-                            //  form.validate();
-                            flag = 'F';
-                            $('.alert-danger').show();
-                            $('#errorSeq').text('Remarks should be minimum 50 characters & maximum 1000 characters.');
-                            Metronic.scrollTo($(".alert-danger"), -500);
-                            $('.alert-danger').fadeOut(5000);
-                            return false;
-                        }
+                        /* if (form.valid() == false) {
+                            
+                             flag = 'F';
+                             $('.alert-danger').show();
+                             $('#errorSeq').text('Remarks should be minimum 50 characters & maximum 1000 characters.');
+                             Metronic.scrollTo($(".alert-danger"), -500);
+                             $('.alert-danger').fadeOut(5000);
+                             return false;
+                         }*/
                         if (flag == "T") {
                             Savetab2Data();
                             SaveAttechmentinDB();
@@ -500,8 +517,8 @@ function GetOverviewmasterbyId(idx) {
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
 
-                $("#txtAmountFrom").val(thousands_separators(res.result[0].nfaAmount));
-                $("#txtBudget").val(thousands_separators(res.result[0].nfaBudget));
+                $("#txtAmountFrom").val(res.result[0].nfaAmount);
+                $("#txtBudget").val(res.result[0].nfaBudget);
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
 
@@ -637,7 +654,7 @@ function fnApproversNBQuery(rownum, question) {
 
     if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
-        $('#errorSeq').html('Question not selected. Please press + Button after selecting Approver');
+        $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
         Metronic.scrollTo($("#errordivSeq"), -200);
         $('#errordivSeq').fadeOut(7000);
 
@@ -654,7 +671,7 @@ function fnApproversNBQuery(rownum, question) {
 
     if (status == false) {
         $('#errordivSeq').show();
-        $('#errorSeq').html('NFA Question is already mapped for this NFA overview.');
+        $('#errorSeq').html('NFA Response is already mapped for this NFA overview.');
         Metronic.scrollTo($("#errordivSeq"), -200);
         $('#errordivSeq').fadeOut(7000);
 
@@ -664,7 +681,7 @@ function fnApproversNBQuery(rownum, question) {
 
 
         if (!jQuery("#tblNFAOverviewParam thead").length) {
-            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Remark</th></tr></thead>");
+            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Description</th></tr></thead>");
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=1000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
         else {
@@ -680,7 +697,7 @@ function fnApproversNBQuery(rownum, question) {
     form.validate();
     $('#paramremark' + rownum).rules('add', {
         required: true,
-        minlength: 50,
+        // minlength: 50,
         maxlength: 1000,
     });
     $('#paramremark' + rownum).maxlength({
@@ -1119,7 +1136,7 @@ function BindSaveparams() {
 
             $("#tblNFAOverviewParam").empty();
             if (res.result.length > 0) {
-                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Question</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
+                $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
 
 
@@ -1132,7 +1149,7 @@ function BindSaveparams() {
 
                     $('#paramremark' + value.idx).rules('add', {
                         required: true,
-                        minlength: 50,
+                        // minlength: 50,
                         maxlength: 1000
 
                     });
@@ -1162,7 +1179,7 @@ function Bindtab3Data() {
 }
 function BindParamsForpreview() {
     $("#tblOBpreview").empty();
-    $("#tblOBpreview").append("<thead><tr><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
+    $("#tblOBpreview").append("<thead><tr><th class='bold' style='width:50%!important'>Description</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
         var this_row = $(this);
         var Nfidvalue = parseInt($.trim(this_row.find('td:eq(3)').html()))
@@ -1333,13 +1350,13 @@ function SaveApproversConfirmation() {
         //UpdateFirstTabActivity();
         if (res.status == "S") {
             bootbox.alert("NFA Request Submitted Successfully.", function () {
-                        window.location.href = "index.html";
-                        return false;
-                    });
+                window.location.href = "index.html";
+                return false;
+            });
         }
         else {
             bootbox.alert("Error: " + res.error, function () {
-               return false;
+                return false;
             });
         }
         jQuery.unblockUI();
@@ -1627,7 +1644,7 @@ function bindConditionDDL() {
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlCondition").empty();
-        $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No condition selected"));
+        $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No exception"));
         if (res.result != null) {
             if (res.result.length > 0) {
                 //conditionData = res.result;
