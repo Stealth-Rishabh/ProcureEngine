@@ -563,28 +563,28 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
                 }
             }
             for (i = 0; i < data.length; i++) {
                 rowques=i+1
-                var strprev = '<tr id=trLFid' + rowques + ' ><td>' + data[i].loadingFactorReason + "</td>"
-                strprev += "<td style='display:none;'>" + data[i].loadingFactorType + "</td>"
+                var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + data[i].loadingFactorReason + "</td>"
+                strprev += "<td id=trLFType" + rowques + " style='display:none;'>" + data[i].loadingFactorType + "</td>"
                 if (data[i].loadingFactorType == 'P') {
-                    strprev += "<td>" + data[i].loadingFactorPer + "%</td>"
+                    strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactorPer + "%</td>"
                 }
                 else {
-                    strprev += "<td>" + data[i].loadingFactor + "INR</td>"
+                    strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactor + "INR</td>"
                 }
                 
-                strprev += '<td>' + data[i].loadingFactor + '</td>';
+                strprev += '<td id=trLFAmount' + rowques + '>' + data[i].loadingFactor + '</td>';
 
                 
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
                 }
                 
-                strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
                 jQuery('#tblLoadingFactor').append(strprev);
 
 
@@ -1612,19 +1612,19 @@ function addLoadingFactor() {
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
             //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-            jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr data-row='" + rowques + "'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>"
-        strprev += "<td style='display:none;'>" + jQuery("#ddlLFType").val() + "</td>"
+        var strprev = '<tr id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
+        strprev += "<td id=trLFType" + rowques + " style='display:none;' >" + jQuery("#ddlLFType").val() + "</td>"
         if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "%</td>"
+            strprev += "<td id=trLFValue" + rowques + " >" + $("#txtloadingfactor").val() + "%</td>"
         }
         else {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "INR</td>"
+            strprev += "<td id=trLFValue" + rowques + ">" + $("#txtloadingfactor").val() + "INR</td>"
         }
         // strprev += "<td>" + _loadingPer + "</td>"
-        strprev += '<td>' + _LoadingAmount + '</td>';
+        strprev += '<td id=trLFAmount' + rowques + '>' + _LoadingAmount + '</td>';
 
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
@@ -1634,7 +1634,7 @@ function addLoadingFactor() {
         // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
-        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
         jQuery('#tblLoadingFactor').append(strprev);
         jQuery("#tblLoadingFactor").val('')
 
@@ -1652,6 +1652,73 @@ function deleteLFrow(rowid) {
     $('#' + rowid.id).remove();
 
 }
+
+
+var editrow;
+function editLFrow(rowid) {
+
+    console.log(rowid)
+    var i = $('#' + rowid.id).attr('data-row');
+    
+
+    console.log(i)
+    jQuery("#txtloadingfactorreason").val($("#trLFReason" + i).text());
+    jQuery("#ddlLFType").val($("#trLFType" + i).text())
+    if ($("#trLFType" + i).val() == "P") {
+        jQuery("#txtloadingfactor").val($("#trLFValue" + i).text())
+    }
+    else {
+        jQuery("#txtloadingfactor").val($("#trLFValue" + i).text())
+    }
+
+    $('#Addbtn1').hide()
+    $('#Editbtn1').show()
+    editrow = $('#' + rowid.id).attr('data-row');
+}  
+
+function updateLoadingFactor() {
+
+    
+
+
+    var _LoadingAmount = 0;
+    var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
+
+
+
+
+
+    if ($("#ddlLFType").val() == "P") {
+        _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
+        // _loadingPer = $("#txtloadingfactor").val();
+        $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() )
+        $("#trLFAmount" + editrow).text(_LoadingAmount)
+    }
+    else {
+        // _LoadingAmount = $("#txtloadingfactor").val();
+        $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() )
+        $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
+
+    }
+
+
+    $('#Addbtn1').show()
+    $('#Editbtn1').hide()
+
+
+    jQuery("#txtloadingfactorreason").val('')
+    jQuery("#ddlLFType").val('A')
+    jQuery("#txtloadingfactor").val('')
+    editrow = "";
+
+}
+
+   
+
+
+
 
 function fnAddUpdLoadingFactor() {
     var quesquery = '';

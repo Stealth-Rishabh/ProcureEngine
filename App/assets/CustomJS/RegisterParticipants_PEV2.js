@@ -19,7 +19,7 @@ jQuery.validator.addMethod(
 );
 var _vendorId = "";
 var FormValidation = function () {
-
+    //abheedev countrycode issue start
 
     var ValidateParticipants = function () {
         var form1 = $('#entryForm');
@@ -30,8 +30,7 @@ var FormValidation = function () {
             errorElement: 'span',
             errorClass: 'help-block',
             focusInvalid: false,
-            ignore: "",
-
+            ignore: [],   
             rules: {
                 txtAddress: {
                     required: true
@@ -45,9 +44,9 @@ var FormValidation = function () {
                 txtCity: {
                     required: true
                 },
-                txtZipCd: {
+               txtZipCd: {
                     required: true
-                },
+               },
                 txtPanNo: {
                     required: true
                 },
@@ -96,7 +95,8 @@ var FormValidation = function () {
                 ddlCity: {
                     required: true,
                     notEqualTo: 0
-                },
+                }
+    
             },
             messages: {
                 txtAddress: {
@@ -129,7 +129,28 @@ var FormValidation = function () {
                 },
                 ContactName: {
                     required: "Please enter contact person name"
+                },
+                txtZipCd: {
+                   required: "Please enter zip code"
+                },
+                ddlCountryCd: {
+                    required: "Please select country code"
+                   
+                },
+                ddlCountryCdPhone: {
+                    required: "Please select country code"
+
+                },
+                ddlState: {
+                    required: "Please select state"
+                    
+                },
+                ddlCity: {
+                    required: "Please select city"
+
                 }
+
+//abheedev countrycode issue end
 
             },
 

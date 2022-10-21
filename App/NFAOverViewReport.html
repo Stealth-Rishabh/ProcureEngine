@@ -103,6 +103,7 @@
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
+                // abheedev bug 385 start
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet box green-haze">
@@ -163,20 +164,37 @@
                                         </div>
 
                                         <div class="form-group">
+
                                             <div class="Controlgroup col-md-4">
                                                 <label class="control-label col-md-4">
-                                                    From/To Date
+                                                    From Date
                                                 </label>
                                                 <div class="col-md-8">
-
-                                                    <div class="input-group  date-picker input-daterange" data-date-format="mm/dd/yyyy">
-                                                        <input type="text" class="form-control col-md-4" name="txtFromDate" id="txtFromDate" autocomplete="off" style="cursor:pointer!important">
-                                                        <span class="input-group-addon" id="span_To" style="background-color: white!important;">
-                                                            to
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <!-- data-date-start-date="+0d" -->
+                                                        <input type="text" id="txtFromDate" name="txtFromDate" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" id="btncal" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
                                                         </span>
-                                                        <input type="text" class="form-control" name="txtToDate" id="txtToDate" autocomplete="off" style="cursor:pointer!important">
                                                     </div>
-
+                                                </div>
+                                            </div>
+                                            <div class="Controlgroup col-md-4">
+                                                <label class="control-label col-md-4">
+                                                    To Date
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <!--data-date-start-date="+0d"-->
+                                                        <input type="text" id="txtToDate" name="txtToDate" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" id="Button1" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="Controlgroup col-md-4">
@@ -187,6 +205,10 @@
                                                     <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" onchange="bindPurchaseGroupDDL()" class="form-control"></select>
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="form-group">
+
                                             <div class="Controlgroup col-md-4">
                                                 <label class="control-label col-md-4">
                                                     Purchase Group
@@ -197,8 +219,9 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
+
+
+
                                             <div class="Controlgroup col-md-4">
                                                 <label class="control-label col-md-4">
                                                     Configured By
@@ -222,7 +245,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        // abheedev bug 385 end
                                         <div class="form-actions fluid">
                                             <div class="col-md-offset-3 col-md-6" style="text-align: center">
                                                 <input type="submit" id="btnSubject" value="Submit" class="btn yellow" />

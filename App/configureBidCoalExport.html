@@ -66,6 +66,39 @@
             position: fixed;
             top: -120px;
         }
+
+        /*abhhedev bug 52 start*/
+        .hovertext {
+            position: relative;
+        }
+
+            .hovertext:before {
+                content: attr(data-hover);
+                visibility: hidden;
+                opacity: 0;
+                width: 200px;
+                opacity: .9;
+                color: rgb(6, 6, 6);
+                background-color: #74A892;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 5px;
+                transition: opacity 1s ease-in-out;
+                position: absolute;
+                z-index: 2;
+                right: 100%;
+                bottom: 110%;
+            }
+
+            .hovertext:hover:before {
+                opacity: .9;
+                visibility: visible;
+            }
+
+        /*abhhedev bug 52 end*/         
+
+
+
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -415,10 +448,13 @@
 
                                                             <div class="inputgroup">
 
-                                                                <label class="col-md-3 ">
+                                                                <label class="col-md-2 ">
                                                                     <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
                                                                            data-provide="typeahead" autocomplete="off" name="txtApprover" />
                                                                 </label>
+                                                                <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
 
                                                             </div>
                                                             <!--<div class="inputgroup">
@@ -445,11 +481,19 @@
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
+                                                        <!abheedev bug 52 start-->
                                                         <label class="control-label col-md-2">
-                                                            Item/Product/Services <span class="required">
+                                                            Item/Product/Services
+
+                                                            <span class="hovertext" data-hover="please add short name for the respective item">
+                                                                <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                            </span>
+
+                                                            <span class="required">
                                                                 *
                                                             </span>
                                                         </label>
+                                                        <!abheedev bug 52 end-->
                                                         <div class="col-md-4 xyz">
                                                             <input type="text" class="form-control" maxlength="200" id="txtdestinationPort"
                                                                    name="txtdestinationPort" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
@@ -665,7 +709,11 @@
                                                             <button type="button" class="btn btn-danger hide" data-toggle="modal" href="#RAexcel">Excel</button>
                                                             <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdSeaExport()">Add</button>
                                                             <button type="button" class="btn btn-warning" onclick="resetfun()">Clear</button>
-
+                                                            <!-- abheedev bug 52 start-->
+                                                            <span class="hovertext" data-hover="click add button once u have submitted all required details">
+                                                                <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                            </span>
+                                                            <!--abheedev bug 52 end-->
                                                         </div>
 
                                                     </div>

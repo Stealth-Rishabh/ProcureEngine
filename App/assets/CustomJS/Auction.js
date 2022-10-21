@@ -508,6 +508,7 @@ function CancelBidDuringConfig() {
 }
 
 function replaceQuoutesFromString(ele) {
+    
     var str = '';
     str = ele.value;
     str = str.replace(/'/g, '');

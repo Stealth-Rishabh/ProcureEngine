@@ -115,11 +115,13 @@ function fetchrfqcomprative(RFQID) {
                 //@abheedev bug349 start 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //@abheedev bug349 end
+
+                // anupam sir desired changes 21/10/2022 start
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>"+"Submission Time:" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
 
@@ -137,10 +139,10 @@ function fetchrfqcomprative(RFQID) {
                 //@abheedev bug349 start
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //@abheedev bug349 end
-                var initialtaxHRTextEx = stringDivider("Initial Landed Unit Price (Without GST) - R0  ", 18, "<br/>\n");
-                var taxHRTextinc = stringDivider("Landed Unit Price (With GST)", 18, "<br/>\n");
-                var taxHRTextEx = stringDivider("Landed Unit Price (Without GST)", 18, "<br/>\n");
-                var HRAmount = stringDivider("Amount (Inc. GST)", 8, "<br/>\n");
+                var initialtaxHRTextEx = stringDivider("Unit Price - R0 (Without GST)", 18, "<br/>\n");
+                var taxHRTextinc = stringDivider("Unit Price  (With GST)", 18, "<br/>\n");
+                var taxHRTextEx = stringDivider("Unit Price (Without GST)", 18, "<br/>\n");
+                var HRAmount = stringDivider("Amount (Inc. GST)", 10, "<br/>\n");
                 for (var j = 0; j < data[0].vendorNames.length; j++) {
                     strHead += "<th>" + initialtaxHRTextEx + "</th><th>" + taxHRTextEx + "</th><th>" + taxHRTextinc + "</th><th>" + HRAmount + "</th>";
                 }
@@ -152,7 +154,7 @@ function fetchrfqcomprative(RFQID) {
 
 
                 //For Printing Header Ends
-
+                // anupam sir desired changes 21/10/2022 end
 
                 var x = 0;
 
