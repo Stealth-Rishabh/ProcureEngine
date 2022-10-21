@@ -41,23 +41,18 @@
     <div class="user-login-5">
         <div class="row bs-reset">
             <div class="col-md-6 bs-reset">
-                <div class="login-bg" style="background-image:url(assets/pl4.jpg)">
+                <div class="login-bg" style="background-image:url(assets/bg1.jpg)">
                     <!--<img class="login-logo" src="assets/img/mmlogo.png" />-->
                 </div>
             </div>
             <div class="col-md-6 login-container bs-reset">
                 <div class="col-md-12">
-                    <img class="login-logo" src="assets/pllogo.png" style="height:90px; width:180px;" />
+                    <img class="login-logo" src="../assets/images/logo.png" />
                 </div>
                 <div class="clearfix"></div><br /><br />
 
                 <div class="login-content white">
-                    <p style="text-align: justify;">
-                        Pidilite is a consumer centric company committed to quality and innovation. For decades, we have been pioneering products for small to large applications, at home and industry, which have forged strong bonds with people from all walks of life.
-
-                        From adhesives, sealants, waterproofing solutions and construction chemicals to arts & crafts, industrial resins, polymers and more, our product portfolio is as diverse as it is ever-evolving. Today, our brands are trusted household and industrial names, and we are the market leader in adhesives.
-
-                       </p>
+                    <p style="text-align: justify;"> Procur[E]ngine is an advanced e-Negotiation platform, powered by AgileApt Solutions Pvt Ltd, enabling global customers and vendors to seamlessly exchange information in finalizing their B2B Contracts saving time, cost and money – in a transparent manner. </p>
 
                     <form action="#" class="login-form" method="post">
                         <div class="alert alert-danger display-none" id="alrt1">
@@ -305,7 +300,7 @@
     <script src="../assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <!--<script src="assets/global/scripts/app.min.js" type="text/javascript"></script>-->
+    <!--<script src="assets/global/scripts.min.js" type="text/javascript"></script>-->
     <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
 
     <script src="../assets/CustomJS/Auction.js" type="text/javascript"></script>
@@ -315,7 +310,7 @@
     <!-- END PAGE LEVEL SCRIPTS -->
     <!-- END PAGE LEVEL SCRIPTS -->
     <script type="text/javascript">
-        jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
+        jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
@@ -324,9 +319,9 @@
             Login.init();
             jQuery.unblockUI()
             $(".login-bg").backstretch([
-                "assets/pl4.jpg",
-                "assets/pl5.jpg",
-                "assets/pl6.jpg"
+                "assets/bg1.jpg",
+                "assets/bg2.jpg",
+                "assets/bg3.jpg"
             ], { fade: 1e3, duration: 8e3 })
 
 

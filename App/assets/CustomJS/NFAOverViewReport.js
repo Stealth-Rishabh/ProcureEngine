@@ -21,9 +21,9 @@ function formvalidate() {
 
         rules: {
 
-           /* ddlEventType: {
-                required: true
-            }*/
+            /* ddlEventType: {
+                 required: true
+             }*/
 
         },
 
@@ -59,9 +59,9 @@ function formvalidate() {
 
             if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
                 var today = new Date();
-               // dtto=moment(today).format("MM/dd/yyyy");
+                // dtto=moment(today).format("MM/dd/yyyy");
                 var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
                 var yyyy = today.getFullYear();
                 today = mm + '/' + dd + '/' + yyyy;
                 dtto = today;
@@ -72,7 +72,7 @@ function formvalidate() {
             if (jQuery("#txtnfasubject").val() != null && jQuery("#txtnfasubject").val() != "") {
                 subject = jQuery("#txtnfasubject").val()
             }
-           
+
             //if ($('#ddlBidtype option:selected').val() == 7) {
             // if ($('#ddlreporttype option:selected').val() == "List" || $('#ddlreporttype').val() == "ListRFQ") {
             fetNFAReport(dtfrom, dtto, subject);
@@ -181,13 +181,17 @@ function fetchregisterusers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
         success: function (data) {
+
             jQuery("#ddlconfiguredby").empty();
-            jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+
+            if (data[0].role.toLowerCase() != "user") {
+                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+            }
             for (var i = 0; i < data.length; i++) {
                 jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
             }
@@ -205,9 +209,9 @@ function fetchregisterusers() {
     });
 }
 function fetNFAReport(dtfrom, dtto, subject) {
-    
+
     var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
-   
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -233,7 +237,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
                     //var datearray = BidData[i].bidDate.split("/");
 
                     //BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
-                    BidDate = fnConverToLocalTime(data[i].createdOn);
+                    BidDate = fnConverToLocalTime(data[i].updatedOn);
                     //var _bidTime = moment(BidDate).format('HH:mm');
                     //var _bidTime = fnReturnTimeFromDate(BidDate);
 
@@ -314,6 +318,6 @@ function fetNFAReport(dtfrom, dtto, subject) {
     });
 }
 function getSummary(nfaid) {
-    var encrypdata = fnencrypt("nfaIdx=" + nfaid +"&FwdTo=View")
+    var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
     window.open("NFAApproverReq.html?param=" + encrypdata, "_blank")
 }
