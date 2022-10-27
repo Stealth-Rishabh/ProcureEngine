@@ -12,6 +12,7 @@ $(document).ready(function () {
         FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"]
         AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
         $('#lblNFAID').html('NFA ID :' + idx)
+        $('#lblnfa').html(idx)
         $('#divRemarksApp').hide();
     }
 
@@ -60,7 +61,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID) + "&Isactive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         async: false,
@@ -260,7 +261,7 @@ function fetchApproverStatus() {
                     jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
-                    jQuery('#divPendingDate' + i).text(data[i].receiptDt);
+                    jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
                     ApprovalType = data[0].approvalType;
                     if (data[i].statusCode == 10) {
 
@@ -433,11 +434,11 @@ function FetchRecomendedVendor() {
                     $('#frmdivforward').show();
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                             $('#thforward').removeClass('hide')
                         }
                         else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                             $('#thforward').addClass('hide')
                         }
 
@@ -450,7 +451,7 @@ function FetchRecomendedVendor() {
                     $('#frmdivremarksapprover').removeClass('col-md-12');
                     $('#frmdivremarksapprover').addClass('col-md-6');
                     for (var i = 0; i < data.length; i++) {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                     }
                     $('#frmdivapprove').show()
                 }
@@ -764,7 +765,7 @@ function GetQuestions() {
             var attach = 'No Attachment';
             if (data.length > 0) {
                 queslength = data.length;
-                sessionStorage.setItem('HeaderID', data[0].headerid)
+                //sessionStorage.setItem('HeaderID', data[0].headerid)
                 $('#btnTechquery').attr('disabled', 'disabled')
                 jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
@@ -789,6 +790,7 @@ function GetQuestions() {
                         $('#Removebtn' + i).show();
                     }
                     PendingOn = data[i].pendingOn;
+                    sessionStorage.setItem('HeaderID', data[i].headerid)
                 }
 
                 GetQuestionsforCreator(PendingOn);
@@ -839,13 +841,13 @@ function GetQuestionsforCreator(pendingon) {
             if (data.length > 0) {
 
                 $('#divQuery').removeClass('hide')
-                sessionStorage.setItem('HeaderID', data[0].headerid)
+                //sessionStorage.setItem('HeaderID', data[0].headerid)
                 jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
 
                 for (var i = 0; i < data.length; i++) {
                     attach = '';
                     if (data[i].attachment != '') {
-                        attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
+                        attach = '<a style="pointer:cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + '  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
                     if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID') && FwdTo == 'Admin') {
@@ -854,14 +856,17 @@ function GetQuestionsforCreator(pendingon) {
                         str += '<td><textarea onkeyup="replaceQuoutesFromString(this)" name=answer rows=2 class="form-control" maxlength=1000  autocomplete=off id=answer' + i + ' >' + data[i].answer + '</textarea></td>';
                         str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span><br>" + attach + "</td>";
                         jQuery('#tblqueryresponse').append(str);
-                        if (data[i].answer.toLowerCase() == "withdraw") {
+
+                        if (data[i].status.toLowerCase() == "x" || $('#answer' + i).val() != "") {
 
                             $('#answer' + i).prop("disabled", true);
                             $('#fileToUpload' + i).prop('disabled', 'disbaled');
+                            $('#eRFQVQueryFiles' + i).addClass('disable-click');
                         }
                         else {
                             $('#answer' + i).prop("disabled", false);
                             $('#fileToUpload' + i).prop("disabled", false);
+                            $('#eRFQVQueryFiles' + i).removeClass('disable-click');
                         }
 
                         $('#answer' + i).maxlength({
@@ -935,11 +940,11 @@ function fnsubmitQueryByCreator() {
             attchname = ''; ext = '';
             attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
-            
+
             if (attchname != "" && attchname != null && attchname != undefined) {
                 attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
                 attchname = attchname.replace('.', '@')
-                 //Upload Files on aZURE bLOB
+                //Upload Files on aZURE bLOB
                 fnUploadFilesonAzure('fileToUpload' + i, $('#fileToUpload' + i).val(), 'NFA/' + idx + '/NFAQuery');
             }
             else {
@@ -1035,12 +1040,13 @@ function deletequesrow(rowid) {
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
-    if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength >= 0) {
+    if ((jQuery('#txtquestions> tbody > tr').length == 1 || queslength >= 0)) {
+
         $('#btnTechquery').attr('disabled', 'disabled')
         // $('#btnwithdraw').hide()
     }
     else {
-        // $('#btnTechquery').removeAttr('disabled')
+        $('#btnTechquery').removeAttr('disabled')
     }
 }
 function submitQuery() {
@@ -1067,7 +1073,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-            // console.log(JSON.stringify(data))
+            console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1177,7 +1183,7 @@ function withdrawquery() {
                 setTimeout(function () {
                     $('#btnSubmitApp').removeAttr('disabled')
                     $('#btnSubmitApp').addClass('green').removeClass('default')
-
+                    GetQuestions();
                     $("#RaiseQuery").modal('hide');
 
                     jQuery.unblockUI();

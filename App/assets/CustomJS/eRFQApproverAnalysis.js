@@ -172,7 +172,7 @@ function fetchrfqcomprative() {
 
             // To Check With Pooja---What is this check?
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
-            if (_rfqBidType == 'Open') {
+            if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
                     //sessionStorage.setItem('ShowPrice', ShowPrice);
