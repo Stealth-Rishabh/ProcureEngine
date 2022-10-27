@@ -1396,7 +1396,7 @@ function DownloadFileVendor(aID) {
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-    
+    debugger;
    // $('#txtbasicPrice').val(thousands_separators(basicprice))
    //abheedev
     $('#txtbasicPrice').val((basicprice))
@@ -1575,6 +1575,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 }
 
 function saveQuotation() {
+    debugger;
     var PriceDetails = [];
     var commercialterms = [];
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
@@ -1635,6 +1636,13 @@ function saveQuotation() {
 
         $("#tblRFQLevelTCForQuot > tbody > tr").each(function () {
             var this_row = $(this);
+            var _otherTC = $.trim(this_row.find('td:eq(6)').html());
+            if (_otherTC == null || _otherTC == '') {
+                _otherTC = 0;
+            }
+            else {
+                _otherTC = parseInt(_otherTC);
+            }
             var comm = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1642,7 +1650,7 @@ function saveQuotation() {
                 "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
-                "OtherTermCondition":parseInt($.trim(this_row.find('td:eq(6)').html()))
+                "OtherTermCondition":_otherTC//parseInt($.trim(this_row.find('td:eq(6)').html()))
             };
             commercialterms.push(comm)
         });
