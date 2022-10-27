@@ -1170,8 +1170,14 @@ function fnGetRFQApprovers(Type) {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].approverType != "P" && data[i].approverType != "T") {
                     rowRFQApp = rowRFQApp + 1;
+                    debugger;
                     str = '<tr id=trAppid' + rowRFQApp + '>';
-                    str += '<td><button type=button class="btn btn-xs btn-danger"  id=Removebtn' + rowRFQApp + ' onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                    if (data[i].aprStatus != 'Y') {
+                        str += '<td><button type=button class="btn btn-xs btn-danger"  id=Removebtn' + rowRFQApp + ' onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                    }
+                    else {
+                        str += '<td><button type=button class="btn btn-xs btn-danger"  id=Removebtn' + rowRFQApp + ' onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')"  disabled><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                    }
                     str += '<td>' + data[i].approverName + '</td>'
                     str += "<td>" + data[i].emailID + "</td>";
 

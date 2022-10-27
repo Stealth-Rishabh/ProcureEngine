@@ -250,31 +250,31 @@ var FormWizard = function () {
                 onTabClick: function (tab, navigation, index, clickedIndex) {
                     return false;
                 },
-//abheedev bug347 start
+                //abheedev bug347 start
                 onNext: function (tab, navigation, index) {
 
                     if (index == 1) {
 
                     }
                     else if (index == 2) {
-       
-                var flag = "T";
-                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
 
-                var count = 1;
-                for (i = 0; i < rowCount - 1; i++) {
-                    if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
-                        $('#commremarks' + i).removeClass('has-success')
-                        $('#commremarks' + i).css("border", "1px solid red")
-                        flag = "F";
-                        // $('#form_wizard_1').bootstrapWizard('previous');
-                        $('.alert-danger').show();
-                        $('#spandanger').html('Please fill RFQ Commercial Terms.');
-                        Metronic.scrollTo($(".alert-danger"), -200);
-                        $('.alert-danger').fadeOut(7000);
-                        count = count + 1;
-                    }
-                 
+                        var flag = "T";
+                        var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
+
+                        var count = 1;
+                        for (i = 0; i < rowCount - 1; i++) {
+                            if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
+                                $('#commremarks' + i).removeClass('has-success')
+                                $('#commremarks' + i).css("border", "1px solid red")
+                                flag = "F";
+                                // $('#form_wizard_1').bootstrapWizard('previous');
+                                $('.alert-danger').show();
+                                $('#spandanger').html('Please fill RFQ Commercial Terms.');
+                                Metronic.scrollTo($(".alert-danger"), -200);
+                                $('.alert-danger').fadeOut(7000);
+                                count = count + 1;
+                            }
+
                             else {
                                 flag = "T"
                             }
@@ -326,29 +326,29 @@ var FormWizard = function () {
 
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
-                
+
                 var flagQ = "T";
-                        var rowCountQ = jQuery('#tblquestions tr').length;
+                var rowCountQ = jQuery('#tblquestions tr').length;
 
-                        var countQ = 1;
-                        for (i = 0; i < rowCountQ - 1; i++) {
-                            if ($("#answers" + i).val() == "") {
-                                $('#answers' + i).removeClass('has-success')
-                                $('#answers' + i).css("border", "1px solid red")
-                                flagQ = "F";
-                                // $('#form_wizard_1').bootstrapWizard('previous');
-                                $('.alert-danger').show();
-                                $('#spandanger').html('Please fill RFQ Answer.');
-                                Metronic.scrollTo($(".alert-danger"), -200);
-                                $('.alert-danger').fadeOut(7000);
-                                countQ = countQ + 1;
-                            }
-                            else {
+                var countQ = 1;
+                for (i = 0; i < rowCountQ - 1; i++) {
+                    if ($("#answers" + i).val() == "") {
+                        $('#answers' + i).removeClass('has-success')
+                        $('#answers' + i).css("border", "1px solid red")
+                        flagQ = "F";
+                        // $('#form_wizard_1').bootstrapWizard('previous');
+                        $('.alert-danger').show();
+                        $('#spandanger').html('Please fill RFQ Answer.');
+                        Metronic.scrollTo($(".alert-danger"), -200);
+                        $('.alert-danger').fadeOut(7000);
+                        countQ = countQ + 1;
+                    }
+                    else {
 
 
-                                flagQ == "T";
-                            }        
-                    
+                        flagQ == "T";
+                    }
+
                 }
                 if (flagQ == "F") {
                     return false;
@@ -385,7 +385,7 @@ $(document).on('keyup', '.form-control', function () {
 
 
 function fncheckItemWiseTC(ver, BoqPID) {
-    debugger;
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -600,7 +600,7 @@ function addmoreattachments() {
         $("#tblAttachmentsresponse >tbody>tr").each(function () {
             var this_row = $(this);
             num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
-             if (parseInt(num) > parseInt(maxinum)) {
+            if (parseInt(num) > parseInt(maxinum)) {
                 maxinum = num;
             }
         });
@@ -765,7 +765,7 @@ function fetchRFQResponse(Flag, version) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+
             if (Flag == 'Question') {
                 jQuery("#tblquestions").empty();
                 jQuery("#tblQuestionsPrev").empty();
@@ -780,7 +780,7 @@ function fetchRFQResponse(Flag, version) {
                         var attachQA = data[i].attachementQA;
                         str = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
-                       // strprev = "<tr><td style='width:30%!important'>" +"hello" + "</td>";
+
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
@@ -788,7 +788,6 @@ function fetchRFQResponse(Flag, version) {
                         strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this)>' + attachQA + '</a></td>';//' + data[i].answer + '
                         str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
                         strprev += '<td style="width:30%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
-                       // strprev += "<td style='width:20%!important'>" +  data[i].answer  + "</td></tr>";//' + data[i].answer + '
 
 
                         jQuery('#tblquestions').append(str);
@@ -864,7 +863,7 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
- 
+
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -889,14 +888,14 @@ function fnsaveAttachmentsquestions() {
 
     }
     if (validateSubmit) {
-     
+
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
-         
+
             var this_row = $(this);
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
             i++;
         });
-        i=0
+        i = 0
         var attchname = '';
         $("#tblquestions> tbody > tr").each(function (index) {
             var this_row = $(this);
@@ -918,7 +917,7 @@ function fnsaveAttachmentsquestions() {
 
             }*/
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
-         
+
             i++;
         });
         var data = {
@@ -1126,7 +1125,7 @@ function fetchReguestforQuotationDetails() {
                         //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
                         fetchRFQResponse('Question', RFQData[0].vendors[i].version);
                         fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
-                      
+
                         sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
                     }
                 }
@@ -1270,7 +1269,7 @@ function fetchRFQParameterlastquotesonload(ver) {
 
 function fetchRFIParameteronload(ver) {
     //alert("Called")
-   
+
     fetchRFQLevelTC(ver);
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
@@ -1290,7 +1289,7 @@ function fetchRFIParameteronload(ver) {
             var description = "";
             var totalammwithoutGST = 0;
             var totalammwithGST = 0;
-          
+
             if (data.length > 0) {
 
                 if (_RFQBidType == 'Open') {
@@ -1384,23 +1383,22 @@ setTimeout(function () { sessionStorage.removeItem('selectedboqtxtboxid') }, 500
 sessionStorage.removeItem('selectedboqtxtboxidTax');
 
 function DownloadFile(aID) {
- 
-    
+
+
 
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 function DownloadFileVendor(aID) {
-    
-    
+
+
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-    
-   // $('#txtbasicPrice').val(thousands_separators(basicprice))
-   //abheedev
+    // $('#txtbasicPrice').val(thousands_separators(basicprice))
+    //abheedev
     $('#txtbasicPrice').val((basicprice))
-     
+
     $("#hddnBoqParamQuantity").val(quantity);
 
     $('#texttblidwithGST').val(withgst);
@@ -1424,16 +1422,16 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
-   
+
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
     basicprice = 0.0;
     PricewithoutGSTDiscount = 0.0;
 
-      
+
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
-   
+
 
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
@@ -1575,6 +1573,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 }
 
 function saveQuotation() {
+    debugger;
     var PriceDetails = [];
     var commercialterms = [];
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
@@ -1610,7 +1609,7 @@ function saveQuotation() {
                 vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
-           
+
             var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1635,6 +1634,13 @@ function saveQuotation() {
 
         $("#tblRFQLevelTCForQuot > tbody > tr").each(function () {
             var this_row = $(this);
+            var _otherTC = $.trim(this_row.find('td:eq(6)').html());
+            if (_otherTC == null || _otherTC == '' || _otherTC == 'undefined') {
+                _otherTC = 0;
+            }
+            else {
+                _otherTC = parseInt(_otherTC);
+            }
             var comm = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1642,7 +1648,7 @@ function saveQuotation() {
                 "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
-                "OtherTermCondition":parseInt($.trim(this_row.find('td:eq(6)').html()))
+                "OtherTermCondition": _otherTC//parseInt($.trim(this_row.find('td:eq(6)').html()))
             };
             commercialterms.push(comm)
         });
@@ -1655,7 +1661,7 @@ function saveQuotation() {
             "CommercialTerms": commercialterms,
             "VendorRemarks": $('#txtvendorremarks').val()
         };
-      
+
         jQuery.ajax({
 
             type: "POST",
@@ -1730,7 +1736,7 @@ function shwconfirmationtoreplicate() {
 
 }
 function fnReplicateToAllItems() {
-    
+
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
