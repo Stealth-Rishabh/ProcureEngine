@@ -3,454 +3,445 @@ var url = '';
 /////****** Chat Start*****************/////
 
 var clientIP = "";
-
-$.getJSON("https://api.ipify.org?format=json", function (data) {
-
-    // Setting text of element P with id gfg
-    clientIP = data.ip;
-
-});
-
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP="+ clientIP).withAutomaticReconnect().build();
-
-
-
-console.log("Not Started")
-connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
-    alert("connection started")
-    console.log("connection started")
-}).catch(function (err) {
-    alert(err.toString())
-    bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page")
-
-});
-
-connection.onclose(error => {
-    alert('You are not connected to the Bid as Your Internet connection is unstable or due to multiple logins, please refresh the page!!')
-});
-
-connection.onreconnected(connectionId => {
-  
-    alert('Connection reconnected')
-});
-
-
-connection.on("disconnectSR", function (connectionId) {
-   alert('disconnecting');
-   connection.stop();
-});
-
-
-connection.on("refreshRAQuotes", function (data) {
-
-    console.log(BidForID)
-    if (BidForID == 81 || BidForID == 83) {
-        fetchBidSummaryVendorproduct();
-    }
-    else {
-        fetchBidSummaryVendorSeaExportDutch();
-    }
-});
-
-connection.on("refreshColumnStatus", function (data) {
-
-    var JsonMsz = JSON.parse(data[0]);
-    if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
-
-        $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
-        $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
-        return false;
-
-    }
-
-    else {
-
-        clearInterval(mytime)
-        url = sessionStorage.getItem("APIPath") + "VendorParticipation/RefreshRAParticipation/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&SeID=" + JSON.parse(JsonMsz[2]);
-
-        jQuery.ajax({
-
-            type: "GET",
-
-            contentType: "application/json; charset=utf-8",
-
-            url: url,
-
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-
-            cache: false,
-
-            crossDomain: true,
-
-            dataType: "json",
-
-            success: function (data, status, jqXHR) {
-                if (data.length > 0) {
-
-                    // for (var i = 0; i < data.length; i++) {
-
-                    jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
-
-                        if (data[0].seid == $('#seid' + i).text()) {
-
-
-
-                            if (data[0].noOfExtension >= 1) {
-
-                                jQuery('#lblTimeLeft').css('color', 'red');
-
-                                jQuery('#lblTimeLeftTxt').removeClass('display-none');
-
-                                jQuery('#lblTimeLeftTxt').html('<b>Bid Time Extended.</b>').css('color', 'red')
-
-                            }
-
-                            else {
-
-                                jQuery('#lblTimeLeftTxt').addClass('display-none');
-
-                                jQuery('#lblTimeLeft').css('color', '');
-
-                            }
-
-
-
-                            jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
-
-                            display = document.querySelector('#lblTimeLeft');
-
-                            startTimer(data[0].timeLeft, display);
-
-
-
-                            $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
-                            $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
-
-
-
-
-                            $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
-
-                            $("#lblstatus" + i).html(data[0].vendorRank)
-
-                            var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
-
-                            $("#L1Price" + i).html(L1Quote)
-
-
-
-                            if (data[0].vendorRank == 'L1') {
-
-                                jQuery('#lblstatus' + i).css('color', 'Blue');
-
-                            }
-
-                            else {
-
-                                jQuery('#lblstatus' + i).css('color', 'Red');
-
-                            }
-
-                            if (data[0].itemNoOfExtension > 0) {
-
-                                jQuery('#itemleft' + i).css({
-
-                                    'color': 'Red',
-
-                                    'font-weight': '500'
-
-                                });
-
-                                jQuery('#itemleftTime' + i).css({
-
-                                    'color': 'Red',
-
-                                    'font-weight': '500'
-
-                                });
-
-                            }
-
-                        }
-
-                    });
-
-                }
-
-
-
-                //}
-
-
-
-            },
-
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-
-                if (xhr.status == 401) {
-
-                    error401Messagebox(err.Message);
-
-                }
-
-                else {
-
-                    fnErrorMessageText('error', '');
-
-                }
-
-                jQuery.unblockUI();
-
-            }
+var connection;
+function getIP() {
+
+    $.getJSON("https://api.ipify.org?format=json", function (data) {
+        console.log(data)
+
+        // Setting text of element P with id gfg
+        clientIP = data.ip;
+        connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP=" + clientIP).withAutomaticReconnect().build();
+        console.log("Not Started")
+        connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
+            console.log("connection started")
+        }).catch(function (err) {
+            bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page", function () {
+                window.location = sessionStorage.getItem('MainUrl');
+                return false;
+            })
 
         });
 
-    }
+        connection.onclose(error => {
+            bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable or due to multiple logins, please refresh the page!!", function () {
+                // window.location = sessionStorage.getItem('MainUrl');
+                window.location = "VendorHome.html";
+                return false;
+            });
+        });
 
-});
-connection.on("refreshBidDetailsManage", function (data) {
+        connection.onreconnected(connectionId => {
+            bootbox.alert("You are connect to bid with multiple devices...disconnecting.", function () {
+                return false;
+            });
+        });
 
-    if (data.length > 0) {
-        jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+        connection.on("disconnectSR", function (connectionId) {
+            bootbox.alert("You are connect to bid with multiple devices...disconnecting.", function () {
+                connection.stop();
+                window.location = sessionStorage.getItem('MainUrl');
+                return false;
+            });
 
+        });
+
+        connection.on("refreshRAQuotes", function (data) {
+
+
+            if (BidForID == 81 || BidForID == 83) {
+                fetchBidSummaryVendorproduct();
+            }
+            else {
+                fetchBidSummaryVendorSeaExportDutch();
+            }
+        });
+
+        connection.on("refreshColumnStatus", function (data) {
             var JsonMsz = JSON.parse(data[0]);
-            if (JsonMsz.valType == "BAL") {
-                var VRanlList = JSON.parse(data[1]);
-                for (var j = 0; j < VRanlList.length; j++) {
-                    if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
-                        $('#lblstatus' + i).html(VRanlList[j].VendorRank)
-                        if (VRanlList[j].VendorRank == 'L1') {
-                            jQuery('#lblstatus' + i).css('color', 'Blue');
+            if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
 
-                        }
-                        else {
-                            jQuery('#lblstatus' + i).css('color', 'Red');
-                        }
-                    }
-
-                }
+                $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
+                $('#spanmszA' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
+                return false;
 
             }
 
-            if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
+            else {
 
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
+                clearInterval(mytime)
+                url = sessionStorage.getItem("APIPath") + "VendorParticipation/RefreshRAParticipation/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&SeID=" + JSON.parse(JsonMsz[2]);
 
-            }
+                jQuery.ajax({
 
-            if (JsonMsz.valType != "BAL") {
+                    type: "GET",
 
-                if (JsonMsz.SeId == $('#seid' + i).text()) {
+                    contentType: "application/json; charset=utf-8",
 
-                    if (JsonMsz.valType == "BSPRA") {
-                        $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
-                        // $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
+                    url: url,
 
-                    }
+                    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
 
-                    if (JsonMsz.valType == "BMD") {
+                    cache: false,
 
-                        $("#minimumdec" + i).html(thousands_separators(JsonMsz.QueryString));
-                        $("#mindec" + i).text(thousands_separators(JsonMsz.QueryString));
+                    crossDomain: true,
 
-                    }
+                    dataType: "json",
 
-                    if (JsonMsz.valType == "RAL1") {
+                    success: function (data, status, jqXHR) {
+                        if (data.length > 0) {
 
-                        if (JsonMsz.QueryString == 'N') {
-                            $("#L1Price" + i).css("display", "none");
-                            $("#L1Pricenotdisclosed" + i).css("display", "block");
+                            // for (var i = 0; i < data.length; i++) {
+
+                            jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+
+                                if (data[0].seid == $('#seid' + i).text()) {
+
+
+
+                                    if (data[0].noOfExtension >= 1) {
+
+                                        jQuery('#lblTimeLeft').css('color', 'red');
+
+                                        jQuery('#lblTimeLeftTxt').removeClass('display-none');
+
+                                        jQuery('#lblTimeLeftTxt').html('<b>Bid Time Extended.</b>').css('color', 'red')
+
+                                    }
+
+                                    else {
+
+                                        jQuery('#lblTimeLeftTxt').addClass('display-none');
+
+                                        jQuery('#lblTimeLeft').css('color', '');
+
+                                    }
+
+
+
+                                    jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
+
+                                    display = document.querySelector('#lblTimeLeft');
+
+                                    startTimer(data[0].timeLeft, display);
+
+
+
+                                    $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
+
+                                    $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
+
+
+
+
+
+                                    $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
+
+                                    $("#lblstatus" + i).html(data[0].vendorRank)
+
+                                    var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
+
+                                    $("#L1Price" + i).html(L1Quote)
+
+
+
+                                    if (data[0].vendorRank == 'L1') {
+
+                                        jQuery('#lblstatus' + i).css('color', 'Blue');
+
+                                    }
+
+                                    else {
+
+                                        jQuery('#lblstatus' + i).css('color', 'Red');
+
+                                    }
+
+                                    if (data[0].itemNoOfExtension > 0) {
+
+                                        jQuery('#itemleft' + i).css({
+
+                                            'color': 'Red',
+
+                                            'font-weight': '500'
+
+                                        });
+
+                                        jQuery('#itemleftTime' + i).css({
+
+                                            'color': 'Red',
+
+                                            'font-weight': '500'
+
+                                        });
+
+                                    }
+
+                                }
+
+                            });
+
+                        }
+
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+
+                        if (xhr.status == 401) {
+
+                            error401Messagebox(err.Message);
+
                         }
 
                         else {
 
-                            $("#L1Price" + i).css("display", "block");
-                            $("#L1Pricenotdisclosed" + i).css("display", "none");
+                            fnErrorMessageText('error', '');
 
                         }
+
+                        jQuery.unblockUI();
 
                     }
 
-                    if (JsonMsz.valType == "RAStartP") {
-                        if (JsonMsz.QueryString == 'N') {
-
-                            $("#ceilingprice" + i).css("display", "none");
-                            //$("#CP" + i).css("display", "none");
-                            $("#ceilingpricenotdisclose" + i).css("display", "block");
-
-                        }
-                        else {
-                            $("#ceilingprice" + i).css("display", "block");
-                            //$("#CP" + i).css("display", "block");
-                            $("#ceilingpricenotdisclose" + i).css("display", "none");
-
-                        }
-
-                    }
-
-                    return false;
-
-                }
+                });
 
             }
 
+        });
+        connection.on("refreshBidDetailsManage", function (data) {
 
+            if (data.length > 0) {
+                jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+
+                    var JsonMsz = JSON.parse(data[0]);
+                    if (JsonMsz.valType == "BAL") {
+                        var VRanlList = JSON.parse(data[1]);
+                        for (var j = 0; j < VRanlList.length; j++) {
+                            if ($('#seid' + i).text() == VRanlList[j].SEID && sessionStorage.getItem("VendorId") == VRanlList[j].VendorID) {
+                                $('#lblstatus' + i).html(VRanlList[j].VendorRank)
+                                if (VRanlList[j].VendorRank == 'L1') {
+                                    jQuery('#lblstatus' + i).css('color', 'Blue');
+
+                                }
+                                else {
+                                    jQuery('#lblstatus' + i).css('color', 'Red');
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    if (JsonMsz.valType == "BHV" || JsonMsz.valType == "BAT") {
+
+                        fetchBidHeaderDetails(sessionStorage.getItem("BidID"));
+
+                    }
+
+                    if (JsonMsz.valType != "BAL") {
+
+                        if (JsonMsz.SeId == $('#seid' + i).text()) {
+
+                            if (JsonMsz.valType == "BSPRA") {
+                                $("#ceilingprice" + i).html(thousands_separators(JsonMsz.QueryString));
+                                // $("#CP" + i).html(thousands_separators(JsonMsz.QueryString));
+
+                            }
+
+                            if (JsonMsz.valType == "BMD") {
+
+                                $("#minimumdec" + i).html(thousands_separators(JsonMsz.QueryString));
+                                $("#mindec" + i).text(thousands_separators(JsonMsz.QueryString));
+
+                            }
+
+                            if (JsonMsz.valType == "RAL1") {
+
+                                if (JsonMsz.QueryString == 'N') {
+                                    $("#L1Price" + i).css("display", "none");
+                                    $("#L1Pricenotdisclosed" + i).css("display", "block");
+                                }
+
+                                else {
+
+                                    $("#L1Price" + i).css("display", "block");
+                                    $("#L1Pricenotdisclosed" + i).css("display", "none");
+
+                                }
+
+                            }
+
+                            if (JsonMsz.valType == "RAStartP") {
+                                if (JsonMsz.QueryString == 'N') {
+
+                                    $("#ceilingprice" + i).css("display", "none");
+                                    //$("#CP" + i).css("display", "none");
+                                    $("#ceilingpricenotdisclose" + i).css("display", "block");
+
+                                }
+                                else {
+                                    $("#ceilingprice" + i).css("display", "block");
+                                    //$("#CP" + i).css("display", "block");
+                                    $("#ceilingpricenotdisclose" + i).css("display", "none");
+
+                                }
+
+                            }
+
+                            return false;
+
+                        }
+
+                    }
+
+                });
+
+            }
+
+        });
+        connection.on("refreshTimer", function () {
+
+            fetchBidTime();
+
+            //url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
+
+            //jQuery.ajax({
+
+            //    type: "GET",
+
+            //    contentType: "application/json; charset=utf-8",
+
+            //    url: url,
+
+            //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+
+            //    cache: false,
+
+            //    crossDomain: true,
+
+            //    dataType: "json",
+
+            //    success: function (data, status, jqXHR) {
+
+
+
+            //        if (data.length > 0) {
+
+            //            jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
+
+            //            display = document.querySelector('#lblTimeLeft');
+
+            //            startTimer(data[0].timeLeft, display);
+
+            //        }
+
+
+
+            //    },
+
+            //    error: function (xhr, status, error) {
+
+            //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+
+            //        if (xhr.status == 401) {
+
+            //            error401Messagebox(err.Message);
+
+            //        }
+
+            //        else {
+
+            //            fnErrorMessageText('error', '');
+
+            //        }
+
+            //        jQuery.unblockUI();
+
+            //    }
+
+            //});
+
+        })
+        connection.on("refreshTimeronClients", function () {
+            fetchBidTime();
 
         });
 
-    }
+        connection.on("ReceiveMessage", function (objChatmsz) {
 
-});
-connection.on("refreshTimer", function () {
+            let chat = JSON.parse(objChatmsz)
+            // toastr.clear();
 
-    fetchBidTime();
+            $(".pulsate-regular").css('animation', 'pulse 2s infinite')
 
-    //url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
+            //toastr.success('You have a new message.', 'New Message')
 
-    //jQuery.ajax({
+            calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+            $("#hddnadminConnection").val(chat.fromconnectionID)
 
-    //    type: "GET",
+            // if (sessionStorage.getItem("UserID") != chat.fromID) {
 
-    //    contentType: "application/json; charset=utf-8",
+            $("#chatList").append('<div class="post out">'
 
-    //    url: url,
+                + '<div class="message">'
 
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                + '<span class="arrow"></span>'
 
-    //    cache: false,
+                + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
-    //    crossDomain: true,
+                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>' //timeNow()
 
-    //    dataType: "json",
+                + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
 
-    //    success: function (data, status, jqXHR) {
+                + '</div>'
 
+                + '</div>');
 
 
-    //        if (data.length > 0) {
+        });
+        connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
-    //            jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
 
-    //            display = document.querySelector('#lblTimeLeft');
 
-    //            startTimer(data[0].timeLeft, display);
+            let chat = JSON.parse(objChatmsz)
 
-    //        }
+            // toastr.clear();
 
+            $(".pulsate-regular").css('animation', 'pulse 2s infinite')
 
+            // toastr.success('You have a new message.', 'New Message')
 
-    //    },
+            calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+            $("#hddnadminConnection").val(chat.fromconnectionID)
 
-    //    error: function (xhr, status, error) {
+            // if (sessionStorage.getItem("UserID") == chat.fromID) {
 
-    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            $("#chatList").append('<div class="post out">'
 
-    //        if (xhr.status == 401) {
+                + '<div class="message">'
 
-    //            error401Messagebox(err.Message);
+                + '<span class="arrow"></span>'
 
-    //        }
+                + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
-    //        else {
+                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>'
 
-    //            fnErrorMessageText('error', '');
+                + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
 
-    //        }
+                + '</div>'
 
-    //        jQuery.unblockUI();
+                + '</div>');
 
-    //    }
+            //  }
 
-    //});
+            //$(".pulsate-regular").css('animation', 'none');
 
-})
-connection.on("refreshTimeronClients", function () {
-    
-    fetchBidTime();
-
-});
-
-connection.on("ReceiveMessage", function (objChatmsz) {
-
-    let chat = JSON.parse(objChatmsz)
-    // toastr.clear();
-
-    $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-
-    //toastr.success('You have a new message.', 'New Message')
-
-    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
-    $("#hddnadminConnection").val(chat.fromconnectionID)
-
-    // if (sessionStorage.getItem("UserID") != chat.fromID) {
-
-    $("#chatList").append('<div class="post out">'
-
-        + '<div class="message">'
-
-        + '<span class="arrow"></span>'
-
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>' //timeNow()
-
-        + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
-
-        + '</div>'
-
-        + '</div>');
-
-    // }
-
-    //$(".pulsate-regular").css('animation', 'none');
-
-});
-connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
-
-
-
-    let chat = JSON.parse(objChatmsz)
-
-    // toastr.clear();
-
-    $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-
-    // toastr.success('You have a new message.', 'New Message')
-
-    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
-    $("#hddnadminConnection").val(chat.fromconnectionID)
-
-    // if (sessionStorage.getItem("UserID") == chat.fromID) {
-
-    $("#chatList").append('<div class="post out">'
-
-        + '<div class="message">'
-
-        + '<span class="arrow"></span>'
-
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>'
-
-        + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
-
-        + '</div>'
-
-        + '</div>');
-
-    //  }
-
-    //$(".pulsate-regular").css('animation', 'none');
-
-});
-
+        });
+    });
+}
 function sendChatMsgs() {
-
-
 
     var data = {
 
@@ -463,9 +454,6 @@ function sendChatMsgs() {
         "msgType": 'S',
 
         "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
-
-
-
     }
 
     $("#chatList").append('<div class="post in">'
@@ -481,17 +469,11 @@ function sendChatMsgs() {
         + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
 
         + '</div>'
-
         + '</div>');
-
-
 
     connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
 
         return console.error(err.toString());
-
-
-
     });
 
     $("#txtChatMsg").val('')
@@ -509,7 +491,6 @@ function sendChatMsgs() {
 var BidTypeID = 0;
 
 var BidForID = 0;
-
 var Duration = '0.00';
 
 var _isBidStarted = true;
@@ -1050,7 +1031,7 @@ function fetchBidSummaryVendorproduct() {
 
                             }
 
-                           if (data[i].itemBlockedRemarks != '') {
+                            if (data[i].itemBlockedRemarks != '') {
                                 // $('#txtquote' + i).val(data[i].itemBlockedRemarks)
                                 $('#txtquote' + i).val("Restricted")
                                 $('#txtquote' + i).attr('disabled', 'disabled')
@@ -1067,14 +1048,14 @@ function fetchBidSummaryVendorproduct() {
 
                                 jQuery('#lblstatus' + i).css({
                                     'color': 'Blue',
-                                     'vertical-align': 'top'
+                                    'vertical-align': 'top'
                                 });
 
                             }
 
                             else {
 
-                            jQuery('#lblstatus' + i).css({
+                                jQuery('#lblstatus' + i).css({
 
                                     'color': 'Red',
 
@@ -1408,11 +1389,11 @@ function startTimer(duration, display) {
             coutercall = 0;
 
         }
-        
+
         if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
-        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !=="Restricted") {
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
             $('.clsdisable').removeAttr('disabled')
         }
         if (--timer < -3) {

@@ -847,7 +847,7 @@ function GetQuestionsforCreator(pendingon) {
                 for (var i = 0; i < data.length; i++) {
                     attach = '';
                     if (data[i].attachment != '') {
-                        attach = '<a style="pointer: cursur; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
+                        attach = '<a style="pointer:cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + '  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
                     if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID') && FwdTo == 'Admin') {
@@ -857,14 +857,16 @@ function GetQuestionsforCreator(pendingon) {
                         str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span><br>" + attach + "</td>";
                         jQuery('#tblqueryresponse').append(str);
 
-                        if (data[i].status.toLowerCase() == "x") {
+                        if (data[i].status.toLowerCase() == "x" || $('#answer' + i).val() != "") {
 
                             $('#answer' + i).prop("disabled", true);
                             $('#fileToUpload' + i).prop('disabled', 'disbaled');
+                            $('#eRFQVQueryFiles' + i).addClass('disable-click');
                         }
                         else {
                             $('#answer' + i).prop("disabled", false);
                             $('#fileToUpload' + i).prop("disabled", false);
+                            $('#eRFQVQueryFiles' + i).removeClass('disable-click');
                         }
 
                         $('#answer' + i).maxlength({
