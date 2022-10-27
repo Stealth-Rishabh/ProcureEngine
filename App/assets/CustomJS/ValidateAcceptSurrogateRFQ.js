@@ -59,9 +59,19 @@ function fetchReguestforQuotationDetailseRFQ() {
     });
     jQuery.unblockUI();
 }
-function DownloadFile(aID) {
+
+//abheedev bug 381 start
+/*function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + RFQID);
+}*/
+
+function DownloadFile(aID) {
+
+
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
+
+//abheedev bug 381 end
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 

@@ -1143,7 +1143,8 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
-                                        <input type="file" id="file-excelparameter" name="file-excelparameter" />
+                                       <!--abheedev bug 443-->
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter"  onchange="checkExcelUpload(this);"/>
                                         <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
                                     </div>
                                     <div class="col-md-6">

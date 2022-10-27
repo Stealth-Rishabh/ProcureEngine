@@ -150,6 +150,15 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
 
+
+//abheedev bug 381 start
+function DownloadbidFile(aID) {
+
+
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + sessionStorage.getItem('hddnRFQID'));
+}
+//abheedev bug 381 end
+
 var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 

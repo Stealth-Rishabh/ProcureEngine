@@ -597,6 +597,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
 
 function updloadingfactor() {
+    
     //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
     //    $('.alert-danger').show();
     //    $('#msgErrorL1').html('Please Enter Loading factor');
@@ -652,7 +653,7 @@ function updloadingfactor() {
     //        }
     //    })
     //}
-    debugger;
+ 
     var tabItems = '', eRFQLoadingTerms = [];
     var oTable = document.getElementById('tblLoadingFactor');
     var rowCount = oTable.rows.length;
@@ -1496,7 +1497,7 @@ function downloadexcel() {
     //var hour = dt.getHours();
     //var mins = dt.getMinutes();
     //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-    debugger
+    
     var postfix = fnConverToLocalTime(new Date())
 
     //Export To Excel
@@ -1566,7 +1567,7 @@ function fnAddUpdLoadingFactor() {
 function addLoadingFactor() {
     //abheedev loading factor start
 
-
+ 
     var _LoadingAmount = 0;
     var _loadingPer = 0;
     var isSubmitActive = true;
@@ -1615,13 +1616,13 @@ function addLoadingFactor() {
             jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr data-row='" + rowques + "'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
+        var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
         strprev += "<td id=trLFType" + rowques + " style='display:none;' >" + jQuery("#ddlLFType").val() + "</td>"
         if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td id=trLFValue" + rowques + " >" + $("#txtloadingfactor").val() + "%</td>"
+            strprev += "<td id=trLFValue" + rowques +"><span>" + $("#txtloadingfactor").val() + "</span>" + "%</td>"
         }
         else {
-            strprev += "<td id=trLFValue" + rowques + ">" + $("#txtloadingfactor").val() + "INR</td>"
+            strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "INR</td>"
         }
         // strprev += "<td>" + _loadingPer + "</td>"
         strprev += '<td id=trLFAmount' + rowques + '>' + _LoadingAmount + '</td>';
@@ -1641,13 +1642,13 @@ function addLoadingFactor() {
         jQuery("#txtloadingfactorreason").val('')
         jQuery("#ddlLFType").val('A')
         jQuery("#txtloadingfactor").val('')
-
+     
         //abheedev loading factor End
     }
 }
 
 function deleteLFrow(rowid) {
-    debugger
+    
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
@@ -1656,21 +1657,16 @@ function deleteLFrow(rowid) {
 
 var editrow;
 function editLFrow(rowid) {
-
-    console.log(rowid)
+   
+   
     var i = $('#' + rowid.id).attr('data-row');
     
-
     console.log(i)
+    
     jQuery("#txtloadingfactorreason").val($("#trLFReason" + i).text());
     jQuery("#ddlLFType").val($("#trLFType" + i).text())
-    if ($("#trLFType" + i).val() == "P") {
-        jQuery("#txtloadingfactor").val($("#trLFValue" + i).text())
-    }
-    else {
-        jQuery("#txtloadingfactor").val($("#trLFValue" + i).text())
-    }
-
+    jQuery("#txtloadingfactor").val($("#trLFValue" + i).text().replace('INR', '').replace('%', ''));
+   
     $('#Addbtn1').hide()
     $('#Editbtn1').show()
     editrow = $('#' + rowid.id).attr('data-row');
@@ -1692,13 +1688,13 @@ function updateLoadingFactor() {
         _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
         // _loadingPer = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() )
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"%")
         $("#trLFAmount" + editrow).text(_LoadingAmount)
     }
     else {
         // _LoadingAmount = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() )
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"INR")
         $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
 
     }
@@ -1712,7 +1708,7 @@ function updateLoadingFactor() {
     jQuery("#ddlLFType").val('A')
     jQuery("#txtloadingfactor").val('')
     editrow = "";
-
+    
 }
 
    

@@ -1731,3 +1731,26 @@ var tablesToExcel = (function () {
         document.body.removeChild(link);
     }
 })();
+//abheedev bug 443 start
+function checkExcelUpload(fileid) {
+
+    var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
+
+    var fn = $('#' + fileid.id)[0].files[0].name; // get file type
+    var fname = fn.substring(fn.lastIndexOf('/') + 1, fn.lastIndexOf('.'));
+    var size = $('#' + fileid.id)[0].files[0].size;
+
+    switch (ftype.toLowerCase()) {
+        case 'xlsx':
+            break;
+        default:
+            jQuery(".alert-success").hide();
+            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx");
+            jQuery(".alert-danger").show();
+            jQuery(".alert-danger").fadeOut(5000);
+            Metronic.scrollTo($('.alert-danger'), -200);
+            $('#' + fileid.id).val('')
+            return false
+    }  
+}
+//abheedev bug 443 end
