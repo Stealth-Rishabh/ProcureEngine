@@ -15,6 +15,7 @@ var currentdate = new Date();
 var _RFQBidType = "";
 jQuery("#eventDetailstab_0").hide();
 
+ 
 
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -204,7 +205,6 @@ function fetchRFIRFQSubjectforReport() {
 
 jQuery("#txtRFQ").typeahead({
     source: function (query, process) {
-
         var data1 = sessionStorage.getItem('hdnAllRFQ');
         usernames = [];
         map = {};
@@ -521,14 +521,17 @@ function fetchReguestforQuotationDetails(RFQID) {
             var CurDateonly = new Date()
             var ENDDTdateonly = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate).replace('-', ''))
             sessionStorage.setItem("rfqEndDate", ENDDTdateonly)
-
+            //abheedev bug 438 start
             if (ENDDTdateonly < CurDateonly) {
                 $('#sendremainder').attr("disabled", "disabled");
+                $('#fileToUpload1').attr("disabled", "disabled");
+                
             }
             else {
                 $('#sendremainder').removeAttr("disabled");
+                $('#fileToUpload1').removeAttr("disabled");
             }
-
+            //abheedev bug 438 start
 
             if (RFQData[0].general[0].rfqTermandCondition != '') {
                 replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
@@ -1047,6 +1050,7 @@ function addmoreattachments() {
 
 
 
+    
     if (jQuery("#AttachDescription1").val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Enter Attachment Description');
@@ -1061,6 +1065,9 @@ function addmoreattachments() {
         $('.alert-danger').fadeOut(7000);
         return false;
     }
+
+   
+
     else {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');

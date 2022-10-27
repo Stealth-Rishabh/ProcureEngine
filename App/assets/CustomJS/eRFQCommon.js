@@ -563,28 +563,28 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
                 }
             }
             for (i = 0; i < data.length; i++) {
                 rowques=i+1
-                var strprev = '<tr id=trLFid' + rowques + ' ><td>' + data[i].loadingFactorReason + "</td>"
-                strprev += "<td style='display:none;'>" + data[i].loadingFactorType + "</td>"
+                var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + data[i].loadingFactorReason + "</td>"
+                strprev += "<td id=trLFType" + rowques + " style='display:none;'>" + data[i].loadingFactorType + "</td>"
                 if (data[i].loadingFactorType == 'P') {
-                    strprev += "<td>" + data[i].loadingFactorPer + "%</td>"
+                    strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactorPer + "%</td>"
                 }
                 else {
-                    strprev += "<td>" + data[i].loadingFactor + "INR</td>"
+                    strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactor + "INR</td>"
                 }
                 
-                strprev += '<td>' + data[i].loadingFactor + '</td>';
+                strprev += '<td id=trLFAmount' + rowques + '>' + data[i].loadingFactor + '</td>';
 
                 
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
                 }
                 
-                strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+                strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
                 jQuery('#tblLoadingFactor').append(strprev);
 
 
@@ -597,6 +597,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
 
 function updloadingfactor() {
+    
     //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
     //    $('.alert-danger').show();
     //    $('#msgErrorL1').html('Please Enter Loading factor');
@@ -652,7 +653,7 @@ function updloadingfactor() {
     //        }
     //    })
     //}
-    debugger;
+ 
     var tabItems = '', eRFQLoadingTerms = [];
     var oTable = document.getElementById('tblLoadingFactor');
     var rowCount = oTable.rows.length;
@@ -1502,7 +1503,7 @@ function downloadexcel() {
     //var hour = dt.getHours();
     //var mins = dt.getMinutes();
     //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-    debugger
+    
     var postfix = fnConverToLocalTime(new Date())
 
     //Export To Excel
@@ -1521,7 +1522,50 @@ function downloadexcel() {
     // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
 }
 
+function fnAddUpdLoadingFactor() {
+    var quesquery = '';
+    $("#tblLoadingFactor> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
 
+    });
+    var data = {
+        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "AttachString": attchquery,
+        "QuesString": quesquery
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            fetchAttachments();
+            GetQuestions();
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
 
 
 //FOR LOADING FACTOR TABLE
@@ -1529,7 +1573,7 @@ function downloadexcel() {
 function addLoadingFactor() {
     //abheedev loading factor start
 
-
+ 
     var _LoadingAmount = 0;
     var _loadingPer = 0;
     var isSubmitActive = true;
@@ -1575,19 +1619,19 @@ function addLoadingFactor() {
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
             //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-            jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
+            jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr data-row='" + rowques + "'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
         }
 
-        var strprev = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#txtloadingfactorreason").val() + "</td>"
-        strprev += "<td style='display:none;'>" + jQuery("#ddlLFType").val() + "</td>"
+        var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
+        strprev += "<td id=trLFType" + rowques + " style='display:none;' >" + jQuery("#ddlLFType").val() + "</td>"
         if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "%</td>"
+            strprev += "<td id=trLFValue" + rowques +"><span>" + $("#txtloadingfactor").val() + "</span>" + "%</td>"
         }
         else {
-            strprev += "<td>" + $("#txtloadingfactor").val() + "INR</td>"
+            strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "INR</td>"
         }
         // strprev += "<td>" + _loadingPer + "</td>"
-        strprev += '<td>' + _LoadingAmount + '</td>';
+        strprev += '<td id=trLFAmount' + rowques + '>' + _LoadingAmount + '</td>';
 
         // jQuery('#tblLoadingFactor').append(strprev);
         //TODO
@@ -1597,22 +1641,128 @@ function addLoadingFactor() {
         // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
         //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
-        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
         jQuery('#tblLoadingFactor').append(strprev);
         jQuery("#tblLoadingFactor").val('')
 
         jQuery("#txtloadingfactorreason").val('')
         jQuery("#ddlLFType").val('A')
         jQuery("#txtloadingfactor").val('')
-
+     
         //abheedev loading factor End
     }
 }
 
 function deleteLFrow(rowid) {
-    debugger
+    
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
 }
 
+
+var editrow;
+function editLFrow(rowid) {
+   
+   
+    var i = $('#' + rowid.id).attr('data-row');
+    
+    console.log(i)
+    
+    jQuery("#txtloadingfactorreason").val($("#trLFReason" + i).text());
+    jQuery("#ddlLFType").val($("#trLFType" + i).text())
+    jQuery("#txtloadingfactor").val($("#trLFValue" + i).text().replace('INR', '').replace('%', ''));
+   
+    $('#Addbtn1').hide()
+    $('#Editbtn1').show()
+    editrow = $('#' + rowid.id).attr('data-row');
+}  
+
+function updateLoadingFactor() {
+
+    
+
+
+    var _LoadingAmount = 0;
+    var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
+
+
+
+
+
+    if ($("#ddlLFType").val() == "P") {
+        _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
+        // _loadingPer = $("#txtloadingfactor").val();
+        $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"%")
+        $("#trLFAmount" + editrow).text(_LoadingAmount)
+    }
+    else {
+        // _LoadingAmount = $("#txtloadingfactor").val();
+        $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"INR")
+        $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
+
+    }
+
+
+    $('#Addbtn1').show()
+    $('#Editbtn1').hide()
+
+
+    jQuery("#txtloadingfactorreason").val('')
+    jQuery("#ddlLFType").val('A')
+    jQuery("#txtloadingfactor").val('')
+    editrow = "";
+    
+}
+
+   
+
+
+
+
+function fnAddUpdLoadingFactor() {
+    var quesquery = '';
+    $("#tblLoadingFactor> tbody > tr").each(function (index) {
+        var this_row = $(this);
+        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+    });
+    var data = {
+        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "AttachString": attchquery,
+        "QuesString": quesquery
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            fetchAttachments();
+            GetQuestions();
+            return;
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}

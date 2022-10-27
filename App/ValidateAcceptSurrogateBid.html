@@ -490,7 +490,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-11 control-label">I accept the above Bid Details and agree to  participate in this bid as per above terms. </label>
+                                    <!-- <label class="col-md-11 control-label">I accept the above Bid Details and agree to  participate in this bid as per above terms. </label>-->
+                                    <!--abheedev bug 381 start -->
+                                    <label class="col-md-11 control-label bidtc">
+                                        I hereby accept the
+                                        <a id="bidTermandCondition" href="javascript:;" onclick="DownloadbidFile(this)">Terms and Conditions </a>
+                                        of this bid  and agree to participate as per above bid details.  &nbsp; <input type="checkbox" id="bidchkIsAccepted" name="bidchkIsAccepted">
+                                    </label>
+                                    <!--abheedev bug 381 end -->                                    
+                                    
+                                    
                                     <div class="col-md-1 checkbox-list">
 
                                         <label class="checkbox-inline">

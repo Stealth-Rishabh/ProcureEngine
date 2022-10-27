@@ -1253,9 +1253,8 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N", beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        //beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -1963,7 +1962,7 @@ function editRow(icount) {
 
 }
 function deleterow(TrId, Trprevid) {
-    debugger
+    
     //rowAppItems = rowAppItems - 1;
     rowAppItemsrno = rowAppItemsrno - 1;
     $('#' + TrId.id).remove();
@@ -2124,7 +2123,7 @@ function displayUOM() {
 
 
 jQuery("#txtSearch").keyup(function () {
-    debugger
+  
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblvendorlist tbody").find("tr"), function () {
@@ -2761,7 +2760,7 @@ function isValidDate(str) {
 }
 var Rowcount = 0;
 function printDataparameter(result) {
-
+   
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
@@ -2982,7 +2981,8 @@ function printDataparameter(result) {
         // $("#errspan-excelparameter").html('');
         $("#success-excelparameter").show();
         $('#btnsforYesNo').show()
-        $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
+        //abheedev backlog 405
+        $("#succspan-excelparameter").html('<p>Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.</p>\n <p style="color:red"><b>Special characters like -\',\", #,&,~  shall be removed from the text during upload. Please check your text accordingly.</b></p>');
         $("#file-excelparameter").val('');
         excelCorrect = '';
         if (st == 'false') {

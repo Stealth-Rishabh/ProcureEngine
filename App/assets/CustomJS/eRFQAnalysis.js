@@ -193,17 +193,17 @@ function fetchrfqcomprative() {
                         //abheedev bug 349 part2  start
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                         
-                        strHeadQ += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
+
+                        strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
                         strHeadExcelQ += "<th colspan='4'>" + data[0].vendorNames[i].vName; +"</th>";
-                         
+
                     }
                     else {
                         allvendorresponse = 'N';
                         strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
 
-                        strHeadQ += "<th  colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
+                        strHeadQ += "<th   style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
                         strHeadExcelQ += "<th  colspan='4'>" + data[0].vendorNames[i].vName; +"</th>";
                         //abheedev bug 349 part2  end
                     }
@@ -221,13 +221,13 @@ function fetchrfqcomprative() {
                 //abheedev bug349 start
                 strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 end
-
+                // anupam sir desired changes 21/10/2022 start
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
-                        strHeadExcel += "<th colspan='4'>" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>"+"Submission Time:" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHeadExcel += "<th colspan='4'>" + "Submission Time:" +  fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
 
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
@@ -252,14 +252,14 @@ function fetchrfqcomprative() {
                 strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 end
 
-                var taxHRTextinc = stringDivider("Landed Unit Price (With GST)", 18, "<br/>\n");
-                var initialtaxHRTextEx = stringDivider("Initial Landed Unit Price (Without GST) - R0  ", 18, "<br/>\n");
-                var taxHRTextEx = stringDivider("Landed Unit Price (Without GST)", 18, "<br/>\n");
-                var HRAmount = stringDivider("Amount (Exc. GST)", 8, "<br/>\n");
+                var taxHRTextinc = stringDivider(" Unit Price (With GST)", 18, "<br/>\n");
+                var initialtaxHRTextEx = stringDivider("Unit Price  - R0 (Without GST)  ", 18, "<br/>\n");
+                var taxHRTextEx = stringDivider(" Unit Price (Without GST)", 18, "<br/>\n");
+                var HRAmount = stringDivider("Amount (Exc. GST)", 10, "<br/>\n");
                 for (var j = 0; j < data[0].vendorNames.length; j++) {
 
                     strHead += "<th>" + initialtaxHRTextEx + "</th><th>" + taxHRTextEx + "</th><th>" + taxHRTextinc + "</th><th>" + HRAmount + "</th>";
-                    strHeadExcel += "<th>Initial Landed Unit Price (Without GST) - R0</th><th>Landed Unit Price (Without GST)</th><th>Landed Unit Price (With GST)</th><th>Amount (Exc. GST)</th>"
+                    strHeadExcel += "<th> Unit Price - R0(Without GST)</th><th>Unit Price (Without GST)</th><th>Unit Price (With GST)</th><th>Amount (Exc. GST)</th>"
 
                 }
                 strHead += "<th>" + taxHRTextEx + "</th><th>Po No</th><th>PO Date</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Value</th><th>&nbsp;</th>";
@@ -273,7 +273,7 @@ function fetchrfqcomprative() {
 
                 jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
                 jQuery('#tblRFQComprativeForExcelQ > thead').append(strHeadExcelQ);
-
+                // anupam sir desired changes 21/10/2022 end
                 //For Printing Header Ends
 
 
@@ -737,13 +737,13 @@ function fetchrfqcomprative() {
 
 
                         if (flag2 == 'T') {
-                            
+
                             strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  start
                             strExcelQ += "<tr><td colspan=5>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  end
                             for (var s = 0; s < data[0].questions.length; s++) {
-                                
+
                                 if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
 
                                     //  q = q + 1;
@@ -754,20 +754,20 @@ function fetchrfqcomprative() {
 
                                             if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
                                                 //strQ += "<td>" + data[0].questions[s].answer + "</td>";
-                                                strQ += '<td colspan=4>' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
+                                                strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
                                                 strExcelQ += "<td colspan=4>" + data[0].questions[s].answer + "</td>";
 
                                             }
                                             else if (data[0].questions[s].answer == 'Rejected') {
-                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;'>Regretted</td>"
+                                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
                                                 strExcelQ += "<td colspan=4>Regretted</td>";
 
                                             }
                                             else {
-                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
                                                 strExcelQ += "<td colspan=4>Not Quoted </td>";
                                             }
-                                     //abheedev bug 349 part2  end is done
+                                            //abheedev bug 349 part2  end is done
                                         }
 
                                     }

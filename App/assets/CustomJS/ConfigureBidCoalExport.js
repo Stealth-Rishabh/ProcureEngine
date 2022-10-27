@@ -2819,7 +2819,9 @@ function printdataSeaBid(result) {
         $("#error-excelparameter").hide();
         $("#errspan-excelparameter").html('');
         $("#success-excelparameter").show()
-        $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
+        //abheedev backlog 405
+        $("#succspan-excelparameter").html('<p>Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.</p>\n <p style="color:red"><b>Special characters like -\',\", #,&,~  shall be removed from the text during upload. Please check your text accordingly.</b></p>');
+
         $("#file-excelparameter").val('');
         excelCorrect = '';
         if (st == 'false') {

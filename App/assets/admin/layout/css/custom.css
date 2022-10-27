@@ -59,6 +59,13 @@ Change Quick Sidebar Width
 }
 */
 
+/* abheedev bug 373 start */
+body {
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+}
+
+/* abheedev bug 373 end */
 
 .valign-center-th  thead tr th {
     vertical-align:top !important;
