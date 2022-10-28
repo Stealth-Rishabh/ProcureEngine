@@ -1521,53 +1521,6 @@ function downloadexcel() {
     //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
     // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
 }
-
-function fnAddUpdLoadingFactor() {
-    var quesquery = '';
-    $("#tblLoadingFactor> tbody > tr").each(function (index) {
-        var this_row = $(this);
-        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
-
-    });
-    var data = {
-        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "AttachString": attchquery,
-        "QuesString": quesquery
-    }
-
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-            fetchAttachments();
-            GetQuestions();
-            return;
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-
-    });
-
-}
-
-
 //FOR LOADING FACTOR TABLE
 
 function addLoadingFactor() {
@@ -1715,54 +1668,4 @@ function updateLoadingFactor() {
     jQuery("#txtloadingfactor").val('')
     editrow = "";
     
-}
-
-   
-
-
-
-
-function fnAddUpdLoadingFactor() {
-    var quesquery = '';
-    $("#tblLoadingFactor> tbody > tr").each(function (index) {
-        var this_row = $(this);
-        quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
-
-    });
-    var data = {
-        "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "AttachString": attchquery,
-        "QuesString": quesquery
-    }
-
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsQuestionsAttachments",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-            fetchAttachments();
-            GetQuestions();
-            return;
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-
-    });
-
 }
