@@ -525,11 +525,13 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (ENDDTdateonly < CurDateonly) {
                 $('#sendremainder').attr("disabled", "disabled");
                 $('#fileToUpload1').attr("disabled", "disabled");
+                $('#AttachDescription1').attr("disabled", "disabled");
                 
             }
             else {
                 $('#sendremainder').removeAttr("disabled");
                 $('#fileToUpload1').removeAttr("disabled");
+                $('#AttachDescription').removeAttr("disabled");
             }
             //abheedev bug 438 start
 

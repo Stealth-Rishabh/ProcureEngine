@@ -12,8 +12,7 @@ $('.MaxLength').maxlength({
 
 $(".thousandsep").inputmask({
 
-        alias: "decimal",
-        rightAlign: false,
+
 
         groupSeparator: ",",
 
