@@ -10,9 +10,20 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-$(".thousandsep").inputmask({
 
 
+
+
+
+/*
+
+$(".thousandsep").inputmask(
+    {
+        alias: "decimal",
+
+        rightAlign: false,
+
+        numericInput: true,
 
         groupSeparator: ",",
 
@@ -36,7 +47,36 @@ $(".thousandsep").inputmask({
 
         //autoUnmask: true
 
-});
+    }
+);*/
+//abheedev bug 385
+function localecommaseperator(ele)
+{
+    debugger
+ 
+    var str = ele.value;
+
+    if (str == NaN || str == '')
+    {
+        str = 0;
+        $(ele).val("")
+    }
+   str= str.replaceAll(',', "")
+    console.log(str)
+   
+    str = parseFloat(str);
+    console.log(str)
+
+
+    console.log(str.toLocaleString('en-IN'));
+    $(ele).val(str.toLocaleString('en-IN'))
+
+}
+
+//abheedev bug 385
+
+
+
 CommonGenricAjax = function (url, type, data, async, token) {
     return $.ajax({
         url: apiURL + url,
