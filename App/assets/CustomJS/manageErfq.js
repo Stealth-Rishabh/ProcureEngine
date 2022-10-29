@@ -15,8 +15,6 @@ var currentdate = new Date();
 var _RFQBidType = "";
 jQuery("#eventDetailstab_0").hide();
 
- 
-
 $(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
