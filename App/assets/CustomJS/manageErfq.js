@@ -523,12 +523,13 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $('#sendremainder').attr("disabled", "disabled");
                 $('#fileToUpload1').attr("disabled", "disabled");
                 $('#AttachDescription1').attr("disabled", "disabled");
-                
+                $("#Addbtn1").addClass("isDisabledClass");
             }
             else {
                 $('#sendremainder').removeAttr("disabled");
                 $('#fileToUpload1').removeAttr("disabled");
-                $('#AttachDescription').removeAttr("disabled");
+                $('#AttachDescription1').removeAttr("disabled");
+                $("#Addbtn1").removeClass("isDisabledClass");
             }
             //abheedev bug 438 start
 
