@@ -532,7 +532,6 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $("#Addbtn1").removeClass("isDisabledClass");
             }
             //abheedev bug 438 start
-
             if (RFQData[0].general[0].rfqTermandCondition != '') {
                 replaced1 = RFQData[0].general[0].rfqTermandCondition.replace(/\s/g, "%20")
             }
