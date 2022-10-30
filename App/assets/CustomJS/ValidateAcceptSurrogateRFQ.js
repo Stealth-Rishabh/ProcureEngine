@@ -64,7 +64,6 @@ function fetchReguestforQuotationDetailseRFQ() {
 /*function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + RFQID);
 }*/
-
 function DownloadFile(aID) {
 
 

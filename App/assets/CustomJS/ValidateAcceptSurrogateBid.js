@@ -150,7 +150,6 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
 
-
 //abheedev bug 381 start
 function DownloadbidFile(aID) {
 
