@@ -2,7 +2,6 @@ var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 formValidation();
 //var form1 = $('#entryForm');
-
 var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var error2 = $('#errormapdiv');
