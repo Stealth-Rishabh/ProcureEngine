@@ -946,6 +946,54 @@ function fnConverToLocalTime(dttime) {
     }
     else return '..'
 }
+
+function fnSetLocalFromTimeZone(dateTime) {
+    debugger;
+    var retDt = new Date();
+    var userTz = sessionStorage.getItem('preferredtimezone');
+    var systemDate = new Date();
+    var systemOffset = systemDate.getTimezoneOffset();
+    var dt = dateTime;
+    //var dt = new Date(dateTime.toLocaleString("en-GB", { timeZone: userTz, }));
+    var newDt = new Intl.DateTimeFormat("en-GB", {
+        timeZone: userTz,
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZoneName: "short"
+    }).format(dt);
+    newDt = newDt.replace('at', '');
+    newDt = newDt.replace('-', '');
+    dt = new Date(newDt);
+    var userOffset = dt.getTimezoneOffset();
+    //var userOffset2 = newDt.getTimezoneOffset();
+    if (systemOffset == userOffset) {
+        retDt = dateTime;
+    }
+    else {
+        var timeDiff = userOffset - systemOffset;
+        retDt = new Date(dt.getTime + timeDiff * 60000);
+    }
+    return retDt;
+}
+function GetCurrentDateTime() {
+    var retDt = new Date();
+    var userTz = sessionStorage.getItem('preferredtimezone');
+    var currDt = new Date();
+    var dt = new Date(dateTime.toLocaleString("en-GB", { timeZone: userTz }));
+    var systemOffset = currDt.getTimezoneOffset();
+    var userOffset = dt.getTimezoneOffset();
+    if (systemOffset == userOffset) {
+        retDt = currDt;
+    }
+    else {
+        retDt = dt;
+    }
+    return retDt;
+}
 function formatDate(date) {
     return [
         padTo2Digits(date.getDate()),
