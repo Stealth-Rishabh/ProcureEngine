@@ -1746,7 +1746,7 @@ function checkExcelUpload(fileid) {
             jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
-            Metronic.scrollTo($('.alert-danger'), -200);
+           Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
             return false
     }
