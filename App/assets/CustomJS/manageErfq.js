@@ -1,4 +1,5 @@
 var APIPath = sessionStorage.getItem("APIPath");
+
 clearsession()
 formValidation();
 //var form1 = $('#entryForm');
