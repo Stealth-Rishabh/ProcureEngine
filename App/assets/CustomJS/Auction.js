@@ -946,6 +946,11 @@ function fnConverToLocalTime(dttime) {
     }
     else return '..'
 }
+
+function fnSetLocalFromTimeZone(dateTime) {
+    var dt = new Date(dateTime.toLocaleString("en-GB", { timeZone: sessionStorage.getItem('preferredtimezone') }));
+    return dt;
+}
 function formatDate(date) {
     return [
         padTo2Digits(date.getDate()),
