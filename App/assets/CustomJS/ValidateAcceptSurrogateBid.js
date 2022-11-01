@@ -70,7 +70,10 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblConvRate").text(data[0].conversionRate);
                     jQuery("#lblstatus").text(data[0].conversionRate);
                     jQuery("#lblConvRate").text(data[0].conversionRate);
+                    //abheedev bug 381 start
+                    jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition)
 
+                     //abheedev bug 381 end
                     /*}
                     else {
                         bootbox.alert("This bid has not yet started !!!", function () {

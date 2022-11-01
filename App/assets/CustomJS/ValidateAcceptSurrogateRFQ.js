@@ -5,7 +5,7 @@ var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
 //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
    
@@ -42,6 +42,7 @@ function fetchReguestforQuotationDetailseRFQ() {
                 jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
+                jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition);
                 
                 jQuery('#TermCondition').html(data[0].rfqTermandCondition)
             }
@@ -74,6 +75,7 @@ var successopenbid = $('#successopenbid');
 function validatepassword() {
     //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
     sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+   // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -140,8 +142,10 @@ function validatepassword() {
                     sessionStorage.setItem("UserName", data[0].vendorName)
                     sessionStorage.setItem("RFQID", RFQID)
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")
+
                     //sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
-                    sessionStorage.setItem("HomePage", "https://pev3qaapi.azurewebsites.net/")
+                   sessionStorage.setItem("HomePage", "https://pev3qaapi.azurewebsites.net/")
+                   // sessionStorage.setItem("HomePage", 'http://localhost:51739/');
                     
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {
