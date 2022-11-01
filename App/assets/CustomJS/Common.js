@@ -10,11 +10,6 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-
-
-
-
-
 /*
 
 $(".thousandsep").inputmask(
@@ -50,9 +45,10 @@ $(".thousandsep").inputmask(
     }
 );*/
 //abheedev bug 385
+
 function localecommaseperator(ele)
 {
-    debugger
+    
  
     var str = ele.value;
 
@@ -62,13 +58,9 @@ function localecommaseperator(ele)
         $(ele).val("")
     }
    str= str.replaceAll(',', "")
-    console.log(str)
-   
+
     str = parseFloat(str);
-    console.log(str)
 
-
-    console.log(str.toLocaleString('en-IN'));
     $(ele).val(str.toLocaleString('en-IN'))
 
 }

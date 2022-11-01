@@ -147,7 +147,7 @@ var Login = function () {
     }
 
     function validateUser() {
-        debugger
+        
       // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
@@ -158,7 +158,7 @@ var Login = function () {
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-      //  lastPart = 'vendor'
+        //lastPart = 'vendor'
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
             // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
@@ -232,7 +232,7 @@ var Login = function () {
             crossDomain: true,
             dataType: "json",
             success: function (data1) {
-
+             
                 jQuery.each(data1, function (key, value) {
 
                     // if (MemberID != '0') {
@@ -249,6 +249,8 @@ var Login = function () {
                     sessionStorage.setItem("BidPreApp", value.bidpreapproval);
                     sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
+                    //abheedev bug 385
+                    sessionStorage.setItem("culturecode", value.cultureCode);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
