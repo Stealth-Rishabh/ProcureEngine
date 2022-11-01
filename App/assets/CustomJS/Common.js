@@ -10,8 +10,6 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-/*
-
 $(".thousandsep").inputmask(
     {
         alias: "decimal",
@@ -43,7 +41,7 @@ $(".thousandsep").inputmask(
         //autoUnmask: true
 
     }
-);*/
+);
 //abheedev bug 385
 
 function localecommaseperator(ele)

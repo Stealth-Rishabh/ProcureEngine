@@ -431,9 +431,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        //abheedev bug 385 start
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID)+"&IsActive=0",
-        //abheedev bug 385 end
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID)+"&IsActive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         async: false,

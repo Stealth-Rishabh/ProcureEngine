@@ -12,7 +12,6 @@ function fetchBidHeaderDetails() {
 
     var url = '';
 
-    debugger;
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetailsForSurrogate/?BidID=" + parseInt(BIDID);
     jQuery.ajax({
         type: "GET",
@@ -24,7 +23,6 @@ function fetchBidHeaderDetails() {
         dataType: "json",
         success: function (data, status, jqXHR) {
             if (data.length == 1) {
-                debugger;
                 var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
                 var BidExpiryDatetime = fnConverToLocalTime(data[0].bidExpiryDate);
                 var _bidDateStart = new Date(BidStartDatetime.replace('-', ''));
@@ -70,7 +68,7 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblConvRate").text(data[0].conversionRate);
                     jQuery("#lblstatus").text(data[0].conversionRate);
                     jQuery("#lblConvRate").text(data[0].conversionRate);
-
+                    jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
                     /*}
                     else {
                         bootbox.alert("This bid has not yet started !!!", function () {
@@ -84,45 +82,45 @@ function fetchBidHeaderDetails() {
                 }
                 else {
                     bootbox.alert("This bid has already expired !!!", function () {
-                        
-                        
+
+
                         //@abheedev bug 360 surrogate start
-                    $('#btnpassword').removeAttr('disabled');
-                    $('#txtpassword').removeAttr('disabled');
-                    jQuery('#lblEventID').html(BIDID);
-                    jQuery('#bid_EventID').html("Event ID : " + BIDID);
+                        $('#btnpassword').removeAttr('disabled');
+                        $('#txtpassword').removeAttr('disabled');
+                        jQuery('#lblEventID').html(BIDID);
+                        jQuery('#bid_EventID').html("Event ID : " + BIDID);
 
-                    jQuery("#lblbidsubject").text(data[0].bidSubject);
-                    jQuery("#lblbidDetails").text(data[0].bidDetails);
-                    //jQuery("#lblbiddate").text(data[0].bidDate);
-                    jQuery("#lblbiddate").text(BidStartDatetime);
-                    //jQuery("#lblbidtime").text(data[0].bidTime);
-                    jQuery("#lblbidtype").text(data[0].bidTypeName);
-                    jQuery("#lblbidfor").text(data[0].bidFor);
-                    jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
-                    jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
-                    //jQuery("#lblbiddateTT").text(data[0].bidDate);
-                    jQuery("#lblbiddateTT").text(BidStartDatetime);
-                    //jQuery("#lblbidtimeTT").text(data[0].bidTime);
-                    jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
-                    jQuery("#lblbidforTT").text(data[0].bidFor);
-                    BIDTypeID = data[0].bidTypeID;
-                    BidClosingType = data[0].bidClosingType;
+                        jQuery("#lblbidsubject").text(data[0].bidSubject);
+                        jQuery("#lblbidDetails").text(data[0].bidDetails);
+                        //jQuery("#lblbiddate").text(data[0].bidDate);
+                        jQuery("#lblbiddate").text(BidStartDatetime);
+                        //jQuery("#lblbidtime").text(data[0].bidTime);
+                        jQuery("#lblbidtype").text(data[0].bidTypeName);
+                        jQuery("#lblbidfor").text(data[0].bidFor);
+                        jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
+                        jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
+                        //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                        jQuery("#lblbiddateTT").text(BidStartDatetime);
+                        //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                        jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                        jQuery("#lblbidforTT").text(data[0].bidFor);
+                        BIDTypeID = data[0].bidTypeID;
+                        BidClosingType = data[0].bidClosingType;
 
-                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                        jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                        jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
 
 
-                    jQuery("#lblbidduration").text(data[0].bidDuration);
-                    jQuery("#lblcurrency").text(data[0].currencyName);
-                    jQuery("#lblbiddurationTT").text(data[0].bidDuration);
-                    jQuery("#lblcurrencyTT").text(data[0].currencyName);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                    jQuery("#lblstatus").text(data[0].conversionRate);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                      //@abheedev bug 360 surrogate end
-                        
-                        
+                        jQuery("#lblbidduration").text(data[0].bidDuration);
+                        jQuery("#lblcurrency").text(data[0].currencyName);
+                        jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                        jQuery("#lblcurrencyTT").text(data[0].currencyName);
+                        jQuery("#lblConvRate").text(data[0].conversionRate);
+                        jQuery("#lblstatus").text(data[0].conversionRate);
+                        jQuery("#lblConvRate").text(data[0].conversionRate);
+                        //@abheedev bug 360 surrogate end
+
+
 
                         $('#btnpassword').attr('disabled', 'disabled')
                         $('#txtpassword').attr('disabled', 'disabled')
@@ -149,11 +147,13 @@ function fetchBidHeaderDetails() {
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
+
+
 //abheedev bug 381 start
 function DownloadbidFile(aID) {
 
 
-    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + sessionStorage.getItem('hddnRFQID'));
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + BIDID);
 }
 //abheedev bug 381 end
 
