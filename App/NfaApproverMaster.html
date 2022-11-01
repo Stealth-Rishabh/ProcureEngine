@@ -212,7 +212,7 @@
                                                             <div class="col-md-3">
                                                                 <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" class="form-control" onchange="bindPurchaseGroupDDL()"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="ddlPurchaseOrg"
-                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
+                                                                    data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlPurchaseOrg" />-->
                                                             </div>
 
                                                             <div class="col-12 col-md-2 hide">
@@ -282,9 +282,9 @@
                                                                 Amount From<span class="required"> *</span>
                                                             </label>
                                                           
-                                                            <!-- @abheedev bug 368 start-->
+                                                            <!-- @abheedev bug 385 start-->
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength" onkeyup="thousands_separators_input(this)" maxlength="18" />
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength" onkeyup="localecommaseperator(this)" maxlength="18" />
                                                             </div>
 
                                                         </div>
@@ -293,11 +293,11 @@
                                                                 Amount To<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="text-right form-control MaxLength" onkeyup="thousands_separators_input(this)" maxlength="18" /><!--onkeyup="thousands_separators_input(this)"-->
+                                                                <input type="tel" id="txtAmountTo" name="txtAmountTo" autocomplete="off" class="text-right form-control MaxLength" onkeyup="localecommaseperator(this)" maxlength="18" /><!--onkeyup="thousands_separators_input(this)"-->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--@abheedev bug 368 end-->
+                                                    <!--@abheedev bug 385 end-->
 
                                                     <div class="form-group">
                                                         <div class="inputgroup">

@@ -26,10 +26,10 @@ function BindPurchaseOrg() {
 
 };
 function onSave() {
-    
     var str = $('#txtParamText').val();
-    //@abheedev bug368 startS
-    if (/^[a-zA-Z0-9-@/*/$#&;:@%-]*$/.test(str) == false) 
+    var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
+    //@abheedev bug 385 start
+    if (pattern.test(str) == false) 
     {
         $('.alert-danger').show();
         $('#error').text('Special characters not allowed.');
@@ -173,7 +173,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
-    
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";

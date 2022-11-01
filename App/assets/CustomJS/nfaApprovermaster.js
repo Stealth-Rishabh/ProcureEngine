@@ -195,7 +195,6 @@ function GetApprovermasterbyId(idx) {
 
 jQuery("#txtDetails").keyup(function () {
     sessionStorage.setItem("hdnApprovermasterIDX", 0);
-
 });
 sessionStorage.setItem("hdnApprovermasterIDX", 0);
 $("#txtDetails").typeahead({
@@ -432,7 +431,9 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID),
+        //abheedev bug 385 start
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID)+"&IsActive=0",
+        //abheedev bug 385 end
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         async: false,
@@ -1277,8 +1278,8 @@ function BindPreviewDetails() {
     var group = $("#ddlPurchasegroup").val();
     var conditionName = $("#ddlCondition").val();
     var approvelType = $("#ddlApproveltype option:selected").text();
-    var from = $("#txtAmountFrom").val();
-    var to = $("#txtAmountTo").val();
+    var from = $("#txtAmountFrom").val().toLocaleString(sessionStorage.getItem("culturecode"));
+    var to = $("#txtAmountTo").val().toLocaleString(sessionStorage.getItem("culturecode"));
     $("#lblPurchaseOrg").text($("#ddlPurchaseOrg option:selected").text());
     $("#lblPurchaseGroup").text($("#ddlPurchasegroup option:selected").text());
     if ($("#ddlCondition option:selected").text() == "Select") {
@@ -1355,14 +1356,14 @@ var FormWizard = function () {
                     },
                     txtAmountFrom: {
                         required: true,
-                        number: true,
+                       // number: true,
                         minlength: 1,
                         maxlength: 18,//3
                         notEqualTo: 0
                     },
                     txtAmountTo: {
                         required: true,
-                        number: true,
+                      //  number: true,
                         minlength: 1,
                         maxlength: 18,//3
                         notEqualTo: 0
@@ -1397,23 +1398,22 @@ var FormWizard = function () {
                 },
 
                 highlight: function (element) {
-
-                    $(element)
-                        .closest('.inputgroup').removeClass('has-success').addClass('has-error');
-                    $(element)
-                        .closest('.col-md-4').removeClass('has-success').addClass('has-error');
+                   
+                    $(element).closest('.inputgroup').removeClass('has-success').addClass('has-error');
+                    $(element).closest('.col-md-4').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-3').removeClass('has-success').addClass('has-error');
 
                 },
 
                 unhighlight: function (element) {
-
+                   
                     $(element)
                         .closest('.inputgroup').removeClass('has-error');
                     $(element)
                         .closest('.col-md-4').removeClass('has-error');
                     $(element)
                         .closest('.col-md-3').removeClass('has-error');
+
 
                 },
 
@@ -1503,6 +1503,7 @@ var FormWizard = function () {
 
                         }
                         else if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
+                            debugger
                             $("#txtAmountFrom").css("border-color", "#ebccd1");
                             $("#txtAmountTo").css("border-color", "#ebccd1");
                             $('.alert-danger').show();
