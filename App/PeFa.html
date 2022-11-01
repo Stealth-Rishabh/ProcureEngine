@@ -45,33 +45,29 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-   
-        
-   
-       
-   
-       .form-horizontal .form-control-static {
-          
-          width: 100%;
-        }
-   
-   
-       .form-horizontal .form-control-static 
-       {
-          padding-top: 7px;
-          width: 100%;
-        }
-   
-   
-   
-        .tab-content>.active
-        {
 
-             margin-right: 10%;
+
+
+
+
+        .form-horizontal .form-control-static {
+            width: 100%;
         }
-   
-    
-    
+
+
+        .form-horizontal .form-control-static {
+            padding-top: 7px;
+            width: 100%;
+        }
+
+
+
+        .tab-content > .active {
+            margin-right: 10%;
+        }
+
+
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -106,7 +102,7 @@
                 visibility: visible;
             }
 
-        /*abhhedev bug 52 end*/         
+        /*abhhedev bug 52 end*/
 
 
 
@@ -458,12 +454,12 @@
                                                                            data-provide="typeahead" autocomplete="off" name="txtApprover" />
 
                                                                 </label>
-                                                                
-                                                                    <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
-                                                                        <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
-                                                                    </span>
 
-                                                                
+                                                                <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+
+
                                                                 <!--bug 52 end-->
 
 
@@ -1298,42 +1294,43 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     </div>
                 </div>
-                <!--abheedev bug 443    <div class="portlet-body form">
-          <div class="alert alert-danger display-hide" id="errordiv2">
-              <button class="close" data-close="alert"></button>
-              <span id="errormsg2"></span>
-          </div>
-          <div class="alert alert-success display-hide" id="successdiv2">
-              <button class="close" data-close="alert"></button>
-              <span id="successmsg2"></span>
-          </div>-->
-          <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
-              <div class="form-body">
+                <div class="portlet-body form">
+                    <!--abheedev bug 443-->
+                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>-->
+                    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
+                        <div class="form-body">
 
-                  <div class="progress-form display-none" id="modalLoaderparameter">
+                            <div class="progress-form display-none" id="modalLoaderparameter">
 
-                      <div class="col-md-offset-3 col-md-6">
-                          <p id="loader-msgparameter">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msgparameter">
 
-                          </p>
-                          <div class="progress">
-                              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="clearfix"></div>
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
 
-                  </div>
+                            </div>
 
-                  <div class="row">
+                            <div class="row">
 
-                      <div class="col-md-12">
-                          <div class="col-md-6">
-                              <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
-                            <!--abheedev bug 443-->
-                <input type="file" id="file-excelparameter" name="file-excelparameter" onchange="checkExcelUpload(this);" />
-                <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
-            </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
+                                        <!--abheedev bug 443-->
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter" onchange="checkExcelUpload(this);" />
+                                        <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
+                                    </div>
                                     <div class="col-md-6">
 
                                         <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter" style="text-decoration:none;">Instructions</a></span>
@@ -1397,8 +1394,8 @@
 
                                                         </ul>
                                                         <!--<label class="col-md-12 text-left">
-                                                            Skip this step if you have downloaded Excel Template
-                                                        </label>-->
+                                            Skip this step if you have downloaded Excel Template
+                                        </label>-->
 
                                                         <br />
                                                     </div>
@@ -1528,9 +1525,9 @@
 
         jQuery(document).ready(function () {
             Pageloaded()
-            
-            
-            
+
+
+
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
