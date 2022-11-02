@@ -87,6 +87,7 @@ function fetchRegisterUser() {
     });
 
 }
+//abheedev bug 385
 function GetOverviewmasterbyId(idx) {
     console.log(parseInt(CurrentCustomer) + "&idx=" + parseInt(idx));
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -150,16 +151,19 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".clsHide").hide();
                 }
+                $("#lblException").text(res.result[0].conditionName);
                 $("#lblRemark").text(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
 
             }
         }
     });
+ 
     GetData.error(function (res) {
         jQuery.unblockUI();
     });
 };
+//abheedev bug 385 end
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
     if (RFQID == 0) {

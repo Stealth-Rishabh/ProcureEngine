@@ -338,6 +338,7 @@ var FormWizard = function () {
                         }
 
                     }
+                    //abheedev bug 385 
                     else if (index == 2) {
                      
                         form.validate();
@@ -372,6 +373,7 @@ var FormWizard = function () {
                              // abheedev backlog 286 end
                         }
                     }
+                    //abheedev bug 385 end
                     handleTitle(tab, navigation, index);
                     if (ApproverCtr === 0)
                         $('.button-submit').hide();
