@@ -211,7 +211,7 @@ function fetchregisterusers() {
 function fetNFAReport(dtfrom, dtto, subject) {
 
     var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
-
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -222,7 +222,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            
             jQuery("#tblNFASummary").empty();
             jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>NFA ID</th><th class='bold'>NFA Subject</th><th class='bold'>Configured By</th><th class='bold'>NFA Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>NFA Status</th></tr></thead>");
             if (data.length > 0) {

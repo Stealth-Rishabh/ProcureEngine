@@ -10,7 +10,7 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-/*
+
 
 $(".thousandsep").inputmask(
     {
@@ -43,25 +43,26 @@ $(".thousandsep").inputmask(
         //autoUnmask: true
 
     }
-);*/
+);
 //abheedev bug 385
 
 function localecommaseperator(ele)
 {
-    
+  
  
     var str = ele.value;
 
     if (str == NaN || str == '')
     {
-        str = 0;
+        str = "";
         $(ele).val("")
     }
-   str= str.replaceAll(',', "")
-
-    str = parseFloat(str);
-
-    $(ele).val(str.toLocaleString('en-IN'))
+   
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
 }
 

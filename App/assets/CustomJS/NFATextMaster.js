@@ -26,8 +26,9 @@ function BindPurchaseOrg() {
 
 };
 function onSave() {
+    
     var str = $('#txtParamText').val();
-    var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
+    var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]*$/
     //@abheedev bug 385 start
     if (pattern.test(str) == false) 
     {

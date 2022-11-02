@@ -41,6 +41,54 @@
        .bluecls{
            color:blue!important;
        }
+
+
+       /*abheedev backlog 333*/
+       thead {
+           position: -webkit-sticky; /* Safari */
+           position: sticky;
+           z-index: 1;
+           top: 0;
+           border: 2px solid darkgrey;
+       }
+
+
+       .table-scrollable {
+           overflow-y: auto !important;
+           max-height: 500px;
+       }
+
+
+
+
+       /*abhhedev ankur sir remark*/
+       .hovertext {
+           position: relative;
+       }
+
+           .hovertext:before {
+               content: attr(data-hover);
+               visibility: hidden;
+               opacity: 0;
+               width: 300px;
+               opacity: .9;
+               color: rgb(6, 6, 6);
+               background-color: #44b6ae;
+               text-align: center;
+               border-radius: 5px;
+               padding: 5px 5px;
+               transition: opacity 1s ease-in-out;
+               position: absolute;
+               z-index: 1;
+               right: 100%;
+               bottom: 20px;
+           }
+
+           .hovertext:hover:before {
+               opacity: .9;
+               visibility: visible;
+           }
+
    </style>
    
 </head>

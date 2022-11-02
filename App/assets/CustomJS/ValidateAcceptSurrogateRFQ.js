@@ -42,7 +42,8 @@ function fetchReguestforQuotationDetailseRFQ() {
                 jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
-                jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition);
+                //abheedev bug 381
+                jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition );
                 
                 jQuery('#TermCondition').html(data[0].rfqTermandCondition)
             }
@@ -66,7 +67,7 @@ function fetchReguestforQuotationDetailseRFQ() {
 function DownloadFile(aID) {
 
 
-    fnDownloadAttachments($("#" + aID.id).attr("name"), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'eRFQ/' + sessionStorage.getItem('hddnRFQRFIID'));
 }
 //abheedev bug 381 end
 var erroropenbid = $('#errorOpenbid');

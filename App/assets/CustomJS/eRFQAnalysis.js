@@ -312,7 +312,7 @@ function fetchrfqcomprative() {
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
                                 x = x + 1;
                                 if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                    _totalWithoutGst = data[0].quotesDetails[j].rfqVendorPricewithoutGST * _quantity;
+                                    _totalWithoutGst = (data[0].quotesDetails[j].rfqVendorPricewithoutGST * _quantity).round(2);
                                     if (ShowPrice == "N" && data[0].quotesDetails[j].initialQuotewithoutGST != 0) {
                                         strExcel += "<td>Quoted</td>";
                                         str += "<td class='VInitialwithoutGST text-right'>Quoted</td>";

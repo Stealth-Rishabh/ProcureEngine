@@ -148,8 +148,8 @@ function GetApprovermasterbyId(idx) {
             if (res.result.length > 0) {
 
                 $("#ddlApproveltype").val(res.result[0].approvalType);
-                $("#txtAmountFrom").val((removeThousandSeperator(res.result[0].amountFrom)));
-                $("#txtAmountTo").val((removeThousandSeperator(res.result[0].amountTo)));
+                $("#txtAmountFrom").val((res.result[0].amountFrom).toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtAmountTo").val((res.result[0].amountTo).toLocaleString(sessionStorage.getItem("culturecode")));
 
                 $("#txtdeviation").val(res.result[0].deviation);
                 $("#ddlPurchaseOrg").val(res.result[0].orgID);
@@ -1503,7 +1503,6 @@ var FormWizard = function () {
 
                         }
                         else if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
-                            debugger
                             $("#txtAmountFrom").css("border-color", "#ebccd1");
                             $("#txtAmountTo").css("border-color", "#ebccd1");
                             $('.alert-danger').show();

@@ -16,7 +16,7 @@ $('#txtloadingfactorreason').maxlength({
     alwaysShow: true
 });
 function fetchRFIRFQSubjectforReport(subjectFor) {
-
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
