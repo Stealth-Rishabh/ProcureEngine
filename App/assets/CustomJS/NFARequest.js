@@ -155,7 +155,7 @@ var FormWizard = function () {
                         maxlength: 18//3
                     },
                     txtBudget: {
-                      //  number: true,
+                        //  number: true,
                         minlength: 1,
                         maxlength: 18//3
                     },
@@ -177,9 +177,9 @@ var FormWizard = function () {
                     success.hide();
                     Metronic.scrollTo(error, -200);
                 },
-                
+
                 highlight: function (element) {
-                    
+
                     $(element)
                         .closest('.inputgroup,.clsTA').removeClass('has-success').addClass('has-error');
 
@@ -192,7 +192,7 @@ var FormWizard = function () {
                 },
 
                 unhighlight: function (element) {
-                    
+
 
                     $(element)
                         .closest('.inputgroup,.clsTA').removeClass('has-error');
@@ -301,7 +301,7 @@ var FormWizard = function () {
 
 
                     if (index == 1) {
-                       
+
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
@@ -338,10 +338,11 @@ var FormWizard = function () {
                         }
 
                     }
+                    //abheedev bug 385 
                     else if (index == 2) {
-                     
+
                         form.validate();
-                      
+
                         // abheedev backlog 286 start
                         $('.paramremark').rules('add', {
                             required: true,
@@ -355,23 +356,24 @@ var FormWizard = function () {
                             $('#errordivSeq').fadeOut(8000);
                             return false;
                         }
-                         if (form.valid() == false) {
-                            
-                             flag = 'F';
-                             $('.alert-danger').show();
-                             $('#errorSeq').text('Remarks is required and should be maximum 10000 characters.'); //abheedev backlog 286 
-                             Metronic.scrollTo($(".alert-danger"), -500);
-                             $('.alert-danger').fadeOut(5000);
-                             return false;
-                         }
+                        if (form.valid() == false) {
+
+                            flag = 'F';
+                            $('.alert-danger').show();
+                            $('#errorSeq').text('Remarks is required and should be maximum 10000 characters.'); //abheedev backlog 286 
+                            Metronic.scrollTo($(".alert-danger"), -500);
+                            $('.alert-danger').fadeOut(5000);
+                            return false;
+                        }
                         if (flag == "T") {
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                             // abheedev backlog 286 end
+                            // abheedev backlog 286 end
                         }
                     }
+                    //abheedev bug 385 end
                     handleTitle(tab, navigation, index);
                     if (ApproverCtr === 0)
                         $('.button-submit').hide();
@@ -520,9 +522,9 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
-             //abheedev bug385 start
+                //abheedev bug385 start
                 $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
-                
+
                 $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
@@ -594,17 +596,17 @@ $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
         $('#ddlBudget').val('NB');
-       
+
     }
     //abheedev bug 385 start
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
-        
+
         $('#ddlBudget').val('OB');
-           
+
     }
     else {
         $('#ddlBudget').val('WB');
-           
+
     }
 });//abheedev bug 385 end
 $("#txtAmountFrom").focusout(function () {
@@ -616,7 +618,7 @@ $("#txtAmountFrom").focusout(function () {
     }
     else {
         $('#ddlBudget').val('WB');
-        
+
     }
 });
 //abheedev amountbudget end
@@ -696,7 +698,7 @@ function fnApproversNBQuery(rownum, question) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Description</th></tr></thead>");
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-       //abheedev backlog 286 end
+        //abheedev backlog 286 end
         else {
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td  class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
@@ -1153,12 +1155,12 @@ function BindSaveparams() {
                 $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
 
-                   //abheedev backlog 286 start
+                    //abheedev backlog 286 start
                     if (value.flDefault == 'Y')
                         $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=10000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
                     else
                         $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + ' rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=10000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
-                   //abheedev backlog 286 end
+                    //abheedev backlog 286 end
                     form.validate();
 
                     $('#paramremark' + value.idx).rules('add', {
