@@ -21,7 +21,6 @@ function thouandseparator() {
 }
 thouandseparator();
 $('#txtbid,#txtvendor,#txtBidDurationPrev,#txtvendorSurrogateBid,#txtdestinationPort,#txtshortname,#txtpricefrequency').maxlength({
-    limitReachedClass: "label label-danger",
     alwaysShow: true
 });
 
@@ -339,7 +338,6 @@ function FormValidate() {
 function fetchUserBids() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //alert(APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=0&CustomerID=" + sessionStorage.getItem('CustomerID'))
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -407,9 +405,8 @@ jQuery("#txtbid").typeahead({
                 });
             }
             setTimeout(function () {
-                var clientIP = "User";
 
-                connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + map[item].bidId + "&userType=E" + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP=" + clientIP).withAutomaticReconnect().build();
+                connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + map[item].bidId + "&userType=E" + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
                 console.log('Not Started')
                 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
                     console.log("connection started")
@@ -448,10 +445,6 @@ jQuery("#txtbid").typeahead({
                     $('#litab3').hide();
                     $('#tab_3').hide();
                 }
-                /* else{
-                      $('#litab0,#tab_0').addClass('active');
-                 }*/
-
 
             }
             else {
@@ -578,7 +571,6 @@ function fetchparticationQuotes() {
         url = APIPath + "RemoveParticipatedQuotedPrices/fetchCAQuotedPrices/?BidID=" + $('#ddlbid').val() + "&VendorID=" + $('#ddlvendors').val();
     }
 
-    // alert(url)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1297,7 +1289,7 @@ function resetpasswordForBidVendor() {
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
 
         }
-        // alert(JSON.stringify(data))
+
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/ResetPassword",
             data: JSON.stringify(data),
@@ -1371,7 +1363,7 @@ function sendremainderstoparicipants() {
             "UserID": sessionStorage.getItem("UserID"),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-        //  alert(JSON.stringify(data))
+
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/SendRemainderToParticipant",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1379,8 +1371,7 @@ function sendremainderstoparicipants() {
             type: "POST",
             contentType: "application/json",
             success: function (data) {
-                // alert(data[0].Flag)
-                // if (data == "1") {
+
                 errorremainder.hide();
                 succesremainder.show();
                 $('#succrem').html('Reminder has been sent Successfully..');
@@ -2624,24 +2615,17 @@ function DateandtimevalidateForBidOpen(ismailsend) {
 
     }
     else {
-        var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+        debugger;
+        var BidDate = $('#txtbidDate').val().replace('-', '');
         Dateandtimevalidate(BidDate, ismailsend, '');
+
     }
 
-    //else if (reopenDate < s) {
-    //    erroropenbid.show();
-    //    $('#erropenbid').html('Date cannot be less than current date');
-    //    erroropenbid.fadeOut(3000);
-    //    App.scrollTo(erroropenbid, -200);
-    //}
-    //else {
-    //    fnTimeUpdateClosedBid(ismailsend);
-    //}
+
 
 }
 function Dateandtimevalidate(biddate, ismailsend, DateopenFor) {
-    //var dtst = new Date($('#txtbidDate').val().replace('-', ''));
-    //dtst = moment(dtst).format('DD MMM YYYY h:mm:ss a');
+
     var Tab1Data = {
         "BidDate": biddate
     }
@@ -2655,11 +2639,13 @@ function Dateandtimevalidate(biddate, ismailsend, DateopenFor) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
+
             if (data == "1") {
                 if (DateopenFor == "reopen") {
                     fnupdateStaggerReopendatetime();
                 }
                 else {
+                    debugger;
                     fnTimeUpdateClosedBid(ismailsend);
                 }
 
@@ -2684,55 +2670,9 @@ function Dateandtimevalidate(biddate, ismailsend, DateopenFor) {
         }
     });
 }
-function fnTimeUpdateClosedBid(isMailSend) {
-    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var finalStatus = "";
-    if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
-        finalStatus = $('#ddlBidfinalStatus').val();
-    }
-    var Data = {
-        "BidStatus": parseInt($('#ddlBidStatus option:selected').val()),
-        "BidID": parseInt(jQuery('#ddlbid').val()),
-        "BidDuration": parseInt(jQuery('#txtBidDurationForBidOpen').val()),
-        "BidDate": StartDT,
-        "IsMailSend": isMailSend,
-        "FinalStatus": finalStatus,
-        "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
-    }
 
-    connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
-        //connection.start().then(function () {
-        //    console.log("connection started")
-        //    }).catch(function (err) {
-        //   console.log(err.toString())
-        //});
-    });
-    connection.on("refreshTimeronClients", function (data) {
-
-        if (data == sessionStorage.getItem('UserID')) {
-            erroropenbid.hide();
-            successopenbid.show();
-            $('#succopenbid').html('Bid updated successfully');
-            successopenbid.fadeOut(3000);
-            App.scrollTo(successopenbid, -200);
-            setTimeout(function () {
-                location.reload();
-            }, 1000)
-
-            //fetchallexportdetails();
-            jQuery.unblockUI();
-        }
-    });
-
-}
 function fnpauseaction() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    // var s = new Date();
-    //var selectedtime = new Date($("#txtreopenDate").val().replace('-', ''));
-
 
     if ((jQuery("#txtreopenDate").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") && $('#ddlBidStatus').val() != 2) {
         erroropenbid.show();
@@ -2740,14 +2680,11 @@ function fnpauseaction() {
         erroropenbid.fadeOut(3000);
         App.scrollTo(erroropenbid, -200);
     }
-    //else if (selectedtime < s) {
-    //    erroropenbid.show();
-    //    $('#erropenbid').html('Re Open Bid Date/Time should be greater than Current Date/Time.');
-    //    erroropenbid.fadeOut(3000);
-    //    App.scrollTo(erroropenbid, -200);
-    //}
+
     else {
-        var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
+        alert($('#txtreopenDate').val())
+        //   var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
+        var reopendtst = $('#txtreopenDate').val().replace('-', '');
         Dateandtimevalidate(reopendtst, '', 'reopen');
     }
     jQuery.unblockUI();
@@ -2875,7 +2812,11 @@ function fnTimeUpdate() {
 }
 
 function fnTimeUpdateClosedBid(isMailSend) {
-    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    debugger;
+    alert($('#txtbidDate').val().replace('-', ''))
+    // var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    var StartDT = new Date($('#txtbidDate').val().replace('-', '')).toLocaleString("en-IN", { timeZone: sessionStorage.getItem('preferredtimezone') });
+    alert(StartDT)
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var finalStatus = "";
     if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
@@ -2885,8 +2826,6 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "BidStatus": parseInt($('#ddlBidStatus option:selected').val()),
         "BidID": parseInt(jQuery('#ddlbid').val()),
         "BidDuration": parseInt(jQuery('#txtBidDurationForBidOpen').val()),
-        //"BidDate": jQuery('#txtbidDate').val(),
-        //"BidTime": jQuery('#txtbidTime').val(),
         "BidDate": StartDT,
         "IsMailSend": isMailSend,
         "FinalStatus": finalStatus,
@@ -2896,11 +2835,7 @@ function fnTimeUpdateClosedBid(isMailSend) {
 
     connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
         return console.error(err.toString());
-        //connection.start().then(function () {
-        //    console.log("connection started")
-        //    }).catch(function (err) {
-        //   console.log(err.toString())
-        //});
+
     });
     connection.on("refreshTimeronClients", function (data) {
 
@@ -5290,7 +5225,7 @@ function fnsubmitFAPrePrices() {
                 "UserID": sessionStorage.getItem('UserID'),
                 "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
             };
-            // alert(JSON.stringify(Data))
+
             console.log(JSON.stringify(Data))
 
             jQuery.ajax({
@@ -5408,7 +5343,7 @@ function handleFileparameter(e) {
                 }
             });
             //Get the first column first cell value
-            //alert(JSON.stringify(result))
+
             printdataSeaBid(result)
         };
         reader.readAsArrayBuffer(f);

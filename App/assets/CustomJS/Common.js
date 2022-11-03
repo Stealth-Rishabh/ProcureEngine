@@ -10,8 +10,6 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-/*
-
 $(".thousandsep").inputmask(
     {
         alias: "decimal",
@@ -43,29 +41,8 @@ $(".thousandsep").inputmask(
         //autoUnmask: true
 
     }
-);*/
-//abheedev bug 385
+);
 
-function localecommaseperator(ele)
-{
-    
- 
-    var str = ele.value;
-
-    if (str == NaN || str == '')
-    {
-        str = 0;
-        $(ele).val("")
-    }
-   str= str.replaceAll(',', "")
-
-    str = parseFloat(str);
-
-    $(ele).val(str.toLocaleString('en-IN'))
-
-}
-
-//abheedev bug 385
 
 
 
@@ -153,6 +130,26 @@ function SearchInGridview(tableName,value) {
 
     });
 }
+
+//abheedev bug 385
+function localecommaseperator(ele) {
+
+
+    var str = ele.value;
+
+    if (str == NaN || str == '') {
+        str = "";
+        $(ele).val("")
+    }
+
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString('en-IN'))
+
+}
+//abheedev bug 385
 function bindApproverMaster(edit) {
   
     var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
