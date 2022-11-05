@@ -885,11 +885,15 @@ function CheckTerms(event, ID) {
 }
 function fnsavetermscondition(isbuttonclick) {
     var checkedValue = '2~I~#';
+    var checkedOtherTerms = '';
     $("#tblTermsCondition> tbody > tr").each(function (index) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
-            if ($.trim(this_row.find('td:eq(0)').text()) != '2') {
+            if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
+                checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
@@ -898,8 +902,8 @@ function fnsavetermscondition(isbuttonclick) {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QueryString": checkedValue,
-            "ConditionType": jQuery("#ddlConditiontype").val()
-
+            "ConditionType": jQuery("#ddlConditiontype").val(),
+            "OtherTermsCondition": checkedOtherTerms
         }
 
         jQuery.ajax({
@@ -1018,7 +1022,18 @@ function addmoreattachments() {
     else {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-        rowAttach = rowAttach + 1;
+        var num = 0;
+        var maxinum = 0;
+        $("#tblAttachments tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowAttach = parseInt(maxinum) + 1;
         if (!jQuery("#tblAttachmentsPrev thead").length) {
             jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
@@ -1152,7 +1167,19 @@ function addquestions() {
         return false;
     }
     else {
-        rowques = rowques + 1;
+        var num = 0;
+        var maxinum = 0;
+        $("#tblquestions tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
+
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowques = parseInt(maxinum) + 1;
         if (!jQuery("#tblQuestionsPrev thead").length) {
             jQuery('#tblQuestionsPrev').append("<thead><tr><th class='bold' style='width:50%!important'>Questions</th><th class='bold' style='width:50%!important'>Requirement</th></tr></thead>");
         }
@@ -1348,6 +1375,8 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
+    var num = 0;
+    var maxinum = 0;
     var status = "true";
     var UserID = sessionStorage.getItem('hdnApproverid');
     var UserName = jQuery("#txtApprover").val();

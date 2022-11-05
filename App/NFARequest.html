@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -41,6 +42,12 @@
     <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+        /*abheedev bug 340*/
+        body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -267,17 +274,16 @@
                                                             <label class="col-md-3 control-label">
                                                                 Amount<span class="required"> *</span>
                                                             </label>
-                                                            <!--abheedev bug 385 start-->
-                                                            <div id="divtxtAmountFrom" class="col-md-3">
-                                                                <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
+                                                            <div class="col-md-3">
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
                                                         </div>
-                                                        <div class="inputgroup" id="divtxtBudget">
+                                                        <div class="inputgroup">
                                                             <label class="col-md-2 control-label">
                                                                 Budget
                                                             </label>
                                                             <div class="col-md-2">
-                                                                <input type="text" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
 
                                                             <div class="col-md-1">
@@ -285,7 +291,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <!--abheedev bug 385 end-->
+
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
@@ -559,33 +565,28 @@
 
                                                                 </p>
                                                             </div>
-
-
-                                                            <!--</div>-->
                                                         </div>
-                                                        <!--abheedev bug 385 nfa start-->
+                                                        <!--</div>-->
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <!--<div class="form-group">-->
+                                                            <label class="col-12 col-md-2 control-label">Project :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static" id="lblProjectName">
 
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <!--<div class="form-group">-->
-                                                                <label class="col-12 col-md-2 control-label">Project :</label>
-                                                                <div class="col-12 col-md-2">
-                                                                    <p class="form-control-static" id="lblProjectName">
+                                                                </p>
+                                                            </div>
 
-                                                                    </p>
-                                                                </div>
+                                                            <label class="col-12 col-md-2 control-label">Category :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static" id="lblCategory">
 
-                                                                <label class="col-12 col-md-2 control-label">Category :</label>
-                                                                <div class="col-12 col-md-6">
-                                                                    <p class="form-control-static" id="lblCategory">
-
-                                                                    </p>
-                                                                </div>
+                                                                </p>
                                                             </div>
 
                                                             <!--</div>-->
                                                         </div>
-                                                        <!--abheedev bug 385 nfa end-->
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -649,13 +650,11 @@
                                                         <div class="col-md-12">
                                                             <!--<div class="form-group">-->
                                                             <label class="col-12 col-md-2 control-label">Additional Remarks :</label>
-                                                            <!--abheedev bug385 nfa-->
                                                             <div class="col-12 col-md-10">
                                                                 <p class="form-control-static " id="lblRemark">
 
                                                                 </p>
                                                             </div>
-                                                            <!--abheedev bug385 nfa-->s
                                                         </div>
                                                         <!--</div>-->
                                                     </div>
@@ -918,9 +917,7 @@
     <!--<script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <!--abheedev backlog 286-->
-    <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
-    <!--abheedev backlog 286 end-->
+
     <!--<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>-->
 
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -933,9 +930,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <!--abheedev backlog 286-->
-    <script src="assets/CustomJS/ckeditor.js"></script>
-    <!--abheedev backlog 286-->
+
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/NFARequest.js"></script>
 
@@ -967,16 +962,13 @@
             Metronic.init();
             Layout.init();
             FormWizard.init();
-            //abheedev backlog 286
-            CKEDITOR.replace("txtNFADetail");
-            //abheedev backlog 286 end
             FetchCurrency("0");
             // ComponentsPickers.init();
             setCommonData();
+
             fetchMenuItemsFromSession(1, 53);
             BindPurchaseOrg();
             bindConditionDDL();
-
 
         });
 
