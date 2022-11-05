@@ -2,7 +2,6 @@
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -18,7 +17,7 @@ $.getJSON("https://api.ipify.org?format=json", function (data) {
 
 
 var Login = function () {
-   
+
     var handleLogin = function () {
 
         $('.login-form').validate({
@@ -147,8 +146,8 @@ var Login = function () {
     }
 
     function validateUser() {
-        
-      // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+
+        // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
@@ -158,11 +157,11 @@ var Login = function () {
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-        //lastPart = 'vendor'
+        // lastPart = 'vendor'
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
             // url = APIPath + "User/validateUser_Vendor/?LoginID=" + LoginID + "&Password=" + Password;
-            //alert(url)
+
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
                 "Password": jQuery("#password").val().trim(),
@@ -193,7 +192,6 @@ var Login = function () {
         }
         else {
             url = APIPath + "User/validate_User/?LoginID=" + LoginID + "&Password=" + Password + "&LinkUrl=" + LinkUrl;
-            alert(url);
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -232,7 +230,7 @@ var Login = function () {
             crossDomain: true,
             dataType: "json",
             success: function (data1) {
-             
+
                 jQuery.each(data1, function (key, value) {
 
                     // if (MemberID != '0') {
@@ -248,7 +246,7 @@ var Login = function () {
                     sessionStorage.setItem("VendorId", value.vendorID);
                     sessionStorage.setItem("BidPreApp", value.bidpreapproval);
                     sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
-                    sessionStorage.setItem("timezoneid", value.timeZoneID);
+                    sessionStorage.setItem("timezoneid", value.timeZoneID)
                     //abheedev bug 385
                     sessionStorage.setItem("culturecode", value.cultureCode);
                     setTimeout(function () {
@@ -404,12 +402,15 @@ function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var custid = 0;
+    var UserType = 'V'
     if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
         custid = sessionStorage.getItem('CustomerID');
+        UserType = 'E';
     }
     var data = {
         "EmailID": $("#txtemail").val(),
-        "CustomerID": parseInt(custid)
+        "CustomerID": parseInt(custid),
+        "UserType": UserType
     }
 
     jQuery.ajax({

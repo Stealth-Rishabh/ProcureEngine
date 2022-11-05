@@ -431,9 +431,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        //abheedev bug 385 start
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID)+"&IsActive=0",
-        //abheedev bug 385 end
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID) + "&IsActive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         async: false,
@@ -522,7 +520,7 @@ function validateWBADD() {
     else return false;
 }
 function AddWBApprovers() {
-    
+
     if (validateWBADD()) {
         return false;
     }
@@ -539,7 +537,7 @@ function AddWBApprovers() {
         var Seq = $("#txtWBSeq").val();
 
         var EmailID = sessionStorage.getItem("hdnWBApproverEmailid");
-       
+
         if (ApproverType == "S") {
 
             if (WBSeq <= 0) {
@@ -610,7 +608,7 @@ function fnApproversQuery(EmailID, UserID, UserName, rownum) {
             jQuery("#tblWBApproverSeq").append('<tr id=trWBAppid' + rowAppWB + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rowAppWB + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a><a class="btn  btn-xs btn-primary edit ' + isEditAllowed + '"><i class="fa fa-pencil"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rownum + '</td><td class=hide>' + UserID + '</td><td class=' + isHide + '>' + MoveSeqData + '</td></tr>');
         }
         if (ApproverType == "S") {
-        var rowcount = jQuery('#tblWBApproverSeq >tbody>tr').length;
+            var rowcount = jQuery('#tblWBApproverSeq >tbody>tr').length;
             if (rowcount >= 1) {
                 $("#tblWBApproverSeq tr:gt(0)").each(function (index) {
                     var this_row = $(this);
@@ -786,7 +784,7 @@ function fnApproversOBQuery(EmailID, UserID, UserName, rownum) {
         return false;
     }
     else {
-       // rowAppOB = rowAppOB + 1;
+        // rowAppOB = rowAppOB + 1;
         var maxidnum = 0; var num = 0;
         $("#tblOBApproverSeq tr:gt(0)").each(function () {
             var this_row = $(this);
@@ -1356,14 +1354,14 @@ var FormWizard = function () {
                     },
                     txtAmountFrom: {
                         required: true,
-                       // number: true,
+                        // number: true,
                         minlength: 1,
                         maxlength: 18,//3
                         notEqualTo: 0
                     },
                     txtAmountTo: {
                         required: true,
-                      //  number: true,
+                        //  number: true,
                         minlength: 1,
                         maxlength: 18,//3
                         notEqualTo: 0
@@ -1398,7 +1396,7 @@ var FormWizard = function () {
                 },
 
                 highlight: function (element) {
-                   
+
                     $(element).closest('.inputgroup').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-4').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-3').removeClass('has-success').addClass('has-error');
@@ -1406,7 +1404,7 @@ var FormWizard = function () {
                 },
 
                 unhighlight: function (element) {
-                   
+
                     $(element)
                         .closest('.inputgroup').removeClass('has-error');
                     $(element)

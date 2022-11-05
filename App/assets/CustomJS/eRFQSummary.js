@@ -1,3 +1,4 @@
+/// <reference path="configurefrench.js" />
 var form = $('#frmbidsummaryreport');
 $(document).ready(function () {
 
@@ -9,14 +10,15 @@ function fetchregisterusers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N",
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
         success: function (data) {
             jQuery("#ddlconfiguredby").empty();
-            jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+            if (data[0].role.toLowerCase() != "user") {
+                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+            }
             for (var i = 0; i < data.length; i++) {
                 jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
             }
@@ -166,16 +168,19 @@ function fetchRFQVendorSummary() {
 
 
             jQuery("#tblVendorSummary").empty();
-            jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
+            //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
+            jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
 
                 for (var i = 0; i < BidData.length; i++) {
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
                     rfqdeadline = fnConverToLocalTime(BidData[i].rfqEndDate);
 
-                    str += "<td class=hide>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
+                    //str += "<td class=hide>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
 
                     str += "<td>" + rfqdeadline + "</td>"
 

@@ -29,8 +29,6 @@
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet">
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-   
-
     <style>
         input#file-excelparameter {
             position: fixed;
@@ -79,7 +77,6 @@
     </div>
 
     <div class="clearfix">
-
     </div>
     <div class="page-container">
         <!-- BEGIN SIDEBAR -->
@@ -143,7 +140,34 @@
                                         </div>
                                     </div>
 
+                                    <!--abheedev bug 385 start-->
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-control">
+                                                <label class="col-md-5 control-label">Amount:</label>
+                                                <label class="col-md-7 control-label" style="text-align:left">
+                                                    <span class="thousandsep" id="lblAmount"></span>&nbsp;<span id="lblCurrency"></span>
+                                                </label>
 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-control">
+                                                <label class="col-md-5 control-label">Category:</label>
+                                                <label class="col-md-7 control-label" id="lblCategory" style="text-align:left!important"></label>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-control">
+                                                <label class="col-md-5 control-label">Budget Status:</label>
+                                                <label class="col-md-7 control-label" id="lblbudget" style="text-align:left"></label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--abheedev bug385-->
                                     <div class="row clsHide">
                                         <div class="col-md-4">
                                             <div class="form-control">
@@ -314,6 +338,7 @@
                         </div>
 
                     </div>
+
                     <div id="divRemarksApp" class="col-md-12">
                         <div class="row">
                             <div class="col-md-12" id="frmdivremarksapprover">
@@ -322,7 +347,7 @@
                                     <form action="#" id="frmsubmitapp" class="form-horizontal">
 
                                         <div class="form-body">
-                                            <div class="alert alert-success" id="successdiv" style="display:none">
+                                            <div class="alert alert-success" id="successdiv" style="display: none">
                                                 <span id="success">Transaction Successfull..</span>
                                             </div>
 
@@ -409,7 +434,7 @@
                                 </div>
                             </form>
 
-                            <div class="col-md-6" style="display:none height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                            <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
 
                                 <form action="#" id="form2" class="form-horizontal">
 
@@ -439,36 +464,7 @@
                         </div>
 
                     </div>
-
                 </div>
-                <!--abheedev backlog 286 (new div section added for pdf download)-->
-                <div class="row">
-                    <div class="form-actions fluid" style="padding: 10px 5px;">
-                        <p class="display-none" id="PPrintBy"><label class="pull-left "><b>Print By :&nbsp;&nbsp;</b></label><label id="lblprintByname" class="control-label pull-left"></label></p>
-                        <p class="display-none" id="Pdate"> <label class="pull-right"><b>Date :&nbsp;&nbsp;</b></label><label id="lbldate" class="control-label pull-right"></label></p>
-                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
-
-                            <button id="btnExportToExcel" type="button" class="btn blue forbtnpause">
-                                Export To Excel
-                            </button>
-                            <button id="btnpdf" type="button" class="btn green forbtnpause">generate PDF</button>
-                            <a href="#inviteVendorModal" data-toggle="modal" id="btn_invite_vendors" class="btn green forbtnpause" onclick="FetchVenderNotInvited()">
-                                Invite Vendors
-                            </a>
-
-                            <button type="button" class="btn red forbtnpause" id="cancl_btn">
-                                <!--onclick="cancelBtnclick()"-->
-                                Cancel Bid
-                            </button>
-                            <button id="btnback" type="button" class="btn yellow" onclick="backButtonClick()">
-                                Back
-                            </button>
-
-                            <label></label>
-                        </div>
-                    </div>
-                </div>
-                <!--abheedev backlog 286 end-->
                 <!-- END PAGE CONTENT-->
                 <!--Model popup Start-->
                 <!--Model End-->
@@ -644,7 +640,10 @@
                                     Submit
                                 </button>
                                 <button type="button" class="btn blue" data-dismiss="modal" aria-hidden="true">Close</button>
+
                             </div>
+
+
                         </div>
                     </form>
                 </div>
@@ -680,7 +679,6 @@
     <script src="assets/scripts/core/app.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="assets/scripts/aes.js"></script>
-    <script src="assets/global/plugins/printThis/printThis.js" type="text/javascript"></script>
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
@@ -691,10 +689,8 @@
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
 
-
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/NFAApproverReq.js"></script>
-
 
     <script>
         jQuery(document).ready(function () {

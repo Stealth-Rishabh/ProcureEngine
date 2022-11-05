@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -41,6 +42,12 @@
     <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+        /*abheedev bug 340*/
+        body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -250,7 +257,6 @@
 
                                                         </div>
                                                     </div>
-                                                    <!--abheedev bug 385-->
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -258,28 +264,26 @@
                                                             </label>
                                                             <div class="col-md-8">
                                                                 <textarea id="txtNFADetail" name="txtNFADetail" class="wysihtml5 form-control MaxLength"
-                                                                          rows="3" placeholder="Enter NFA Request Detail" maxlength="1000"></textarea>
+                                                                          rows="3" placeholder="Enter NFA Request Detail" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                                 <!--<input type="text" placeholder="Enter NFA Request Detail" id="txtDetail" maxlength="500" name="txtDetail" class="form-control MaxLength" onkeyup="replaceQuoutesFromString(this)" />-->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--abheedev bug 385 end-->
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Amount<span class="required"> *</span>
                                                             </label>
-                                                            <!--abheedev bug 385 start-->
-                                                            <div id="divtxtAmountFrom" class="col-md-3">
-                                                                <input type="text" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
+                                                            <div class="col-md-3">
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
                                                         </div>
-                                                        <div class="inputgroup" id="divtxtBudget">
+                                                        <div class="inputgroup">
                                                             <label class="col-md-2 control-label">
                                                                 Budget
                                                             </label>
                                                             <div class="col-md-2">
-                                                                <input type="text" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
 
                                                             <div class="col-md-1">
@@ -287,7 +291,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <!--abheedev bug 385 end-->
+
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
@@ -333,7 +337,7 @@
                                                             <div class="col-md-3">
                                                                 <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" onchange="bindPurchaseGroupDDL()" class="form-control"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select ORG" id="txtPurcOrg"
-                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcOrg" />-->
+                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcOrg" />-->
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -353,7 +357,7 @@
                                                                     </a>
                                                                 </div>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Group" id="txtPurcGroup"
-                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcGroup" />-->
+                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtPurcGroup" />-->
 
                                                             </div>
                                                         </div>
@@ -369,12 +373,12 @@
                                                             <label class="col-md-8">
                                                                 <select class="form-control" id="ddlCondition" name="ddlCondition"></select>
                                                                 <!--<input type="text" class="form-control pull-right MaxLength" maxlength="100" placeholder="Select Condition" id="ddlCondition"
-                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
+                                                                data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="ddlCondition" />-->
                                                             </label>
 
                                                         </div>
                                                     </div>
-                                                    <!--abheedev bug 385-->
+
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
                                                             Additional Remark (If any)<span class="required"></span>
@@ -382,10 +386,10 @@
 
                                                         <div class="col-12 col-md-8">
                                                             <textarea id="txtRemark" name="txtRemark" class="form-control MaxLength"
-                                                                      rows="2" placeholder="Enter Remark (If any)" maxlength="10000"></textarea>
+                                                                      rows="2" placeholder="Enter Remark (If any)" maxlength="10000" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                         </div>
                                                     </div>
-                                                    <!--abheedev bug 385 end-->
+
 
 
                                                 </div>
@@ -543,7 +547,7 @@
                                                             <!--</div>-->
                                                         </div>
                                                     </div>
-                                                    <!--abheedev bug 385 latest 02/11/2022-->
+
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <!--<div class="form-group">-->
@@ -562,7 +566,7 @@
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <!--abheedev bug 385  end -->
+                                                        <!--</div>-->
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -575,17 +579,15 @@
                                                             </div>
 
                                                             <label class="col-12 col-md-2 control-label">Category :</label>
-                                                            <div class="col-12 col-md-6">
+                                                            <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblCategory">
 
                                                                 </p>
                                                             </div>
-                                                        </div>
 
-                                                        <!--</div>-->
+                                                            <!--</div>-->
+                                                        </div>
                                                     </div>
-                                                    <!--abheedev bug 385 nfa end-->
-                                                </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <!--<div class="form-group">-->
@@ -648,13 +650,11 @@
                                                         <div class="col-md-12">
                                                             <!--<div class="form-group">-->
                                                             <label class="col-12 col-md-2 control-label">Additional Remarks :</label>
-                                                            <!--abheedev bug385 nfa-->
                                                             <div class="col-12 col-md-10">
                                                                 <p class="form-control-static " id="lblRemark">
 
                                                                 </p>
                                                             </div>
-                                                            <!--abheedev bug385 nfa-->s
                                                         </div>
                                                         <!--</div>-->
                                                     </div>
@@ -917,9 +917,7 @@
     <!--<script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <!--abheedev backlog 286-->
-    <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
-    <!--abheedev backlog 286 end-->
+
     <!--<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>-->
 
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -932,9 +930,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <!--abheedev backlog 286-->
-    <script src="assets/CustomJS/ckeditor.js"></script>
-    <!--abheedev backlog 286-->
+
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/NFARequest.js"></script>
 
@@ -966,16 +962,13 @@
             Metronic.init();
             Layout.init();
             FormWizard.init();
-            //abheedev backlog 286
-           // CKEDITOR.replace("txtRemark");
-            //abheedev backlog 286 end
             FetchCurrency("0");
             // ComponentsPickers.init();
             setCommonData();
+
             fetchMenuItemsFromSession(1, 53);
             BindPurchaseOrg();
             bindConditionDDL();
-
 
         });
 
