@@ -501,12 +501,11 @@ function bindNFAOverViewMaster() {
     });
 
 };
-
+//abheedev backlog 286
 function GetOverviewmasterbyId(idx) {
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
-
-    GetData.success(function (res) {
+    GetData.success(function (res) {     
         if (res.result != null) {
 
             if (res.result.length > 0) {
@@ -523,12 +522,14 @@ function GetOverviewmasterbyId(idx) {
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
              //abheedev bug385 start
-                $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
-                
-                $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtAmountFrom").val(res.result[0].nfaAmount).toLocaleString(sessionStorage.getItem("culturecode"));                
+                $("#txtBudget").val(res.result[0].nfaBudget).toLocaleString(sessionStorage.getItem("culturecode"));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
+                CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);;
+               
+
 
                 if (res.result[0].nfaCategory == 1) {
 
@@ -547,7 +548,7 @@ function GetOverviewmasterbyId(idx) {
                 }, 900)
 
                 $("#ddlCondition").val(res.result[0].conditionID);
-                $("#txtRemark").val(res.result[0].remarks);
+              
 
             }
         }
@@ -631,7 +632,6 @@ $("#txtEventref").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            // console.log(data);
             map[username.refText] = username;
 
             usernames.push(username.refText);
@@ -893,7 +893,7 @@ $("#txtDetails").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            // console.log(data);
+
             map[username.nfaOverview] = username;
 
             usernames.push(username.nfaOverview);
@@ -981,7 +981,6 @@ $("#txtProjectName").on("keyup", function () {
 });
 
 /*function ValidTeTab1() {
-    debugger;
     var v_org = false;
     var v_group = false;
     var ProjectName = false;
@@ -1025,8 +1024,8 @@ $("#txtProjectName").on("keyup", function () {
         return false;
 }
 */
+//abheedev backlog 286
 function Savedata() {
-
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1039,7 +1038,8 @@ function Savedata() {
     var budgetStatus = $("#ddlBudget option:selected").val();
     var p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
-    var p_remark = $("#txtRemark").val();
+  //  var p_remark = $("#txtRemark").val();
+    var p_remark = CKEDITOR.instances['txtRemark'].getData();
 
     var model = {
         CustomerID: parseInt(CurrentCustomer),
@@ -1205,8 +1205,9 @@ function BindParamsForpreview() {
     });
 
 }
-
+//abheedev backlog 286
 function Bindtab1DataforPreview() {
+    var p_remark = CKEDITOR.instances['txtRemark'].getData();
     $("#lbltitle").text($("#txtTitle").val());
     $("#lblDetails").text($("#txtNFADetail").val());
     //abheedev bug 385 start
@@ -1242,7 +1243,7 @@ function Bindtab1DataforPreview() {
     else {
         $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + sessionStorage.getItem("hdnEventrefId") + "'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
     }
-    $("#lblRemark").text($("#txtRemark").val());
+    $("#lblRemark").html(p_remark);   
 }
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
@@ -1712,7 +1713,6 @@ function bindApproverMaster() {
     alert(url)
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-        debugger;
         if (res.result != null) {
             $('#tblAllmatrix').empty();
 

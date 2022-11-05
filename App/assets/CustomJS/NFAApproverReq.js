@@ -89,7 +89,7 @@ function fetchRegisterUser() {
 }
 //abheedev bug 385
 function GetOverviewmasterbyId(idx) {
-    console.log(parseInt(CurrentCustomer) + "&idx=" + parseInt(idx));
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -97,10 +97,6 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
-
-
-                console.log(res.result[0]);
-
                 if (res.result[0].nfaCategory == "1")
                     $(".clsHide").hide();
                 else
@@ -152,7 +148,8 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHide").hide();
                 }
                 $("#lblException").text(res.result[0].conditionName);
-                $("#lblRemark").text(res.result[0].remarks);
+                //abheedev backlog 286
+                $("#lblRemark").html(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
 
             }
@@ -215,7 +212,6 @@ function BindSaveparams() {
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
-
         if (res != null) {
             $("#tblNFAOverviewParam").empty();
             if (res.result.length > 0) {
@@ -646,8 +642,7 @@ function ApprovalApp() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
 
-    // alert(JSON.stringify(approvalbyapp))
-    //console.log(JSON.stringify(approvalbyapp))
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/ApproveRejectNFA",
@@ -704,7 +699,7 @@ function DelegateUser() {
         };
 
 
-        //console.log(JSON.stringify(approvalbyapp))
+        
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "NFA/NFADelegate",
@@ -967,8 +962,8 @@ function fnsubmitQueryByCreator() {
             "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
             "PendingOn": "A"
         }
-        // alert(JSON.stringify(data))
-        console.log(JSON.stringify(data))
+       
+       
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1077,7 +1072,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-            console.log(JSON.stringify(data))
+           
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",

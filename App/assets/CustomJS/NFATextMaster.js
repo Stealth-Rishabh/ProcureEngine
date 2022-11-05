@@ -25,10 +25,9 @@ function BindPurchaseOrg() {
 
 
 };
-function onSave() {
-    
+function onSave() { 
     var str = $('#txtParamText').val();
-    var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]*$/
+   var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/
     //@abheedev bug 385 start
     if (pattern.test(str) == false) 
     {
@@ -174,7 +173,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
-    debugger
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";

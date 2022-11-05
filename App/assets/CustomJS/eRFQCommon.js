@@ -453,7 +453,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblRFQComprative tbody").find("tr"), function () {
-        console.log($(this).text());
+      
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -563,12 +563,13 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
-                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
+                    //abheedev bug 462
+                    jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr style=\"background: gray; color: #FFF;\"><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
                 }
             }
             for (i = 0; i < data.length; i++) {
                 rowques=i+1
-                var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + data[i].loadingFactorReason + "</td>"
+                var strprev = '<tr  data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + data[i].loadingFactorReason + "</td>"
                 strprev += "<td id=trLFType" + rowques + " style='display:none;'>" + data[i].loadingFactorType + "</td>"
                 if (data[i].loadingFactorType == 'P') {
                     strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactorPer + "%</td>"
@@ -597,7 +598,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
 
 function updloadingfactor() {
-    
+   
     //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
     //    $('.alert-danger').show();
     //    $('#msgErrorL1').html('Please Enter Loading factor');
@@ -669,6 +670,7 @@ function updloadingfactor() {
             //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
             //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
             //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+
             if (_LFType == 'P') {
                 var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
                 perVal = perVal.replace('%', '');
@@ -687,6 +689,7 @@ function updloadingfactor() {
             isSubmit = true;
         }
     }
+    
     if (isSubmit) {
         var Data = {
             "RFQID": parseInt($('#hdnRfqID').val()),
@@ -701,6 +704,7 @@ function updloadingfactor() {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
+              
                 //abheedev bug 349 start
                // if (data[0].LoadingFactor > 0) {
                 // alert(data[0].loadingFactor)
@@ -1170,7 +1174,7 @@ function fnGetRFQApprovers(Type) {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].approverType != "P" && data[i].approverType != "T") {
                     rowRFQApp = rowRFQApp + 1;
-                    debugger;
+                   
                     str = '<tr id=trAppid' + rowRFQApp + '>';
                     if (data[i].aprStatus != 'Y') {
                         str += '<td><button type=button class="btn btn-xs btn-danger"  id=Removebtn' + rowRFQApp + ' onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
@@ -1607,7 +1611,6 @@ function addLoadingFactor() {
 }
 
 function deleteLFrow(rowid) {
-    
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
@@ -1620,7 +1623,6 @@ function editLFrow(rowid) {
    
     var i = $('#' + rowid.id).attr('data-row');
     
-    console.log(i)
     
     jQuery("#txtloadingfactorreason").val($("#trLFReason" + i).text());
     jQuery("#ddlLFType").val($("#trLFType" + i).text())

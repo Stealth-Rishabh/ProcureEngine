@@ -45,33 +45,29 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-   
-        
-   
-       
-   
-       .form-horizontal .form-control-static {
-          
-          width: 100%;
-        }
-   
-   
-       .form-horizontal .form-control-static 
-       {
-          padding-top: 7px;
-          width: 100%;
-        }
-   
-   
-   
-        .tab-content>.active
-        {
 
-             margin-right: 10%;
+
+
+
+
+        .form-horizontal .form-control-static {
+            width: 100%;
         }
-   
-    
-    
+
+
+        .form-horizontal .form-control-static {
+            padding-top: 7px;
+            width: 100%;
+        }
+
+
+
+        .tab-content > .active {
+            margin-right: 10%;
+        }
+
+
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -106,7 +102,7 @@
                 visibility: visible;
             }
 
-        /*abhhedev bug 52 end*/         
+        /*abhhedev bug 52 end*/
 
 
 
@@ -458,12 +454,12 @@
                                                                            data-provide="typeahead" autocomplete="off" name="txtApprover" />
 
                                                                 </label>
-                                                                
-                                                                    <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
-                                                                        <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
-                                                                    </span>
 
-                                                                
+                                                                <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+
+
                                                                 <!--bug 52 end-->
 
 
@@ -1529,9 +1525,9 @@
 
         jQuery(document).ready(function () {
             Pageloaded()
-            
-            
-            
+
+
+
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
