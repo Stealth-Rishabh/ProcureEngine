@@ -16,7 +16,7 @@ $('#txtloadingfactorreason').maxlength({
     alwaysShow: true
 });
 function fetchRFIRFQSubjectforReport(subjectFor) {
-
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -453,7 +453,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblRFQComprative tbody").find("tr"), function () {
-        console.log($(this).text());
+      
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -511,7 +511,7 @@ function RFQFetchL1Package(VendorID, Counter) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
@@ -520,7 +520,7 @@ function RFQFetchL1Package(VendorID, Counter) {
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
 
             $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
-
+          
 
         }, error: function (xhr, status, error) {
 
@@ -555,10 +555,10 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+           
             console.log(data);
-
-
+            
+            
             if (data.length > 0) {
 
                 if (!jQuery("#tblLoadingFactor thead").length) {
@@ -568,7 +568,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
                 }
             }
             for (i = 0; i < data.length; i++) {
-                rowques = i + 1
+                rowques=i+1
                 var strprev = '<tr  data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + data[i].loadingFactorReason + "</td>"
                 strprev += "<td id=trLFType" + rowques + " style='display:none;'>" + data[i].loadingFactorType + "</td>"
                 if (data[i].loadingFactorType == 'P') {
@@ -577,14 +577,14 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
                 else {
                     strprev += "<td id=trLFValue" + rowques + ">" + data[i].loadingFactor + "INR</td>"
                 }
-
+                
                 strprev += '<td id=trLFAmount' + rowques + '>' + data[i].loadingFactor + '</td>';
 
-
+                
                 if (!jQuery("#tblLoadingFactor thead").length) {
                     jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
                 }
-
+                
                 strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
                 jQuery('#tblLoadingFactor').append(strprev);
 
@@ -598,7 +598,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
 
 function updloadingfactor() {
-
+   
     //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
     //    $('.alert-danger').show();
     //    $('#msgErrorL1').html('Please Enter Loading factor');
@@ -654,7 +654,7 @@ function updloadingfactor() {
     //        }
     //    })
     //}
-
+ 
     var tabItems = '', eRFQLoadingTerms = [];
     var oTable = document.getElementById('tblLoadingFactor');
     var rowCount = oTable.rows.length;
@@ -670,6 +670,7 @@ function updloadingfactor() {
             //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
             //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
             //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
+
             if (_LFType == 'P') {
                 var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
                 perVal = perVal.replace('%', '');
@@ -688,6 +689,7 @@ function updloadingfactor() {
             isSubmit = true;
         }
     }
+    
     if (isSubmit) {
         var Data = {
             "RFQID": parseInt($('#hdnRfqID').val()),
@@ -702,16 +704,17 @@ function updloadingfactor() {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
+              
                 //abheedev bug 349 start
-                // if (data[0].LoadingFactor > 0) {
+               // if (data[0].LoadingFactor > 0) {
                 // alert(data[0].loadingFactor)
                 // var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                //   $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                // $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                //  $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                //   $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
-                //   $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
-                //   $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+               //   $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
+               // $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
+              //  $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
+             //   $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
+             //   $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
+            //   $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
@@ -1171,7 +1174,7 @@ function fnGetRFQApprovers(Type) {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].approverType != "P" && data[i].approverType != "T") {
                     rowRFQApp = rowRFQApp + 1;
-                    debugger;
+                   
                     str = '<tr id=trAppid' + rowRFQApp + '>';
                     if (data[i].aprStatus != 'Y') {
                         str += '<td><button type=button class="btn btn-xs btn-danger"  id=Removebtn' + rowRFQApp + ' onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
@@ -1504,7 +1507,7 @@ function downloadexcel() {
     //var hour = dt.getHours();
     //var mins = dt.getMinutes();
     //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-
+    
     var postfix = fnConverToLocalTime(new Date())
 
     //Export To Excel
@@ -1527,7 +1530,7 @@ function downloadexcel() {
 function addLoadingFactor() {
     //abheedev loading factor start
 
-
+ 
     var _LoadingAmount = 0;
     var _loadingPer = 0;
     var isSubmitActive = true;
@@ -1579,7 +1582,7 @@ function addLoadingFactor() {
         var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
         strprev += "<td id=trLFType" + rowques + " style='display:none;' >" + jQuery("#ddlLFType").val() + "</td>"
         if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "%</td>"
+            strprev += "<td id=trLFValue" + rowques +"><span>" + $("#txtloadingfactor").val() + "</span>" + "%</td>"
         }
         else {
             strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "INR</td>"
@@ -1602,13 +1605,12 @@ function addLoadingFactor() {
         jQuery("#txtloadingfactorreason").val('')
         jQuery("#ddlLFType").val('A')
         jQuery("#txtloadingfactor").val('')
-
+     
         //abheedev loading factor End
     }
 }
 
 function deleteLFrow(rowid) {
-
     rowques = rowques - 1;
     $('#' + rowid.id).remove();
 
@@ -1617,24 +1619,23 @@ function deleteLFrow(rowid) {
 
 var editrow;
 function editLFrow(rowid) {
-
-
+   
+   
     var i = $('#' + rowid.id).attr('data-row');
-
-    console.log(i)
-
+    
+    
     jQuery("#txtloadingfactorreason").val($("#trLFReason" + i).text());
     jQuery("#ddlLFType").val($("#trLFType" + i).text())
     jQuery("#txtloadingfactor").val($("#trLFValue" + i).text().replace('INR', '').replace('%', ''));
-
+   
     $('#Addbtn1').hide()
     $('#Editbtn1').show()
     editrow = $('#' + rowid.id).attr('data-row');
-}
+}  
 
 function updateLoadingFactor() {
 
-
+    
 
 
     var _LoadingAmount = 0;
@@ -1648,13 +1649,13 @@ function updateLoadingFactor() {
         _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
         // _loadingPer = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "%")
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"%")
         $("#trLFAmount" + editrow).text(_LoadingAmount)
     }
     else {
         // _LoadingAmount = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "INR")
+        $("#trLFValue" + editrow).text($('#txtloadingfactor').val()+"INR")
         $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
 
     }
@@ -1668,5 +1669,5 @@ function updateLoadingFactor() {
     jQuery("#ddlLFType").val('A')
     jQuery("#txtloadingfactor").val('')
     editrow = "";
-
+    
 }

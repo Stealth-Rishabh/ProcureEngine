@@ -155,7 +155,7 @@ var FormWizard = function () {
                         maxlength: 18//3
                     },
                     txtBudget: {
-                        //  number: true,
+                      //  number: true,
                         minlength: 1,
                         maxlength: 18//3
                     },
@@ -177,9 +177,9 @@ var FormWizard = function () {
                     success.hide();
                     Metronic.scrollTo(error, -200);
                 },
-
+                
                 highlight: function (element) {
-
+                    
                     $(element)
                         .closest('.inputgroup,.clsTA').removeClass('has-success').addClass('has-error');
 
@@ -192,7 +192,7 @@ var FormWizard = function () {
                 },
 
                 unhighlight: function (element) {
-
+                    
 
                     $(element)
                         .closest('.inputgroup,.clsTA').removeClass('has-error');
@@ -301,7 +301,7 @@ var FormWizard = function () {
 
 
                     if (index == 1) {
-
+                       
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
@@ -340,9 +340,9 @@ var FormWizard = function () {
                     }
                     //abheedev bug 385 
                     else if (index == 2) {
-
+                     
                         form.validate();
-
+                      
                         // abheedev backlog 286 start
                         $('.paramremark').rules('add', {
                             required: true,
@@ -356,21 +356,21 @@ var FormWizard = function () {
                             $('#errordivSeq').fadeOut(8000);
                             return false;
                         }
-                        if (form.valid() == false) {
-
-                            flag = 'F';
-                            $('.alert-danger').show();
-                            $('#errorSeq').text('Remarks is required and should be maximum 10000 characters.'); //abheedev backlog 286 
-                            Metronic.scrollTo($(".alert-danger"), -500);
-                            $('.alert-danger').fadeOut(5000);
-                            return false;
-                        }
+                         if (form.valid() == false) {
+                            
+                             flag = 'F';
+                             $('.alert-danger').show();
+                             $('#errorSeq').text('Remarks is required and should be maximum 10000 characters.'); //abheedev backlog 286 
+                             Metronic.scrollTo($(".alert-danger"), -500);
+                             $('.alert-danger').fadeOut(5000);
+                             return false;
+                         }
                         if (flag == "T") {
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                            // abheedev backlog 286 end
+                             // abheedev backlog 286 end
                         }
                     }
                     //abheedev bug 385 end
@@ -501,12 +501,11 @@ function bindNFAOverViewMaster() {
     });
 
 };
-
+//abheedev backlog 286
 function GetOverviewmasterbyId(idx) {
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
-
-    GetData.success(function (res) {
+    GetData.success(function (res) {     
         if (res.result != null) {
 
             if (res.result.length > 0) {
@@ -522,13 +521,15 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
-                //abheedev bug385 start
-                $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
-
-                $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
+             //abheedev bug385 start
+                $("#txtAmountFrom").val(res.result[0].nfaAmount).toLocaleString(sessionStorage.getItem("culturecode"));                
+                $("#txtBudget").val(res.result[0].nfaBudget).toLocaleString(sessionStorage.getItem("culturecode"));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
+                CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);;
+               
+
 
                 if (res.result[0].nfaCategory == 1) {
 
@@ -547,7 +548,7 @@ function GetOverviewmasterbyId(idx) {
                 }, 900)
 
                 $("#ddlCondition").val(res.result[0].conditionID);
-                $("#txtRemark").val(res.result[0].remarks);
+              
 
             }
         }
@@ -596,17 +597,17 @@ $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
         $('#ddlBudget').val('NB');
-
+       
     }
     //abheedev bug 385 start
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
-
+        
         $('#ddlBudget').val('OB');
-
+           
     }
     else {
         $('#ddlBudget').val('WB');
-
+           
     }
 });//abheedev bug 385 end
 $("#txtAmountFrom").focusout(function () {
@@ -618,7 +619,7 @@ $("#txtAmountFrom").focusout(function () {
     }
     else {
         $('#ddlBudget').val('WB');
-
+        
     }
 });
 //abheedev amountbudget end
@@ -631,7 +632,6 @@ $("#txtEventref").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            // console.log(data);
             map[username.refText] = username;
 
             usernames.push(username.refText);
@@ -698,7 +698,7 @@ function fnApproversNBQuery(rownum, question) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Description</th></tr></thead>");
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-        //abheedev backlog 286 end
+       //abheedev backlog 286 end
         else {
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td  class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
@@ -893,7 +893,7 @@ $("#txtDetails").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            // console.log(data);
+
             map[username.nfaOverview] = username;
 
             usernames.push(username.nfaOverview);
@@ -981,7 +981,6 @@ $("#txtProjectName").on("keyup", function () {
 });
 
 /*function ValidTeTab1() {
-    debugger;
     var v_org = false;
     var v_group = false;
     var ProjectName = false;
@@ -1025,8 +1024,8 @@ $("#txtProjectName").on("keyup", function () {
         return false;
 }
 */
+//abheedev backlog 286
 function Savedata() {
-
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1039,7 +1038,8 @@ function Savedata() {
     var budgetStatus = $("#ddlBudget option:selected").val();
     var p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
-    var p_remark = $("#txtRemark").val();
+  //  var p_remark = $("#txtRemark").val();
+    var p_remark = CKEDITOR.instances['txtRemark'].getData();
 
     var model = {
         CustomerID: parseInt(CurrentCustomer),
@@ -1155,12 +1155,12 @@ function BindSaveparams() {
                 $("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Response</th></tr></thead>");
                 $.each(res.result, function (key, value) {
 
-                    //abheedev backlog 286 start
+                   //abheedev backlog 286 start
                     if (value.flDefault == 'Y')
                         $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger disabled" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=10000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
                     else
                         $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + value.idx + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + value.idx + ' >' + value.paramtext + '</td><td class=clsTA><textarea name=paramremark' + value.idx + ' rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + value.idx + ' maxlength=10000 >' + value.paramRemark + '</textarea></td><td class=hide>' + value.idx + '</td></tr>');
-                    //abheedev backlog 286 end
+                   //abheedev backlog 286 end
                     form.validate();
 
                     $('#paramremark' + value.idx).rules('add', {
@@ -1205,8 +1205,9 @@ function BindParamsForpreview() {
     });
 
 }
-
+//abheedev backlog 286
 function Bindtab1DataforPreview() {
+    var p_remark = CKEDITOR.instances['txtRemark'].getData();
     $("#lbltitle").text($("#txtTitle").val());
     $("#lblDetails").text($("#txtNFADetail").val());
     //abheedev bug 385 start
@@ -1242,7 +1243,7 @@ function Bindtab1DataforPreview() {
     else {
         $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + sessionStorage.getItem("hdnEventrefId") + "'\) href = 'javascript:;' >" + $("#txtEventref").val() + "</a>");
     }
-    $("#lblRemark").text($("#txtRemark").val());
+    $("#lblRemark").html(p_remark);   
 }
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
@@ -1712,7 +1713,6 @@ function bindApproverMaster() {
     alert(url)
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-        debugger;
         if (res.result != null) {
             $('#tblAllmatrix').empty();
 

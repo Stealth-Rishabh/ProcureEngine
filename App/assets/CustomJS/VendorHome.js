@@ -503,7 +503,7 @@ function fetchReguestforQuotationDetailseRFQ() {
 
 
 function DownloadFile(aID) {
-
+    
 
     fnDownloadAttachments($("#" + aID.id).attr("name") , 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }

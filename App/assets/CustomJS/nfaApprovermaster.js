@@ -1501,7 +1501,6 @@ var FormWizard = function () {
 
                         }
                         else if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
-                            debugger
                             $("#txtAmountFrom").css("border-color", "#ebccd1");
                             $("#txtAmountTo").css("border-color", "#ebccd1");
                             $('.alert-danger').show();
