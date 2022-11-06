@@ -169,6 +169,7 @@ function fetchRFQVendorSummary() {
 
             jQuery("#tblVendorSummary").empty();
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
+            //Sid RFQ Stages
             jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
 
@@ -181,7 +182,7 @@ function fetchRFQVendorSummary() {
 
                     //str += "<td class=hide>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
                     str += "<td>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
-
+                    //END
                     str += "<td>" + rfqdeadline + "</td>"
 
                     str += "<td>" + BidData[i].currencyName + "</td>";
@@ -329,8 +330,8 @@ function fetchBidVendorSummaryDetail() {
 
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
-
-            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            //Sid RFQ Stages
+            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
 
@@ -344,6 +345,9 @@ function fetchBidVendorSummaryDetail() {
                     //var datearray = BidData[i].rfqDeadline.split("/");
 
                     //rfqdeadline = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
+                    //END
                     rfqdeadline = fnConverToLocalTime(BidData[i].rfqDeadline);
 
                     str += "<td>" + rfqdeadline + "</td>";
@@ -619,8 +623,8 @@ function fetchBidVendorSummarySummarization() {
             var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
             jQuery("#tblVendorSummarySUmzation").empty();
-
-            jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            //Sid RFQ Stages
+            jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
 
             if (BidData.length > 0) {
 
@@ -631,7 +635,9 @@ function fetchBidVendorSummarySummarization() {
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 
                     //var datearray = BidData[i].rfqDeadline.split("/");
-
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].rfqStartDate) + "</td>";
+                    //END
                     rfqdeadline = fnConverToLocalTime(BidData[i].rfqDeadline);
 
                     str += "<td>" + rfqdeadline + "</td>";
