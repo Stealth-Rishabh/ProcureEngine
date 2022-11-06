@@ -917,7 +917,8 @@
     <!--<script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-
+    <!--backlog 286--> 
+    <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
     <!--<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>-->
 
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -930,7 +931,8 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-
+   <!---backlog 286-->
+    <script src="assets/CustomJS/ckeditor.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/NFARequest.js"></script>
 
@@ -965,7 +967,8 @@
             FetchCurrency("0");
             // ComponentsPickers.init();
             setCommonData();
-
+            //backlog 286 abheedev
+            CKEDITOR.replace('txtRemark');
             fetchMenuItemsFromSession(1, 53);
             BindPurchaseOrg();
             bindConditionDDL();
