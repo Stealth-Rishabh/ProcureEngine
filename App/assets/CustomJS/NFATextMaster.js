@@ -27,7 +27,7 @@ function BindPurchaseOrg() {
 };
 function onSave() { 
     var str = $('#txtParamText').val();
-   var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/
+   /*var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/
     //@abheedev bug 385 start
     if (pattern.test(str) == false) 
     {
@@ -36,7 +36,7 @@ function onSave() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         return false;
-    }
+    }*/
     if (Validate()) {
         return false;
     }
@@ -224,6 +224,7 @@ function SaveUpdate() {
         }
         jQuery.unblockUI();
     });
+    $("#submitbtnmaster").text("save");
 };
 
 $("#search").keyup(function () {
