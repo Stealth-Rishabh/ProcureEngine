@@ -556,7 +556,6 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
            
-            console.log(data);
             
             
             if (data.length > 0) {
@@ -596,7 +595,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
     })
 }
 
-
+//abheedev bug 462
 function updloadingfactor() {
    
     //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
@@ -660,7 +659,7 @@ function updloadingfactor() {
     var rowCount = oTable.rows.length;
     //var rowCount = jQuery('#tblLoadingFactor >tbody>tr').length;
     var isSubmit = false;
-    if (rowCount >= 1) {
+    if (rowCount > 1) {
         //var this_row = $(this);
         for (i = 1; i < rowCount; i++) {
             var _LFPer = 0;
@@ -688,6 +687,10 @@ function updloadingfactor() {
             eRFQLoadingTerms.push(tabItems);
             isSubmit = true;
         }
+    }
+    else {
+        eRFQLoadingTerms.pop();
+        isSubmit = true;
     }
     
     if (isSubmit) {
@@ -740,6 +743,7 @@ function updloadingfactor() {
 
     }
 }
+//abheedev bug 462 end
 $("#editloadingfactor").on("hidden.bs.modal", function () {
     $("#txtloadingfactor").val('')
     $("#hdngstprice").val('');
