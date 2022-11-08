@@ -54,7 +54,7 @@ function FetchInvitedVendorsForeRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -194,7 +194,7 @@ function fetchrfqcomprative() {
                 //abheedev bug349 start
                 strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 end
-                // anupam sir desired changes 21/10/2022 start
+                
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
@@ -246,8 +246,7 @@ function fetchrfqcomprative() {
 
                 jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
                 jQuery('#tblRFQComprativeForExcelQ > thead').append(strHeadExcelQ);
-                // anupam sir desired changes 21/10/2022 end
-                //For Printing Header Ends
+                
 
 
                 var x = 0;
@@ -319,7 +318,7 @@ function fetchrfqcomprative() {
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + data[0].quotesDetails[j].unitRate + "</td>";
-                                        //str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                        
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
                                             str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
@@ -445,7 +444,7 @@ function fetchrfqcomprative() {
 
 
 
-                //For Loading Factor
+               
                 str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -477,7 +476,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
-                //For Loading Factor reason Row
+                
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Loading Reason</b></td>";
                 strExcel += "<tr><td colspan=6 ><b>Loading Reason</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -502,7 +501,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
-                ////For Commercial Rank
+               
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=6 ><b>Commercial Rank (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -538,9 +537,9 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
-                ////For L1 Package
-                str += "<tr><td colspan=6 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                strExcel += "<tr><td colspan=6 ><b>L1 Package</b></td>";
+               //abheedev bug 479
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                strExcel += "<tr><td colspan=6 ><b>Package Value where supplier is L1</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
@@ -562,7 +561,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
                 strExcel += "<td colspan=7>&nbsp;</td></tr>";
 
-                ////For Blank Row
+                
                 str += "<tr>";
                 strExcel += " <tr>";
                 var t = 0;
@@ -573,8 +572,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
                 strExcel += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
 
-                //////For Commercial Header Row
-                ////// ***************** Start  Commercial Row
+               
                 if (data[0].commercialTerms.length > 0) {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
@@ -601,7 +599,6 @@ function fetchrfqcomprative() {
 
                     $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
 
-                    //For  Commercial table 
                     for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
 
                         var flag1 = 'T';
@@ -621,9 +618,9 @@ function fetchrfqcomprative() {
 
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
 
-                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
+                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {
 
-                                    //  q = q + 1;
+                                    
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
                                         if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
 
@@ -657,11 +654,7 @@ function fetchrfqcomprative() {
                     }
                 }
 
-                //////// ***************** End  Commercial Row
-
-
-
-                //////For Vendor Comments
+               
 
                 str += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
                 strExcel += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
@@ -682,13 +675,11 @@ function fetchrfqcomprative() {
                 str += " </tr>";
                 strExcel += " </tr>";
 
-                ////////For Qusetion table
-                //////// ***************** Start  Answer Question Row
-
+                
                 //abheedev bug 410 start
                 if (data[0].questions.length > 0) {
 
-                    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                    $('#tblRFQComprativetestQ > tbody').empty(); 
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
                         var flag2 = 'T';
@@ -763,8 +754,7 @@ function fetchrfqcomprative() {
                     strExcelQ += "</tr>";
                     //abheedev bug 349 part2  start
                 }
-                ////////// ***************** END  Answer Question Row
-                ////////// ***************** Start  Define Technical  Approver Row**********************
+                
                 strQ += " <tr><td><b>Technical Approval Required</b></td>";
 
                 t = 0;
@@ -791,9 +781,6 @@ function fetchrfqcomprative() {
                 }
                 //abheedev bug 349 part2  end
                 strQ += "</tr>";
-
-                ////////// ***************** END  Define Technical  Row **********************
-                ////////// ***************** Start  Technical Approver Row**********************
 
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
@@ -852,10 +839,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
-                //  }
-                //////// ***************** END  Technical Approver Row
-
-                ////      //For Blank Row after question table 
+               
                 strQ += "<tr>";
                 strExcelQ += " <tr><td>&nbsp;</td>";
                 t = 0;
@@ -870,7 +854,7 @@ function fetchrfqcomprative() {
                 strQ += "</tr>";
                 strExcelQ += "</tr>";
                 //abheedev bug 349 part2  end
-                //** Add row Reinvitation Remarks & status
+               
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
                     str += "<tr id='reinvitationTRRem'><td colspan=6><b>Re-Invitation Remarks</b></td>";
                     strExcel += "<tr><td colspan=6><b>Re-Invitation Remarks</b></td>";
@@ -894,7 +878,7 @@ function fetchrfqcomprative() {
 
 
                 if ($("#ddlrfqVersion option:selected").val() != 99) {
-                    //For ReInvite Row
+                    
                     var maxValue = -1;
                     $("#ddlrfqVersion option").each(function () {
                         var thisVal = $(this).val();
@@ -951,13 +935,13 @@ function fetchrfqcomprative() {
                     }
                 }
 
-                //** check if RFQ is awarded then commercial button hidden
+                
                 if (Type != undefined && Type.toLowerCase() == "aw") {
                     $("#btn_commercial").addClass('hide');
                 }
 
 
-                //** check if commercial approval initiated
+                
                 if (data[0].commApprover[0].isFwdCommApp == "Y") {
                     $('#btn_commercial').attr('disabled', 'disabled')
                     $('#btn_commercial').text('Approval Pending')
@@ -967,7 +951,7 @@ function fetchrfqcomprative() {
                     $('#btn_commercial').text('Commercial Approval')
                 }
 
-                //** check if technical approval initiated
+               
                 if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() == "rfq") { //|| allvendorresponse=='N'
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
@@ -1013,7 +997,7 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1039,14 +1023,12 @@ function formvalidate() {
 
     form.validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        doNotHideMessage: true, 
 
-        errorElement: 'span', //default input error message container
+        errorElement: 'span', 
 
-        errorClass: 'help-block help-block-error', // default input error message class
-
-        focusInvalid: false, // do not focus the last invalid input
-
+        errorClass: 'help-block help-block-error', 
+        focusInvalid: false,
         rules: {
 
             txtrfirfqsubject: {
@@ -1111,13 +1093,13 @@ function formvalidate() {
 
     $("#frmReInvite").validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        doNotHideMessage: true,
 
-        errorElement: 'span', //default input error message container
+        errorElement: 'span', 
 
-        errorClass: 'help-block help-block-error', // default input error message class
+        errorClass: 'help-block help-block-error', 
 
-        focusInvalid: false, // do not focus the last invalid input
+        focusInvalid: false, 
 
         rules: {
 
@@ -1170,13 +1152,13 @@ function formvalidate() {
 
     });
 
-    // Forward to Commercial Approver Validation
+   
     formCommApprover.validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
+        doNotHideMessage: true, 
+        errorElement: 'span', 
+        errorClass: 'help-block help-block-error', 
+        focusInvalid: false,
         rules: {
             txtfwdToCommApproverrem: {
                 required: true
@@ -1209,7 +1191,7 @@ function formvalidate() {
         }
 
     });
-    //Form Validation for Cancel Reason
+   
     var form1 = $('#frmRemarksCancel');
     var error1 = $('.alert-danger', form1);
     var success1 = $('.alert-success', form1);
@@ -1231,24 +1213,23 @@ function formvalidate() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
-            // success1.hide();
-            // error1.show();
+        invalidHandler: function (event, validator) {             
+           
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) { 
             $(element)
-                .closest('.col-md-10').addClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').removeClass('has-error'); 
         },
 
         success: function (label) {
             label
-                .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
+                .closest('.col-md-10').removeClass('has-error'); 
         },
 
         submitHandler: function (form) {
@@ -1256,7 +1237,7 @@ function formvalidate() {
 
         }
     });
-    //Form Validation for Cancel Reason
+    
     var formaddcommapprover = $('#frmRFQApprover');
     var errorapp = $('.alert-danger', formaddcommapprover);
     var successapp = $('.alert-success', formaddcommapprover);
@@ -1273,22 +1254,22 @@ function formvalidate() {
 
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {               
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) { 
             $(element)
-                .closest('.col-md-10').addClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').addClass('has-error'); 
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
+                .closest('.col-md-10').removeClass('has-error'); 
         },
 
         success: function (label) {
             label
-                .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
+                .closest('.col-md-10').removeClass('has-error'); 
         },
 
         submitHandler: function (form) {
@@ -1370,7 +1351,7 @@ function fnSendActivityToCommercial() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
