@@ -168,51 +168,40 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
-            //debugger;
-            // To Check With Pooja---What is this check?
+            
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
-            //alert(_rfqBidType)
+            
             if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
-                    //debugger;
+                    
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                    //alert('2-'+ ShowPrice);
-                    //sessionStorage.setItem('ShowPrice', ShowPrice);
+                   
                 }
-                //if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
-                //    ShowPrice = 'Y';
-                //}
+               
 
                 if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
                     ShowPrice = 'Y';
-                    //alert('3-'+ ShowPrice);
+                    
                 }
                 ShowPrice = 'Y';
-                //alert('4-'+ ShowPrice);
+               
             }
             else {
                 if (bidopeningdate == null || bidopeningdate == '') {
                     ShowPrice = 'N';
-                    //alert('4-'+ ShowPrice);
+                   
                 }
                 else {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
                         ShowPrice = 'Y';
-                        ////if (AppType == "T" && FwdTo != 'Admin') {
-                        ////    ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                        ////    //sessionStorage.setItem('ShowPrice', ShowPrice);
-                        ////}
-
-                        ////if (AppType == "C" && AppType != "T") {
-                        ////    ShowPrice = 'Y';
-                        ////}
+                       
 
                     }
                     else {
                         ShowPrice = 'N';
-                        //alert('6-'+ ShowPrice);
+                       
                     }
                 }
             }
@@ -231,7 +220,7 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                    //** Get Query/Response for Technical Approval if any?
+                    
                     GetQuestions(data[0].vendorNames[i].vendorID)
 
                     if (data[0].vendorNames[i].seqNo != 0) {
@@ -299,7 +288,7 @@ function fetchrfqcomprative() {
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
 
-                            if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
+                            if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {
                                 x = x + 1;
 
                                 if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
@@ -410,7 +399,7 @@ function fetchrfqcomprative() {
                 }
 
 
-                //For Loading Factor
+                
                 str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -437,7 +426,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
-                //For Loading Factor reason Row
+                
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -462,7 +451,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                //For Commercial Rank
+                
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -489,8 +478,8 @@ function fetchrfqcomprative() {
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
-                //For L1 Package
-                str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+               
+                str += "<tr><td colspan=5 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -513,7 +502,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                //For Blank Row
+                
                 str += "<tr>";
 
                 var t = 0;
@@ -524,8 +513,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
 
 
-                //For Commercial Header Row
-                // ***************** Start  Commercial Row
+                
                 if (data[0].commercialTerms.length > 0) {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
@@ -550,9 +538,9 @@ function fetchrfqcomprative() {
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
 
 
-                    $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
+                    $('#tblRFQComprativetest > tbody').empty(); 
 
-                    //For  Commercial table 
+                     
                     for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
 
                         var flag1 = 'T';
@@ -572,9 +560,9 @@ function fetchrfqcomprative() {
 
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
 
-                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
+                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {
 
-                                    //  q = q + 1;
+                                    
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
                                         if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
 
@@ -608,11 +596,7 @@ function fetchrfqcomprative() {
                     }
                 }
 
-                // ***************** End  Commercial Row
-
-
-
-                ////For Vendor Comments
+               
 
                 str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
 
@@ -633,11 +617,10 @@ function fetchrfqcomprative() {
                 str += " </tr>";
 
 
-                //For Qusetion table
-                // ***************** Start  Answer Question Row
+                
                 if (data[0].questions.length > 0) {
 
-                    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                    $('#tblRFQComprativetestQ > tbody').empty(); 
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
                         var flag2 = 'T';
@@ -707,10 +690,7 @@ function fetchrfqcomprative() {
                     strQ += "</tr>";
 
                 }
-                //// ***************** END  Answer Question Row
-
-
-                // Technical Approver Row
+              
                 strQ += "<tr><td><b>Technical Approval</b></td>";
                 if (AppType == 'T') {
 
@@ -724,7 +704,7 @@ function fetchrfqcomprative() {
                         strQ += "<td>Not Required</td>"
                     }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-                        //strQ += "<td style='text-align:center;'><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  /> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
+                        
                         strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
 
                     }
@@ -758,7 +738,6 @@ function fetchrfqcomprative() {
                 }
 
 
-                //For Blank Row after question table 
                 strQ += "<tr>";
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
@@ -768,10 +747,6 @@ function fetchrfqcomprative() {
 
                 strQ += "</tr>";
 
-                //// ***************** END  Define Technical  Row **********************
-                //// ***************** Start  Technical Approver Row**********************
-
-                // Technical Approver Status
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
@@ -826,10 +801,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
-                //  }
-                //// ***************** END  Technical Approver Row
-
-                //For Blank Row after question table 
+               
                 strQ += "<tr>";
 
                 t = 0;
@@ -857,7 +829,7 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;// eval("(" + + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -885,7 +857,7 @@ function check(vendorid) {
 function fnRaiseQuery(vendorid) {
     $('#hdnvendorid').val(vendorid)
     GetQuestions(vendorid);
-    //sessionStorage.setItem('hdnqueryselectedvID', vendorid)
+    
 }
 var queslength = 0;
 var PendingOn = 'A';
@@ -937,7 +909,7 @@ function GetQuestions(vendorid) {
                         $('#btn_raisequery' + vendorid).text('Reponse Recieved')
                         $('#btn_raisequery' + vendorid).removeClass('yellow').addClass('green')
                         $('#querycount' + vendorid).hide();
-                        //$('#btnmsz').removeClass('hide')
+                        
                     }
                     if (data[0].pendingOn.toLowerCase() == "x") {
                         $('#btn_raisequery' + vendorid).text('Withdraw')
@@ -957,12 +929,12 @@ function GetQuestions(vendorid) {
             }
             else {
                 $('#btnwithdraw').hide()
-                //jQuery('#tblquestions').append("<tr><td>No Questions !!</td></tr>")
+                
             }
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1008,11 +980,11 @@ function addquestions() {
 
         if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
             $('#btnTechquery').attr('disabled', 'disabled')
-            // $('#btnwithdraw').hide()
+            
         }
         else {
             $('#btnTechquery').removeAttr('disabled')
-            //$('#btnwithdraw').show()
+            
         }
     }
 }
@@ -1022,10 +994,10 @@ function deletequesrow(rowid) {
 
     if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
         $('#btnTechquery').attr('disabled', 'disabled')
-        // $('#btnwithdraw').hide()
+       
     }
     else {
-        // $('#btnTechquery').removeAttr('disabled')
+       
     }
 }
 function submitTechnicalQuery() {
@@ -1038,7 +1010,7 @@ function submitTechnicalQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
+                
                 if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
                     quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
                 }
@@ -1081,7 +1053,7 @@ function submitTechnicalQuery() {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+                    var err = xhr.responseText;
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
@@ -1117,7 +1089,7 @@ function submitTechnicalQuery() {
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from vendor, Click Yes for  Continue ",
-        // title: "Custom title",
+       
         buttons: {
             confirm: {
                 label: "Yes",
@@ -1173,7 +1145,7 @@ function withdrawquery() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1229,7 +1201,7 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" +  + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1266,7 +1238,7 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" +  + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1298,7 +1270,7 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;// eval("(" + + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1392,7 +1364,7 @@ function fetchReguestforQuotationDetails() {
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
-                //alert('rnd-'+ RFQData[0].general[0].rfqBidType)
+               
                 jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1417,7 +1389,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + + ")");
+            var err = xhr.responseText 
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1467,25 +1439,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {           
             success1.hide();
             error1.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) { 
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error'); 
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error'); 
         },
 
         submitHandler: function (form) {
@@ -1520,25 +1492,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {               
             success2.hide();
             error2.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) { 
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error'); 
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error'); 
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error'); 
         },
 
         submitHandler: function (form) {
@@ -1572,21 +1544,21 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {              
             successawd.hide();
             errorawd.show();
             $('#diverrordiv2').hide();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) { 
             $(element)
-                .closest('.Input-group,.xyz').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group,.xyz').addClass('has-error'); 
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.Input-group,.xyz').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group,.xyz').removeClass('has-error'); 
         },
 
         success: function (label) {
@@ -1596,7 +1568,7 @@ function validateAppsubmitData() {
 
         submitHandler: function (form) {
 
-            //AwardCommeRFQ();
+           
 
         }
     });
@@ -1619,25 +1591,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {  
             successFWD.hide();
             errorFWD.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error'); 
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) { 
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error'); 
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1680,7 +1652,7 @@ function ApprovalCommercialApp() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText 
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1875,18 +1847,18 @@ function fnFWDeRFQ() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            //if (data.length > 0) {
+            
             bootbox.alert("Transaction Successful..", function () {
                 window.location = "index.html";
                 return false;
             });
 
 
-            //}
+           
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText 
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1936,9 +1908,7 @@ function ApprovalApp() {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
         };
-        // alert(parseInt(VID))
-        // alert(JSON.stringify(approvalbyapp))
-        //console.log(JSON.stringify(approvalbyapp))
+       
 
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
@@ -1959,7 +1929,7 @@ function ApprovalApp() {
             },
             error: function (xhr, status, error) {
 
-                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText 
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
