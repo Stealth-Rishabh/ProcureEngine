@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -22,7 +23,7 @@
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
-  
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -190,7 +191,7 @@
 
                                                     </div>
                                                     <label class="control-label  col-md-2">
-                                                        Delivery Date
+                                                        Delivery Date <span class="required">*</span>
                                                     </label>
                                                     <div class="col-md-4 xyz">
                                                         <div class="input-group date date-picker" data-date-format="mm/dd/yyyy">
@@ -210,7 +211,7 @@
                                                 <div class="form-group">
 
                                                     <label class="control-label col-md-2">
-                                                        Item/Service Name
+                                                        Item/Service Name<span class="required">*</span>
                                                     </label>
                                                     <div class="col-md-4">
                                                         <input type="text" class="form-control" id="txtshortname" name="txtshortname"
@@ -239,7 +240,7 @@
                                                         <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                     </div>
                                                     <label class="control-label col-md-2">
-                                                        Quantity
+                                                        Quantity<span class="required">*</span>
                                                     </label>
                                                     <div class="col-md-2 xyz">
                                                         <input type="text" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" />
@@ -266,8 +267,8 @@
                                                         <div class="col-md-offset-9 col-md-4">
                                                             <input type="hidden" id="rowid" />
 
-                                                            <button type="button" class="btn btn-danger" data-toggle="modal" href="#RAexcel">Excel Upload</button>
-                                                            <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
+                                                            <button type="button" id=btnexcel class="btn btn-danger" data-toggle="modal" href="#RAexcel" disabled>Excel Upload</button>
+                                                            <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()" disabled>Add</button>
                                                             <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
 
                                                         </div>
