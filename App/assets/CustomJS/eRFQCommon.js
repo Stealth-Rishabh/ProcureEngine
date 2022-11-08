@@ -84,7 +84,6 @@ jQuery("#txtrfirfqsubject").typeahead({
 function fnForwardforAllvendorTechnical() {
     bootbox.dialog({
         message: "Do you want to forward response to Technical Approver, Click Yes for  Continue ",
-        // title: "Custom title",
         buttons: {
             confirm: {
                 label: "Yes",
@@ -186,7 +185,7 @@ function fetchApproverRemarks(Type) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText// eval("(" +  + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -233,7 +232,6 @@ function ReInviteVendorsForRFQ() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     }
-    // alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_ReInviteVendor/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -241,7 +239,6 @@ function ReInviteVendorsForRFQ() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            // if (data == '1') {
             $("#modalreInviteDate").modal("hide");
             bootbox.alert("Re-Invitation For RFQ sent successfully", function () {
                 location.reload();
@@ -253,7 +250,7 @@ function ReInviteVendorsForRFQ() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" +  + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -288,7 +285,6 @@ jQuery("#cancl_btn").click(function () {
 function cancelBtnclick() {
     bootbox.dialog({
         message: "Are you sure want to cancel this bid?",
-        // title: "Custom title",
         buttons: {
             confirm: {
                 label: "Yes",
@@ -297,7 +293,6 @@ function cancelBtnclick() {
 
                     bootbox.dialog({
                         message: "Do you want to send cancellation email to participants for this RFQ?",
-                        // title: "Custom title",
                         buttons: {
                             confirm: {
                                 label: "Yes",
@@ -336,7 +331,6 @@ function cancelRFQ(mailparam) {
         "SendMail": mailparam,
         "UserID": sessionStorage.getItem('UserID')
     };
-    // alert(JSON.stringify(Cancelbid))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -355,7 +349,7 @@ function cancelRFQ(mailparam) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText// eval("(" +  + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -416,7 +410,6 @@ function fetchReguestforQuotationDetails() {
                 jQuery('#RFQStartDate').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
                 jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
                 jQuery('#lblrfqconfigby').html(RFQData[0].general[0].rfqConfigureByName)
-                //jQuery('#lblrfqopendate').html(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate))
                 $('#hdnUserID').val(RFQData[0].general[0].userId)
                 $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
@@ -427,7 +420,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -451,7 +444,6 @@ $("#ddlrfqVersion").change(function () {
 
 jQuery("#txtSearch").keyup(function () {
     _this = this;
-    // Show only matching TR, hide rest of them
     jQuery.each($("#tblRFQComprative tbody").find("tr"), function () {
 
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
@@ -485,7 +477,7 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText //eval("(" + + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -516,7 +508,6 @@ function RFQFetchL1Package(VendorID, Counter) {
             $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
             $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
-            //$("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
             $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
 
             $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
@@ -524,7 +515,7 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -561,7 +552,6 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
             if (data.length > 0) {
 
                 if (!jQuery("#tblLoadingFactor thead").length) {
-                    //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
                     //abheedev bug 462
                     jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr style=\"background: gray; color: #FFF;\"><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
                 }
@@ -598,78 +588,18 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 //abheedev bug 462
 function updloadingfactor() {
 
-    //if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
-    //    $('.alert-danger').show();
-    //    $('#msgErrorL1').html('Please Enter Loading factor');
-    //    Metronic.scrollTo($(".alert-danger"), -200);
-    //    $('.alert-danger').fadeOut(7000);
-    //    $("#txtloadingfactor").val('')
-    //    return false;
-    //}
-    //else {
-    //    var Data = {
-    //        "RFQID": parseInt($('#hdnRfqID').val()),
-    //        "VersionID": parseInt(sessionStorage.getItem("RFQVersionId")),
-    //        "VendorID": parseInt($("#hdnvendorid").val()),
-    //        "LoadingFactor": parseFloat(removeThousandSeperator($("#txtloadingfactor").val())),
-    //        "LoadingFactorReason": $("#txtloadingfactorreason").val()
-    //    }
-    //    // alert(JSON.stringify(Data))
-    //    jQuery.ajax({
-    //        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQ_VendorLoadingFactor/",
-    //        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //        type: "POST",
-    //        data: JSON.stringify(Data),
-    //        contentType: "application/json; charset=utf-8",
-    //        success: function (data, status, jqXHR) {
 
-    //            //if (data[0].LoadingFactor > 0) {
-    //            //  alert(data[0].loadingFactor)
-    //            var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-    //            $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-    //            $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-    //            $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-    //            $('#LFactorexcel' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-    //            $('#LoadingFexcel' + $("#hdnvendorid").val()).html(thousands_separators(price))
-    //            $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-    //            setTimeout(function () {
-    //                $("#editloadingfactor").modal('hide');
-    //                fetchrfqcomprative();
-    //            }, 1000)
-    //            // }
-    //        },
-    //        error: function (xhr, status, error) {
-
-    //            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-    //            if (xhr.status == 401) {
-    //                error401Messagebox(err.Message);
-    //            }
-    //            else {
-    //                fnErrorMessageText('spnerror', '');
-    //            }
-    //            jQuery.unblockUI();
-    //            return false;
-
-    //        }
-    //    })
-    //}
 
     var tabItems = '', eRFQLoadingTerms = [];
     var oTable = document.getElementById('tblLoadingFactor');
     var rowCount = oTable.rows.length;
-    //var rowCount = jQuery('#tblLoadingFactor >tbody>tr').length;
     var isSubmit = false;
     if (rowCount > 1) {
-        //var this_row = $(this);
         for (i = 1; i < rowCount; i++) {
             var _LFPer = 0;
             var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML;
             var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
             var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML);
-            //var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            //var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-            //var _LFPer = document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML;
-
             if (_LFType == 'P') {
                 var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
                 perVal = perVal.replace('%', '');
@@ -709,25 +639,15 @@ function updloadingfactor() {
             success: function (data, status, jqXHR) {
 
                 //abheedev bug 349 start
-                // if (data[0].LoadingFactor > 0) {
-                // alert(data[0].loadingFactor)
-                // var price = parseFloat(data[0].loadingFactor + data[0].totalPriceIncTax)
-                //   $('#LFactor' + $("#hdnvendorid").val()).html(thousands_separators(data[0].loadingFactor))
-                // $('#LoadingF' + $("#hdnvendorid").val()).html(thousands_separators(price))
-                //  $('#LoadingReason' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
-                //   $('#LFactorexcel' + $("#hdnvendorid").val()).html(data[0].loadingFactor)
-                //   $('#LoadingFexcel' + $("#hdnvendorid").val()).html(price)
-                //   $('#LoadingReasonexcel' + $("#hdnvendorid").val()).html($("#txtloadingfactorreason").val())
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
                     fetchrfqcomprative();
                 }, 1000)
                 rowques = 0;
-                //abheedev bug 349 end
-                // }
+
             },
             error: function (xhr, status, error) {
-                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -761,7 +681,6 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            // alert(data[0].Attachments.length)
             jQuery("#tblAttachments").empty();
 
             if (data[0].attachments.length > 0) {
@@ -800,28 +719,6 @@ function DownloadFile(aID) {
 }
 function fnDownloadZip() {
     var prefix = 'eRFQ/' + $('#hdnRfqID').val()
-    /*
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix,
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        success: function (data) {
-            alert('success')
-            console.log(data)
-            // var downloadwindow = window.open(data, "_blank");
-            //downloadwindow.focus();
-        },
-
-        error: function () {
-            $(".alert-danger").find("span").html('').html(filename + " Couldn't download ZIP successfully from Azure");
-            Metronic.scrollTo(error, -200);
-            $(".alert-danger").show();
-            $(".alert-danger").fadeOut(5000);
-            jQuery.unblockUI();
-        }
-    })
-    */
     fetch(sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix)
         .then(resp => resp.blob())
         .then(blob => {
@@ -829,7 +726,6 @@ function fnDownloadZip() {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            // the filename you want
             a.download = 'Download.zip';
             document.body.appendChild(a);
             a.click();
@@ -860,7 +756,6 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
             $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
             $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxwithgstExcel" + VendorID).html(data[0].totalPriceIncTax);
-            //$("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
             $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
 
 
@@ -880,7 +775,7 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" +  + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1040,6 +935,7 @@ function addRFQApprovers() {
         jQuery("#txtApproverRFQ").val('')
         jQuery("#hdnRFQApproverID").val('0')
     }
+    //bug 478
     jQuery('#btnrfqapproversubmit').removeAttr("disabled");
 }
 function deleteRFQApprow(rowid) {
@@ -1133,7 +1029,7 @@ function MapRFQapprover(Type) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1214,7 +1110,7 @@ function fnGetRFQApprovers(Type) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1255,7 +1151,6 @@ function fnclosepopupApprovers(Type) {
 }
 function fetchRFQApproverStatus(RFQID) {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQApproverStatus/?RFQID=" + RFQID
 
     jQuery.ajax({
@@ -1291,14 +1186,12 @@ function fetchRFQApproverStatus(RFQID) {
 
                     }
                     if (data[i].statusCode == 20) {
-                        //counterColor = counterColor + 1;
                         status = 'Approved'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
                     if (data[i].statusCode == 30) {
 
-                        //counterColor = counterColor + 1;
                         status = 'Forwarded'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
@@ -1345,7 +1238,7 @@ function fetchRFQApproverStatus(RFQID) {
 
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1360,7 +1253,6 @@ function fetchRFQApproverStatus(RFQID) {
 }
 function fetchRFQPPCApproverStatus(RFQID) {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQPPCApproverStatus/?RFQID=" + RFQID
 
     jQuery.ajax({
@@ -1396,28 +1288,24 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
                     }
                     if (data[i].statusCode == 20) {
-                        //counterColor = counterColor + 1;
                         status = 'Approved'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
                     if (data[i].statusCode == 30) {
 
-                        //counterColor = counterColor + 1;
                         status = 'Forwarded to comm Approver'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
                     if (data[i].statusCode == 45) {
 
-                        //counterColor = counterColor + 1;
                         status = 'Forwarded to PPC'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
                     if (data[i].statusCode == 50) {
 
-                        //counterColor = counterColor + 1;
                         status = 'Forwarded to FC'
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
@@ -1451,7 +1339,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
 
-                    if (counterColor >= 1 && data[i].pendingSince == '') {//
+                    if (counterColor >= 1 && data[i].pendingSince == '') {
                         if (status == 'Pending') {
                             status = 'N/A'
                             $('#divPendingDate' + i).addClass('hide')
@@ -1478,7 +1366,7 @@ function fetchRFQPPCApproverStatus(RFQID) {
 
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1503,19 +1391,10 @@ $("#modalreInviteDate").on("hidden.bs.modal", function () {
 });
 
 function downloadexcel() {
-    //  var dt = new Date();
-    //    var day = dt.getDate();
-    //  var month = dt.getMonth() + 1;
-    //var year = dt.getFullYear();
-    //var hour = dt.getHours();
-    //var mins = dt.getMinutes();
-    //var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
 
     var postfix = fnConverToLocalTime(new Date())
 
-    //Export To Excel
     var data_type = 'data:application/vnd.ms-excel';
-    // var table_div = document.getElementById('');
     var table_div = document.getElementById('table_wrapper');
 
     var table_html = table_div.outerHTML.replace(/ /g, '%20');
@@ -1525,10 +1404,8 @@ function downloadexcel() {
     a.download = 'RFQDetails -' + postfix + '.xls';
 
     a.click();
-    //tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeQ', 'tblCommercialApprovalprev'], ['RFQ Details', 'Comprative Analysis', 'Commercial', 'Questions', 'Approval History'], 'RFQDetails -' + postfix + '.xls')
-    // tableToExcelMultipleSheetwithoutColor(['tbldetailsExcel', 'tblRFQComprativeForExcelQ', 'tblRFQComprativeForExcel'], ['RFQ Details', 'Comprative Analysis','Test'], 'RFQDetails -' + postfix + '.xls')
+
 }
-//FOR LOADING FACTOR TABLE
 
 function addLoadingFactor() {
     //abheedev loading factor start
@@ -1539,7 +1416,6 @@ function addLoadingFactor() {
     var isSubmitActive = true;
     var vId = parseInt($("#hdnvendorid").val());
     var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
-    //jQuery("#tblLoadingFactor").empty();
     if ($("#txtloadingfactor").val() == "" || $("#txtloadingfactor").val() == null || $("#txtloadingfactor").val() == 'undefined') {
         isSubmitActive = false;
         $('.alert-danger').show();
@@ -1551,7 +1427,6 @@ function addLoadingFactor() {
     }
     else {
         isSubmitActive = true;
-        //_LoadingAmount = parseFloat($("#txtloadingfactor").val());
         isSubmitActive = true;
         if ($(ddlLFType).val() == "P") {
             _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
@@ -1572,13 +1447,8 @@ function addLoadingFactor() {
         return false;
     }
     if (isSubmitActive) {
-        //_LoadingAmount = parseFloat()
-
-
-
         rowques = rowques + 1;
         if (!jQuery("#tblLoadingFactor thead").length) {
-            //jQuery('#tblLoadingFactor').append("<thead><tr><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:50%!important'>Type</th><th class='bold' style='width:50%!important'>Amount</th><th></th></tr></thead>");
             jQuery('#tblLoadingFactor').append("<thead style='width:100%!important'><tr data-row='" + rowques + "'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Loading Factor</th><th class='bold' style='width:25%!important'>Amount</th><th></th><th></th></tr></thead>");
         }
 
@@ -1590,17 +1460,11 @@ function addLoadingFactor() {
         else {
             strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "INR</td>"
         }
-        // strprev += "<td>" + _loadingPer + "</td>"
         strprev += '<td id=trLFAmount' + rowques + '>' + _LoadingAmount + '</td>';
 
-        // jQuery('#tblLoadingFactor').append(strprev);
-        //TODO
         if (!jQuery("#tblLoadingFactor thead").length) {
             jQuery('#tblLoadingFactor').append("<thead><tr style='width:100%!important'><th class='bold' style='width:50%!important'>Reason</th><th class='bold' style='width:25%!important'>Type</th><th class='bold' style='width:25%!important'>Amount</th><th></th></tr></thead>");
         }
-        // var str = '<tr id=trLFid' + rowques + ' ><td>' + jQuery("#tblLoadingFactor").val() + '</td>';
-        //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
-        //   str += "<td>" + jQuery("#txtreq").val() + "</td>"
         strprev += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteLFrow(trLFid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:5%!important"><button type=button class="btn btn-xs btn-success"  onclick="editLFrow(trLFid' + rowques + ')" ><i class="fa fa-pencil"></i></button></td></tr>';
         jQuery('#tblLoadingFactor').append(strprev);
         jQuery("#tblLoadingFactor").val('')
@@ -1650,13 +1514,11 @@ function updateLoadingFactor() {
 
     if ($("#ddlLFType").val() == "P") {
         _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
-        // _loadingPer = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
         $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "%")
         $("#trLFAmount" + editrow).text(_LoadingAmount)
     }
     else {
-        // _LoadingAmount = $("#txtloadingfactor").val();
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
         $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "INR")
         $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
