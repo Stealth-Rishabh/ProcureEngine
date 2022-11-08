@@ -25,20 +25,19 @@ $(document).ready(function () {
         FetchRecomendedVendor();
         fetchApproverStatus();
 
-        //** Get Query/Response  if any?
         GetQuestions()
 
         if (IsApp == 'N' && FwdTo != 'Admin') {
             jQuery("#divRemarksForward").show();
 
         }
-        else if (IsApp == 'Y' && FwdTo == 'Admin') {//&& AppStatus == 'Reverted'
+        else if (IsApp == 'Y' && FwdTo == 'Admin') {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").show();
             $('#frmadminbutton').show()
 
         }
-        else if (FwdTo == 'View') {//&& AppStatus == 'Reverted'
+        else if (FwdTo == 'View') {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").hide();
             $('#frmadminbutton').hide()
@@ -89,7 +88,7 @@ function fetchRegisterUser() {
 }
 //abheedev bug 385
 function GetOverviewmasterbyId(idx) {
-  
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -155,7 +154,7 @@ function GetOverviewmasterbyId(idx) {
             }
         }
     });
- 
+
     GetData.error(function (res) {
         jQuery.unblockUI();
     });
@@ -318,37 +317,6 @@ function fetchApproverStatus() {
                         jQuery('#divstatuscolor' + i).addClass('done');
                     }
 
-                    //if (ApprovalType != 'P') {
-                    //    if (counterColor > 1) {
-                    //        if (status == 'Pending') {
-                    //            status = 'N/A'
-                    //            jQuery('#divPendingDate' + i).addClass('hide')
-                    //            c = c + 1;
-                    //            jQuery('#divstatus' + i).text(status);
-                    //            jQuery('#divstatuscolor' + i).removeClass('error')
-                    //            jQuery('#divstatuscolor' + i).addClass('font-yellow')
-                    //            jQuery('#divstatuscolor' + i).addClass('last')
-                    //            jQuery('#divstatus' + i).addClass('font-yellow')
-                    //            jQuery('#divapprovername' + i).addClass('font-yellow')
-
-                    //        }
-                    //    }
-                    //}
-                    //else if (ApprovalType == 'P' && (data[i].approverSeq != prevseq && status == 'Pending')) {
-
-                    //            status = 'N/A'
-                    //            jQuery('#divPendingDate' + i).addClass('hide')
-                    //            c = c + 1;
-                    //            jQuery('#divstatus' + i).text(status);
-                    //            jQuery('#divstatuscolor' + i).removeClass('error')
-                    //            jQuery('#divstatuscolor' + i).addClass('font-yellow')
-                    //            jQuery('#divstatuscolor' + i).addClass('last')
-                    //            jQuery('#divstatus' + i).addClass('font-yellow')
-                    //            jQuery('#divapprovername' + i).addClass('font-yellow')
-
-
-                    //}
-                    //prevseq = data[i].approverSeq;
                 }
             }
             else {
@@ -376,7 +344,7 @@ function fetchApproverStatus() {
 sessionStorage.setItem('hdnApproverid', 0);
 jQuery("#txtApprover").keyup(function () {
     sessionStorage.setItem('hdnApproverid', '0');
-    // sessionStorage.setItem('hdnWBApproverEmailid', '');
+
 });
 
 
@@ -463,7 +431,7 @@ function FetchRecomendedVendor() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -513,25 +481,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             success1.hide();
             error1.show();
-            // App.scrollTo(error1, -300);
+
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -563,25 +531,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             success2.hide();
             error2.show();
-            // App.scrollTo(error1, -300);
+
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                .closest('.form-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                .closest('.form-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -608,19 +576,19 @@ function validateAppsubmitData() {
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.form-group').addClass('has-error'); // set error class to the control group
+                .closest('.form-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                .closest('.form-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                .closest('.form-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -699,7 +667,7 @@ function DelegateUser() {
         };
 
 
-        
+
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "NFA/NFADelegate",
@@ -743,7 +711,6 @@ $("#RaiseQuery").on("hidden.bs.modal", function () {
     PendingOn = 'C'
 });
 function fnRaisequery() {
-    // $('#hdnvendorid').val(vendorid)
     GetQuestions();
 }
 var queslength = 0;
@@ -764,7 +731,6 @@ function GetQuestions() {
             var attach = 'No Attachment';
             if (data.length > 0) {
                 queslength = data.length;
-                //sessionStorage.setItem('HeaderID', data[0].headerid)
                 $('#btnTechquery').attr('disabled', 'disabled')
                 jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
@@ -810,7 +776,7 @@ function GetQuestions() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -840,7 +806,6 @@ function GetQuestionsforCreator(pendingon) {
             if (data.length > 0) {
 
                 $('#divQuery').removeClass('hide')
-                //sessionStorage.setItem('HeaderID', data[0].headerid)
                 jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
 
                 for (var i = 0; i < data.length; i++) {
@@ -873,16 +838,14 @@ function GetQuestionsforCreator(pendingon) {
                             alwaysShow: true
                         });
                     }
-                    else {//if ((pendingon.toLowerCase() == "a" || pendingon.toLowerCase() == "x") && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID')) {
+                    else {
                         $('#btnsubmitquery').addClass('hide')
                         str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
                         str += '<td>' + data[i].answer + '</td>';
                         str += '<td>' + attach + '</td>';
                         jQuery('#tblqueryresponse').append(str);
                     }
-                    //else {
-                    //    $('#divQuery').addClass('hide')
-                    //}
+
                 }
 
             }
@@ -892,7 +855,7 @@ function GetQuestionsforCreator(pendingon) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -943,7 +906,6 @@ function fnsubmitQueryByCreator() {
             if (attchname != "" && attchname != null && attchname != undefined) {
                 attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
                 attchname = attchname.replace('.', '@')
-                //Upload Files on aZURE bLOB
                 fnUploadFilesonAzure('fileToUpload' + i, $('#fileToUpload' + i).val(), 'NFA/' + idx + '/NFAQuery');
             }
             else {
@@ -962,8 +924,8 @@ function fnsubmitQueryByCreator() {
             "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
             "PendingOn": "A"
         }
-       
-       
+
+
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -983,7 +945,7 @@ function fnsubmitQueryByCreator() {
             },
             error: function (xhr, status, error) {
 
-                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
@@ -1027,11 +989,11 @@ function addquestions() {
 
         if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength >= 0) && (PendingOn != 'A' && PendingOn != 'X')) {
             $('#btnTechquery').attr('disabled', 'disabled')
-            // $('#btnwithdraw').hide()
+
         }
         else {
             $('#btnTechquery').removeAttr('disabled')
-            //$('#btnwithdraw').show()
+
         }
     }
 }
@@ -1042,7 +1004,7 @@ function deletequesrow(rowid) {
     if ((jQuery('#txtquestions> tbody > tr').length == 1 || queslength >= 0)) {
 
         $('#btnTechquery').attr('disabled', 'disabled')
-        // $('#btnwithdraw').hide()
+
     }
     else {
         $('#btnTechquery').removeAttr('disabled')
@@ -1072,7 +1034,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-           
+
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1089,7 +1051,6 @@ function submitQuery() {
                             $('#btnTechquery').attr('disabled', 'disabled')
                             $('#btnSubmitApp').attr('disabled', 'disabled')
                             $('#btnSubmitApp').removeClass('green').addClass('default')
-                            //$('#btnwithdraw').show()
 
                             $("#RaiseQuery").modal('hide');
                             GetQuestionsforCreator(PendingOn)
@@ -1100,7 +1061,7 @@ function submitQuery() {
                 },
                 error: function (xhr, status, error) {
 
-                    var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+                    var err = xhr.responseText;
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
@@ -1136,7 +1097,6 @@ function submitQuery() {
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from Approver, Click Yes for  Continue ",
-        // title: "Custom title",
         buttons: {
             confirm: {
                 label: "Yes",
@@ -1192,7 +1152,7 @@ function withdrawquery() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1211,7 +1171,6 @@ function withdrawquery() {
 function fnRecall() {
     bootbox.dialog({
         message: "Do you want to Recall NFA, Click Yes for  Continue ",
-        // title: "Custom title",
         buttons: {
             confirm: {
                 label: "Yes",
@@ -1254,20 +1213,13 @@ function DisableActivityRecall() {
 
             bootbox.alert("NFA ReCalled successfully .", function () {
                 window.location.href = "index.html";
-                //setTimeout(function () {
-                //    $('#btnSubmitApp').removeAttr('disabled') 
-                //    $('#btnSubmitApp').addClass('green').removeClass('default')
 
-                //    $("#RaiseQuery").modal('hide');
-
-                //    jQuery.unblockUI();
-                //}, 1000);
             });
             return;
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }

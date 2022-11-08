@@ -38,6 +38,7 @@ else {
     // $('#txtVendorGroup').removeAttr('disabled', 'disabled')
 }
 var form = $('#frmbidsummaryreport');
+var error = $('.alert-danger');
 function InsUpdProductSevices() {
 
     if ($('#add_or').text() == "Modify") {
@@ -46,21 +47,40 @@ function InsUpdProductSevices() {
         $("#tblServicesProduct tr:gt(0)").each(function () {
 
             var this_row = $(this);
-
-            if ($.trim(this_row.find('td:eq(2)').html()) == $('#txtshortname').val() && $.trim(this_row.find('td:eq(1)').html()) != $('#txtItemCode').val() && $.trim(this_row.find('td:eq(3)').html()) != $('#txtedelivery').val() && $.trim(this_row.find('td:eq(4)').html()) != $("#txtPoNo").val() && $.trim(this_row.find('td:eq(5)').html()) != $("#txtPODate").val() && $.trim(this_row.find('td:eq(6)').html()) != $('#txtquantitiy').val() && $.trim(this_row.find('td:eq(7)').html()) != $('#dropuom').val()) {
-
+            i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            //if ($.trim($('#destinationport' + i).html()) == $('#txtshortname').val()) {
+            if ($.trim($('#destinationport' + i).html()) == $('#txtshortname').val() && $.trim($('#itemcode' + i).html()) != $('#txtItemCode').val() && $.trim($('#delivery' + i).html()) != $('#txtedelivery').val() && $.trim($('#pono' + i).html()) != $("#txtPoNo").val() && $.trim($('#podate' + i).html()) != $("#txtPODate").val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#uom' + i).html()) != $('#dropuom').val()) {
                 st = "false"
-
             }
-
         });
+
         if (st == "false") {
-            error.show();
+            $('.alert-danger').show();
             $('#spandanger').html('Data already exists...');
             Metronic.scrollTo(error, -200);
             error.fadeOut(3000);
             return false;
-
+        }
+        else if ($('#txtPODate').val() == '') {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Delivery Date.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else if ($('#txtshortname').val() == '') {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Item/Service Name.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else if ($('#txtquantitiy').val() == '' || $('#txtquantitiy').val() == 0) {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Quantity.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
         }
         else if ($('#dropuom').val() == '' || $('#txtUOM').val() == '') {
             $('.alert-danger').show();
@@ -72,126 +92,132 @@ function InsUpdProductSevices() {
         else {
 
             var this_row = $('#rowid').val();
-
-            var this_row_Prev = $('#rowidPrev').val();
-            $("#" + this_row).find("td:eq(1)").text($('#txtItemCode').val())
-            $("#" + this_row).find("td:eq(2)").text($('#txtshortname').val())
-            $("#" + this_row).find("td:eq(3)").text($('#txtedelivery').val())
-            $("#" + this_row).find("td:eq(4)").text($('#txtPoNo').val())
-
-            $("#" + this_row).find("td:eq(5)").text($('#txtPODate').val())
-
-            $("#" + this_row).find("td:eq(6)").text($('#txtquantitiy').val())
-            $("#" + this_row).find("td:eq(7)").text($('#dropuom').val())
-
+            $("#itemcode" + this_row).text($('#txtItemCode').val())
+            $("#destinationport" + this_row).text($('#txtshortname').val())
+            $("#delivery" + this_row).text($('#txtedelivery').val())
+            $("#pono" + this_row).text($('#txtPoNo').val())
+            $("#podate" + this_row).text($('#txtPODate').val())
+            $("#quantity" + this_row).text($('#txtquantitiy').val())
+            $("#uom" + this_row).text($('#dropuom').val())
             resetfun();
-
         }
     }
-
     else {
 
-
-        if ($('#tblServicesProduct >tbody >tr').length == 0) {
-            if ($('#dropuom').val() == '' || $('#txtUOM').val() == '') {
-                $('.alert-danger').show();
-                $('#spandanger').html('Please Select UOM Properly');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
-                return false;
-            }
-            else {
-                ParametersQuery()
-            }
+        st = "true";
+        if ($('#txtPODate').val() == '') {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Delivery Date.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else if ($('#txtshortname').val() == '') {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Item/Service Name.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else if ($('#txtquantitiy').val() == '' || $('#txtquantitiy').val() == 0) {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please fill Quantity.');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
+        }
+        else if ($('#dropuom').val() == '' || $('#txtUOM').val() == '') {
+            $('.alert-danger').show();
+            $('#spandanger').html('Please Select UOM Properly');
+            Metronic.scrollTo($(".alert-danger"), -200);
+            $('.alert-danger').fadeOut(7000);
+            return false;
         }
         else {
-
-            var status = "true";
-            $("#tblServicesProduct tr:gt(0)").each(function () {
-
-                var this_row = $(this);
-
-                if ($.trim(this_row.find('td:eq(2)').html()) == $('#txtshortname').val()) {
-                    status = "false"
-
-                }
-
-            });
-
-
-            if (status == "false") {
-                error.show();
-                $('#spandanger').html('Data already exists...');
-                Metronic.scrollTo(error, -200);
-                error.fadeOut(3000);
-                return false;
-
-            }
-            else if ($('#dropuom').val() == '' || $('#txtUOM').val() == '') {
-                $('.alert-danger').show();
-                $('#spandanger').html('Please Select UOM Properly');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
-                return false;
+            if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                ParametersQuery()
             }
             else {
+                $("#tblServicesProduct tr:gt(0)").each(function () {
 
-                ParametersQuery()
+                    var this_row = $(this);
+                    i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+                    if ($.trim($('#destinationport' + i).html()) == $('#txtshortname').val()) {
+                        st = "false"
+                    }
 
+                });
+
+                if (st == "false") {
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Data already exists...');
+                    Metronic.scrollTo(error, -200);
+                    error.fadeOut(3000);
+                    jQuery.unblockUI();
+                    // resetfun();
+                    return false;
+                }
+                else {
+                    ParametersQuery()
+                }
             }
 
         }
-
+        jQuery.unblockUI();
     }
 
 }
 
-var i = 0;
-var z = 0;
 
 
 function ParametersQuery() {
+    //i = $('#tblServicesProduct >tbody >tr').length;
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
 
-    // z = z + 1
-    i = $('#tblServicesProduct >tbody >tr').length;
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
     if (!jQuery("#tblServicesProduct thead").length) {
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th>Delivery Location</th><th>Po No</th><th>Po Delivery Date</th><th>Quantity</th><th>UOM</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(trid' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;">' + $('#txtItemCode').val() + '</td><td>' + $('#txtshortname').val() + '</td><td>' + $('#txtedelivery').val() + '</td><td>' + $('#txtPoNo').val() + '</td><td>' + $('#txtPODate').val() + '</td><td class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td>' + $("#dropuom").val() + '</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + '>' + $('#txtshortname').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td id=pono' + i + '>' + $('#txtPoNo').val() + '</td><td id=podate' + i + '>' + $('#txtPODate').val() + '</td><td  id=quantity' + i + ' class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td></tr>');
     }
     else {
-
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn  btn-xs btn-success" onclick="editvalues(trid' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;">' + $('#txtItemCode').val() + '</td><td>' + $('#txtshortname').val() + '</td><td>' + $('#txtedelivery').val() + '</td><td>' + $('#txtPoNo').val() + '</td><td>' + $('#txtPODate').val() + '</td><td class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td>' + $("#dropuom").val() + '</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + '>' + $('#txtshortname').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td id=pono' + i + '>' + $('#txtPoNo').val() + '</td><td id=podate' + i + '>' + $('#txtPODate').val() + '</td><td id=quantity' + i + ' class=text-right>' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td></tr>');
 
     }
-
     resetfun()
 
 }
 
-function editvalues(rowid) {
-
+function editvalues(icount) {
 
     Metronic.scrollTo($("body"), 200);
-    $('#rowid').val(rowid.id)
+    $('#rowid').val(icount)
 
-    $('#txtItemCode').val($("#" + rowid.id).find("td:eq(1)").text())
-    $('#txtshortname').val($("#" + rowid.id).find("td:eq(2)").text())
-    $('#txtedelivery').val($("#" + rowid.id).find("td:eq(3)").text())
+    $('#txtItemCode').val($("#itemcode" + icount).text())
+    $('#txtshortname').val($("#destinationport" + icount).text())
+    $('#txtedelivery').val($("#delivery" + icount).text())
     //alert($("#" + rowid.id).find("td:eq(4)").text())
-    $('#txtPoNo').val($("#" + rowid.id).find("td:eq(4)").text())
+    $('#txtPoNo').val($("#pono" + icount).text())
 
-    $('#txtPODate').val($("#" + rowid.id).find("td:eq(5)").text())
-    $('#txtquantitiy').val($("#" + rowid.id).find("td:eq(6)").text())
-    $('#dropuom').val($("#" + rowid.id).find("td:eq(7)").text())
-    $('#txtUOM').val($("#" + rowid.id).find("td:eq(7)").text())
+    $('#txtPODate').val($("#podate" + icount).text())
+    $('#txtquantitiy').val($("#quantity" + icount).text())
+    $('#dropuom').val($("#uom" + icount).text())
+    $('#txtUOM').val($("#uom" + icount).text())
 
     $('#add_or').text('Modify');
 
 }
 
-function deleterow(rowid) {
-
-    $('#' + rowid.id).remove();
+function deleterow(icount) {
+    $('#trid' + icount).remove();
 
 }
 
@@ -208,28 +234,29 @@ function insPoDetails() {
     }
     else {
 
-        var rowCount = jQuery('#tblServicesProduct tr').length;
+        var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
 
-        if (rowCount > 0) {
-            $("#tblServicesProduct tr:gt(0)").each(function () {
+        if (rowCount >= 0) {
+            $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
+                index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
-                var deliverylocation = $.trim(this_row.find('td:eq(3)').html()).replace(/'/g, "");
+                var deliverylocation = $.trim($("#delivery" + index).text()).replace(/'/g, "");
                 items = {
                     "POHeaderID": parseInt($('#hdnPOHeader').val()),
-                    "ItemCode": $.trim(this_row.find('td:eq(1)').html()),
-                    "ItemServiceName": $.trim(this_row.find('td:eq(2)').html()),
+                    "ItemCode": $.trim($("#itemcode" + index).text()),
+                    "ItemServiceName": $.trim($("#destinationport" + index).text()),
                     "DeliveryLocation": $.trim(deliverylocation),
-                    "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(6)').html()))),
-                    "UOM": $.trim(this_row.find('td:eq(7)').html()),
-                    "PONo": $.trim(this_row.find('td:eq(4)').html()),
-                    "PODeliveryDate": $.trim(this_row.find('td:eq(5)').html())
+                    "Quantity": parseFloat(removeThousandSeperator($.trim($("#quantity" + index).text()))),
+                    "UOM": $.trim($("#uom" + index).text()),
+                    "PONo": $.trim($("#pono" + index).text()),
+                    "PODeliveryDate": $.trim($("#podate" + index).text())
 
                 }
                 PriceDetails.push(items)
             })
         }
-        // console.log(PriceDetails)
+        console.log(PriceDetails)
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
@@ -254,15 +281,18 @@ function insPoDetails() {
             dataType: "json",
             success: function (data) {
                 // if (data == '1') {
+
                 if (AppType != 'Reverted') {
                     $('.alert-success').show();
-                    $('#spansuccess1').html('PO sent to vendor successfully');
+                    $('#spansuccess1').html('PO sent to vendor successfully.');
                     Metronic.scrollTo($(".alert-success"), -200);
                     $('.alert-success').fadeOut(7000);
                     $('#cancelBidBtn').hide();
+                    bootbox.alert("PO sent to vendor successfully.", function () {
+                        resetfun();
+                        resetForm();
+                    });
 
-                    resetfun();
-                    resetForm();
                 }
                 else {
                     bootbox.alert("PO is now forwarded again to the vendor for acceptance.", function () {
@@ -296,13 +326,12 @@ function insPoDetails() {
 function resetForm() {
     $('#tblServicesProduct').empty();
     $('#tblAttachments').empty();
-
-
     $('#txtVendor').removeAttr('disabled')
-
     $('#txtVendor').val('');
     sessionStorage.setItem('hdnVendorID', '0')
     $('#txtvendorremarks').val('');
+    $('#btnexcel').attr('disabled', 'disabled')
+    $('#add_or').attr('disabled', 'disabled')
 
 }
 var vendor;
@@ -398,6 +427,7 @@ function addAttachments() {
         return false;
     }
     else {
+
         var attchname = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         var Attachments = {
@@ -427,6 +457,8 @@ function addAttachments() {
                         $('#hdnPOHeader').val(data[0].poHeaderID)
 
                         $('#txtVendor').attr('disabled', 'disabled')
+                        $('#btnexcel').removeAttr('disabled')
+                        $('#add_or').removeAttr('disabled')
                         fetchAttachments()
 
                         //** Upload Files on Azure PortalDocs folder first Time
@@ -484,7 +516,8 @@ function fetchAttachments() {
             jQuery("#tblAttachments").empty();
 
             if (data.length > 0) {
-
+                $('#btnexcel').removeAttr('disabled')
+                $('#add_or').removeAttr('disabled')
                 sessionStorage.setItem('hdnVendorID', data[0].vendorID);
                 $('#txtVendor').val(data[0].vendorName)
                 $('#txtvendorremarks').val(data[0].userRemarks)
@@ -499,6 +532,8 @@ function fetchAttachments() {
 
             else {
                 $('#txtVendor').removeAttr('disabled')
+                $('#btnexcel').attr('disabled', 'disabled')
+                $('#add_or').attr('disabled', 'disabled')
                 jQuery('#tblAttachments').append("<tr><td>No Attachments!!</td></tr>")
             }
 
@@ -730,7 +765,6 @@ function printdataSeaBid(result) {
 
 
     for (i = 0; i < loopcount; i++) {
-
         itemcode = '', podate = '', pono = '', deliverylocation = '', itemservicename = '';
 
         if ($.trim(result[i].PoDeliveryDate) != '') {
@@ -739,7 +773,6 @@ function printdataSeaBid(result) {
         if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
         }
-
         if ($.trim(result[i].ItemCode) != '') {
             itemcode = $.trim(result[i].ItemCode);
         }
@@ -762,8 +795,6 @@ function printdataSeaBid(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-
-
         else if (!result[i].Quantity.trim().match(numberOnly) || result[i].Quantity.trim() == '') {
 
             $("#error-excelparameter").show();
@@ -781,7 +812,7 @@ function printdataSeaBid(result) {
         else {
 
             // if values are correct then creating a temp table
-            $("<tr><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td class=hide>" + replaceQuoutesFromStringFromExcel(description) + "</td><td>" + replaceQuoutesFromStringFromExcel(deliverylocation) + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + podate + "</td></tr>").appendTo("#temptableForExcelDataparameter");
+            $("<tr id=trexcel" + i + " ><td id=itemcodeexcel" + i + " >" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td id=destionportexcel" + i + ">" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td class=hide>" + replaceQuoutesFromStringFromExcel(description) + "</td><td id=deliveryexcel" + i + ">" + replaceQuoutesFromStringFromExcel(deliverylocation) + "</td><td id=quantityexcel" + i + ">" + result[i].Quantity + "</td><td id=uomexcel" + i + ">" + result[i].UOM + "</td><td id=ponoexcel" + i + ">" + replaceQuoutesFromStringFromExcel(pono) + "</td><td id=podateexcel" + i + ">" + podate + "</td></tr>").appendTo("#temptableForExcelDataparameter");
 
         }
 
@@ -795,11 +826,11 @@ function printdataSeaBid(result) {
     Rowcount = 0;
     // check for UOM
     $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
-        var this_row = $(this);
+        //var this_row = $(this);
         excelCorrectUOM = 'N';
         Rowcount = Rowcount + 1;
         for (var i = 0; i < allUOM.length; i++) {
-            if ($.trim(this_row.find('td:eq(5)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
+            if ($.trim($('#uomexcel' + i).text()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
                 excelCorrectUOM = 'Y';
             }
 
@@ -843,22 +874,22 @@ function InsupdProductfromExcel() {
     $('#loader-msgparameter').html('Processing. Please Wait...!');
     $('#modalLoaderparameter').removeClass('display-none');
     var items = '', PriceDetails = [];
-    var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
-    if (rowCount > 0) {
+    var rowCount = jQuery('#temptableForExcelDataparameter >tbody>tr').length;
+    if (rowCount >= 0) {
 
-        $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+        $("#temptableForExcelDataparameter tr:gt(0)").each(function (index) {
             var this_row = $(this);
-
-            var deliverylocation = $.trim(this_row.find('td:eq(2)').html()).replace(/'/g, "");
+            index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            var deliverylocation = $.trim($('#deliveryexcel' + index).html()).replace(/'/g, "");
             items = {
                 "POHeaderID": parseInt($('#hdnPOHeader').val()),
-                "ItemCode": $.trim(this_row.find('td:eq(0)').html()),
-                "ItemServiceName": $.trim(this_row.find('td:eq(1)').html()),
+                "ItemCode": $.trim($('#itemcodeexcel' + index).html()),
+                "ItemServiceName": $.trim($('#destionportexcel' + index).html()),
                 "DeliveryLocation": $.trim(deliverylocation),
-                "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
-                "UOM": $.trim(this_row.find('td:eq(5)').html()),
-                "PONo": $.trim(this_row.find('td:eq(6)').html()),
-                "PODeliveryDate": $.trim(this_row.find('td:eq(7)').html())
+                "Quantity": parseFloat(removeThousandSeperator($.trim($('#quantityexcel' + index).html()))),
+                "UOM": $.trim($('#uomexcel' + index).html()),
+                "PONo": $.trim($('#ponoexcel' + index).html()),
+                "PODeliveryDate": $.trim($('#podateexcel' + index).html())
 
             }
             PriceDetails.push(items)
@@ -938,27 +969,21 @@ function fetchDeliverySpread() {
         success: function (data, status, jqXHR) {
             var attach = "";
             jQuery("#tblServicesProduct").empty();
-
             if (data.length > 0) {
 
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th>Delivery Location</th><th>Po No</th><th>Po Delivery Date</th><th>Quantity</th><th>UOM</th></tr></thead>");
-
-
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(trid' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;">' + data[i].itemCode + '</td><td>' + data[i].itemServiceName + '</td><td>' + data[i].deliveryLocation + '</td><td>' + data[i].poNo + '</td><td>' + data[i].poDeliveryDate + '</td><td class=text-right>' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td></tr>');
-
+                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + data[i].itemCode + '</td><td id=destinationport' + i + '>' + data[i].itemServiceName + '</td><td id=delivery' + i + '>' + data[i].deliveryLocation + '</td><td id=pono' + i + '>' + data[i].poNo + '</td><td id=podate' + i + '>' + data[i].poDeliveryDate + '</td><td class=text-right id=quantity' + i + '>' + thousands_separators(data[i].quantity) + '</td><td id=uom' + i + '>' + data[i].uom + '</td></tr>');
                 }
             }
-
             else {
-
                 jQuery('#tblServicesProduct').append("<tr><td>No Delivery Spread!!</td></tr>")
             }
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -978,6 +1003,8 @@ function resetfun() {
     $('#txtedelivery').val('')
     $('#txtPODate').val('')
     $('#txtPoNo').val('')
+    // $('#btnexcel').attr('disabled','disabled')
+    // $('#add_or').attr('disabled','disabled')
 
 }
 $("#btndownloadTemplate").click(function (e) {
@@ -1088,15 +1115,17 @@ function FetchRecomendedVendor() {
                 $('#frmdivforward').removeClass('hide')
                 $('#divRemarks').removeClass('col-md-12')
                 $('#divRemarks').addClass('col-md-6')
-                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th class=hide id=thforward>Recommended Vendor</th><th>Completion DT</th></tr>')
+                $('#tblremarksforward').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th class=hide id=thforward>Recommended Vendor</th><th>Completion DT</th><th>Attachment</th></tr>')
 
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].VendorName != "") {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    attach = data[i].attachment.replace(/\s/g, "%20");
+
+                    if (data[i].vendorName != "") {
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td><td><a style="pointer:cursur;text-decoration:none;" id=POHistory' + i + ' onclick="DownloadFile(this)" href="javascript:;" >' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td><td><a style="pointer:cursur;text-decoration:none;" id=POHistory' + i + ' onclick="DownloadFile(this)" href="javascript:;" >' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').addClass('hide')
                     }
 
@@ -1193,15 +1222,11 @@ function getCategoryWiseVendors(categoryID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
-
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise_PEV2/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
-
         dataType: "json",
-
         success: function (data) {
             if (data.length) {
                 vendor = data;
@@ -1209,7 +1234,6 @@ function getCategoryWiseVendors(categoryID) {
 
         },
         error: function (xhr, status, error) {
-
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
