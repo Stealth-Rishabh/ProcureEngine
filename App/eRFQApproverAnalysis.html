@@ -428,14 +428,9 @@
                                                                 </div>
                                                                 <div class="form-group" style="padding: 10px 5px;">
                                                                     <div class="col-md-offset-1 col-md-12" style="text-align: center">
-                                                                        <!--<button id="btnExportToExcel1" type="button" class="btn blue">
-                                                    Export To Excel
-                                                </button>-->
-
                                                                         <button id="btnSubmitAppcomm" type="submit" class="btn green">
                                                                             Submit
                                                                         </button>
-
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -493,13 +488,14 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="col-md-1 control-label">
+                                                                        <!-- abheedev bug 444-->
+                                                                        <label class="col-md-2 control-label">
                                                                             Supplier
                                                                         </label>
                                                                         <div class="col-md-5 xyz">
                                                                             <select class="form-control" id="drpVendors" name="drpVendors"></select>
                                                                         </div>
-                                                                        <div class="col-md-5 xyz">
+                                                                        <div class="col-md-4 xyz">
                                                                             <textarea id="txtRemarksAward" name="txtRemarksAward" onkeyup="replaceQuoutesFromString(this)" class="form-control" maxlength="250" rows="2"></textarea>
                                                                         </div>
                                                                         <div class="col-md-1">
@@ -841,6 +837,7 @@
 
 
     <script type="text/javascript">
+
         $("#btnExport").click(function (e) {
 
             var dt = new Date();
@@ -863,6 +860,8 @@
             a.click();
 
         });
+
+      
     </script>
 
 
