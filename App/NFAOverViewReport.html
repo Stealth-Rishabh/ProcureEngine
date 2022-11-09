@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -77,9 +78,9 @@
                     <li class="sidebar-toggler-wrapper">
                         <div class="sidebar-toggler">
                         </div>
-                    </li>                   
+                    </li>
                 </ul>
-                <br/>
+                <br />
             </div>
         </div>
         <div class="page-content-wrapper">
@@ -169,7 +170,7 @@
                                                 </label>
                                                 <div class="col-md-8">
                                                     <!--abheedev bug 385 -->
-                                                    <div class="input-group input-medium date date-picker" data-date-format="mm/dd/yyyy">
+                                                    <div class="input-group  date date-picker" data-date-format="mm/dd/yyyy">
                                                         <!-- data-date-start-date="+0d" -->
                                                         <input type="text" id="txtFromDate" name="txtFromDate" class="form-control" readonly>
                                                         <span class="input-group-btn">
@@ -186,7 +187,7 @@
                                                 </label>
                                                 <div class="col-md-8">
                                                     <!--abheedev bug 385 -->
-                                                    <div class="input-group input-medium date date-picker" data-date-format="mm/dd/yyyy">
+                                                    <div class="input-group  date date-picker" data-date-format="mm/dd/yyyy">
                                                         <!--data-date-start-date="+0d"-->
                                                         <input type="text" id="txtToDate" name="txtToDate" class="form-control" readonly>
                                                         <span class="input-group-btn">
@@ -222,12 +223,12 @@
 
 
 
-                                            <div class="Controlgroup col-md-4">
-                                                <label class="control-label col-md-4">
+                                            <div class="Controlgroup col-md-8">
+                                                <label class="control-label col-md-2">
                                                     Configured By
                                                 </label>
-                                                <div class="col-md-8">
-                                                    <select class="form-control" id="ddlconfiguredby" name="ddlconfiguredby"></select>
+                                                <div class="col-md-10">
+                                                    <select class="form-control" name="ddlconfiguredby" id="ddlconfiguredby" tabindex="4" multiple></select>
                                                 </div>
                                             </div>
 
@@ -371,6 +372,11 @@
             }
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
             fetchMenuItemsFromSession(7, 65);
+            $('#ddlconfiguredby').select2({
+                // allSelectedText: 'All',
+                placeholder: "Select Users",
+                allowClear: true
+            });
         });
     </script>
 
