@@ -6,6 +6,19 @@ $(document).ready(function () {
     BindPurchaseOrg();
 
 });
+$('#ddlconfiguredby').on('change', function (e) {
+
+    if (this.value != '' && this.value == 0) {
+        $('#ddlconfiguredby').select2({
+            placeholder: "Select Users",
+            allowClear: true
+        });
+        $('#ddlconfiguredby').select2('data', null)
+        $(this).select2('val', 0);
+    }
+
+
+});
 var form = $('#frmbidsummaryreport');
 function formvalidate() {
 
@@ -51,58 +64,32 @@ function formvalidate() {
         submitHandler: function (form) {
             var dtfrom = '', dtto = '', subject = 'X-X';
             if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-                dtfrom = '01/01/1900';
+                dtfrom = new Date(2000, 01, 01);
+
             }
             else {
-                dtfrom = $("#txtFromDate").val()
+                var dateParts = $("#txtFromDate").val().split("/");
+                dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             }
 
             if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
-                var today = new Date();
-                // dtto=moment(today).format("MM/dd/yyyy");
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0');
-                var yyyy = today.getFullYear();
-                today = mm + '/' + dd + '/' + yyyy;
-                dtto = today;
+                //dtto = new Date();
+                dtto = null;
+
             }
             else {
-                dtto = $("#txtToDate").val()
+                var dateParts = $("#txtToDate").val().split("/");
+                dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+                dtto.setDate(dtto.getDate() + 1);
             }
             if (jQuery("#txtnfasubject").val() != null && jQuery("#txtnfasubject").val() != "") {
                 subject = jQuery("#txtnfasubject").val()
             }
 
-            //if ($('#ddlBidtype option:selected').val() == 7) {
-            // if ($('#ddlreporttype option:selected').val() == "List" || $('#ddlreporttype').val() == "ListRFQ") {
+
             fetNFAReport(dtfrom, dtto, subject);
             $('#tblNFASummary_wrapper').removeClass('hide');
             $('#tblNFASummary').removeClass('hide');
-            // $('#tblVendorSummarydetails').addClass('hide');
-            // $('#tblVendorSummarydetails_wrapper').addClass('hide');
-            //$('#tblVendorSummarySUmzation').addClass('hide');
-            //$('#tblVendorSummarySUmzation_wrapper').addClass('hide');
-            // }
-
-            //else if ($('#ddlreporttype').val() == "SDetail") {
-            //    fetchBidVendorSummaryDetail(dtfrom, dtto, subject);
-            //    $('#tblVendorSummary').addClass('hide');
-            //    $('#tblVendorSummary_wrapper').addClass('hide');
-            //    $('#tblVendorSummarydetails').removeClass('hide');
-            //    $('#tblVendorSummarydetails_wrapper').removeClass('hide');
-            //    $('#tblVendorSummarySUmzation').addClass('hide');
-            //    $('#tblVendorSummarySUmzation_wrapper').addClass('hide');
-            //}
-            //else {
-            //    fetchBidVendorSummarySummarization(dtfrom, dtto, subject);
-            //    $('#tblVendorSummary').addClass('hide');
-            //    $('#tblVendorSummary_wrapper').addClass('hide');
-            //    $('#tblVendorSummarydetails').addClass('hide');
-            //    $('#tblVendorSummarydetails_wrapper').addClass('hide');
-            //    $('#tblVendorSummarySUmzation').removeClass('hide');
-            //    $('#tblVendorSummarySUmzation_wrapper').removeClass('hide');
-            //}
-            //}
 
         }
 
@@ -188,12 +175,18 @@ function fetchregisterusers() {
         success: function (data) {
 
             jQuery("#ddlconfiguredby").empty();
+            jQuery("#ddlconfiguredby").prop('disabled', false)
 
-            if (data[0].role.toLowerCase() != "user") {
-                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+            if (data[0].roleName.toLowerCase() == "reports" || data[0].role.toLowerCase() == "administrator") {
+
+                jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val("0").html("All"));
             }
             for (var i = 0; i < data.length; i++) {
                 jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
+            }
+            if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
+                jQuery("#ddlconfiguredby").select2('val', data[0].userID);
+                jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -209,20 +202,41 @@ function fetchregisterusers() {
     });
 }
 function fetNFAReport(dtfrom, dtto, subject) {
+    var result = '';
+    if ($("#ddlconfiguredby").select2('data').length) {
+        $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            result = result + (item.id) + ','
 
-    var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
-    
+        });
+        result = result.slice(0, -1)
+    }
+    //var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+    var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/";
+    var Tab1Data = {
+        "EventID": parseInt(jQuery("#ddlEventType option:selected").val()),
+        "OrgID": parseInt(jQuery("#ddlPurchaseOrg option:selected").val()),
+        "GroupID": parseInt(jQuery("#ddlPurchasegroup option:selected").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "NFASubject": subject,
+        "FinalStatus": jQuery("#ddlNFAstatus option:selected").val(),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": result == '' ? '0' : result,
+
+    };
+    console.log(JSON.stringify(Tab1Data))
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         url: url,
-
+        data: JSON.stringify(Tab1Data),
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
+
             jQuery("#tblNFASummary").empty();
             jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>NFA ID</th><th class='bold'>NFA Subject</th><th class='bold'>Configured By</th><th class='bold'>NFA Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>NFA Status</th></tr></thead>");
             if (data.length > 0) {
@@ -233,14 +247,8 @@ function fetNFAReport(dtfrom, dtto, subject) {
                     var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
                     str += "<td>" + data[i].nfaSubject + "</td>";
                     str += "<td>" + data[i].createdBy + "</td>";
-                    //var _bidDate = fnConverToLocalTime
-                    //var datearray = BidData[i].bidDate.split("/");
-
-                    //BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                     BidDate = fnConverToLocalTime(data[i].updatedOn);
-                    //var _bidTime = moment(BidDate).format('HH:mm');
-                    //var _bidTime = fnReturnTimeFromDate(BidDate);
-
+                    
                     str += "<td>" + BidDate + "</td>";
                     str += "<td>" + data[i].aging + "</td>";
                     str += "<td>" + data[i].nfaCurrency + "</td>";

@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
@@ -147,8 +147,8 @@ var Login = function () {
 
     function validateUser() {
 
-        // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
 
