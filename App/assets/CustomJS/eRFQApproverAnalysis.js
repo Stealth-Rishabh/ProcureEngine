@@ -1633,7 +1633,7 @@ function ApprovalCommercialApp() {
         "AwardQuery": ''
     };
 
-
+    //abheedev bug 444
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
@@ -1644,11 +1644,14 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            bootbox.alert("Transaction Successful..", function () {
+            
+            alert("transaction successful")
+           
+            function done() {
                 window.location = "index.html";
                 return false;
-            });
-
+            }
+            done()
         },
         error: function (xhr, status, error) {
 

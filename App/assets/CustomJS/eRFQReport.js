@@ -85,12 +85,12 @@ function RFQFetchQuotedPriceReport() {
                 else {
                     $('#tblvendorremarks').addClass('hide')
                 }
-
+                //abheedev bug 480
                 for (var i = 0; i < data[0].quotesDetails.length; i++) {
 
-                    var taxHRTextinc = stringDivider("Landed Unit Price (Without GST)", 12, "<br/>\n");
-                    var taxHRTextEx = stringDivider("Landed Unit Price (With GST)", 12, "<br/>\n");
-                    var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 12, "<br/>\n");
+                    var taxHRTextinc = stringDivider("Unit Price (Without GST)", 18, "<br/>\n");
+                    var taxHRTextEx = stringDivider("Unit Price (With GST)", 18, "<br/>\n");
+                    var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 18, "<br/>\n");
                     var totalamount = 0.0;
                     var bsicpercentageofGST = 0.0;
                     var _basicPrice = data[0].quotesDetails[i].rfqVendorPricewithoutGST;
