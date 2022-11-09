@@ -193,7 +193,7 @@ function ParametersQuery() {
 
     }
     resetfun()
-
+   
 }
 
 function editvalues(icount) {
@@ -236,10 +236,11 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
-
+        
         if (rowCount >= 0) {
             $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
+                console.log(this_row)
                 index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
                 var deliverylocation = $.trim($("#delivery" + index).text()).replace(/'/g, "");
@@ -257,17 +258,20 @@ function insPoDetails() {
                 PriceDetails.push(items)
             })
         }
-        console.log(PriceDetails)
+        
         //481
-        debugger;
-        rowCount = 0;
+       debugger
+        rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
-        rowCount = jQuery("tblapprovers>tbody> tr").length;
+       
+      
         if (rowCount >= 0) {
             $("#tblapprovers tr:gt(0)").each(function (index) {
+              
                 var this_row = $(this);
-                index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
-
+               
+                index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+                index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
                 ccEmails = $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
@@ -290,7 +294,7 @@ function insPoDetails() {
         };
 
 
-        //console.log(JSON.stringify(Tab2data))
+        
         jQuery.ajax({
 
             type: "POST",
