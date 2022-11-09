@@ -140,15 +140,7 @@ var FormWizard = function () {
                         // required: true,
                         maxlength: 50
                     },
-                    //txtItemRemarks: {
-                    //    required: true,
-                    //    maxlength: 200
-                    //},
-                    //txttat: {
-                    //    digits: true,
-                    //    maxlength: 4,
-                    //    //notEqualTo: 0
-                    //},
+                    
                     txtPono: {
                         maxlength: 20,
                         /* required: true*/
@@ -892,9 +884,9 @@ function fnsavetermscondition(isbuttonclick) {
             if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
-            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
-                checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
-            }
+            //if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
+            //    checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            //}
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
     });
