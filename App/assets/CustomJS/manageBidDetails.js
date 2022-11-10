@@ -2812,11 +2812,8 @@ function fnTimeUpdate() {
 }
 
 function fnTimeUpdateClosedBid(isMailSend) {
-    debugger;
-    alert($('#txtbidDate').val().replace('-', ''))
-    // var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-    var StartDT = new Date($('#txtbidDate').val().replace('-', '')).toLocaleString("en-IN", { timeZone: sessionStorage.getItem('preferredtimezone') });
-    alert(StartDT)
+    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    //var StartDT = new Date($('#txtbidDate').val().replace('-', '')).toLocaleString("en-IN", { timeZone: sessionStorage.getItem('preferredtimezone') });
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var finalStatus = "";
     if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
@@ -2857,8 +2854,6 @@ function fnTimeUpdateClosedBid(isMailSend) {
 }
 
 function editValues(divName, rowid) {
-    //alert(sessionStorage.getItem("hdnbidtypeid"));
-    debugger;
     var isEditable = true;
     var extval = -1;
     if (rowid == 'New') {
@@ -3285,8 +3280,6 @@ function fnclearmsz(id) {
 function formSubmitEditEvent() {
 
     var Data = {};
-    //debugger;
-    //(isNewLineItem);
     if (isNewLineItem == 'Y') {
         addrowfield()
 
@@ -3455,8 +3448,7 @@ function addrowfield() {
     var pricereductionamount = 0;
     var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
     //alert(jQuery("#txtbidDatePrevtab_0").html());
-    //debugger;
-
+    
     if ($('#txttargetprice').val() != '') {
         targetprice = $('#txttargetprice').val();
     }
@@ -3894,8 +3886,6 @@ function editrowfields() {
 
         }
     }
-    //alert(JSON.stringify(Data))
-    // console.log(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         jQuery.ajax({
@@ -4140,7 +4130,6 @@ function confirmEditEventAction(eventType) {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     if (Data != '' || Data != null) {
-        //alert(eventType)
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -4500,7 +4489,6 @@ function UpdShowL1Price() {
         //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
 
-    //alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
@@ -4789,7 +4777,6 @@ function saveBidSurrogate() {
         "EncryptedLink": "BidID=" + sessionStorage.getItem('hdnbid'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-    // alert(JSON.stringify(Data))
     if (Data != '' || Data != null) {
 
         jQuery.ajax({
@@ -4981,7 +4968,6 @@ function submitprebidprice() {
 
     }
 
-    // alert(flag)
     if (flag == true) {
         if (sessionStorage.getItem("hdnbidtypeid") == 7) {
             fnsubmitRAPrePrices()
@@ -5006,7 +4992,7 @@ var BlockedItemsquery = "";
 var BlockQuery = "";
 var flagBlock = "T";
 function fnsubmitRAPrePrices() {
-
+    var validateSubmit = false;
     var singleQuery = "";
     var quote = 0;
     HeaderQuery = '';
@@ -5024,7 +5010,6 @@ function fnsubmitRAPrePrices() {
         }
         i++;
     })
-    //alert(flag)
     if (flagBlock == "T") {
         i = 0;
         $("#tblprebidvendors tr:gt(0)").each(function () {
@@ -5049,6 +5034,13 @@ function fnsubmitRAPrePrices() {
             i++;
         })
         if (HeaderQuery != "" && HeaderQuery != null) {
+            validateSubmit = true;
+        }
+        if (BlockQuery != "" && BlockQuery != null) {
+            validateSubmit = true;
+        }
+        //if (HeaderQuery != "" && HeaderQuery != null
+        if (validateSubmit) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
                 "HeaderDetails": HeaderQuery,
@@ -5056,8 +5048,6 @@ function fnsubmitRAPrePrices() {
                 "UserID": sessionStorage.getItem('UserID'),
                 "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
             };
-            // alert(JSON.stringify(Data))
-            // console.log(JSON.stringify(Data))
             jQuery.ajax({
 
                 type: "POST",
@@ -5132,7 +5122,6 @@ function fnsubmitCAPrePrices() {
             }
             i++;
         })
-        // console.log(HeaderQuery)
         if (HeaderQuery != "" & HeaderQuery != null) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
@@ -5141,8 +5130,7 @@ function fnsubmitCAPrePrices() {
                 "UserID": sessionStorage.getItem('UserID'),
                 "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
             };
-            // alert(JSON.stringify(Data))
-
+            
             jQuery.ajax({
 
                 type: "POST",
