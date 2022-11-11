@@ -2,7 +2,6 @@ var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 var biddatetime = getCurrentDateddmmyyyy();
 var currentdate = new Date();
-//$('#txtreopenDate').val(biddatetime);
 $('#txreopenTime').val('')
 function thouandseparator() {
     $(".thousandseparated").inputmask({
@@ -1583,7 +1582,7 @@ function fetchallexportdetails() {
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
     }
-    //debugger;
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1594,10 +1593,6 @@ function fetchallexportdetails() {
         dataType: "json",
         success: function (BidData) {
             var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
-            //var localBidTime = BidData[0].bidDetails[0].bidTime
-            //var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate);
-            //var localBidTime = fnConverToLocalTime(BidData[0].bidDetails[0].bidTime);
-
             $('#BidPreviewDiv').show()
             jQuery('#mapedapproverPrev').html('');
             jQuery('#mapedapproverPrevtab_0').html('');
@@ -1605,14 +1600,8 @@ function fetchallexportdetails() {
             jQuery('#txtBidSubjectPrevtab_0').html(BidData[0].bidDetails[0].bidSubject)
             jQuery('#txtbiddescriptionPrev').html(BidData[0].bidDetails[0].bidDetails)
             jQuery('#txtbiddescriptionPrevtab_0').html(BidData[0].bidDetails[0].bidDetails)
-            //jQuery('#txtbidDatePrev').html(BidData[0].bidDetails[0].bidDate)
-            //jQuery('#txtbidDatePrevtab_0').html(BidData[0].bidDetails[0].bidDate)
-            //jQuery('#txtbidTimePrevtab_0').html(BidData[0].bidDetails[0].bidTime)
-            //jQuery('#txtbidTimePrev').html(BidData[0].bidDetails[0].bidTime)
             jQuery('#txtbidDatePrev').html(localBidDate)
             jQuery('#txtbidDatePrevtab_0').html(localBidDate)
-            //jQuery('#txtbidTimePrevtab_0').html(localBidTime)
-            //jQuery('#txtbidTimePrev').html(localBidTime)
             jQuery("#dropCurrencyPrev").html(BidData[0].bidDetails[0].currencyName)
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
@@ -1848,7 +1837,6 @@ function fetchallexportdetails() {
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Starting Price</th><th>Last Invoice Price</th><th>Floor/ Min. Price</th><th>Price Decrement Frequency</th><th>Price Decrement Amount</th><th class=hide>Show H1 Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
                     var counterReopenbtn = 1;
-                    //debugger;
                     for (var i = 0; i < BidData[0].bidSeaExportDetails.length; i++) {
                         var decrementon = ''
 
@@ -2040,7 +2028,6 @@ function fetchallexportdetails() {
 
                 }
             }
-            //debugger;
             if (sessionStorage.getItem('hdnbidtypeid') == 6) {
                 $('#txtBidType').text("Forward Auction");
                 $('#hdnClosingval').val('').val(BidData[0].bidDetails[0].bidForID)
@@ -2615,8 +2602,7 @@ function DateandtimevalidateForBidOpen(ismailsend) {
 
     }
     else {
-        debugger;
-        var BidDate = $('#txtbidDate').val().replace('-', '');
+        var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
         Dateandtimevalidate(BidDate, ismailsend, '');
 
     }
@@ -2645,7 +2631,6 @@ function Dateandtimevalidate(biddate, ismailsend, DateopenFor) {
                     fnupdateStaggerReopendatetime();
                 }
                 else {
-                    debugger;
                     fnTimeUpdateClosedBid(ismailsend);
                 }
 
@@ -2682,9 +2667,8 @@ function fnpauseaction() {
     }
 
     else {
-        alert($('#txtreopenDate').val())
-        //   var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
-        var reopendtst = $('#txtreopenDate').val().replace('-', '');
+
+        var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
         Dateandtimevalidate(reopendtst, '', 'reopen');
     }
     jQuery.unblockUI();
@@ -2813,7 +2797,6 @@ function fnTimeUpdate() {
 
 function fnTimeUpdateClosedBid(isMailSend) {
     var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
-    //var StartDT = new Date($('#txtbidDate').val().replace('-', '')).toLocaleString("en-IN", { timeZone: sessionStorage.getItem('preferredtimezone') });
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var finalStatus = "";
     if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
@@ -2868,7 +2851,6 @@ function editValues(divName, rowid) {
         $("#btn-submit-datetime").show();
         $("#btn-submit-modal").hide();
         $("#" + divName).show();
-        //$("#txtinputbidTimePrevtab_0").val(jQuery("#txtbidTimePrevtab_0").html());
         $("#" + rowid).show();
         $("#txtinputBidDatePrevtab_0").val(jQuery("#txtbidDatePrevtab_0").html());
     }
@@ -3342,7 +3324,6 @@ function formSubmitEditEvent() {
             Data = {
 
                 "QueryString": showrank,
-
                 "QueryStringDT": 'NA',
                 "valType": "BAL",
                 "BidId": parseInt(sessionStorage.getItem('hdnbid')),
@@ -3448,7 +3429,8 @@ function addrowfield() {
     var pricereductionamount = 0;
     var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
     //alert(jQuery("#txtbidDatePrevtab_0").html());
-    
+    //debugger;
+
     if ($('#txttargetprice').val() != '') {
         targetprice = $('#txttargetprice').val();
     }
@@ -3543,7 +3525,6 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            //"BidStartDate": biddatetime,
             "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
@@ -3577,7 +3558,6 @@ function addrowfield() {
             "SeId": 0,
             "GST": parseFloat($('#txtGST').val()),
             "BidForId": parseInt(BidForID),
-            //"BidStartDate": biddatetime,
             "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
         }
@@ -3610,7 +3590,6 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            //"BidStartDate": biddatetime,
             "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
@@ -3643,7 +3622,6 @@ function addrowfield() {
             "SeId": 0,
             "GST": 0,
             "BidForId": parseInt(BidForID),
-            //"BidStartDate": biddatetime,
             "BidStartDate": startDateTime,
             "BidDuration": parseInt(_Totalbiddurationfordutch)
 
@@ -4130,6 +4108,7 @@ function confirmEditEventAction(eventType) {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     if (Data != '' || Data != null) {
+        //alert(eventType)
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ResetInviteVendor/SendEmailConfirmationEditBidDetails/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -4137,8 +4116,6 @@ function confirmEditEventAction(eventType) {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-                // if (parseInt(data) == 1) {
                 bootbox.alert("An email notification has been sent to all participants invited for the bid.", function () {
                     window.location = sessionStorage.getItem('HomePage');
                     return false;
@@ -4244,12 +4221,6 @@ function editShowStartPrice(seId, rowid) {
 }
 function editbidstartprice(seId, rowid) {
     $("#hddnbidstartprice").val(seId);
-    //if (BidForID == 81 || BidForID == 83) {
-    //   $("#txtbidstartpricetab_0").val($.trim($("#" + rowid).find("td:eq(7)").text()))
-    //}
-    //else {
-    //    $("#txtbidstartpricetab_0").val($.trim($("#" + rowid).find("td:eq(7)").text()))
-    //}
     $("#txtbidstartpricetab_0").val($.trim($("#" + rowid).find("td:eq(7)").text()))
     $("#editbidstartprice").modal('show');
 }
@@ -4312,7 +4283,6 @@ function updMinDecreament() {
             "UserID": sessionStorage.getItem('UserID')
 
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
         var Data = {
@@ -4326,7 +4296,6 @@ function updMinDecreament() {
             "UserID": sessionStorage.getItem('UserID')
 
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
 
     if (Data != '' || Data != null) {
@@ -4440,7 +4409,6 @@ function UpdShowL1Price() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 6) {
         var valtype = "FAL1";
@@ -4455,7 +4423,6 @@ function UpdShowL1Price() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 9) {
         var valtype = "FFH1";
@@ -4470,7 +4437,6 @@ function UpdShowL1Price() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
         var valtype = "CAL1";
@@ -4486,9 +4452,7 @@ function UpdShowL1Price() {
             "DecreamentOn": ''
 
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
-
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
@@ -4535,8 +4499,6 @@ function UpdShowStartPrice() {
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
 
         }
-
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 6) {
         var valtype = "FAStartP";
@@ -4551,7 +4513,6 @@ function UpdShowStartPrice() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 9) {
         var valtype = "FFStartP";
@@ -4566,7 +4527,6 @@ function UpdShowStartPrice() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else {
         var valtype = "CAStartP";
@@ -4581,7 +4541,6 @@ function UpdShowStartPrice() {
             "UserID": sessionStorage.getItem('UserID')
 
         }
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
 
     if (Data != '' || Data != null) {
@@ -4626,7 +4585,6 @@ function updBidStartPrice() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 7 && BidForID == 82) {
         var valtype = "BSPRAD";
@@ -4641,7 +4599,6 @@ function updBidStartPrice() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 6) {
         var valtype = "BSPFA";
@@ -4656,7 +4613,6 @@ function updBidStartPrice() {
             "UserID": sessionStorage.getItem('UserID'),
             "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
         }
-        //URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateBidDetails/";
     }
     else if (sessionStorage.getItem('hdnbidtypeid') == 9) {
         var valtype = "BSPFF";
@@ -4685,7 +4641,6 @@ function updBidStartPrice() {
             "DecreamentOn": '',
             "UserID": sessionStorage.getItem('UserID')
         }
-        // URL = sessionStorage.getItem("APIPath") + "ResetInviteVendor/ManageUpdateCABidDetails/";
     }
     if (Data != '' || Data != null) {
 
@@ -4786,15 +4741,11 @@ function saveBidSurrogate() {
             data: JSON.stringify(Data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-                //if (parseInt(data) == 1) {
                 succsurrogate.show();
                 $('#spnsuccsurr').html("Data Successfully saved");
                 succsurrogate.fadeOut(6000);
                 App.scrollTo(succsurrogate, -200);
                 clearSurrogateForm();
-                //  }
-
                 jQuery.unblockUI();
             },
             error: function (xhr, status, error) {
@@ -4938,7 +4889,6 @@ function CheckTerms(event, ID) {
         $('#spancheckedTerms' + ID).addClass("checked")
         $("#chkTerms" + ID).attr('checked', 'checked')
         $('#remarks' + ID).addClass('hide')
-        // $('#remarks' + ID).val('')
         $('#txtpreprice' + ID).removeAttr('disabled')
     }
 
@@ -4968,6 +4918,7 @@ function submitprebidprice() {
 
     }
 
+    // alert(flag)
     if (flag == true) {
         if (sessionStorage.getItem("hdnbidtypeid") == 7) {
             fnsubmitRAPrePrices()
@@ -5014,8 +4965,6 @@ function fnsubmitRAPrePrices() {
         i = 0;
         $("#tblprebidvendors tr:gt(0)").each(function () {
             var this_row = $(this);
-            // quote = $.trim(this_row.find('td:eq(6) input[type="tel"]').val())
-
             quote = $.trim($('#txtpreprice' + i).val())
             if ($("#chkTerms" + i).prop('checked') == false && $('#remarks' + i).val() != "" && $('#vid' + i).text() != "" && $('#seid' + i).text() != "") {
                 BlockQuery = BlockQuery + 'exec PE.BidItemsVendorBlocked ';
@@ -5025,9 +4974,6 @@ function fnsubmitRAPrePrices() {
                 singleQuery = "";
 
                 singleQuery = $.trim($('#seid' + i).text()) + '~' + removeThousandSeperator(quote);
-                // singleQuery = 'insert into PE.VendorSeaExportParticipationDetails(SEHeaderID,BidID,SubmissionTime,VendorID,seid,QuotedPrice) values(0,'
-                // singleQuery = singleQuery + sessionStorage.getItem('hdnbid') + ",[PE].FN_Now()," + $.trim(this_row.find('td:eq(0)').html()) + "," + $.trim(this_row.find('td:eq(1)').html()) + "," + removeThousandSeperator(quote) + ")";
-
                 HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdSeaExport ';
                 HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "','" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'N','Y' ; "
             }
@@ -5039,7 +4985,6 @@ function fnsubmitRAPrePrices() {
         if (BlockQuery != "" && BlockQuery != null) {
             validateSubmit = true;
         }
-        //if (HeaderQuery != "" && HeaderQuery != null
         if (validateSubmit) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
@@ -5059,14 +5004,10 @@ function fnsubmitRAPrePrices() {
                 data: JSON.stringify(Data),
                 dataType: "json",
                 success: function (data) {
-
-                    //if (data == "1") {
                     successprebid.show();
                     $('#succpreprice').html('Pre-Bid RA Prices updated successfully..');
                     successprebid.fadeOut(5000);
                     fetchItemsforPreBidPrices(sessionStorage.getItem('hdnbid'), sessionStorage.getItem("hdnbidtypeid"), sessionStorage.getItem('hdbbidForID'));
-                    // }
-
                     jQuery.unblockUI();
                 },
                 error: function (xhr, status, error) {
@@ -5090,6 +5031,7 @@ function fnsubmitRAPrePrices() {
     }
 }
 function fnsubmitCAPrePrices() {
+    var validateSubmit = false;
     BlockQuery = "";
     var i = 0
 
@@ -5122,7 +5064,13 @@ function fnsubmitCAPrePrices() {
             }
             i++;
         })
-        if (HeaderQuery != "" & HeaderQuery != null) {
+        if (HeaderQuery != "" && HeaderQuery != null) {
+            validateSubmit = true;
+        }
+        if (BlockQuery != "" && BlockQuery != null) {
+            validateSubmit = true;
+        }
+        if (validateSubmit) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
                 "HeaderDetails": HeaderQuery,
@@ -5130,7 +5078,6 @@ function fnsubmitCAPrePrices() {
                 "UserID": sessionStorage.getItem('UserID'),
                 "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid'))
             };
-            
             jQuery.ajax({
 
                 type: "POST",
@@ -5142,14 +5089,10 @@ function fnsubmitCAPrePrices() {
                 data: JSON.stringify(Data),
                 dataType: "json",
                 success: function (data) {
-
-                    //if (data == "1") {
                     successprebid.show();
                     $('#succpreprice').html('Pre-Bid Prices updated successfully..');
                     successprebid.fadeOut(5000);
                     fetchItemsforPreBidPrices(sessionStorage.getItem('hdnbid'), sessionStorage.getItem("hdnbidtypeid"), sessionStorage.getItem('hdbbidForID'));
-                    // }
-
                     jQuery.unblockUI();
                 },
                 error: function (xhr, status, error) {
@@ -5173,6 +5116,7 @@ function fnsubmitCAPrePrices() {
     }
 }
 function fnsubmitFAPrePrices() {
+    var validateSubmit = false;
     HeaderQuery = '';
     BlockQuery = "";
     var i = 0
@@ -5192,8 +5136,6 @@ function fnsubmitFAPrePrices() {
         i = 0;
         $("#tblprebidvendors tr:gt(0)").each(function () {
             var this_row = $(this);
-
-            // quote = $.trim(this_row.find('td:eq(6) input[type="tel"]').val())
             quote = $.trim($('#txtpreprice' + i).val())
             if ($("#chkTerms" + i).prop('checked') == false && $('#remarks' + i).val() != "" && $('#vid' + i).text() != "" && $('#seid' + i).text() != "") {
                 BlockQuery = BlockQuery + 'exec PE.BidItemsVendorBlocked ';
@@ -5205,7 +5147,13 @@ function fnsubmitFAPrePrices() {
             }
             i++;
         })
-        if (HeaderQuery != "" & HeaderQuery != null) {
+        if (HeaderQuery != "" && HeaderQuery != null) {
+            validateSubmit = true;
+        }
+        if (BlockQuery != "" && BlockQuery != null) {
+            validateSubmit = true;
+        }
+        if (validateSubmit) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
                 "HeaderDetails": HeaderQuery,
@@ -5227,14 +5175,10 @@ function fnsubmitFAPrePrices() {
                 data: JSON.stringify(Data),
                 dataType: "json",
                 success: function (data) {
-
-                    // if (parseInt(data) == 1) {
                     successprebid.show();
                     $('#succpreprice').html('Pre-Bid Prices updated successfully..');
                     successprebid.fadeOut(5000);
                     fetchItemsforPreBidPrices(sessionStorage.getItem('hdnbid'), sessionStorage.getItem("hdnbidtypeid"), sessionStorage.getItem('hdbbidForID'));
-                    // }
-
                     jQuery.unblockUI();
                 },
                 error: function (xhr, status, error) {
@@ -5280,27 +5224,6 @@ function fnNoUpload() {
 
 
 $("#btninstructionexcelparameter").click(function () {
-    //var ErrorUOMMsz = '<ul class="col-md-3 text-left">';
-    //var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
-    //var quorem = (allUOM.length / 2) + (allUOM.length % 2);
-    //for (var i = 0; i < parseInt(quorem); i++) {
-    //    ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uom + '</li>';
-    //    var z = (parseInt(quorem) + i);
-    //    if (z <= allUOM.length - 1) {
-    //        ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uom + '</li>';
-    //    }
-    //}
-    //ErrorUOMMsz = ErrorUOMMsz + '</ul>'
-    //ErrorUOMMszRight = ErrorUOMMszRight + '</ul>'
-
-
-    //$("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
-    //if ($('#ddlbidclosetype').val() == "S") {
-    //    $('#libidduraion').show()
-    //}
-    //else {
-    //    $('#libidduraion').hide()
-    //}
     $("#instructionsDivParameter").show();
     $("#instructionSpanParameter").show();
 });
@@ -5324,7 +5247,6 @@ function handleFileparameter(e) {
             sheet_name_list.forEach(function (y) { /* iterate through sheets */
                 //Convert the cell value to Json
                 var sheet1 = workbook.SheetNames[0];
-                //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
                 var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
                 if (roa.length > 0) {
                     result = roa;
@@ -5375,25 +5297,6 @@ function printdataSeaBid(result) {
             else {
 
                 $("<tr><td id=bExcelid" + i + ">" + result[i].BidID + "</td><td id=videxcel" + i + ">" + result[i].VendorID + "</td><td id=vendorexcel" + i + ">" + result[i].Vendor + "</td><td id=seisexcel" + i + ">" + result[i].ItemID + "</td><td>" + result[i].ItemName + "</td><td id=txtpriceexcel" + i + ">" + result[i].Price + "</td></tr>").appendTo("#temptableForExcelDataparameter");
-                /* var arr = $("#temptableForExcelDataparameter tr");
-   
-                   $.each(arr, function (i, item) {
-                       var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
-   
-                       seid = currIndex.find("td:eq(1)").text();
-                       price = currIndex.find("td:eq(3)").text();
-                       $(this).nextAll().each(function (x, inItem) {
-   
-                           //if (matchText === $(this).find("td:eq(1)").text().toLowerCase()) {
-                           if (seid === $(this).find("td:eq(1)").text()) {
-                               if (price == $(this).find("td:eq(3)").text() && $(this).find("td:eq(3)").text() != '' && x != 0) {
-                                   $(this).remove();
-                                   st = 'false'
-                                   ErrorMszDuplicate = ErrorMszDuplicate + ' already quoted by someone of Item no ' + (i + 1) + ' . Item will not insert.!<BR>'
-                               }
-                           }
-                       });
-                   });*/
             }
         } // for loop ends
     }
