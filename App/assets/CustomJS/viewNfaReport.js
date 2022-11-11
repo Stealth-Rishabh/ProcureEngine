@@ -394,11 +394,11 @@ function FetchRecomendedVendor() {
         dataType: "json",
         success: function (data) {
             $('#tblremarksapprover').empty()
-
+            $('#tblNFaHistory').empty()
             if (data.length > 0) {
                 $('#divforapprovalprocess').show()
                 $('#tblremarksapprover').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-
+                $('#tblNFaHistory').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
                 if (AppStatus == 'Reverted') {
                     jQuery("#lblrevertedComment").text(data[0].remarks);
                     jQuery("#RevertComment").show();
@@ -424,13 +424,13 @@ function FetchRecomendedVendor() {
                     $('#frmdivremarksapprover').removeClass('col-md-12');
                     $('#frmdivremarksapprover').addClass('col-md-6');
                     for (var i = 0; i < data.length; i++) {
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblremarksapprover,#tblNFaHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                     }
                     $('#frmdivapprove').show()
                 }
             }
             else {
-                $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
+                $('#tblapprovalprocess,#tblNFaHistory').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
             jQuery.unblockUI();
         },
