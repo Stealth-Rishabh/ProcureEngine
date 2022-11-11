@@ -1,4 +1,4 @@
-var idx = 0;
+﻿var idx = 0;
 var allUsers = [];
 $(document).ready(function () {
 
@@ -67,7 +67,7 @@ function fetchRegisterUser() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-           
+
             if (data.length > 0) {
 
                 allUsers = data;
@@ -86,7 +86,7 @@ function fetchRegisterUser() {
     });
 
 }
-//abheedev backlog 471
+//abheedev bug 385
 var nfaid
 
 function GetOverviewmasterbyId(idx) {
@@ -96,9 +96,9 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-           
+
             nfaid = res.result[0].nfaID
-           
+
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
                     $(".clsHide").hide();
@@ -112,7 +112,7 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-                $("#lblDetailsdesc").html("<b>Descrition:</b>");
+               
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
@@ -1239,14 +1239,29 @@ function DisableActivityRecall() {
     });
 }
 
-// abheedev backlog 471
-$('#btnpdf').click(function () {
+
+$('#printed_by').html(sessionStorage.getItem('UserName'));
+function getCurrenttime() {
+
+    postfix = new Date()
+
+    $('#printed_on').html(postfix);
+}
+
+
+
+
+function saveAspdf() {
+ 
+    var pdf = new jsPDF('l', 'pt', 'a0');
+    var options = {
+        pagesplit: true
+    };
+    pdf.addHTML(document.body, options, function () {
+        pdf.save('nfareport.pdf');
+       window.close();
+
+    });
+
    
-
-    var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
-    window.open("viewNfaReport.html?param=" + encrypdata, "_blank")
-})
-
-
-
-
+}
