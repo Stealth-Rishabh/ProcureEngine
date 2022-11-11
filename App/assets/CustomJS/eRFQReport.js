@@ -50,7 +50,7 @@ function fetchReguestforQuotationDetails() {
     });
 
 }
-
+var verArray = [];
 function RFQFetchQuotedPriceReport() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -85,12 +85,13 @@ function RFQFetchQuotedPriceReport() {
                 else {
                     $('#tblvendorremarks').addClass('hide')
                 }
-                //abheedev bug 480
+
                 for (var i = 0; i < data[0].quotesDetails.length; i++) {
 
                     var taxHRTextinc = stringDivider("Unit Price (Without GST)", 18, "<br/>\n");
                     var taxHRTextEx = stringDivider("Unit Price (With GST)", 18, "<br/>\n");
                     var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 18, "<br/>\n");
+
                     var totalamount = 0.0;
                     var bsicpercentageofGST = 0.0;
                     var _basicPrice = data[0].quotesDetails[i].rfqVendorPricewithoutGST;
@@ -236,7 +237,15 @@ function RFQFetchQuotedPriceReport() {
                     else {
                         version = sessionStorage.getItem('RFQVersionId');
                     }
+
+                    debugger;
+                    if (data[0].attachments[i].rfqVersionId != null || data[0].attachments[i].rfqVersionId != '' || data[0].attachments[i].rfqVersionId != 'undefined') {
+                        version = data[0].attachments[i].rfqVersionId
+
+                    }
+                    verArray[i] = version;
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
+                    //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
                 }
             }
@@ -264,13 +273,17 @@ function RFQFetchQuotedPriceReport() {
     });
 
 }
-function DownloadFileVendor(aID) {
+function DownloadFileVendor(aID, versionId) {
+    debugger;
+    var arrelement = aID.id.replace('attchvendor', '')
+    arrelement = parseInt(arrelement);
     if (sessionStorage.getItem('RFQVersionId') == 99) {
         version = max;
     }
     else {
         version = sessionStorage.getItem('RFQVersionId');
     }
+    //version = verArray.at(arrelement);
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + sessionStorage.getItem('hddnVendorId') + '/' + version);
 }
 function GetQuestions() {

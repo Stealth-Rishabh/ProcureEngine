@@ -85,7 +85,7 @@
                     </ul>
 
                 </div>
-                <!--backlog 471 abheedev-->
+
                 <div class="row" id="downloadcontent">
 
                     <div class="col-md-12">
@@ -284,6 +284,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12 display-none" id="divforapprovalprocess">
+                        <div class="portlet box blue-hoki">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-bookmark-o"></i>NFA Approval History
+                                </div>
+                                <div class="tools hidden-xs">
+
+                                    <a href="javascript:;" class="collapse hidden-xs"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-10">
+                                                <table id="tblNFaHistory" class="table table-striped table-bordered table-hover">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12 hide" id="divQuery">
                         <div class="portlet box blue-hoki">
                             <div class="alert alert-danger" id="msgErrorquery" style='display: none;'>
@@ -470,7 +495,6 @@
                     </div>
 
                 </div>
-                <!--backlog 471 abheedev-->
             </div>
         </div>
     </div>
@@ -681,7 +705,6 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-
     <script src="assets/CustomJS/jspdf.debug.js"></script>
 
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>-->
@@ -700,10 +723,8 @@
 
     <script>
         jQuery(document).ready(function () {
-
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
-
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
