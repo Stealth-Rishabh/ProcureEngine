@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -30,6 +30,11 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+        * {
+            -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+            print-color-adjust: exact !important; /*Firefox*/
+        }
+
         input#file-excelparameter {
             position: fixed;
             top: -120px;
@@ -41,87 +46,68 @@
             justify-content: center;
             align-items: center;
         }
+
+        body {
+            font-family: Verdana, serif;
+           /* font-family: Garamond, serif !important;*/
+        }
+        
+
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
-    <div class="page-header navbar navbar-fixed-top">
-        <div class="page-header-inner">
-            <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
-                </a>
 
-            </div>
-            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            </a>
-            <div class="top-menu">
-                <ul class="nav navbar-nav pull-right">
-                    <li class="dropdown dropdown-user">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                           data-hover="dropdown" data-close-others="true">
-
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
+    
     <div class="clearfix">
     </div>
     <div class="page-container">
 
         <div class="page-content-wrapper">
             <div class="page-content">
-                <div class="page-bar">
-                    <ul class="page-breadcrumb">
-                        <li id="liHome"></li>
-                    </ul>
-
+                <div class="row" style="text-align: center;">
+                    <h1>
+                        <b>NFA Summary</b>
+                    </h1>
                 </div>
-                <!--backlog 471 abheedev-->
-                <div class="row" id="downloadcontent">
-
+               
+              
+                <div class="row">
                     <div class="col-md-12">
                         <div class="portlet box green-haze">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-edit"></i>NFA Request Summary
+                                    NFA Request Summary
                                 </div>
                                 <div class="tools">
                                     <span id="NFa_ConfiguredBy" class="align-right"></span>
-                                    <a href="javascript:;" class="collapse hidden-xs"></a>
                                 </div>
                             </div>
-                            <div class="portlet-body form" id="content">
+                            <div class="portlet-body form" >
                                 <div class="form-body">
+
                                     <div class="row">
+                                        
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="col-md-1 control-label" id="lbltitlesubject"><b>Subject:</b></label>
-                                                <label id="lbltitle" style="text-align:left" class="col-md-10 control-label">
+                                                <label id="lbltitle" style="text-align:left" class="col-md-4 control-label">
                                                 </label>
 
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row">
+                                        
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="col-md-1 control-label" id="lblDetailsdesc"></label>
-
-                                                <label id="lblDetails" style="text-align:left" class="col-md-10 control-label">
+                                                <label class="col-md-1 control-label" ><b>Description</b></label>
+                                                <label id="lblDetails" style="text-align:left" class="col-md-4 control-label">
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <br />
 
                                     <!--abheedev bug 385 start-->
                                     <!--backlog 286 abheedev-->
@@ -238,11 +224,11 @@
                         <div class="portlet box blue-hoki">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-gift"></i>NFA Details
+                                    NFA Details
                                 </div>
                                 <div class="tools hidden-xs">
                                     <label id="lblNFAID" class="control-label"></label>
-                                    <a href="javascript:;" class="collapse hidden-xs"></a>
+
                                 </div>
                             </div>
                             <div class="portlet-body">
@@ -263,12 +249,9 @@
                         <div class="portlet box blue-madison">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-file"></i>Attachment(s)
+                                    Attachment(s)
                                 </div>
-                                <div class="tools hidden-xs">
 
-                                    <a href="javascript:;" class="collapse hidden-xs"></a>
-                                </div>
                             </div>
                             <div class="portlet-body">
                                 <div class="row">
@@ -295,7 +278,7 @@
                                 </div>
                                 <div class="tools hidden-xs">
 
-                                    <a href="javascript:;" class="collapse hidden-xs"></a>
+
                                 </div>
                             </div>
                             <div class="portlet-body">
@@ -443,217 +426,22 @@
 
                     </div>
                 </div>
-                <div class="row" id="rowpdf">
-                    <div class="form-actions fluid" style="padding: 10px 5px;">
-                        <p class="display-none" id="PPrintBy"><label class="pull-left "><b>Print By :&nbsp;&nbsp;</b></label><label id="lblprintByname" class="control-label pull-left"></label></p>
-                        <p class="display-none" id="Pdate"> <label class="pull-right"><b>Date :&nbsp;&nbsp;</b></label><label id="lbldate" class="control-label pull-right"></label></p>
-                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
-
-                            <button id="btnExportToExcel" type="button" class="btn blue forbtnpause">
-                                Export To Excel
-                            </button>
-                            <button id="btnpdf" type="button" class="btn green forbtnpause">generate PDF</button>
-                            <a href="#inviteVendorModal" data-toggle="modal" id="btn_invite_vendors" class="btn green forbtnpause" onclick="FetchVenderNotInvited()">
-                                Invite Vendors
-                            </a>
-
-                            <button type="button" class="btn red forbtnpause" id="cancl_btn">
-                                <!--onclick="cancelBtnclick()"-->
-                                Cancel Bid
-                            </button>
-                            <button id="btnback" type="button" class="btn yellow" onclick="backButtonClick()">
-                                Back
-                            </button>
-
-                            <label></label>
-                        </div>
+                <div claass="row">
+                    <div class="col-md-6">
+                        <div style="width: auto; float: left;">Printed By: <span id="printed_by"></span></div>
+                        
                     </div>
-
-                </div>
-                <!--backlog 471 abheedev-->
-            </div>
-        </div>
-    </div>
-    <div class="page-footer">
-        <div class="page-footer-inner">
-            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
-        </div>
-        <div class="scroll-to-top">
-            <i class="icon-arrow-up"></i>
-        </div>
-    </div>
-
-    <div id="delegatemodal" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="portlet box blue-hoki">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-reorder"></i>Delegate User
-                    </div>
-                    <div class="tools">
-                        <button type="button" class="close" id="ModelCloseBtn" data-dismiss="modal" aria-hidden="true"></button>
+                    <div class="col-md-6">
+                        
+                        <div style="width: auto; float: right;">Printed On: <span id="printed_on"></span></div>
                     </div>
                 </div>
-                <div class="portlet-body form">
-                    <div class="alert alert-danger display-hide" id="errordiv1">
-                        <button class="close" data-close="alert"></button>
-                        <span id="errormsg"></span>
-                    </div>
-                    <div class="alert alert-success display-hide" id="successdiv1">
-                        <button class="close" data-close="alert"></button>
-                        <span id="successmsg"></span>
-                    </div>
-                    <form id="delegateuser" class="form-horizontal" role="form">
-                        <div class="form-body">
-                            <div class="form-group">
-                                <input type="hidden" value="0" id="hdndelegateuserid" />
-                                <label class="control-label col-md-4">
-                                    Delegate to User <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Select Approver" id="txtApprover"
-                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtApprover" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">
-                                    Remarks<span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <textarea id="txtdelegate" name="txtdelegate" onkeyup="replaceQuoutesFromString(this)" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-actions fluid">
-                                <button type="submit" class="btn green col-lg-offset-5">
-                                    Submit
-                                </button>
-                                <button type="button" class="btn blue" data-dismiss="modal" aria-hidden="true">Close</button>
-
-                            </div>
-                        </div>
-                    </form>
+                <div class="clearfix">
                 </div>
             </div>
+
         </div>
     </div>
-    <div id="RaiseQuery" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog  modal-lg">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-reorder"></i>Raise Query
-                    </div>
-                    <div class="tools">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <form class="form-horizontal" role="form" id="frmMapApprover">
-                        <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorApp" style='display: none;'>
-                                <span id="spandanger"> </span>
-                            </div>
-                            <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
-                                <span id=""> </span>
-                            </div>
-                            <input type="hidden" id="hdnvendorid" value="0" />
-                            <div class="form-group">
-
-                                <div class="col-md-12">
-                                    <div class="inputgroup">
-                                        <div class="col-md-2">
-                                            &nbsp;
-                                        </div>
-                                    </div>
-                                    <div class="inputgroup">
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" id="txtquestions" maxlength="1000" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="col-md-1">
-                                        <button type="button" id="Addbtn1" onclick="addquestions()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="form-group" id="divapprover">
-                                <div class="col-md-12">
-                                    <table class="table table-striped table-bordered table-hover" id="tblquestions"></table>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-actions">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-offset-4">
-                                        <button type="button" class="btn green" id="btnTechquery" disabled onclick="submitQuery()"> Submit Query</button>
-                                        <button type="button" class="btn red" id="btnwithdraw" onclick="fnquerywithdaw()">Query withdraw</button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="recallNFA" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="portlet box blue-hoki">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-reorder"></i>Recall NFA
-                    </div>
-                    <div class="tools">
-                        <button type="button" class="close" id="ModelCloseBtn" data-dismiss="modal" aria-hidden="true"></button>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <div class="alert alert-danger display-hide" id="errordiv1">
-                        <button class="close" data-close="alert"></button>
-                        <span id="errormsg"></span>
-                    </div>
-                    <div class="alert alert-success display-hide" id="successdiv1">
-                        <button class="close" data-close="alert"></button>
-                        <span id="successmsg"></span>
-                    </div>
-                    <form id="frmadminbuttonsrecall" class="form-horizontal" role="form">
-                        <div class="form-body">
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">
-                                    Remarks<span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <textarea id="txtRemarksrecall" name="txtRemarksrecall" onkeyup="replaceQuoutesFromString(this)" class="form-control MaxLength" rows="4" maxlength="1000"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-actions fluid">
-                                <button type="submit" class="btn green col-lg-offset-5">
-                                    Submit
-                                </button>
-                                <button type="button" class="btn blue" data-dismiss="modal" aria-hidden="true">Close</button>
-
-                            </div>
-
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
 
 
 
@@ -696,7 +484,7 @@
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
 
     <script src="assets/CustomJS/Common.js"></script>
-    <script src="assets/CustomJS/NFAApproverReq.js"></script>
+    <script src="assets/CustomJS/viewNfaReport.js"></script>
 
     <script>
         jQuery(document).ready(function () {
@@ -729,11 +517,12 @@
             validateAppsubmitData();
 
             setCommonData();
+            getCurrenttime()
             fetchMenuItemsFromSession(1, 58);
-
-
-
-
+           
+            setTimeout(function () {
+                saveAspdf()
+            }, 3000)
         });
 
     </script>

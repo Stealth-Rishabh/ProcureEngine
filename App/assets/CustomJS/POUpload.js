@@ -193,7 +193,7 @@ function ParametersQuery() {
 
     }
     resetfun()
-
+   
 }
 
 function editvalues(icount) {
@@ -236,7 +236,7 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
-
+        
         if (rowCount >= 0) {
             $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
@@ -258,19 +258,20 @@ function insPoDetails() {
                 PriceDetails.push(items)
             })
         }
-
+        
         //481
-        debugger
+       debugger
         rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
-
-
+       
+      
         if (rowCount >= 0) {
             $("#tblapprovers tr:gt(0)").each(function (index) {
-
+              
                 var this_row = $(this);
-
+               
                 index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+                
                 ccEmails = $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
@@ -293,7 +294,7 @@ function insPoDetails() {
         };
 
 
-
+        
         jQuery.ajax({
 
             type: "POST",
@@ -1358,7 +1359,7 @@ jQuery("#txtApprover").keyup(function () {
 });
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
-
+       
         var data = allUsers;
         usernames = [];
         map = {};
@@ -1451,9 +1452,9 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         }
 
 
-
+        
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
-
+        
         //if (rowcount >= 1) {
         //    $("#tblapprovers tr:gt(0)").each(function (index) {
         //        var this_row = $(this);
@@ -1464,7 +1465,7 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         //        $.trim(this_row.find('td:eq(3)').html(index + 1));
         //    });
         //}
-
+        
     }
 }
 function deleteApprow(IDcount) {
@@ -1490,5 +1491,5 @@ function deleteApprow(IDcount) {
         });
     }
 
-
+    
 }

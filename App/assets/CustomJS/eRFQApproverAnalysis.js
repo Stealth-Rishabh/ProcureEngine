@@ -122,10 +122,11 @@ function getSummary(vendorid, version) {
 
 var bidopeningdate = new Date();
 var RFQBidType = '';
+var ShowPrice = "Y";
 var RFQEndDate = new Date();
 function fetchrfqcomprative() {
     var url = '';
-    var ShowPrice = "N";
+    ShowPrice = "N";
     //alert('1-'+ ShowPrice);
     if (VID != undefined && VID != '' && VID != null && VID.toLowerCase() != 'nfa') {
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
