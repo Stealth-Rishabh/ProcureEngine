@@ -119,10 +119,9 @@ function getSummary(vendorid, version) {
 
 }
 
-
+var ShowPrice = "Y";
 var bidopeningdate = new Date();
 var RFQBidType = '';
-var ShowPrice = "Y";
 var RFQEndDate = new Date();
 function fetchrfqcomprative() {
     var url = '';
@@ -169,40 +168,40 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
-            
+
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
-            
+
             if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
-                    
+
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                   
+
                 }
-               
+
 
                 if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
                     ShowPrice = 'Y';
-                    
+
                 }
                 ShowPrice = 'Y';
-               
+
             }
             else {
                 if (bidopeningdate == null || bidopeningdate == '') {
                     ShowPrice = 'N';
-                   
+
                 }
                 else {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
                         ShowPrice = 'Y';
-                       
+
 
                     }
                     else {
                         ShowPrice = 'N';
-                       
+
                     }
                 }
             }
@@ -221,7 +220,7 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                    
+
                     GetQuestions(data[0].vendorNames[i].vendorID)
 
                     if (data[0].vendorNames[i].seqNo != 0) {
@@ -293,7 +292,7 @@ function fetchrfqcomprative() {
                                 x = x + 1;
 
                                 if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                   
+
 
                                     if (ShowPrice == "N") {
                                         str += "<td>Quoted</td>";
@@ -313,7 +312,7 @@ function fetchrfqcomprative() {
                                         else {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
-                                    }                                    
+                                    }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
                                             str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
@@ -329,7 +328,7 @@ function fetchrfqcomprative() {
                                         else {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
-                                    }                          
+                                    }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
@@ -338,7 +337,7 @@ function fetchrfqcomprative() {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
                                     }
-                                     //abheedev bug 436 end
+                                    //abheedev bug 436 end
                                     else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
                                         str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
 
@@ -392,7 +391,7 @@ function fetchrfqcomprative() {
                 }
                 //abheedev bug 436 
                 if (ShowPrice == 'Y') {
-                    str += "<td class=text-right>" + thousands_separators( totallowestValue )+ "</td><td colspan=6>&nbsp;</td></tr>";
+                    str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=6>&nbsp;</td></tr>";
                 }
                 //abheedev bug 436 end
                 else {
@@ -400,7 +399,7 @@ function fetchrfqcomprative() {
                 }
 
 
-                
+
                 str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -427,7 +426,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
-                
+
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -452,7 +451,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                
+
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -479,7 +478,7 @@ function fetchrfqcomprative() {
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
-               
+
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -503,7 +502,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                
+
                 str += "<tr>";
 
                 var t = 0;
@@ -514,7 +513,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
 
 
-                
+
                 if (data[0].commercialTerms.length > 0) {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
@@ -539,9 +538,9 @@ function fetchrfqcomprative() {
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
 
 
-                    $('#tblRFQComprativetest > tbody').empty(); 
+                    $('#tblRFQComprativetest > tbody').empty();
 
-                     
+
                     for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
 
                         var flag1 = 'T';
@@ -563,7 +562,7 @@ function fetchrfqcomprative() {
 
                                 if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {
 
-                                    
+
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
                                         if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
 
@@ -597,7 +596,7 @@ function fetchrfqcomprative() {
                     }
                 }
 
-               
+
 
                 str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
 
@@ -618,10 +617,10 @@ function fetchrfqcomprative() {
                 str += " </tr>";
 
 
-                
+
                 if (data[0].questions.length > 0) {
 
-                    $('#tblRFQComprativetestQ > tbody').empty(); 
+                    $('#tblRFQComprativetestQ > tbody').empty();
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
                         var flag2 = 'T';
@@ -691,7 +690,7 @@ function fetchrfqcomprative() {
                     strQ += "</tr>";
 
                 }
-              
+
                 strQ += "<tr><td><b>Technical Approval</b></td>";
                 if (AppType == 'T') {
 
@@ -705,7 +704,7 @@ function fetchrfqcomprative() {
                         strQ += "<td>Not Required</td>"
                     }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-                        
+
                         strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
 
                     }
@@ -802,7 +801,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
-               
+
                 strQ += "<tr>";
 
                 t = 0;
@@ -858,7 +857,7 @@ function check(vendorid) {
 function fnRaiseQuery(vendorid) {
     $('#hdnvendorid').val(vendorid)
     GetQuestions(vendorid);
-    
+
 }
 var queslength = 0;
 var PendingOn = 'A';
@@ -910,7 +909,7 @@ function GetQuestions(vendorid) {
                         $('#btn_raisequery' + vendorid).text('Reponse Recieved')
                         $('#btn_raisequery' + vendorid).removeClass('yellow').addClass('green')
                         $('#querycount' + vendorid).hide();
-                        
+
                     }
                     if (data[0].pendingOn.toLowerCase() == "x") {
                         $('#btn_raisequery' + vendorid).text('Withdraw')
@@ -930,7 +929,7 @@ function GetQuestions(vendorid) {
             }
             else {
                 $('#btnwithdraw').hide()
-                
+
             }
         },
         error: function (xhr, status, error) {
@@ -981,11 +980,11 @@ function addquestions() {
 
         if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
             $('#btnTechquery').attr('disabled', 'disabled')
-            
+
         }
         else {
             $('#btnTechquery').removeAttr('disabled')
-            
+
         }
     }
 }
@@ -995,10 +994,10 @@ function deletequesrow(rowid) {
 
     if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
         $('#btnTechquery').attr('disabled', 'disabled')
-       
+
     }
     else {
-       
+
     }
 }
 function submitTechnicalQuery() {
@@ -1011,7 +1010,7 @@ function submitTechnicalQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                
+
                 if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
                     quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
                 }
@@ -1090,7 +1089,7 @@ function submitTechnicalQuery() {
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from vendor, Click Yes for  Continue ",
-       
+
         buttons: {
             confirm: {
                 label: "Yes",
@@ -1365,7 +1364,7 @@ function fetchReguestforQuotationDetails() {
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
-               
+
                 jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1390,7 +1389,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText 
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1440,25 +1439,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) {           
+        invalidHandler: function (event, validator) {
             success1.hide();
             error1.show();
 
         },
 
-        highlight: function (element) { 
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); 
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { 
+        unhighlight: function (element) {
             $(element)
                 .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); 
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1493,25 +1492,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) {               
+        invalidHandler: function (event, validator) {
             success2.hide();
             error2.show();
 
         },
 
-        highlight: function (element) { 
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); 
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { 
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); 
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); 
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1545,21 +1544,21 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) {              
+        invalidHandler: function (event, validator) {
             successawd.hide();
             errorawd.show();
             $('#diverrordiv2').hide();
 
         },
 
-        highlight: function (element) { 
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group,.xyz').addClass('has-error'); 
+                .closest('.Input-group,.xyz').addClass('has-error');
         },
 
-        unhighlight: function (element) { 
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group,.xyz').removeClass('has-error'); 
+                .closest('.Input-group,.xyz').removeClass('has-error');
         },
 
         success: function (label) {
@@ -1569,7 +1568,7 @@ function validateAppsubmitData() {
 
         submitHandler: function (form) {
 
-           
+
 
         }
     });
@@ -1592,7 +1591,7 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) {  
+        invalidHandler: function (event, validator) {
             successFWD.hide();
             errorFWD.show();
 
@@ -1600,12 +1599,12 @@ function validateAppsubmitData() {
 
         highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); 
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { 
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); 
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
@@ -1634,7 +1633,7 @@ function ApprovalCommercialApp() {
         "AwardQuery": ''
     };
 
-    //abheedev bug 444
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
@@ -1645,18 +1644,15 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            
-            alert("transaction successful")
-           
-            function done() {
+            bootbox.alert("Transaction Successful..", function () {
+                return true;
                 window.location = "index.html";
-                return false;
-            }
-            done()
+
+            });
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText 
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1851,18 +1847,18 @@ function fnFWDeRFQ() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            
+
             bootbox.alert("Transaction Successful..", function () {
                 window.location = "index.html";
                 return false;
             });
 
 
-           
+
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText 
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1912,7 +1908,7 @@ function ApprovalApp() {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
         };
-       
+
 
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
@@ -1933,7 +1929,7 @@ function ApprovalApp() {
             },
             error: function (xhr, status, error) {
 
-                var err = xhr.responseText 
+                var err = xhr.responseText
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
