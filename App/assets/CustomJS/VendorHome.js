@@ -433,7 +433,6 @@ function fetchRFIDetails(){
         success: function (BidData) {
             sessionStorage.setItem('CustomerID', BidData[0].rfxMaster[0].customerID)
             sessionStorage.setItem('CurrentRFXID', BidData[0].rfxMaster[0].rfxid)
-           
             jQuery('#RFISubject').text(BidData[0].rfxMaster[0].rfxSubject)
             jQuery('#RFIDeadline').text(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#RFIDescription').text(BidData[0].rfxMaster[0].rfxDescription)
@@ -453,7 +452,6 @@ function fetchRFIDetails(){
 
 function fetchReguestforQuotationDetailseRFQ() {
    
-  
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQRFIID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -480,11 +478,6 @@ function fetchReguestforQuotationDetailseRFQ() {
             
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            jQuery('#rfqTermandCondition').attr("name",RFQData[0].general[0].rfqTermandCondition)
-            
-            //abheedev
-            
-            
            
         },
         error: function (xhr, status, error) {
@@ -499,8 +492,6 @@ function fetchReguestforQuotationDetailseRFQ() {
     });
     jQuery.unblockUI();
 }
-
-
 
 function DownloadFile(aID) {
     
@@ -1005,16 +996,6 @@ function fetchBidHeaderDetails() {
                 var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
                 sessionStorage.setItem('CustomerID', data[0].customerID)
-                sessionStorage.setItem('hddnRFQID', data[0].bidID)
-                 jQuery('.bidtc').show();
-                 jQuery('.rfqtc').hide();
-                 
-                 
-                 //abheedev
-              $('#uniform-chkIsAccepted').find("span").removeClass('checked');    
-              $('#btnContinue').attr("disabled", true);
-              
-                 
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
@@ -1024,8 +1005,6 @@ function fetchBidHeaderDetails() {
                 jQuery("#lblbidfor").text(data[0].bidFor);
 
                 jQuery("a#lnkTermsAttachment").text(data[0].termsConditions);
-               jQuery('#bidTermandCondition').attr("name",data[0].termsConditions)
-             
                 jQuery("a#lnkTermsAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + tncAttachment)
 
                 jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
