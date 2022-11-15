@@ -18,6 +18,7 @@ jQuery(document).ready(function () {
 
 function fetchCountry() {
 
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
 
@@ -31,11 +32,15 @@ function fetchCountry() {
         dataType: "json",
         success: function (data) {
             jQuery("#ddlCountry").empty();
+           
             var vlal = new Array();
             if (data.length > 0) {
+
+
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
                     jQuery("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+
                     jQuery("#ddlCountryAltCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
                 jQuery("#ddlCountry").val('111').trigger("change");
@@ -75,9 +80,8 @@ function fetchCountry() {
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
-
-                jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
-            }
+                     jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+                  }
         },
         error: function (xhr, status, error) {
 
@@ -249,11 +253,12 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+          
             cc = 0;
             if (data.length > 0) {
 
                 let userdetails = JSON.parse(data[0].jsondata);
+
                 $('#username').html(userdetails[0].UserName)
                 $('#usermobileno').val(userdetails[0].MobileNo)
                 $('#userEmailID').html(userdetails[0].EmailID)
@@ -266,6 +271,14 @@ function fetchUserDetails() {
                 }, 800)
                 let userOrg = JSON.parse(data[1].jsondata);
 
+
+
+
+                
+
+
+
+               
                 if (userOrg.length > 0) {
                     $('#userOrg').removeClass('hide')
                     $('#tblpurchaseOrg').empty();
@@ -288,6 +301,7 @@ function fetchUserDetails() {
 
             }
             jQuery.unblockUI();
+
         },
         error: function (xhr, status, error) {
 
@@ -301,6 +315,7 @@ function fetchUserDetails() {
             jQuery.unblockUI();
             return false;
         }
+
     });
 
 }
@@ -318,7 +333,7 @@ function deleterow(trid, rowcount, gid) {
 }
 //vendor myprofile.html
 function fetchVendorDetails() {
-    // debugger;
+
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -330,6 +345,7 @@ function fetchVendorDetails() {
         dataType: "json",
         success: function (data) {
             let detail = JSON.parse(data[0].jsondata);
+
             $('#vendorname').html(detail[0].VendorName)
             $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
@@ -369,7 +385,58 @@ function fetchVendorDetails() {
     });
 
 }
+
+
+
+function fetchUserCountryCode() {
+
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            jQuery("#ddlCountry").empty();
+            if (data.length > 0) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    jQuery("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+
+
+                }
+
+
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
+
+
+
+
+
 function prefferedTimezone() {
+
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -404,6 +471,7 @@ function prefferedTimezone() {
 }
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
+
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
     $("#ddlpreferredTime").val(tzID)
@@ -416,7 +484,9 @@ function fetchMyProfileVendor() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+
             var vendordetails = JSON.parse(data[0].jsondata);
+
 
             var vendorComps = JSON.parse(data[1].jsondata);
             //console.log(vendordetails[a].preferredtimezone);
@@ -459,7 +529,7 @@ function fetchMyProfileVendor() {
                 $('#ddlNatureEstaiblishment').val(vendordetails[0].EstTypeID);
 
             } else {
-                $('#ddlNatureEstaib lishment').val(0);
+                $('#ddlNatureEstaiblishment').val(0);
             }
 
             if (vendordetails[0].VendorCatID != "" && vendordetails[0].VendorCatID != undefined) {
@@ -653,6 +723,7 @@ function fetchMyProfileVendor() {
                 $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear);
                 $('#txtLastFiscalyear').attr("disabled", 'disabled');
             } else {
+
                 $('#txtLastFiscalyear').val();
             }
 
@@ -666,9 +737,32 @@ function fetchMyProfileVendor() {
                 $('#txt2LastFiscalyear').val();
             }
 
+            //abheedev
+
+            if (vendordetails[0].DialingCodeMobile != "" && vendordetails[0].DialingCodeMobile != undefined && vendordetails[0].DialingCodeMobile != null) {
+                $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
+
+            } else {
+
+                $('#ddlCountryCd').val();
+            }
+
+            if (vendordetails[0].DialingCodePhone != "" && vendordetails[0].DialingCodePhone != undefined && vendordetails[0].DialingCodePhone != null) {
+                $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
+
+            } else {
+
+                $('#ddlCountryAltCd').val();
+            }
 
 
+            if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
+                $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
 
+            } else {
+
+                $('#ddlpreferredTime').val();
+            }
 
 
 
@@ -693,16 +787,10 @@ function fetchMyProfileVendor() {
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
             $('#vendoraddress').val(vendordetails[0].Address1)
 
-            $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
-            // $('#vendorCity').val(data[0].city)
-            //SET HERE
+             $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
 
-            /*   $('#ddlpreferredTime').on('change', function () {
-                   console.log(sessionStorage.getItem("timezoneid"))
-                   sessionStorage.setItem("timezoneid", $("#ddlpreferredTime option:selected").val().trim())
-                  $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid") }]`).attr("selected", "selected")
-                   
-               });*/
+
+           
 
             $('#vendorphone').val(data[0].phone)
             $('#vendorpanno').html(vendordetails[0].PANNo)
@@ -729,6 +817,8 @@ function fetchMyProfileVendor() {
 
             setTimeout(function () {
                 CalContactDetailPercent();
+
+
                 calAccountDetailPercent();
                 calBusinessDetailPercent();
             }, 1500)
@@ -779,6 +869,7 @@ jQuery.validator.addMethod(
 );
 
 function formvalidate() {
+
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
@@ -971,7 +1062,6 @@ function formvalidatevendor() {
 }
 
 function updMobileNo() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
 
@@ -987,7 +1077,10 @@ function updMobileNo() {
         "ContactPerson": "",
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-    console.log(JSON.stringify(data))
+
+
+
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1613,7 +1706,7 @@ function sendToCompanies() {
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
-
+  
     //console.log(JSON.stringify(datainfo));
     jQuery.ajax({
 
@@ -1659,6 +1752,7 @@ var businesspercent = 0;
 
 
 function CalContactDetailPercent() {
+    //alert("contact");
 
     var div = document.getElementById("tab1check");
     var inputs = div.querySelectorAll('input.form-control')
@@ -1695,14 +1789,15 @@ function CalContactDetailPercent() {
     $("#contact_chart").attr('data-percent', contactpercent);
     $('#contactspan').text(contactpercent);
 
+
 }
 
 function calCompanyDetailPercent() {
-
+  
     var div = document.getElementById("collapse0");
     var selects = div.getElementsByTagName('select');
     var inputs = div.querySelectorAll('input.form-control');
-    //console.log("selects", selects);
+
     var totalInputs = inputs.length;
     var totalSelect = selects.length;
     var totalFields = totalInputs + totalSelect;
@@ -1918,5 +2013,71 @@ function calBusinessDetailPercent() {
 }
 
 
+//abheedev
 
+function numberonly() {
+    $(".numberonly").keyup(function () {
+        $(".numberonly").val(this.value.match(/[0-9]*/));
+    });
+
+}
+//translation code begin by abhee
+function multilingualLanguage() {
+
+    var set_locale_to = function (locale) {
+        if (locale) {
+            $.i18n().locale = locale;
+        }
+        $('body').i18n();
+    };
+
+    jQuery(function () {
+        $.i18n().load({
+            'en': 'jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'jquery.i18n/language/fr/translation.json' // message for french
+        }).done(function () {
+            set_locale_to(url('?locale'));
+
+            console.log($.i18n().locale)
+            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
+
+
+            //   <option data-locale="en" value="en">English</option>
+
+            History.Adapter.bind(window, 'statechange', function () {
+                set_locale_to(url('?locale'));
+                console.log("i am here")
+            });
+            $('.navbar-language').change(function (e) {
+                e.preventDefault();
+                $.i18n().locale = $('option:selected', this).data("locale");
+                History.pushState(null, null, "?locale=" + $.i18n().locale);
+
+            });
+
+            $('a').click(function (e) {
+
+                if (this.href.indexOf('?') != -1) {
+                    this.href = this.href;
+                }
+                else if (this.href.indexOf('#') != -1) {
+                    e.preventDefault();
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+                //   else if (this.href.indexOf('javascript:') != -1){
+
+                //      this.href = this.href + "?locale=" + $.i18n().locale;
+                //  }
+                else {
+
+                    this.href = this.href + "?locale=" + $.i18n().locale
+                }
+            });
+
+
+
+        });
+    });
+
+}
 

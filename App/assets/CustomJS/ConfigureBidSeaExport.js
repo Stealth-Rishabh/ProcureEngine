@@ -1,7 +1,7 @@
 $("#cancelBidBtn").hide();
-
+//abheedev bug 507
 jQuery(document).ready(function () {
-    $("#txtWeightageval,#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtitembidduration,#txtfloorPrice,#txtPriceReductionAmount").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
+    $("#txtWeightageval,#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtfloorPrice,#txtPriceReductionAmount").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
        
         alias: "decimal",
         rightAlign: false,

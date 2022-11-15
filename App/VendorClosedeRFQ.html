@@ -40,6 +40,12 @@
         .has-success {
             border-color: #27a4b0 !important;
         }
+        /*@abheedev multilingual*/
+        .changeLanguage {
+            position: absolute;
+            right: 160px;
+            top: 11px;
+        }
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
@@ -49,6 +55,15 @@
                 <a class="navbar-brand" href="index.html" style="padding:4px !important;">
                     <!--<img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />-->
                 </a>
+
+            </div>
+            <!--@abheedev multilingual-->
+            <div class="changeLanguage">
+                <select class="navbar-language" href="index.html" style="padding:4px !important;">
+                    <option data-locale="en" value="en">English</option>
+                    <option data-locale="fr" value="fr">French</option>
+
+                </select>
 
             </div>
             <div class="top-menu">
@@ -92,18 +107,18 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title">
+                                <h4 class="modal-title" data-i18n="modaltitle">
                                     Modal title
                                 </h4>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" data-i18n="widgetsetting">
                                 Widget settings form goes here
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn yellow">
+                                <button type="button" class="btn yellow" data-i18n="savechanges">
                                     Save changes
                                 </button>
-                                <button type="button" class="btn default" data-dismiss="modal">
+                                <button type="button" class="btn default" data-dismiss="modal"  data-i18n="close">
                                     Close
                                 </button>
                             </div>
@@ -113,11 +128,11 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="VendorHome.html">Home</a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="VendorHome.html" data-i18n="home">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
 
-                        <li><a href="#">RFQ Closed Details</a> </li>
+                        <li><a href="#" data-i18n="rfqcloseddetails">RFQ Closed Details</a> </li>
                     </ul>
 
                 </div>
@@ -126,11 +141,11 @@
 
                         <div class="portlet box blue-hoki" id="BidPreviewDiv">
                             <div class="portlet-title">
-                                <div class="caption">
+                                <div class="caption" data-i18n="captionrfq">
                                     RFQ Closed Details
                                 </div>
                                 <div class="actions" style="display:flex; align-items:center;">
-                                    <a id="btn_ReSubmit" href="javascript:;" class="btn btn-sm green-haze" onclick="ReSubmitQuotes()" style="margin-top: 1px;"><i class="fa fa-arrow-right"></i>  Modify Quotes </a>
+                                    <a id="btn_ReSubmit" href="javascript:;" class="btn btn-sm green-haze" onclick="ReSubmitQuotes()" style="margin-top: 1px;"><i class="fa fa-arrow-right"></i> <span data-i18n="modifyquotes">Modify Quotes</span>  </a>
                                 </div>
 
                             </div>
@@ -147,7 +162,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
 
-                                                <label class="col-md-4 control-label">
+                                                <label class="col-md-4 control-label" data-i18n="rfqsubject">
                                                     RFQ Subject:
                                                 </label>
                                                 <div class="col-md-8">
@@ -160,7 +175,7 @@
                                             </div>
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Reference Number:</label>
+                                                <label class="control-label col-md-4" data-i18n="referencenumber">Reference Number:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="txtRFQReferencePrev"></p>
                                                 </div>
@@ -170,7 +185,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
 
-                                                <label class="col-md-4 control-label">RFQ StartDate:</label>
+                                                <label class="col-md-4 control-label" data-i18n="rfqstartdate">RFQ StartDate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblrfqstartdate">
 
@@ -180,7 +195,7 @@
                                             </div>
                                             <div class="col-md-6">
 
-                                                <label class="col-md-4 control-label">RFQ EndDate:</label>
+                                                <label class="col-md-4 control-label" data-i18n="rfqenddate">RFQ EndDate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblrfqenddate">
 
@@ -193,7 +208,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
 
-                                                <label class="control-label col-md-2">RFQ Description:</label>
+                                                <label class="control-label col-md-2" data-i18n="rfqdescription">RFQ Description:</label>
                                                 <div class="col-md-9">
                                                     <p class="form-control-static" id="lblrfqdescription">
 
@@ -207,7 +222,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Currency:</label>
+                                                <label class="control-label col-md-4" data-i18n="currency">Currency:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="dropCurrencyPrev">
 
@@ -218,7 +233,7 @@
                                             <!--/span-->
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Conversion Rate:</label>
+                                                <label class="control-label col-md-4" data-i18n="conversionrate">Conversion Rate:</label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblConversionRatePrev">
 
@@ -232,7 +247,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
 
-                                                <label class="control-label col-md-4">Term & Condition:</label>
+                                                <label class="control-label col-md-4" data-i18n="termcondition">Term & Condition:</label>
                                                 <div class="col-md-8">
                                                     <a class="form-control-static" href="javascript:;" onclick="DownloadFile(this)" id="filepthtermsPrev" style="text-decoration: none;">
                                                     </a>
@@ -268,7 +283,7 @@
                                             </div>
                                         </div>
                                         <!--/row-->
-                                        <h3 class="form-section">Input Parameters</h3>
+                                        <h3 class="form-section" data-i18n="inputparameters">Input Parameters</h3>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="display-none" id="wrap_scrollerPrev">
@@ -276,7 +291,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h3 class="form-section">Other Commercial Terms</h3>
+                                        <h3 class="form-section" data-i18n="othercommercialterms">Other Commercial Terms</h3>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="table-scrollable">
@@ -425,6 +440,20 @@
 
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
     <script src="assets/CustomJS/VendorClosedeRFQ.js"></script>
+
+    <!--translating file for i18n plugin - abhi@dev-->
+
+    <script type="module" src="assets/plugins/jquery.i18n/CLDRPluralRuleParser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.messagestore.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.fallbacks.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.language.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.parser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/history.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/url.js"></script>
+
     <script>
         jQuery(document).ready(function () {
 
@@ -476,7 +505,7 @@
             }
             Metronic.init();
             Layout.init();
-
+            multilingualLanguage();
             setCommonData();
 
         });

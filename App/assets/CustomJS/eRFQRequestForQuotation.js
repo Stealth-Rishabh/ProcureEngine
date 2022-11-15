@@ -2649,16 +2649,17 @@ function fetchPSBidDetailsForPreview() {
     jQuery.unblockUI();
 
 }
-
+//abheedev bug 479
 $("#btninstructionexcelparameter").click(function () {
     var ErrorUOMMsz = '<ul class="col-md-5 text-left">';
     var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+    
     for (var i = 0; i < parseInt(quorem); i++) {
-        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].UOM + '</li>';
+        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uomid + '</li>';
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {
-            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].UOM + '</li>';
+            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uomid + '</li>';
         }
     }
     ErrorUOMMsz = ErrorUOMMsz + '</ul>'

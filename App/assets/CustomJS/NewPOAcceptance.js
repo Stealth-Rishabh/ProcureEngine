@@ -293,3 +293,63 @@ function DownloadFile(aID) {
 function DownloadFileVendor(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
 }
+
+
+//abheedev
+function multilingualLanguage() {
+
+    var set_locale_to = function (locale) {
+        if (locale) {
+            $.i18n().locale = locale;
+        }
+
+        $('body').i18n();
+    };
+    jQuery(function () {
+        $.i18n().load({
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
+        }).done(function () {
+            set_locale_to(url('?locale'));
+
+            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
+
+            //   <option data-locale="en" value="en">English</option>
+
+            History.Adapter.bind(window, 'statechange', function () {
+                set_locale_to(url('?locale'));
+
+            });
+            $('.navbar-language').change(function (e) {
+
+                e.preventDefault();
+                $.i18n().locale = $('option:selected', this).data("locale");
+
+
+                History.pushState(null, null, "?locale=" + $.i18n().locale);
+
+
+
+            });
+
+            $('a').click(function (e) {
+
+                if (this.href.indexOf('?') != -1) {
+                    this.href = this.href;
+                }
+                else if (this.href.indexOf('#') != -1) {
+                    e.preventDefault()
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+                //else if (this.href.indexOf('javascript:') != -1) {
+
+                //  this.href = this.href + "?locale=" + $.i18n().locale;
+                //} 
+
+                else {
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+            });
+        });
+    });
+}

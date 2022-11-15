@@ -89,6 +89,8 @@
                 opacity: .9;
                 visibility: visible;
             }
+
+      
     </style>
 
 </head>
@@ -803,6 +805,8 @@
         jQuery(document).ready(function () {
 
             Pageloaded()
+            
+           
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {

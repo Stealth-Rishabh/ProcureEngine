@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-        <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <title>Sourcing Portal</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -50,7 +50,6 @@
                 right: 3%;
             }
         }
-
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
@@ -62,7 +61,15 @@
                 </a>
             </div>
 
-           
+            <!--@abheedev-->
+            <div class="changeLanguage">
+                <select class="navbar-language" href="index.html" style="padding:4px !important;">
+                    <option data-locale="en" value="en">English</option>
+                    <option data-locale="fr" value="fr">French</option>
+                </select>
+
+            </div>
+
 
 
             <div class="top-menu">
@@ -106,14 +113,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title"  data-i18n="modaltitle">
+                                <h4 class="modal-title" data-i18n="modaltitle">
                                     Modal title
                                 </h4>
                             </div>
                             <div class="modal-body" data-i18n="widgetsetting">
                                 Widget settings form goes here
                             </div>
-                            <div class="modal-footer" >
+                            <div class="modal-footer">
                                 <button type="button" class="btn yellow" data-i18n="savechanges">
                                     Save changes
                                 </button>
@@ -127,11 +134,11 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="javascript:;" onclick=fnredirecttoHome()><span  data-i18n="home">Home</span></a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="VendorHome.html" data-i18n="home" style="text-decoration:none;">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
                         <li>
-                            <a href="#"  data-i18n="myprofile" >My Profile</a>
+                            <a href="#" data-i18n="myprofile">My Profile</a>
 
                         </li>
                     </ul>
@@ -181,8 +188,8 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-i18n="contactdetails" data-parent="#accordion1" href="#collapse2">
-                                                                    Contact details
+                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+                                                                    <span data-i18n="contactdetails"> Contact details </span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="contactspan" name="contactspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="contact_chart" data-percent=""></div>
@@ -215,9 +222,10 @@
                                                                                         <label class="col-md-3 control-label" style="text-align:left" data-i18n="mobileno">
                                                                                             Mobile No
                                                                                         </label>
+
                                                                                         <div class="col-md-2 xyz">
                                                                                             <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                                                                <option Value="">Select</option>
+                                                                                                <option Value="">select</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-7 xyz">
@@ -260,7 +268,7 @@
                                                                                         </label>
                                                                                         <div class="col-md-2">
                                                                                             <select id="ddlCountryAltCd" name="ddlCountryAltCd" class="form-control">
-                                                                                                <option Value="">Select</option>
+                                                                                                <option Value="">select</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-7">
@@ -276,7 +284,7 @@
                                                                                             Email ID
                                                                                         </label>
                                                                                         <div class="col-md-9">
-                                                                                            <input type="text" class="form-control" 
+                                                                                            <input type="text" class="form-control"
                                                                                                    id="vendorAltEmailID" name="vendorAltEmailID" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
                                                                                     </div>
@@ -286,7 +294,7 @@
                                                                                         <label class="control-label col-md-3" style="text-align:left" data-i18n="preferredzone">Preferred Time/Zone:</label>
                                                                                         <div class="col-md-9">
                                                                                             <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
-                                                                                                <option>Select</option>
+                                                                                                <option Value="">Select</option>
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
@@ -303,8 +311,8 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0" >
-                                                                    <span data-i18n="companydetails" >Company Details</span>
+                                                                <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
+                                                                    <span data-i18n="companydetails">Company Details</span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="companyspan" name="companyspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="company_chart" data-percent=""></div>
@@ -322,23 +330,23 @@
                                                                             </label>
                                                                             <div class="col-md-3 ">
                                                                                 <select class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" aria-invalid="false">
-                                                                                    <option value="0">Select</option>
-                                                                                    <option value="1">Partnership</option>
-                                                                                    <option value="2">Proprietor</option>
-                                                                                    <option value="3">Private limited</option>
-                                                                                    <option value="4">Public limited</option>
+                                                                                    <option value="0" data-i18n="select">Select</option>
+                                                                                    <option value="1" data-i18n="partnership">Partnership</option>
+                                                                                    <option value="2" data-i18n="proprietor">Proprietor</option>
+                                                                                    <option value="3" data-i18n="privatelimited">Private limited</option>
+                                                                                    <option value="4" data-i18n="publiclimited">Public limited</option>
                                                                                 </select>
                                                                             </div>
 
-                                                                            <label class="col-md-3 control-label">
+                                                                            <label class="col-md-3 control-label" data-i18n="suppliertype">
                                                                                 Supplier Type
                                                                             </label>
                                                                             <div class="col-md-3 ">
                                                                                 <select class="form-control" id="ddlVendorType" name="ddlVendorType">
-                                                                                    <option value="0">Select</option>
-                                                                                    <option value="1">Supply Vendor</option>
-                                                                                    <option value="2">Service Vendor</option>
-                                                                                    <option value="3">Both</option>
+                                                                                    <option value="0" data-i18n="select">Select</option>
+                                                                                    <option value="1" data-i18n="supplyvendor">Supply Vendor</option>
+                                                                                    <option value="2" data-i18n="servicevendor">Service Vendor</option>
+                                                                                    <option value="3" data-i18n="both">Both</option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -346,7 +354,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="product">
                                                                                 Product
                                                                             </label>
                                                                             <div class="col-md-9">
@@ -358,7 +366,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="companyname">
                                                                                 Company Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -370,7 +378,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="address">
                                                                                 Address
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -382,13 +390,13 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="country">
                                                                                 Country
                                                                             </label>
                                                                             <div class="col-md-3 ">
                                                                                 <select class="form-control" name="ddlCountry" onchange="fetchState();" id="ddlCountry" tabindex="4"></select>
                                                                             </div>
-                                                                            <label class="col-md-3 control-label">
+                                                                            <label class="col-md-3 control-label" data-i18n="state">
                                                                                 State
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -399,14 +407,14 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="city">
                                                                                 City
                                                                             </label>
                                                                             <div class="col-md-3 ">
                                                                                 <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
                                                                             </div>
 
-                                                                            <label class="col-md-3 control-label">
+                                                                            <label class="col-md-3 control-label" data-i18n="pincode">
                                                                                 PIN Code
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -420,7 +428,7 @@
 
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="companies">
                                                                             Companies
                                                                         </label>
                                                                         <div class="col-md-9">
@@ -442,7 +450,7 @@
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
                                                                 <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
-                                                                    Accounting Details
+                                                                    <span data-i18n="accountingdetails"> Accounting Details</span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="accountspan" name="accountspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="account_chart" data-percent=""></div>
@@ -455,19 +463,19 @@
                                                                 <div class="row">
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="gstvendorclass">
                                                                                 GST Vendor Class
                                                                             </label>
                                                                             <div class="col-md-3">
                                                                                 <select class="form-control" id="ddlGSTclass" name="ddlGSTclass">
-                                                                                    <option value="0" class="hide">Select</option>
-                                                                                    <option value="Registered">Registered</option>
-                                                                                    <option value="Not Registered">Not Registered</option>
+                                                                                    <option value="0" class="hide" data-i18n="select">Select</option>
+                                                                                    <option value="Registered" data-i18n="registered">Registered</option>
+                                                                                    <option value="Not Registered" data-i18n="notregistered">Not Registered</option>
                                                                                 </select>
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label" data-i18n="gstno">
                                                                                     GST No
                                                                                 </label>
                                                                                 <div class="col-md-3 ">
@@ -480,7 +488,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="control-label col-md-3" style="text-align:left">
+                                                                            <label class="control-label col-md-3" style="text-align:left" data-i18n="attachgst">
                                                                                 Attach GST REG 06GST certificate
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -505,7 +513,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="pan">
                                                                                 PAN
                                                                             </label>
                                                                             <div class="col-md-3">
@@ -514,7 +522,7 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label" data-i18n="attachpan">
                                                                                     Attach PAN
                                                                                 </label>
 
@@ -537,7 +545,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="attachcancelledcheque">
                                                                                 Attach Cancelled Cheque
                                                                             </label>
                                                                             <div class="col-md-3">
@@ -555,7 +563,7 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label" data-i18n="tanno">
                                                                                     TAN No
                                                                                 </label>
                                                                                 <div class="col-md-3">
@@ -568,7 +576,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="paymentterms">
                                                                                 Payment Terms
                                                                             </label>
                                                                             <div class="col-md-9">
@@ -579,7 +587,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="nameofbank">
                                                                                 Name of Bank
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -591,7 +599,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11 ">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="bankaccountno">
                                                                                 Bank A/c No
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -600,7 +608,7 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label" data-i18n="ifsccode">
                                                                                     IFSC Code
                                                                                 </label>
                                                                                 <div class="col-md-3 ">
@@ -613,7 +621,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="accountholdername">
                                                                                 Account Holder Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -625,7 +633,7 @@
                                                                     <div class="clearfix">&nbsp;</div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <label class="control-label"><span class="required">*:</span>&nbsp;&nbsp;<span class="font-red">If your PAN Number or GST Number are incorrect, please send correction request at: <b>info@agileapt.com</b> with copy of PAN/GST or both, as applicable.</span></label>
+                                                                            <label class="control-label"><span class="required">*:</span>&nbsp;&nbsp;<span class="font-red"><span data-i18n="pangstfontred">If your PAN Number or GST Number are incorrect, please send correction request at:</span> <b>info@agileapt.com</b><span data-i18n="pangstfontredtwo"> with copy of PAN/GST or both, as applicable.</span></span></label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -637,7 +645,7 @@
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
                                                                 <a class="accordion-toggle total-tab collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">
-                                                                    Business Detail
+                                                                    <span data-i18n="businessdetail"> Business Detail</span>
                                                                     <div class="outer_wrap">
                                                                         <span class="progress-value" id="businessspan" name="businessspan"></span><span>%</span>
                                                                         <div class="cs_chart" id="business_chart" data-percent=""></div>
@@ -651,28 +659,28 @@
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label" style="text-align:left" data-i18n="msme">
                                                                                     MSME
                                                                                 </label>
                                                                                 <div class="col-md-3">
                                                                                     <select class="form-control selects selectno" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
-                                                                                        <option value="0" class="hide">Select</option>
-                                                                                        <option value="Y">Yes</option>
-                                                                                        <option value="N">No</option>
+                                                                                        <option value="0" class="hide" data-i18n="select">Select</option>
+                                                                                        <option value="Y" data-i18n="yes">Yes</option>
+                                                                                        <option value="N" data-i18n="no">No</option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="inputgroup hideInput hide">
                                                                                 <label class="col-md-3 control-label">
-                                                                                    MSME Class<span class="required"> *</span>
+                                                                                    <span data-i18n="msmeclass"> MSME Class </span><span class="required"> *</span>
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
                                                                                     <select class="form-control selects ddlMSMEClass" id="ddlMSMEClass" name="ddlMSMEClass">
-                                                                                        <option value=''>Select</option>
-                                                                                        <option value="Micro">Micro</option>
-                                                                                        <option value="Small">Small</option>
-                                                                                        <option value="Medium">Medium</option>
+                                                                                        <option value='' data-i18n="select">Select</option>
+                                                                                        <option value="Micro" data-i18n="micro">Micro</option>
+                                                                                        <option value="Small" data-i18n="small">Small</option>
+                                                                                        <option value="Medium" data-i18n="medium">Medium</option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
@@ -682,7 +690,7 @@
                                                                     <div class="form-group hideInput hide">
                                                                         <div class="col-lg-11">
                                                                             <label class="col-md-3 control-label" style="text-align:left">
-                                                                                MSME Udyam No.<span class="required">*</span>
+                                                                                <span data-i18n="msmeudyamno">  MSME Udyam No.</span><span class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-3 xyz">
                                                                                 <input type="text" class="form-control" placeholder="MSME Udyam No."
@@ -691,7 +699,7 @@
 
                                                                             <div class="inputgroup">
                                                                                 <label class="col-md-3 control-label">
-                                                                                    Attach MSME Udyam certificate<span class="required"> *</span>
+                                                                                    <span data-i18n="msmeudyamcertificate">  Attach MSME Udyam certificate </span><span class="required"> *</span>
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
                                                                                     <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem3">
@@ -708,16 +716,16 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="lastfyturnover">
                                                                                 Last FY Turn Over
                                                                             </label>
 
                                                                             <div class="select_input_area">
                                                                                 <div class="col-md-1">
                                                                                     <select class="form-control" id="currencyLastFiscalupdate" name="currencyLastFiscalupdate" style="padding:0px!important">
-                                                                                        <option value="INR" selected>INR</option>
-                                                                                        <option value="USD">USD</option>
-                                                                                        <option value="EUR">EUR</option>
+                                                                                        <option value="INR" selected data-i18n="inr">INR</option>
+                                                                                        <option value="USD" data-i18n="usd">USD</option>
+                                                                                        <option value="EUR" data-i18n="eur">EUR</option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div class="col-md-2 xyz">
@@ -727,12 +735,12 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label xyz">
+                                                                                <label class="col-md-3 control-label xyz" data-i18n="lastfyturnoveryear">
                                                                                     Last FY Turn Over Year
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
                                                                                     <input type="text" class="form-control selectno "
-                                                                                           id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                           id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -740,7 +748,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="secondlastfyturnover">
                                                                                 2nd Last FY Turn Over
                                                                             </label>
 
@@ -759,12 +767,12 @@
                                                                             </div>
 
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label">
+                                                                                <label class="col-md-3 control-label" data-i18n="secondlastfyturnoveryear">
                                                                                     2nd Last FY Turn Over Year
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
                                                                                     <input type="text" class="form-control selectno"
-                                                                                           id="txt2LastFiscalyear" name="txt2LastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                           id="txt2LastFiscalyear" name="txt2LastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                                 </div>
                                                                             </div>
@@ -779,7 +787,7 @@
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="submit" class="btn btn-success">
-                                                        Update <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                                        <span data-i18n="update">Update</span> <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
                                                     </button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -796,7 +804,7 @@
                         <div class="portlet box green-haze">
                             <div class="portlet-title min-h-auto">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Send Request To Register With Companies
+                                    <i class="fa fa-reorder"></i><span data-i18n="sendrequestregister">Send Request To Register With Companies</span>
                                 </div>
                                 <div class="tools">
                                     <a id="showHide" href="javascript:;" class="collapse"></a>
@@ -823,7 +831,7 @@
                                                                 <select class="form-control" id="txtCompanies" name="txtCompanies" onchange="fnAddCustomers()"></select>
                                                             </div>
                                                         </div>
-                                                        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                                        <div class="scroller" style="height:300px" data-always-visible="0" data-rail-visible="0" data-rail-color="yellow" data-handle-color="red">
                                                             <div id="divcompanieslist" class="portlet-body flip-scroll table-scrollable">
                                                                 <table style="width:100%;" id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content">
                                                                     <thead class="flip-content">
@@ -835,7 +843,7 @@
                                                                                     </label>
                                                                                 </div>
                                                                             </th>
-                                                                            <th width="100%">
+                                                                            <th width="100%" data-i18n="companies">
                                                                                 Companies
                                                                             </th>
                                                                         </tr>
@@ -856,7 +864,7 @@
                                                             <table id="selectedcompanieslists" class="table table-bordered display-none">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Selected Companies</th>
+                                                                        <th data-i18n="selectedcompanies">Selected Companies</th>
                                                                         <th style="width:5px!important">#</th>
                                                                     </tr>
                                                                 </thead>
@@ -868,7 +876,7 @@
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="button" class="btn btn-success" onclick="sendToCompanies()">
-                                                        Send <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                                        <span data-i18n="sendbutton">  Send</span> <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
                                                     </button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -916,6 +924,7 @@
                         <span id="successmsg"></span>
                     </div>
                     <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+
                     </div>
                 </div>
             </div>
@@ -953,30 +962,39 @@
     <script src="assets/CustomJS/MyProfile.js"></script>
     <script src="assets/CustomJS/progress.js"></script>
 
+    <!--translating file for i18n plugin - abhi@dev-->
 
-
-
-
-
+    <script type="module" src="assets/plugins/jquery.i18n/CLDRPluralRuleParser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.messagestore.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.fallbacks.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.language.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.parser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/history.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/url.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
-            Pageloaded()
+
+            Pageloaded();
             setInterval(function () { Pageloaded() }, 15000);
             App.init();
+            multilingualLanguage();
             setCommonData();
             fetchCountry();
             fetchPaymentTerms();
-            
-            
-            function numberonly(){
-            $(".numberonly").keyup(function () {
-                $(".numberonly").val(this.value.match(/[0-9]*/));
-            });
+            //abheedev
+            function numberonly() {
+                $(".numberonly").keyup(function () {
+                    $(".numberonly").val(this.value.match(/[0-9]*/));
+                });
 
             }
             numberonly();
+
 
             $('#ddlTypeofProduct').select2({
                 placeholder: "Type of Product",
@@ -987,9 +1005,7 @@
                 searchInputPlaceholder: "Search Country",
                 // placeholder: 'Select Country'
             });
-            $('#ddlCountryCd').select2();
-            $('#ddlCountryAltCd').select2();
-            $('#ddlpreferredTime').select2();
+           
 
             $('#ddlState').select2({
                 searchInputPlaceholder: "Search State",
@@ -1012,6 +1028,10 @@
                 searchInputPlaceholder: "Search",
                 allowClear: true
             });
+            //@abheeDev
+            $('#ddlCountryCd').select2();
+            $('#ddlCountryAltCd').select2();
+            $('#ddlpreferredTime').select2();
 
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
@@ -1026,15 +1046,5 @@
 
         });
     </script>
-
-
-
-
-    
-
-
-
-
-
 </body>
 </html>
