@@ -112,7 +112,7 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-               
+
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
@@ -1252,7 +1252,7 @@ function getCurrenttime() {
 
 
 function saveAspdf() {
- 
+
     var pdf = new jsPDF('l', 'pt', 'a0');
     var options = {
         pagesplit: true
@@ -1263,5 +1263,5 @@ function saveAspdf() {
 
     });
 
-   
+
 }

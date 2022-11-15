@@ -29,6 +29,45 @@
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet">
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+    <script src="assets/CustomJS/jspdf.debug.js"></script>
+
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>-->
+    <script src="assets/CustomJS/html2canvas.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/index.js" type="text/javascript"></script>
+
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
     <style>
         * {
             -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
@@ -49,15 +88,13 @@
 
         body {
             font-family: Verdana, serif;
-           /* font-family: Garamond, serif !important;*/
+            /* font-family: Garamond, serif !important;*/
         }
-        
-
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
 
-    
+
     <div class="clearfix">
     </div>
     <div class="page-container">
@@ -69,8 +106,8 @@
                         <b>NFA Summary</b>
                     </h1>
                 </div>
-               
-              
+
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet box green-haze">
@@ -273,7 +310,7 @@
                                 <div class="caption">
                                     NFA Approval History
                                 </div>
-                                
+
                             </div>
                             <div class="portlet-body">
                                 <div class="row">
@@ -451,10 +488,10 @@
                 <div claass="row">
                     <div class="col-md-6">
                         <div style="width: auto; float: left;">Printed By: <span id="printed_by"></span></div>
-                        
+
                     </div>
                     <div class="col-md-6">
-                        
+
                         <div style="width: auto; float: right;">Printed On: <span id="printed_on"></span></div>
                     </div>
                 </div>
@@ -467,50 +504,12 @@
 
 
 
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-    <script src="assets/CustomJS/jspdf.debug.js"></script>
-
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>-->
-    <script src="assets/CustomJS/html2canvas.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/index.js" type="text/javascript"></script>
-
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-
-    <script src="assets/CustomJS/Common.js"></script>
-    <script src="assets/CustomJS/viewNfaReport.js"></script>
 
     <script>
         jQuery(document).ready(function () {
 
+            callPagejs('viewNfaReport.js');
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
 
@@ -541,7 +540,7 @@
             setCommonData();
             getCurrenttime()
             fetchMenuItemsFromSession(1, 58);
-           
+
             setTimeout(function () {
                 saveAspdf()
             }, 3000)
