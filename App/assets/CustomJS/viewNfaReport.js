@@ -114,8 +114,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lbltitle").text(res.result[0].nfaSubject);
 
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
-
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))
                 $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
@@ -260,9 +259,10 @@ function fetchApproverStatus() {
                 jQuery('#divappendstatusbar').empty();
                 var counterColor = 0;
                 var prevseq = '1';
+                //abheedev backlog 471
                 for (var i = 0; i < data.length; i++) {
 
-                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
+                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px; border-color: transparent !important;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
@@ -333,7 +333,7 @@ function fetchApproverStatus() {
 
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -371,7 +371,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             $('#hdndelegateuserid').val(map[item].userID)
-            // sessionStorage.setItem('hdndelegateuserid', map[item].userID);
+           
 
         }
         else {
@@ -1024,7 +1024,7 @@ function submitQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
+                
                 if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
                     quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
                 }
