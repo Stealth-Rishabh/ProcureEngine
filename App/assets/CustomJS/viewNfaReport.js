@@ -87,8 +87,8 @@ function fetchRegisterUser() {
 
 }
 //abheedev bug 385
+//abheedev backlog 471
 var nfaid
-
 function GetOverviewmasterbyId(idx) {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -96,9 +96,8 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            console.log(res)
             nfaid = res.result[0].nfaID
-
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
                     $(".clsHide").hide();
@@ -112,17 +111,20 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-
+                $("#lblDetailsdesc").html("<b>Descrition:</b>");
                 $("#lblDetails").text(res.result[0].nfaDescription);
-                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))
+                $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
+
                 $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
+
                 $("#lblPurOrg").text(res.result[0].orgName);
                 $("#lblGroup").text(res.result[0].groupName);
+
                 if (res.result[0].eventtypeName == "RA") {
                     $("#lblEventType").text("Reverse Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\,\'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
@@ -139,6 +141,10 @@ function GetOverviewmasterbyId(idx) {
                     $("#lblEventType").text("French Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
+                else if (res.result[0].eventtypeName == "ON") {
+                    $("#lblEventType").text("Outside NFA")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + "Not Applicable" + "</a>");
+                }
                 else {
                     $("#lblEventType").text("RFQ")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventRefernce + "'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
@@ -150,7 +156,13 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".clsHide").hide();
                 }
-                $("#lblException").text(res.result[0].conditionName);
+                //abheedev backlog 471
+                if (res.result[0].conditionName == "") {
+                    $("#lblException").text("No Exception");
+                }
+                else {
+                    $("#lblException").text(res.result[0].conditionName);
+                }
                 //abheedev backlog 286
                 $("#lblRemark").html(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
@@ -163,7 +175,11 @@ function GetOverviewmasterbyId(idx) {
         jQuery.unblockUI();
     });
 };
+
+
 //abheedev bug 385 end
+
+
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
     if (RFQID == 0) {

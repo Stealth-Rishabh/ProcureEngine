@@ -88,6 +88,7 @@ function fetchRegisterUser() {
 
 }
 //abheedev bug 385
+//abheedev backlog 471
 var nfaid = 0;
 function GetOverviewmasterbyId(idx) {
 
@@ -96,6 +97,7 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
+            console.log(res)
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
@@ -120,6 +122,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
+               
                 $("#lblPurOrg").text(res.result[0].orgName);
                 $("#lblGroup").text(res.result[0].groupName);
 
@@ -141,7 +144,7 @@ function GetOverviewmasterbyId(idx) {
                 }
                 else if (res.result[0].eventtypeName == "ON") {
                     $("#lblEventType").text("Outside NFA")
-                    // $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + "Not Applicable" + "</a>");
                 }
                 else {
                     $("#lblEventType").text("RFQ")
@@ -154,7 +157,13 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".clsHide").hide();
                 }
-                $("#lblException").text(res.result[0].conditionName);
+               //abheedev backlog 471
+                if (res.result[0].conditionName == "") {
+                    $("#lblException").text("No Exception");
+                }
+                else {
+                    $("#lblException").text(res.result[0].conditionName);
+                }
                 //abheedev backlog 286
                 $("#lblRemark").html(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
