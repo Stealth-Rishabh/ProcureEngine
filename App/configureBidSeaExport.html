@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -477,7 +478,15 @@
                                                                 <span class="hovertext col-md-1" style="margin:11px auto" data-hover="Enter approver name on select approver input then click enter">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
                                                                 </span>
-                                                            </div>                                                           
+                                                            </div>
+
+                                                            <!--abheedev bug 52 end-->
+                                                            <!--<div class="inputgroup">
+                                                                <div class="col-md-1 ">
+
+                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                </div>
+                                                            </div>-->
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -601,10 +610,9 @@
                                                         <label class="control-label col-md-2">
                                                             Bid Start Price<span class="required"> *</span>
                                                         </label>
-                                                        <!--abheedev bug 507-->
                                                         <div class="col-md-3 xyz" id="divBSP">
                                                             <input type="tel" class="form-control" id="txtCeilingPrice" name="txtCeilingPrice"
-                                                                   autocomplete="off" onkeyup="thousands_separators(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   autocomplete="off" onkeyup="thousands_separators(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
                                                         </div>
                                                         <div class="col-md-1 xyz for-nondutch-bid">
                                                             <select class="form-control no-space" id="checkshowstartprice" name="checkshowstartprice">
@@ -619,7 +627,7 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <input type="tel" class="form-control" id="txtminimumdecreament" name="txtminimumdecreament"
-                                                                       autocomplete="off" onkeyup="thousands_separators(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                       autocomplete="off" onkeyup="thousands_separators(this)"/> <!--onkeyup="thousands_separators_input(this)"-->
                                                             </div>
                                                             <div class="col-md-1 xyz">
                                                                 <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton">
@@ -629,7 +637,6 @@
 
                                                             </div>
                                                         </div>
-                                                        <!--abheedev bug 507 end-->
                                                         <div class="for-dutch-bid">
                                                             <label class="control-label col-md-2">
                                                                 Floor/ Min. Price<span class="required"> *</span>
@@ -1103,16 +1110,17 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <!--abheedev bug 443 <div class="alert alert-danger display-hide" id="errordiv2">
+                    <!--abheedev bug 443-->
+                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
                         <button class="close" data-close="alert"></button>
-                          <span id="errormsg2"></span>
-                         </div>
-                      <div class="alert alert-success display-hide" id="successdiv2">
-                              <button class="close" data-close="alert"></button>
-                              <span id="successmsg2"></span>
-                        </div>-->
-    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
-        <div class="form-body">
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>-->
+                    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
+                        <div class="form-body">
 
                             <div class="progress-form display-none" id="modalLoaderparameter">
 
@@ -1720,12 +1728,9 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/ConfigureBidSeaExport.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/ConfigureBidSeaExport.js?v=1" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
-            debugger
-            document.addEventListener('touchstart', onTouchStart, { passive: true });
-
             $('[data-toggle="popover"]').popover({})
 
 
