@@ -16,6 +16,7 @@ $(".thousandseparated").inputmask({
     clearMaskOnLostFocus: true,
     supportsInputType: ["text", "tel", "password"],
     'removeMaskOnSubmit': false
+
 });
 var _RFQBidType = "";
 var Vehicleerror1 = $('#errordiv1');
@@ -250,7 +251,7 @@ var FormWizard = function () {
                 onTabClick: function (tab, navigation, index, clickedIndex) {
                     return false;
                 },
-                //abheedev bug347 start
+
                 onNext: function (tab, navigation, index) {
 
                     if (index == 1) {
@@ -274,7 +275,6 @@ var FormWizard = function () {
                                 $('.alert-danger').fadeOut(7000);
                                 count = count + 1;
                             }
-
                             else {
                                 flag = "T"
                             }
@@ -326,6 +326,8 @@ var FormWizard = function () {
 
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
+                var flag = "T";
+                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
 
                 var flagQ = "T";
                 var rowCountQ = jQuery('#tblquestions tr').length;
@@ -344,17 +346,15 @@ var FormWizard = function () {
                         countQ = countQ + 1;
                     }
                     else {
-
-
                         flagQ == "T";
                     }
-
                 }
                 if (flagQ == "F") {
                     return false;
                 }
 
                 if (flagQ == "T") {
+
                     fnsaveAttachmentsquestions();
                     saveQuotation();
                     $('#BidPreviewDiv').show();
@@ -373,7 +373,7 @@ var FormWizard = function () {
     };
 
 }();
-//abheedev bug 347 end
+
 
 sessionStorage.setItem('CurrentrfiID', 0)
 sessionStorage.setItem('CurrentRFQParameterId', 0)
@@ -621,6 +621,7 @@ function addmoreattachments() {
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
         str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
+
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',\'VAttachment\',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachmentsresponse').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
@@ -765,7 +766,6 @@ function fetchRFQResponse(Flag, version) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             if (Flag == 'Question') {
                 jQuery("#tblquestions").empty();
                 jQuery("#tblQuestionsPrev").empty();
@@ -780,7 +780,6 @@ function fetchRFQResponse(Flag, version) {
                         var attachQA = data[i].attachementQA;
                         str = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
-
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
@@ -863,7 +862,6 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
-
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -888,14 +886,13 @@ function fnsaveAttachmentsquestions() {
 
     }
     if (validateSubmit) {
-
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
 
             var this_row = $(this);
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
             i++;
         });
-        i = 0
+        i = 0;
         var attchname = '';
         $("#tblquestions> tbody > tr").each(function (index) {
             var this_row = $(this);
@@ -903,21 +900,13 @@ function fnsaveAttachmentsquestions() {
             if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '' && $('#fileToUploadques' + index).val() != 'undefined') {
                 attchname = jQuery('#fileToUploadques' + index).val().substring(jQuery('#fileToUploadques' + index).val().lastIndexOf('\\') + 1)
                 fnUploadFilesonAzure('fileToUploadques' + index, attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
-            }
+             }
             else {
                 if ($('#eRFQVFilesques' + index).text() != '' && $('#eRFQVFilesques' + index).text() != null && $('#eRFQVFilesques' + index).text() != 'undefined') {
                     attchname = $('#eRFQVFilesques' + index).text()
                 }
             }
-            /*if (attchname == null || attchname == '') {
-                if (jQuery('#eRFQVFilesques' + index).val() != null || jQuery('#eRFQVFilesques' + index).val() != '') {
-                    attchname = jQuery('#eRFQVFilesques' + index).val();
-
-                }
-
-            }*/
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
-
             i++;
         });
         var data = {
@@ -1065,7 +1054,6 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
             if (RFQData[0].general.length) {
                 sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
@@ -1113,23 +1101,23 @@ function fetchReguestforQuotationDetails() {
                     $('#form_wizard_1').find('.button-next').show();
                     $('#lblRFQMessage').hide();
                 }
-            }
-            if (RFQData[0].vendors.length) {
-                for (var i = 0; i < RFQData[0].vendors.length; i++) {
-                    if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
+                if (RFQData[0].vendors.length) {
+                    for (var i = 0; i < RFQData[0].vendors.length; i++) {
+                        if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
 
-                        // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
-                        fetchRFIParameteronload(RFQData[0].vendors[i].version);
+                            // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
+                            fetchRFIParameteronload(RFQData[0].vendors[i].version);
 
-                        // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
-                        //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
-                        fetchRFQResponse('Question', RFQData[0].vendors[i].version);
-                        fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
+                            // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
+                            //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
+                            fetchRFQResponse('Question', RFQData[0].vendors[i].version);
+                            fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
 
-                        sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
+                            sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
+                        }
                     }
-                }
 
+                }
             }
 
         },
@@ -1268,9 +1256,8 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
-    //alert("Called")
-
     fetchRFQLevelTC(ver);
+
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     jQuery.ajax({
@@ -1291,7 +1278,6 @@ function fetchRFIParameteronload(ver) {
             var totalammwithGST = 0;
 
             if (data.length > 0) {
-
                 if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
@@ -1384,21 +1370,15 @@ sessionStorage.removeItem('selectedboqtxtboxidTax');
 
 function DownloadFile(aID) {
 
-
-
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 function DownloadFileVendor(aID) {
-
-
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-    // $('#txtbasicPrice').val(thousands_separators(basicprice))
-    //abheedev
-    $('#txtbasicPrice').val((basicprice))
 
+    $('#txtbasicPrice').val((basicprice))
     $("#hddnBoqParamQuantity").val(quantity);
 
     $('#texttblidwithGST').val(withgst);
@@ -1422,17 +1402,13 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
-
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
-    basicprice = 0.0;
+    basicprice = 0;
     PricewithoutGSTDiscount = 0.0;
 
-
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
-
-
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
     var validateSubmit = true;
@@ -1537,15 +1513,13 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
-
                     $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
                     //$(this_row.find('td:eq(13)').html(Price))
                     (async () => {
                         await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
                     })();
-
-                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                    //Price = 0;
+                   // fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                  //  Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
                     }
@@ -1567,13 +1541,11 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
-        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
 
 function saveQuotation() {
-    debugger;
     var PriceDetails = [];
     var commercialterms = [];
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
@@ -1609,7 +1581,6 @@ function saveQuotation() {
                 vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
-
             var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1661,7 +1632,8 @@ function saveQuotation() {
             "CommercialTerms": commercialterms,
             "VendorRemarks": $('#txtvendorremarks').val()
         };
-
+        // console.log(JSON.stringify(Tab2data))
+        //alert(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",
@@ -1736,7 +1708,6 @@ function shwconfirmationtoreplicate() {
 
 }
 function fnReplicateToAllItems() {
-
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
@@ -1822,4 +1793,64 @@ function fnRedirectToHome() {
     else {
         window.location = "VendorHome.html"
     }
+}
+
+
+//abheedev
+function multilingualLanguage() {
+
+    var set_locale_to = function (locale) {
+        if (locale) {
+            $.i18n().locale = locale;
+        }
+
+        $('body').i18n();
+    };
+    jQuery(function () {
+        $.i18n().load({
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
+        }).done(function () {
+            set_locale_to(url('?locale'));
+            
+            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
+
+            //   <option data-locale="en" value="en">English</option>
+
+            History.Adapter.bind(window, 'statechange', function () {
+                set_locale_to(url('?locale'));
+
+            });
+            $('.navbar-language').change(function (e) {
+
+                e.preventDefault();
+                $.i18n().locale = $('option:selected', this).data("locale");
+
+
+                History.pushState(null, null, "?locale=" + $.i18n().locale);
+
+
+
+            });
+
+            $('a').click(function (e) {
+
+                if (this.href.indexOf('?') != -1) {
+                    this.href = this.href;
+                }
+                else if (this.href.indexOf('#') != -1) {
+                    e.preventDefault()
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+                //else if (this.href.indexOf('javascript:') != -1) {
+
+                //  this.href = this.href + "?locale=" + $.i18n().locale;
+                //} 
+
+                else {
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+            });
+        });
+    });
 }
