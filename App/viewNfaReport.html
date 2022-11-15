@@ -29,6 +29,76 @@
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet">
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+    <script src="assets/CustomJS/jspdf.debug.js"></script>
+
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>-->
+    <script src="assets/CustomJS/html2canvas.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/index.js" type="text/javascript"></script>
+
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+    <!--abheedev backlog 471-->
+    <style type="text/css" media="print">
+        @media print {
+            .pagebreak {
+                page-break-before: always;
+            }
+            /* page-break-after works, as well */
+        }
+
+        @page {
+            size: landscape;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 10%;
+        }
+
+        @media screen {
+            div.divFooter {
+                display: none;
+            }
+        }
+
+        @media print {
+            div.divFooter {
+                position: fixed;
+                bottom: 0;
+            }
+        }
+    </style>
+
     <style>
         * {
             -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
@@ -49,28 +119,29 @@
 
         body {
             font-family: Verdana, serif;
-           /* font-family: Garamond, serif !important;*/
+            /* font-family: Garamond, serif !important;*/
         }
-        
 
+        
     </style>
 </head>
-<body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
+<body class="page-full-width">
 
     
     <div class="clearfix">
     </div>
+
     <div class="page-container">
 
         <div class="page-content-wrapper">
             <div class="page-content">
-                <div class="row" style="text-align: center;">
-                    <h1>
-                        <b>NFA Summary</b>
-                    </h1>
-                </div>
+
                
-              
+                <div style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;">
+                    <div style="float: left;"><img src="../Vendor/assets/aalogo.png" /></div> 
+                    <div style="clear: both;"></div>
+                    <label style="text-align: center;">NFA Report Summary</label>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet box green-haze">
@@ -110,12 +181,20 @@
                                     <br />
 
                                     <!--abheedev bug 385 start-->
-                                    <!--backlog 286 abheedev-->
+                                    <!--backlog 286 471 abheedev-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-control">
+                                                <label class="col-md-1 control-label ">Project:</label>
+                                                <label class="col-md-11 control-label" id="lblProjectName" style="text-align:left!important;padding-left:30px!important"></label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Amount:</label>
-                                                <label class="col-md-7 control-label" style="text-align:left!important;padding-left:3px!important">
+                                                <label class="col-md-4 control-label">Amount:</label>
+                                                <label class="col-md-8 control-label" style="text-align:left!important;padding-left:3px!important">
                                                     <span class="thousandsep" id="lblAmount"></span>&nbsp;<span id="lblCurrency"></span>
                                                 </label>
 
@@ -124,8 +203,8 @@
 
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Category:</label>
-                                                <label class="col-md-7 control-label" id="lblCategory" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-4 control-label">Category:</label>
+                                                <label class="col-md-8 control-label" id="lblCategory" style="text-align:left!important;padding-left:3px!important"></label>
 
                                             </div>
                                         </div>
@@ -138,24 +217,27 @@
                                         </div>
                                     </div>
                                     <!--abheedev bug385-->
+
                                     <div class="row clsHide">
+
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label ">Project:</label>
-                                                <label class="col-md-7 control-label" id="lblProjectName" style="text-align:left!important;padding-left:3px!important"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-control">
-                                                <label class="col-md-5 control-label ">Exception:</label>
-                                                <label class="col-md-7 control-label" id="lblException" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-4 control-label ">Exception:</label>
+                                                <label class="col-md-8 control-label" id="lblException" style="text-align:left!important;padding-left:3px!important"></label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Purchase Org:</label>
-                                                <label class="col-md-7 control-label" id="lblPurOrg" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-4 control-label">Purchase Org:</label>
+                                                <label class="col-md-8 control-label" id="lblPurOrg" style="text-align:left!important;padding-left:3px!important"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-control">
+                                                <label class="col-md-5 control-label">Purchase Group:</label>
+                                                <label class="col-md-7 control-label" id="lblGroup" style="text-align:left!important;padding-left:3px!important"></label>
+
                                             </div>
                                         </div>
                                     </div>
@@ -165,15 +247,15 @@
 
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Purchase Group:</label>
-                                                <label class="col-md-7 control-label" id="lblGroup" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-4 control-label">Budget:</label>
+                                                <label class="col-md-8 control-label" id="lblbudgetamount" style="text-align:left!important;padding-left:3px!important"></label>
 
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Event Type:</label>
-                                                <label class="col-md-7 control-label" id="lblEventType" style=" text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-4 control-label">Event Type:</label>
+                                                <label class="col-md-8 control-label" id="lblEventType" style=" text-align:left!important;padding-left:3px!important"></label>
 
                                             </div>
 
@@ -183,8 +265,8 @@
 
                                         <div class="col-md-4">
                                             <div class="form-control">
-                                                <label class="col-md-5 control-label">Event ID:</label>
-                                                <label class="col-md-7 control-label" id="lblEventId" style="text-align: left !important;padding-left:3px!important"></label>
+                                                <label class="col-md-3 control-label">Event ID:</label>
+                                                <label class="col-md-9 control-label" id="lblEventId" style="text-align: left !important;padding-left:3px!important"></label>
                                             </div>
                                         </div>
 
@@ -273,7 +355,7 @@
                                 <div class="caption">
                                     NFA Approval History
                                 </div>
-                                
+
                             </div>
                             <div class="portlet-body">
                                 <div class="row">
@@ -451,10 +533,10 @@
                 <div claass="row">
                     <div class="col-md-6">
                         <div style="width: auto; float: left;">Printed By: <span id="printed_by"></span></div>
-                        
+
                     </div>
                     <div class="col-md-6">
-                        
+
                         <div style="width: auto; float: right;">Printed On: <span id="printed_on"></span></div>
                     </div>
                 </div>
@@ -467,50 +549,12 @@
 
 
 
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-    <script src="assets/CustomJS/jspdf.debug.js"></script>
-
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>-->
-    <script src="assets/CustomJS/html2canvas.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/index.js" type="text/javascript"></script>
-
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-
-    <script src="assets/CustomJS/Common.js"></script>
-    <script src="assets/CustomJS/viewNfaReport.js"></script>
 
     <script>
         jQuery(document).ready(function () {
 
+            callPagejs('viewNfaReport.js');
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
 
@@ -541,7 +585,7 @@
             setCommonData();
             getCurrenttime()
             fetchMenuItemsFromSession(1, 58);
-           
+
             setTimeout(function () {
                 saveAspdf()
             }, 3000)

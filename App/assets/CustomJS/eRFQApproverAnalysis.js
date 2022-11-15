@@ -1633,7 +1633,7 @@ function ApprovalCommercialApp() {
         "AwardQuery": ''
     };
 
-
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
@@ -1644,10 +1644,17 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            bootbox.alert("Transaction Successful..", function () {
-                return true;
+          
+          /*  bootbox.alert("Transaction Successful..", function () {
+                debugger
                 window.location = "index.html";
+                return false;
+            });*/
 
+            bootbox.alert("transaction successful...").on("shown.bs.modal", function (e) {
+              
+                window.location = "index.html";
+                return false;
             });
         },
         error: function (xhr, status, error) {
@@ -1795,6 +1802,7 @@ function AwardCommeRFQ() {
                 dataType: "json",
                 success: function () {
                     bootbox.alert("Transaction Successful..", function () {
+                       
                         window.location = "index.html";
                         return false;
                     });
@@ -1849,6 +1857,7 @@ function fnFWDeRFQ() {
         success: function (data) {
 
             bootbox.alert("Transaction Successful..", function () {
+               
                 window.location = "index.html";
                 return false;
             });
@@ -1950,6 +1959,5 @@ function ApprovalApp() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         jQuery.unblockUI();
-
     }
 }

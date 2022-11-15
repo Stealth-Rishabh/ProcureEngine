@@ -747,9 +747,10 @@ function fetchrfqcomprative() {
                         t = k;
 
                     }
+                  
                     //abheedev bug 349 part2  start
-                    strQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
-                    strExcelQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
+                    strQ += "<td colspan=" +  2 + ">&nbsp;</td><td colspan=" + (t + 2) + " style='text-align:center'>No Questions Mapped</td>";
+                    strExcelQ += "<td colspan=" + 5 + ">&nbsp;</td><td colspan=" + (t + 10) + " style='text-align:center'>No Questions Mapped</td>";
                     strQ += "</tr>";
                     strExcelQ += "</tr>";
                     //abheedev bug 349 part2  start

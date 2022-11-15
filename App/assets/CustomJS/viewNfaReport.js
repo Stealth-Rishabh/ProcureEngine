@@ -87,8 +87,8 @@ function fetchRegisterUser() {
 
 }
 //abheedev bug 385
+//abheedev backlog 471
 var nfaid
-
 function GetOverviewmasterbyId(idx) {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -96,9 +96,8 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            console.log(res)
             nfaid = res.result[0].nfaID
-
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
                     $(".clsHide").hide();
@@ -112,7 +111,7 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-               
+                $("#lblDetailsdesc").html("<b>Descrition:</b>");
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
@@ -122,8 +121,10 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
+
                 $("#lblPurOrg").text(res.result[0].orgName);
                 $("#lblGroup").text(res.result[0].groupName);
+
                 if (res.result[0].eventtypeName == "RA") {
                     $("#lblEventType").text("Reverse Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\,\'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
@@ -140,6 +141,10 @@ function GetOverviewmasterbyId(idx) {
                     $("#lblEventType").text("French Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
+                else if (res.result[0].eventtypeName == "ON") {
+                    $("#lblEventType").text("Outside NFA")
+                    $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + "Not Applicable" + "</a>");
+                }
                 else {
                     $("#lblEventType").text("RFQ")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'0'\,\'0'\,\'0'\,\'" + res.result[0].eventRefernce + "'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
@@ -151,7 +156,13 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".clsHide").hide();
                 }
-                $("#lblException").text(res.result[0].conditionName);
+                //abheedev backlog 471
+                if (res.result[0].conditionName == "") {
+                    $("#lblException").text("No Exception");
+                }
+                else {
+                    $("#lblException").text(res.result[0].conditionName);
+                }
                 //abheedev backlog 286
                 $("#lblRemark").html(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
@@ -164,7 +175,11 @@ function GetOverviewmasterbyId(idx) {
         jQuery.unblockUI();
     });
 };
+
+
 //abheedev bug 385 end
+
+
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
     if (RFQID == 0) {
@@ -260,9 +275,10 @@ function fetchApproverStatus() {
                 jQuery('#divappendstatusbar').empty();
                 var counterColor = 0;
                 var prevseq = '1';
+                //abheedev backlog 471
                 for (var i = 0; i < data.length; i++) {
 
-                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
+                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px; border-color: transparent !important;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
@@ -333,7 +349,7 @@ function fetchApproverStatus() {
 
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -371,7 +387,7 @@ jQuery("#txtApprover").typeahead({
     updater: function (item) {
         if (map[item].userID != "0") {
             $('#hdndelegateuserid').val(map[item].userID)
-            // sessionStorage.setItem('hdndelegateuserid', map[item].userID);
+           
 
         }
         else {
@@ -1024,7 +1040,7 @@ function submitQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
+                
                 if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
                     quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
                 }
@@ -1252,7 +1268,7 @@ function getCurrenttime() {
 
 
 function saveAspdf() {
- 
+
     var pdf = new jsPDF('l', 'pt', 'a0');
     var options = {
         pagesplit: true
@@ -1263,5 +1279,5 @@ function saveAspdf() {
 
     });
 
-   
+
 }
