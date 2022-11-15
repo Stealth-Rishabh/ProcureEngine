@@ -34,13 +34,14 @@ $(document).ready(function () {
         else if (IsApp == 'Y' && FwdTo == 'Admin') {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").show();
-            $('#frmadminbutton').show()
+            $('#frmadminbutton').show();
 
         }
         else if (FwdTo == 'View') {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").hide();
             $('#frmadminbutton').hide()
+            $('#divreportPDFButton').show()
 
         }
         else {
@@ -738,7 +739,7 @@ function GetQuestions() {
             if (data.length > 0) {
                 queslength = data.length;
                 $('#btnTechquery').attr('disabled', 'disabled')
-                jQuery('#tblquestions').append("<thead><tr><th></th><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
+                jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     rowques = rowques + 1;
                     attach = '';
@@ -746,7 +747,7 @@ function GetQuestions() {
                         attach = '<a style="pointer: cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
-                    str = "<tr id=trquesid" + (i) + "><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + data[i].id + "'\) \"  id=chkvender" + data[i].id + "  value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvender\" disabled/></span></div></td><td class=hide id=quesid" + i + ">" + data[i].id + "</td><td id=ques" + i + ">" + data[i].question + "</td>";
+                    str = "<tr id=trquesid" + i + "><td class=hide id=quesid" + i + ">" + data[i].id + "</td><td id=ques" + i + ">" + data[i].question + "</td>";
                     str += '<td id=answer' + i + '>' + data[i].answer + '</td>';
                     str += '<td>' + attach + '</td>';
                     str += '<td>' + data[i].createdBy + '</td>';
@@ -761,9 +762,7 @@ function GetQuestions() {
                     else {
                         $('#Removebtn' + i).show();
                     }
-                    if (data[i].status.toLowerCase() != "x") {
-                        $('#chkvender' + data[i].id).removeAttr("disabled");
-                    }
+
                     PendingOn = data[i].pendingOn;
                     sessionStorage.setItem('HeaderID', data[i].headerid)
                 }
@@ -773,16 +772,16 @@ function GetQuestions() {
                 if (PendingOn.toLowerCase() == "c") {
                     jQuery('#btnSubmitApp').attr("disabled", 'disabled');
                     $('#btnSubmitApp').removeClass('green').addClass('default')
-                    $('#btnwithdraw').show()
+                    //$('#btnwithdraw').show()
                 }
-                else {
+                /*else {
 
                     $('#btnwithdraw').hide()
-                }
+                }*/
             }
-            else {
+            /*else {
                 $('#btnwithdraw').hide()
-            }
+            }*/
         },
         error: function (xhr, status, error) {
 
@@ -816,17 +815,18 @@ function GetQuestionsforCreator(pendingon) {
             if (data.length > 0) {
 
                 $('#divQuery').removeClass('hide')
-                jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
+                jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th></th><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
+                $('#btnwithdraw').hide()
 
                 for (var i = 0; i < data.length; i++) {
                     attach = '';
                     if (data[i].attachment != '') {
-                        attach = '<a style="pointer:cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + '  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
+                        attach = '<a style="pointer:cursor; text-decoration:none;" id=eRFQVQueryFiles' + i + '  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
                     }
 
                     if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID') && FwdTo == 'Admin') {
                         $('#btnsubmitquery').removeClass('hide')
-                        str = '<tr id=trquesid' + i + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
+                        str = "<tr id=trresquesid" + i + "><td class=hide id=quesresid" + i + ">" + data[i].id + "</td><td colspan=2>" + data[i].question + "</td><td>" + data[i].createdBy + "</td>";
                         str += '<td><textarea onkeyup="replaceQuoutesFromString(this)" name=answer rows=2 class="form-control" maxlength=1000  autocomplete=off id=answer' + i + ' >' + data[i].answer + '</textarea></td>';
                         str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span><br>" + attach + "</td>";
                         jQuery('#tblqueryresponse').append(str);
@@ -850,17 +850,35 @@ function GetQuestionsforCreator(pendingon) {
                     }
                     else {
                         $('#btnsubmitquery').addClass('hide')
-                        str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
+                        str = "<tr id=trresquesid" + i + "><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\Check(this,\'" + data[i].id + "'\) \"  id=chkvender" + data[i].id + "  value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvender\" disabled/></span></div></td><td class=hide id=quesresid" + i + ">" + data[i].id + "</td><td>" + data[i].question + "</td><td>" + data[i].createdBy + "</td>";
                         str += '<td>' + data[i].answer + '</td>';
                         str += '<td>' + attach + '</td>';
                         jQuery('#tblqueryresponse').append(str);
+                        if (data[i].status.toLowerCase() != "x" && data[i].status.toLowerCase() != "a") {
+                            $('#chkvender' + data[i].id).removeAttr("disabled");
+                            $('.checker').show();
+                            //$('#btnwithdraw').show()
+                        }
+                        else {
+                            $('.checker').hide();
+                            //$('#btnwithdraw').hide();
+                        }
+
+
                     }
+                    if (pendingon.toLowerCase() == "c") {
+                        $('#btnwithdraw').show()
+                    }
+                    else {
+                        $('#btnwithdraw').hide()
+                    }
+                    sessionStorage.setItem('HeaderID', data[i].headerid)
 
                 }
 
             }
             else {
-
+                $('#btnwithdraw').hide()
             }
         },
         error: function (xhr, status, error) {
@@ -917,28 +935,33 @@ function fnsubmitQueryByCreator() {
 
     }
     if (flag == "T") {
-        var i = 0;
+
         var quesquery = "";
         var attchname = "";
         var ext = "";
         $("#tblqueryresponse> tbody > tr").each(function (index) {
             var this_row = $(this);
+            i = index;
             attchname = ''; ext = '';
+
+            // attchname = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('\\') + 1, $('#fileToUpload' + i).val().lastIndexOf('.'))
             attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
-
             if (attchname != "" && attchname != null && attchname != undefined) {
                 attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-                attchname = attchname.replace('.', '@')
-                fnUploadFilesonAzure('fileToUpload' + i, $('#fileToUpload' + i).val(), 'NFA/' + idx + '/NFAQuery');
+                alert(attchname)
+                fnUploadFilesonAzure('fileToUpload' + i, attchname, 'NFA/' + idx + '/NFAQuery');
             }
             else {
                 if ($('#eRFQVQueryFiles' + i).text() != '' && $('#eRFQVQueryFiles' + i).text() != null && $('#eRFQVQueryFiles' + i).text() != 'undefined') {
-                    attchname = $('#eRFQVQueryFiles' + i).text()
+                    attchname = $('#eRFQVQueryFiles' + i).text();
                 }
             }
-            quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
-            i++;
+
+
+            quesquery = quesquery + $.trim($('#quesresid' + i).text()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
+
+
         });
         var data = {
             "NFAID": parseInt(idx),
@@ -949,7 +972,7 @@ function fnsubmitQueryByCreator() {
             "PendingOn": "A"
         }
 
-
+        console.log(JSON.stringify(data));
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1016,9 +1039,9 @@ function addquestions() {
 
         rowques = parseInt(maxidnum) + 1;
         if (!jQuery("#tblquestions thead").length) {
-            jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important' colspan=5>Questions</th><th style='width:5%!important'></th></tr></thead>");
+            jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important' colspan=4>Questions</th><th style='width:5%!important'></th></tr></thead>");
         }
-        var str = '<tr id=trquesid' + rowques + '><td class=hide id=quesid' + rowques + '>0</td><td colspan=5 id=ques' + rowques + '>' + jQuery("#txtquestions").val() + '</td>';
+        var str = '<tr id=trquesid' + rowques + '><td class=hide id=quesid' + rowques + '>0</td><td colspan=4 id=ques' + rowques + '>' + jQuery("#txtquestions").val() + '</td>';
         str += '<td style="width:5%!important"><button type=button id=Removebtn' + rowques + ' class="btn btn-xs btn-danger"  onclick="deletequesrow(trquesid' + rowques + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td class=hide>C</td></tr>';
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
@@ -1055,10 +1078,10 @@ function submitQuery() {
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
                 //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
-                //if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
+
                 index = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
                 if ($.trim($('#quesid' + index).text()) == "0") {
-                    quesquery = quesquery + $.trim($('#ques' + index).text()) + '#';//$.trim(this_row.find('td:eq(1)').html()) + '#';
+                    quesquery = quesquery + $.trim($('#ques' + index).text()) + '#';
                 }
 
             });
@@ -1071,7 +1094,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-            //console.log(JSON.stringify(data))
+            console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1090,7 +1113,7 @@ function submitQuery() {
                             $('#btnSubmitApp').removeClass('green').addClass('default')
 
                             $("#RaiseQuery").modal('hide');
-                            GetQuestionsforCreator(PendingOn)
+                            GetQuestionsforCreator('C')
                             jQuery.unblockUI();
                         }, 1000);
                     });
@@ -1154,12 +1177,13 @@ function fnquerywithdaw() {
     });
 }
 function withdrawquery() {
+
     var checkedValue = '';
-    $("#tblquestions> tbody > tr").each(function (index) {
+    $("#tblqueryresponse> tbody > tr").each(function (index) {
         var this_row = $(this);
         if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-            index = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
-            checkedValue = checkedValue + $('#quesid' + index).text() + ',';
+            index = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
+            checkedValue = checkedValue + $('#quesresid' + index).text() + ',';
         }
     });
     checkedValue = checkedValue.slice(0, -1)
@@ -1291,9 +1315,8 @@ function DisableActivityRecall() {
 }
 
 // abheedev backlog 471
-$('#btnpdf').click(function () {
-
-
+function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
     window.open("viewNfaReport.html?param=" + encrypdata, "_blank")
-})
+
+}
