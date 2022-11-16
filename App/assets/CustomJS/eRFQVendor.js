@@ -2,6 +2,9 @@
 var error = $('.alert-danger');
 var success = $('.alert-success');
 
+
+
+
 var form = $('#submit_form');
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -16,7 +19,6 @@ $(".thousandseparated").inputmask({
     clearMaskOnLostFocus: true,
     supportsInputType: ["text", "tel", "password"],
     'removeMaskOnSubmit': false
-
 });
 var _RFQBidType = "";
 var Vehicleerror1 = $('#errordiv1');
@@ -135,8 +137,6 @@ var FormWizard = function () {
                 return "<img class='flag' src='assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
 
             }
-
-
             form.validate({
 
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -168,10 +168,8 @@ var FormWizard = function () {
                         $("#btncal").css("margin-top", "-22px");
                     }
                 },
-
                 invalidHandler: function (event, validator) {
                 },
-
                 highlight: function (element) {
                     $(element)
                         .closest('.inputgroup').removeClass('has-success').addClass('has-error');
@@ -179,7 +177,6 @@ var FormWizard = function () {
                         .closest('.col-md-4,.xyz').removeClass('has-success').addClass('has-error');
 
                 },
-
                 unhighlight: function (element) {
                     $(element)
                         .closest('.inputgroup').removeClass('has-error');
@@ -279,27 +276,20 @@ var FormWizard = function () {
                                 flag = "T"
                             }
                         }
-                        if (flag == "F") {//&& rowCountQ == countQ
+                        if (flag == "F") {
                             return false;
                         }
-                        else if (jQuery('#fileToUpload1').val() != "") {
-                            $('.alert-danger').show();
-                            $('#spandanger').text('Your file is not attached. Please do press "+" button after uploading the file.');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(7000);
-                            return false;
-                        }
-                        else {
-                            if (flag == "T") {
-                                fnsaveAttachmentsquestions();
 
-                            }
+                        if (flag == "T") {
+                            saveQuotation();
+                            fetchRFQResponse('Attachment', sessionStorage.getItem('RFQVersionId'))
                         }
 
                     }
                     else if (index == 3) {
-
                     }
+
+
                     handleTitle(tab, navigation, index);
 
                 },
@@ -326,9 +316,6 @@ var FormWizard = function () {
 
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
-                var flag = "T";
-                var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
-
                 var flagQ = "T";
                 var rowCountQ = jQuery('#tblquestions tr').length;
 
@@ -346,24 +333,30 @@ var FormWizard = function () {
                         countQ = countQ + 1;
                     }
                     else {
-                        flagQ == "T";
+                        flagQ = "T"
                     }
                 }
-                if (flagQ == "F") {
+                if (flagQ == "F") {//&& rowCountQ == countQ
                     return false;
                 }
-
-                if (flagQ == "T") {
-
-                    fnsaveAttachmentsquestions();
-                    saveQuotation();
-                    $('#BidPreviewDiv').show();
-                    $('#form_wizard_1').hide();
-                    return true;
+                else if (jQuery('#fileToUpload1').val() != "") {
+                    $('.alert-danger').show();
+                    $('#spandanger').text('Your file is not attached. Please do press "+" button after uploading the file.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    return false;
+                }
+                else {
+                    if (flagQ == "T") {
+                        fnsaveAttachmentsquestions();
+                        $('#BidPreviewDiv').show();
+                        $('#form_wizard_1').hide();
+                        return true;
+                    }
                 }
 
-            }).hide();
 
+            }).hide();
 
 
             //unblock code
@@ -614,20 +607,19 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
+        strprev += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;" id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,-1)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
-        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this)" >' + attchname + '</a></td>';
-
+        str += '<td class=style="width:47%!important"><a style="pointer:cursur;text-decoration:none;"  id=eRFQVFilesPrev' + rowAttach + ' href="javascript:;" onclick="DownloadFileVendor(this,-1)" >' + attchname + '</a></td>';
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + rowAttach + ' onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',\'VAttachment\',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachmentsresponse').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
 
         //** function to insert record in DB after file upload on Blob
-        fnsaveAttachmentsquestions();
+        //fnsaveAttachmentsquestions();
 
         // var arr = $("#tblAttachmentsresponse tr");
 
@@ -681,7 +673,7 @@ function fileDeletefromdb(srno, deletionFor) {
         "DeletionFor": deletionFor,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
     }
-    //alert(JSON.stringify(Attachments))
+
     jQuery.ajax({
 
         type: "POST",
@@ -753,6 +745,7 @@ function fetchRFQResponseTocheckVersion(Flag, ver) {
         }
     });
 }
+var PreviousVersion = 0;
 function fetchRFQResponse(Flag, version) {
 
     var strprev = "";
@@ -783,8 +776,8 @@ function fetchRFQResponse(Flag, version) {
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         str += "<td class='hide'>" + data[i].questionID + "</td>";
-                        str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span><br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this)>' + attachQA + '</a> </td>';
-                        strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this)>' + attachQA + '</a></td>';//' + data[i].answer + '
+                        str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span><br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[i].version + ')>' + attachQA + '</a> </td>';
+                        strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this,' + data[i].version + ')>' + attachQA + '</a></td>';//' + data[i].answer + '
                         str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
                         strprev += '<td style="width:30%!important"><label class="control-label" id=lblanswer' + i + '></label></td></tr>';//' + data[i].answer + '
 
@@ -799,6 +792,7 @@ function fetchRFQResponse(Flag, version) {
                         });
 
                     }
+                    PreviousVersion = data[0].version;
                 }
                 else {
                     $('#headerspecificresponse').addClass('hide')
@@ -820,23 +814,24 @@ function fetchRFQResponse(Flag, version) {
                         rowAttach = rowAttach + 1;
                         attach = data[i].attachment.replace(/\s/g, "%20");
                         var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + data[i].attachmentdescription + '</td>';
-                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a></td>';
+                        strprev += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFileVendor(this,' + data[i].version + ')" >' + data[i].attachment + '</a></td>';
                         jQuery('#tblAttachmentsPrev').append(strprev);
 
                         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + data[i].attachmentdescription + '</td>';
-                        str += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this)">' + data[i].attachment + '</a></td>';
+                        str += '<td class=style="width:47%!important"><a id=eRFQVFilesPrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick="DownloadFileVendor(this,' + data[i].version + ')">' + data[i].attachment + '</a></td>';
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
-                        if (parseInt(sessionStorage.getItem('RFQVersionId')) > version) {
-                            $('#Removebtnattach' + i).attr('disabled', 'disabled')
-                        }
-                        else {
-                            $('#Removebtnattach' + i).removeAttr('disabled')
-                        }
+                        //if (parseInt(sessionStorage.getItem('RFQVersionId')) > parseInt(data[i].version)) {
+                        //    $('#Removebtnattach' + i).attr('disabled', 'disabled')
+                        //}
+                        //else {
+                        //    $('#Removebtnattach' + i).removeAttr('disabled')
+                        //}
 
 
                     }
+                    PreviousVersion = data[0].version;
                 }
                 else {
                     $('#headerresposeatt').addClass('hide')
@@ -862,6 +857,7 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
+    debugger;
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -886,13 +882,14 @@ function fnsaveAttachmentsquestions() {
 
     }
     if (validateSubmit) {
+
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
 
             var this_row = $(this);
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
             i++;
         });
-        i = 0;
+        i = 0
         var attchname = '';
         $("#tblquestions> tbody > tr").each(function (index) {
             var this_row = $(this);
@@ -900,13 +897,15 @@ function fnsaveAttachmentsquestions() {
             if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '' && $('#fileToUploadques' + index).val() != 'undefined') {
                 attchname = jQuery('#fileToUploadques' + index).val().substring(jQuery('#fileToUploadques' + index).val().lastIndexOf('\\') + 1)
                 fnUploadFilesonAzure('fileToUploadques' + index, attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
-             }
+            }
             else {
                 if ($('#eRFQVFilesques' + index).text() != '' && $('#eRFQVFilesques' + index).text() != null && $('#eRFQVFilesques' + index).text() != 'undefined') {
                     attchname = $('#eRFQVFilesques' + index).text()
                 }
             }
+
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
+
             i++;
         });
         var data = {
@@ -916,6 +915,7 @@ function fnsaveAttachmentsquestions() {
             "VendorID": parseInt(sessionStorage.getItem('VendorId')),
             "Version": parseInt(sessionStorage.getItem('RFQVersionId'))
         }
+
         // console.log(JSON.stringify(data))
         jQuery.ajax({
             type: "POST",
@@ -1054,6 +1054,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             if (RFQData[0].general.length) {
                 sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
@@ -1101,23 +1102,23 @@ function fetchReguestforQuotationDetails() {
                     $('#form_wizard_1').find('.button-next').show();
                     $('#lblRFQMessage').hide();
                 }
-                if (RFQData[0].vendors.length) {
-                    for (var i = 0; i < RFQData[0].vendors.length; i++) {
-                        if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
+            }
+            if (RFQData[0].vendors.length) {
+                for (var i = 0; i < RFQData[0].vendors.length; i++) {
+                    if (RFQData[0].vendors[i].vendorId == sessionStorage.getItem("VendorId")) {
 
-                            // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
-                            fetchRFIParameteronload(RFQData[0].vendors[i].version);
+                        // fetchRFQParameterlastquotesonload(RFQData[0].vendors[i].version)
+                        fetchRFIParameteronload(RFQData[0].vendors[i].version);
 
-                            // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
-                            //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
-                            fetchRFQResponse('Question', RFQData[0].vendors[i].version);
-                            fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
+                        // fetchRFQResponseTocheckVersion('Question', RFQData[0].vendors[i].version);
+                        //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Question', RFQData[0].vendors[i].version);
+                        fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
 
-                            sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
-                        }
+                        sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
                     }
-
                 }
+
             }
 
         },
@@ -1256,8 +1257,9 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
-    fetchRFQLevelTC(ver);
+    //alert("Called")
 
+    fetchRFQLevelTC(ver);
     //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     jQuery.ajax({
@@ -1278,6 +1280,7 @@ function fetchRFIParameteronload(ver) {
             var totalammwithGST = 0;
 
             if (data.length > 0) {
+
                 if (_RFQBidType == 'Open') {
                     jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th>Currency</th><th class=hide>Delivery Location</th><th></th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th class='hidden'>Description</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
                     jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th><th>Delivery Location</th><th>Comments</th></tr></thead>");
@@ -1370,15 +1373,27 @@ sessionStorage.removeItem('selectedboqtxtboxidTax');
 
 function DownloadFile(aID) {
 
+
+
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
-function DownloadFileVendor(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
+function DownloadFileVendor(aID, version) {
+
+    if (version == "-1") {
+        version = sessionStorage.getItem('RFQVersionId')
+    }
+    else {
+        version = version;
+    }
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + version);
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
 
+    // $('#txtbasicPrice').val(thousands_separators(basicprice))
+    //abheedev
     $('#txtbasicPrice').val((basicprice))
+
     $("#hddnBoqParamQuantity").val(quantity);
 
     $('#texttblidwithGST').val(withgst);
@@ -1402,13 +1417,17 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
+
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
-    basicprice = 0;
+    basicprice = 0.0;
     PricewithoutGSTDiscount = 0.0;
 
+
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
+
+
     var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     var CurDt = new Date();
     var validateSubmit = true;
@@ -1513,13 +1532,15 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
+
                     $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
                     //$(this_row.find('td:eq(13)').html(Price))
                     (async () => {
                         await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
                     })();
-                   // fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                  //  Price = 0;
+
+                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
+                    //Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
                     }
@@ -1541,6 +1562,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
+        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
@@ -1548,6 +1570,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 function saveQuotation() {
     var PriceDetails = [];
     var commercialterms = [];
+    var attchquery = '';
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     var vendorRemarks = "";
 
@@ -1612,6 +1635,7 @@ function saveQuotation() {
             else {
                 _otherTC = parseInt(_otherTC);
             }
+
             var comm = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1619,21 +1643,26 @@ function saveQuotation() {
                 "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
-                "OtherTermCondition": _otherTC//parseInt($.trim(this_row.find('td:eq(6)').html()))
+                "OtherTermCondition": _otherTC//($.trim(this_row.find('td:eq(6)').html()))
             };
             commercialterms.push(comm)
         });
+        $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
+            var this_row = $(this);
+            attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
 
+        });
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
             "VendorId": parseInt(sessionStorage.getItem('VendorId')),
             "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
             "CommercialTerms": commercialterms,
-            "VendorRemarks": $('#txtvendorremarks').val()
+            "VendorRemarks": $('#txtvendorremarks').val(),
+            "PreviousVersion": PreviousVersion,
+            "AttachString": attchquery
         };
-        // console.log(JSON.stringify(Tab2data))
-        //alert(JSON.stringify(Tab2data))
+        console.log(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",
@@ -1708,6 +1737,7 @@ function shwconfirmationtoreplicate() {
 
 }
 function fnReplicateToAllItems() {
+
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
@@ -1793,64 +1823,4 @@ function fnRedirectToHome() {
     else {
         window.location = "VendorHome.html"
     }
-}
-
-
-//abheedev
-function multilingualLanguage() {
-
-    var set_locale_to = function (locale) {
-        if (locale) {
-            $.i18n().locale = locale;
-        }
-
-        $('body').i18n();
-    };
-    jQuery(function () {
-        $.i18n().load({
-            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
-            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
-        }).done(function () {
-            set_locale_to(url('?locale'));
-            
-            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
-
-            //   <option data-locale="en" value="en">English</option>
-
-            History.Adapter.bind(window, 'statechange', function () {
-                set_locale_to(url('?locale'));
-
-            });
-            $('.navbar-language').change(function (e) {
-
-                e.preventDefault();
-                $.i18n().locale = $('option:selected', this).data("locale");
-
-
-                History.pushState(null, null, "?locale=" + $.i18n().locale);
-
-
-
-            });
-
-            $('a').click(function (e) {
-
-                if (this.href.indexOf('?') != -1) {
-                    this.href = this.href;
-                }
-                else if (this.href.indexOf('#') != -1) {
-                    e.preventDefault()
-                    this.href = this.href + "?locale=" + $.i18n().locale;
-                }
-                //else if (this.href.indexOf('javascript:') != -1) {
-
-                //  this.href = this.href + "?locale=" + $.i18n().locale;
-                //} 
-
-                else {
-                    this.href = this.href + "?locale=" + $.i18n().locale;
-                }
-            });
-        });
-    });
 }
