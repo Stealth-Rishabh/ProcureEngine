@@ -740,17 +740,17 @@ function fetchrfqcomprative() {
                 }
                 else {
                     strQ += "<tr>";
-                    strExcelQ += " <tr><td>&nbsp;</td>";
+                    strExcelQ += " <tr><td colspan=" + 6 + ">&nbsp;</td>";
                     t = 0;
                     for (var k = 1; k <= data[0].vendorNames.length; k++) {
 
                         t = k;
 
                     }
-                  
-                    //abheedev bug 349 part2  start
+                   
+                    //abheedev bug  472 479 
                     strQ += "<td colspan=" +  2 + ">&nbsp;</td><td colspan=" + (t + 2) + " style='text-align:center'>No Questions Mapped</td>";
-                    strExcelQ += "<td colspan=" + 5 + ">&nbsp;</td><td colspan=" + (t + 10) + " style='text-align:center'>No Questions Mapped</td>";
+                    strExcelQ += "<td colspan=" + (t + (4*t)) + " style='text-align:center'>No Questions Mapped</td>";
                     strQ += "</tr>";
                     strExcelQ += "</tr>";
                     //abheedev bug 349 part2  start

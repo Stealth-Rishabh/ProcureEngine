@@ -826,22 +826,33 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
+   
 
-    var formData = new FormData();
+
+   /* var formData = new formData;
     formData.append('file', $('#' + fileID)[0].files[0]);
-    formData.append('foldername', foldername);
+    formData.append('foldername', foldername);*/
+    var formData = {
+        "fileID": $('#' + fileID)[0].files[0],
+        "foldername": foldername
 
+    };
+
+
+    console.log(formData)
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
         contentType: false,
         processData: false,
-        data: formData,
+        data:formData,
         success: function (data) {
-            //  alert('success')
+            
+             console.log(data)
             return;
         },
         error: function (xhr, status, error) {
+         
             $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
             Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
