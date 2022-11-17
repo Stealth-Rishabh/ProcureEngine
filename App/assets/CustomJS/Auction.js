@@ -270,7 +270,7 @@ $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
-
+    debugger
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -848,7 +848,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
         data:formData,
         success: function (data) {
             
-             console.log(data)
+             
             return;
         },
         error: function (xhr, status, error) {
