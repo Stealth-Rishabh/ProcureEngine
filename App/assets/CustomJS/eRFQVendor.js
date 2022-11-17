@@ -762,7 +762,7 @@ function fetchRFQResponse(Flag, version) {
             if (Flag == 'Question') {
                 jQuery("#tblquestions").empty();
                 jQuery("#tblQuestionsPrev").empty();
-
+                debuggerconsole.log(data)
                 if (data.length > 0) {
                     $('#headerspecificresponse').removeClass('hide')
                     $('#divspecificresponse').removeClass('hide')
@@ -905,6 +905,8 @@ function fnsaveAttachmentsquestions() {
             }
 
             quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
+
+            alert(quesquery)
 
             i++;
         });

@@ -527,7 +527,8 @@ function fetchrfqcomprative(RFQID) {
                         t = k;
 
                     }
-                    strQ += "<td colspan=" + (t + 2) + ">No Questions Mapped</td>";
+                   //abheedev bug 472-479
+                    strQ += "<td colspan=" + 2 + ">&nbsp;</td><td colspan=" + (t + (4*t)) + " style='text-align:center'>No Questions Mapped</td>";
 
                     strQ += "</tr>";
 
