@@ -253,12 +253,10 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
+
             cc = 0;
             if (data.length > 0) {
-
                 let userdetails = JSON.parse(data[0].jsondata);
-
                 $('#username').html(userdetails[0].UserName)
                 $('#usermobileno').val(userdetails[0].MobileNo)
                 $('#userEmailID').html(userdetails[0].EmailID)
@@ -270,29 +268,25 @@ function fetchUserDetails() {
                     $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
                 let userOrg = JSON.parse(data[1].jsondata);
+                if (userOrg != null) {
+                    if (userOrg.length > 0) {
+                        $('#userOrg').removeClass('hide')
+                        $('#tblpurchaseOrg').empty();
+                        $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
+                        for (var i = 0; i < userOrg.length; i++) {
+                            $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[i].PurchaseGrpID + '</td><td>' + userOrg[i].PurchaseOrgName + '</td><td>' + userOrg[i].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userOrg[i].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                            cc = cc + 1;
+                        }
 
-
-
-
-                
-
-
-
-               
-                if (userOrg.length > 0) {
-                    $('#userOrg').removeClass('hide')
-                    $('#tblpurchaseOrg').empty();
-                    $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
-                    for (var i = 0; i < userOrg.length; i++) {
-                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[i].PurchaseGrpID + '</td><td>' + userOrg[i].PurchaseOrgName + '</td><td>' + userOrg[i].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userOrg[i].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                        cc = cc + 1;
-                    }
-
-                    if (jQuery('#tblpurchaseOrg tr').length > 0) {
-                        $('#theadgroup').removeClass('hide');
+                        if (jQuery('#tblpurchaseOrg tr').length > 0) {
+                            $('#theadgroup').removeClass('hide');
+                        }
+                        else {
+                            $('#theadgroup').addClass('hide');
+                        }
                     }
                     else {
-                        $('#theadgroup').addClass('hide');
+                        $('#userOrg').addClass('hide')
                     }
                 }
                 else {
@@ -301,7 +295,6 @@ function fetchUserDetails() {
 
             }
             jQuery.unblockUI();
-
         },
         error: function (xhr, status, error) {
 
@@ -315,7 +308,6 @@ function fetchUserDetails() {
             jQuery.unblockUI();
             return false;
         }
-
     });
 
 }
