@@ -1,4 +1,4 @@
-var param = getUrlVars()["param"]
+﻿var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
@@ -9,7 +9,7 @@ $('.maxlength').maxlength({
 });
 
 function fetchReguestforQuotationDetails() {
-
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -70,7 +70,7 @@ var error = $('.alert-danger');
 var success = $('.alert-success');
 var BiddingVendorQuery = [];
 function formvalidate() {
-
+    
     form.validate({
         doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
         errorElement: 'span', //default input error message container
@@ -168,7 +168,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
 
     };
-     //alert(JSON.stringify(Data))
+    //alert(JSON.stringify(Data))
     //console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -177,7 +177,7 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            
+
             if (data == '1') {
                 $('#spansuccess1').html("PPC Form Saved Successfully...");
                 success.show();
@@ -383,7 +383,7 @@ function fetchAzPPcFormDetails() {
                             $("#TPIN" + i).removeAttr("checked");
                             $("#TPIY" + i).removeAttr("checked");
                         }
-                        
+
                         else {
                             $("#TPIY" + i).removeAttr("checked");
                             $("#TPIN" + i).attr("checked", "checked");
@@ -654,3 +654,16 @@ function fnRemoveAttachment(POID, deletionfor) {
         }
     })
 }
+
+$("txtSearch").typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+},
+
+    {
+        name: 'allvendorsforautocomplete'
+      
+    }
+)
+
