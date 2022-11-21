@@ -1522,7 +1522,7 @@ function ConfigureBidForSeaExportTab2() {
             }
             $("#tblServicesProduct> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                index = (this_row.closest('tr').attr('id')).substring(4);
+                index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 targetPrice = 0
                 unitrate = 0;
                 povalue = 0, tab2Data = '', ItemStatus = '', itmduartion = 0;;
