@@ -1447,7 +1447,7 @@ function ConfigureBidForSeaExportTab2() {
             var ItemStatus = 'Open';
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
                 targetPrice = 0
                 unitrate = 0;
@@ -1522,7 +1522,7 @@ function ConfigureBidForSeaExportTab2() {
             }
             $("#tblServicesProduct> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                index = (this_row.closest('tr').attr('id')).substring(4);
+                index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 targetPrice = 0
                 unitrate = 0;
                 povalue = 0, tab2Data = '', ItemStatus = '', itmduartion = 0;;
@@ -1890,11 +1890,11 @@ function InsUpdSeaExport() {
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
-                if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
-                
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+                if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val()) {
                     st = "false";
                 }
+                i++;
                 
             });
 
@@ -2151,7 +2151,7 @@ function InsUpdSeaExport() {
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
                         var this_row = $(this);
-                        i = (this_row.closest('tr').attr('id')).substring(4);
+                        i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                         var this_row = $(this);
                         if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
                             st = "false"
@@ -4166,7 +4166,4 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
-
-
-
 

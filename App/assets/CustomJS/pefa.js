@@ -1,7 +1,7 @@
 $("#cancelBidBtn").hide();
-//abheedev bug 507 comment for reference
-/*jQuery(document).ready(function () {
-    $(",").inputmask({ //#txtquantitiy,#txtCeilingPrice #txtminimumdecreament #txtStartingPrice #txtPriceReductionAmount #txtlastinvoiceprice
+
+jQuery(document).ready(function () {
+    /*$("#txtCeilingPrice,#txtquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount,#txtlastinvoiceprice").inputmask({
         
         alias: "decimal",
         rightAlign: false,
@@ -16,9 +16,9 @@ $("#cancelBidBtn").hide();
         supportsInputType: ["text", "tel", "password"],
         'removeMaskOnSubmit': true,
          autoUnmask: true
-    });
-   
-});*/
+    });*/
+
+});
 
 $('#txtBidSubject,#txtshortname,#txtConversionRate,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
@@ -536,7 +536,6 @@ $("#chkAll").click(function () {
 
 
 var allUsers = '';
-//abheedev bug 507 start
 function fetchRegisterUser() {
 
     jQuery.ajax({
@@ -1251,7 +1250,7 @@ function ConfigureBidInsPefaTab2() {
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
                 targetPrice = 0
                 var t = 'A';
@@ -1291,7 +1290,7 @@ function ConfigureBidInsPefaTab2() {
             }
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
                     t = 'P'
@@ -1335,7 +1334,9 @@ function ConfigureBidInsPefaTab2() {
         "BidDuration": _BidDuration == 0 ? 0 : parseInt(_BidDuration)
 
     };
-    
+    //console.log(PriceDetails)
+    //alert(JSON.stringify(Tab2data))
+    console.log(JSON.stringify(Tab2data))
     jQuery.ajax({
 
         type: "POST",
@@ -1638,15 +1639,15 @@ function InsUpdProductSevices() {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
-                //if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val()) && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
-                 if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+                if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val()) && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
+                    //if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
                     st = "false";
-                    
+
                 }
 
             });
-            
+
             if ($('#dropuom').val() == '') {
                 $('.alert-danger').show();
                 $('#spandanger').html('Please Select UOM Properly');
@@ -1858,13 +1859,13 @@ function InsUpdProductSevices() {
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
                         var this_row = $(this);
-                        i = (this_row.closest('tr').attr('id')).substring(4);
+                        i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                         if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
                             st = "false"
                         }
-                        
+
                     });
-                    
+
                     if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
@@ -1983,7 +1984,7 @@ function ParametersQuery() {
 }
 
 function editvalues(icount) {
-   
+    // sessionStorage.setItem('ClickedEditID', rowid.id)
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
 
@@ -1997,7 +1998,7 @@ function editvalues(icount) {
     $('#drpdecreamenton').val(removeThousandSeperator($("#inconval" + icount).text()))
     $('#txtlastinvoiceprice').val($("#LIPrice" + icount).text())
     $('#txtStartingPrice').val(removeThousandSeperator($("#starttingprice" + icount).text()))
-    
+    // $('#txtStartingPrice').val($("#" + rowid.id).find("td:eq(13)").text())
     $('#showhlprice').val($("#showhlprice" + icount).text())
     $('#showstartprice').val($("#showstartprice" + icount).text())
 
@@ -2031,7 +2032,7 @@ function resetfun() {
     $('#txtlastinvoiceprice').val('')
     jQuery('#fileattachment').val('')
     jQuery('#checkmaskvendor').val('Y')
-   
+    //jQuery('#showhlprice').val('N')
     jQuery('#showstartprice').val('Y')
     $('#closebtnitms').hide();
     $('#fileattachmentforitems').html('')
@@ -2071,7 +2072,7 @@ function FetchUOM(CustomerID) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -2149,7 +2150,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblvendorlist tbody").find("tr"), function () {
-       
+        console.log($(this).text());
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -2465,7 +2466,7 @@ function Dateandtimevalidate(indexNo) {
     var Tab1Data = {
         "BidDate": StartDT
     }
-   
+    //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -2557,7 +2558,7 @@ function Dateandtimevalidate(indexNo) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -2586,7 +2587,7 @@ function fetchPSBidDetailsForPreview() {
     $("#ddlauctiontypePrev").html($("#ddlAuctiontype option:selected").html())
     jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
-    
+    //jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#txtConversionRatePrev').html($('#txtConversionRate').val())
 
@@ -2695,7 +2696,7 @@ function deleteBidParameter(For) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -2732,7 +2733,7 @@ function fetchVendorGroup(categoryFor, vendorId) {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -2803,7 +2804,9 @@ jQuery("#txtSearch").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].participantID != "0") {
-            
+            // sessionStorage.setItem('hdnVendorID', map[item].participantID);
+            //jQuery("#tblvendorlist > tbody").empty();
+
 
             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
@@ -2923,16 +2926,17 @@ $("#btninstructionexcelparameter").click(function () {
     ErrorUOMMsz = ErrorUOMMsz + '</ul>'
     ErrorUOMMszRight = ErrorUOMMszRight + '</ul>'
 
+    // alert(ErrorUOMMsz + ErrorUOMMszRight)
     $("#ULUOM_instructions").html(ErrorUOMMsz + ErrorUOMMszRight);
     $("#instructionsDivParameter").show();
     $("#instructionSpanParameter").show();
 });
 function handleFileparameter(e) {
 
-   
+    //Get the files from Upload control
     var files = e.target.files;
     var i, f;
-    
+    //Loop through files
 
     for (i = 0, f = files[i]; i != files.length; ++i) {
         var reader = new FileReader();
@@ -2944,15 +2948,17 @@ function handleFileparameter(e) {
             var workbook = XLSX.read(data, { type: 'binary' });
 
             var sheet_name_list = workbook.SheetNames;
-            sheet_name_list.forEach(function (y) { 
+            sheet_name_list.forEach(function (y) { /* iterate through sheets */
+                //Convert the cell value to Json
                 var sheet1 = workbook.SheetNames[0];
-               
+                //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
                 var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
                 if (roa.length > 0) {
                     result = roa;
                 }
             });
-           
+            //Get the first column first cell value
+            //alert(JSON.stringify(result))
             printdataSeaBid(result)
         };
         reader.readAsArrayBuffer(f);
@@ -2972,7 +2978,7 @@ function printdataSeaBid(result) {
     else {
         var ErrorMszDuplicate = '';
         var i;
-       
+        //var numberOnly = /^[0-9]+$/;
         var numberOnly = /^[0-9]\d*(\.\d+)?$/;
         $("#temptableForExcelDataparameter").empty();
         $("#temptableForExcelDataparameter").append("<tr><th>ItemService</th><th>TargetPrice</th><th>HideTargetPrice</th><th>Quantity</th><th>UOM</th><th>BidStartPrice</th><th>MinimumIncreament</th><th>IncreamentOn</th>th>LastInvoicePrice</th><th>ShowH1Price</th><th>ShowStartPrice</th></tr>");
@@ -2984,7 +2990,7 @@ function printdataSeaBid(result) {
         var st = 'true'
 
 
-        
+        //var SelectedCurrency = $('#txtselectedCurrency').val();
         var z = 0;
         for (i = 0; i < loopcount; i++) {
 
@@ -3026,7 +3032,12 @@ function printdataSeaBid(result) {
                 $("#file-excelparameter").val('');
                 return false;
             }
-            
+            //else if (!result[i].TargetPrice.trim().match(numberOnly) || targetPrice == 0 ) {
+            //    $("#error-excelparameter").show();
+            //    $("#errspan-excelparameter").html('Target Price should be in numbers only of Item no ' + (i + 1) +'.');
+            //    $("#file-excelparameter").val('');
+            //    return false;
+            //}
             else if ($.trim(result[i].HideTargetPrice) == '') {
                 $("#error-excelparameter").show();
                 $("#errspan-excelparameter").html('Hide Target Price can not be blank of Item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -3113,7 +3124,7 @@ function printdataSeaBid(result) {
             }
             else {
 
-                
+                // if values are correct then creating a temp table
                 $("<tr><td id=itemserviceexcel" + i + ">" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td id=TPexcel" + i + ">" + targetPrice + "</td><td id=hideTP" + i + ">" + result[i].HideTargetPrice + "</td><td id=quanexcel" + i + ">" + result[i].Quantity + "</td><td id=uom" + i + ">" + result[i].UOM + "</td><td id=BSPexcel" + i + ">" + BidstartPrice + "</td><td id=incrmenton" + i + ">" + result[i].IncreamentOn + "</td><td id=mininc" + i + ">" + minimuminc + "</td><td id=LIPexcel" + i + ">" + LastInvoicePrice + "</td><td id=showH1" + i + ">" + result[i].ShowH1Price + "</td><td id=showstartprice" + i + ">" + result[i].ShowStartPrice + "</td></tr>").appendTo("#temptableForExcelDataparameter");
                 var arr = $("#temptableForExcelDataparameter tr");
 
@@ -3175,7 +3186,7 @@ function printdataSeaBid(result) {
         });
 
         $("#temptableForExcelDataparameter tr:gt(0)").each(function (index) {
-            
+            //var this_row = $(this);
 
             switch ($.trim($('#hideTP' + index).text())) {
                 case 'N':
@@ -3289,7 +3300,7 @@ function fnSeteRFQparameterTable() {
 
         var incon = '';
         $("#temptableForExcelDataparameter tr:gt(0)").each(function (i) {
-           
+            //var this_row = $(this);
             if ($.trim($('#incrmenton' + i).text()) == "A") {
                 incon = "Amount";
             }
