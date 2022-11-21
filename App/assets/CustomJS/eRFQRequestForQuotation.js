@@ -1371,6 +1371,7 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
+  
     var num = 0;
     var maxinum = 0;
     var status = "true";
@@ -1468,7 +1469,7 @@ function fnApproversQuery() {
             maxinum = 0;
             $("#tblapproverstech >tbody>tr").each(function () {
                 var this_rowtech = $(this);
-                num = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
+                num = (this_rowtech.closest('tr').attr('id')).substring(11, (this_rowtech.closest('tr').attr('id')).length)
 
                 if (parseInt(num) > parseInt(maxinum)) {
                     maxinum = num;
@@ -2695,7 +2696,6 @@ function fnNoExcelUpload() {
     $("#file-excelparameter").val('');
     $('#RfqParameterexcel').modal('hide');
 }
-
 function handleFileparameter(e) {
 
     //Get the files from Upload control

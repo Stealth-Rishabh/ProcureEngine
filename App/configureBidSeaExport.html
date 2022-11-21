@@ -269,38 +269,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <!--<div class="inputgroup">
-                                                            <label class="control-label col-md-3">
-                                                                Bid Date<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="col-md-3 xyz">
-                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                                     data-date-start-date="+0d">
-                                                                    <input type="text" id="txtbidDate" autocomplete="off" name="txtbidDate" class="form-control" readonly>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn default" id="btncal" type="button">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="inputgroup">
-                                                            <label class="control-label col-md-3">
-                                                                Bid Start Time<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="col-md-3">
-                                                                <div class="input-group xyz">
-                                                                    <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
-                                                                           readonly>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn default" type="button">
-                                                                            <i class="fa fa-clock-o"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
+                                                      
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Bid Date/Time<span class="required"> *</span>
@@ -443,8 +412,7 @@
                                                                 Maximum No. of Bid Extensions
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <!--<input type="text" class="form-control" placeholder="None" id="txtBidExtension"
-                                                                autocomplete="off" name="txtBidExtension">-->
+                                                                
                                                                 <select class="form-control" id="txtBidExtension">
                                                                 </select>
                                                             </div>
@@ -482,12 +450,7 @@
                                                             </div>
 
                                                             <!--abheedev bug 52 end-->
-                                                            <!--<div class="inputgroup">
-                                                                <div class="col-md-1 ">
-
-                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                </div>
-                                                            </div>-->
+                                                           
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -539,7 +502,7 @@
                                                     <div class="form-group hide">
 
                                                         <label class="control-label col-md-2">
-                                                            Description<!--<span class="required"> *</span>-->
+                                                            Description
                                                         </label>
                                                         <div class="col-md-10 xyz">
                                                             <textarea id="txtdescription" name="txtdescription" class="wysihtml5 form-control"
@@ -555,7 +518,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-2 xyz">
-                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtquantitiy" name="txtquantitiy" autocomplete="off" onkeyup="thousands_separators_input(this)"/> 
 
 
                                                         </div>
@@ -602,8 +565,8 @@
                                                             Last Invoice Price
                                                         </label>
                                                         <div class="col-md-4 hide">
-                                                            <input type="tel" class="form-control" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
-                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)"/> 
 
                                                         </div>
                                                     </div>
@@ -613,7 +576,7 @@
                                                         </label>
                                                         <div class="col-md-3 xyz" id="divBSP">
                                                             <input type="text" class="form-control text-right" id="txtCeilingPrice" name="txtCeilingPrice"
-                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
                                                         </div>
                                                         <div class="col-md-1 xyz for-nondutch-bid">
                                                             <select class="form-control no-space" id="checkshowstartprice" name="checkshowstartprice">
@@ -628,7 +591,7 @@
                                                             </label>
                                                             <div class="col-md-3 xyz">
                                                                 <input type="tel" class="form-control text-right" id="txtminimumdecreament" name="txtminimumdecreament"
-                                                                       autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                       autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
                                                             </div>
                                                             <div class="col-md-1 xyz">
                                                                 <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton">
@@ -643,8 +606,8 @@
                                                                 Floor/ Min. Price<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-4 xyz">
-                                                                <input type="tel" class="form-control" id="txtfloorPrice" name="txtfloorPrice"
-                                                                       autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                                <input type="tel" class="form-control text-right" id="txtfloorPrice" name="txtfloorPrice"
+                                                                       autocomplete="off" onkeyup="thousands_separators_input(this)"/> 
 
                                                             </div>
 
@@ -655,8 +618,8 @@
                                                             Price Decrement Amount <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-4 xyz">
-                                                            <input type="tel" class="form-control" id="txtPriceReductionAmount"
-                                                                   name="txtPriceReductionAmount" autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtPriceReductionAmount"
+                                                                   name="txtPriceReductionAmount" autocomplete="off" onkeyup="thousands_separators_input(this)"/>  
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -795,7 +758,7 @@
                                                                         <div class="col-md-9">
                                                                             <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
                                                                                    data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
-                                                                            <!--<input type="text" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch"></br>-->
+                                                                            
                                                                             <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                         </div>
                                                                         <div class="col-md-1">
@@ -1112,14 +1075,7 @@
                 </div>
                 <div class="portlet-body form">
                     <!--abheedev bug 443-->
-                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
-                        <button class="close" data-close="alert"></button>
-                        <span id="errormsg2"></span>
-                    </div>
-                    <div class="alert alert-success display-hide" id="successdiv2">
-                        <button class="close" data-close="alert"></button>
-                        <span id="successmsg2"></span>
-                    </div>-->
+                    
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1167,7 +1123,7 @@
                                         <button class="close" data-close="alert"></button>
                                         <span id="succspan-excelparameter" class="text-center"></span><br />
                                         <div class="col-md-12 col-md-offset-5" id="btnyesno">
-                                            <!--<button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>-->
+                                            
                                             <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
                                             <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
                                         </div>
@@ -1212,9 +1168,7 @@
                                                             <li id="libidduraion">ItemBidDuration</li>
 
                                                         </ul>
-                                                        <!--<label class="col-md-12 text-left">
-                                                            Skip this step if you have downloaded Excel Template
-                                                        </label>-->
+                                                        
 
                                                         <br />
                                                     </div>
@@ -1283,7 +1237,7 @@
                                     </div>
 
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
-                                    <!--</div>-->
+                                    
                                 </div>
                             </div>
 
@@ -1303,7 +1257,7 @@
                 <tr id="Trhead">
                     <th data-style="NonMandatory">ItemCode</th>
                     <th data-style="Mandatory">ItemService</th>
-                    <!--<th data-style="Header" style="display:none!important">Description</th>-->
+                    
                     <th data-style="NonMandatory">TargetPrice</th>
                     <th data-style="Mandatory">HideTargetPrice</th>
                     <th data-style="Mandatory">Remarks</th>
@@ -1395,7 +1349,7 @@
 
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-reorder"></i>Advance Vendor Search<!--<span id='Nodename'></span>-->
+                            <i class="fa fa-reorder"></i>Advance Vendor Search
                         </div>
                         <div class="tools">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>

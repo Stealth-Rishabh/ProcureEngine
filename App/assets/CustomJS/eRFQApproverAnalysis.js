@@ -1648,11 +1648,17 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            bootbox.alert("Transaction Successful..", function () {
+          /*  bootbox.alert("Transaction Successful..", function () {
                 return true;
                 window.location = "index.html";
 
-            });
+            });*/
+            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
+                window.location = "index.html";
+                return false;
+            },2000) 
+                );
         },
         error: function (xhr, status, error) {
 
