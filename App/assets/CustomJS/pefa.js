@@ -1,18 +1,8 @@
 $("#cancelBidBtn").hide();
 
 jQuery(document).ready(function () {
-    $("#txtCeilingPrice,#txtquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount,#txtlastinvoiceprice").inputmask({
-        /* alias: "decimal",
-         rightAlign: false,
-         groupSeparator: ",",
-         radixPoint: ".",
-         autoGroup: true,
-         integerDigits: 40,
-         digitsOptional: true,
-         allowPlus: false,
-         allowMinus: false,
-         clearMaskOnLostFocus: true,
-         'removeMaskOnSubmit': true*/
+    /*$("#txtCeilingPrice,#txtquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount,#txtlastinvoiceprice").inputmask({
+        
         alias: "decimal",
         rightAlign: false,
         groupSeparator: ",",
@@ -26,8 +16,8 @@ jQuery(document).ready(function () {
         supportsInputType: ["text", "tel", "password"],
         'removeMaskOnSubmit': true,
          autoUnmask: true
-    });
-   
+    });*/
+
 });
 
 $('#txtBidSubject,#txtshortname,#txtConversionRate,.maxlength').maxlength({
@@ -552,7 +542,7 @@ function fetchRegisterUser() {
 
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1260,7 +1250,7 @@ function ConfigureBidInsPefaTab2() {
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
                 targetPrice = 0
                 var t = 'A';
@@ -1300,7 +1290,7 @@ function ConfigureBidInsPefaTab2() {
             }
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 var t = 'A';
                 if ($.trim($('#incontext' + i).text()).toLowerCase() == "percentage") {
                     t = 'P'
@@ -1649,15 +1639,15 @@ function InsUpdProductSevices() {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4);
-                //if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val()) && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
-                 if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+                if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val()) && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quantity' + i).html()) != $('#txtquantitiy').val() && $.trim($('#dropuom' + i).html()) != $("#dropuom option:selected").text() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#minincrement' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $("#drpdecreamenton option:selected").text() && $.trim($('#LIP' + i).html()) != $("#txtlastinvoiceprice").val()) {
+                    //if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
                     st = "false";
-                    
+
                 }
 
             });
-            
+
             if ($('#dropuom').val() == '') {
                 $('.alert-danger').show();
                 $('#spandanger').html('Please Select UOM Properly');
@@ -1869,13 +1859,13 @@ function InsUpdProductSevices() {
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
                         var this_row = $(this);
-                        i = (this_row.closest('tr').attr('id')).substring(4);
+                        i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                         if ($.trim($('#shortname' + i).text()) == $.trim($('#txtshortname').val())) {
                             st = "false"
                         }
-                        
+
                     });
-                    
+
                     if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
