@@ -56,7 +56,7 @@ var FormValidation = function () {
                 },
                 txtPhoneNo: {
                     required: true,
-                    maxlength: 50
+                    maxlength: 50,
 
                 },
                 txtMobileNo: {

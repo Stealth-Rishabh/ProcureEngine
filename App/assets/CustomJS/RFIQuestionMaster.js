@@ -117,6 +117,11 @@ function FormValidate() {
 
 }
 
+
+
+
+
+
 function fetchQuestionCategory(applicableFor) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -127,6 +132,7 @@ function fetchQuestionCategory(applicableFor) {
         cache: false,
         dataType: "json",
         success: function (data) {
+           
             $('#ddlquestCategory').empty();
             $('#ddlquestCategory').append(jQuery('<option></option>').val('').html('Select'));
             for (var i = 0; i < data.length; i++) {
@@ -148,9 +154,11 @@ function fetchQuestionCategory(applicableFor) {
 }
 var questcategoryID=0;
 function getCategoryIDforSubCategory() {
+  
     $("#tblFetchRFIQuestionMastr").empty();
     if ($('#ddlquestCategory').val() != '') {
         questcategoryID = $('#ddlquestCategory option:selected').val();
+       
         $('#catIDforsubcategory').val($('#ddlquestCategory option:selected').text());
         fetchQuestionSubCategory(questcategoryID)
         
@@ -164,11 +172,12 @@ function getCategoryIDforSubCategory() {
 }
 
 function getQuestionForSubCategory() {
-    
+    debugger
     fetchQuestionCategory($("#ddlQuestionFor option:selected").val());
 }
 
 function fetchQuestionMasters(questcategoryID) {
+
     
     var mandat ='';
     var isattach  ='';
@@ -198,7 +207,7 @@ function fetchQuestionMasters(questcategoryID) {
                     } else {
                         isattach = "Not required"
                     }
-                    $('#tblFetchRFIQuestionMastr').append('<tr id=rowid'+i+'><td><a href=# class="btn btn-xs blue" onclick="updatequestMaster(\'rowid'+i+'\')"><i class="fa fa-pencil"></i> Edit</a></td><td class="hide">'+data[i].questionID+'</td><td>' + $('#ddlquestCategory option:selected').text() + '</td><td>' + data[i].questionSubCategory + '</td><td>' + data[i].questionDescription + '</td><td>' + mandat + '</td><td>' + isattach + '</td><td class="hide">'+data[i].questionSubCategoryID+'</td></tr>')
+                    $('#tblFetchRFIQuestionMastr').append('<tr id=rowid' + i +'><td><a href=# class="btn btn-xs blue" onclick="updatequestMaster(\'rowid'+i+'\')"><i class="fa fa-pencil"></i> Edit</a></td><td class="hide">'+data[i].questionID+'</td><td>' + $('#ddlquestCategory option:selected').text() + '</td><td>' + data[i].questionSubCategory + '</td><td>' + data[i].questionDescription + '</td><td>' + mandat + '</td><td>' + isattach + '</td><td class="hide">'+data[i].questionSubCategoryID+'</td></tr>')
 
                 }
             }
@@ -233,7 +242,7 @@ function fetchQuestionSubCategory(questcategoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-                 
+                
             sessionStorage.setItem('hdnquestionSubCatgry', JSON.stringify(data));
             $('#tblsubcategory').empty();
             if (data.length > 0) {
@@ -604,4 +613,124 @@ jQuery("#searchPop-up").keyup(function () {
 });
 
 
+
+
+
+
+
+function fetchRFIDetails() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var replaced = '', _selectedCat = new Array();
+    // alert(sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID') )
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (BidData) {
+          
+            
+            if (BidData.length > 0) {
+
+               
+
+                
+                
+
+                if (BidData[0].vqProductCat.length > 0) {
+                    for (var i = 0; i < BidData[0].vqProductCat.length; i++) {
+                        _selectedCat.push(BidData[0].vqProductCat[i].categoryID);
+                    }
+                    $("#ddlCategoryMultiple").select2('val', _selectedCat).trigger("change");
+
+
+                }
+               
+
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+    jQuery.unblockUI();
+
+
+}
+
+function fetchCategorymaster() {
+
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            jQuery("#ddlCategoryMultiple").empty();
+            var vlal = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
+                }
+                jQuery("#ddlCategoryMultiple").trigger("change");
+                if (sessionStorage.getItem('CurrentVQID') != "0") {
+                    setTimeout(function () {
+                        fetchRFIDetails();
+                    }, 1000)
+                }
+            }
+            else {
+                jQuery("#ddlCategoryMultiple").append('<tr><td>No categories found..</td></tr>');
+            }
+            // jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert("error");
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+/*function ifvendorAssisment() {
+    if (document.querySelector('#ddlQuestionFor').value == 'VA') {
+        debugger
+        fetchCategorymaster();
+        $("#ddlquestCategory").select2();
+       
+    }
+}*/
+
+
+
+
+$('#ddlquestCategory').on('change', function () {
+    alert("hello");
+});
 
