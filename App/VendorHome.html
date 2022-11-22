@@ -899,75 +899,6 @@
 
     <script>
 
-
-        // translation code begin -abhi@dev
-        /*
-        var set_locale_to = function (locale) {
-            if (locale) {
-                $.i18n().locale = locale;
-            }
-            $('body').i18n();
-        };
-        jQuery(function () {
-            $.i18n().load({
-                'en': 'jquery.i18n/language/en/translation.json', // Messages for english
-                'fr': 'jquery.i18n/language/fr/translation.json' // message for french
-            }).done(function () {
-
-                set_locale_to(url('?locale'));
-                console.log($.i18n().locale)
-                $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
-
-
-                //   <option data-locale="en" value="en">English</option>
-
-                History.Adapter.bind(window, 'statechange', function () {
-                    set_locale_to(url('?locale'));
-                    console.log("i am here")
-                });
-                $('.navbar-language').change(function (e) {
-                    e.preventDefault();
-                    $.i18n().locale = $('option:selected', this).data("locale");
-                    History.pushState(null, null, "?locale=" + $.i18n().locale);
-
-
-
-                });
-            });
-        });
-
-*/
-
-
-
-        /*
-
-        jQuery(function () {
-            $.i18n().locale = $(".navbar-language").children("option").val();
-
-            $.i18n().load({
-                'en': 'jquery.i18n/language/en/translation.json', // Messages for english
-                'fr': 'jquery.i18n/language/fr/translation.json' // message for french
-            }).done(function () {
-                $('body').i18n();
-
-
-                $(".navbar-language").change(function () {
-              //      var selectedItem = $(this).val();
-
-                    $.i18n().locale = $('option:selected', this).data("locale");
-
-                    $('body').i18n();
-                });
-                });
-
-
-        }) */
-        //translation code end - abhi@dev
-
-
-
-
         jQuery(document).ready(function () {
          
             setInterval(function () { Pageloaded() }, 15000);
@@ -998,24 +929,6 @@
 
             fetchMenuItemsFromSession(0, 0)
         });
-    </script>
-
-    <script>
-        /*
-        //removing cookies on unload -@abheedev
-        $(window).load(function () {
-            // Remove the cookie
-            var cookies = document.cookie.split(";");
-           // for (var i = 0; i < cookies.length; i++) {
-             //   var cookie = cookies[i];
-               // $.removeCookie(cookie);
-                console.log(cookies);
-
-           // }
-
-
-        });
-        */
     </script>
 
     <!-- END JAVASCRIPTS -->

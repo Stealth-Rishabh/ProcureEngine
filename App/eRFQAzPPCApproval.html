@@ -34,6 +34,41 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
     <style>
         .greencls {
             color: green !important;
@@ -209,7 +244,7 @@
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label class="control-label">
-                                                            <a href="javascript:;" onclick="DownloadFile(this)" id="TermCondition"  style="text-align:left; text-decoration: none !important;">
+                                                            <a href="javascript:;" onclick="DownloadFile(this)" id="TermCondition" style="text-align:left; text-decoration: none !important;">
 
                                                             </a>
                                                         </label>
@@ -251,7 +286,7 @@
                                         <a href="#tab_2" data-toggle="tab">RFQ Attachments </a>
                                     </li>
                                     <l1 class="pull-right"><a href="javascript:;" onclick="fnfillPPCForm()" class="btn  yellow" id="btn_fillPPCForm"> Edit PPC Form</a></l1>
-                                     <l1 class="pull-right"><a href="#MapppcApprover" onclick="fnOpenPopupApprovers()" class="btn  blue" id="btn_mapaaprover" data-toggle="modal" data-backdrop="static" data-keyboard="false">Map PPC-FC Approver</a></l1>
+                                    <l1 class="pull-right"><a href="#MapppcApprover" onclick="fnOpenPopupApprovers()" class="btn  blue" id="btn_mapaaprover" data-toggle="modal" data-backdrop="static" data-keyboard="false">Map PPC-FC Approver</a></l1>
                                     <!--<l1 class="pull-right"><a href="#MapFCApprover" onclick="fnOpenPopupFCApprovers()" class="btn  blue" id="btn_mapFCaaprover" data-toggle="modal" data-backdrop="static" data-keyboard="false">Map FC Approver</a></l1>-->
 
                                 </ul>
@@ -764,8 +799,8 @@
                                                                         <div class="col-md-4">
                                                                             <select class="form-control" id="ddlActionType" name="ddlActionType">
                                                                                 <option value="">Select</option>
-                                                                                <option value="Pre-Approved">Approved</option>
-                                                                                <option value="Pre-Revert">Revert</option>
+                                                                                <option value="Approved">Approved</option>
+                                                                                <option value="Revert">Revert</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -987,7 +1022,7 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
 
                         </div>
@@ -1103,7 +1138,7 @@
                                         <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApproverFC"
                                                data-provide="typeahead" autocomplete="off" name="txtApproverFC" />
                                     </div>
-                                    
+
                                     <div class="col-md-1">
                                         <button type="button" id="AddbtnFC" onclick="addApproversFC()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                     </div>
@@ -1172,46 +1207,10 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-
-
-   
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/eRFQAzPPCApproval.js" type="text/javascript"></script>
     <script>
-        jQuery(document).ready(function () {
 
+        jQuery(document).ready(function () {
+            callPagejs('eRFQAzPPCApproval.js');
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -1235,10 +1234,10 @@
             formvalidate();
             validateAppsubmitData();
             fetchRegisterUser();
-            
+
         });
     </script>
-   
+
 
     <script type="text/javascript">
         $("#btnExport").click(function (e) {
@@ -1258,7 +1257,7 @@
 
             var a = document.createElement('a');
             a.href = data_type + ', ' + table_html;
-           
+
             a.download = 'RFQDetails -' + postfix + '.xls';
 
             a.click();
