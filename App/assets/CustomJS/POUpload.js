@@ -272,7 +272,7 @@ function insPoDetails() {
                
                 index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
                 
-                ccEmails = $.trim($("#email" + index).text()) + ";";
+                ccEmails = ccEmails + $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
                     "ObserverEmailID": $.trim($("#email" + index).text()),
@@ -281,6 +281,7 @@ function insPoDetails() {
                 ObserverDetails.push(items)
             })
         }
+        debugger;
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),

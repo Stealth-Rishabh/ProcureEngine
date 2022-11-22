@@ -270,7 +270,7 @@ $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
-
+    debugger
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -826,22 +826,33 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
+   
 
-    var formData = new FormData();
+
+   /* var formData = new formData;
     formData.append('file', $('#' + fileID)[0].files[0]);
-    formData.append('foldername', foldername);
+    formData.append('foldername', foldername);*/
+    var formData = {
+        "fileID": $('#' + fileID)[0].files[0],
+        "foldername": foldername
 
+    };
+
+
+    console.log(formData)
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
         contentType: false,
         processData: false,
-        data: formData,
+        data:formData,
         success: function (data) {
-            //  alert('success')
+            
+             
             return;
         },
         error: function (xhr, status, error) {
+         
             $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
             Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
@@ -1795,3 +1806,27 @@ function checkExcelUpload(fileid) {
     }
 }
 //abheedev bug 443 end
+//htmlEncode
+function StringEncodingMechanism(maliciousText) {
+    debugger;
+    var returnStr = maliciousText.replaceAll('&', '&amp;');
+    returnStr = returnStr.replaceAll('<', '&lt;');
+    returnStr = returnStr.replaceAll('>', '&gt;');
+    returnStr = returnStr.replaceAll('"', '&quot;');
+    returnStr = returnStr.replaceAll("'", '&#x27;');
+    returnStr = returnStr.replaceAll('/', '&#x2F;');
+    returnStr = returnStr.replaceAll('alert(', 'alert-');
+    return returnStr;
+}
+
+function StringDecodingMechanism(maliciousText) {
+    debugger;
+    var returnStr = returnStr.replaceAll('&lt;', '<');
+    returnStr = returnStr.replaceAll('&gt;', '>');
+    returnStr = returnStr.replaceAll('&quot;', '"');
+    returnStr = returnStr.replaceAll("&#x27;", "'");
+    returnStr = returnStr.replaceAll('&#x2F;', '/');
+    returnStr = returnStr.replaceAll('alert-', 'alert(');
+    returnStr = maliciousText.replaceAll('&amp;', '&');
+    return returnStr;
+}

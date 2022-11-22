@@ -192,7 +192,9 @@
                                         <div class="col-md-4">
                                             <div class="form-control">
                                                 <label class="col-md-4 control-label">Budget Status:</label>
-                                                <label class="col-md-8 control-label" id="lblbudget" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-8 control-label" id="lblbudget" style="text-align:left!important;padding-left:3px!important">
+                                                    
+                                                </label>
 
                                             </div>
                                         </div>
@@ -227,11 +229,13 @@
                                     </div>
 
                                     <div class="row">
-
+                                        <!--bug dated 18 november-->
                                         <div class="col-md-4">
                                             <div class="form-control">
                                                 <label class="col-md-4 control-label ">Budget:</label>
-                                                <label class="col-md-8 control-label" id="lblbudgetamount" style="text-align:left!important;padding-left:3px!important"></label>
+                                                <label class="col-md-8 control-label"  style="text-align:left!important;padding-left:3px!important">
+                                                    <span class="thousandsep" id="lblbudgetamount"></span>&nbsp;<span id="lblCurrency"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -380,7 +384,7 @@
 
                                             </div>
                                             <div class="col-md-2">
-                                                <button type="button" class="btn red" id="btnwithdraw" onclick="fnquerywithdaw()">Query withdraw</button>
+                                                <button type="button" class="btn red display-none" id="btnwithdraw" onclick="fnquerywithdaw()">Query withdraw</button>
                                             </div>
                                         </div>
                                     </div>

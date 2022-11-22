@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -39,9 +40,44 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
     <style>
-
-
 
         body {
             overflow-x: hidden;
@@ -277,38 +313,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!--<div class="inputgroup">
-                                                            <label class="control-label col-md-3">
-                                                                Bid Date<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="col-md-3 xyz">
-                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                                     data-date-start-date="+0d">
-                                                                    <input type="text" id="txtbidDate" autocomplete="off" name="txtbidDate" class="form-control" readonly>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn default" id="btncal" type="button">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="inputgroup">
-                                                            <label class="control-label col-md-3">
-                                                                Bid Start Time<span class="required"> *</span>
-                                                            </label>
-                                                            <div class="col-md-3">
-                                                                <div class="input-group xyz">
-                                                                    <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds"
-                                                                           readonly>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn default" type="button">
-                                                                            <i class="fa fa-clock-o"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
+                                                        
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="inputgroup">
@@ -416,8 +421,6 @@
                                                                 Maximum No. of Bid Extensions
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <!--<input type="text" class="form-control" placeholder="None" id="txtBidExtension"
-                                                                autocomplete="off" name="txtBidExtension">-->
                                                                 <select class="form-control" id="txtBidExtension">
                                                                 </select>
                                                             </div>
@@ -454,12 +457,7 @@
                                                                 </span>
 
                                                             </div>
-                                                            <!--<div class="inputgroup">
-                                                                <div class="col-md-1 ">
-
-                                                                    <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                                </div>
-                                                            </div>-->
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -575,8 +573,8 @@
                                                             Last Invoice Price
                                                         </label>
                                                         <div class="col-md-4 hide">
-                                                            <input type="tel" class="form-control" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
-                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtlastinvoiceprice" name="txtlastinvoiceprice"
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" />
 
                                                         </div>
                                                     </div>
@@ -585,8 +583,8 @@
                                                             Bid Start Price<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-3 xyz">
-                                                            <input type="tel" class="form-control" id="txtCeilingPrice" name="txtCeilingPrice"
-                                                                   autocomplete="off" />  <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtCeilingPrice" name="txtCeilingPrice"
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" />
                                                         </div>
                                                         <div class="col-md-1 xyz">
                                                             <select class="form-control no-space" id="checkshowstartprice" name="checkshowstartprice">
@@ -599,8 +597,8 @@
                                                             Minimum Decrement<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-3 xyz">
-                                                            <input type="tel" class="form-control" id="txtminimumdecreament" name="txtminimumdecreament"
-                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control text-right" id="txtminimumdecreament" name="txtminimumdecreament"
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)" />
                                                         </div>
                                                         <div class="col-md-1 xyz">
                                                             <select class="form-control no-space" id="drpdecreamenton" name="drpdecreamenton" disabled>
@@ -617,7 +615,7 @@
                                                                 Bid Duration <span class="required">*</span>
                                                             </label>
                                                             <div class="col-md-3 xyz">
-                                                                <input type="tel" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" />
+                                                                <input type="tel" class="form-control text-right" id="txtitembidduration" name="txtitembidduration" autocomplete="off" onkeyup="thousands_separators_input(this)" />
                                                             </div>
                                                             <label class="control-label col-md-1">
                                                                 (in&nbsp;minutes)
@@ -1043,7 +1041,8 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                   
+                    <!--abheedev bug 443-->
+                    
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1137,9 +1136,7 @@
                                                             <li id="libidduraion">ItemBidDuration</li>
 
                                                         </ul>
-                                                        <!--<label class="col-md-12 text-left">
-                                            Skip this step if you have downloaded Excel Template
-                                        </label>-->
+                                                        
 
                                                         <br />
                                                     </div>
@@ -1420,52 +1417,10 @@
         </div>
     </div>
 
-
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/ConfigureBidCoalExport.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
+            callPagejs('ConfigureBidCoalExport.js');
             $('[data-toggle="popover"]').popover({})
-
-
-
-
 
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);

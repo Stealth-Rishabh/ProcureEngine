@@ -175,15 +175,19 @@ function fetchrfqcomprative() {
                 if (AppType == "T" && FwdTo != 'Admin') {
 
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
+                    if (ShowPrice != 'N') {
+                        ShowPrice = 'Y';
+                    }
 
                 }
 
 
-                if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
+                //if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
+                if (AppType == "C" && AppType != "T") {
                     ShowPrice = 'Y';
 
                 }
-                ShowPrice = 'Y';
+                //ShowPrice = 'Y';
 
             }
             else {
@@ -1633,7 +1637,7 @@ function ApprovalCommercialApp() {
         "AwardQuery": ''
     };
 
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
@@ -1644,18 +1648,17 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-          
           /*  bootbox.alert("Transaction Successful..", function () {
-                debugger
+                return true;
                 window.location = "index.html";
-                return false;
-            });*/
 
-            bootbox.alert("transaction successful...").on("shown.bs.modal", function (e) {
-              
+            });*/
+            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
                 window.location = "index.html";
                 return false;
-            });
+            },2000) 
+                );
         },
         error: function (xhr, status, error) {
 
@@ -1802,7 +1805,6 @@ function AwardCommeRFQ() {
                 dataType: "json",
                 success: function () {
                     bootbox.alert("Transaction Successful..", function () {
-                       
                         window.location = "index.html";
                         return false;
                     });
@@ -1857,7 +1859,6 @@ function fnFWDeRFQ() {
         success: function (data) {
 
             bootbox.alert("Transaction Successful..", function () {
-               
                 window.location = "index.html";
                 return false;
             });
@@ -1959,5 +1960,6 @@ function ApprovalApp() {
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         jQuery.unblockUI();
+
     }
 }

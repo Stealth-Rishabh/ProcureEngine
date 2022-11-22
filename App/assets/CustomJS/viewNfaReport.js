@@ -116,7 +116,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
                 $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
-
+                $('#logoimg').attr("src", res.result[0].logoImage);
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);

@@ -35,6 +35,7 @@ $(document).ready(function () {
             jQuery("#frmdivremarksapprover").hide();
             jQuery("#divRemarksApp").show();
             $('#frmadminbutton').show();
+            //$('#btnwithdraw').hide()
 
         }
         else if (FwdTo == 'View') {
@@ -45,9 +46,11 @@ $(document).ready(function () {
 
         }
         else {
+
             jQuery("#divRemarksApp").show();
             jQuery("#frmdivremarksapprover").show();
             $('#frmadminbutton').hide()
+            //$('#btnwithdraw').show()
         }
 
 
@@ -97,7 +100,6 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-            console.log(res)
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
@@ -122,7 +124,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblCategory").text(res.result[0].categoryName);
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
-               
+
                 $("#lblPurOrg").text(res.result[0].orgName);
                 $("#lblGroup").text(res.result[0].groupName);
 
@@ -157,7 +159,7 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".clsHide").hide();
                 }
-               //abheedev backlog 471
+                //abheedev backlog 471
                 if (res.result[0].conditionName == "") {
                     $("#lblException").text("No Exception");
                 }
@@ -825,7 +827,7 @@ function GetQuestionsforCreator(pendingon) {
 
                 $('#divQuery').removeClass('hide')
                 jQuery('#tblqueryresponse').append("<thead><tr  style='background: gray; color: #FFF;'><th></th><th class='bold' style='width:30%!important'>Questions</th><th style='width:10%!important'>Created By</th><th style='width:50%!important'>Answer</th><th style='width:10%!important'>Attachment</th></tr></thead>");
-                $('#btnwithdraw').hide()
+
 
                 for (var i = 0; i < data.length; i++) {
                     attach = '';
@@ -835,6 +837,7 @@ function GetQuestionsforCreator(pendingon) {
 
                     if (pendingon.toLowerCase() == "c" && data[0].nfaCreatorEncrypted == sessionStorage.getItem('UserID') && FwdTo == 'Admin') {
                         $('#btnsubmitquery').removeClass('hide')
+                        $('#btnwithdraw').hide()
                         str = "<tr id=trresquesid" + i + "><td class=hide id=quesresid" + i + ">" + data[i].id + "</td><td colspan=2>" + data[i].question + "</td><td>" + data[i].createdBy + "</td>";
                         str += '<td><textarea onkeyup="replaceQuoutesFromString(this)" name=answer rows=2 class="form-control" maxlength=1000  autocomplete=off id=answer' + i + ' >' + data[i].answer + '</textarea></td>';
                         str += "<td><span style='width:200px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span><br>" + attach + "</td>";
@@ -875,14 +878,14 @@ function GetQuestionsforCreator(pendingon) {
 
 
                     }
-                    if (pendingon.toLowerCase() == "c") {
-                        $('#btnwithdraw').show()
-                    }
-                    else {
-                        $('#btnwithdraw').hide()
-                    }
                     sessionStorage.setItem('HeaderID', data[i].headerid)
 
+                }
+                if (IsApp == 'Y' && FwdTo == 'Admin' && pendingon.toLowerCase() == "c") {
+                    $('#btnwithdraw').hide()
+                }
+                else if (IsApp == 'Y' && FwdTo != 'Admin' && pendingon.toLowerCase() == "c") {
+                    $('#btnwithdraw').show()
                 }
 
             }
@@ -958,7 +961,6 @@ function fnsubmitQueryByCreator() {
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
             if (attchname != "" && attchname != null && attchname != undefined) {
                 attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-                alert(attchname)
                 fnUploadFilesonAzure('fileToUpload' + i, attchname, 'NFA/' + idx + '/NFAQuery');
             }
             else {

@@ -979,7 +979,11 @@ function Savedata() {
     var p_descript = $("#txtNFADetail").val();
 
     var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
-    var p_Budget = removeThousandSeperator($("#txtBudget").val());
+    var _budget = 0;
+    if ($("#txtBudget").val() != '') {
+        _budget = parseInt($("#txtBudget").val());
+    }
+    var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName").val();

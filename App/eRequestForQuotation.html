@@ -38,26 +38,56 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
     <style>
-
-
-
         body {
             overflow-x: hidden;
             overflow-wrap: break-word;
         }
 
-
         .form-horizontal .form-control-static {
             width: 100%;
         }
 
-
         .tab-content > .active {
             padding-right: 10%;
         }
-
-
 
         input#file3 {
             position: fixed;
@@ -75,7 +105,7 @@
         }
 
 
-/*abhhedev bug 52 start*/
+        /*abhhedev bug 52 start*/
         .hovertext {
             position: relative;
         }
@@ -84,7 +114,7 @@
                 content: attr(data-hover);
                 visibility: hidden;
                 opacity: 0;
-                width:200px;
+                width: 200px;
                 opacity: .9;
                 color: rgb(6, 6, 6);
                 background-color: #74A892;
@@ -94,7 +124,6 @@
                 transition: opacity 1s ease-in-out;
                 position: absolute;
                 z-index: 2;
-              
                 right: 100%;
                 bottom: 110%;
             }
@@ -104,31 +133,27 @@
                 visibility: visible;
             }
 
-        /*abhhedev bug 52 end*/         
-            
-            
-    /*abheedev bug laptop responsive issue*/
-    .addmorebutton {
-                margin-left:85%;
-            }
-    
-    
-    
-  @media only screen and (max-width: 750px) {
+        /*abhhedev bug 52 end*/
+
+
+        /*abheedev bug laptop responsive issue*/
+        .addmorebutton {
+            margin-left: 85%;
+        }
+
+
+
+        @media only screen and (max-width: 750px) {
             .addmorebutton {
-                margin-left:65%;
+                margin-left: 65%;
             }
         }
-        
-     @media only screen and (min-width: 1250px){
-    .table .btn
-    {
-        margin-right:-23% !important;
-    }    
-    
-     }
 
-        
+        @media only screen and (min-width: 1250px) {
+            .table .btn {
+                margin-right: -23% !important;
+            }
+        }
     </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -241,35 +266,35 @@
                                                         <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>General</span>
                                                     </a>
                                                 </li>
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                 <li>
+
+
+
+
+
+
+                                                <li>
                                                     <a href="#tab2" data-toggle="tab" class="step">
                                                         <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Items/Services</span>
                                                     </a>
                                                 </li>
-                                                
-                                                
+
+
                                                 <li>
                                                     <a href="#tab3" data-toggle="tab" class="step">
                                                         <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Additional Details</span>
                                                     </a>
                                                 </li>
 
-                                              
-                                                
+
+
                                                 <li>
                                                     <a href="#tab4" data-toggle="tab" class="step active">
                                                         <span class="number">4 </span>
                                                         <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
                                                     </a>
                                                 </li>
-                                                
-                                                 
+
+
 
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
@@ -690,15 +715,15 @@
 
                                                                             </div>
                                                                         </div>
-                                                                     
-                                                                     
-                                                                        <label class="addmorebutton" > 
+
+
+                                                                        <label class="addmorebutton">
                                                                             <a href="javascript:;" class="btn btn-primary" onclick="addMoreTermsCondition()">
                                                                                 Add more <i class="m-icon-swapright m-icon-white">
                                                                                 </i>
                                                                             </a>
                                                                         </label>
-                                                                      
+
 
                                                                     </div>
                                                                 </div>
@@ -886,12 +911,10 @@
                                                     <a href="javascript:;" class="btn default button-previous">
                                                         <i class="m-icon-swapleft">
                                                         </i>Back
-                                                    </a>
-                                                    <a href="javascript:;" class="btn yellow button-next">
+                                                    </a><a href="javascript:;" class="btn yellow button-next">
                                                         Save And Continue <i class="m-icon-swapright m-icon-white">
                                                         </i>
-                                                    </a>
-                                                    <a href="javascript:;" class="btn green button-submit">
+                                                    </a><a href="javascript:;" class="btn green button-submit">
                                                         Preview
 
                                                     </a>
@@ -1141,15 +1164,15 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <!--abheedev bug 443 again 
-                        <div class="alert alert-danger display-hide" id="errordiv2">
-                          <button class="close" data-close="alert"></button>
-                          <span id="errormsg2"></span>
-                        </div>
-                       <div class="alert alert-success display-hide" id="successdiv2">
-                         <button class="close" data-close="alert"></button>
-                         <span id="successmsg2"></span>
-                       </div>-->
+                    <!--abheedev bug 443 again-->
+                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>-->
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1427,53 +1450,15 @@
         </div>
     </div>
 
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
 
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Moment.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/eRFQRequestForQuotation.js"></script>
     <script>
 
         jQuery(document).ready(function () {
+            callPagejs('Moment.js,eRFQRequestForQuotation.js');
             var date = new Date();
             date.setDate(date.getDate() - 1);
             $('#txtPODate').datepicker({ startDate: "-1d" });
-
-
-
             Pageloaded()
 
             setInterval(function () { Pageloaded() }, 15000);
