@@ -111,6 +111,7 @@ var FormWizard = function () {
             }
 
             form.validate({
+                ignore: "", //nfaissue 22/11/2022
 
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
 
@@ -336,7 +337,7 @@ var FormWizard = function () {
                     }
                     //abheedev bug 385 
                     else if (index == 2) {
-
+                      
                         form.validate();
 
                         // abheedev backlog 286 start
@@ -361,7 +362,10 @@ var FormWizard = function () {
                             $('.alert-danger').fadeOut(5000);
                             return false;
                         }
+                       
                         if (flag == "T") {
+                            
+                            
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
@@ -1039,6 +1043,7 @@ function Savedata() {
 };
 
 function Savetab2Data() {
+    debugger
     var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
 
     Paramdata = [];
