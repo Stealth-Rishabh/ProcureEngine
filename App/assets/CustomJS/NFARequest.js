@@ -119,7 +119,7 @@ var FormWizard = function () {
                 errorClass: 'help-block help-block-error', // default input error message class
 
                 focusInvalid: false, // do not focus the last invalid input
-
+                ignore:'',
                 rules: {
 
                     txtTitle: {
