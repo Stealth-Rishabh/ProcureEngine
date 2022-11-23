@@ -2,6 +2,7 @@
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -147,15 +148,15 @@ var Login = function () {
 
     function validateUser() {
 
-        // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
-
+        debugger;
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-       lastPart = 'vendor'
+        //lastPart = 'vendor'
         var LinkUrl = window.location.href;
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
@@ -173,9 +174,52 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
-                    sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                    sessionStorage.setItem("Token", data.token)
-                    fnGetUserBasicDetails(lastPart)
+                    switch (data.token) {
+                        case "You are accessing an Invalid URL.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('You are accessing an Invalid URL.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Your account has been Locked. Please contact administrator.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Your account has been Locked. Please contact administrator.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "You have entered an incorrect Password.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Something went wrong!!! Please contact administrator.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Something went wrong!!! Please contact administrator.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Your account has been Locked due to multiple failed Login attempts.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Your account has been Locked due to multiple failed Login attempts.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        default:
+                            sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                            sessionStorage.setItem("Token", data.token)
+                            fnGetUserBasicDetails(lastPart)
+                            break;
+
+                    }
+                    //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                    //sessionStorage.setItem("Token", data.token)
+                    //fnGetUserBasicDetails(lastPart)
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')
@@ -189,13 +233,17 @@ var Login = function () {
 
         }
         else {
-
+            var userPass = jQuery("#password").val().trim();
+            //var encryptedString = CryptoJS.AES.encrypt(userPass, "8080808080808080").toString();
+            //var encryptedString = toUTF8Array(userPass);
+            //var decryptedString = (CryptoJS.AES.decrypt(encryptedString, "/")).toString(CryptoJS.enc.Utf8);
+            var encryptedString = userPass;
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
-                "Password": jQuery("#password").val().trim(),
+                //"Password": jQuery("#password").val().trim(),
+                "Password": encryptedString,
                 "LinkUrl": LinkUrl
             }
-            console.log(JSON.stringify(data));
             jQuery.ajax({
                 url: APIPath + "User/validate_User",
                 data: JSON.stringify(data),
@@ -203,10 +251,52 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
+                    switch (data.token) {
+                        case "You are accessing an Invalid URL.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('You are accessing an Invalid URL.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Your account has been Locked. Please contact administrator.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Your account has been Locked. Please contact administrator.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "You have entered an incorrect Password.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Something went wrong!!! Please contact administrator.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Something went wrong!!! Please contact administrator.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        case "Your account has been Locked due to multiple failed Login attempts.":
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Your account has been Locked due to multiple failed Login attempts.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                            break;
+                        default:
+                            sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                            sessionStorage.setItem("Token", data.token)
+                            fnGetUserBasicDetails(lastPart)
+                            break;
 
-                    sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                    sessionStorage.setItem("Token", data.token)
-                    fnGetUserBasicDetails(lastPart)
+                    }
+                    //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
+                    //sessionStorage.setItem("Token", data.token)
+                    //fnGetUserBasicDetails(lastPart)
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')
