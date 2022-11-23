@@ -36,6 +36,30 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/scripts/custom/components-pickers.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -223,7 +247,7 @@
                                                 <label class="col-md-2 text-right control-label">
                                                     IsActive
                                                 </label>
-                                                <div class="col-md-1 checkbox-list pull-right" >
+                                                <div class="col-md-1 checkbox-list pull-right">
                                                     <label class="checkbox-inline">
                                                         <input type="checkbox" id="chkIsActive" checked="checked" name="chkIsActive" />
                                                     </label>
@@ -245,30 +269,30 @@
                                                 <label class="col-md-4 control-label">
                                                     Purchase Group<span class="required">*</span>
                                                 </label>
-                                               
-                                                    <label class="col-md-7 xyz">
-                                                        <select class="form-control" name="ddlPurchasegroup" id="ddlPurchasegroup" tabindex="4" multiple></select>
-                                                    </label>
 
-                                                    <div class="col-md-1">
-                                                        <button type="button" id="Addbtn" onclick="fnaddPurchaseOrg()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                
-                                            </div>
-                                              </div>
-                                            <div class="form-group">
-                                                <div class="col-md-6">&nbsp;</div>
-                                                <div class="col-md-5" style="margin-left:110px!important">
+                                                <label class="col-md-7 xyz">
+                                                    <select class="form-control" name="ddlPurchasegroup" id="ddlPurchasegroup" tabindex="4" multiple></select>
+                                                </label>
 
-                                                    <table class="table table-bordered table-hover" id="tblpurchaseOrg" >
-                                                        <thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>
-
-                                                    </table>
+                                                <div class="col-md-1">
+                                                    <button type="button" id="Addbtn" onclick="fnaddPurchaseOrg()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                 </div>
+
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6">&nbsp;</div>
+                                            <div class="col-md-5" style="margin-left:110px!important">
+
+                                                <table class="table table-bordered table-hover" id="tblpurchaseOrg">
+                                                    <thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>
+
+                                                </table>
+                                            </div>
+                                        </div>
 
 
-                                      
+
 
 
 
@@ -282,7 +306,7 @@
                                             <button id="btnsubmit" type="submit" class="btn green">
                                                 Submit
                                             </button>
-                                             <button id="btnclear" type="button" class="btn yellow" onclick="clearform()">
+                                            <button id="btnclear" type="button" class="btn yellow" onclick="clearform()">
                                                 Clear
                                             </button>
                                         </div>
@@ -392,35 +416,9 @@
             </div>
         </div>
     </div>
-
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-
-    <script src="assets/CustomJS/Common.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/scripts/custom/components-pickers.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js"></script>
-    <script src="assets/CustomJS/RegisterUser.js" type="text/javascript"></script>
     <script type="text/javascript">
         jQuery(document).ready(function () {
+            callPagejs('RegisterUser.js');
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {

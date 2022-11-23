@@ -298,7 +298,6 @@ var _Bidtype = '';
 var EventType = '';
 
 function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
-   debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if (linkurl.indexOf('?') != -1) {
@@ -515,7 +514,6 @@ function fetchReguestforQuotationDetailseRFQ() {
 
 function DownloadFile(aID) {
  
-    console.log(aID)
     fnDownloadAttachments($("#" + aID.id).attr("name"), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 
