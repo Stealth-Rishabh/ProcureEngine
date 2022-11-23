@@ -125,7 +125,7 @@ var RFQBidType = '';
 var RFQEndDate = new Date();
 function fetchrfqcomprative() {
     var url = '';
-    ShowPrice = "N";
+    //ShowPrice = "N";
     //alert('1-'+ ShowPrice);
     if (VID != undefined && VID != '' && VID != null && VID.toLowerCase() != 'nfa') {
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
