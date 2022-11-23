@@ -27,10 +27,11 @@ var FormValidation = function () {
         var success1 = $('.alert-success', form1);
 
         form1.validate({
+            
             errorElement: 'span',
             errorClass: 'help-block',
             focusInvalid: false,
-            ignore: "",
+            ignore: [],
 
             rules: {
                 txtAddress: {
@@ -56,13 +57,13 @@ var FormValidation = function () {
                 },
                 txtPhoneNo: {
                     required: true,
-                    maxlength: 50
+                    maxlength: 10
 
                 },
                 txtMobileNo: {
                     required: true,
                     number: true,
-                    maxlength: 50,
+                    maxlength: 10,
                 },
                 txtcompanyemail: {
                     required: true,
@@ -1654,6 +1655,7 @@ function fetchCountry() {
                 }
 
                 $("#ddlCountry").val('111').trigger("change");
+                
 
             }
             else {
@@ -1711,7 +1713,13 @@ function fetchCountry() {
 
 function fetchState() {
     var countryid = $('#ddlCountry option:selected').val();
+   
+    
 
+    $("#ddlCountryCd").select2().select2("val", countryid);
+    $("#ddlCountryCdPhone").select2().select2("val", countryid);
+   
+    
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -1724,6 +1732,7 @@ function fetchState() {
         dataType: "json",
         success: function (data) {
             $("#ddlState").empty();
+            
             if (data.length > 0) {
 
                 $("#ddlState").append("<option value=0>Select State</option>");
@@ -1732,6 +1741,9 @@ function fetchState() {
 
                 }
                 $("#ddlState").trigger("change");
+                
+
+
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');

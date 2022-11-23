@@ -955,7 +955,7 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-           
+            console.log(Venderdata)
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
                
