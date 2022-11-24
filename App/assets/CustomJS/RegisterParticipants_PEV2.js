@@ -25,7 +25,7 @@ var FormValidation = function () {
         var form1 = $('#entryForm');
         var error1 = $('.alert-danger', form1);
         var success1 = $('.alert-success', form1);
-
+        //abheedev 24 / 11 / 2022
         form1.validate({
             errorElement: 'span',
             errorClass: 'help-block',
