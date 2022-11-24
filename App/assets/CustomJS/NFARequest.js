@@ -297,7 +297,7 @@ var FormWizard = function () {
 
                     var flag = "T";
 
-
+                   
 
                     if (index == 1) {
 
@@ -381,7 +381,7 @@ var FormWizard = function () {
                         $('.button-submit').hide();
 
                 },
-
+                //abheedev 24/11/2022
                 onPrevious: function (tab, navigation, index) {
                     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
                         var this_row = $(this);
@@ -430,13 +430,21 @@ var FormWizard = function () {
     };
 
 }();
-
+//abheedev 24/11/2022
 $("#ddlCategory").on('change', function () {
-    if ($(this).val() == 1)
+    if ($(this).val() == 1) {
+        $('#txtProjectName').val('');
+         $('#txtProjectName').rules('add', {
+             required: false
+         });
         $(".isProject").hide();
-
-    else
+    }
+    else {
         $(".isProject").show();
+         $('#txtProjectName').rules('add', {
+             required: true
+         });
+    }
 });
 function FetchCurrency(CurrencyID) {
 

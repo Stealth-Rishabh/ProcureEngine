@@ -587,9 +587,7 @@ function editwithgstlambdafactor(pricewithgst, rowid, vendorid) {
 
 //abheedev bug 462
 function updloadingfactor() {
-
-
-
+    debugger
     var tabItems = '', eRFQLoadingTerms = [];
     var oTable = document.getElementById('tblLoadingFactor');
     var rowCount = oTable.rows.length;
@@ -599,11 +597,11 @@ function updloadingfactor() {
             var _LFPer = 0;
             var _LFReason = document.getElementById("tblLoadingFactor").rows[i].cells.item(0).innerHTML;
             var _LFType = document.getElementById("tblLoadingFactor").rows[i].cells.item(1).innerHTML;
-            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML);
+            var _LF = parseFloat(document.getElementById("tblLoadingFactor").rows[i].cells.item(3).innerHTML).toFixed(2);
             if (_LFType == 'P') {
                 var perVal = document.getElementById("tblLoadingFactor").rows[i].cells.item(2).innerHTML;
-                perVal = perVal.replace('%', '');
-                _LFPer = parseFloat(perVal);
+                perVal = parseFloat(perVal.replace('%', '')).toFixed(2);
+                _LFPer = parseFloat(perVal).toFixed(2);
             }
             else {
                 _LFPer = 0;
@@ -1410,7 +1408,7 @@ function downloadexcel() {
 function addLoadingFactor() {
     //abheedev loading factor start
 
-
+   
     var _LoadingAmount = 0;
     var _loadingPer = 0;
     var isSubmitActive = true;
@@ -1427,14 +1425,16 @@ function addLoadingFactor() {
     }
     else {
         isSubmitActive = true;
-        isSubmitActive = true;
+       
+        
         if ($(ddlLFType).val() == "P") {
-            _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
+          
+            _LoadingAmount = parseFloat(totalPriceWithutGst * parseFloat($("#txtloadingfactor").val()) / 100).toFixed(2);
             _loadingPer = $("#txtloadingfactor").val();
 
         }
         else {
-            _LoadingAmount = $("#txtloadingfactor").val();
+            _LoadingAmount = parseFloat($("#txtloadingfactor").val()).toFixed(2);
 
         }
     }
@@ -1455,10 +1455,10 @@ function addLoadingFactor() {
         var strprev = '<tr data-row=' + rowques + ' id=trLFid' + rowques + ' ><td id=trLFReason' + rowques + '>' + jQuery("#txtloadingfactorreason").val() + "</td>"
         strprev += "<td id=trLFType" + rowques + " style='display:none;' >" + jQuery("#ddlLFType").val() + "</td>"
         if ($("#ddlLFType").val() == 'P') {
-            strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "%</td>"
+            strprev += "<td id=trLFValue" + rowques + ">"  + $("#txtloadingfactor").val()  + "%</td>"
         }
         else {
-            strprev += "<td id=trLFValue" + rowques + "><span>" + $("#txtloadingfactor").val() + "</span>" + "INR</td>"
+            strprev += "<td id=trLFValue" + rowques + ">" + $("#txtloadingfactor").val() + "INR</td>"
         }
         strprev += '<td id=trLFAmount' + rowques + '>' + _LoadingAmount + '</td>';
 
@@ -1501,16 +1501,9 @@ function editLFrow(rowid) {
 }
 
 function updateLoadingFactor() {
-
-
-
-
+ 
     var _LoadingAmount = 0;
     var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
-
-
-
-
 
     if ($("#ddlLFType").val() == "P") {
         _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
