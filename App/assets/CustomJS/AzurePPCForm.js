@@ -8,6 +8,8 @@ $('.maxlength').maxlength({
     alwaysShow: true
 });
 
+
+
 function fetchReguestforQuotationDetails() {
 
     jQuery.ajax({
