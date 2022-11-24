@@ -11,6 +11,7 @@ var ApprSeqval = [];
 var lstActivityData = [];
 var objActivity = {};
 
+
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -161,6 +162,7 @@ var FormWizard = function () {
                     txtProjectName: {
                         required: true
                     }
+
 
                 },
 
@@ -333,6 +335,9 @@ var FormWizard = function () {
                                 BindAttachmentsOfEdit();
                             }
                             SaveFirstTabActivity();
+                           /* fnfillPPCForm();*/
+                           
+                           
                         }
 
                     }
@@ -407,11 +412,17 @@ var FormWizard = function () {
 }();
 
 $("#ddlCategory").on('change', function () {
-    if ($(this).val() == 1)
+   
+    if ($(this).val() == 1) {
+        $('#txtProjectName').rules('remove')
         $(".isProject").hide();
-
-    else
+    }
+    else {
         $(".isProject").show();
+        $('#txtProjectName').rules('add', {
+            required: true
+        });
+    }
 });
 function FetchCurrency(CurrencyID) {
 
@@ -540,10 +551,13 @@ function GetOverviewmasterbyId(idx) {
 var objEventData = [];
 
 $("#ddlEventType").on("change", function () {
+   
     GetEventRefData();
+    
 
 })
 function GetEventRefData() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var EventTypeId = $("#ddlEventType option:selected").val();
     $("#txtEventref").val('');
@@ -1024,7 +1038,7 @@ function Savedata() {
 };
 
 function Savetab2Data() {
-    debugger
+   
     var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
 
     Paramdata = [];
@@ -1091,7 +1105,7 @@ function Bindtab3Data() {
 
 function Bindtab2DataforPreview() {
     //responses
-    debugger
+   
     $("#lblintroduction").text($("#txtintroduction").val());
     $("#lbltxtcostbenefit").text($("#txtcostbenefit").val());
     $("#lblbudgetavailbilty").text($("#txtbudgetavailbilty").val());
@@ -1609,6 +1623,7 @@ function viewallmatrix() {
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+var RFQID = 0;
 
 var RFQSubject = '';
 $('.maxlength').maxlength({
@@ -1616,7 +1631,10 @@ $('.maxlength').maxlength({
     alwaysShow: true
 });
 
+if ($("#ddlEventType").val() == 1) {
 
+
+}
 
 
 
@@ -1631,11 +1649,11 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            debugger
             $('#tblvendors > tbody').empty();
             $('#tblvendors > thead').empty();
             if (RFQData.length > 0) {
-                jQuery('#lblenquirysubject').text(RFQData[0].general[0].rfqSubject)
+               // jQuery('#lblenquirysubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQConfigueron').html(RFQData[0].general[0].rfqConfigureDate)
                 RFQSubject = RFQData[0].general[0].rfqSubject;
 
@@ -2057,4 +2075,76 @@ function fnSendActivitytoCommercialForPPCApp() {
             return false;
         }
     })
+}
+
+function fnfillPPCForm() {
+    var encrypdata = fnencrypt("RFQID=" + $('#hdnRfqID').val())
+  /*  var url = 'PPCRequest.html?param=' + encrypdata;
+    window.open(url, '_blank');*/
+
+}
+
+function fetchVendorAutoComplete(index) {
+    var returnitem = '';
+    $('#vendoridrow' + index).text('0');
+    jQuery(".vendorsearch").typeahead({
+        source: function (query, process) {
+
+            var data = allvendorsforautocomplete;
+            var vName = '';
+            usernames = [];
+            map = {};
+            var username = "";
+            jQuery.each(data, function (i, username) {
+                vName = username.participantName + ' (' + username.companyEmail + ')'
+                map[vName] = username;
+                usernames.push(vName);
+            });
+            process(usernames);
+
+        },
+        minLength: 2,
+        updater: function (item) {
+            var status = "true";
+            if (map[item].participantID != "0") {
+                vendorid = map[item].participantID
+                var arr = $("#tblvendorlist >tbody>tr");
+                $.each(arr, function (i, item) {
+                    var currIndex = $("#tblvendorlist >tbody>tr").eq(i);
+
+                    var matchText = currIndex.find("td:eq(1)").text();
+                    $(this).nextAll().each(function (i, inItem) {
+                        if (matchText == vendorid) {
+                            status = 'false';
+                            return false;
+                        }
+                    });
+                });
+
+                if (status == 'false') {
+                    $('#vendoridrow' + index).text('0')
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Vendor is already added.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    //$('#vendorSearch' + index).typeahead('val', '')
+                    vendorid = 0;
+
+                }
+                else {
+                    $('#vendoridrow' + index).text(vendorid)
+                    returnitem = item;
+                }
+
+            }
+            else {
+                $('#vendoridrow' + index).text('0')
+                gritternotification('Please select Vendor!!!');
+
+            }
+
+
+            return returnitem;
+        }
+    });
 }

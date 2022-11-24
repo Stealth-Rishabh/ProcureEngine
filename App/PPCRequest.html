@@ -562,13 +562,8 @@
                                                                             <div class="col-md-5">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Enquiry Issued on :</label>
-                                                                                    <div class="input-group date form_datetime form_datetime bs-datetime ">
-                                                                                        <input type="text" size="16" class="form-control" id="RFQConfigueron" name="txtstartdatettime" placeholder="If required" autocomplete="off" readonly>
-                                                                                        <span class="input-group-btn">
-                                                                                            <button class="btn default date-set" type="button" id="btncal">
-                                                                                                <i class="fa fa-calendar"></i>
-                                                                                            </button>
-                                                                                        </span>
+                                                                                    <div class="col-md-8">
+                                                                                        <label id="RFQConfigueron" class="control-label"></label>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -598,29 +593,7 @@
                                                                                         <table id="tblvendors" class="table table-bordered " border="0" cellpadding="1" cellspacing="1">
 
                                                                                             <tbody>
-                                                                                                <tr>
-                                                                                                    <td>Vendor A</td>
-                                                                                                    <td>
-                                                                                                        <div class="radio-list">
-                                                                                                            <label class="radio-inline">
-                                                                                                                <input type="radio" name="optionsRadios2" value="option1" /> Yes
-                                                                                                            </label>
-                                                                                                            <label class="radio-inline">
-                                                                                                                <input type="radio" name="optionsRadios2" value="option2" checked />No
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <div class="radio-list">
-                                                                                                            <label class="radio-inline">
-                                                                                                                <input type="radio" name="optionsRadios2" value="option1" /> Yes
-                                                                                                            </label>
-                                                                                                            <label class="radio-inline">
-                                                                                                                <input type="radio" name="optionsRadios2" value="option2" checked />No
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                    </td>
-                                                                                                </tr>
+                                                                                                
                                                                                             </tbody>
                                                                                         </table>
 
@@ -1178,6 +1151,60 @@
                                                         </div>
                                                     </div>
 
+                                                    <h4 class="form-section">Recommendation</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <label class="col-12 col-md-2 control-label">Lowest Price Offer:</label>
+                                                            <div class="col-12 col-md-4">
+                                                                <p class="form-control-static" id="lblrationalrfqvendor">
+
+                                                                </p>
+                                                            </div>
+
+                                                            <label class="col-12 col-md-2 control-label">Repeat Order:</label>
+                                                            <div class="col-12 col-md-4">
+                                                                <p class="form-control-static" id="lblenquirynotsent">
+
+                                                                </p>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <label class="col-12 col-md-2 control-label">Supported enclosure(Please specify):</label>
+                                                            <div class="col-12 col-md-4">
+                                                                <p class="form-control-static" id="lblrationalrfqvendor">
+
+                                                                </p>
+                                                            </div>
+
+                                                            <label class="col-12 col-md-2 control-label">Comparatives statement of final price:</label>
+                                                            <div class="col-12 col-md-4">
+                                                                <p class="form-control-static" id="lblenquirynotsent">
+
+                                                                </p>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <label class="col-12 col-md-2 control-label">Quotations of the parties:</label>
+                                                            <div class="col-12 col-md-4">
+                                                                <p class="form-control-static" id="lblrationalrfqvendor">
+
+                                                                </p>
+                                                            </div>                                                           
+                                                        </div>
+                                                    </div>
                                                     <h4 class="form-section">Approvers</h4>
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -1469,6 +1496,9 @@
             fetchMenuItemsFromSession(1, 53);
             BindPurchaseOrg();
             bindConditionDDL();
+            
+           
+            
 
         });
 
