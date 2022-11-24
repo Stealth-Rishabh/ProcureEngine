@@ -112,8 +112,7 @@ var FormWizard = function () {
             }
 
             form.validate({
-                ignore: "", //nfaissue 22/11/2022
-
+                
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
 
                 errorElement: 'span', //default input error message container
@@ -1057,7 +1056,6 @@ function Savedata() {
 };
 
 function Savetab2Data() {
-    debugger
     var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
 
     Paramdata = [];
