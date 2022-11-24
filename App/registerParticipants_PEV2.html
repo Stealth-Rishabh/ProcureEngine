@@ -291,20 +291,16 @@
                                                                    name="txtPanNo" maxlength="10" />
                                                         </div>
                                                     </div>
-                                                   
-                                                   
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
                                                             Mobile No <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-2">
                                                             <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                                <option Value="">Select</option>
                                                             </select>
                                                         </div>
-
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo" maxlength="10">
+                                                        <div class="col-md-7 reqcls">
+                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -322,12 +318,11 @@
                                                         </label>
                                                         <div class="col-md-2">
                                                             <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
-                                                                <option Value="">Select</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-7">
+                                                        <div class="col-md-7 reqcls">
                                                             <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
-                                                                   name="txtPhoneNo" maxlength="10">
+                                                                   name="txtPhoneNo">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -371,7 +366,16 @@
                                                         </div>
 
                                                     </div>
-                                                    
+                                                    <!--<div class="form-group">
+                                                        <label class="col-md-3 control-label">
+                                                            IsActive
+                                                        </label>
+                                                        <div class="col-md-9 checkbox-list">
+                                                            <label class="checkbox-inline">
+                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                            </label>
+                                                        </div>
+                                                    </div>-->
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                         <label class="col-md-3 control-label">
                                                             &nbsp;
@@ -1242,10 +1246,12 @@
             });
             $('#ddlCountryCd').select2({
                 searchInputPlaceholder: "Dialing Code",
+                //allowClear: true
             });
 
             $('#ddlCountryCdPhone').select2({
                 searchInputPlaceholder: "Dialing Code",
+                // allowClear: true
             });
 
             $('#ddlState').select2({
