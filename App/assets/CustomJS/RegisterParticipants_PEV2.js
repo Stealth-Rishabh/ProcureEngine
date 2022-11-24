@@ -56,12 +56,12 @@ var FormValidation = function () {
                 },
                 txtPhoneNo: {
                     required: true,
-                    maxlength: 50
+                    
                 },
                 txtMobileNo: {
                     required: true,
-                    number: true,
-                    maxlength: 50,
+                    number: true
+                   
                 },
                 txtcompanyemail: {
                     required: true,
@@ -96,6 +96,10 @@ var FormValidation = function () {
                     required: true,
                     notEqualTo: 0
                 },
+                ddlpreferredTime: {
+                    required: true,
+                    
+                }
             },
             messages: {
                 txtAddress: {
@@ -128,6 +132,9 @@ var FormValidation = function () {
                 },
                 ContactName: {
                     required: "Please enter contact person name"
+                },
+                ddlpreferredTime: {
+                    required: "please select your preferred time zone"
                 }
 
             },
