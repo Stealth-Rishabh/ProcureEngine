@@ -29,6 +29,7 @@ if (window.location.search) {
 }
 
 $("#cancelNFABtn").hide();
+$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
@@ -120,7 +121,8 @@ var FormWizard = function () {
                 errorClass: 'help-block help-block-error', // default input error message class
 
                 focusInvalid: false, // do not focus the last invalid input
-                ignore:'',
+                ignore: '',
+
                 rules: {
 
                     txtTitle: {
@@ -381,6 +383,12 @@ var FormWizard = function () {
                 },
 
                 onPrevious: function (tab, navigation, index) {
+                    $("#tblNFAOverviewParam tr:gt(0)").each(function () {
+                        var this_row = $(this);
+                        $('#paramremark' + $.trim(this_row.find('td:eq(3)').html())).rules('add', {
+                            required: false
+                        });
+                    });
 
                     success.hide();
                     error.hide();
@@ -395,9 +403,7 @@ var FormWizard = function () {
                 onTabShow: function (tab, navigation, index) {
 
                     var total = navigation.find('li').length;
-
                     var current = index + 1;
-
                     var $percent = (current / total) * 100;
 
                     $('#form_wizard_1').find('.progress-bar').css({
@@ -694,7 +700,7 @@ function fnApproversNBQuery(rownum, question) {
 
         if (!jQuery("#tblNFAOverviewParam thead").length) {
             jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Description</th></tr></thead>");
-            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000></textarea></td><td class=hide>' + rownum + '</td></tr>');
+            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000></textarea></td><td class=hide >' + rownum + '</td></tr>');
         }
         //abheedev backlog 286 end
         else {
@@ -711,7 +717,7 @@ function fnApproversNBQuery(rownum, question) {
     $('#paramremark' + rownum).rules('add', {
         required: true,
         // minlength: 50,
-        maxlength: 10000,
+        maxlength: 10000
     });
     $('#paramremark' + rownum).maxlength({
         limitReachedClass: "label label-danger",
@@ -985,7 +991,7 @@ function Savedata() {
     var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
     var _budget = 0;
     if ($("#txtBudget").val() != '') {
-        _budget = parseInt($("#txtBudget").val());
+        _budget = $("#txtBudget").val();
     }
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
