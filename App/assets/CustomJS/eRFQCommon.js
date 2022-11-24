@@ -1503,22 +1503,22 @@ function editLFrow(rowid) {
     $('#Editbtn1').show()
     editrow = $('#' + rowid.id).attr('data-row');
 }
-
+//abheedev 24/11/2022 loading factor issue
 function updateLoadingFactor() {
  
     var _LoadingAmount = 0;
     var totalPriceWithutGst = parseFloat($("#hdngstprice").val());
 
     if ($("#ddlLFType").val() == "P") {
-        _LoadingAmount = (totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100;
+        _LoadingAmount = parseFloat((totalPriceWithutGst * parseFloat($("#txtloadingfactor").val())) / 100).toFixed(2);
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "%")
+        $("#trLFValue" + editrow).text(parseFloat($('#txtloadingfactor').val()).toFixed(2) + "%")
         $("#trLFAmount" + editrow).text(_LoadingAmount)
     }
     else {
         $("#trLFReason" + editrow).text($('#txtloadingfactorreason').val())
-        $("#trLFValue" + editrow).text($('#txtloadingfactor').val() + "INR")
-        $("#trLFAmount" + editrow).text($('#txtloadingfactor').val())
+        $("#trLFValue" + editrow).text(parseFloat($('#txtloadingfactor').val()).toFixed(2) + "INR")
+        $("#trLFAmount" + editrow).text(parseFloat($('#txtloadingfactor').val()).toFixed(2))
 
     }
 
