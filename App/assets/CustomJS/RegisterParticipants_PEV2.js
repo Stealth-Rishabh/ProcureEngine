@@ -5,7 +5,7 @@ jQuery(document).ready(function () {
     });
 });
 
-$('#txtUI,txtPanNo,#txtTINNo').maxlength({
+$('#txtUI,txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
