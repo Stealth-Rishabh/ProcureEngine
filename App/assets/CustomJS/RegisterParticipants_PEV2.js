@@ -1022,80 +1022,7 @@ jQuery("#txtSearchparked").keyup(function () {
             jQuery(this).show();
     });
 });
-//function MapVendorCategories() {
 
-//    var InsertQuery = '';
-
-//    $('.childchkbox').each(function() {
-//        if (this.checked) {
-//           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
-//            InsertQuery = InsertQuery + $(this).val() + "#";
-//        }
-
-//    });
-
-//    if (InsertQuery == '') {
-
-//        jQuery('#divalerterr').find('span').text('Please select atleast one group!');
-//        jQuery('#divalerterr').slideDown('show');
-//        App.scrollTo(jQuery('#divalerterr'), -200);
-//        return false;
-//        setTimeout(function() {
-//            jQuery('#divalerterr').css('display', 'none');
-//        }, 5000);
-//    }
-
-
-//    var MapParticipants = {
-//        "CustomerID":parseInt(sessionStorage.getItem('CustomerID')),
-//        "InsertQuery": InsertQuery,
-//        "UserID": sessionStorage.getItem('UserID'),
-//        "VendorID": parseInt($("#hdnParticipantID").val())
-
-//    };
-//    //console.log(JSON.stringify(MapParticipants))
-//   // alert(JSON.stringify(MapParticipants))
-//    jQuery.ajax({
-//        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        type: "POST",
-//        data: JSON.stringify(MapParticipants),
-//        contentType: "application/json; charset=utf-8",
-//        success: function(data, status, jqXHR) {
-
-//        //if (data == '1') {
-//            jQuery('#divalertsucess').slideDown('show');
-//            App.scrollTo(jQuery('#divalertsucess'), -200);
-//            fetchParticipantsVenderTable();
-//            clearform();
-//        // }
-//            //else {
-
-//            //    jQuery('#divalerterr').slideDown('show');
-//            //    App.scrollTo(jQuery('#divalerterr'), -200);
-//            // }
-//            setTimeout(function() {
-//                jQuery('#divalertsucess').css('display', 'none');
-//                jQuery('#divalerterr').css('display', 'none');
-
-//            }, 5000);
-
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('spanerterr', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-//        }
-
-//    });
-//}
 
 jQuery("#txtSearchCategory").keyup(function () {
 
@@ -1325,9 +1252,6 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     jQuery("#txtcompanyemail").val(emailid);
     jQuery("#txtAlternateeMailID").val(alternateemailid);
     jQuery("#txtZipCd").val(zipcode)
-    // $("#ddlCountryCd option:selected").val(countrycdid)
-    //   $("#ddlCountryCdPhone option:selected").val(countrycdphoneid)
-    //$("#ddlpreferredTime").find(prefferredTZ).attr("selected", "selected")
     $('#ddlpreferredTime').val(prefferredTZ).trigger('change')
 
     //@abheedev
@@ -1426,8 +1350,6 @@ function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phon
         $('#ddlCity').val(cityid).trigger('change')
 
     }, 1500)
-    //$("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
-    //$("#ddlpreferredTime").find(prefferredTZ).attr("selected", "selected")
     $('#ddlpreferredTime').val(prefferredTZ).trigger('change')
 
 

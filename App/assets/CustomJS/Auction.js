@@ -1888,3 +1888,43 @@ function fromUTF8Array(data) { // array of bytes
 
     return str;
 }
+
+function checkPasswordValidation(value) {
+    debugger;
+    const isWhitespace = /^(?=.*\s)/;
+    if (isWhitespace.test(value)) {
+        return "Password must not contain Whitespaces.";
+    }
+
+
+    const isContainsUppercase = /^(?=.*[A-Z])/;
+    if (!isContainsUppercase.test(value)) {
+        return "Password must have at least one Uppercase Character.";
+    }
+
+
+    const isContainsLowercase = /^(?=.*[a-z])/;
+    if (!isContainsLowercase.test(value)) {
+        return "Password must have at least one Lowercase Character.";
+    }
+
+
+    const isContainsNumber = /^(?=.*[0-9])/;
+    if (!isContainsNumber.test(value)) {
+        return "Password must contain at least one Digit.";
+    }
+
+
+    const isContainsSymbol = /^(?=.*[~`!@#$%^*--+={}\[\]|\\:;"',.?/_])/;
+    if (!isContainsSymbol.test(value)) {
+        return "Password must contain at least one Special Symbol.";
+    }
+
+
+    const isValidLength = /^.{6,8}$/;
+    if (!isValidLength.test(value)) {
+        return "Password must be 6-8 Characters Long.";
+    }
+    return "SUCCESS";
+
+}
