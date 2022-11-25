@@ -68,14 +68,23 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger;
+    var isSubmit = true;
+    var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
-        jQuery("#errorpassword").text("Password not matched..");
-        Changepassworderror.show();
-        Changepassworderror.fadeOut(5000);
-        jQuery.unblockUI();
-        return;
+        successMsg = "Password not matched.."
+        isSubmit = false;
     }
-    else {
+    if (isSubmit) {
+        successMsg = checkPasswordValidation($("#nPassword").val());
+        if (successMsg != "SUCCESS") {
+            isSubmit = false;
+        }
+        else {
+            isSubmit = true;
+        }
+    }
+    if (isSubmit) {
         var data = {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -121,6 +130,15 @@ function ChangePassword() {
                 return false;
             }
         });
+
+        
+    }
+    else {
+        jQuery("#errorpassword").text(successMsg);
+        Changepassworderror.show();
+        Changepassworderror.fadeOut(5000);
+        jQuery.unblockUI();
+        return;
     }
 
 }
