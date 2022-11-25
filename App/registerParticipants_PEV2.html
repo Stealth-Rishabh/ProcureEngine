@@ -103,8 +103,8 @@
                         <div class="sidebar-toggler hidden-phone">
                         </div>
                     </li>
-                    <br />
                 </ul>
+                <br/>
             </div>
         </div>
         <div class="page-content-wrapper">
@@ -266,8 +266,7 @@
                                                             City <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
-                                                            <!--<input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
-                                                            name="txtCity" onkeyup="replaceQuoutesFromString(this)" />-->
+                                                           
                                                             <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
                                                         </div>
                                                     </div>
@@ -291,17 +290,17 @@
                                                                    name="txtPanNo" maxlength="10" />
                                                         </div>
                                                     </div>
+                                                    <!--abheedev 24/11/2022-->
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
                                                             Mobile No <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-2">
                                                             <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                                <option Value="">Select</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo">
+                                                        <div class="col-md-7 reqcls">
+                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo" minlength="10" maxlength="10">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -313,18 +312,18 @@
                                                                    maxlength="15" name="txtTINNo">
                                                         </div>
                                                     </div>
+                                                    <!--abheedev 24/11/2022-->
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label">
                                                             Company Phone <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-2">
                                                             <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
-                                                                <option Value="">Select</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-7">
+                                                        <div class="col-md-7 reqcls">
                                                             <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
-                                                                   name="txtPhoneNo">
+                                                                   name="txtPhoneNo" minlength="10" maxlength="10">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -368,7 +367,7 @@
                                                         </div>
 
                                                     </div>
-                                                    
+                                                   
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                         <label class="col-md-3 control-label">
                                                             &nbsp;
@@ -384,7 +383,7 @@
                                                             </div>
                                                             <div class="tools">
                                                                 <a href="javascript:;" class="collapse"></a>
-                                                                <!--<a href="javascript:;" class="reload" onclick="fetchPlacemaster();"></a>-->
+                                                                
                                                             </div>
                                                         </div>
                                                         <div class="portlet-body">
@@ -421,7 +420,7 @@
                                         </div>
                                         <div class="row" id="displayTable">
                                             <div class="col-md-12">
-                                                <!--<div class="portlet-body " >-->
+                                                
 
                                                 <div class="tabbable tabbable-custom boxless tabbable-reversed" style="overflow:unset;">
                                                     <ul class="nav nav-tabs">
@@ -1234,26 +1233,29 @@
             fetchBidType();// for serach vendor
             clearform();
             fetchCountry();
+            //abheedev 25/11/2022
             $('#ddlCountry').select2({
                 searchInputPlaceholder: "Search Country",
-            });
+            })
             $('#ddlCountryCd').select2({
                 searchInputPlaceholder: "Dialing Code",
+                //allowClear: true
             });
 
             $('#ddlCountryCdPhone').select2({
                 searchInputPlaceholder: "Dialing Code",
+                // allowClear: true
             });
 
             $('#ddlState').select2({
                 searchInputPlaceholder: "Search State",
                 allowClear: true
-            });
+            }).on('change', function () { $(this).valid();});
             $('#ddlCity').select2({
                 searchInputPlaceholder: "Search City",
                 allowClear: true
-            });
-            $('#ddlpreferredTime').select2();
+            }).on('change', function () { $(this).valid(); });
+            $('#ddlpreferredTime').select2().on('change', function () { $(this).valid(); });
         });
     </script>
 
