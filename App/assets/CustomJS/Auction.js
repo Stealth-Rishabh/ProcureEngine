@@ -305,7 +305,7 @@ function checkfilesize(fileid) {
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
