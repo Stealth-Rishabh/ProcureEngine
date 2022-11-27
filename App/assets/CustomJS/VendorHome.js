@@ -1210,9 +1210,10 @@ function multilingualLanguage() {
     };
     jQuery(function () {
         $.i18n().load({
-            'en': 'jquery.i18n/language/en/translation.json', // Messages for english
-            'fr': 'jquery.i18n/language/fr/translation.json' // message for french
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
         }).done(function () {
+            $('body').i18n();
             set_locale_to(url('?locale'));
            
             $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
