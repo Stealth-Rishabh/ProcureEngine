@@ -188,7 +188,7 @@ function fetchrfqcomprative() {
                 strHeadExcel += "</tr>"
 
                 strHeadQ += "</tr>"
-                strHeadExcelQ += "</tr>"
+                strHeadExcelQ += "<td colspan='6'>&nbsp;</td></tr>"
 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 start
@@ -568,9 +568,9 @@ function fetchrfqcomprative() {
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
                     t = k;
                 }
-
+            
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
-                strExcel += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
+                strExcel += "<td colspan=" + (t + 2 + (6*t)) + ">&nbsp;</td></tr>";
 
                
                 if (data[0].commercialTerms.length > 0) {
@@ -595,7 +595,7 @@ function fetchrfqcomprative() {
 
                     }
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
-                    strExcel += "<td colspan=7><b>Our Requirement</b></td></tr>";
+                    strExcel += "<td colspan=8><b>Our Requirement</b></td></tr>";
 
                     $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
 
@@ -645,7 +645,7 @@ function fetchrfqcomprative() {
                                 }
                             }
                             str += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
-                            strExcel += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
+                            strExcel += "<td colspan=8>" + data[0].commercialTerms[p].requirement + "</td>";
 
                             str += " </tr>";
                             strExcel += " </tr>";
@@ -671,7 +671,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td>";
-                strExcel += "<td colspan=7>&nbsp;</td>";
+                strExcel += "<td colspan=8>&nbsp;</td>";
                 str += " </tr>";
                 strExcel += " </tr>";
 
@@ -873,7 +873,7 @@ function fetchrfqcomprative() {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-                    strExcel += "<td colspan='7'>&nbsp;</td>";
+                    strExcel += "<td colspan='8'>&nbsp;</td>";
                     strExcel += " </tr>";
                 }
 
@@ -1065,7 +1065,7 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-
+            
             if ($('#hdnRfiRfqID').val() == "0") {
                 gritternotification('Please Select RFQ properly!!!')
             }
@@ -1148,6 +1148,7 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
+           
             ReInviteVendorsForRFQ();
         }
 
@@ -1188,6 +1189,7 @@ function formvalidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
+           
             fnSendActivityToCommercial();
         }
 
@@ -1234,6 +1236,7 @@ function formvalidate() {
         },
 
         submitHandler: function (form) {
+            
             cancelBtnclick();
 
         }

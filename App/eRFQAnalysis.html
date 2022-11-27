@@ -198,6 +198,7 @@
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
+                <!--Bug 479 abheedev-->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet box green-haze">
@@ -298,13 +299,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
-                                                        RFQ Description:
+                                                        RFQ Configured By:
                                                     </label>
-                                                    <div class="col-md-6">
-                                                        <label id="RFQDescription" style="text-align:left" class="control-label">
+                                                    <div class="col-md-8">
+                                                        <label id="lblrfqconfigby" class="control-label" style="text-align:left">
+
                                                         </label>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -370,18 +371,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">
-                                                        RFQ Configured By:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="lblrfqconfigby" class="control-label" style="text-align:left">
-
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                           
+                                            
                                             <div class="col-md-6" id="div_bidopendate">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
@@ -391,6 +382,20 @@
                                                         <label id="lblrfqopendate" class="control-label" style="text-align:left">
                                                         </label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">
+                                                        RFQ Description:
+                                                    </label>
+                                                    <div class="col-md-10">
+                                                        <label id="RFQDescription" style="text-align:left" class="control-label">
+                                                        </label>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -447,11 +452,12 @@
                                                         <tr>
                                                             <th>RFQ Subject</th>
                                                             <th>Event ID</th>
-                                                            <th>Description</th>
+
                                                             <th>Currency</th>
                                                             <th>Conversion Rate</th>
                                                             <th>RFQ Start Date</th>
                                                             <th>RFQ Deadline</th>
+                                                            <th>RFQ Description</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>
