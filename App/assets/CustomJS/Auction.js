@@ -269,8 +269,9 @@ jQuery("#txtSearch").keyup(function () {
 $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
+
+//abheedev bug 572
 function checkfilesize(fileid) {
-    debugger
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -282,7 +283,7 @@ function checkfilesize(fileid) {
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
@@ -1785,7 +1786,7 @@ var tablesToExcel = (function () {
 })();
 //abheedev bug 443 start
 function checkExcelUpload(fileid) {
-
+   
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
