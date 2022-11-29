@@ -96,7 +96,7 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-            console.log(res)
+           
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
                 if (res.result[0].nfaCategory == "1")
@@ -124,7 +124,8 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lblPurOrg").text(res.result[0].orgName);
                 $("#lblGroup").text(res.result[0].groupName);
-
+               /* $('body').css({ 'background-image': 'url(' + res.result[0].logoImage + ')' });
+*/
                 if (res.result[0].eventtypeName == "RA") {
                     $("#lblEventType").text("Reverse Auction")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\,\'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
@@ -1274,8 +1275,8 @@ function saveAspdf() {
         pagesplit: true
     };
     pdf.addHTML(document.body, options, function () {
-        pdf.save('nfareport.pdf');
-        window.close();
+         pdf.save('nfareport.pdf') 
+         window.close();
 
     });
 
