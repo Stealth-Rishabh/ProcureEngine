@@ -116,29 +116,26 @@
             justify-content: center;
             align-items: center;
         }
-
-        body {
-            font-family: Verdana, serif;
-            /* font-family: Garamond, serif !important;*/
-        }
-
+        
+       
         
     </style>
 </head>
 <body class="page-full-width">
 
-    
+
     <div class="clearfix">
     </div>
-
-    <div class="page-container">
+   
+    <div class="page-container" style="height:auto;width:auto;font-family: Arial, Helvetica, sans-serif;">
 
         <div class="page-content-wrapper">
+          
             <div class="page-content">
-
                
+
                 <div style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;">
-                    <div style="float: left;"><img id="logoimg" src="" /></div> 
+                    <div style="float: left;"><img id="logoimg" src="" /></div>
                     <div style="clear: both;"></div>
                     <label style="text-align: center;">NFA Report Summary</label>
                 </div>
@@ -160,8 +157,8 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="col-md-1 control-label" id="lbltitlesubject"><b>Subject:</b></label>
-                                                <label id="lbltitle" style="text-align:left" class="col-md-4 control-label">
+                                                <label class="col-md-2 control-label" id="lbltitlesubject"><b>Subject:</b></label>
+                                                <label id="lbltitle" style="text-align:left" class="col-md-10 control-label">
                                                 </label>
 
                                             </div>
@@ -171,8 +168,8 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="col-md-1 control-label"><b>Description</b></label>
-                                                <label id="lblDetails" style="text-align:left" class="col-md-4 control-label">
+                                                <label class="col-md-2 control-label"><b>Description</b></label>
+                                                <label id="lblDetails" style="text-align:left" class="col-md-10 control-label">
                                                 </label>
                                             </div>
                                         </div>
@@ -278,7 +275,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="col-md-1 control-label" id="lblRemarktitle"><b>Remarks</b></label>
+                                                <label class="col-md-2 control-label" id="lblRemarktitle"><b>Remarks</b></label>
                                                 <label id="lblRemark" style="text-align:left" class="col-md-10 control-label">
                                                 </label>
 
@@ -579,6 +576,7 @@
                 $('[data-toggle="tooltip"]').tooltip()
             })
 
+            $('.watermark').css('background-image', 'url("assets / img / gallery / image1.jpg")');
 
             Metronic.init();
             Layout.init();
@@ -590,7 +588,7 @@
 
             setTimeout(function () {
                 saveAspdf()
-            }, 3000)
+            }, 5000) // abheedev bug 519 29/11/2022
         });
 
     </script>
