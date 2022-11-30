@@ -130,19 +130,33 @@ function fnToCheckUserIPaccess() {
 var allUsers
 function fetchRegisterUser(Type) {
     var url = ''
+    url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser"
+    var data = [];
     if (Type.toLowerCase() == "ppc") {
-        url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0&Isactive=N"
+        data = {
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+            "UserID": "0",
+            "Isactive": "N"
+        } 
+        //url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0&Isactive=N"
     }
     else {
-        url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N"
+        data = {
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+            "UserID": sessionStorage.getItem('UserID'),
+            "Isactive": "N"
+        }
+        //url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N"
     }
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
 

@@ -1,14 +1,5 @@
 ﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
-    /*
-      var dt = new Date();
-      var day = dt.getDate();
-      var month = dt.getMonth() + 1;
-      var year = dt.getFullYear();
-      var hour = dt.getHours();
-      var mins = dt.getMinutes();
-      postfix = day + "/" + month + "/" + year;*/
-
     postfix = new Date()
 
     $('#printed_on').html(postfix);

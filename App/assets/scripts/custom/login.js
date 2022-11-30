@@ -175,52 +175,46 @@ var Login = function () {
                 contentType: "application/json",
                 success: function (data) {
                     debugger;
+                    var successMsg = "";
+                    var isSuccess = true;
                     switch (data.token) {
                         case "You are accessing an Invalid URL.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('You are accessing an Invalid URL.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "You are accessing an Invalid URL."
+                            isSuccess = false;
                             break;
                         case "Your account has been Locked. Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked. Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "You are accessing an Invalid URL."
+                            isSuccess = false;
                             break;
                         case "You have entered an incorrect Password.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect'
+                            isSuccess = false;
                             break;
                         case "Something went wrong!!! Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Something went wrong!!! Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "Something went wrong!!! Please contact administrator."
+                            isSuccess = false;
                             break;
                         case "Your account has been Locked due to multiple failed Login attempts.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked due to multiple failed Login attempts.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "Your account has been Locked due to multiple failed Login attempts."
+                            isSuccess = false;
                             break;
                         default:
+                            successMsg = "SUCCESS"
+                            isSuccess = true;
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.token)
                             fnGetUserBasicDetails(lastPart)
                             break;
 
                     }
-                    //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                    //sessionStorage.setItem("Token", data.token)
-                    //fnGetUserBasicDetails(lastPart)
+                    if (!isSuccess) {
+                        jQuery.unblockUI();
+                        $('#alrt1').show();
+                        $('#alertmessage1').html(successMsg)
+                        App.scrollTo($('#alrt1'), -200);
+                        $('#alrt1').fadeOut(5000);
+                    }
+                    
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')

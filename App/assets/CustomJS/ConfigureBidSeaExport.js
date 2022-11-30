@@ -1242,11 +1242,15 @@ function ConfigureBidForSeaExportTab1() {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
         //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
+    var _bidSubject = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _bidDesc = StringEncodingMechanism(jQuery("#txtbiddescription").val());
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidSubject": _bidSubject,
+        "BidDescription": _bidDesc,
         "BidDate": StartDT,
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
@@ -2499,13 +2503,17 @@ function fetchSeaExportDetails() {
         success: function (BidData) {
             var str = '';
             var strp = '';
+            var _bidSubject = StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject);
+            var _bidDesc = StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails);
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            //jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(_bidSubject)
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
 
             jQuery('#txtStaggerNo').val(BidData[0].bidDetails[0].noOfStaggerItems)
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            //jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(_bidDesc)
            
             jQuery('#txtbidDate').val(dtst)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
