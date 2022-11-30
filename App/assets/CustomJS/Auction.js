@@ -1803,7 +1803,7 @@ function StringEncodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('"', '&quot;');
     returnStr = returnStr.replaceAll("'", '&#x27;');
     returnStr = returnStr.replaceAll('/', '&#x2F;');
-    returnStr = returnStr.replaceAll('alert(', 'alert-');
+    //returnStr = returnStr.replaceAll('alert(', 'alert-');
     return returnStr;
 }
 
@@ -1814,7 +1814,7 @@ function StringDecodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('&quot;', '"');
     returnStr = returnStr.replaceAll("&#x27;", "'");
     returnStr = returnStr.replaceAll('&#x2F;', '/');
-    returnStr = returnStr.replaceAll('alert-', 'alert(');
+    //returnStr = returnStr.replaceAll('alert-', 'alert(');
     returnStr = maliciousText.replaceAll('&amp;', '&');
     return returnStr;
 }
