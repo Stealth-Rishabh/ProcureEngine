@@ -40,13 +40,20 @@ $('#ddlconfiguredby').on('change', function (e) {
 });
 
 function fetchregisterusers() {
-
+    
+    var userData = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": encodeURIComponent(sessionStorage.getItem('UserID')),
+        "Isactive": 'N'
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
+        //url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        data: JSON.stringify(userData),
         dataType: "json",
         success: function (data) {
             jQuery("#ddlconfiguredby").empty();
