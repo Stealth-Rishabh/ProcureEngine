@@ -251,37 +251,70 @@ function fetchDashboardData() {
                     str += "<span class='label-sm label-info'>" + fnConverToLocalTime(BidData[0].pendingActivity[i].receiptDt) + "</span></div></div>";
                     str += "</li>";
                     jQuery('#UlPendingActivity').append(str);
+                    switch (BidData[0].pendingActivity[i].bidTypeName) {
+                        case 'VQ':
+                            jQuery('#icon' + i).addClass('fa fa-question-circle');
+                            break;
+                        case 'VR':
+                            jQuery('#icon' + i).addClass('fa fa-question-circle');
+                            break;
+                        case 'RFI':
+                            jQuery('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'RFQ':
+                            $('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'NFA':
+                            $('#icon' + i).addClass('fa fa-edit');
+                            break;
+                        case 'eRFQ':
+                            $('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'Forward Auction':
+                            $('#icon' + i).addClass('fa fa-forward');
+                            break;
+                        case 'Reverse Auction':
+                            $('#icon' + i).addClass('fa fa-gavel');
+                            break;
+                        case 'Coal Auction':
+                            $('#icon' + i).addClass('fa fa-fire-extinguisher');
+                            break;
+                        case 'French Auction':
+                            $('#icon' + i).addClass('fa fa-forward');
+                            break;
 
-                    if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
-                        jQuery('#icon' + i).addClass('fa fa-question-circle');
                     }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
-                        jQuery('#icon' + i).addClass('fa fa-question-circle');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
-                        jQuery('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
-                        $('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'NFA') {
-                        $('#icon' + i).addClass('fa fa-edit');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
-                        $('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
-                        $('#icon' + i).addClass('fa fa-forward');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
-                        $('#icon' + i).addClass('fa fa-gavel');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
-                        $('#icon' + i).addClass('fa fa-fire-extinguisher');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'french auction') {
-                        $('#icon' + i).addClass('fa fa-forward');
-                    }
+
+                    //if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
+                    //    jQuery('#icon' + i).addClass('fa fa-question-circle');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
+                    //    jQuery('#icon' + i).addClass('fa fa-question-circle');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
+                    //    jQuery('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
+                    //    $('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'NFA') {
+                    //    $('#icon' + i).addClass('fa fa-edit');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
+                    //    $('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
+                    //    $('#icon' + i).addClass('fa fa-forward');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
+                    //    $('#icon' + i).addClass('fa fa-gavel');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
+                    //    $('#icon' + i).addClass('fa fa-fire-extinguisher');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName.toLowerCase() == 'french auction') {
+                    //    $('#icon' + i).addClass('fa fa-forward');
+                    //}
                 }
             }
             else {
@@ -336,7 +369,7 @@ function fetchDashboardData() {
                         else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
                             $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
                         }
-                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'French Auction') {
+                        else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
                             $('#iconbid_all' + i).addClass('fa fa-forward');
                         }
                     }

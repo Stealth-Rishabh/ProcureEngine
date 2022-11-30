@@ -90,7 +90,6 @@ function fetchrfqcomprative() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            console.log(data)
             var str = '';
             var strHead = '';
             var strHeadExcel = '';
@@ -269,7 +268,6 @@ function fetchrfqcomprative() {
                     if (flag == 'T') {
 
                         minprice = 0;
-                        console.log(data)
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
                         strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
@@ -1324,7 +1322,6 @@ function fnSendActivityToCommercial() {
         "Vendors": '',
         "AwardQuery": ''
     }
-    console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
