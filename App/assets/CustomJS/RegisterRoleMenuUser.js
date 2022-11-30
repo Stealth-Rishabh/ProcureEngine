@@ -511,13 +511,20 @@ function fnUpdateType(RoleID, RoleName, isactive) {
     }
 }
 function fetchRegisterUser() {
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+       // url: APIPath + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
             
