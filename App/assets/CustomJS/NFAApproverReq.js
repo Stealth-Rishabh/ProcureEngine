@@ -1105,7 +1105,7 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-            console.log(JSON.stringify(data))
+            
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1260,6 +1260,7 @@ function withdrawquery() {
 
 }
 function fnRecall() {
+   
     bootbox.dialog({
         message: "Do you want to Recall NFA, Click Yes for  Continue ",
         buttons: {
@@ -1282,6 +1283,7 @@ function fnRecall() {
     });
 }
 function DisableActivityRecall() {
+  
     var data = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem('UserID'),

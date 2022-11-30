@@ -468,12 +468,12 @@ function fetchrfqcomprative() {
 
                                 }
                                 else {
-                                    str += "<td colspan=3 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
+                                    str += "<td colspan=4 style='text-align:center;color: red!important;'>" + data[0].lStatus[k].status + "</td>";
 
                                 }
                             }
                             else {
-                                str += "<td colspan=3 style='text-align:center;color: black!important;'>Quoted</td>";
+                                str += "<td colspan=4 style='text-align:center;color: black!important;'>Quoted</td>";
                             }
 
                         }

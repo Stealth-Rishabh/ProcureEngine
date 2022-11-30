@@ -1246,7 +1246,7 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     jQuery("#txtAlternateeMailID").val(alternateemailid);
     jQuery("#txtZipCd").val(zipcode)
    
-    $('#ddlpreferredTime').val(prefferredTZ)//.trigger('change')
+    $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
 
     //@abheedev
 

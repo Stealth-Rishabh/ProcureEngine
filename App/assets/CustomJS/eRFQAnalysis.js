@@ -811,7 +811,7 @@ function fetchrfqcomprative() {
 
                                             if (data[0].approverStatus[s].status == 'Approved') {
                                                 strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
-                                                strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].Status + "</td>";
+                                                strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].status + "</td>";//abheedev479
 
                                             }
                                             else if (data[0].approverStatus[s].status == 'Rejected') {

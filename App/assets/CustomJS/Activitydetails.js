@@ -279,7 +279,7 @@ function fetchDashboardData() {
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
                         $('#icon' + i).addClass('fa fa-fire-extinguisher');
                     }
-                    else if (BidData[0].pendingActivity[i].bidTypeName.toLowerCase() == 'french auction') {
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'french auction') {
                         $('#icon' + i).addClass('fa fa-forward');
                     }
                 }
@@ -336,7 +336,7 @@ function fetchDashboardData() {
                         else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
                             $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
                         }
-                        else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'French Auction') {
                             $('#iconbid_all' + i).addClass('fa fa-forward');
                         }
                     }
