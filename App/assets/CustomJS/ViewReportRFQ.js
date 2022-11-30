@@ -1,14 +1,5 @@
 ﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
-    /*
-      var dt = new Date();
-      var day = dt.getDate();
-      var month = dt.getMonth() + 1;
-      var year = dt.getFullYear();
-      var hour = dt.getHours();
-      var mins = dt.getMinutes();
-      postfix = day + "/" + month + "/" + year;*/
-
     postfix = new Date()
 
     $('#printed_on').html(postfix);
@@ -63,7 +54,7 @@ function fetchrfqcomprative(RFQID) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //   alert(data[0].VendorNames.length)
+          
             var str = '';
             var strHead = '';
 
@@ -528,7 +519,7 @@ function fetchrfqcomprative(RFQID) {
 
                     }
                    //abheedev bug 472-479
-                    strQ += "<td colspan=" + 2 + ">&nbsp;</td><td colspan=" + (t + (4*t)) + " style='text-align:center'>No Questions Mapped</td>";
+                    strQ += "<td colspan=" + 2 + ">&nbsp;</td><td colspan=" + (t + (4*t) + 6) + " style='text-align:center'>No Questions Mapped</td>";
 
                     strQ += "</tr>";
 
@@ -549,10 +540,10 @@ function fetchrfqcomprative(RFQID) {
                             }
 
                         });
-
+                       
                         if (flag3 == 'T') {
 
-                            strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td>";
+                            strQ += "<tr><td colspan='6'>" + data[0].approverStatus[p].approverName + "</td>";
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
 
                                 if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
@@ -561,17 +552,17 @@ function fetchrfqcomprative(RFQID) {
                                         if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
 
                                             if (data[0].approverStatus[s].status == 'Approved') {
-                                                strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
+                                                strQ += "<td colspan='5' style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
 
 
                                             }
                                             else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
+                                                strQ += "<td colspan='5' style='color: red!important; text-align: center;'>Not Approved</td>";
 
 
                                             }
-                                            else if (data[0].approverStatus[s].status == 'Pending') {
-                                                strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
+                                            else {
+                                                strQ += "<td colspan='5' style='color: blue!important; text-align: center;'>Pending</td>";
 
 
                                             }
@@ -582,8 +573,8 @@ function fetchrfqcomprative(RFQID) {
                             }
 
 
-                            strQ += "<td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
-
+                            strQ += "<td  id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
+                           
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
                         }
@@ -636,7 +627,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //   alert(data[0].VendorNames.length)
+            
             var str = '';
             var strHead = '';
 

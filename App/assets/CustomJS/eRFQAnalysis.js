@@ -90,7 +90,6 @@ function fetchrfqcomprative() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            console.log(data)
             var str = '';
             var strHead = '';
             var strHeadExcel = '';
@@ -154,7 +153,7 @@ function fetchrfqcomprative() {
                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
 
                 //abheedev bug 349 start
-                strHeadExcel = "<tr><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Description</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
+                strHeadExcel = "<tr><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
                 //abheedev bug 349 end
                 //abheedev bug 349 part2  start
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
@@ -188,7 +187,7 @@ function fetchrfqcomprative() {
                 strHeadExcel += "</tr>"
 
                 strHeadQ += "</tr>"
-                strHeadExcelQ += "</tr>"
+                strHeadExcelQ += "<td colspan='6'>&nbsp;</td></tr>"
 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 start
@@ -269,10 +268,9 @@ function fetchrfqcomprative() {
                     if (flag == 'T') {
 
                         minprice = 0;
-                        console.log(data)
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].rfqDescription + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -568,9 +566,9 @@ function fetchrfqcomprative() {
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
                     t = k;
                 }
-
+            
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
-                strExcel += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
+                strExcel += "<td colspan=" + (t + 2 + (6*t)) + ">&nbsp;</td></tr>";
 
                
                 if (data[0].commercialTerms.length > 0) {
@@ -595,7 +593,7 @@ function fetchrfqcomprative() {
 
                     }
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
-                    strExcel += "<td colspan=7><b>Our Requirement</b></td></tr>";
+                    strExcel += "<td colspan=8><b>Our Requirement</b></td></tr>";
 
                     $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
 
@@ -645,7 +643,7 @@ function fetchrfqcomprative() {
                                 }
                             }
                             str += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
-                            strExcel += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
+                            strExcel += "<td colspan=8>" + data[0].commercialTerms[p].requirement + "</td>";
 
                             str += " </tr>";
                             strExcel += " </tr>";
@@ -671,7 +669,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td>";
-                strExcel += "<td colspan=7>&nbsp;</td>";
+                strExcel += "<td colspan=8>&nbsp;</td>";
                 str += " </tr>";
                 strExcel += " </tr>";
 
@@ -873,7 +871,7 @@ function fetchrfqcomprative() {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-                    strExcel += "<td colspan='7'>&nbsp;</td>";
+                    strExcel += "<td colspan='8'>&nbsp;</td>";
                     strExcel += " </tr>";
                 }
 
@@ -1065,7 +1063,7 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-
+            
             if ($('#hdnRfiRfqID').val() == "0") {
                 gritternotification('Please Select RFQ properly!!!')
             }
@@ -1148,6 +1146,7 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
+           
             ReInviteVendorsForRFQ();
         }
 
@@ -1188,6 +1187,7 @@ function formvalidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
+           
             fnSendActivityToCommercial();
         }
 
@@ -1234,6 +1234,7 @@ function formvalidate() {
         },
 
         submitHandler: function (form) {
+            
             cancelBtnclick();
 
         }
@@ -1321,7 +1322,6 @@ function fnSendActivityToCommercial() {
         "Vendors": '',
         "AwardQuery": ''
     }
-    console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

@@ -56,6 +56,7 @@ var FormValidation = function () {
                 },
                 txtPhoneNo: {
                     required: true,
+                    number: true
                     
                 },
                 txtMobileNo: {
@@ -1114,7 +1115,7 @@ function fnfetchfoundVendors() {
             dataType: "json",
             success: function (data) {
                
-                clearform() //abheedev 25/11/2022
+               
                 if ($('#txtUI').val().length == "15" && $('#ddlUI').val().toLowerCase() == "servicetaxno") {
 
                     $('#divVendorForm').removeClass('hide')

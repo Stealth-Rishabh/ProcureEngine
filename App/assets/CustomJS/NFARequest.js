@@ -518,7 +518,7 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+       
             if (res.result.length > 0) {
                 setTimeout(function () {
                     GetEventRefData();
@@ -533,8 +533,8 @@ function GetOverviewmasterbyId(idx) {
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
                 //abheedev bug385 start
-                $("#txtAmountFrom").val(res.result[0].nfaAmount).toLocaleString(sessionStorage.getItem("culturecode"));
-                $("#txtBudget").val(res.result[0].nfaBudget).toLocaleString(sessionStorage.getItem("culturecode"));
+                $("#txtAmountFrom").val((res.result[0].nfaAmount).toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtBudget").val((res.result[0].nfaBudget).toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
@@ -899,6 +899,7 @@ sessionStorage.setItem("hdnNfaOverviewIdx", 0);
 $("#txtDetails").typeahead({
     source: function (query, process) {
         var data = NFAOverviewDetails;
+        
         usernames = [];
         map = {};
         var username = "";
@@ -1223,6 +1224,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function FetchMatrixApprovers() {
+    
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
     var groupId = $('#ddlPurchasegroup option:selected').val()//sessionStorage.getItem("hdnPurchaseGroupID");
@@ -1617,11 +1619,12 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-
+  
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
+      
         $("#ddlCondition").empty();
         $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No exception"));
         if (res.result != null) {

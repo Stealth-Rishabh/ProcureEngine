@@ -437,7 +437,9 @@ var FormWizard = function () {
                         }
 
                     }
+                       // abheedev bug 572
                     else if (index == 3) {
+                        debugger
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                          
                             $('.alert-danger').show();
@@ -449,7 +451,7 @@ var FormWizard = function () {
                         }
                         else if (jQuery('#fileToUpload1').val() != "") {
                             $('.alert-danger').show();
-                            $('#spandanger').html('Your file is not attached. Please do press "+" button after uploading the file.');
+                            $('#spandanger').html('Your file is not attached. Please do press "+" button after uploading the file.');                            
                             Metronic.scrollTo($(".alert-danger"), -200);
                             $('.alert-danger').fadeOut(7000);
                             return false;
@@ -997,7 +999,7 @@ function fnsaveAttachmentsquestions() {
 var rowAttach = 0;
 
 function addmoreattachments() {
-
+    
     if (jQuery("#AttachDescription1").val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Enter Attachment Description');

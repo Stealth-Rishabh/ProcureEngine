@@ -305,7 +305,7 @@ function checkfilesize(fileid) {
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
@@ -1803,7 +1803,7 @@ function StringEncodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('"', '&quot;');
     returnStr = returnStr.replaceAll("'", '&#x27;');
     returnStr = returnStr.replaceAll('/', '&#x2F;');
-    returnStr = returnStr.replaceAll('alert(', 'alert-');
+    //returnStr = returnStr.replaceAll('alert(', 'alert-');
     return returnStr;
 }
 
@@ -1814,7 +1814,7 @@ function StringDecodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('&quot;', '"');
     returnStr = returnStr.replaceAll("&#x27;", "'");
     returnStr = returnStr.replaceAll('&#x2F;', '/');
-    returnStr = returnStr.replaceAll('alert-', 'alert(');
+    //returnStr = returnStr.replaceAll('alert-', 'alert(');
     returnStr = maliciousText.replaceAll('&amp;', '&');
     return returnStr;
 }
