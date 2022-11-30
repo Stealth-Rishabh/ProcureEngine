@@ -68,14 +68,23 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger;
+    var isSubmit = true;
+    var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
-        jQuery("#errorpassword").text("Password not matched..");
-        Changepassworderror.show();
-        Changepassworderror.fadeOut(5000);
-        jQuery.unblockUI();
-        return;
+        successMsg = "Password not matched.."
+        isSubmit = false;
     }
-    else {
+    if (isSubmit) {
+        successMsg = checkPasswordValidation($("#nPassword").val());
+        if (successMsg != "SUCCESS") {
+            isSubmit = false;
+        }
+        else {
+            isSubmit = true;
+        }
+    }
+    if (isSubmit) {
         var data = {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -121,6 +130,15 @@ function ChangePassword() {
                 return false;
             }
         });
+
+
+    }
+    else {
+        jQuery("#errorpassword").text(successMsg);
+        Changepassworderror.show();
+        Changepassworderror.fadeOut(5000);
+        jQuery.unblockUI();
+        return;
     }
 
 }
@@ -200,24 +218,25 @@ function fetchDashboardData() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
-            jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
-            jQuery('#lblForwardedBidCount').text(BidData[0].bidcnt[0].forwarded)
-            jQuery('#lblAwardedBidCount').text(BidData[0].bidcnt[0].awarded)
 
-            jQuery('#lblopenRFQCount').text(BidData[0].rFxcnt[0].todayRFx)
-            jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
-            jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
-            jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+            if (BidData[0].bidcnt != "") {
+                jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
+                jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
+                jQuery('#lblForwardedBidCount').text(BidData[0].bidcnt[0].forwarded)
+                jQuery('#lblAwardedBidCount').text(BidData[0].bidcnt[0].awarded)
 
+                jQuery('#lblopenRFQCount').text(BidData[0].rFxcnt[0].todayRFx)
+                jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
+                jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
+                jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+            }
 
 
             jQuery("#UlPendingActivity").empty();
-            $('#pendingact').text("Pending Activities (" + BidData[0].pendingActivity.length + ")")
             if (BidData[0].pendingActivity.length > 0) {
-
+                $('#pendingact').text("Pending Activities (" + BidData[0].pendingActivity.length + ")")
                 for (var i = 0; i < BidData[0].pendingActivity.length; i++) {
-                    
+
                     str = "<li><a style='text-decoration:none;' href='javascript:;' onclick=fnOpenLink(\'" + BidData[0].pendingActivity[i].linkURL + "'\,\'" + BidData[0].pendingActivity[i].isPPCObserver + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
                     str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=icon" + i + "></i></div></div>";
@@ -232,37 +251,70 @@ function fetchDashboardData() {
                     str += "<span class='label-sm label-info'>" + fnConverToLocalTime(BidData[0].pendingActivity[i].receiptDt) + "</span></div></div>";
                     str += "</li>";
                     jQuery('#UlPendingActivity').append(str);
+                    switch (BidData[0].pendingActivity[i].bidTypeName) {
+                        case 'VQ':
+                            jQuery('#icon' + i).addClass('fa fa-question-circle');
+                            break;
+                        case 'VR':
+                            jQuery('#icon' + i).addClass('fa fa-question-circle');
+                            break;
+                        case 'RFI':
+                            jQuery('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'RFQ':
+                            $('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'NFA':
+                            $('#icon' + i).addClass('fa fa-edit');
+                            break;
+                        case 'eRFQ':
+                            $('#icon' + i).addClass('fa fa-envelope-o');
+                            break;
+                        case 'Forward Auction':
+                            $('#icon' + i).addClass('fa fa-forward');
+                            break;
+                        case 'Reverse Auction':
+                            $('#icon' + i).addClass('fa fa-gavel');
+                            break;
+                        case 'Coal Auction':
+                            $('#icon' + i).addClass('fa fa-fire-extinguisher');
+                            break;
+                        case 'French Auction':
+                            $('#icon' + i).addClass('fa fa-forward');
+                            break;
 
-                    if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
-                        jQuery('#icon' + i).addClass('fa fa-question-circle');
                     }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
-                        jQuery('#icon' + i).addClass('fa fa-question-circle');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
-                        jQuery('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
-                        $('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'NFA') {
-                        $('#icon' + i).addClass('fa fa-edit');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
-                        $('#icon' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
-                        $('#icon' + i).addClass('fa fa-forward');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
-                        $('#icon' + i).addClass('fa fa-gavel');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
-                        $('#icon' + i).addClass('fa fa-fire-extinguisher');
-                    }
-                    else if (BidData[0].pendingActivity[i].bidTypeName.toLowerCase() == 'french auction') {
-                        $('#icon' + i).addClass('fa fa-forward');
-                    }
+
+                    //if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
+                    //    jQuery('#icon' + i).addClass('fa fa-question-circle');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
+                    //    jQuery('#icon' + i).addClass('fa fa-question-circle');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
+                    //    jQuery('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'RFQ') {
+                    //    $('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'NFA') {
+                    //    $('#icon' + i).addClass('fa fa-edit');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'eRFQ') {
+                    //    $('#icon' + i).addClass('fa fa-envelope-o');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Forward Auction') {
+                    //    $('#icon' + i).addClass('fa fa-forward');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Reverse Auction') {
+                    //    $('#icon' + i).addClass('fa fa-gavel');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName == 'Coal Auction') {
+                    //    $('#icon' + i).addClass('fa fa-fire-extinguisher');
+                    //}
+                    //else if (BidData[0].pendingActivity[i].bidTypeName.toLowerCase() == 'french auction') {
+                    //    $('#icon' + i).addClass('fa fa-forward');
+                    //}
                 }
             }
             else {
@@ -270,84 +322,86 @@ function fetchDashboardData() {
             }
 
 
-            if (BidData[0].todayBidStatus.length >= 7) {
-                jQuery('#see_all_bids_btn').show()
+            if (BidData[0].todayBidStatus.length > 0) {
+                if (BidData[0].todayBidStatus.length >= 7) {
+                    jQuery('#see_all_bids_btn').show()
 
-                jQuery('#all_pending_bids_list').empty();
-                for (var i = 0; i < BidData[0].todayBidStatus.length; i++) {
-                    str = "<li><a href=" + BidData[0].todayBidStatus[i].linkURL + ">";
-                    str += "<div class='col1'><div class='cont'>";
-                    str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbid_all" + i + "></i></div></div>";
-                    str += "<div class='cont-col2'><div class='desc'>" + BidData[0].todayBidStatus[i].activityDescription + "&nbsp;&nbsp;";
-                    str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
-                    str += "</div></div></div></div>";
-                    str += "<div class='col2'>";
-                    //str += "<div class='date'>" + fnConverToLocalTime(BidData[0].todayBidStatus[i].bidStatus) + "</div></div>";
-                    str += "<div class='date'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
-                    str += "</a></li>";
-                    jQuery('#all_pending_bids_list').append(str);
+                    jQuery('#all_pending_bids_list').empty();
+                    for (var i = 0; i < BidData[0].todayBidStatus.length; i++) {
+                        str = "<li><a href=" + BidData[0].todayBidStatus[i].linkURL + ">";
+                        str += "<div class='col1'><div class='cont'>";
+                        str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbid_all" + i + "></i></div></div>";
+                        str += "<div class='cont-col2'><div class='desc'>" + BidData[0].todayBidStatus[i].activityDescription + "&nbsp;&nbsp;";
+                        str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
+                        str += "</div></div></div></div>";
+                        str += "<div class='col2'>";
+                        //str += "<div class='date'>" + fnConverToLocalTime(BidData[0].todayBidStatus[i].bidStatus) + "</div></div>";
+                        str += "<div class='date'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
+                        str += "</a></li>";
+                        jQuery('#all_pending_bids_list').append(str);
 
 
 
-                    if (BidData[0].todayBidStatus[i].bidTypeName == 'VQ') {
-                        jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'VR') {
-                        jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFQ') {
-                        $('#iconbid_all' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'NFA') {
-                        $('#iconbid_all' + i).addClass('fa fa-edit');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'eRFQ') {
-                        $('#iconbid_all' + i).addClass('fa fa-envelope-o');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFI') {
-                        $('#iconbid_all' + i).addClass('fa fa-envelope-o');
-                    }
+                        if (BidData[0].todayBidStatus[i].bidTypeName == 'VQ') {
+                            jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'VR') {
+                            jQuery('#iconbid_all' + i).addClass('fa fa-question-circle');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFQ') {
+                            $('#iconbid_all' + i).addClass('fa fa-envelope-o');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'NFA') {
+                            $('#iconbid_all' + i).addClass('fa fa-edit');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'eRFQ') {
+                            $('#iconbid_all' + i).addClass('fa fa-envelope-o');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'RFI') {
+                            $('#iconbid_all' + i).addClass('fa fa-envelope-o');
+                        }
 
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'Reverse Auction') {
-                        $('#iconbid_all' + i).addClass('fa fa-gavel');
-                    } else if (BidData[0].todayBidStatus[i].bidTypeName == 'Forward Auction') {
-                        $('#iconbid_all' + i).addClass('fa fa-forward');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
-                        $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
-                    }
-                    else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
-                        $('#iconbid_all' + i).addClass('fa fa-forward');
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'Reverse Auction') {
+                            $('#iconbid_all' + i).addClass('fa fa-gavel');
+                        } else if (BidData[0].todayBidStatus[i].bidTypeName == 'Forward Auction') {
+                            $('#iconbid_all' + i).addClass('fa fa-forward');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName == 'Coal Auction') {
+                            $('#iconbid_all' + i).addClass('fa fa-fire-extinguisher');
+                        }
+                        else if (BidData[0].todayBidStatus[i].bidTypeName.toLowerCase() == 'french auction') {
+                            $('#iconbid_all' + i).addClass('fa fa-forward');
+                        }
                     }
                 }
-            }
-            else {
-                jQuery('#see_all_bids_btn').css('visibility', 'hidden')
+                else {
+                    jQuery('#see_all_bids_btn').css('visibility', 'hidden')
+                }
             }
 
             jQuery("#ulList").empty();
-            $('#spanPanelCaptioncount').text("(" + BidData[0].todayBidStatus.length + ")")
-            if (BidData[0].todayBidStatus.length > 0) {
 
+            if (BidData[0].todayBidStatus.length > 0) {
+                $('#spanPanelCaptioncount').text("(" + BidData[0].todayBidStatus.length + ")")
                 for (var i = 0; i < BidData[0].todayBidStatus.length; i++) {
                     var _bidStatus = BidData[0].todayBidStatus[i].bidStatus
                     if (_bidStatus == null || _bidStatus == '') {
                         if (BidData[0].todayBidStatus[i].startDate != null || BidData[0].todayBidStatus[i].startDate != '') {
                             var StartDate = fnConverToShortDT(BidData[0].todayBidStatus[i].startDate);
-                            
+
                             //StartDate = moment(StartDate).format('DD-MMM');
                             _bidStatus = StartDate;
                         }
-                        
+
                         if (BidData[0].todayBidStatus[i].endDate != null || BidData[0].todayBidStatus[i].endDate != '') {
-                           
+
                             var EndDate = fnConverToShortDT(BidData[0].todayBidStatus[i].endDate);
-                            
+
                             //EndDate = moment(EndDate).format('DD-MMM');
                             _bidStatus = _bidStatus + '-' + EndDate;
                         }
-                       
-                           
+
+
                     }
                     str = "<li><a href='" + BidData[0].todayBidStatus[i].linkURL + "'>";
 

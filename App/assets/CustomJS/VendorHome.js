@@ -67,19 +67,36 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#nPassword").val().toLowerCase() != $("#reEnterPass").val().toLowerCase()) {
-        jQuery("#errorpassword").text("Password not matched..");
-        Changepassworderror.show();
-        Changepassworderror.fadeOut(5000);
-        jQuery.unblockUI();
-        return;
+    var isSubmit = true;
+    var successMsg = "";
+    if ($("#nPassword").val() != $("#reEnterPass").val()) {
+        successMsg = "Password not matched.."
+        isSubmit = false;
     }
-    else {
+    if (isSubmit) {
+        successMsg = checkPasswordValidation($("#nPassword").val());
+        if (successMsg != "SUCCESS") {
+            isSubmit = false;
+        }
+        else {
+            isSubmit = true;
+        }
+    }
+    //var custID = 0;
+    //if ($("#nPassword").val().toLowerCase() != $("#reEnterPass").val().toLowerCase()) {
+    //    jQuery("#errorpassword").text("Password not matched..");
+    //    Changepassworderror.show();
+    //    Changepassworderror.fadeOut(5000);
+    //    jQuery.unblockUI();
+    //    return;
+    //}
+    if (isSubmit) {
         var data = {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
             "NewPassword": $("#nPassword").val(),
-            "UserType": sessionStorage.getItem("UserType"),
+            //"UserType": sessionStorage.getItem("UserType"),
+            "UserType": 'V',
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
 
@@ -121,6 +138,13 @@ function ChangePassword() {
                 return false;
             }
         });
+    }
+    else {
+        jQuery("#errorpassword").text(successMsg);
+        Changepassworderror.show();
+        Changepassworderror.fadeOut(5000);
+        jQuery.unblockUI();
+        return;
     }
 
 }
@@ -1210,9 +1234,10 @@ function multilingualLanguage() {
     };
     jQuery(function () {
         $.i18n().load({
-            'en': 'jquery.i18n/language/en/translation.json', // Messages for english
-            'fr': 'jquery.i18n/language/fr/translation.json' // message for french
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
         }).done(function () {
+            $('body').i18n();
             set_locale_to(url('?locale'));
            
             $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")

@@ -1,266 +1,40 @@
-﻿var param = getUrlVars()["param"]
-var decryptedstring = fndecrypt(param)
-var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+﻿
+var vendorid = 0;
+var PPCID = 0;
+$(document).ready(function () {
 
-var RFQSubject = '';
-$('.maxlength').maxlength({
-    limitReachedClass: "label label-danger",
-    alwaysShow: true
+
+    var path = window.location.pathname;
+    page = path.split("/").pop();
+
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        PPCID = getUrlVarsURL(decryptedstring)["PPCID"]
+
+        //IsApp = getUrlVarsURL(decryptedstring)["App"]
+        //FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"]
+        //AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
+        jQuery("#divRemarksAppComm").show();
+
+        //if (IsApp == 'N' && FwdTo != 'Admin') {
+
+
+        //}
+
+        fetchPPCApproverDetails();
+    }
+    else {
+        jQuery('#btnsubmit').text("Submit");
+    }
+
 });
-
-function fetchReguestforQuotationDetails() {
-    
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (RFQData) {
-
-            $('#tblvendors > tbody').empty();
-            $('#tblvendors > thead').empty();
-            if (RFQData.length > 0) {
-                jQuery('#lblenquirysubject').text(RFQData[0].general[0].rfqSubject)
-                jQuery('#RFQConfigueron').html(RFQData[0].general[0].rfqConfigureDate)
-                RFQSubject = RFQData[0].general[0].rfqSubject;
-
-                if (RFQData[0].vendors.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
-                    for (i = 0; i < RFQData[0].vendors.length; i++) {
-                        $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-
-                        $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-
-
-
-                        $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
-                        $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
-                        $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + '  checked />No</label></div>')
-                        $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
-                        $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
-                    }
-                    $('#tblvendors').append("<tr><td colspan=5></td><td><span class='help-block'><b>Note*</b><br>Y - IF TPI ALREADY DONE</br> N - TPI WILL BE DONE WHILE PLACING THE ORDER WITH FINAL VENDOR</br>Not Applicable - TPI not required</span></td></tr>")
-                    $('#tblvendors').append("</tbody>");
-                }
-
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-    });
-
-}
-
-var form = $('#frmIntroduction');
-var error = $('.alert-danger');
-var success = $('.alert-success');
-var BiddingVendorQuery = [];
-function formvalidate() {
-    
-    form.validate({
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
-        rules: {
-
-            //txtrfirfqsubject: {
-            //    required: true
-            //}
-
-        },
-
-        messages: {
-
-        },
-        invalidHandler: function (event, validator) {
-
-        },
-
-        highlight: function (element) {
-            $(element).closest('.form-group').addClass('has-error');
-
-        },
-        unhighlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-error');
-
-        },
-
-        success: function (label) {
-        },
-        submitHandler: function (form) {
-            frmAzurePPCForm();
-        }
-
-    });
-
-}
-function frmAzurePPCForm() {
-
-    var i = 0;
-    //var BiddingVendorQuery = '';
-    var AzurevendorDetails = [];
-    $("#tblvendors> tbody > tr").not(':last').each(function (index) {
-        // BiddingVendorQuery = BiddingVendorQuery + $(this).find("td").eq(0).html() + '~' + $("input[name=OpQuotation" + index + "]:checked").val() + '~' + $("input[name=OpTechAccep" + index + "]:checked").val() + '#';
-        var details = {
-            "VendorID": parseInt($(this).find("td").eq(0).html()),
-            "QuotationReceived": $("input[name=OpQuotation" + index + "]:checked").val(),
-            "TexhnicallyAcceptable": $("input[name=OpTechAccep" + index + "]:checked").val(),
-            "PoliticallyExposed": $("input[name=politicalyexp" + index + "]:checked").val(),
-            "QuotedValidatedSCM": $("input[name=QuotedSCM" + index + "]:checked").val(),
-            "TPI": $("input[name=TPI" + index + "]:checked").val()
-        };
-        AzurevendorDetails.push(details)
-    });
-
-    var EnquiryIssuedthrogh = $("input[name='optionenquiryissued']:checked").val();
-    var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
-    var repeatorder = $("input[name='repeatorder']:checked").val();
-    var Data = {
-        "PPCID": parseInt($('#hdnPPCID').val()),
-        "RFQID": parseInt(RFQID),
-        "BidID": 0,
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "Introduction": jQuery('#txtintroduction').val(),
-        "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
-        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(),
-        "Workordergiven": jQuery('#txtpartordergiven').val(),
-        "Completionsechdule": jQuery('#txtcompletionsechdule').val(),
-        "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
-        "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
-        "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
-        "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
-        "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
-        "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
-        "EnquiryIssuedOn": jQuery('#RFQConfigueron').text(),
-        "EnquiryIssuedthrogh": EnquiryIssuedthrogh,
-        "RecomOrderLowPriceOffer": LowestPriceOffer,
-        "RecomRepeatOrder": repeatorder,
-        "RecomSuppEnclosure": jQuery('#txtsupportedenclosure').val(),
-        "RecomCompFinalPrice": jQuery('#tctcomfinalprice').val(),
-        "RecomQuotationofParties": jQuery('#txtquotationparties').val(),
-        "WorkOrderRecomParty": jQuery('#txtorderrecparty').val(),
-        "PurchaseOrder": jQuery('#txtworkordervalue').val(),
-        "InternalCostestimate": jQuery('#txtinternalcost').val(),
-        "Terms": jQuery('#txtterms').val(),
-        "Scopeofwork": jQuery('#txtscopework').val(),
-        "Deliverables": jQuery('#txtdeliverables').val(),
-        "Paymentterms": jQuery('#txtpaymentterms').val(),
-        "ApplicableTaxduty": jQuery('#txtapplicabletax').val(),
-        "WhetherLDApplicable": jQuery('#txtLDapplicable').val(),
-        "WhetherCPBGApplicable": jQuery('#txtCPBGapplicable').val(),
-        "PRDetails": jQuery('#txtPRdetails').val(),
-        "EnteredBy": sessionStorage.getItem("UserID"),
-        "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
-
-    };
-    //alert(JSON.stringify(Data))
-    //console.log(JSON.stringify(Data))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(Data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-
-            if (data == '1') {
-                $('#spansuccess1').html("PPC Form Saved Successfully...");
-                success.show();
-                success.fadeOut(5000);
-                App.scrollTo(success, -200);
-                bootbox.dialog({
-                    message: "PPC Form submitted Successfully..",
-                    buttons: {
-                        confirm: {
-                            label: "Yes",
-                            className: "btn-success",
-                            callback: function () {
-
-                                if ($('#hdnPPCID').val() == "0") {
-                                    // fnSendActivitytoCommercialForPPCApp();
-                                    var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + RFQSubject)
-                                    var encrypdataAp = fnencrypt("RFQID=" + RFQID + '&AppType=E')
-                                    setTimeout(function () {
-                                        window.location = "AzeRFQAnalysis.html?param=" + encrypdataAZ;
-                                    }, 1000)
-                                }
-                                else {
-                                    window.location = "eRFQAzPPCApproval.html?param=" + encrypdataAp
-                                }
-                            }
-                        }
-
-                    }
-                });
-
-            }
-            else if (data == '2') {
-                $('#spansuccess1').html("Data Updated Successfull...");
-                success.show();
-                success.fadeOut(5000);
-                App.scrollTo(success, -200);
-                bootbox.dialog({
-                    message: "PPC Form Updated Successfully..",
-                    buttons: {
-                        confirm: {
-                            label: "Yes",
-                            className: "btn-success",
-                            callback: function () {
-
-                                window.close();
-
-                            }
-                        }
-
-                    }
-                });
-
-            }
-            else {
-                jQuery("#spandanger").text("Data Already Exists...");
-                error.show();
-                error.fadeOut(5000)
-            }
-
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-
-    });
-}
-
-function fetchAzPPcFormDetails() {
+function fetchPPCApproverDetails() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID + "&BidID=0",
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + PPCID + "&BidID=-1",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -273,6 +47,7 @@ function fetchAzPPcFormDetails() {
                 //$('#tblvendors > thead').empty();
                 jQuery('#btnsubmit').text("Update");
                 jQuery('#txtintroduction').val(data[0].azureDetails[0].introduction)
+                jQuery('#txtsubject').val(data[0].azureDetails[0].enquirySubject)
                 jQuery('#txtcostbenefit').val(data[0].azureDetails[0].costBenefitAnalysis)
                 $('#hdnPPCID').val(data[0].azureDetails[0].ppcid)
                 jQuery('#txtbudgetavailbilty').val(data[0].azureDetails[0].budgetavailabilty);
@@ -284,8 +59,14 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtgemeralremarks').val(data[0].azureDetails[0].generalRemarks);
                 jQuery('#txtrationalrfqvendor').val(data[0].azureDetails[0].issuingRFQtoVendor);
                 jQuery('#txtenquirynotsent').val(data[0].azureDetails[0].enquirynotsentvendors);
+                jQuery('#txtAmountFrom').val(data[0].azureDetails[0].nfaAmount);
+                jQuery('#txtBudget').val(data[0].azureDetails[0].nfaBudget);
+                jQuery('#dropCurrency').val(data[0].azureDetails[0].nfaCurrency);
+                jQuery('#ddlBudget').val(data[0].azureDetails[0].budgetStatus);
+                jQuery('#ddlPurchaseOrg').val(data[0].azureDetails[0].purchaseOrg);
+                jQuery('#ddlPurchasegroup').val(data[0].azureDetails[0].purchaseGroup);
 
-                jQuery('#RFQConfigueron').val(data[0].azureDetails[0].enquiryIssuedOn);
+                jQuery('#txtenquiryissuedon').val(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
 
                 // alert(data[0].AzureDetails[0].EnquiryIssuedthrogh)
                 if (data[0].azureDetails[0].recomOrderLowPriceOffer == "Y") {
@@ -356,15 +137,20 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtPRdetails').val(data[0].azureDetails[0].prDetails);
 
                 if (data[0].biddingVendor.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
+                    //$('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-                        $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y"  id=OpQuotationY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N" id=OpQuotationN' + i + ' />No</label></div>')
-                        $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y" id=OpTechAccepY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  id=OpTechAccepN' + i + ' />No</label></div>')
-                        $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' />No</label></div>')
-                        $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
-                        $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
-
+                        if (i > 0) {
+                            addvendor();
+                        }
+                        $('#vendoridrow' + i).text(data[0].biddingVendor[i].vendorID)
+                        $('#vendorSearch' + i).val(data[0].biddingVendor[i].vendorName)
+                        /* $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
+                         $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y"  id=OpQuotationY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N" id=OpQuotationN' + i + ' />No</label></div>')
+                         $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y" id=OpTechAccepY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  id=OpTechAccepN' + i + ' />No</label></div>')
+                         $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' />No</label></div>')
+                         $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+                         $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
+                         */
                         if (data[0].biddingVendor[i].quotationReceived == "Y") {
                             $("#OpQuotationY" + i).attr("checked", "checked");
                             $("#OpQuotationN" + i).removeAttr("checked");
@@ -453,46 +239,453 @@ function fetchAzPPcFormDetails() {
 
     })
 }
-function DownloadFilePPC(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + RFQID + '/PPC');
-}
-function fnSendActivitytoCommercialForPPCApp() {
-    var Data = {
-        "ApproverType": "C",
-        "RFQID": parseInt(RFQID),
-        "CreatedBy": sessionStorage.getItem('UserID'),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "Type": "SendActivityToCommForPPC",
-        "IsApproverObserver": '',
-        "PPCApprovers": ''
-    }
-    //alert(JSON.stringify(Data))
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(Data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            return;
+function fetchVendorAutoComplete(index) {
+    var returnitem = '';
+    $('#vendoridrow' + index).text('0');
+    jQuery(".vendorsearch").typeahead({
+        source: function (query, process) {
+
+            var data = allvendorsforautocomplete;
+            var vName = '';
+            usernames = [];
+            map = {};
+            var username = "";
+            jQuery.each(data, function (i, username) {
+                vName = username.participantName + ' (' + username.companyEmail + ')'
+                map[vName] = username;
+                usernames.push(vName);
+            });
+            process(usernames);
+
         },
+        minLength: 2,
+        updater: function (item) {
+            var status = "true";
+            if (map[item].participantID != "0") {
+                vendorid = map[item].participantID
+                var arr = $("#tblvendorlist >tbody>tr");
+                $.each(arr, function (i, item) {
+                    var currIndex = $("#tblvendorlist >tbody>tr").eq(i);
 
-        error: function (xhr, status, error) {
+                    var matchText = currIndex.find("td:eq(1)").text();
+                    $(this).nextAll().each(function (i, inItem) {
+                        if (matchText == vendorid) {
+                            status = 'false';
+                            return false;
+                        }
+                    });
+                });
 
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                if (status == 'false') {
+                    $('#vendoridrow' + index).text('0')
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Vendor is already added.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    //$('#vendorSearch' + index).typeahead('val', '')
+                    vendorid = 0;
+
+                }
+                else {
+                    $('#vendoridrow' + index).text(vendorid)
+                    returnitem = item;
+                }
+
             }
             else {
-                fnErrorMessageText('spandanger', '');
+                $('#vendoridrow' + index).text('0')
+                gritternotification('Please select Vendor!!!');
+
             }
-            jQuery.unblockUI();
-            return false;
+
+
+            return returnitem;
         }
-    })
+    });
 }
 
-//**** Add Attachments will do correct after first publishment on AZure
+$("#tablevendor").hide()
+$('.maxlength').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
+
+var form = $('#frmIntroduction');
+var error = $('.alert-danger');
+var success = $('.alert-success');
+jQuery.validator.addMethod(
+    "notEqualTo",
+    function (elementValue, element, param) {
+        return elementValue != param;
+    },
+    //"Value cannot be {0}"
+    "This field is required."
+);
+
+function formvalidate() {
+    form.validate({
+
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+
+            txtsubject: {
+                required: true
+            },
+            txtAmountFrom: {
+                required: true,
+                number: true
+            },
+            txtBudget: {
+                number: true
+            },
+            txtenquiryissuedon: {
+                required: true
+            }
+        },
+        messages: {
+
+        },
+        errorPlacement: function (error, element) {
+            //$("#btncal").css("margin-top", "-22px");
+        },
+        invalidHandler: function (event, validator) {
+            window.scrollTo(0, 0);
+            error.show()
+            $('#spandanger').text("Please fill Highlighted fields.")
+            error.fadeOut(5000);
+
+        },
+
+        highlight: function (element) {
+            $(element).closest('.form-group').addClass('has-error');
+            //$(element).focus();
+        },
+        unhighlight: function (element) {
+
+            $(element).closest('.form-group').removeClass('has-error');
+
+            //element.remove()
+
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            //frmApprovalPPCForm();
+            BindApprovers();
+        }
+
+    });
+
+}
+function addvendor() {
+
+
+    var num = 0;
+    var maxinum = -1, i = 0;
+    $("#tblvendorlist tr:gt(0)").each(function () {
+        var this_row = $(this);
+        num = (this_row.closest('tr').attr('id')).substring(3, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
+
+    $('#tblvendorlist').append("<tr id=row" + i + "><td><button class='btn green-haze btn-sm' id=addBtn" + i + " type='button' onclick='addvendor()'><i class='fa fa-plus'></i></button><button type='button' id=btnvendordelete" + i + " class='btn btn-sm btn-danger' onclick='deleteLFrow(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td><td class=hide id=vendoridrow" + i + ">" + vendorid + "</td><td width='20%' id=vendorname" + i + " class=form-group ><input type='text' autocomplete='off' class='form-control vendorsearch' placeholder='Search Vendor Name' id=vendorSearch" + i + " name=vendorSearch" + i + "  onkeyup='fnclearcss(" + i + ")' /></td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
+    $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
+    $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
+    $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + '  checked />No</label></div>')
+    $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+    $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
+    fetchVendorAutoComplete(i);
+    if (i == 0) {
+        $('#btnvendordelete' + i).hide()
+    }
+    else {
+        $('#btnvendordelete' + i).show()
+    }
+    form.validate()
+    $('#vendorSearch' + i).rules('add', {
+        required: true,
+        notEqualTo: 0
+    });
+
+
+
+}
+function fnclearcss(index) {
+    $('#vendorSearch' + index).css("border", "1px solid #e5e5e5");
+}
+
+function deleteLFrow(rowid) {
+
+    $('#row' + rowid).remove();
+
+}
+
+function BindApprovers() {
+
+    var amount = removeThousandSeperator($("#txtAmountFrom").val());
+    var budget = 0;
+    if ($("#txtBudget").val() != '') {
+        _budget = $("#txtBudget").val();
+    }
+    budget = removeThousandSeperator(_budget);
+    var budgetType = $("#ddlBudget option:selected").val();
+    var orgid = parseInt($('#ddlPurchaseOrg option:selected').val());
+    var groupId = parseInt($('#ddlPurchasegroup option:selected').val());
+    var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + groupId + "&orgid=" + orgid + "&conId=0&budgetType=" + budgetType + "&NFAID=0";
+
+    var GetData = callajaxReturnSuccess(url, "Get", {});
+    GetData.success(function (res) {
+        // $("#tblApproversPrev").empty();
+        if (res.result != null) {
+            debugger;
+            if (res.result.length > 0) {
+                $("#errorApproverdivSeq").hide();
+                //  $("#tblApproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:5%!important'>Sequence</th></tr></thead>");
+                //$.each(res.result, function (key, value) {
+                //  $("#tblApproversPrev").append('<tr id=trNfaApprover' + value.idx + '><td>' + value.approverName + '</td><td>' + value.emailId + "<td>" + value.seq + "</td>" + '</td><td class=hide>' + value.idx + '</td></tr>');
+
+                //});
+                ApproverCtr = 1;
+                frmApprovalPPCForm(res.result[0].nfaAppGroupID);
+            }
+            else {
+                ApproverCtr = 0;
+                bootbox.alert("No Approver(s) find for selected Apprval matrix(BudgetType: " + $("#ddlBudget option:selected").text() + ", Amount: " + $("#txtAmountFrom").val() + ", Org: " + $("#ddlPurchaseOrg option:selected").text() + ", Group: " + $("#ddlPurchasegroup option:selected").text())
+
+            }
+        }
+    });
+    GetData.error(function (res) {
+        ApproverCtr = 0;
+        jQuery.unblockUI();
+    });
+
+}
+
+
+
+function frmApprovalPPCForm(nfagroupid) {
+
+    var validVendor = "T";
+    var AzurevendorDetails = [];
+    $("#tblvendorlist >tbody> tr").each(function (index) {
+        var this_row = $(this);
+        index = (this_row.closest('tr').attr('id')).substring(3, (this_row.closest('tr').attr('id')).length)
+
+        if ($("#vendoridrow" + index).text() == "0" || $("#vendoridrow" + index).text() == "") {
+
+            $('#vendorSearch' + index).removeClass('has-success')
+            $('#vendorSearch' + index).css("border", "1px solid red")
+            $('#spandanger').text('Please Select Vendor Properly.');
+            $('.alert-danger').show();
+            Metronic.scrollTo(error, -600);
+            $('.alert-danger').fadeOut(5000);
+            validVendor = "F";
+            return false;
+
+        }
+        else {
+
+            var details = {
+                "VendorID": parseInt($("#vendoridrow" + index).text()),
+                "QuotationReceived": $("input[name=OpQuotation" + index + "]:checked").val(),
+                "TexhnicallyAcceptable": $("input[name=OpTechAccep" + index + "]:checked").val(),
+                "PoliticallyExposed": $("input[name=politicalyexp" + index + "]:checked").val(),
+                "QuotedValidatedSCM": $("input[name=QuotedSCM" + index + "]:checked").val(),
+                "TPI": $("input[name=TPI" + index + "]:checked").val()
+
+            };
+            AzurevendorDetails.push(details)
+        }
+
+    });
+
+    if (validVendor == "T") {
+
+        var EnquiryIssuedthrogh = $("input[name='optionenquiryissued']:checked").val();
+        var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
+        var repeatorder = $("input[name='repeatorder']:checked").val();
+        var Enquiryissuedon = new Date();
+        if ($('#txtenquiryissuedon').val() != null && $('#txtenquiryissuedon').val() != "") {
+            Enquiryissuedon = new Date($('#txtenquiryissuedon').val().replace('-', ''));
+
+        }
+
+        var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
+        var _budget = 0;
+        if ($("#txtBudget").val() != '') {
+            _budget = $("#txtBudget").val();
+        }
+        var p_Budget = removeThousandSeperator(_budget);
+        var p_category = $("#ddlCategory option:selected").val();
+        var p_currency = $("#dropCurrency option:selected").val();
+        var budgetStatus = $("#ddlBudget option:selected").val();
+
+        var Data = {
+            "PPCID": PPCID,
+            "RFQID": 0,
+            "BidID": 0,
+            "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+            "EnquirySubject": jQuery('#txtsubject').val(),
+            "Introduction": jQuery('#txtintroduction').val(),
+            "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
+            "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(),
+            "Workordergiven": jQuery('#txtpartordergiven').val(),
+            "Completionsechdule": jQuery('#txtcompletionsechdule').val(),
+            "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
+            "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
+            "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
+            "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
+            "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
+            "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
+            "EnquiryIssuedOn": Enquiryissuedon,
+            "EnquiryIssuedthrogh": EnquiryIssuedthrogh,
+            "RecomOrderLowPriceOffer": LowestPriceOffer,
+            "RecomRepeatOrder": repeatorder,
+            "RecomSuppEnclosure": jQuery('#txtsupportedenclosure').val(),
+            "RecomCompFinalPrice": jQuery('#tctcomfinalprice').val(),
+            "RecomQuotationofParties": jQuery('#txtquotationparties').val(),
+            "WorkOrderRecomParty": jQuery('#txtorderrecparty').val(),
+            "PurchaseOrder": jQuery('#txtworkordervalue').val(),
+            "InternalCostestimate": jQuery('#txtinternalcost').val(),
+            "Terms": jQuery('#txtterms').val(),
+            "Scopeofwork": jQuery('#txtscopework').val(),
+            "Deliverables": jQuery('#txtdeliverables').val(),
+            "Paymentterms": jQuery('#txtpaymentterms').val(),
+            "ApplicableTaxduty": jQuery('#txtapplicabletax').val(),
+            "WhetherLDApplicable": jQuery('#txtLDapplicable').val(),
+            "WhetherCPBGApplicable": jQuery('#txtCPBGapplicable').val(),
+            "PRDetails": jQuery('#txtPRdetails').val(),
+            "EnteredBy": sessionStorage.getItem("UserID"),
+            "BiddingVendorDetails": AzurevendorDetails,
+            "PurchaseOrg": parseInt($('#ddlPurchaseOrg option:selected').val()),
+            "PurchaseGroup": parseInt($('#ddlPurchasegroup option:selected').val()),
+            "conditionID": 0,
+            "BudgetStatus": budgetStatus,
+            "NfaAmount": parseFloat(p_amount),
+            "NfaBudget": parseFloat(p_Budget),
+            "NfaCurrency": p_currency,
+            "NFAAppGroupID": nfagroupid
+        };
+
+        console.log(JSON.stringify(Data))
+        jQuery.ajax({
+            url: sessionStorage.getItem("APIPath") + "Azure/insPPCnew/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            type: "POST",
+            data: JSON.stringify(Data),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (parseInt(data) > 1 && parseInt(data) != 2) {
+                    $('#spansuccess1').html("PPC Form Saved Successfully...");
+
+                    bootbox.dialog({
+                        message: "PPC Form submitted Successfully..",
+                        buttons: {
+                            confirm: {
+                                label: "Yes",
+                                className: "btn-success",
+                                callback: function () {
+                                    window.location = "index.html";
+                                    //if ($('#hdnPPCID').val() == "0") {
+
+                                    //    var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + "")
+                                    //    var encrypdataAp = fnencrypt("RFQID=" + RFQID + '&AppType=E')
+                                    //    setTimeout(function () {
+                                    //        window.location = "ApprovalPPCForm.html?param=" + encrypdataAZ;
+                                    //    }, 1000)
+                                    //}
+                                    //else {
+                                    //    window.location = "eRFQAzPPCApproval.html?param=" + encrypdataAp
+                                    //}
+                                }
+                            }
+
+                        }
+                    });
+
+                }
+
+
+
+                jQuery.unblockUI();
+            },
+            error: function (xhr, status, error) {
+                window.scrollTo(0, 0);
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+
+        });
+    }
+}
+var orgData = [];
+function BindPurchaseOrg() {
+
+
+    var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
+    var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
+    GetNFAPARAM.success(function (res) {
+
+        $("#ddlModelOrg,#ddlPurchaseOrg").empty();
+        $('#ddlModelOrg').append('<option value="0">Select</option>');
+        if (res.result.length > 0) {
+
+            $.each(res.result, function (key, value) {
+                $('#ddlModelOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
+                $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
+
+            });
+            setTimeout(function () {
+                bindPurchaseGroupDDL();
+            }, 500);
+        }
+
+    });
+    GetNFAPARAM.error(function (error) {
+        console.log(error);
+
+    });
+
+
+};
+function bindPurchaseGroupDDL() {
+    var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
+
+    var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
+    GetNFAPARAM.success(function (res) {
+
+        if (res.result.length > 0) {
+
+            $("#ddlPurchasegroup").empty();
+            if (res.result.length > 0) {
+                $.each(res.result, function (key, value) {
+                    $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
+                });
+            }
+
+        }
+    });
+    GetNFAPARAM.error(function (error) {
+        console.log(error);
+    });
+
+};
 function addmoreattachments() {
     if (jQuery('#file1').val() == "") {
         $('.alert-danger').show();
@@ -654,16 +847,44 @@ function fnRemoveAttachment(POID, deletionfor) {
         }
     })
 }
+function FetchCurrency(CurrencyID) {
 
-$("txtSearch").typeahead({
-    hint: true,
-    highlight: true,
-    minLength: 1
-},
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
 
-    {
-        name: 'allvendorsforautocomplete'
-      
-    }
-)
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchCurrency/?CurrencyID=" + CurrencyID + "&excludeStatus=N",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
 
+        cache: false,
+
+        dataType: "json",
+
+        success: function (data) {
+
+            jQuery("#dropCurrency").empty();
+            jQuery("#dropCurrency").append(jQuery("<option ></option>").val("").html("Select"));
+
+            for (var i = 0; i < data.length; i++) {
+
+                jQuery("#dropCurrency").append(jQuery("<option></option>").val(data[i].currencyId).html(data[i].currencyNm));
+
+            }
+
+            $("#dropCurrency").val(DefaultCurrency);
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText// eval("(" + + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+
+        }
+
+    });
+
+}

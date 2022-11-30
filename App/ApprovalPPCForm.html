@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta content="Cache-Control: no-cache, no-store, must-revalidate" />; <!--abheedev for cache-->
     <meta content="" name="description" />
     <meta content="" name="author" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
@@ -36,6 +35,41 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+
+
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
     <div class="page-header navbar navbar-fixed-top">
@@ -121,23 +155,98 @@
                                         </div>
 
                                         <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3"><b>Enquiry Subject<span class="required"> *</span></b></label>
+                                                    <div class="col-md-9">
+                                                        <textarea id="txtsubject" name="txtsubject" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="100" rows="1" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Enquiry subject"></textarea>
 
-                                                    <label class="control-label col-md-2" style="text-align:left;padding-left:40px!important"><b>Enquiry Subject:</b></label>
-                                                    <div class="col-md-10">
-                                                        <label class="control-label" id="lblenquirysubject" style="text-align:right;"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Amount <span class="required"> *</span></label>
+                                                    <div class="col-md-9">
+                                                        <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control maxlength" maxlength="18" onkeyup="localecommaseperator(this)" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Budget
+                                                    </label>
+                                                    <div class="col-md-2">
+                                                        <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control maxlength" maxlength="18" onkeyup="localecommaseperator(this)" /><!--onkeyup="localecommaseperator(this)"-->
+                                                    </div>
 
-                                                    <label class="control-label col-md-10" style="text-align:left;padding-left:40px!important"><b>SCM-FR-019 Rev Dt:16/12/21 Rev 01</b></label>
+                                                    <div class="col-md-2">
+                                                        <select id="dropCurrency" name="dropCurrency" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                    <label class="control-label col-md-2">Budget Status</label>
+
+                                                    <div class="col-md-3">
+                                                        <select id="ddlBudget" name="ddlBudget" class="form-control" disabled>
+                                                            <option value="WB">Within Budget</option>
+                                                            <option value="OB">Outside Budget</option>
+                                                            <option value="NB" selected>Not Budgeted</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+
+                                                    <label class="col-md-3 control-label">
+                                                        Purchase Org.<span class="required"> *</span>
+                                                    </label>
+                                                    <div class="col-md-9">
+                                                        <select id="ddlPurchaseOrg" name="ddlPurchaseOrg" onchange="bindPurchaseGroupDDL()" class="form-control"></select>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+
+                                                    <label class="col-md-3 control-label">
+                                                        Purchase Group.<span class="required"> *</span>
+                                                    </label>
+
+                                                    <div class="col-md-8">
+                                                        <select id="ddlPurchasegroup" name="ddlPurchasegroup" class="form-control text-left">
+                                                            <option value="0">Select</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1 hide">
+                                                        <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" style="cursor:pointer" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to
+                                                                                  View All Matrix">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </div>
+
 
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -287,7 +396,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">Enquiry Issued on :</label>
                                                     <div class="input-group date form_datetime form_datetime bs-datetime ">
-                                                        <input type="text" size="16" class="form-control" id="RFQConfigueron" name="txtstartdatettime" placeholder="If required" autocomplete="off" readonly>
+                                                        <input type="text" size="16" class="form-control" id="txtenquiryissuedon" name="txtenquiryissuedon" placeholder="" autocomplete="off" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default date-set" type="button" id="btncal">
                                                                 <i class="fa fa-calendar"></i>
@@ -321,311 +430,366 @@
 
 
                                             <div class="col-md-12">
-                                                <div class="col-md-6">
-                                                    <div class="row">
+                                                <div class="col-md-12">
 
-                                                        <div class="col-md-8">
-                                                            <input type="text" autocomplete="off" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
-                                                        </div>
-
-                                                    </div>
+                                                    <br /><br />
                                                     <!--#a1b2bd-->
-                                                    <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
-                                                            <thead class="flip-content">
-                                                                <tr width="50%">
-                                                                    <th width="20%">
-                                                                        <div class="col-md-8 checkbox-list">
-                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
-                                                                                <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
-                                                                            </label>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th width="100%">
-                                                                        Vendors
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody></tbody>
-                                                        </table>
-                                                    </div>
+                                                    <div id="divvendorlist">
 
-                                                </div>
-
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="col-md-6">
-                                                    <input type="hidden" id="hdnweightageIndex" value="0" />
-                                                    <div class="table-scrollable">
-                                                        <table id="selectedvendorlists" class="table table-bordered display-none">
+                                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Vendors</th>
-                                                                    <th>Actions</th>
+                                                                    <th></th>
+                                                                    <th>
+
+                                                                        Enquiry Issued to
+
+                                                                    </th>
+                                                                    <th>
+                                                                        Quotation recieved
+                                                                    </th>
+                                                                    <th>
+                                                                        Technically Acceptable
+                                                                    </th>
+                                                                    <th>
+                                                                        Politically Exposed Person
+                                                                    </th>
+                                                                    <th>
+                                                                        Quote Validated By SCM
+                                                                    </th>
+                                                                    <th>
+                                                                        TPI
+                                                                    </th>
                                                                 </tr>
                                                             </thead>
+
+
+
+
                                                         </table>
                                                     </div>
                                                 </div>
+
                                             </div>
+
+
+
+
                                         </div>
 
 
-                                    </div>
 
 
-                                    <!--/row-->
-                                    <h3 class="form-section">Recommendation</h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Lowest Price Offer</label>
-                                                <div class="col-md-9">
-                                                    <div class="radio-list">
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="LowestPriceOffer" value="Y" id="LowestPriceOfferY" /> Yes
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="LowestPriceOffer" value="N" id="LowestPriceOfferN" checked />No
-                                                        </label>
+
+                                        <!--/row-->
+                                        <h3 class="form-section">Recommendation</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Lowest Price Offer</label>
+                                                    <div class="col-md-9">
+                                                        <div class="radio-list">
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="LowestPriceOffer" value="Y" id="LowestPriceOfferY" /> Yes
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="LowestPriceOffer" value="N" id="LowestPriceOfferN" checked />No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Repeat Order</label>
+                                                    <div class="col-md-9">
+                                                        <div class="radio-list">
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="repeatorder" id="repeatorderY" value="Y" /> Yes
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="repeatorder" id="repeatorderN" value="N" checked />No
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Repeat Order</label>
-                                                <div class="col-md-9">
-                                                    <div class="radio-list">
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="repeatorder" id="repeatorderY" value="Y" /> Yes
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="repeatorder" id="repeatorderN" value="N" checked />No
-                                                        </label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Supported enclosure(Please specify):</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtsupportedenclosure" name="txtsupportedenclosure" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Supported enclosure"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Comparatives statement of final  price</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="tctcomfinalprice" name="tctcomfinalprice" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Comparatives statement of final  price"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Quotations of the parties:</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtquotationparties" name="txtquotationparties" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Quotations of the parties"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <h3 class="form-section">Purchase Order/Work Order Details</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Order recommended on (Party):</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtorderrecparty" name="txtorderrecparty" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Order recommended on (Party)"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Purchase Order/Work Order Value </label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtworkordervalue" name="txtworkordervalue" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Purchase Order/Work Order Value"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Internal Cost Estimate:</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtinternalcost" name="txtinternalcost" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Internal Cost Estimate"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Terms (Ex- works/ FOR/ FOB/ CIF) </label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtterms" name="txtterms" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Terms (Ex- works/ FOR/ FOB/ CIF)"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Scope of Work	:</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtscopework" name="txtscopework" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Scope of Work"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Deliverables : </label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtdeliverables" name="txtdeliverables" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Deliverables"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 ">Payment terms	:</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtpaymentterms" name="txtpaymentterms" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Payment terms"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Applicable taxes & duties and their applicability </label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtapplicabletax" name="txtapplicabletax" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Applicable taxes & duties and their applicability"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Whether LD applicable :</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtLDapplicable" name="txtLDapplicable" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether LD applicable"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Whether CPBG applicable</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtCPBGapplicable" name="txtCPBGapplicable" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether CPBG applicable"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">PR Details :</label>
+                                                    <div class="col-md-9">
+
+                                                        <textarea id="txtPRdetails" name="txtPRdetails" class="maxlength wysihtml5 form-control"
+                                                                  maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="PR Details"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6 hide">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Attachments:</label>
+
+                                                    <div class="col-md-9">
+                                                        <span class="btn blue"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
+
+                                                        <button type="button" id="Addbtn1" onclick="addmoreattachments()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                &nbsp;
+
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="divRemarksAppComm" class="col-md-12 row" style="display: none;">
+
+                                                <div class="col-md-12" id="frmdivremarksapprover">
+                                                    <div id="entryForm" class="portlet-body form">
+                                                        <div class="form-body">
+                                                            <div class="alert alert-success" id="successdiv" style="display: none">
+                                                                <span id="success">Transaction Successfull..</span>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="Input-group">
+                                                                    <label class="col-md-4 control-label">
+                                                                        Action
+                                                                    </label>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control" id="ddlActionType" name="ddlActionType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="Approved">Approved</option>
+                                                                            <option value="Revert">Revert</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="Input-group">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4 control-label">
+                                                                        Remarks
+                                                                    </label>
+                                                                    <div class="col-md-6">
+                                                                        <textarea id="txtRemarksAppC" name="txtRemarksAppC" class="form-control" rows="4" maxlength="800"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                                                    <div class="table-scrollable">
+
+                                                        <table class="table table-bordered" id="tblremarksapprover">
+                                                            <thead>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                        No record's found
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Supported enclosure(Please specify):</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtsupportedenclosure" name="txtsupportedenclosure" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Supported enclosure"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Comparatives statement of final  price</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="tctcomfinalprice" name="tctcomfinalprice" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Comparatives statement of final  price"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Quotations of the parties:</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtquotationparties" name="txtquotationparties" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Quotations of the parties"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <h3 class="form-section">Purchase Order/Work Order Details</h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Order recommended on (Party):</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtorderrecparty" name="txtorderrecparty" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Order recommended on (Party)"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Purchase Order/Work Order Value </label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtworkordervalue" name="txtworkordervalue" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Purchase Order/Work Order Value"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Internal Cost Estimate:</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtinternalcost" name="txtinternalcost" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Internal Cost Estimate"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Terms (Ex- works/ FOR/ FOB/ CIF) </label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtterms" name="txtterms" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Terms (Ex- works/ FOR/ FOB/ CIF)"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Scope of Work	:</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtscopework" name="txtscopework" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Scope of Work"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Deliverables : </label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtdeliverables" name="txtdeliverables" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Deliverables"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3 ">Payment terms	:</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtpaymentterms" name="txtpaymentterms" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Payment terms"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Applicable taxes & duties and their applicability </label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtapplicabletax" name="txtapplicabletax" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Applicable taxes & duties and their applicability"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Whether LD applicable :</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtLDapplicable" name="txtLDapplicable" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether LD applicable"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Whether CPBG applicable</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtCPBGapplicable" name="txtCPBGapplicable" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether CPBG applicable"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">PR Details :</label>
-                                                <div class="col-md-9">
-
-                                                    <textarea id="txtPRdetails" name="txtPRdetails" class="maxlength wysihtml5 form-control"
-                                                              maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="PR Details"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Attachments:</label>
-
-                                                <div class="col-md-9">
-                                                    <span class="btn blue"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
-
-                                                    <button type="button" id="Addbtn1" onclick="addmoreattachments()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-
-                                            &nbsp;
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <table class="table table-striped table-bordered table-hover" id="tblAttachments"></table>
-
-                                        </div>
-
-
-
-                                    </div>
-
-
 
                                     <input value="0" type="hidden" id="hdnPPCID" />
-                                    <!--/row-->
-                            </div>
-                            <div class="form-actions">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-offset-3 col-md-9">
-                                                <button type="submit" class="btn green" id="btnsubmit">Submit</button>
 
+
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-offset-11 col-md-9">
+                                                        <button type="submit" class="btn green" id="btnsubmit">Submit</button>
+
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-md-6"> </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> </div>
-                                </div>
+                                </form>
+                                <!-- END FORM-->
                             </div>
-                            </form>
-                            <!-- END FORM-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -666,48 +830,11 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-
-
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Moment.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/ApprovalPPCForm.js" type="text/javascript"></script>
- <!--  <script src="assets/CustomJS/eRFQRequestForQuotation.js"></script>-->
     <script>
         jQuery(document).ready(function () {
+            callPagejs('approvalppcform.js');
             Pageloaded()
+            formvalidate();
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -728,24 +855,17 @@
             }
             App.init();
             Metronic.init(); Layout.init(); setCommonData();
-            //formvalidate();
             ComponentsPickers.init();
-          //  fetchReguestforQuotationDetails();
-
-           // fetchRegisterUser('1');
-          //  fetchVendorGroup('M', 0);
+            addvendor();
             fetchParticipantsVender();// fetch all vendors for advance search
-           
-            setTimeout(function () {
-                fetchAzPPcFormDetails();
-            }, 1000);
-            
-           // fetch all vendors for advance search
-           
+            fetchVendorAutoComplete(0)
+            BindPurchaseOrg();
+            FetchCurrency("0");
+
         });
     </script>
 
-    <!-- END JAVASCRIPTS -->
+
 </body>
 
 <!-- END BODY -->

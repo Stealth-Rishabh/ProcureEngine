@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-    <!--<meta http-equiv="Cache-control" content="public">-->
+    <meta http-equiv="Cache-control" content="public">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -260,6 +260,7 @@
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-wizard">
                                         <div class="form-body">
+                                           
                                             <ul class="nav nav-pills nav-justified steps">
                                                 <li>
                                                     <a href="#tab1" data-toggle="tab" class="step">
@@ -753,8 +754,9 @@
                                                                                 <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                         </div>
+                                                                        <!--abheedev bug 572 -->
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-5">
                                                                                 <span style="width:390px!important" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
@@ -1451,10 +1453,10 @@
     </div>
 
 
-
     <script>
 
         jQuery(document).ready(function () {
+            
             callPagejs('Moment.js,eRFQRequestForQuotation.js');
             var date = new Date();
             date.setDate(date.getDate() - 1);

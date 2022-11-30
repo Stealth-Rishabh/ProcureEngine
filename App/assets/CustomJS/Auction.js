@@ -3,6 +3,28 @@ function logoutFunction() {
     sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
+function handleDateTimepicker() {
+    if (jQuery().datepicker) {
+        $('.date-picker').datepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        $(".form_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        $(".form_advance_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+
+        $(".form_meridian_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
+    }
+}
 function error401Messagebox(error) {
 
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
@@ -11,6 +33,7 @@ function error401Messagebox(error) {
         return false;
     });
 }
+
 if (sessionStorage.getItem('CustomerID') == 32) {
     $('#lichngepass').hide()
 }
@@ -270,7 +293,7 @@ $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
-    debugger
+
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -282,7 +305,7 @@ function checkfilesize(fileid) {
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
@@ -330,22 +353,24 @@ function thousands_Sep_Text(num) {
     return num_parts.join(".");
 }
 function thousands_separators(num) {
+    var res = "";
+    if (num != null && num != undefined) {
+        x = num.toString();
 
-    x = num.toString();
+        x = x.replace(/,/g, '');
 
-    x = x.replace(/,/g, '');
+        var afterPoint = '';
+        if (x.indexOf('.') > 0)
+            afterPoint = x.substring(x.indexOf('.'), x.length);
+        x = Math.floor(x);
+        x = x.toString();
+        var lastThree = x.substring(x.length - 3);
 
-    var afterPoint = '';
-    if (x.indexOf('.') > 0)
-        afterPoint = x.substring(x.indexOf('.'), x.length);
-    x = Math.floor(x);
-    x = x.toString();
-    var lastThree = x.substring(x.length - 3);
-
-    var otherNumbers = x.substring(0, x.length - 3);
-    if (otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+        var otherNumbers = x.substring(0, x.length - 3);
+        if (otherNumbers != '')
+            lastThree = ',' + lastThree;
+        res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+    }
     return res;
 }
 function thousands_separators_NonMadCol(ele) {
@@ -416,37 +441,7 @@ function convertTo24Hour(time) {
 
     return time;
 }
-function CancelBidDuringConfig() {
-    var _bidId;
-    var _for;
-
-    if (sessionStorage.getItem("CurrentBidID") != '0' && sessionStorage.getItem("CurrentBidID") != null) {
-        _for = 'BID';
-        _bidId = sessionStorage.getItem("CurrentBidID")
-    }
-
-    else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-        _for = 'eRFQ';
-        _bidId = sessionStorage.getItem("hddnRFQID");
-    }
-    //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-    //    _for = 'RFQ';
-    //    _bidId = sessionStorage.getItem("hddnRFQID");
-    // }
-    else if (sessionStorage.getItem("CurrentRFXID") != '0' && sessionStorage.getItem("CurrentRFXID") != null) {
-
-        _for = 'RFI';
-        _bidId = sessionStorage.getItem("CurrentRFXID");
-    }
-    else if (sessionStorage.getItem("hdnNFAID") != '0' && sessionStorage.getItem("hdnNFAID") != null) {
-
-        _for = 'NFA';
-        _bidId = sessionStorage.getItem("hdnNFAID");
-    }
-    else {
-        _for = 'VQ';
-        _bidId = sessionStorage.getItem("CurrentVQID");
-    }
+function CancelBidDuringConfig(_bidId, _for) {
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -508,15 +503,15 @@ function CancelBidDuringConfig() {
 }
 
 function replaceQuoutesFromString(ele) {
-   
+
     var str = '';
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-    
+    //@abheedev bug368 start
     str = str.replace(/#/g, '');
     str = str.replace(/&/g, '');
-    
+    //@abheedev bug368 end
 
     str = str.replace(/~/g, '');
     ele.value = str;
@@ -524,10 +519,14 @@ function replaceQuoutesFromString(ele) {
 }
 function replaceQuoutesFromStringFromExcel(ele) {
     var str = '';
-    str = ele.replace(/'/g, '');
-    str = str.replace(/"/g, '');
-    str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
+
+    if (ele != "" && ele != undefined) {
+        str = ele.replace(/'/g, '');
+        str = str.replace(/"/g, '');
+        str = str.replace(/#/g, '');
+        str = str.replace(/&/g, '');
+    }
+
     //ele.value = str;
     return str;
 }
@@ -826,33 +825,22 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-   
-
-
-   /* var formData = new formData;
+    debugger;
+    var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
-    formData.append('foldername', foldername);*/
-    var formData = {
-        "fileID": $('#' + fileID)[0].files[0],
-        "foldername": foldername
+    formData.append('foldername', foldername);
 
-    };
-
-
-    console.log(formData)
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
         contentType: false,
         processData: false,
-        data:formData,
+        data: formData,
         success: function (data) {
-            
-             
+            //  alert('success')
             return;
         },
         error: function (xhr, status, error) {
-         
             $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
             Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
@@ -957,7 +945,6 @@ function fnConverToLocalTime(dttime) {
     }
     else return '..'
 }
-
 function fnSetLocalFromTimeZone(dateTime) {
     debugger;
     var retDt = new Date();
@@ -1119,6 +1106,7 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             if (deletionfor == 'VAttachment' && srno != 0) {
+
                 fileDeletefromdb(srno, deletionfor)
             }
             $('#spansuccess1').html('File Deleted Successfully');
@@ -1259,7 +1247,7 @@ jQuery("#txtsearchcat").typeahead({
             // getCategoryWiseVendors(map[item].CategoryID);
         }
         else {
-            gritternotification('Please select Group Category  properly!!!');
+            gritternotification('Please select Group Category !!!');
         }
 
         return item;
@@ -1800,13 +1788,13 @@ function checkExcelUpload(fileid) {
             jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
-           Metronic.scrollTo($('.alert-danger'), -200);
+            Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
             return false
     }
 }
 //abheedev bug 443 end
-//htmlEncode
+//htmlencode
 function StringEncodingMechanism(maliciousText) {
     debugger;
     var returnStr = maliciousText.replaceAll('&', '&amp;');
@@ -1815,7 +1803,7 @@ function StringEncodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('"', '&quot;');
     returnStr = returnStr.replaceAll("'", '&#x27;');
     returnStr = returnStr.replaceAll('/', '&#x2F;');
-    returnStr = returnStr.replaceAll('alert(', 'alert-');
+    //returnStr = returnStr.replaceAll('alert(', 'alert-');
     return returnStr;
 }
 
@@ -1826,7 +1814,7 @@ function StringDecodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('&quot;', '"');
     returnStr = returnStr.replaceAll("&#x27;", "'");
     returnStr = returnStr.replaceAll('&#x2F;', '/');
-    returnStr = returnStr.replaceAll('alert-', 'alert(');
+    //returnStr = returnStr.replaceAll('alert-', 'alert(');
     returnStr = maliciousText.replaceAll('&amp;', '&');
     return returnStr;
 }
@@ -1887,4 +1875,44 @@ function fromUTF8Array(data) { // array of bytes
     }
 
     return str;
+}
+
+function checkPasswordValidation(value) {
+    debugger;
+    const isWhitespace = /^(?=.*\s)/;
+    if (isWhitespace.test(value)) {
+        return "Password must not contain Whitespaces.";
+    }
+
+
+    const isContainsUppercase = /^(?=.*[A-Z])/;
+    if (!isContainsUppercase.test(value)) {
+        return "Password must have at least one Uppercase Character.";
+    }
+
+
+    const isContainsLowercase = /^(?=.*[a-z])/;
+    if (!isContainsLowercase.test(value)) {
+        return "Password must have at least one Lowercase Character.";
+    }
+
+
+    const isContainsNumber = /^(?=.*[0-9])/;
+    if (!isContainsNumber.test(value)) {
+        return "Password must contain at least one Digit.";
+    }
+
+
+    const isContainsSymbol = /^(?=.*[~`!@#$%^*--+={}\[\]|\\:;"',.?/_])/;
+    if (!isContainsSymbol.test(value)) {
+        return "Password must contain at least one Special Symbol.";
+    }
+
+
+    const isValidLength = /^.{6,8}$/;
+    if (!isValidLength.test(value)) {
+        return "Password must be 6-8 Characters Long.";
+    }
+    return "SUCCESS";
+
 }

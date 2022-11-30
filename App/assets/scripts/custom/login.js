@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -148,8 +148,8 @@ var Login = function () {
 
     function validateUser() {
 
-        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
         debugger;
@@ -174,52 +174,47 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
+                    debugger;
+                    var successMsg = "";
+                    var isSuccess = true;
                     switch (data.token) {
                         case "You are accessing an Invalid URL.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('You are accessing an Invalid URL.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "You are accessing an Invalid URL."
+                            isSuccess = false;
                             break;
                         case "Your account has been Locked. Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked. Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "You are accessing an Invalid URL."
+                            isSuccess = false;
                             break;
                         case "You have entered an incorrect Password.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect'
+                            isSuccess = false;
                             break;
                         case "Something went wrong!!! Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Something went wrong!!! Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "Something went wrong!!! Please contact administrator."
+                            isSuccess = false;
                             break;
                         case "Your account has been Locked due to multiple failed Login attempts.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked due to multiple failed Login attempts.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            successMsg = "Your account has been Locked due to multiple failed Login attempts."
+                            isSuccess = false;
                             break;
                         default:
+                            successMsg = "SUCCESS"
+                            isSuccess = true;
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.token)
                             fnGetUserBasicDetails(lastPart)
                             break;
 
                     }
-                    //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                    //sessionStorage.setItem("Token", data.token)
-                    //fnGetUserBasicDetails(lastPart)
+                    if (!isSuccess) {
+                        jQuery.unblockUI();
+                        $('#alrt1').show();
+                        $('#alertmessage1').html(successMsg)
+                        App.scrollTo($('#alrt1'), -200);
+                        $('#alrt1').fadeOut(5000);
+                    }
+                    
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')
@@ -492,13 +487,25 @@ var Login = function () {
 }();
 function Changeforgotpasswordfn() {
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var UserType = '';
+    var path = window.location.pathname;
+    var url = '';
+    var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+    //lastPart = 'vendor'
+    var LinkUrl = window.location.href;
 
-    var custid = 0;
-    var UserType = 'V'
-    if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
-        custid = sessionStorage.getItem('CustomerID');
+    if (lastPart.toLocaleLowerCase() == "vendor") {
+        UserType = 'V';
+    }
+    else {
         UserType = 'E';
     }
+    var custid = 0;
+    //var UserType = 'V'
+    //if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
+    //    custid = sessionStorage.getItem('CustomerID');
+    //    UserType = 'E';
+    //}
     var data = {
         "EmailID": $("#txtemail").val(),
         "CustomerID": parseInt(custid),
@@ -507,29 +514,50 @@ function Changeforgotpasswordfn() {
 
     jQuery.ajax({
 
-        url: APIPath + "ChangeForgotPassword/forgotPassword/",
+        //url: APIPath + "ChangeForgotPassword/forgotPassword/",
+        url: APIPath + "ChangeForgotPassword/forgotPasswordNew/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-
-            if (data.isSuccess == "-1") {
-                $('#alrt2').show();
-                $('#alertmessage2').html('Email Id does not exists.!');
-                $('#alrt2').fadeOut(6000);
-                App.scrollTo($('#alrt2'), -200);
-                resetfileds()
-                jQuery.unblockUI();
+            debugger;
+            switch (data.successCount) {
+                case 1:
+                case 2:
+                case 4:
+                    $('#succs2').show();
+                    $('#sucssmessage2').html(data.successMsg + 'You have ' + data.lockCount + ' attempts left.');
+                    $('#succs2').fadeOut(6000);
+                    App.scrollTo($('#succs2'), -200);
+                    resetfileds()
+                    jQuery.unblockUI();
+                    break;
+                default:
+                    $('#alrt2').show();
+                    $('#alertmessage2').html(data.successMsg);
+                    $('#alrt2').fadeOut(6000);
+                    App.scrollTo($('#alrt2'), -200);
+                    resetfileds()
+                    jQuery.unblockUI();
+                    break;
             }
-            else {
-                $('#succs2').show();
-                $('#sucssmessage2').html('Your new password is sent to your email address');
-                $('#succs2').fadeOut(6000);
-                App.scrollTo($('#succs2'), -200);
-                resetfileds()
-                jQuery.unblockUI();
-            }
+            //if (data.isSuccess == "-1") {
+            //    $('#alrt2').show();
+            //    $('#alertmessage2').html('Email Id does not exists.!');
+            //    $('#alrt2').fadeOut(6000);
+            //    App.scrollTo($('#alrt2'), -200);
+            //    resetfileds()
+            //    jQuery.unblockUI();
+            //}
+            //else {
+            //    $('#succs2').show();
+            //    $('#sucssmessage2').html('Your new password is sent to your email address');
+            //    $('#succs2').fadeOut(6000);
+            //    App.scrollTo($('#succs2'), -200);
+            //    resetfileds()
+            //    jQuery.unblockUI();
+            //}
 
         }
     });
