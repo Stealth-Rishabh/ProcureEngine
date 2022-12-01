@@ -1075,7 +1075,11 @@ jQuery("#ParticipantName").typeahead({
 });
 
 function validatePanNumber(pan) {
+   
     clearform();
+    $("#ddlpreferredTime").select2("val", "");
+    $("#ddlState").select2("val", "0")
+    $("#ddlCity").select2("val", "0")
 
     // fnValidateGST();
     fnfetchfoundVendors();
@@ -1460,7 +1464,7 @@ function ExtendParticipants() {
 }
 
 function clearform() {
-
+    
     jQuery("#ParticipantName").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
@@ -1472,11 +1476,13 @@ function clearform() {
     jQuery("#txtMobileNo").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtcompanyemail").val('');
+    jQuery("#txtAlternateeMailID").val('');
     jQuery('#hdnParticipantID').val('0');
     $("#ddlCountry").val('111');
     
-    $("#ddlState").val('0');
-    $("#ddlCity").val('0');
+    
+    
+   
 
 
     $('.childchkbox').each(function () {
