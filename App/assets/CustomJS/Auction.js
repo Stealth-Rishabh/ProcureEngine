@@ -579,13 +579,21 @@ function closeChatsForAdminB() {
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
+    var chatData = {
+        "UserID": userId,
+        "BidID": parseInt(_bidId),
+        "UserType": sessionStorage.getItem("UserType"),
+        "MsgType": msgType
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(chatData),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
@@ -626,12 +634,20 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
+    var _bidId = getUrlVarsURL(decryptedstring)['BidID']
+    _bidId = parseInt(_bidId)
+    var chatData = {
+        "UserID": sessionStorage.getItem("UserID"),
+        "BidID": _bidId,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
+        data: JSON.stringify(chatData),
         cache: false,
         dataType: "json",
         success: function (data) {
