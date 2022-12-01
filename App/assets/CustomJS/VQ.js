@@ -1,4 +1,8 @@
-﻿
+﻿// bug 584 abheedev 
+$('#txtmobileNo').maxlength({
+    limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
 $("#cancelBidBtn").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
@@ -391,7 +395,7 @@ function fileUploader(RFIID,fileObj) {
 function fetchRFIDetails() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced = '', _selectedCat = new Array();
-   // alert(sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID') )
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID') ,
@@ -412,8 +416,7 @@ function fetchRFIDetails() {
                 jQuery('#txtattachdescription').val(BidData[0].vqMaster[0].vqAttachmentDescription)
 
                 $("#cancelBidBtn").show();
-                //jQuery('#attach-file').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + replaced).html(BidData[0].VQMaster[0].RFIAttachment)
-
+               
                 if (BidData[0].vqAttachment.length > 0) {
                     $("#tblAttachmentsElem").empty();
                     for (var i = 0; i < BidData[0].vqAttachment.length; i++) {
@@ -490,7 +493,7 @@ function fetchRFIQuestions(applicableFor) {
         success: function(data) {
 
             jQuery("#accordion1").empty();
-            //var QuestionsubCategoryID = '';
+            
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
                 if (QuestionCategoryID != data[i].questionCategoryID) {
@@ -590,8 +593,9 @@ function fetchRFIDetailsForTab2(applicableFor) {
 
     jQuery.unblockUI();
 }
-//sessionStorage.setItem('CurrentVQID', '0');
+
 function RFIConfigureTab1() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var AttachementFileName = '', queryAttachment = "", queryCategories = "";  filename = "";
     if ($('#attach-file').html() != '') {
@@ -640,8 +644,7 @@ function RFIConfigureTab1() {
         "ProductCatQuery": queryCategories
 
     };
-   // alert(JSON.stringify(Tab1Data))
-   // console.log(JSON.stringify(Tab1Data))
+   
     jQuery.ajax({
 
         type: "POST",
@@ -732,7 +735,7 @@ function RFIConfigureTab2() {
         "RFIQuestionMapping": InsertQuery
 
     };
-    //alert(JSON.stringify(Tab2Data))
+   
     jQuery.ajax({
 
         type: "POST",
@@ -825,7 +828,8 @@ function fetchTempVendors() {
 
    }
 
-   function checkForDuplicateVendor() {
+function checkForDuplicateVendor() {
+       debugger
        var EmailID = '';
        var count = 0;
        
@@ -851,6 +855,7 @@ function fetchTempVendors() {
    }
 
 function AddTempvendors() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
         
@@ -865,7 +870,7 @@ function AddTempvendors() {
             'RowID': parseInt($('#updateField').val())
             
         };
-        //alert(JSON.stringify(TempCompany))
+      
         jQuery.ajax({
 
             type: "POST",
@@ -997,8 +1002,7 @@ function RFISubmitTempVendors() {
         "VQDeadline": jQuery('#txtrfideadline').val()
 
     };
-    //alert(JSON.stringify(TempVendors))
-
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VQMaster/VQSubmitVendors/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1006,20 +1010,12 @@ function RFISubmitTempVendors() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            //if (data[0].outmsg == "1") {
+           
                  bootbox.alert("VQ submitted successfully.", function () {
                             window.location = sessionStorage.getItem("HomePage")
                             return false;
                     });
-            //}
-            //else {
-            //    $('.alert-success').hide();
-            //    $('#spandanger').html('Vendor Cannot Be Registered.!!')
-            //    $(".alert-danger").show();
-            //    $(".alert-danger").fadeOut(5000);
-            //    Metronic.scrollTo($(".alert-danger"), -200);
-
-            //}
+            
         },
         error: function (xhr, status, error) {
 
@@ -1212,7 +1208,7 @@ function fetchqsubcategoryForAuto(questcategoryID) {
         dataType: "json",
         success: function (data) {
            
-            //alert(JSON.stringify(data))           
+             
             sessionStorage.setItem('hdnquestionSubCatgry', JSON.stringify(data));
            
 
@@ -1466,7 +1462,7 @@ function insupdRFIQuestionMaster() {
         "QuestionApplicableFor": 'VQL'
 
     }
-   //alert(JSON.stringify(data))
+  
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionMaster",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1780,7 +1776,7 @@ function fetchCategorymaster() {
             else {
                 jQuery("#ddlCategoryMultiple").append('<tr><td>No categories found..</td></tr>');
             }
-           // jQuery.unblockUI();
+          
         },
         error: function (xhr, status, error) {
 
@@ -1886,3 +1882,4 @@ function fileDeletefromdb(closeBtn, filepath) {
 
     });
 }
+
