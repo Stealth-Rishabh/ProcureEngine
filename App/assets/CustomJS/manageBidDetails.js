@@ -264,75 +264,6 @@ function FormValidate() {
         }
 
     });
-    //$('#frmReopen').validate({
-    //    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-    //    errorElement: 'span', //default input error message container
-    //    errorClass: 'help-block help-block-error', // default input error message class
-    //    focusInvalid: false, // do not focus the last invalid input
-
-    //    rules: {
-    //        txtbidDate: {
-    //            required: true
-    //        },
-    //        txtbidTime: {
-    //            required: true
-    //        }
-    //    },
-    //    messages: {
-    //        txtbidDate: {
-    //            required: "Re Open Bid date is required."
-    //        },
-    //        txtbidDate: {
-    //            required: "Re Open Bid Time is required."
-    //        }
-    //    },
-
-    //    errorPlacement: function (error, element) { // render error placement for each input type
-    //        error.insertAfter(element); // for other inputs, just perform default behavior
-    //    },
-
-    //    invalidHandler: function (event, validator) { //display error alert on form submit
-
-    //        successreOpen.hide();
-    //        jQuery("#spandangeropen").text("You have some form errors. Please check below.");
-    //        errorReOpen.show();
-    //        errorReOpen.fadeOut(5000);
-    //        App.scrollTo(errorReOpen, -200);
-    //    },
-
-    //    highlight: function (element) { // hightlight error inputs
-    //        $(element)
-    //            .closest('.xyz').removeClass('has-success').addClass('has-error'); // set error class to the control group
-    //    },
-
-    //    unhighlight: function (element) { // revert the change done by hightlight
-    //        $(element)
-    //            .closest('.xyz').removeClass('has-error'); // set error class to the control group
-    //    },
-
-    //    success: function (label) {
-    //        label.closest('.xyz').removeClass('has-error').addClass('has-success');
-    //        label.remove(); // remove error label here
-
-    //    },
-    //    submitHandler: function (form) {
-    //        errorReOpen.hide();
-
-
-    //        if (currentdate < new Date(biddatetime + ' ' + $('#txreopenTime').val())) {
-    //            successreOpen.hide();
-    //            jQuery("#spandangeropen").text("New Bid Date must be greater than Current Date.");
-    //            errorReOpen.show();
-    //            errorReOpen.fadeOut(5000);
-    //            App.scrollTo(errorReOpen, -200);
-    //        }
-    //        else {
-    //            fnpauseaction()
-    //        }
-
-
-    //    }
-    //});
 }
 function fetchUserBids() {
 
@@ -687,56 +618,7 @@ function deletePEFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    /*jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePEFAQuote/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(QuoteProduct),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
 
-            //** Upload Files on Azure PortalDocs folder
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-            }
-            if (data == "1") {
-
-                success1.show();
-                $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                success1.fadeOut(6000);
-                App.scrollTo(success1, -200);
-                fetchparticationQuotes()
-                $('#deletepopup').modal('hide')
-                $('#txtremarks').val('')
-                $('#fileToUpload').val('')
-
-            }
-            else if (data == "99") {
-                $('#deletepopup').modal('hide')
-                bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-            }
-            else {
-                error2.show();
-                $('#err').html('You have some error.Please try agian.');
-                error2.fadeOut(3000);
-                App.scrollTo(error2, -200);
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })*/
     connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -801,56 +683,7 @@ function deleteFAquote() {
         "QuantityAllocated": parseFloat(sessionStorage.getItem("QuantityAllocated"))
 
     }
-    /*  jQuery.ajax({
-          url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveFAQuote/",
-          beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-          type: "POST",
-          data: JSON.stringify(QuoteProduct),
-          contentType: "application/json; charset=utf-8",
-          success: function (data, status, jqXHR) {
-  
-              //** Upload Files on Azure PortalDocs folder
-              if ($('#fileToUpload').val() != '') {
-                  fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-  
-              }
-              if (data == "1") {
-  
-                  success1.show();
-                  $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                  success1.fadeOut(6000);
-                  App.scrollTo(success1, -200);
-                  fetchparticationQuotes()
-                  $('#deletepopup').modal('hide')
-                  $('#txtremarks').val('')
-                  $('#fileToUpload').val('')
-  
-              }
-              else if (data == "99") {
-                  $('#deletepopup').modal('hide')
-                  bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-              }
-              else {
-                  error2.show();
-                  $('#err').html('You have some error.Please try agian.');
-                  error2.fadeOut(3000);
-                  App.scrollTo(error2, -200);
-              }
-              jQuery.unblockUI();
-          },
-          error: function (xhr, status, error) {
-  
-              var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-              if (xhr.status == 401) {
-                  error401Messagebox(err.Message);
-              }
-              else {
-                  fnErrorMessageText('errormapdiv', '');
-              }
-              jQuery.unblockUI();
-              return false;
-          }
-      })*/
+
     connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -915,58 +748,7 @@ function deletePSquote() {
 
     }
 
-    /*jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemovePSQuote/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(QuoteProduct),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
 
-
-            if (data == "1") {
-               // ** Upload Files on Azure PortalDocs folder
-                if ($('#fileToUpload').val() != '') {
-                    fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-                }
-
-                success1.show();
-                $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                success1.fadeOut(6000);
-                App.scrollTo(success1, -200);
-                fetchparticationQuotes()
-                $('#deletepopup').modal('hide')
-                $('#txtremarks').val('')
-                $('#fileToUpload').val('')
-
-
-            }
-            else if (data == "99") {
-                $('#deletepopup').modal('hide')
-                bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-            }
-            else {
-                error2.show();
-                $('#err').html('You have some error.Please try agian.');
-                error2.fadeOut(3000);
-                App.scrollTo(error2, -200);
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })*/
     connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -1031,58 +813,7 @@ function deleteCoalquote() {
 
     }
     //console.log(JSON.stringify(QuoteProduct))
-    /* jQuery.ajax({
-         url: sessionStorage.getItem("APIPath") + "RemoveParticipatedQuotedPrices/RemoveCAQuote/",
-         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-         type: "POST",
-         data: JSON.stringify(QuoteProduct),
-         contentType: "application/json; charset=utf-8",
-         success: function (data, status, jqXHR) {
- 
- 
-             if (data == "1") {
-                 //** Upload Files on Azure PortalDocs folder
-                 if ($('#fileToUpload').val() != '') {
-                     fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
- 
-                 }
- 
-                 success1.show();
-                 $('#spansuccess1').html("Quoted Price deleted Successfully..");
-                 success1.fadeOut(6000);
-                 App.scrollTo(success1, -200);
-                 fetchparticationQuotes()
-                 $('#deletepopup').modal('hide')
-                 $('#txtremarks').val('')
-                 $('#fileToUpload').val('')
- 
- 
-             }
-             else if (data == "99") {
-                 $('#deletepopup').modal('hide')
-                 bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-             }
-             else {
-                 error2.show();
-                 $('#err').html('You have some error.Please try agian.');
-                 error2.fadeOut(3000);
-                 App.scrollTo(error2, -200);
-             }
-             jQuery.unblockUI();
-         },
-         error: function (xhr, status, error) {
- 
-             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-             if (xhr.status == 401) {
-                 error401Messagebox(err.Message);
-             }
-             else {
-                 fnErrorMessageText('spandanger', '');
-             }
-             jQuery.unblockUI();
-             return false;
-         }
-     })*/
+
     connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -1727,7 +1458,7 @@ function fetchallexportdetails() {
             //$('#txtbidTime').val(localBidTime)
             $('#txtbidDate').val(localBidDate)
 
-            
+
             $('#ddlBidfinalStatus').val(BidData[0].bidDetails[0].finalStatus)
 
 
@@ -1854,7 +1585,7 @@ function fetchallexportdetails() {
                                     $('#spinner' + i).hide()
                                     $('#btnextendA' + i).hide()
                                 }
-                                
+
                                 if (BidData[0].bidDetails[0].bidForID == "81" || BidData[0].bidDetails[0].bidForID == "1") {
                                     jQuery("#tblServicesProductPrevtab_0").append("<tr id=trid" + i + "><td><a class=isDisabledClass onclick=editValues(\'divbidItemsPrevtab_0\',\'trid" + i + "\') ><i class='fa fa-pencil'></i></a></td><td>" + (i + 1) + "</td><td>" + BidData[0].bidSeaExportDetails[i].destinationPort + "</td><td>" + BidData[0].bidSeaExportDetails[i].remarks + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].targetprice + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + "</td><td>" + BidData[0].bidSeaExportDetails[i].uom + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + " <a class='changeMinDecreament ml-1' onclick=editbidstartprice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].maskVendor + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].minimumDecreament + " <a class='changeMinDecreament ml-1' onclick=editMinDecreament(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td>" + decrementon + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].decreamentOn + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].lastInvoicePrice) + "</td><td class=text-right>" + BidData[0].bidSeaExportDetails[i].itemBidDuration + "</td><td>" + BidData[0].bidSeaExportDetails[i].itemClosingTime + "</td><td class=hide>" + BidData[0].bidSeaExportDetails[i].seid + "</td><td>" + BidData[0].bidSeaExportDetails[i].maskL1Price + "&nbsp;<a class='lambdafactor' onclick=editShowL1Price(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\') class=pencilHLP ><i class='fa fa-pencil'></i></a></td><td>" + BidData[0].bidSeaExportDetails[i].showStartPrice + "&nbsp;<a class='' onclick=editShowStartPrice(" + BidData[0].bidSeaExportDetails[i].seid + ",\'trid" + i + "\')><i class='fa fa-pencil'></i></a></td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + "</td><td>" + BidData[0].bidSeaExportDetails[i].poNo + "</td><td>" + BidData[0].bidSeaExportDetails[i].poVendorName + "</td><td>" + BidData[0].bidSeaExportDetails[i].poDate + "</td><td class=text-right>" + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue) + "</td></tr>");
                                 }
@@ -2190,15 +1921,22 @@ function Checkrem(event) {
 var allUsers
 function fetchRegisterUser() {
     var url = ''
-    url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N"
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    // url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N"
+    url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser"
 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
 
@@ -2500,54 +2238,9 @@ function fnTimeUpdateS(index, seaid) {
         }
     })
     jQuery.unblockUI();
-    //jQuery.ajax({
-    //    url: sessionStorage.getItem("APIPath") + "ConfigureBid/UpdateBidTime/",
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //    type: "POST",
-    //    data: JSON.stringify(Data),
-    //    contentType: "application/json; charset=utf-8",
-    //    success: function (data, status, jqXHR) {
 
-    //        if (data == "1") {
-    //            $('#extendedDuration' + index).show()
-
-    //        }
-    //        else if (data == "-1") {
-    //            $('#extendedDuration' + index).text("This Item is already expired.").css('color', 'red')
-    //            $('#extendedDuration' + index).show()
-
-    //        }
-    //        setTimeout(function () { fetchallexportdetails() }, 5000)
-    //        jQuery.unblockUI();
-    //    },
-    //    error: function (xhr, status, error) {
-
-    //        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-    //        if (xhr.status == 401) {
-    //            error401Messagebox(err.Message);
-    //        }
-    //        else {
-    //            fnErrorMessageText('spandanger', '');
-    //        }
-    //        jQuery.unblockUI();
-    //        return false;
-    //    }
-    //})
 }
 
-
-function fnshowDatetime() {
-    /*if ($('#ddlBidStatus').val() == 1 || $('#ddlBidStatus').val()==2) {
-        $('#divreopendttime').hide()
-        $('.dttime').removeAttr('disabled')
-        $('#btnbidchangedttime').show()
-        $('#btnreopendttime').hide()
-    }
-    else if ($('#ddlBidStatus').val() == 3) {
-        $('#btnbidchangedttime').hide()
-        $('#btnreopendttime').hide()
-    }*/
-}
 
 function DateandtimevalidateForBidOpen(ismailsend) {
 
@@ -3041,8 +2734,7 @@ function editValues(divName, rowid) {
                     $('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
                     $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
                 }
-                //$('#checkL1Price').val($("#" + rowid).find("td:eq(15)").text().trim())
-                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(16)").text().trim())
+
             } else {
                 hdnSeId = $("#" + rowid).find("td:eq(16)").text()
                 if (hdnSeId == 0 || hdnSeId == null) {
@@ -3053,8 +2745,7 @@ function editValues(divName, rowid) {
                     $('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
                     $('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
                 }
-                //$('#checkL1Price').val($("#" + rowid).find("td:eq(17)").text().trim())
-                //$('#checkshowstartPrice').val($("#" + rowid).find("td:eq(18)").text().trim())
+
             }
             $('#txtminimumdecreament').val($("#" + rowid).find("td:eq(10)").text())
             $("#txtselectedCurrency").val($("#dropCurrencyPrevtab_0").html());

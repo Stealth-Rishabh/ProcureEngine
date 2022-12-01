@@ -1,5 +1,6 @@
 $("#cancelBidBtn").hide();
 
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
         alias: "decimal",
@@ -18,6 +19,29 @@ jQuery(document).ready(function () {
 
     });
 });
+
+var _BidID;
+var _savedDraft = '';
+sessionStorage.setItem('_savedDraft', 'N');
+if (window.location.search) {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0);
+        _BidID = 0;
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchFrenchBidDetails();
+        sessionStorage.setItem('_savedDraft', 'Y')
+    }
+}
+
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
+
 function CheckminQuantity(id) {
     var biddidval = $('#' + id.id).val();
     if (parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiy').val())) || $('#txtquantitiy').val() == "") {
@@ -505,14 +529,21 @@ $("#chkAll").click(function () {
 
 var allUsers = '';
 function fetchRegisterUser() {
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
             if (data.length > 0) {
