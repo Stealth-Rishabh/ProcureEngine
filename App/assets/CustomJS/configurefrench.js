@@ -1,5 +1,6 @@
 $("#cancelBidBtn").hide();
 
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
         alias: "decimal",
@@ -18,6 +19,29 @@ jQuery(document).ready(function () {
 
     });
 });
+
+var _BidID;
+var _savedDraft = '';
+sessionStorage.setItem('_savedDraft', 'N');
+if (window.location.search) {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0);
+        _BidID = 0;
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchFrenchBidDetails();
+        sessionStorage.setItem('_savedDraft', 'Y')
+    }
+}
+
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
+
 function CheckminQuantity(id) {
     var biddidval = $('#' + id.id).val();
     if (parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiy').val())) || $('#txtquantitiy').val() == "") {

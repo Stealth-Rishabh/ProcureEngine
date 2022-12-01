@@ -1,5 +1,9 @@
 $("#cancelBidBtn").hide();
+$('#file-excelparameter').change(handleFileparameter);
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 //abheedev bug 507
+var _BidID;
+
 jQuery(document).ready(function () {
     $("#txtWeightageval").inputmask({ 
        
@@ -20,6 +24,9 @@ jQuery(document).ready(function () {
     });
 
 });
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true

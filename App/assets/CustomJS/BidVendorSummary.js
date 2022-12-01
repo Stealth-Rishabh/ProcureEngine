@@ -43,7 +43,7 @@ function fetchregisterusers() {
     
     var userData = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID')),
+        "UserID": sessionStorage.getItem('UserID'),
         "Isactive": 'N'
     }
     jQuery.ajax({

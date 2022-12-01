@@ -4,13 +4,33 @@ $(document).ready(function () {
 
     fetchregisterusers();
     formvalidate();
+
 });
+$('#ddlconfiguredby').on('change', function (e) {
+
+    if (this.value != '' && this.value == 0) {
+
+        $('#ddlconfiguredby').select2({
+            placeholder: "Select Users",
+            allowClear: true
+        });
+        $('#ddlconfiguredby').select2('data', null)
+        //$("#ddlconfiguredby").val([1]).change();
+        $(this).select2('val', 0);
+    }
+
+    /* console.log(this.value,
+                 this.options[this.selectedIndex].value,
+                 $(this).find("option:selected").val(),);*/
+});
+
 function fetchregisterusers() {
     var userData = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": encodeURIComponent(sessionStorage.getItem('UserID')),
         "Isactive": 'N'
     }
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -22,11 +42,16 @@ function fetchregisterusers() {
         dataType: "json",
         success: function (data) {
             jQuery("#ddlconfiguredby").empty();
-            if (data[0].role.toLowerCase() != "user") {
-                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("Select"));
+            jQuery("#ddlconfiguredby").prop('disabled', false)
+            if (data[0].roleName.toLowerCase() == "reports" || data[0].role.toLowerCase() == "administrator") {
+                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("All"));
             }
             for (var i = 0; i < data.length; i++) {
                 jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
+            }
+            if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
+                jQuery("#ddlconfiguredby").select2('val', data[0].userID);
+                jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -121,9 +146,11 @@ function formvalidate() {
 
 }
 var rfqdeadline = '';
+var result = '';
 function fetchRFQVendorSummary() {
-    debugger;
+
     var dtfrom = '', dtto = '', subject = 'X-X';
+    result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
         dtfrom = new Date(2000, 01, 01);
 
@@ -148,18 +175,24 @@ function fetchRFQVendorSummary() {
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
         subject = jQuery("#txtbidsubject").val()
     }
-    debugger;
+    if ($("#ddlconfiguredby").select2('data').length) {
+        $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            result = result + (item.id) + ','
+        });
+        result = result.slice(0, -1)
+    }
     var Tab1Data = {
 
         "FromDate": dtfrom,
         "ToDate": dtto,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "ConfiguredBy": result == '' ? '0' : result,//parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
     };
-    //alert(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQOverviewReport/?FromDate=" + dtfrom + "&ToDate=" + dtto + "&RFQSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val())
+
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -287,8 +320,9 @@ function getSummary(RFQID, subject) {
 
 }
 function fetchBidVendorSummaryDetail() {
-    debugger;
+
     var dtfrom = '', dtto = '', subject = 'X-X';
+    result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
         dtfrom = new Date(2000, 01, 01);
 
@@ -310,12 +344,18 @@ function fetchBidVendorSummaryDetail() {
         dtto.setDate(dtto.getDate() + 1);
 
     }
+    if ($("#ddlconfiguredby").select2('data').length) {
+        $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            result = result + (item.id) + ','
+        });
+        result = result.slice(0, -1)
+    }
     var Tab1Data = {
 
         "FromDate": dtfrom,
         "ToDate": dtto,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "ConfiguredBy": result == '' ? '0' : result, //parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
@@ -576,8 +616,9 @@ $('#editLastInvoiceprice').on("hidden.bs.modal", function () {
 
 
 function fetchBidVendorSummarySummarization() {
-    debugger;
+
     var dtfrom = '', dtto = '', subject = 'X-X';
+    result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
         dtfrom = new Date(2000, 01, 01);
 
@@ -602,12 +643,18 @@ function fetchBidVendorSummarySummarization() {
     if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
         subject = jQuery("#txtbidsubject").val()
     }
+    if ($("#ddlconfiguredby").select2('data').length) {
+        $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            result = result + (item.id) + ','
+        });
+        result = result.slice(0, -1);
+    }
     var Tab1Data = {
 
         "FromDate": dtfrom,
         "ToDate": dtto,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ConfiguredBy": parseInt(jQuery("#ddlconfiguredby option:selected").val()),
+        "ConfiguredBy": result == '' ? '0' : result,//parseInt(jQuery("#ddlconfiguredby option:selected").val()),
         "FinalStatus": jQuery("#ddlbidstatus option:selected").val(),
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
