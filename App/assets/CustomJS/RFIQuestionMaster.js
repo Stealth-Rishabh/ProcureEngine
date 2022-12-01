@@ -7,7 +7,7 @@ var pageState = 'add';
 
 
 function FormValidate() {
- 
+
     $('#RFIQuestionmaster').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
@@ -17,11 +17,11 @@ function FormValidate() {
             ddlquestCategory: {
                 required: true
             },
-            
+
             txtQuestiondescription: {
                 required: true
             }
-          
+
         },
         messages: {
 
@@ -31,20 +31,20 @@ function FormValidate() {
             txtQuestiondescription: {
                 required: "Question Description is required."
             }
-            
+
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
             success.hide();
             $('#error').html('You have some errors. Please check below.!');
             error.show();
-            error.fadeOut(5000);              
-            
+            error.fadeOut(5000);
+
         },
 
         highlight: function (element) { // hightlight error inputs
             $(element).closest('.col-lg-8').addClass('has-error'); // set error class to the control group
             $(element).closest('.col-lg-7').addClass('has-error'); // set error class to the control group
-            
+
         },
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
@@ -59,19 +59,20 @@ function FormValidate() {
             label.remove();
         },
 
-        submitHandler: function (form) {            
+        submitHandler: function (form) {
+
             insupdRFIQuestionMaster();
         }
     });
 
-// Form Validation For Sub Category Modal
+    // Form Validation For Sub Category Modal
 
     $('#subcategoryForm').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
 
-        rules: {            
+        rules: {
             txtqSubcategory: {
                 required: true,
                 maxlength: 64
@@ -81,19 +82,19 @@ function FormValidate() {
         messages: {
 
             txtqSubcategory: {
-                required: "Sub Category is required.",              
-               
+                required: "Sub Category is required.",
+
             }
 
 
         },
         invalidHandler: function (event, validator) { //display error alert on form submit             
-             subcatsuccess.hide();
-             jQuery("#errormsg").text("You have some form errors. Please check below.");
-             subcaterror.show();
-             subcaterror.fadeOut(6000)
-            
-       },
+            subcatsuccess.hide();
+            jQuery("#errormsg").text("You have some form errors. Please check below.");
+            subcaterror.show();
+            subcaterror.fadeOut(6000)
+
+        },
 
         highlight: function (element) { // hightlight error inputs
             $(element).closest('.col-md-8').addClass('has-error'); // set error class to the control group
@@ -109,11 +110,12 @@ function FormValidate() {
         },
 
         submitHandler: function (form) {
-            InsUpdQuestionSubcategory();        
+
+            InsUpdQuestionSubcategory();
         }
     });
 
-    
+
 
 }
 
@@ -127,6 +129,9 @@ function fetchQuestionCategory(applicableFor) {
         cache: false,
         dataType: "json",
         success: function (data) {
+
+
+
             $('#ddlquestCategory').empty();
             $('#ddlquestCategory').append(jQuery('<option></option>').val('').html('Select'));
             for (var i = 0; i < data.length; i++) {
@@ -146,32 +151,44 @@ function fetchQuestionCategory(applicableFor) {
     });
     jQuery.unblockUI();
 }
-var questcategoryID=0;
+var questcategoryID = 0;
 function getCategoryIDforSubCategory() {
     $("#tblFetchRFIQuestionMastr").empty();
     if ($('#ddlquestCategory').val() != '') {
         questcategoryID = $('#ddlquestCategory option:selected').val();
+
         $('#catIDforsubcategory').val($('#ddlquestCategory option:selected').text());
         fetchQuestionSubCategory(questcategoryID)
-        
+
     } else {
         questcategoryID = 0
         $('#catIDforsubcategory').val('');
         fetchQuestionSubCategory(questcategoryID)
-        
+
     }
-   
+
 }
 
 function getQuestionForSubCategory() {
-    
-    fetchQuestionCategory($("#ddlQuestionFor option:selected").val());
+
+
+    if ($('#ddlQuestionFor option:selected').val() == 'VAA') {
+        $("#POItablediv").show();
+        fetchCategorymaster();
+        $("#ddlquestCategory").select2();
+    }
+    else {
+        fetchQuestionCategory($("#ddlQuestionFor option:selected").val());
+        $('#POItablediv').hide();
+        $("#ddlquestCategory").select2('destroy');
+    }
+
 }
 
 function fetchQuestionMasters(questcategoryID) {
-    
-    var mandat ='';
-    var isattach  ='';
+
+    var mandat = '';
+    var isattach = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -181,7 +198,7 @@ function fetchQuestionMasters(questcategoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-          
+
             $('#tblFetchRFIQuestionMastr').empty();
             if (data.length > 0) {
                 $('#searchmaster').show();
@@ -198,7 +215,8 @@ function fetchQuestionMasters(questcategoryID) {
                     } else {
                         isattach = "Not required"
                     }
-                    $('#tblFetchRFIQuestionMastr').append('<tr id=rowid'+i+'><td><a href=# class="btn btn-xs blue" onclick="updatequestMaster(\'rowid'+i+'\')"><i class="fa fa-pencil"></i> Edit</a></td><td class="hide">'+data[i].questionID+'</td><td>' + $('#ddlquestCategory option:selected').text() + '</td><td>' + data[i].questionSubCategory + '</td><td>' + data[i].questionDescription + '</td><td>' + mandat + '</td><td>' + isattach + '</td><td class="hide">'+data[i].questionSubCategoryID+'</td></tr>')
+
+                    $('#tblFetchRFIQuestionMastr').append('<tr id=rowid' + i + '><td><a href=# class="btn btn-xs blue" onclick="updatequestMaster(\'rowid' + i + '\')"><i class="fa fa-pencil"></i> Edit</a></td><td class="hide">' + data[i].questionID + '</td><td>' + $('#ddlquestCategory option:selected').text() + '</td><td>' + data[i].questionSubCategory + '</td><td>' + data[i].questionDescription + '</td>     <td>' + mandat + '</td><td>' + isattach + '</td><td class="hide">' + data[i].questionSubCategoryID + '</td>   <td class="hide">' + data[i].criteriaLst + '</td>   </tr>')
 
                 }
             }
@@ -233,7 +251,7 @@ function fetchQuestionSubCategory(questcategoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-                 
+
             sessionStorage.setItem('hdnquestionSubCatgry', JSON.stringify(data));
             $('#tblsubcategory').empty();
             if (data.length > 0) {
@@ -252,7 +270,7 @@ function fetchQuestionSubCategory(questcategoryID) {
                 $('#searchsubcat').hide();
                 return true;
             }
-            
+
         },
         error: function (xhr, status, error) {
 
@@ -272,7 +290,7 @@ sessionStorage.setItem('hdnSubCategoryID', '0');
 sessionStorage.setItem('hdnquestionSubCatgry', '')
 jQuery("#txtsubCategory").keyup(function () {
     sessionStorage.setItem('hdnSubCategoryID', '0');
-    
+
 });
 
 jQuery("#txtsubCategory").blur(function () {
@@ -301,14 +319,14 @@ jQuery("#txtsubCategory").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-          if (map[item].questionSubCategoryID != "0") {
+        if (map[item].questionSubCategoryID != "0") {
             sessionStorage.setItem('hdnSubCategoryID', map[item].questionSubCategoryID);
-            if (pageState != 'edit') { 
+            if (pageState != 'edit') {
                 $("#tblFetchRFIQuestionMastr").empty();
                 fetchQuestionMasters($('#ddlquestCategory option:selected').val())
             }
-            
-         }
+
+        }
         else {
             gritternotification('Please select Sub Category properly!!!');
         }
@@ -319,7 +337,7 @@ jQuery("#txtsubCategory").typeahead({
 });
 
 function InsUpdQuestionSubcategory() {
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery("#checkboxactive").is(':checked')) {
@@ -334,11 +352,13 @@ function InsUpdQuestionSubcategory() {
         "QuestionSubCategoryID": parseInt($('#hdnSubcatID').val()),
         "QuestionSubCategory": $('#txtqSubcategory').val(),
         "isActive": status,
-        "customerId": parseInt(sessionStorage.getItem("CustomerID"))
+        "customerId": parseInt(sessionStorage.getItem("CustomerID")),
+
 
     }
     //alert(JSON.stringify(data))
     jQuery.ajax({
+
         url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionSubCategory",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: JSON.stringify(data),
@@ -348,12 +368,14 @@ function InsUpdQuestionSubcategory() {
         processData: true,
         dataType: "json",
         contentType: "application/json",
-        success: function (data) {            
+        success: function (data) {
+
             if (data == "1") {
+
                 subcaterror.hide();
                 $("#successmsg").html("Transaction Successful.");
                 subcatsuccess.show();
-                subcatsuccess.fadeOut(5000);               
+                subcatsuccess.fadeOut(5000);
                 fetchQuestionSubCategory(questcategoryID)
 
             }
@@ -361,7 +383,7 @@ function InsUpdQuestionSubcategory() {
                 subcaterror.hide();
                 $("#successmsg").html("Updation Successful.");
                 subcatsuccess.show();
-                subcatsuccess.fadeOut(5000);                
+                subcatsuccess.fadeOut(5000);
                 fetchQuestionSubCategory(questcategoryID)
 
             }
@@ -398,7 +420,7 @@ function editSubcategory(SubcatID, SubCatdesc, status) {
     } else {
         $('#checkboxactive').attr('checked', false)
     }
-    
+
 
 }
 
@@ -416,87 +438,119 @@ function mandatoryChange() {
     } else {
         mandatory = $('#ddlmandatory option:selected').val();
     }
-   
+
 }
+
+
+
+
+
+
 
 function insupdRFIQuestionMaster() {
 
-        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-        var status = "";
-        if (jQuery("#chkattachment").is(':checked')) {
-            status = "Y";
-        }
-        else {
-            status = "N";
-        }
-        var txtQuestiondescription = $('#txtQuestiondescription').val().replace(/'/g, " ")
-        var data = {
-            "QuestionCategoryID": parseInt($('#ddlquestCategory option:selected').val()),
-            "QuestionSubCategoryID": parseInt(sessionStorage.getItem("hdnSubCategoryID")),
-            "QuestionDescription": txtQuestiondescription,
-            "Mandatory": mandatory,
-            "Attachement": status,
-            "QuestionID": parseInt($('#hdnQuestmastrID').val()),
-            "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-            "QuestionApplicableFor": $("#ddlQuestionFor option:selected").val()
 
-        }
-       
-        jQuery.ajax({
-            url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionMaster",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            data: JSON.stringify(data),
-            type: "POST",
-            cache: false,
-            crossDomain: true,
-            processData: true,
-            dataType: "json",
-            contentType: "application/json",
-            success: function (data) {
-                
-                if (data== "1") {
-                    error.hide();
-                    $("#success").html("Transaction Successful.");
-                    success.show();
-                    fetchQuestionMasters(questcategoryID)
-                    success.fadeOut(5000);
+    var CriteriaDetails = [];
+
+    $('#tblvendorlist >tbody> tr').each(function () {
+        var Criteria = $('#txtCriteria', this).val();
+        var Score = parseFloat($('#txtScore', this).val());
+        // convert to number?
+
+        // (idem)
+        var item = { Criteria, Score }; // just assign to item
+        CriteriaDetails.push(item);
+        // don't use square brackets here
+    });
 
 
-                }
-                else if (data== '2') {
-                    error.hide();
-                    $("#success").html("Updation Successful.");
-                    success.show();
-                    fetchQuestionMasters(questcategoryID)
-                    success.fadeOut(5000);
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var status = "";
+    if (jQuery("#chkattachment").is(':checked')) {
+        status = "Y";
+    }
+    else {
+        status = "N";
+    }
 
-                }
-            },
-            error: function (xhr, status, error) {
+    var txtQuestiondescription = $('#txtQuestiondescription').val().replace(/'/g, " ")
+    var data = {
 
-                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                if (xhr.status === 401) {
-                    error401Messagebox(err.Message);
-                }
-                else{
-                    $('#error').html('You have some errors')
-                    error.show();
-                    error.fadeOut(5000)
-                }
-                return false;
-                jQuery.unblockUI();
+        "QuestionCategoryID": parseInt($('#ddlquestCategory option:selected').val()),
+        "QuestionSubCategoryID": parseInt(sessionStorage.getItem("hdnSubCategoryID")),
+        "QuestionDescription": txtQuestiondescription,
+        "Mandatory": mandatory,
+        "Attachement": status,
+        "criteriaLst": CriteriaDetails,
+        "QuestionID": parseInt($('#hdnQuestmastrID').val()),
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+        "QuestionApplicableFor": $("#ddlQuestionFor option:selected").val()
+
+
+    }
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionMaster",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        type: "POST",
+        cache: false,
+        crossDomain: true,
+        processData: true,
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+
+
+            if (data == "1") {
+                error.hide();
+                $("#success").html("Transaction Successful.");
+                success.show();
+                fetchQuestionMasters(questcategoryID)
+                success.fadeOut(5000);
+
+
             }
-           
-        });
-        resetRFIQuestionmaster();
-        jQuery.unblockUI();
-   
-    
+
+            else if (data == '2') {
+                error.hide();
+                $("#success").html("Updation Successful.");
+                success.show();
+                fetchQuestionMasters(questcategoryID)
+                success.fadeOut(5000);
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                $('#error').html('You have some errors')
+                error.show();
+                error.fadeOut(5000)
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+
+    resetRFIQuestionmaster();
+    // clearTable();
+    jQuery.unblockUI();
+
+    // window.location.reload();
+
+
 }
 
 
-function resetRFIQuestionmaster(){ 
-    pageState="add";
+function resetRFIQuestionmaster() {
+
+    pageState = "add";
     $('#submitbtnmaster').text('Submit');
     sessionStorage.setItem('hdnSubCategoryID', '0');
     $('#hdnQuestmastrID').val("0");
@@ -505,6 +559,7 @@ function resetRFIQuestionmaster(){
     $('#ddlmandatory').val('');
     $('#txtsubCategory').val('')
     $('#txtQuestiondescription').val('')
+
     jQuery('input:checkbox[name=chkattachment]').attr('checked', false);
     jQuery('#chkattachment').parents('span').removeClass('checked');
     $('#ddlquestCategory').attr('disabled', false)
@@ -514,40 +569,37 @@ function resetRFIQuestionmaster(){
 
 
 function updatequestMaster(RowID) {
+    debugger
+
+    FetchQuetionCriteria();
     var rowID = $('#' + RowID);
     pageState = 'edit';
     $('#ddlquestCategory').attr('disabled', 'disabled')
     $('#submitbtnmaster').text('Modify');
     $('#hdnQuestmastrID').val(rowID.find('td:eq(1)').text());
     $('#txtsubCategory').val(rowID.find('td:eq(3)').text());
-    sessionStorage.setItem('hdnSubCategoryID', rowID.find('td:eq(7)').text())   
-    
+    sessionStorage.setItem('hdnSubCategoryID', rowID.find('td:eq(7)').text())
     if (rowID.find('td:eq(5)').text() == "Mandatory") {
         $('#ddlmandatory').val('Y')
-          }
-       else {
+    }
+    else {
         $('#ddlmandatory').val('N')
     }
-    
     $('#txtQuestiondescription').val(rowID.find('td:eq(4)').text());
-    
+
     if (rowID.find('td:eq(6)').text() == "Required") {
         jQuery('input:checkbox[name=chkattachment]').attr('checked', true);
         jQuery('#chkattachment').parents('span').addClass('checked');
 
-          }
-       else {
+    }
+    else {
         jQuery('input:checkbox[name=chkattachment]').attr('checked', false);
         jQuery('#chkattachment').parents('span').removeClass('checked');
     }
 }
 
-
-
-
-
 jQuery("#search").keyup(function () {
- 
+
     jQuery("#tblFetchRFIQuestionMastr tr:has(td)").hide(); // Hide all the rows.
 
     var iCounter = 0;
@@ -572,9 +624,8 @@ jQuery("#search").keyup(function () {
         }
 
     });
+
 });
-
-
 jQuery("#searchPop-up").keyup(function () {
 
     jQuery("#tblsubcategory tr:has(td)").hide(); // Hide all the rows.
@@ -601,7 +652,178 @@ jQuery("#searchPop-up").keyup(function () {
         }
 
     });
+
 });
 
+function fetchRFIDetails() {
 
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var replaced = '', _selectedCat = new Array();
+    // alert(sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID') )
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (BidData) {
+
+
+
+            if (BidData.length > 0) {
+
+
+
+                if (BidData[0].vqProductCat.length > 0) {
+                    for (var i = 0; i < BidData[0].vqProductCat.length; i++) {
+                        _selectedCat.push(BidData[0].vqProductCat[i].categoryID);
+                    }
+                    $("#ddlCategoryMultiple").select2('val', _selectedCat).trigger("change");
+
+
+                }
+
+
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+    jQuery.unblockUI();
+
+
+}
+
+function fetchCategorymaster() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            jQuery("#ddlquestCategory").empty();
+            var vlal = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#ddlquestCategory").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
+                }
+                jQuery("#ddlquestCategory").trigger("change");
+                if (sessionStorage.getItem('CurrentVQID') != "0") {
+                    setTimeout(function () {
+                        fetchRFIDetails();
+                    }, 1000)
+                }
+            }
+            else {
+                jQuery("#ddlquestCategory").append('<tr><td>No categories found..</td></tr>');
+            }
+            // jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alert("error");
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+var vendorid = 0;
+
+function addvendor() {
+
+
+    var num = 0;
+    var maxinum = -1, i = 0;
+    $("#tblvendorlist tr:gt(0)").each(function () {
+        var this_row = $(this);
+        num = (this_row.closest('tr').attr('id')).substring(3, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
+
+    $('#tblvendorlist').append("<tr id=row" + i + "><td><button class='btn blue' id=addBtn" + i + " type='button' onclick='addvendor()'><i class='fa fa-plus'></i></button><button type='button' id=btnvendordelete" + i + " class='btn btn-danger' onclick='deleteLFrow(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td><td width='20%' id=vendorname" + i + " class=form-group ><input type='text' autocomplete='off'  id='txtCriteria' placeholder='Criteria'  /></td><td id=TDpolyticExp" + i + "></td></tr>")
+
+    $('#TDpolyticExp' + i).append(' <input type="text" id="txtScore" ' + i + ' placeholder="Score"  ' + i + '  </input>')
+
+
+
+    if (i == 0) {
+        $('#btnvendordelete' + i).hide()
+    }
+    else {
+        $('#btnvendordelete' + i).show()
+    }
+}
+function fnclearcss(index) {
+    $('#vendorSearch' + index).css("border", "1px solid #e5e5e5");
+}
+
+function deleteLFrow(rowid) {
+
+    $('#row' + rowid).remove();
+
+}
+
+
+
+/*function clearTable() {
+
+    var Table = document.getElementById("tblvendorlist");
+    Table.innerHTML = "";
+}
+*/
+
+function FetchQuetionCriteria(applicableFor) {
+    debugger
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/FetchQuestionCategory/?applicableFor=" + applicableFor,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            console.log(data)
+
+
+            for (var i = 0; i < data.length; i++) {
+
+                if (data.length > 0) {
+                    $('#searchmaster').show();
+                } else {
+                    $('#tblvendorlist').append('<tr id=rowid' + i + '><td>' + data[i].txtCriteria + '</td>   <td>' + data[i].txtScore + '</td></tr>')
+                }
+            }
+        }
+    });
+}
 

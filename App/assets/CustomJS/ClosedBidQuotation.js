@@ -1248,7 +1248,7 @@ var allUsers
 function fetchRegisterUser() {
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID')),
+        "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     } 
     jQuery.ajax({

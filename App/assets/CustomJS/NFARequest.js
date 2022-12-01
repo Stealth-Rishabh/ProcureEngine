@@ -538,7 +538,7 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
-                CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);;
+                CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
 
 
 
