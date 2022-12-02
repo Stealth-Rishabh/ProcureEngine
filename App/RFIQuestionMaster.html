@@ -153,11 +153,11 @@
                                             <div class="col-lg-8">
                                                 <select class="form-control" id="ddlQuestionFor" name="ddlQuestionFor"
                                                         onchange="getQuestionForSubCategory()">
-                                                    <option value="">Select</option>
+                                                    <option value="SE">Select</option>
                                                     <!--<option value="VRB">VQL and RFI Both</option>-->
                                                     <option value="VQL">Vendor Qualification</option>
                                                     <option value="RFI">Request For Information (RFI)</option>
-                                                    <option value="VA">Vendor Assistment</option>
+                                                    <option value="VAA">Vendor Assestment</option>
                                                 </select>
                                             </div>
 
@@ -190,13 +190,13 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-group" >
-                                        <label class="col-lg-4 col-sm-2 control-label">Item/Service<span class="required">*</span></label>
-                                        <div class="col-lg-8">
+                                    <!-- <div class="form-group" >
+        <label class="col-lg-4 col-sm-2 control-label">Item/Service<span class="required">*</span></label>
+        <div class="col-lg-8">
 
-                                            <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4"></select>
-                                        </div>
-                                    </div>
+            <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4" multiple></select>
+        </div>
+    </div>-->
 
 
                                     <div class="form-group">
@@ -206,13 +206,37 @@
                                         <div class="col-lg-8">
                                             <textarea id="txtQuestiondescription" name="txtQuestiondescription" class="form-control" rows="4"
                                                       autocomplete="off" placeholder="Description" onkeyup="replaceQuoutesFromString(this)"></textarea>
-
-
                                         </div>
                                     </div>
 
+                                    <div class="col-md-4">
+                                    </div>
+                                   
+                                    <div class="col-md-8" id="POItablediv">
+                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                            <thead >
+                                                <tr>
+                                                   <th></th>
+                                                    <th id=" crite">
+                                                        CRITERIA
+
+                                                    </th>
+                                                    <th id="scor">
+                                                       SCORE
+                                                    </th>
+                                                  
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tdata">
+
+                                            </tbody>
 
 
+
+
+                                        </table>
+                                        
+                                    </div>
 
 
                                     <div class="form-group">
@@ -237,14 +261,14 @@
                                             Check if attachment is required
                                         </label>
                                     </div>
-      
+
 
 
 
                                     <div class="form-actions fluid">
                                         <div class="row">
                                             <div class="col-md-offset-4 col-md-9">
-                                                <button type="submit" id="submitbtnmaster" class="btn yellow ">
+                                                <button type="submit" id="submitbtnmaster" class="btn yellow">
                                                     Submit
                                                 </button>
                                                 <button type="button" id="clear-btn" class="btn green" onclick="resetRFIQuestionmaster()">
@@ -254,7 +278,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                        </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -435,7 +459,9 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function () {
+           
             Pageloaded()
+           
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                  window.location = sessionStorage.getItem('MainUrl');
@@ -456,10 +482,10 @@
             setCommonData();
             FormValidate();
             fetchQuestionCategory();
-            fetchCategorymaster()
+         //  fetchCategorymaster();
             //fetchRFIDetails();
-            $("#ddlCategoryMultiple").select2();
-
+          //  $("#ddlCategoryMultiple").select2();
+            addvendor();
         });
     </script>
     <!-- END JAVASCRIPTS -->
