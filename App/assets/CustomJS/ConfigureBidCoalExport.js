@@ -1,22 +1,7 @@
 $("#cancelBidBtn").hide();
 
-jQuery(document).ready(function () {
-    /*$("#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtitembidduration").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
-        alias: "decimal",
-        rightAlign: false,
-        groupSeparator: ",",
-        radixPoint: ".",
-        autoGroup: true,
-        integerDigits: 40,
-        digitsOptional: true,
-        allowPlus: false,
-        allowMinus: false,
-        clearMaskOnLostFocus: true,
-        supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true,
-        autoUnmask: true
-    });*/
-});
+$('#file-excelparameter').change(handleFileparameter);
+
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -26,6 +11,25 @@ jQuery("#txtApprover").keyup(function () {
 });
 sessionStorage.setItem('hdnApproverid', 0);
 
+var _BidID;
+if (window.location.search) {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+
+    if (_BidID == null) {
+        _BidID = 0;
+        sessionStorage.setItem('CurrentBidID', 0)
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchCoalDetails();
+    }
+}
+
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
         var data = allUsers;
@@ -548,14 +552,20 @@ function ValidateVendor() {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
 

@@ -1,5 +1,9 @@
 $("#cancelBidBtn").hide();
+$('#file-excelparameter').change(handleFileparameter);
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 //abheedev bug 507
+var _BidID;
+
 jQuery(document).ready(function () {
     $("#txtWeightageval").inputmask({ 
        
@@ -20,6 +24,9 @@ jQuery(document).ready(function () {
     });
 
 });
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -645,14 +652,20 @@ function ValidateVendor() {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
 

@@ -1,15 +1,7 @@
 var selectedgroup = [];
 var selectedgroupid = [];
 var cc = 0;
-/* if ($("#ddlTypeofProduct").select2('data').length) {
-    $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
-        selectedid.push(item.id);
-        selected.push(item.text);
-        $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
-        result += selectedidss.concat(item.id, "#");
 
-    });
-    straddedproduct = result.slice('#', -1);*/
 function fnaddPurchaseOrg() {
     selectedgroup = [];
     selectedgroupid = [];
@@ -57,10 +49,7 @@ function deleterow(trid, rowcount, gid) {
 
     $('#' + trid.id).remove()
     cc = cc - 1;
-    /* selectedgroupid = jQuery.grep(selectedgroupid, function(value) {
-         return value != gid;
-     });
-     $("#ddlPurchasegroup").val(selectedgroupid).trigger('change')*/
+    
     if (jQuery('#tblpurchaseOrg tr').length == 1) {
         $('#theadgroup').addClass('hide');
     }
@@ -238,13 +227,20 @@ function RegisterUser() {
 
 
 function fetchRegisterUser() {
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
+       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
             jQuery("#tblRegisterUsers > tbody").empty();

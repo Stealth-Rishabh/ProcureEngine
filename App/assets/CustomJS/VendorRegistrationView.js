@@ -213,7 +213,7 @@ function DownloadFile(aID) {
 }
 
 function ApproveRFI(For) {
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];
@@ -273,7 +273,7 @@ function ApproveRFI(For) {
             contentType: "application/json",
             success: function (data) {
 
-                bootbox.alert("Supplier approved successfully.", function () {
+                bootbox.alert("Data updated successfully.", function () {
                     window.location = sessionStorage.getItem("HomePage")
                     return false;
                 });

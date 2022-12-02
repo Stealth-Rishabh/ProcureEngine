@@ -203,13 +203,19 @@ function fetchPendingBid() {
         $('#ULCustomers').val('0')
         sessionStorage.setItem('CustomerID', '0')
     }
+    var userData = {
+        "UserID": sessionStorage.getItem('VendorId'),
+        "CustomerID": sessionStorage.getItem('CustomerID')
+    }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardData/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardData/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardData",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
+        type: "POST",
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userData),
         dataType: "json",
         success: function (data) {
             jQuery("#div_portlet").removeClass();
@@ -663,14 +669,20 @@ function fetchBidDataDashboard(requesttype) {
     if ($('#ULCustomers').val() != null) {
         custid = $('#ULCustomers').val()
     }
-
+    var userData = {
+        "UserID": sessionStorage.getItem('VendorId'),
+        "CustomerID": custid,
+        "RequestType": requesttype
+    }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&RequestType=" + requesttype + "&CustomerID=" + custid,
+        //url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails/?VendorID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&RequestType=" + requesttype + "&CustomerID=" + custid,
+        url: sessionStorage.getItem("APIPath") + "VendorDashboard/VendorfetchDashboardBidDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
+        type: "POST",
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
             $('#totalrecord').text('');

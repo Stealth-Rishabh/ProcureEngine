@@ -17,9 +17,18 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-
+        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+            $('#divNFADetails').hide();
+            $('#divPPCDetails').show();
+            Bindtab2DataforPreview();
+        }
+        else {
+            BindSaveparams();
+            $('#divNFADetails').show();
+            $('#divPPCDetails').hide();
+        }
         GetOverviewmasterbyId(idx);
-        BindSaveparams();
+
         BindAttachmentsOfEdit();
         fetchRegisterUser();
         FetchRecomendedVendor();
@@ -53,22 +62,117 @@ $(document).ready(function () {
             //$('#btnwithdraw').show()
         }
 
-
     }
 
 
 });
+function Bindtab2DataforPreview() {
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            if (data[0].azureDetails.length > 0) {
+                $('#tblvendorsprev').empty();
+                jQuery('#lblintroduction').html(data[0].azureDetails[0].introduction)
+                jQuery('#lblcostbenfit').html(data[0].azureDetails[0].costBenefitAnalysis)
+                jQuery('#lblrepeatorder').html(data[0].azureDetails[0].recomRepeatOrder == 'Y' ? 'Yes' : 'No')
+                jQuery('#lblbudgetavail').html(data[0].azureDetails[0].budgetavailabilty);
+                jQuery('#lblpartyordergiven').html(data[0].azureDetails[0].workordergiven);
+                jQuery('#lblawardL1').html(data[0].azureDetails[0].awardcontractthanL1);
+                jQuery('#lbllessthan3quotes').html(data[0].azureDetails[0].lessthan3Quotes);
+                jQuery('#lblcompletionsechdule').html(data[0].azureDetails[0].completionsechdule);
+                jQuery('#lblrationalspliting').html(data[0].azureDetails[0].splitingorder01Vendor);
+                jQuery('#lblgeneralremarks').html(data[0].azureDetails[0].generalRemarks);
+                jQuery('#lblissuingrfqtovendor').html(data[0].azureDetails[0].issuingRFQtoVendor);
+                jQuery('#lblenquirynotsent').html(data[0].azureDetails[0].enquirynotsentvendors);
 
+                jQuery('#lblenquiryissuedon').html(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
+                jQuery('#lblenquiryissuedthrough').html(data[0].azureDetails[0].enquiryIssuedthrogh);
+                jQuery('#lbllowestpriceoffer').html(data[0].azureDetails[0].recomOrderLowPriceOffer == 'Y' ? 'Yes' : 'No');
+                jQuery('#lblsupportedenclosure').html(data[0].azureDetails[0].recomSuppEnclosure);
+                jQuery('#lblfinalprice').html(data[0].azureDetails[0].recomCompFinalPrice);
+                jQuery('#lblquotationparties').html(data[0].azureDetails[0].recomQuotationofParties);
+                jQuery('#lblorderrecomparty').html(data[0].azureDetails[0].workOrderRecomParty);
+                jQuery('#lblpurchaseorder').html(data[0].azureDetails[0].purchaseOrder);
+                jQuery('#lblinternalcost').html(data[0].azureDetails[0].internalCostestimate);
+                jQuery('#lblterms').html(data[0].azureDetails[0].terms);
+                jQuery('#lblscopeofwork').html(data[0].azureDetails[0].scopeofwork);
+                jQuery('#lbldeliverables').html(data[0].azureDetails[0].deliverables);
+                jQuery('#lblapymentterms').html(data[0].azureDetails[0].paymentterms);
+                jQuery('#lbltaxesduties').html(data[0].azureDetails[0].applicableTaxduty);
+                jQuery('#lblLD').html(data[0].azureDetails[0].whetherLDApplicable);
+                jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
+                jQuery('#lblPRDetails').html(data[0].azureDetails[0].prDetails);
+                if (data[0].biddingVendor.length > 0) {
+
+                    $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
+                    for (i = 0; i < data[0].biddingVendor.length; i++) {
+
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            TPI = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "NA") {
+                            TPI = "NA";
+                        }
+                        else {
+                            TPI = "No";
+                        }
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
+                            validatescm = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
+                            validatescm = "NA";
+                        }
+                        else {
+                            validatescm = "No";
+                        }
+
+                        //**** Prev vendor Details Start
+                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
+                        //**** Prev vendor Details end
+
+                    }
+                }
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+}
 function fetchRegisterUser() {
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID) + "&Isactive=N",
+        //url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID) + "&Isactive=N",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         async: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
 
@@ -281,6 +385,7 @@ function fetchApproverStatus() {
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
                     ApprovalType = data[0].approvalType;
+
                     if (data[i].statusCode == 10) {
 
                         counterColor = counterColor + 1;
@@ -983,7 +1088,6 @@ function fnsubmitQueryByCreator() {
             "PendingOn": "A"
         }
 
-        console.log(JSON.stringify(data));
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1105,7 +1209,6 @@ function submitQuery() {
                 "PendingOn": "C"
             }
 
-            console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1216,7 +1319,6 @@ function withdrawquery() {
             "PendingOn": "X"
 
         }
-        console.log(JSON.stringify(data))
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1325,7 +1427,7 @@ function DisableActivityRecall() {
     });
 }
 
-// abheedev backlog 471
+
 function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
     window.open("viewNfaReport.html?param=" + encrypdata, "_blank")
