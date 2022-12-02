@@ -209,9 +209,10 @@ function fnArchive(RFQID) {
 
 function fetchDashboardData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var custid = parseInt(sessionStorage.getItem('CustomerID'))
     var userData = {
         "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": sessionStorage.getItem('CustomerID')
+        "CustomerID": custid
     }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",

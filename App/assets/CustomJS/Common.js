@@ -10,38 +10,39 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
-$(".thousandsep").inputmask(
-    {
-        alias: "decimal",
 
-        rightAlign: false,
+    $(".thousandsep").inputmask(
+        {
+            alias: "decimal",
 
-        numericInput: true,
+            rightAlign: false,
 
-        groupSeparator: ",",
+            numericInput: true,
 
-        radixPoint: ".",
+            groupSeparator: ",",
 
-        autoGroup: true,
+            radixPoint: ".",
 
-        integerDigits: 40,
+            autoGroup: true,
 
-        digitsOptional: true,
+            integerDigits: 40,
 
-        allowPlus: false,
+            digitsOptional: true,
 
-        allowMinus: false,
+            allowPlus: false,
 
-        clearMaskOnLostFocus: true,
+            allowMinus: false,
 
-        supportsInputType: ["text", "tel", "password"],
+            clearMaskOnLostFocus: true,
 
-        removeMaskOnSubmit: true,
+            supportsInputType: ["text", "tel", "password"],
 
-        //autoUnmask: true
+            removeMaskOnSubmit: true,
 
-    }
-);
+            //autoUnmask: true
+
+        }
+    );
 
 
 
@@ -132,17 +133,14 @@ function SearchInGridview(tableName, value) {
 }
 
 //abheedev bug 385
-
-function localecommaseperator(ele) {
-
-
+//bug 569 abheedev 01/12/2022
+function localecommaseperator(ele) {  
+    var regex = /[^\d,]+/g
     var str = ele.value;
-
-    if (str == NaN || str == '') {
+    if ((regex.test(str))) {
         str = "";
         $(ele).val("")
     }
-
     str = str.replaceAll(',', "")
     if (str != "") {
         str = parseFloat(str);

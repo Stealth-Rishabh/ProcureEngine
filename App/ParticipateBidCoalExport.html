@@ -28,9 +28,10 @@
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
-    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />    
     <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/ParticipateBid.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
@@ -61,128 +62,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-    <style>
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-
-
-
-        .panel-group .panel {
-            margin-bottom: 0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .panel-group .panel-heading + .panel-collapse .panel-body {
-            border-top: 0px solid #ddd !important;
-        }
-
-        .panel-body {
-            padding: 0px !important;
-        }
-
-        .panel {
-            margin-bottom: 10px !important;
-            background-color: #fff;
-            border: 0px solid transparent !important;
-            border-radius: 4px;
-        }
-        /* Button used to open the chat form - fixed at the bottom of the page */
-        .open-button {
-            background-color: #555;
-            color: white;
-            padding: 16px 20px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.8;
-            position: fixed;
-            bottom: 23px;
-            right: 28px;
-            width: 80px;
-        }
-
-        /* The popup chat - hidden by default */
-        .chat-popup {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            right: 15px;
-            border: 3px solid #f1f1f1;
-            z-index: 9;
-        }
-
-        /* Add styles to the form container */
-        .form-container {
-            width: 300px;
-            max-width: 400px;
-            padding: 10px;
-            background-color: white;
-        }
-
-        /* Full-width textarea */
-        /*.form-container textarea {
-                    width: 100%;
-                    /*padding: 15px;
-                    margin: 5px 0 22px 0;*/
-        border: none; background: #f1f1f1; resize: none; min-height: 50px;
-        }
-
-        */
-        /* When the textarea gets focus, do something */
-        .form-container textarea:focus {
-            background-color: #ddd;
-            outline: none;
-        }
-
-        /* Set a style for the submit/send button */
-        /*.form-container .btn {
-                    background-color: #4CAF50;
-                    color:x white;
-                    padding: 16px 20px;
-                    border: none;
-                    cursor: pointer;
-                    width: 100%;
-                    margin-bottom: 10px;
-                    opacity: 0.8;
-                }*/
-
-        /* Add a red background color to the cancel button */
-        .form-container .cancel {
-            background-color: red;
-        }
-
-        /* Add some hover effects to buttons */
-        /*.form-container .btn:hover, .open-button:hover {
-                    opacity: 1;
-                }*/
-
-        .page-quick-sidebar-wrapper {
-            right: -310px;
-            width: 310px;
-        }
-
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
-                margin-left: 0px;
-            }
-
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
-                width: 310px !important;
-            }
-
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
-                padding: 20px 10px 15px 10px;
-            }
-    </style>
-
+  
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <!--page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-->

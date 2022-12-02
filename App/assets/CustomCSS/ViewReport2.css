@@ -1,0 +1,72 @@
+﻿@media print {
+    .pagebreak {
+        page-break-before: always;
+    }
+    /* page-break-after works, as well */
+}
+
+@page {
+    size: landscape;
+}
+
+@page {
+    size: A4 landscape;
+    margin: 10%;
+}
+
+@media screen {
+    div.divFooter {
+        display: none;
+    }
+}
+
+@media print {
+    div.divFooter {
+        position: fixed;
+        bottom: 0;
+    }
+}
+
+* {
+    -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+    color-adjust: exact !important; /*Firefox*/
+}
+
+.mainbody {
+    background: url('../agileapt/assets/aalogo.png');
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: contain;
+    background-position: center !important;
+    background-repeat: repeat-x !important;
+    background-attachment: fixed;
+}
+
+.bg-image {
+    /* The image used */
+    background-image: url('../agileapt/assets/aalogo.png');
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: repeat !important;
+    background-size: cover;
+}
+
+.watermark {
+    /*position: fixed;*/
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: auto 100%;
+    /*background-size: contain;*/
+    /*Background-image: url("../agileapt/assets/aalogo.png");*/
+    Background-repeat: repeat;
+    opacity: 0.1;
+    z-index: -999999;
+}

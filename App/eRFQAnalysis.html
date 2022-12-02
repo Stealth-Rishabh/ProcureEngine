@@ -39,6 +39,8 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
 
     <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -73,72 +75,7 @@
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-    <style>
-        .container {
-            height: 95px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .greencls {
-            color: green !important;
-        }
-
-        .bluecls {
-            color: blue !important;
-        }
-
-        /*abheedev backlog 333*/
-        thead {
-            position: -webkit-sticky; /* Safari */
-            position: sticky;
-            z-index: 1;
-            top: 0;
-            border: 2px solid darkgrey;
-        }
-
-
-        .table-scrollable {
-            overflow-y: auto !important;
-            max-height: 500px;
-        }
-
-        .fixed-header {
-            position: fixed;
-        }
-
-
-
-
-        /*abhhedev backlog335*/
-        .hovertext {
-            position: relative;
-        }
-
-            .hovertext:before {
-                content: attr(data-hover);
-                visibility: hidden;
-                opacity: 0;
-                width: 300px;
-                opacity: .9;
-                color: rgb(6, 6, 6);
-                background-color: #44b6ae;
-                text-align: center;
-                border-radius: 5px;
-                padding: 5px 5px;
-                transition: opacity 1s ease-in-out;
-                position: absolute;
-                z-index: 1;
-                right: 100%;
-                bottom: 20px;
-            }
-
-            .hovertext:hover:before {
-                opacity: .9;
-                visibility: visible;
-            }
-    </style>
+   
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">

@@ -1,4 +1,5 @@
 $("#cancelBidBtn").hide();
+$('#file-excelparameter').change(handleFileparameter);
 $("#spnParamAttach").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
