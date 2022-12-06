@@ -8,10 +8,6 @@ if (RFQID != undefined) {
     fetchrfqcomprative();
     fetchAttachments();
 }
-
-
-
-
 var Vendor;
 function fetchrfqcomprative() {
 
@@ -812,11 +808,3 @@ $('#btnPDF').click(function () {
     win.focus();
 
 })
-
-
-
-
-
-
-
-

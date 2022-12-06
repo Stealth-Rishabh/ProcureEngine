@@ -450,6 +450,17 @@ var FormWizard = function () {
 
                     }
                     else if (index == 3) {
+                        var isOtherTerms = "Y";
+                        $("#tblTermsCondition> tbody > tr").each(function (index) {
+                            index = index + 1;
+                            var this_row = $(this);
+                            if ($(this).find('span').attr('class') == 'checked') {
+                                if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                                    isOtherTerms = "N";
+                                    $('#terms' + index).css("border", "1px solid red")
+                                }
+                            }
+                        });
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
 
                             $('.alert-danger').show();
@@ -459,6 +470,13 @@ var FormWizard = function () {
                             return false;
 
                         }
+                        else if (isOtherTerms == "N") {
+                            $('.alert-danger').show();
+                            $('#spandanger').html('').html('Please fill Other Terms & Condition properly!');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
+                            return false;
+                        }
                         else if (jQuery('#fileToUpload1').val() != "") {
                             $('.alert-danger').show();
                             $('#spandanger').html('Your file is not attached. Please do press "+" button after uploading the file.');
@@ -467,8 +485,10 @@ var FormWizard = function () {
                             return false;
                         }
                         else {
-                            fnsavetermscondition('N');
-                            fnsaveAttachmentsquestions();
+                            if (isOtherTerms == "Y") {
+                                fnsavetermscondition('N');
+                                fnsaveAttachmentsquestions();
+                            }
                         }
                     }
                     handleTitle(tab, navigation, index);
@@ -885,22 +905,40 @@ function CheckTerms(event, ID) {
     }
 
 }
+$(document).on('keyup', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
 function fnsavetermscondition(isbuttonclick) {
     var checkedValue = '2~I~#';
-    var checkedOtherTerms = '';
+    var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
+        index = index + 1;
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
             if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
-            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0' && $('#terms' + index).val() != "" && $('#terms' + index).val() != null) {
                 checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            else if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                isOtherTerms = "N";
+                $('#terms' + index).css("border", "1px solid red")
             }
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
     });
-    if (checkedValue != '') {
+
+    if (isOtherTerms == "N" && isbuttonclick == "Y") {
+        $('.alert-danger').show();
+        $('#spandanger').html('').html('Please fill Other Terms & Condition properly!');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000)
+        return false;
+    }
+    else if (checkedValue != '' && isOtherTerms == "Y") {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QueryString": checkedValue,
@@ -952,6 +990,7 @@ function fnsavetermscondition(isbuttonclick) {
         $('#spandanger').html('Please Check Terms & Condition properly!');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000)
+        return false;
     }
 }
 function fnsaveAttachmentsquestions() {
@@ -1262,7 +1301,6 @@ function GetQuestions() {
 
 var allUsers
 function fetchRegisterUser() {
-    debugger;
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     var data = {
         "CustomerID": custId,
@@ -1280,7 +1318,6 @@ function fetchRegisterUser() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger;
             if (data.length > 0) {
                 allUsers = data;
             }
@@ -3348,7 +3385,7 @@ function addMoreTermsCondition() {
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
-    
+
 }
 function deleteterms(icount) {
     $('#tr' + icount).remove();

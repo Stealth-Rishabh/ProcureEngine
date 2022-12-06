@@ -8,8 +8,6 @@ $('.maxlength').maxlength({
     alwaysShow: true
 });
 
-
-
 function fetchReguestforQuotationDetails() {
 
     jQuery.ajax({
@@ -34,11 +32,6 @@ function fetchReguestforQuotationDetails() {
                     $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
                     for (i = 0; i < RFQData[0].vendors.length; i++) {
                         $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-
-                        $('#tblvendors').append("<tr><td class=hide>" + RFQData[0].vendors[i].vendorId + "</td><td>" + RFQData[0].vendors[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-
-
-
                         $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
                         $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
                         $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + '  checked />No</label></div>')
@@ -134,7 +127,7 @@ function frmAzurePPCForm() {
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
     var Data = {
-        "PPCID": parseInt($('#hdnPPCID').val()),
+        "nfaID": parseInt($('#hdnPPCID').val()),
         "RFQID": parseInt(RFQID),
         "BidID": 0,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
@@ -149,7 +142,7 @@ function frmAzurePPCForm() {
         "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
-        "EnquiryIssuedOn": jQuery('#RFQConfigueron').text(),
+        "EnquiryIssuedOn": new Date(jQuery('#RFQConfigueron').text()),//jQuery('#RFQConfigueron').text(),
         "EnquiryIssuedthrogh": EnquiryIssuedthrogh,
         "RecomOrderLowPriceOffer": LowestPriceOffer,
         "RecomRepeatOrder": repeatorder,
@@ -171,8 +164,8 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails//BiddingVendorQuery
 
     };
-     //alert(JSON.stringify(Data))
-    //console.log(JSON.stringify(Data))
+    //alert(JSON.stringify(Data))
+    console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -180,8 +173,8 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            
-            if (data == '1') {
+
+            if (parseInt(data) > 1 && parseInt(data) != 2) {
                 $('#spansuccess1').html("PPC Form Saved Successfully...");
                 success.show();
                 success.fadeOut(5000);
@@ -263,7 +256,7 @@ function fetchAzPPcFormDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID + "&BidID=0",
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + RFQID + "&BidID=0&nfaID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -288,7 +281,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtrationalrfqvendor').val(data[0].azureDetails[0].issuingRFQtoVendor);
                 jQuery('#txtenquirynotsent').val(data[0].azureDetails[0].enquirynotsentvendors);
 
-                jQuery('#RFQConfigueron').val(data[0].azureDetails[0].enquiryIssuedOn);
+                jQuery('#RFQConfigueron').val(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
 
                 // alert(data[0].AzureDetails[0].EnquiryIssuedthrogh)
                 if (data[0].azureDetails[0].recomOrderLowPriceOffer == "Y") {
@@ -386,7 +379,7 @@ function fetchAzPPcFormDetails() {
                             $("#TPIN" + i).removeAttr("checked");
                             $("#TPIY" + i).removeAttr("checked");
                         }
-                        
+
                         else {
                             $("#TPIY" + i).removeAttr("checked");
                             $("#TPIN" + i).attr("checked", "checked");

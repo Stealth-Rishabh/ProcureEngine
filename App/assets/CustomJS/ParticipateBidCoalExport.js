@@ -911,7 +911,7 @@ function fetchBidHeaderDetails(bidId) {
     //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
 
     jQuery.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },

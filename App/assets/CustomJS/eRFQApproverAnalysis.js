@@ -1043,19 +1043,20 @@ function submitTechnicalQuery() {
                 dataType: "json",
                 success: function (data) {
 
-                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .", function () {
-                        setTimeout(function () {
-                            $('#btnTechquery').attr('disabled', 'disabled')
-                            $('#btnSubmitApp').attr('disabled', 'disabled')
-                            $('#btnSubmitApp').removeClass('green').addClass('default')
-                            $('#btnwithdraw').show()
-                            //$('#btnmsz').removeClass('hide')
-                            $("#RaiseQuery").modal('hide');
+                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .").on("shown.bs.modal", function (e) {
+                        //setTimeout(function () {
+                        $('#btnTechquery').attr('disabled', 'disabled')
+                        $('#btnSubmitApp').attr('disabled', 'disabled')
+                        $('#btnSubmitApp').removeClass('green').addClass('default')
+                        $('#btnwithdraw').show()
+                        //$('#btnmsz').removeClass('hide')
+                        $("#RaiseQuery").modal('hide');
 
-                            jQuery.unblockUI();
-                        }, 1000);
+                        jQuery.unblockUI();
+                        return true;
+                        //}, 1000);
                     });
-                    return;
+
                 },
                 error: function (xhr, status, error) {
 
@@ -1652,17 +1653,17 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-          /*  bootbox.alert("Transaction Successful..", function () {
-                return true;
-                window.location = "index.html";
-
-            });*/
+            /* bootbox.alert("Transaction Successful..", function () {
+                 return true;
+                 window.location = "index.html";
+                
+             });*/
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
                 return false;
-            },2000) 
-                );
+            }, 2000)
+            );
         },
         error: function (xhr, status, error) {
 
@@ -1808,10 +1809,15 @@ function AwardCommeRFQ() {
                 crossDomain: true,
                 dataType: "json",
                 success: function () {
-                    bootbox.alert("Transaction Successful..", function () {
+                    /* bootbox.alert("Transaction Successful..", function () {
+                         window.location = "index.html";
+                         return false;
+                     });*/
+                    bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
                         window.location = "index.html";
                         return false;
-                    });
+                    }, 2000)
+                    );
 
                 },
                 error: function (xhr, status, error) {
@@ -1862,10 +1868,16 @@ function fnFWDeRFQ() {
         dataType: "json",
         success: function (data) {
 
-            bootbox.alert("Transaction Successful..", function () {
+            /*bootbox.alert("Transaction Successful..", function () {
                 window.location = "index.html";
                 return false;
-            });
+            });*/
+            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
+                window.location = "index.html";
+                return false;
+            }, 2000)
+            );
 
 
 
@@ -1935,10 +1947,16 @@ function ApprovalApp() {
             dataType: "json",
             success: function (data) {
 
-                bootbox.alert("Transaction Successful..", function () {
+                /* bootbox.alert("Transaction Successful..", function () {
+                     window.location = "index.html";
+                     return false;
+                 });*/
+                bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
                     window.location = "index.html";
                     return false;
-                });
+                }, 2000)
+                );
 
             },
             error: function (xhr, status, error) {
