@@ -48,13 +48,20 @@ function FetchAllCustomer() {
 }
 function FetchAllpendingWith() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var CustID = parseInt(jQuery("#ddlCustomer option:selected").val());
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingWith/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: APIPath + "BidVendorSummary/fetchAllPendingWith/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val(),
+        //url: APIPath + "BidVendorSummary/fetchAllPendingWith",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        //data: JSON.stringify(bidRequestObj),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -90,15 +97,22 @@ function FetchAllpendingWith() {
 }
 function FetchViewAllPendingBids() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+    var CustID = parseInt(jQuery("#ddlCustomer option:selected").val())
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=0",
+        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype option:selected").val() + "&PendingOn=0",
+        //url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: '',
         cache: false,
         crossDomain: true,
+        //data:JSON.stringify(bidRequestObj),
         dataType: "json",
         success: function (BidData) {
             jQuery("#tbldetails").empty();
@@ -202,12 +216,18 @@ function FetchViewAllPendingBids() {
 function FetchAllCloseBids() {
    // FetchAllpendingWith();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=" + $('#ddlPendingwith').val(),
+        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&PendingOn=" + $('#ddlPendingwith').val(),
+        //url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        //data: JSON.stringify(bidRequestObj),
         cache: false,
         crossDomain: true,
         dataType: "json",

@@ -209,19 +209,21 @@ function fnArchive(RFQID) {
 
 function fetchDashboardData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var custId = parseInt(sessionStorage.getItem('CustomerID'));
     var userData = {
         "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": sessionStorage.getItem('CustomerID')
+        "CustomerID": custId
     }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?CustomerID=" + custId,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
+        type: "GET",
         cache: false,
         crossDomain: true,
-        data: JSON.stringify(userData),
+        //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
 
@@ -504,20 +506,22 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
+    var custId = parseInt(sessionStorage.getItem('CustomerID'))
     var userData = {
         "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": sessionStorage.getItem('CustomerID'),
+        "CustomerID": custId,
         "RequestType": requesttype
     }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + custId,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
+        type: "GET",
         cache: false,
         crossDomain: true,
-        data: JSON.stringify(userData),
+        //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
 

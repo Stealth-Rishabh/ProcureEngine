@@ -244,13 +244,19 @@ function fetchUserDetails() {
 
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var userReqObj = {
+        "UserID": sessionStorage.getItem('UserID'),
+        "UserType": sessionStorage.getItem('UserType')
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
 
@@ -327,13 +333,19 @@ function deleterow(trid, rowcount, gid) {
 function fetchVendorDetails() {
 
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var userReqObj = {
+        "UserID": sessionStorage.getItem('VendorId'),
+        "UserType": sessionStorage.getItem('UserType')
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
             let detail = JSON.parse(data[0].jsondata);
@@ -466,14 +478,20 @@ function fetchMyProfileVendor() {
 
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
+    var userReqObj = {
+        "UserID": sessionStorage.getItem('VendorId'),
+        "UserType": sessionStorage.getItem('UserType')
+    }
     $("#ddlpreferredTime").val(tzID)
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + sessionStorage.getItem('VendorId') + "&UserType=" + sessionStorage.getItem('UserType') + "&CustomerID=" + sessionStorage.getItem("CustomerID"),
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + sessionStorage.getItem('VendorId') + "&UserType=" + sessionStorage.getItem('UserType') + "&CustomerID=" + sessionStorage.getItem("CustomerID"),
+        url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
 

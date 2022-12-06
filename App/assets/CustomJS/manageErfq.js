@@ -454,7 +454,8 @@ function fetchReguestforQuotationDetails(RFQID) {
     $("#eventDetailstab_0").show();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1247,7 +1248,8 @@ function fetchInvitedVendorList(rfqid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=Invited",
+        //url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=Invited",
+        url: APIPath + "eRFQReport/eRFQVendorList/?RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=Invited",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -1281,7 +1283,8 @@ function FetchVenderNotInvited(rfqid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=NOTInvited",
+        //url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=NOTInvited",
+        url: APIPath + "eRFQReport/eRFQVendorList/?RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=0" + "&Flag=NOTInvited",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -1320,7 +1323,8 @@ function FetchVendorNotsubmittedQuotesPassreset(rfqid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=NotCloseQuot",
+        //url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=NotCloseQuot",
+        url: APIPath + "eRFQReport/eRFQVendorList/?RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=NotCloseQuot",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -1475,12 +1479,18 @@ function resetpasswordForBidVendor() {
         return false;
     }
     else {
+        var vendorMailReqObj = {
+            "VendorEmail": sessionStorage.getItem("hdnselectedEmail"),
+            "EventID": parseInt(sessionStorage.getItem("hdnrfqid")),
+            "VendorID": parseInt(sessionStorage.getItem("hdnselectedvendor"))
+        }
 
         jQuery.ajax({
-            url: APIPath + "eRFQReport/ResetPasswordeRFQ/?VendorEmail=" + sessionStorage.getItem("hdnselectedEmail") + "&RFQID=" + sessionStorage.getItem("hdnrfqid") + "&VendorID=" + sessionStorage.getItem("hdnselectedvendor") + "&UserId=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&CustomerID=" + sessionStorage.getItem("CustomerID"),
+            //url: APIPath + "eRFQReport/ResetPasswordeRFQ/?VendorEmail=" + sessionStorage.getItem("hdnselectedEmail") + "&RFQID=" + sessionStorage.getItem("hdnrfqid") + "&VendorID=" + sessionStorage.getItem("hdnselectedvendor") + "&UserId=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&CustomerID=" + sessionStorage.getItem("CustomerID"),
+            url: APIPath + "eRFQReport/ResetPasswordeRFQ",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            data: "{}",
-            type: "GET",
+            data: JSON.stringify(vendorMailReqObj),
+            type: "POST",
             contentType: "application/json",
             success: function (data) {
                 //if (data = "1") {
@@ -1515,7 +1525,8 @@ function FetchVendorsubmittedQuotes(rfqid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=CloseQuot",
+        //url: APIPath + "eRFQReport/eRFQVendorList/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=CloseQuot",
+        url: APIPath + "eRFQReport/eRFQVendorList/?RFQID=" + rfqid + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&Version=" + $('#ddlrfqVersion').val() + "&Flag=CloseQuot",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,

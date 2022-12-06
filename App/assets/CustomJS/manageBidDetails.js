@@ -1302,16 +1302,17 @@ function fetchallexportdetails() {
     $('#extendedDurationPara').hide();
 
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        //bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 7) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 8) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
 
     jQuery.ajax({
@@ -2148,7 +2149,8 @@ function fnGetBidApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

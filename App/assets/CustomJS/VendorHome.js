@@ -500,7 +500,8 @@ function fetchReguestforQuotationDetailseRFQ() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQRFIID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQRFIID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -669,6 +670,7 @@ function fetchBidDataDashboard(requesttype) {
     if ($('#ULCustomers').val() != null) {
         custid = $('#ULCustomers').val()
     }
+    custid = parseInt(custid);
     var userData = {
         "UserID": sessionStorage.getItem('VendorId'),
         "CustomerID": custid,
@@ -1193,7 +1195,8 @@ function fetchMappedCustomers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
