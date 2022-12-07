@@ -405,7 +405,8 @@ function fnGetBidApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + BidID + "&Type=Bid",
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + BidID + "&Type=Bid",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?EventID=" + BidID + "&Type=Bid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -682,7 +683,8 @@ function fetchBidSummaryDetails(BidID, BidForID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1438,7 +1440,8 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1480,19 +1483,24 @@ function fnShowVendorConnecHistory(vendorid) {
     fngetConnHistory(vendorid);
 }
 function fngetConnHistory(vendorid) {
-
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": BidID,
+        "VendorID": _vendorID
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidvendorConnectionlog/?BidID=" + BidID + "&VendorID=" + vendorid + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidvendorConnectionlog/?BidID=" + BidID + "&VendorID=" + vendorid,
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidvendorConnectionlog",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data) {
 
             var JSonData = JSON.parse(data[0].jsondata);
-            console.log(JSonData)
             $('#connscroll').show()
             jQuery("#tblIPHistory").empty();
             if (JSonData != null && JSonData.length > 0) {
@@ -1514,7 +1522,8 @@ function fngetConnHistory(vendorid) {
 var openlefttime = 0;
 function fnrefreshStaggerTimerdataonItemClose() {
 
-    Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    //Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1802,10 +1811,12 @@ connection.on("refreshColumnStatus", function (data1) {
 
     Url = "";
     if (sessionStorage.getItem('hdnbidtypeid') == 7 && _bidClosingType == "A") {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        //Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidAllinOne/?BidID=" + sessionStorage.getItem('BidID')
     }
     else {
-        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        //Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+        Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID
     }
     jQuery.ajax({
         type: "GET",
@@ -1997,7 +2008,8 @@ connection.on("refreshColumnStatusFA", function (data1) {
         display = document.querySelector('#lblTimeLeft');
         startTimer(TimeDetails[0].TimeLeft, display);
     }
-    var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    //var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidFAEnglish/?BidID=" + sessionStorage.getItem('BidID')
 
     jQuery.ajax({
         type: "GET",
@@ -2102,7 +2114,8 @@ connection.on("refreshColumnStatusFF", function (data1) {
         display = document.querySelector('#lblTimeLeft');
         startTimer(data1[0].timeLeft, display);
     }
-    var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    //var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
+    var Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID;
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2190,7 +2203,8 @@ connection.on("refreshColumnStatusCoal", function (data1) {
         display = document.querySelector('#lblTimeLeft');
         startTimer(TimeDetails[0].TimeLeft, display);
     }
-    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID;
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -2648,10 +2662,10 @@ function AwardBid() {
 }
 
 function FetchRecomendedVendor(bidid) {
-
+    debugger;
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
+        //url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?BidID=" + bidid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
@@ -3171,13 +3185,13 @@ function CancelBid(bidid, mailparam) {
         "BidID": parseInt(bidid),
         "Remarks": jQuery("#txtRemarks").val() == null ? '' : jQuery("#txtRemarks").val(),
         "UserID": sessionStorage.getItem('UserID'),
-        "BidSubj": $('#lblbidSubject').text(),
-        "BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
-        //"BidDate": $('#lblbiddate').html(),
-        "BidDate": newBidDate,
-        //"BidTime": $('#lblbidtime').html(),
-        "BidDuration": $('#lblbidduration').html(),
-        "BidTypeID": parseInt(BidTypeID),
+        //"BidSubj": $('#lblbidSubject').text(),
+        //"BidDescription": $('#lblbiddetails').html().replace(/'/g, " "),
+        ////"BidDate": $('#lblbiddate').html(),
+        //"BidDate": newBidDate,
+        ////"BidTime": $('#lblbidtime').html(),
+        //"BidDuration": $('#lblbidduration').html(),
+        //"BidTypeID": parseInt(BidTypeID),
         "SendMail": mailparam,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -3258,7 +3272,8 @@ function fetchGraphData(itemId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&chartFor=sample",
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&chartFor=sample",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&chartFor=sample",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -3312,20 +3327,30 @@ function linegraphsforItems(itemId) {
     } else {
         _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
     }
-
+    _bidTypeID = parseInt(_bidTypeID)
     graphtime = [];
     Vendorseries = "";
     dataQuotes = [];
     Seriesoption = [];
     FinalQuotes = [];
     var colorArray = ['#007ED2', '#f15c80', '#90ED7D', '#FF7F50', '#f15c80', '#FF5733', '#96FF33', '#33FFF0', '#F9FF33', '#581845', '#0B0C01', '#0C0109', '#DAF7A6', '#FFC300', '#08010C'];
+    var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
+    _bidId = parseInt(_bidId)
+    var graphDataReqObj = {
+        "SeId": itemId,
+        "BidId": _bidId,
+        "BidTypeId": _bidTypeID,
+        "UserVendorId": "X-X"
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=X-X",
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=X-X",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(graphDataReqObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);

@@ -1,10 +1,6 @@
 
 var error = $('.alert-danger');
 var success = $('.alert-success');
-
-
-
-
 var form = $('#submit_form');
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -257,24 +253,22 @@ var FormWizard = function () {
                     else if (index == 2) {
 
                         var flag = "T";
-                        var rowCount = jQuery('#tblRFQLevelTCForQuot tr').length;
+                        var rowCount = jQuery('#tblRFQLevelTCForQuot >tbody>tr').length;
 
                         var count = 1;
-                        for (i = 0; i < rowCount - 1; i++) {
+                        for (i = 0; i < rowCount; i++) {
                             if ($("#commremarks" + i).val() == "" || $("#commremarks" + i).val() == "0") {
                                 $('#commremarks' + i).removeClass('has-success')
                                 $('#commremarks' + i).css("border", "1px solid red")
                                 flag = "F";
-                                // $('#form_wizard_1').bootstrapWizard('previous');
+                                //$('#form_wizard_1').bootstrapWizard('previous');
                                 $('.alert-danger').show();
                                 $('#spandanger').html('Please fill RFQ Commercial Terms.');
                                 Metronic.scrollTo($(".alert-danger"), -200);
                                 $('.alert-danger').fadeOut(7000);
                                 count = count + 1;
                             }
-                            else {
-                                flag = "T"
-                            }
+
                         }
                         if (flag == "F") {
                             return false;
@@ -317,10 +311,10 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
                 var flagQ = "T";
-                var rowCountQ = jQuery('#tblquestions tr').length;
+                var rowCountQ = jQuery('#tblquestions >tbody>tr').length;
 
-                var countQ = 1;
-                for (i = 0; i < rowCountQ - 1; i++) {
+
+                for (i = 0; i < rowCountQ; i++) {
                     if ($("#answers" + i).val() == "") {
                         $('#answers' + i).removeClass('has-success')
                         $('#answers' + i).css("border", "1px solid red")
@@ -330,13 +324,11 @@ var FormWizard = function () {
                         $('#spandanger').html('Please fill RFQ Answer.');
                         Metronic.scrollTo($(".alert-danger"), -200);
                         $('.alert-danger').fadeOut(7000);
-                        countQ = countQ + 1;
+
                     }
-                    else {
-                        flagQ = "T"
-                    }
+
                 }
-                if (flagQ == "F") {//&& rowCountQ == countQ
+                if (flagQ == "F") {
                     return false;
                 }
                 else if (jQuery('#fileToUpload1').val() != "") {
@@ -419,7 +411,8 @@ function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -530,8 +523,6 @@ function fetchRFQLevelTC(ver) {
             jQuery("#tblRFQLevelTCForQuot").empty();
             jQuery("#tbltermsconditionprev").empty();
             $('#scrolr').show();
-
-            //alert(JSON.stringify(data))
             if (data.length > 0) {
 
                 jQuery("#tblRFQLevelTCForQuot").append("<thead><tr style='background: gray; color: #FFF;'><th>Other Commercial Terms</th><th>Our Requirement</th><th>Your Offer</th></tr></thead>");
@@ -749,7 +740,6 @@ var PreviousVersion = 0;
 function fetchRFQResponse(Flag, version) {
 
     var strprev = "";
-    // alert(sessionStorage.getItem("APIPath") + "eRFQVendor/efetchVendorResponse/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + sessionStorage.getItem('RFQVersionId') + "&Flag=" + Flag)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -762,7 +752,7 @@ function fetchRFQResponse(Flag, version) {
             if (Flag == 'Question') {
                 jQuery("#tblquestions").empty();
                 jQuery("#tblQuestionsPrev").empty();
-                debuggerconsole.log(data)
+
                 if (data.length > 0) {
                     $('#headerspecificresponse').removeClass('hide')
                     $('#divspecificresponse').removeClass('hide')
@@ -775,7 +765,7 @@ function fetchRFQResponse(Flag, version) {
                         strprev = "<tr><td style='width:30%!important'>" + data[i].rfqQuestions + "</td>";
                         str += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
                         strprev += "<td style='width:30%!important'>" + data[i].rfqQuestionsRequirement + "</td>";
-                        str += "<td class='hide'>" + data[i].questionID + "</td>";
+                        str += "<td class='hide' id=quesid" + i + ">" + data[i].questionID + "</td>";
                         str += '<td style="width:10%!important"><span style="width:300px!important" class="btn blue"><input type="file" id=fileToUploadques' + i + ' name=fileToUploadques' + i + ' onchange="checkfilesize(this);" /></span><br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[i].version + ')>' + attachQA + '</a> </td>';
                         strprev += '<td style="width:10%!important"><a id=fileDownAtt' + i + ' style="pointer:cursur;text-decoration:none;" href=javascript:; onclick=DownloadFileVendor(this,' + data[i].version + ')>' + attachQA + '</a></td>';//' + data[i].answer + '
                         str += '<td style="width:30%!important"><textarea type=text class="form-control" maxlength=500 autocomplete="off" id=answers' + i + ' value=' + data[i].answer + '>' + data[i].answer + '</textarea></td></tr>';
@@ -857,7 +847,7 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
-    debugger;
+
     var attchquery = '';
     var quesquery = '';
     var i = 1;
@@ -889,26 +879,24 @@ function fnsaveAttachmentsquestions() {
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
             i++;
         });
-        i = 0
+
         var attchname = '';
         $("#tblquestions> tbody > tr").each(function (index) {
-            var this_row = $(this);
 
+            attchname = ''
             if ($('#fileToUploadques' + index).val() != null && $('#fileToUploadques' + index).val() != '' && $('#fileToUploadques' + index).val() != 'undefined') {
                 attchname = jQuery('#fileToUploadques' + index).val().substring(jQuery('#fileToUploadques' + index).val().lastIndexOf('\\') + 1)
+                attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
                 fnUploadFilesonAzure('fileToUploadques' + index, attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/' + sessionStorage.getItem('RFQVersionId'));
             }
             else {
                 if ($('#eRFQVFilesques' + index).text() != '' && $('#eRFQVFilesques' + index).text() != null && $('#eRFQVFilesques' + index).text() != 'undefined') {
-                    attchname = $('#eRFQVFilesques' + index).text()
+                    attchname = $('#eRFQVFilesques' + index).text();
                 }
             }
+            quesquery = quesquery + $.trim($('#quesid' + index).text()) + '~' + $.trim($('#answers' + index).val()) + '~' + attchname + '#';
 
-            quesquery = quesquery + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim($('#answers' + i).val()) + '~' + attchname + '#';
 
-            alert(quesquery)
-
-            i++;
         });
         var data = {
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -995,8 +983,6 @@ function fnSubmiteRFQSendmail(ismailsent) {
             success: function (data) {
 
                 setTimeout(function () {
-                    // if (data[0].RFQID > 0) {
-
                     fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
                     if (ismailsent == "Y") {
                         jQuery.unblockUI();
@@ -1049,7 +1035,8 @@ function fetchReguestforQuotationDetails() {
     var currentdate = new Date();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1057,6 +1044,7 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
 
+            sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
                 sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
@@ -1177,7 +1165,6 @@ function fnRegreteRFQ() {
         "Remarks": $('#txtRemarks').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-    //  alert(JSON.stringify(RegretData))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1220,8 +1207,6 @@ function fnRegreteRFQ() {
 }
 
 function fetchRFQParameterlastquotesonload(ver) {
-
-    //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver+"&Flag=NOTBOQ" + "&BoqParentID="+0)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1259,10 +1244,8 @@ function fetchRFQParameterlastquotesonload(ver) {
 }
 
 function fetchRFIParameteronload(ver) {
-    //alert("Called")
 
     fetchRFQLevelTC(ver);
-    //alert(sessionStorage.getItem("APIPath") + "RequestForQuotation/fetchRFQParameter/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=" + ver)
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     jQuery.ajax({
         type: "GET",
@@ -1366,7 +1349,6 @@ function isNumberKey(evt) {
 }
 
 function showDetailedDescription(descText) {
-    //alert(descText)
     $("#paraItemDescription").html(descText);
 }
 
@@ -1479,7 +1461,6 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                     vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
                 }
-                // Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
                 var Pdetails = {
                     "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                     "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
@@ -1494,7 +1475,6 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                     "RFQTCID": parseInt($.trim(this_row.find('td:eq(2)').html())),
                     "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                     "FinalStatus": 'N',
-                    //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
                     "VendorItemRemarks": vendorRemarks
 
                 };
@@ -1518,8 +1498,6 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 "PricewithoutGST": parseFloat(PricewithoutGST),
                 "PriceBasic": parseFloat(basicprice)
             };
-            //console.log(JSON.stringify(Tab2data))
-            // alert(JSON.stringify(Tab2data))
             jQuery.ajax({
 
                 type: "POST",
@@ -1536,13 +1514,10 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                     $("#" + $('#texttblidwithGST').val()).val(Price);
 
                     $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
-                    //$(this_row.find('td:eq(13)').html(Price))
                     (async () => {
                         await fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'))
                     })();
 
-                    //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
-                    //Price = 0;
                     if (issubmitbuttonclick == "Y") {
                         $('#responsive').modal('hide');
                     }
@@ -1564,7 +1539,6 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
             });
         }
         $('.progress-form').hide()
-        //fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
     }
 
 }
@@ -1620,7 +1594,6 @@ function saveQuotation() {
                 "RFQTCID": 0,
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
-                //"VendorItemRemarks": $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
                 "VendorItemRemarks": vendorRemarks
 
             };
@@ -1664,7 +1637,6 @@ function saveQuotation() {
             "PreviousVersion": PreviousVersion,
             "AttachString": attchquery
         };
-        console.log(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",
@@ -1779,8 +1751,6 @@ function fnReplicateToAllItems() {
             "PricewithoutGST": parseFloat(PricewithoutGST),
             "PriceBasic": parseFloat(basicprice)
         };
-        // console.log(JSON.stringify(Tab2data))
-        //alert(JSON.stringify(Tab2data))
         jQuery.ajax({
 
             type: "POST",

@@ -1,11 +1,20 @@
 function fillBidTypedropdown(bidtypeid) {
+    var CustId = parseInt(sessionStorage.getItem("CustomerID"));
+    var bidTypeRequestObj = {
+        "CustomerID": CustId,
+        "BidTypeID": 0,
+        "ExcludeStatus": "N"
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) ,
+        //url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N",
+        //url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidTypeRequestObj),
         dataType: "json",
         success: function (data) {
             jQuery("#dropBidType").empty();

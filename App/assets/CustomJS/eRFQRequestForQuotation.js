@@ -521,6 +521,17 @@ var FormWizard = function () {
 
                     }
                     else if (index == 3) {
+                        var isOtherTerms = "Y";
+                        $("#tblTermsCondition> tbody > tr").each(function (index) {
+                            index = index + 1;
+                            var this_row = $(this);
+                            if ($(this).find('span').attr('class') == 'checked') {
+                                if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                                    isOtherTerms = "N";
+                                    $('#terms' + index).css("border", "1px solid red")
+                                }
+                            }
+                        });
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
 
                             $('.alert-danger').show();
@@ -530,6 +541,13 @@ var FormWizard = function () {
                             return false;
 
                         }
+                        else if (isOtherTerms == "N") {
+                            $('.alert-danger').show();
+                            $('#spandanger').html('').html('Please fill Other Terms & Condition properly!');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
+                            return false;
+                        }
                         else if (jQuery('#fileToUpload1').val() != "") {
                             $('.alert-danger').show();
                             $('#spandanger').html('Your file is not attached. Please do press "+" button after uploading the file.');
@@ -538,8 +556,10 @@ var FormWizard = function () {
                             return false;
                         }
                         else {
-                            fnsavetermscondition('N');
-                            fnsaveAttachmentsquestions();
+                            if (isOtherTerms == "Y") {
+                                fnsavetermscondition('N');
+                                fnsaveAttachmentsquestions();
+                            }
                         }
                     }
                     handleTitle(tab, navigation, index);
@@ -825,7 +845,7 @@ function fnGetTermsCondition() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&RFQID=" + sessionStorage.getItem('hddnRFQID'),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -957,25 +977,42 @@ function CheckTerms(event, ID) {
     }
 
 }
+$(document).on('keyup', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
 function fnsavetermscondition(isbuttonclick) {
     
     var checkedValue = '2~I~#';
-    var checkedOtherTerms = '';
+    var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
+        index = index + 1;
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
             if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
-            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
-               
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0' && $('#terms' + index).val() != "" && $('#terms' + index).val() != null) {
                 checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            else if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                isOtherTerms = "N";
+                $('#terms' + index).css("border", "1px solid red")
             }
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
     });
-    if (checkedValue != '') {
+
+    if (isOtherTerms == "N" && isbuttonclick == "Y") {
+        $('.alert-danger').show();
+        $('#spandanger').html('').html('Please fill Other Terms & Condition properly!');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000)
+        return false;
+    }
+    else if (checkedValue != '' && isOtherTerms == "Y") {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QueryString": checkedValue,
@@ -1027,6 +1064,7 @@ function fnsavetermscondition(isbuttonclick) {
         $('#spandanger').html('Please Check Terms & Condition properly!');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000)
+        return false;
     }
 }
 function fnsaveAttachmentsquestions() {
@@ -1185,7 +1223,8 @@ function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1289,7 +1328,8 @@ function GetQuestions() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1335,8 +1375,9 @@ function GetQuestions() {
 
 var allUsers
 function fetchRegisterUser() {
+    var custId = parseInt(sessionStorage.getItem('CustomerID'));
     var data = {
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "CustomerID": custId,
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
@@ -1658,7 +1699,8 @@ function fnGetApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1784,7 +1826,8 @@ function fetchRFIParameteronload() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -2533,7 +2576,8 @@ function ValidateVendor() {
 function fetchReguestforQuotationDetails() {
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -3416,7 +3460,7 @@ function addMoreTermsCondition() {
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
-    
+
 }
 function deleteterms(icount) {
     $('#tr' + icount).remove();

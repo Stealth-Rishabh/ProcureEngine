@@ -1214,7 +1214,8 @@ function fnGetApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID+"&Type=bid",
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + BidID+"&Type=bid",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?BidID=" + BidID + "&Type=bid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

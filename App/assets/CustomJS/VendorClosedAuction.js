@@ -5,8 +5,14 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 function fetchBidHeaderDetails() {
 
     var url = '';
-    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + BIDID + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": BIDID,
+        "VendorID": _vendorID
+    }
 
+    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -14,6 +20,7 @@ function fetchBidHeaderDetails() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
@@ -527,7 +534,8 @@ function fetchGraphData(itemId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&chartFor=sample",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -584,20 +592,30 @@ function linegraphsforItems(itemId) {
     var _date;
     _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
 
-
     graphtime = [];
     Vendorseries = "";
     dataQuotes = [];
     Seriesoption = [];
     FinalQuotes = [];
     var colorArray = ['#007ED2', '#f15c80', '#90ED7D', '#FF7F50', '#f15c80', '#FF5733', '#96FF33', '#33FFF0', '#F9FF33', '#581845', '#0B0C01', '#0C0109', '#DAF7A6', '#FFC300', '#08010C'];
+    var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
+    _bidTypeID = parseInt(_bidTypeID)
+    _bidId = parseInt(_bidId)
+    var graphDataReqObj = {
+        "SeId": itemId,
+        "BidId": _bidId,
+        "BidTypeId": _bidTypeID,
+        "UserVendorId": sessionStorage.getItem('VendorId')
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('VendorId'),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('VendorId'),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(graphDataReqObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
