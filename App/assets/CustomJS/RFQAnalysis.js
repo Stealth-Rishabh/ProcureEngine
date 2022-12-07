@@ -596,16 +596,20 @@ function checkForSelectedVendors() {
 
 }
 
-function ReInviteVendorsForRFQ(){
+function ReInviteVendorsForRFQ() {
+    var _cleanString = StringEncodingMechanism($("#RFQSubject").html());
+    var _cleanString2 = StringEncodingMechanism($("#txtReInviteRemarks").val());
     str = str.substring(0, str.length - 1);
 
     var data = {
         "RFQID": $("#hdnRfiRfqID").val(),
         "VendorIDs": str,
         "ExtendedDate": $("#txtextendDate").val(),
-        "RFQSubject": $("#RFQSubject").html(),
+        //"RFQSubject": $("#RFQSubject").html(),
+        "RFQSubject": _cleanString,
         "UserID": sessionStorage.getItem("UserID"),
-        "ReInviteRemarks": $("#txtReInviteRemarks").val()
+        //"ReInviteRemarks": $("#txtReInviteRemarks").val()
+        "ReInviteRemarks": _cleanString2
         
       }
     //alert(JSON.stringify(data))

@@ -583,6 +583,9 @@ function fetchRFIDetailsForTab2(applicableFor) {
 }
 
 function RFIConfigureTab1() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfiSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfidescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var AttachementFileName = '',queryAttachment="", queryCategories="";
     if (($('#attach-file').html() != '') && ($('#file2').val() == '')) {
@@ -621,9 +624,11 @@ function RFIConfigureTab1() {
 
         "VQID": sessionStorage.getItem('CurrentRFIID'),
         "CustomerID": sessionStorage.getItem('CustomerID'),
-        "VQSubject": jQuery("#txtrfiSubject").val(),
+        //"VQSubject": jQuery("#txtrfiSubject").val(),
+        "VQSubject": _cleanString,
         "VQDeadline": jQuery("#txtrfideadline").val(),
-        "VQDescription": jQuery("#txtrfidescription").val(),
+        //"VQDescription": jQuery("#txtrfidescription").val(),
+        "VQDescription": _cleanString2,
         "VQAttachment": 'NA',
         "VQAttachmentDescription": 'NA',
         "UserId": sessionStorage.getItem('UserID'),
@@ -843,15 +848,20 @@ function fetchTempVendors() {
    }
 
 function AddTempvendors() {
+    var _cleanString3 = StringEncodingMechanism($('#txtcompany').val());
+    var _cleanString4 = StringEncodingMechanism($('#txtcontactPerson').val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
         
         var TempCompany = {
             'RFIID': sessionStorage.getItem('CurrentRFIID'),
-            'CompanyName': $('#txtcompany').val(),
+            //'CompanyName': $('#txtcompany').val(),
+            'CompanyName': _cleanString3,
             'EmailId': $('#txtemailId').val(),
             'MobileNo': $('#txtmobileNo').val(),
-            'ContactPerson': $('#txtcontactPerson').val(),
+            //'ContactPerson': $('#txtcontactPerson').val(),
+            'ContactPerson': _cleanString4,
             'RFIDeadline': $('#txtrfideadline').val(),
             'UserId': sessionStorage.getItem('UserID'),
             'RowID': $('#updateField').val()
@@ -992,14 +1002,18 @@ function deleteRFITempVendors(RowID) {
 
 
 function RFISubmitTempVendors() {
+    var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfiSubject').val());
+    var _cleanString6 = StringEncodingMechanism(jQuery('#txtrfidescription').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TempVendors = {
 
         "RFIID": sessionStorage.getItem('CurrentRFIID'),
         "UserId": sessionStorage.getItem('UserID'),
-        "Subject": jQuery('#txtrfiSubject').val(),
+        //"Subject": jQuery('#txtrfiSubject').val(),
+        "Subject": _cleanString5,
         "CustomerID": sessionStorage.getItem('CustomerID'),
-        "RFIDescription": jQuery('#txtrfidescription').val(),
+        //"RFIDescription": jQuery('#txtrfidescription').val(),
+        "RFIDescription": _cleanString6,
         "RFIDeadline": jQuery('#txtrfideadline').val()
 
     };
@@ -1331,6 +1345,7 @@ jQuery("#txtsubCategory").typeahead({
 });
 
 function InsUpdQuestionSubcategory() {
+    var _cleanString7 = StringEncodingMechanism($('#txtqSubcategory').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1345,7 +1360,8 @@ function InsUpdQuestionSubcategory() {
     var data = {
         "QuestionCategoryID": $('#hdnquestCatID').val(),
         "QuestionSubCategoryID": $('#hdnsubCatID').val(),
-        "QuestionSubCategory": $('#txtqSubcategory').val(),
+        //"QuestionSubCategory": $('#txtqSubcategory').val(),
+        "QuestionSubCategory": _cleanString7,
         "isActive": status,
         "customerId": sessionStorage.getItem('CustomerID')
 
@@ -1454,6 +1470,7 @@ if (window.location.search) {
     var decryptedstring = fndecrypt(param)
 }
 function insupdRFIQuestionMaster() {
+    var _cleanString8 = StringEncodingMechanism($('#txtQuestiondescription').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -1467,7 +1484,8 @@ function insupdRFIQuestionMaster() {
     var data = {
         "QuestionCategoryID": $('#hdnquestCatID').val(),
         "QuestionSubCategoryID": sessionStorage.getItem("hdnSubCategoryID"),
-        "QuestionDescription": $('#txtQuestiondescription').val(),
+        //"QuestionDescription": $('#txtQuestiondescription').val(),
+        "QuestionDescription": _cleanString8,
         "Mandatory": mandatory,
         "Attachement": status,
         "QuestionID": 0,

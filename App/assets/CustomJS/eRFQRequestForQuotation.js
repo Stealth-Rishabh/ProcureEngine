@@ -530,6 +530,10 @@ var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
 function InsUpdRFQDEtailTab1() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfqdescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
 
@@ -589,13 +593,17 @@ function InsUpdRFQDEtailTab1() {
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
     var _RFQBidType = 'Open';
 
+    
+
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "RFQSubject": jQuery("#txtrfqSubject").val(),
+        //"RFQSubject": jQuery("#txtrfqSubject").val(),
+        "RFQSubject": _cleanString,
         "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
         "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        "RFQDescription": jQuery("#txtrfqdescription").val(),
+        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "RFQTermandCondition": TermsConditionFileName,
@@ -2224,12 +2232,14 @@ function RFQInviteVendorTab3() {
         }
     });
 
+    var _cleanString3 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
 
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
-        "subject": jQuery('#txtrfqSubject').val(),
+        //"subject": jQuery('#txtrfqSubject').val(),
+        "subject": _cleanString3,
         "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -2268,8 +2278,12 @@ function RFQInviteVendorTab3() {
         }
     });
 }
+
 function fnsubmitRFQ() {
 
+
+    var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+    var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
@@ -2277,9 +2291,11 @@ function fnsubmitRFQ() {
 
             "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
             "UserID": sessionStorage.getItem('UserID'),
-            "subject": jQuery('#txtrfqSubject').val(),
+            //"subject": jQuery('#txtrfqSubject').val(),
+            "subject": _cleanString4,
             "RFQEndDate": jQuery('#txtenddatettime').val(),
-            "RFQDescription": jQuery('#txtrfqdescription').val(),
+            //"RFQDescription": jQuery('#txtrfqdescription').val(),
+            "RFQDescription": _cleanString5,
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         };
         jQuery.ajax({

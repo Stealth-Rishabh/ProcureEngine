@@ -169,6 +169,9 @@ function fetchPODetails(flag) {
     })
 }
 function acceptRevertPO() {
+
+    var _cleanString = StringEncodingMechanism($('#txtRemarks').val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var attchname = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1)
@@ -176,7 +179,8 @@ function acceptRevertPO() {
     var Approvers = {
         "POHeaderID": parseInt(sessionStorage.getItem('hddnPOHID')),
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-        "Remarks": $('#txtRemarks').val(),
+        //"Remarks": $('#txtRemarks').val(),
+        "Remarks": _cleanString,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Vendor",
         "Action": $('#ddlActionType').val(),

@@ -492,7 +492,7 @@
 
                                         <textarea class="form-control" type="text"
                                                   placeholder="Type a message here..."
-                                                  id="txtChatMsg" name="txtChatMsg"></textarea>
+                                                  id="txtChatMsg" onkeyup="replaceQuoutesFromString(this)" name="txtChatMsg"></textarea>
 
                                         <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
                                             <i class="fa fa-check icon-white"></i> Send

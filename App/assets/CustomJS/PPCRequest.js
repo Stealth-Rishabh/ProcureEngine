@@ -1528,7 +1528,7 @@ function SaveUpdate() {
 
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
-    var paramtext = $("#txtParamText").val();
+    var paramtext = StringEncodingMechanism($("#txtParamText").val());
     var status = $("#checkboxactive").is(':checked')
     var Data = {
         NfaParamID: parseInt(idx),
@@ -1697,6 +1697,11 @@ function fetchReguestforQuotationDetails() {
 
 
 function frmAzurePPCForm() {
+    var _cleanString = StringEncodingMechanism(jQuery('#txtintroduction').val());
+    var _cleanString2 = StringEncodingMechanism(jQuery('#txtgemeralremarks').val());
+    
+
+
 
     var i = 0;
     //var BiddingVendorQuery = '';
@@ -1722,7 +1727,8 @@ function frmAzurePPCForm() {
         "RFQID": parseInt(RFQID),
         "BidID": 0,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "Introduction": jQuery('#txtintroduction').val(),
+        //"Introduction": jQuery('#txtintroduction').val(),
+        "Introduction": _cleanString,
         "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
         "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(),
         "Workordergiven": jQuery('#txtpartordergiven').val(),
@@ -1730,7 +1736,8 @@ function frmAzurePPCForm() {
         "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
         "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
         "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
-        "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
+        //"GeneralRemarks": jQuery('#txtgemeralremarks').val(),
+        "GeneralRemarks": _cleanString2,
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
         "EnquiryIssuedOn": jQuery('#RFQConfigueron').text(),

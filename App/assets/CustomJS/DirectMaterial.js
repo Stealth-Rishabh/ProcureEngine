@@ -907,6 +907,9 @@ var FormWizard = function () {
 //sessionStorage.setItem('CurrentBidID', 0)
 
 function ConfigureBidForProductTab1() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -924,6 +927,8 @@ function ConfigureBidForProductTab1() {
         AttachementFileName = jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
     }
 
+   
+
     var Tab1Data = {
 
         "BidId": sessionStorage.getItem('CurrentBidID'),
@@ -932,8 +937,10 @@ function ConfigureBidForProductTab1() {
         "CountryID": jQuery("#ddlCountry option:selected").val(),
         "BidForID": 6,
         "BidDuration": jQuery("#txtBidDuration").val(),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         "BidDate": jQuery("#txtbidDate").val(),
         "BidTime": jQuery("#txtbidTime").val(),
         "CurrencyID": jQuery("#dropCurrency option:selected").val(),
@@ -1052,6 +1059,10 @@ function ConfigureBidForProductTab2() {
 }
 
 function ConfigureBidForProductTab3() {
+
+    var _cleanString3 = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString4 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#tblvendorlist> tbody > tr").each(function (index) {
@@ -1077,12 +1088,16 @@ function ConfigureBidForProductTab3() {
         InsertQuery = "Print 1";
     }
 
+    
+
     var Tab3data = {
         "BidVendors": InsertQuery,
         "BidID": sessionStorage.getItem('CurrentBidID'),
         "UserID": sessionStorage.getItem('UserID'),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+       //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString3,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString4,
         "BidDate": jQuery("#txtbidDate").val(),
         "BidTime": jQuery("#txtbidTime").val(),
         "BidDuration": jQuery("#txtBidDuration").val(),

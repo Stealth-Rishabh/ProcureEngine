@@ -620,7 +620,7 @@
 
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
-                                              id="txtChatMsg" name="txtChatMsg"></textarea>
+                                              id="txtChatMsg" name="txtChatMsg" onkeyup="replaceQuoutesFromString(this)"></textarea>
 
                                     <button id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
 
@@ -644,7 +644,7 @@
                                     
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
-                                              id="txtBroadcastMsg" name="txtBroadcastMsg"></textarea>
+                                              id="txtBroadcastMsg" name="txtBroadcastMsg" onkeyup="replaceQuoutesFromString(this)"></textarea>
 
                                     <button type="button" id="bchatbtn" class="btn green btn-block" onclick="sendBroadCastChatMsgs();">
                                         <i class="fa fa-check icon-white"></i> Send

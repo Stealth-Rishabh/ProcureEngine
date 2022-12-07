@@ -412,7 +412,7 @@
                                                                 Items to run simultaneously<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3 xyz">
-                                                                <input type="text" class="form-control" autocomplete="off" placeholder="Enter No of Stagger Items" id="txtStaggerNo" name="txtStaggerNo" maxlength="3" value="1">
+                                                                <input type="text" class="form-control" autocomplete="off" placeholder="Enter No of Stagger Items" id="txtStaggerNo" name="txtStaggerNo" maxlength="3" value="1" onkeyup="replaceQuoutesFromString(this)">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -793,7 +793,7 @@
                                                                     <div class="col-md-10">
                                                                         <div class="col-md-9">
                                                                             <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
-                                                                                   data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                                   data-provide="typeahead" autocomplete="off" name="txtVendorGroup" onkeyup="replaceQuoutesFromString(this)"/>
 
                                                                             <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                         </div>
@@ -1402,7 +1402,7 @@
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
-                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" />
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" onkeyup="replaceQuoutesFromString(this)"/>
 
                                         </div>
                                     </div>
@@ -1410,7 +1410,7 @@
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
-                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" />
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" onkeyup="replaceQuoutesFromString(this)"/>
 
                                         </div>
                                     </div>

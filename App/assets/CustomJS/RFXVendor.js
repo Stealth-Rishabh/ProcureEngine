@@ -935,6 +935,11 @@ function Filltblfinancedetails() {
 }
 
 function InsUpdTab1Data(locText) {
+    var _cleanString = StringEncodingMechanism($('#txtCompanyName').val());
+    var _cleanString = StringEncodingMechanism($('#txtofficeAddress').val());
+    var _cleanString = StringEncodingMechanism($('#txtParentcompName').val());
+    var _cleanString = StringEncodingMechanism($('#txtContactName').val());
+    
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vals = 0;
@@ -960,19 +965,23 @@ function InsUpdTab1Data(locText) {
     var Tab1Data = {
         "RFIID":parseInt(sessionStorage.getItem('CurrentRFIID')),
         "VendorId": parseInt(sessionStorage.getItem('VendorId')),
-        "CompanyName": $('#txtCompanyName').val(),
+        //"CompanyName": $('#txtCompanyName').val(),
+        "CompanyName": _cleanString,
         "CompanyPhone": $('#txtPhoneNo').val(),
-        "OfficedAddress": $('#txtofficeAddress').val(),
+        //"OfficedAddress": $('#txtofficeAddress').val(),
+        "OfficedAddress": _cleanString,
         "CompanyEmail": $('#txtemailID').val(),
         "FactoryAdress": $('#txtfactoryAddress').val(),
-        "ParentCompany": $('#txtParentcompName').val(),
+        //"ParentCompany": $('#txtParentcompName').val(),
+        "ParentCompany": _cleanString,
         "FaxNumber": $('#txtFaxNo').val(),
         "CompanyWebsite": $('#txtWebsite').val(),
         "Ownership": $('#ddlOwnership option:selected').text(),
         "EmployeeCount": $('#txtemployeeNum').val(),
         "KeyProjects": $('#txtbriefDesc').val(),
         "Title": $('#ddlTitle option:selected').text(),
-        "KeyPersonName": $('#txtContactName').val(),
+        //"KeyPersonName": $('#txtContactName').val(),
+        "KeyPersonName": _cleanString,
         "KeyPersonNo": $('#txtcontactNo').val(),
         "KeyPersonEmail": $('#txtcontactEmail').val(),
         "InsertQuery": InsertQuery,

@@ -961,6 +961,11 @@ function Filltblfinancedetails() {
 }
 
 function InsUpdTab1Data(locText) {
+    var _cleanString = StringEncodingMechanism($('#txtCompanyName').val());
+    var _cleanString2 = StringEncodingMechanism($('#txtofficeAddress').val());
+    var _cleanString3 = StringEncodingMechanism($('#txtfactoryAddress').val());
+    var _cleanString4 = StringEncodingMechanism($('#txtParentcompName').val());
+    var _cleanString5 = StringEncodingMechanism($('#txtContactName').val());
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vals = 0;
@@ -986,19 +991,24 @@ function InsUpdTab1Data(locText) {
     var Tab1Data = {
         "RFIID":sessionStorage.getItem('CurrentRFIID'),
         "VendorId": sessionStorage.getItem('VendorId'),
-        "CompanyName": $('#txtCompanyName').val(),
+        //"CompanyName": $('#txtCompanyName').val(),
+        "CompanyName": _cleanString,
         "CompanyPhone": $('#txtPhoneNo').val(),
-        "OfficedAddress": $('#txtofficeAddress').val(),
+        //"OfficedAddress": $('#txtofficeAddress').val(),
+        "OfficedAddress": _cleanString2,
         "CompanyEmail": $('#txtemailID').val(),
-        "FactoryAdress": $('#txtfactoryAddress').val(),
-        "ParentCompany": $('#txtParentcompName').val(),
+        //"FactoryAdress": $('#txtfactoryAddress').val(),
+        "FactoryAdress": _cleanString3,
+        //"ParentCompany": $('#txtParentcompName').val(),
+        "ParentCompany": _cleanString4,
         "FaxNumber": $('#txtFaxNo').val(),
         "CompanyWebsite": $('#txtWebsite').val(),
         "Ownership": $('#ddlOwnership option:selected').text(),
         "EmployeeCount": $('#txtemployeeNum').val(),
         "KeyProjects": $('#txtbriefDesc').val(),
         "Title": $('#ddlTitle option:selected').text(),
-        "KeyPersonName": $('#txtContactName').val(),
+        //"KeyPersonName": $('#txtContactName').val(),
+        "KeyPersonName": _cleanString5,
         "KeyPersonNo": $('#txtcontactNo').val(),
         "KeyPersonEmail": '',
         "InsertQuery": InsertQuery,

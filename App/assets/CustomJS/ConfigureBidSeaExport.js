@@ -1255,15 +1255,17 @@ function ConfigureBidForSeaExportTab1() {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
         //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
-    var _bidSubject = StringEncodingMechanism(jQuery("#txtBidSubject").val());
-    var _bidDesc = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         //"BidSubject": jQuery("#txtBidSubject").val(),
         //"BidDescription": jQuery("#txtbiddescription").val(),
-        "BidSubject": _bidSubject,
-        "BidDescription": _bidDesc,
+        //"BidSubject": _bidSubject,
+        "BidSubject": _cleanString,
+        //"BidDescription": _bidDesc,
+        "BidDescription": _cleanString2,
         "BidDate": StartDT,
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),

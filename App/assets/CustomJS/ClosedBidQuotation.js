@@ -585,14 +585,19 @@ function InsUpdRFQDEtailTab1() {
     var RFQBidType = "Closed";
     var TechnicalAppr = "Not Required";
 
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfqdescription").val());
+
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "RFQSubject": jQuery("#txtrfqSubject").val(),
+        //"RFQSubject": jQuery("#txtrfqSubject").val(),
+        "RFQSubject": _cleanString,
         // "RFQStartDate": dt,
         "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
         "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        "RFQDescription": jQuery("#txtrfqdescription").val(),
+        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "RFQTermandCondition": TermsConditionFileName,
@@ -678,10 +683,15 @@ function InsUpdRFQDEtailTab2() {
 
             var remark = $.trim(this_row.find('td:eq(10)').html()).replace(/'/g, "");
             var description = $.trim(this_row.find('td:eq(7)').html()).replace(/'/g, "");
+
+            var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(3)').html()));
+
+
             tab2Items = {
                 "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
                 "ItemCode": $.trim(this_row.find('td:eq(2)').html()),
-                "ShortName": $.trim(this_row.find('td:eq(3)').html()),
+                //"ShortName": $.trim(this_row.find('td:eq(3)').html()),
+                "ShortName": _cleanString3,
                 "Description": description,
                 "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                 "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(5)').html()))),
@@ -2136,12 +2146,15 @@ function RFQInviteVendorTab3() {
         }
     });
 
+    var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+
 
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
-        "subject": jQuery('#txtrfqSubject').val(),
+        //"subject": jQuery('#txtrfqSubject').val(),
+        "subject": _cleanString4,
         "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -2181,15 +2194,20 @@ function RFQInviteVendorTab3() {
     });
 }
 function fnsubmitRFQ() {
+    var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+    var _cleanString6 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
         var Tab3data = {
 
             "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
             "UserID": sessionStorage.getItem('UserID'),
-            "subject": jQuery('#txtrfqSubject').val(),
+            //"subject": jQuery('#txtrfqSubject').val(),
+            "subject": _cleanString5,
             "RFQEndDate": jQuery('#txtenddatettime').val(),
-            "RFQDescription": jQuery('#txtrfqdescription').val(),
+            //"RFQDescription": jQuery('#txtrfqdescription').val(),
+            "RFQDescription": _cleanString6,
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         };
         console.log(JSON.stringify(Tab3data))

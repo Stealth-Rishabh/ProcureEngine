@@ -649,6 +649,14 @@ function paintmenus() {
 sessionStorage.setItem("hdnCustomerID", 0)
 sessionStorage.setItem("hdnAdminID", 0)
 function ins_updCustomer() {
+
+    var _cleanString = StringEncodingMechanism($('#txtcustomername').val());
+    var _cleanString2 = StringEncodingMechanism($('#txtAddress1').val());
+    var _cleanString3 = StringEncodingMechanism($('#txtadminfirstname').val());
+    
+
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
     var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
@@ -693,15 +701,18 @@ function ins_updCustomer() {
     }
     if (checkimageExtension(logo)) {
         var data = {
-            'CustomerName': $('#txtcustomername').val(),
-            'CustomerAddress': $('#txtAddress1').val(),
+            //'CustomerName': $('#txtcustomername').val(),
+            'CustomerName': _cleanString,
+            //'CustomerAddress': $('#txtAddress1').val(),
+            'CustomerAddress': _cleanString2,
             'CountryID': parseInt($('#dropCountry').val()),
             'StateID': parseInt(state),
             'CityID': parseInt(city),
             'PinCode': parseInt(pincode),
             'Website': $('#txtwebsite').val(),
             'PhoneNo': $('#phoneno').val(),
-            'AdminName': $('#txtadminfirstname').val(),
+            //'AdminName': $('#txtadminfirstname').val(),
+            'AdminName': _cleanString3,
             'AdminEmail': $('#txtUserEmailID').val(),
             'AdminMobile': $('#txtmobileNo').val(),
             'SubscriptionType': '',

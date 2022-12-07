@@ -68,6 +68,7 @@ function FetchCategoryMaster() {
 }
 function getcategoryIds()
 {
+    
     var CatID = '0' ;
     if ($('#inlineCheckbox1').closest('span').attr('class') == 'checked' && $('#inlineCheckbox2').closest('span').attr('class') == 'checked') {
         CatID = $('#inlineCheckbox1').val() + ',' + $('#inlineCheckbox2').val();
@@ -83,18 +84,24 @@ function getcategoryIds()
     return CatID
 }
     // TAB 1
-    function CategorizationAndContactDetails() {
+function CategorizationAndContactDetails() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtname").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtofficeaddress").val());
+    var _cleanString3 = StringEncodingMechanism(jQuery("#txtworksaddress").val());
         var CatIDs = getcategoryIds();
         var VendorRegDetails = {
             "VendorID": jQuery("#hdnvendorid").val(),
             "CatetoryIDs": CatIDs,
-            "VendorName": jQuery("#txtname").val(),
+            //"VendorName": jQuery("#txtname").val(),
+            "VendorName": _cleanString,
             "VendorMobileNo": jQuery("#txtmobileno").val(),
-            "OfficeAddress": jQuery("#txtofficeaddress").val(),
+            //"OfficeAddress": jQuery("#txtofficeaddress").val(),
+            "OfficeAddress": _cleanString2,
             "OfficeZipCode": jQuery("#txtofficezipcode").val(),
             "OfficePhoneNo": jQuery("#txtofficephoneno").val(),
             "OfficeFaxNo": jQuery("#txtofficefax").val(),
-            "WorkAddress": jQuery("#txtworksaddress").val(),
+            //"WorkAddress": jQuery("#txtworksaddress").val(),
+            "WorkAddress": _cleanString3,
             "WorkZipCode": jQuery("#txtworkzipcode").val(),
             "WorkPhoneNo": jQuery("#txtworkphoneno").val(),
             "WorkFaxNo": jQuery("#txtworkfaxno").val(),
@@ -150,7 +157,10 @@ function getcategoryIds()
         });
     }
     // TAB 3
-    function InsUpdCategoryDetails() {
+function InsUpdCategoryDetails() {
+    var _cleanString4 = StringEncodingMechanism(jQuery("#txtcategoryname").val());
+    var _cleanString5 = StringEncodingMechanism(jQuery("#txtcategoryaddress").val());
+    var _cleanString6 = StringEncodingMechanism(jQuery("#txtcontactpersonname").val());
         var Sales ='N'
         var Services ='N'
         if ($('#chkforsales').closest('span').attr('class') == 'checked')
@@ -164,12 +174,15 @@ function getcategoryIds()
         var CategoryDetails = {
             "VendorID": jQuery("#hdnvendorid").val(),
             "CategoryID": jQuery("#ddlCategory option:selected").val(),
-            "CategoryName": jQuery("#txtcategoryname").val(),
-            "Address": jQuery("#txtcategoryaddress").val(),
+            //"CategoryName": jQuery("#txtcategoryname").val(),
+            "CategoryName": _cleanString4,
+            //"Address": jQuery("#txtcategoryaddress").val(),
+            "Address": _cleanString5,
             "CountryID": jQuery("#txtcountry").val(),
             "Phone": jQuery("#txtphone").val(),
             "EMail": jQuery("#txtemail").val(),
-            "ContactPersonName": jQuery("#txtcontactpersonname").val(),
+            //"ContactPersonName": jQuery("#txtcontactpersonname").val(),
+            "ContactPersonName": _cleanString6,
             "ContactPersonMobileNo": jQuery("#txtcontactpersonmobileno").val(),
             "ForSalses": Sales,
             "ForServices": Services
@@ -224,12 +237,16 @@ function getcategoryIds()
     }
 
     // TAB 4
-    function InsUpdClientDetails() {
+function InsUpdClientDetails() {
+    var _cleanString7 = StringEncodingMechanism(jQuery("#txtclientname").val());
+    var _cleanString8 = StringEncodingMechanism(jQuery("#txtclientaddress").val());
         var ClientDetails = {
             "VendorID": jQuery("#hdnvendorid").val(),
-            "Name": jQuery("#txtclientname").val(),
+            //"Name": jQuery("#txtclientname").val(),
+            "Name": _cleanString7,
             "Phone": jQuery("#txtclientPhone").val(),
-            "Address": jQuery("#txtclientaddress").val(),
+            //"Address": jQuery("#txtclientaddress").val(),
+            "Address": _cleanString8,
             "ScopeOfWork": jQuery("#txtclientscopeofwork").val(),
             "Email": jQuery("#txtclientemail").val()
         };
@@ -316,10 +333,12 @@ function getcategoryIds()
         fetchBillingAndCreditCardDetails();
     }
 
-    function InsUpdBankerDetails() {
+function InsUpdBankerDetails() {
+    var _cleanString9 = StringEncodingMechanism(jQuery("#txtbank").val());
         var BankerDetails = {
             "VendorID": jQuery("#hdnvendorid").val(),
-            "BankName": jQuery("#txtbank").val(),
+            //"BankName": jQuery("#txtbank").val(),
+            "BankName": _cleanString9,
             "BankBranch": jQuery("#txtbranch").val(),
             "NEFTNo": jQuery("#txtneftno").val(),
             "RTGSNo": jQuery("#txtrtgsno").val(),

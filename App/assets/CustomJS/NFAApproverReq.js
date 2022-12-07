@@ -721,13 +721,16 @@ function validateAppsubmitData() {
 
 }
 function ApprovalApp() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
         "ActivityDescription": jQuery("#lbltitle").text(),
-        "Remarks": jQuery("#txtRemarksApp").val(),
+        "Remarks": _cleanString,
         "Action": jQuery("#ddlActionType option:selected").val(),
         "ForwardedBy": "Approver",
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
@@ -769,6 +772,7 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     $('#txtdelegate').val()
 });
 function DelegateUser() {
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtdelegate").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#hdndelegateuserid').val() == 0 || $('#hdndelegateuserid').val() == null) {
@@ -783,7 +787,8 @@ function DelegateUser() {
             "NFAID": parseInt(idx),
             "FromUserId": sessionStorage.getItem("UserID"),
             "ActivityDescription": jQuery("#lbltitle").text(),
-            "Remarks": jQuery("#txtdelegate").val(),
+            //"Remarks": jQuery("#txtdelegate").val(),
+            "Remarks": _cleanString2,
             "Action": "Delegate",
             "DelgateTo": parseInt($('#hdndelegateuserid').val()),
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
@@ -1384,13 +1389,16 @@ function fnRecall() {
     });
 }
 function DisableActivityRecall() {
+    var _cleanString3 = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
+
     var data = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem('UserID'),
         "Action": 'Recalled',
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActivityDescription": jQuery("#lbltitle").text(),
-        "Remarks": jQuery("#txtRemarksrecall").val()
+        //"Remarks": jQuery("#txtRemarksrecall").val()
+        "Remarks": _cleanString3
     }
 
     jQuery.ajax({

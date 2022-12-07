@@ -342,6 +342,7 @@ jQuery("#txtsubCategory").typeahead({
 });
 
 function InsUpdQuestionSubcategory() {
+    var _cleanString = StringEncodingMechanism($('#txtqSubcategory').val());
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -355,7 +356,8 @@ function InsUpdQuestionSubcategory() {
     var data = {
         "QuestionCategoryID": parseInt($('#ddlquestCategory option:selected').val()),
         "QuestionSubCategoryID": parseInt($('#hdnSubcatID').val()),
-        "QuestionSubCategory": $('#txtqSubcategory').val(),
+        //"QuestionSubCategory": $('#txtqSubcategory').val(),
+        "QuestionSubCategory": _cleanString,
         "isActive": status,
         "customerId": parseInt(sessionStorage.getItem("CustomerID")),
        
@@ -453,7 +455,7 @@ function mandatoryChange() {
 
 
 function insupdRFIQuestionMaster() {
-  debugger
+    
    var CriteriaDetails = [];
     $('#tblvendorlist >tbody> tr').each(function () {
         var Criteria = $('#txtCriteria', this).val();
@@ -469,8 +471,8 @@ function insupdRFIQuestionMaster() {
         else {
             status = "N";
     }
-    
-    var txtQuestiondescription = $('#txtQuestiondescription').val().replace(/'/g, " ")
+
+    var txtQuestiondescription = StringEncodingMechanism($('#txtQuestiondescription').val().replace(/'/g, " "))
     
     var data = {
             "QuestionCategoryID": parseInt($('#ddlquestCategory option:selected').val()),

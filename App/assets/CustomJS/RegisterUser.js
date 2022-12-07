@@ -139,6 +139,9 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActive').is(':checked') == true) {
@@ -168,13 +171,15 @@ function RegisterUser() {
     var RegisterUser = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": parseInt(jQuery("#hdnUserID").val()),
-        "UserName": jQuery("#txtUsername").val(),
+        //"UserName": jQuery("#txtUsername").val(),
+        "UserName": _cleanString,
         "MobileNO": jQuery("#txtmobilno").val(),
         "EmailID": jQuery("#txtemail").val(),
         "RoleID": parseInt(jQuery('#ddlroleMaster').val()),
         "IsActive": status,
         "CreatedBy": sessionStorage.getItem('UserID'),
-        "Designation": jQuery('#txtdesignation').val(),
+        //"Designation": jQuery('#txtdesignation').val(),
+        "Designation": _cleanString2,
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "purOrg": purOrg
     };

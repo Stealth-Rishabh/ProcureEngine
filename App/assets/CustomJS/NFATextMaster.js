@@ -178,7 +178,7 @@ function SaveUpdate() {
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
-    var paramtext = $("#txtParamText").val();
+    var paramtext = StringEncodingMechanism($("#txtParamText").val());
     var status = $("#chkIsActive").is(':checked')
     if ($("#chkIsdefault").is(':checked')) {
         isdefault = 'Y'

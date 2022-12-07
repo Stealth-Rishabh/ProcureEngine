@@ -355,7 +355,11 @@ $('#sign_up_modal').on('hidden.bs.modal', function() {
     //resetregistrationForm();
 });
 
-function InsRequestDemo(){
+function InsRequestDemo() {
+    var _cleanString = StringEncodingMechanism($('#txtcontctprsnname').val());
+    var _cleanString2 = StringEncodingMechanism($('#reqtxtcompanyname').val());
+    var _cleanString3 = StringEncodingMechanism($('#txtremarks').val());
+
 	var tnc= '';
     if($('#requesttnc').is(':checked')){
         tnc= 'Y';
@@ -364,11 +368,14 @@ function InsRequestDemo(){
     }
 	
 	var reqDemo={
-        'ContactPersonName': $('#txtcontctprsnname').val(),
+        //'ContactPersonName': $('#txtcontctprsnname').val(),
+        'ContactPersonName': _cleanString,
         'Mobileno': $('#txtcompanymob').val(),
         'Email': $('#txtcompanyemail').val(),
-        'CompanyName': $('#reqtxtcompanyname').val(),
-        'RFDRemarks': $('#txtremarks').val()
+        //'CompanyName': $('#reqtxtcompanyname').val(),
+        'CompanyName': _cleanString2,
+        //'RFDRemarks': $('#txtremarks').val()
+        'RFDRemarks': _cleanString3
         //,'IsTermsAccepted': tnc
     }
     //alert(JSON.stringify(reqDemo))
@@ -420,6 +427,10 @@ function resetrequestForm(){
 }
 
 function SignUpCustomer() {
+
+    var _cleanString4 = StringEncodingMechanism($('#txtcompanyname').val());
+    var _cleanString5 = StringEncodingMechanism($('#txtcompaddress').val());
+    var _cleanString6 = StringEncodingMechanism($('#txtcompAdminName').val());
 	var tnc= '';
     if($('#regschtnc').is(':checked')){
         tnc= 'Y';
@@ -428,12 +439,15 @@ function SignUpCustomer() {
     }
 	
 	var signUp={
-	'CustomerName': $('#txtcompanyname').val(),
-	'CustomerAddress': $('#txtcompaddress').val(),
+	//'CustomerName': $('#txtcompanyname').val(),
+        'CustomerName': _cleanString4,
+    //'CustomerAddress': $('#txtcompaddress').val(),
+        'CustomerAddress': _cleanString5,
 	'CountryID': $('#ddlcompcountry').val(),
 	'StateID': $('#ddlcompstate').val(),
 	'CityID': $('#ddlcompcity').val(),
-	'ContactPersonName': $('#txtcompAdminName').val(),
+	//'ContactPersonName': $('#txtcompAdminName').val(),
+        'ContactPersonName': _cleanString6,
 	'PhoneNo': $('#txtcompmobile').val(),
 	'CustomerEmail': $('#txtcompAdminemail').val()
     }

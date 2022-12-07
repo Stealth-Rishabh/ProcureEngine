@@ -309,8 +309,11 @@ function getIP() {
 
 function sendChatMsgs() {
 
+    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
+
     var data = {
-        "ChatMsg": $("#txtChatMsg").val(),
+        //"ChatMsg": $("#txtChatMsg").val(),
+        "ChatMsg": _cleanString,
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
