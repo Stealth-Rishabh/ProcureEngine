@@ -1,3 +1,64 @@
+jQuery(document).ready(function () {
+  
+    Pageloaded()
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(1, 27);
+    FetchCurrency('0');
+
+    fetchRegisterUser('1');
+    fetchBidType();// for serach vendor
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    var _BidID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+    var _savedDraft = '';
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0);
+        sessionStorage.setItem('_savedDraft', 'N')
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchScrapSalesBidDetails();
+        sessionStorage.setItem('_savedDraft', 'Y')
+    }
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+
+    }, 2000);
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchVendorGroup('M', 0); // used to fetch product category
+});
+
+
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
 $("#cancelBidBtn").hide();
 $('#file-excelparameter').change(handleFileparameter);
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });

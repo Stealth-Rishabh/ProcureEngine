@@ -1,3 +1,69 @@
+jQuery(document).ready(function () {
+   
+    $('[data-toggle="popover"]').popover({})
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 52);
+    FetchCurrency('0');
+
+    fetchRegisterUser();
+    fetchBidType();
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+    }, 2000);
+
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchVendorGroup('M', 0); // used to fetch product category
+    showhideItemBidDuration();
+    var _BidID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+
+    if (_BidID == null)
+        sessionStorage.setItem('CurrentBidID', 0)
+
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchCoalDetails();
+    }
+
+});
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
 $("#cancelBidBtn").hide();
 
 $('#file-excelparameter').change(handleFileparameter);

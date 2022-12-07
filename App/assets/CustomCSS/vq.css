@@ -1,0 +1,61 @@
+﻿#logoimage {
+  height:38px; 
+  width:180px;
+}
+.navbar-brand {
+    padding:4px !important;
+}
+
+.page-container {
+    display: none
+}
+
+
+#cfct {
+   list-style: none ;
+}
+
+#tblAttachmentsElem {
+    list-style: none;
+    padding-left: inherit;
+}
+#tblAttachmentsElemPrev {
+   list-style:none;
+   display:grid;
+   padding-left:0px;
+}
+#attach-file1 {
+    text-decoration: none !important;
+}
+
+.display-none {
+    float: left;
+    margin-top: -5px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+.nopaddingleft {
+    padding-left: 0px !important;
+}
+
+.nopaddingtop {
+    padding-top: 0px !important;
+}
+
+#noborderbackground {
+   border:none !important;
+   background: none !important;
+}
+
+#txtsubCategory {
+   margin: 0 auto;
+}
+
+.scroller {
+    height: 200px;
+}
+
+.modal-body {
+    height: 450px;
+    overflow-y: scroll;
+}
