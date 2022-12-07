@@ -1,0 +1,49 @@
+﻿#A {
+    display: none;
+}
+
+
+.navbar-brand {
+    padding: 4px !important;
+}
+
+#logoimage {
+    height: 38px;
+    width: 180px;
+}
+
+.page-container {
+    display: none
+}
+#filepthterms {
+    text-decoration: none !important;
+    float: left;
+    margin-top: 9px
+}
+filepthattach {
+    text-decoration: none !important;
+    float: left;
+}
+#closebtn {
+    float: left;
+    margin-top: 3px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+#closebtn2 {
+    float: left;
+    margin-top: -5px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+#enterapprover {
+    margin: 11px auto
+}
+
+#spinner4input {
+    width: 120px;
+}
+
+#txtrfirfqsubject {
+    margin: 0 auto;
+}

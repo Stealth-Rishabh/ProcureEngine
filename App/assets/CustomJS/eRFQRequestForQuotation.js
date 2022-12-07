@@ -1,3 +1,73 @@
+jQuery(document).ready(function () {
+
+    
+    var date = new Date();
+    date.setDate(date.getDate() - 1);
+    $('#txtPODate').datepicker({ startDate: "-1d" });
+    Pageloaded()
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+    var _RFQid;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+    }
+
+    if (_RFQid == null)
+        sessionStorage.setItem('hddnRFQID', 0)
+    else {
+        sessionStorage.setItem('hddnRFQID', _RFQid)
+        fnGetTermsCondition();
+        fetchAttachments();
+        fnGetApprovers();
+        GetQuestions();
+        fetchReguestforQuotationDetails();
+        fetchRFIParameteronload();
+
+    }
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fnGetTermsCondition();
+    fetchMenuItemsFromSession(1, 24);
+
+    FetchCurrency('0');
+
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+
+    fetchRegisterUser('1');
+    fetchVendorGroup('M', 0);
+    fetchParticipantsVender();// fetch all vendors for advance search
+
+});
+setTimeout(function () {
+    $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+    $('#txtConversionRate').val(1);
+    fnfillInstructionExcel();
+}, 2000);
+
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
+
+
 $("#cancelBidBtn").hide();
 $('#file-excelparameter').change(handleFileparameter);
 $("#spnParamAttach").hide();
@@ -781,6 +851,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+         
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -912,6 +983,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
+    
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -919,6 +991,7 @@ function fnsavetermscondition(isbuttonclick) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
             if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
+               
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
             if ($.trim(this_row.find('td:eq(0)').text()) == '0' && $('#terms' + index).val() != "" && $('#terms' + index).val() != null) {
@@ -3092,6 +3165,7 @@ function isDate(ExpiryDate) {
     return true;
 }
 function fnSeteRFQparameterTable() {
+    
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
         $("#success-excelparameter").hide();
