@@ -203,9 +203,10 @@ function fetchPendingBid() {
         $('#ULCustomers').val('0')
         sessionStorage.setItem('CustomerID', '0')
     }
+    var custId = parseInt(sessionStorage.getItem('CustomerID'))
     var userData = {
         "UserID": sessionStorage.getItem('VendorId'),
-        "CustomerID": sessionStorage.getItem('CustomerID')
+        "CustomerID": custId
     }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -331,7 +332,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if (linkurl.indexOf('?') != -1) {
-        linkurl = linkurl + "locale=" + $.i18n().locale; ;
+        linkurl = linkurl + "locale=" + $.i18n().locale;;
     }
     else if (linkurl.indexOf('#') != -1) {
         e.preventDefault()
@@ -466,7 +467,7 @@ function fetchVQDetails() {
     });
 
 }
-function fetchRFIDetails(){
+function fetchRFIDetails() {
     var attachment = ''
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -500,14 +501,15 @@ function fetchReguestforQuotationDetailseRFQ() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQRFIID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQRFIID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-          
+
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('.rfqtc').show();
@@ -517,7 +519,7 @@ function fetchReguestforQuotationDetailseRFQ() {
             $('#uniform-chkIsAccepted').find("span").removeClass('checked');
             $('#btnContinue').attr("disabled", true);
 
-          
+
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -543,14 +545,14 @@ function fetchReguestforQuotationDetailseRFQ() {
 }
 
 function DownloadFile(aID) {
- 
+
     fnDownloadAttachments($("#" + aID.id).attr("name"), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 
 
 function DownloadbidFile(aID) {
-    
-    fnDownloadAttachments($("#" + aID.id).attr("name") , 'Bid/' + sessionStorage.getItem('hddnRFQID'));
+
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + sessionStorage.getItem('hddnRFQID'));
 }
 
 
@@ -568,7 +570,7 @@ function acceptBidTermsAuction() {
         "VendorID": vendorID,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -639,7 +641,7 @@ function eRFQAcceptBidTerms() {
         "VID": parseInt(vendorID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQAcceptBidTerms/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -669,6 +671,7 @@ function fetchBidDataDashboard(requesttype) {
     if ($('#ULCustomers').val() != null) {
         custid = $('#ULCustomers').val()
     }
+    custid = parseInt(custid);
     var userData = {
         "UserID": sessionStorage.getItem('VendorId'),
         "CustomerID": custid,
@@ -1045,7 +1048,7 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             if (data.length == 1) {
                 var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
@@ -1193,7 +1196,8 @@ function fetchMappedCustomers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/FetchCustomersForUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -1229,10 +1233,10 @@ jQuery('#bidchkIsAccepted').click(function () {
     if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
         $('#btnContinue').attr("disabled", false);
     }
-         else {
-            $('#btnContinue').attr("disabled", true);
-        }
-    });
+    else {
+        $('#btnContinue').attr("disabled", true);
+    }
+});
 
 
 function multilingualLanguage() {
@@ -1251,7 +1255,7 @@ function multilingualLanguage() {
         }).done(function () {
             $('body').i18n();
             set_locale_to(url('?locale'));
-           
+
             $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
 
             //   <option data-locale="en" value="en">English</option>
@@ -1259,7 +1263,7 @@ function multilingualLanguage() {
             History.Adapter.bind(window, 'statechange', function () {
                 set_locale_to(url('?locale'));
 
-              
+
             });
             $('.navbar-language').change(function (e) {
 
@@ -1274,7 +1278,7 @@ function multilingualLanguage() {
             });
 
             $('a').click(function (e) {
-                
+
                 if (this.href.indexOf('?') != -1) {
                     this.href = this.href;
                 }
@@ -1282,19 +1286,19 @@ function multilingualLanguage() {
                     e.preventDefault()
                     this.href = this.href + "?locale=" + $.i18n().locale;
                 }
-               
+
                 /*//else if (this.href.indexOf('javascript:') != -1) {
 
                 //  this.href = this.href + "?locale=" + $.i18n().locale;
                 //} */
-               
+
                 else {
                     this.href = this.href + "?locale=" + $.i18n().locale;
                 }
             });
 
-        
-           
+
+
 
         });
     });

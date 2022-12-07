@@ -120,20 +120,25 @@ function deleteApprow(rowid, rowidPrev) {
 
 var vendorsForAutoComplete;
 function fetchVendorparticipanType() {
-
+    var bidTypeRequestObj = {
+        "CustomerID": CustId,
+        "BidTypeID": 0,
+        "ExcludeStatus": "N"
+    }
     jQuery.ajax({
 
-        type: "GET",
+        type: "POST",
 
         contentType: "application/json; charset=utf-8",
 
-        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        //url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
 
         cache: false,
 
         crossDomain: true,
-
+        data:JSON.stringify(bidTypeRequestObj),
         dataType: "json",
 
         success: function(bidTypedata) {

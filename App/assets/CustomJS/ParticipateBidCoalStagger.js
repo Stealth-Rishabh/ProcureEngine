@@ -795,8 +795,13 @@ function fetchBidHeaderDetails(bidId) {
     var tncAttachment = '';
     var anyotherAttachment = '';
     var url = '';
-
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": bidId,
+        "VendorID": _vendorID
+    }
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
 
     jQuery.ajax({
         type: "GET",
@@ -805,6 +810,7 @@ function fetchBidHeaderDetails(bidId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
