@@ -1,3 +1,64 @@
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    $("#ddlCategoryMultiple").select2({
+        placeholder: "Select Category",
+        allowClear: true
+    });
+
+    Metronic.init();
+    Layout.init();
+
+    $('#dropbidType').select2({
+        placeholder: "Select Bid Type",
+        allowClear: true
+    });
+    var _RFXID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        _RFXID = getUrlVarsURL(decryptedstring)["RFXID"];
+    }
+    fetchCategorymaster()
+    if (_RFXID == null) {
+        sessionStorage.setItem('CurrentRFXID', 0)
+        fetchRFXQuestions('RFI');
+    }
+    else {
+        sessionStorage.setItem('CurrentRFXID', _RFXID)
+
+    }
+
+
+    FormWizard.init();
+    FormValidate();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(1, 25);
+
+});
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
 
 $("#cancelBidBtn").hide();
 var error = $('.alert-danger');

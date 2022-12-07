@@ -392,8 +392,9 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 function thousands_separators_input(ele) {
+    debugger
     var valArr, val = ele.value;
-    val = val.replace(/[^0-9\.]/g, '');
+    val = val.replaceAll(/[^0-9\.]/g, '');
 
     if (val != "") {
         valArr = val.split('.');
@@ -506,32 +507,26 @@ function replaceQuoutesFromString(ele) {
 
     var str = '';
     str = ele.value;
-    str = str.replace(/'/g, '');
-    str = str.replace(/"/g, '');
-    //@abheedev bug368 start
-    str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
-    //@abheedev bug368 end
-
-    str = str.replace(/~/g, '');
+    str = str.replace(/['"#&~`<>_^]/g, '');
     ele.value = str;
     //return val;
 }
+
+
 function replaceQuoutesFromStringFromExcel(ele) {
+    
     var str = '';
 
     if (ele != "" && ele != undefined) {
-        str = ele.replace(/'/g, '');
-        str = str.replace(/"/g, '');
-        str = str.replace(/#/g, '');
-        str = str.replace(/&/g, '');
+        str = ele.replace(/['"#&~`<>_^]/g, '');
     }
-
     //ele.value = str;
     return str;
 }
 
-////******* Chat functions*********/////////////////////////////
+
+
+/////******* Chat functions*********/////////////////////////////
 function openForm() {
     //updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
     $(".pulsate-regular").css('animation', 'none');
@@ -1789,7 +1784,7 @@ var tablesToExcel = (function () {
 })();
 //abheedev bug 443 start
 function checkExcelUpload(fileid) {
-
+    debugger
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type

@@ -1,3 +1,79 @@
+jQuery(document).ready(function () {
+   
+    $('[data-toggle="popover"]').popover({})
+
+
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 30);
+    // fetchBidTypeMapping();
+    FetchCurrency('0');
+
+    fetchRegisterUser();
+    fetchBidType();//for search vendor
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+    }, 2000);
+
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchRFIRFQSubjectforReport('RFQ')
+    fetchVendorGroup('M', 0); // used to fetch product category
+
+    var _BidID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0)
+        sessionStorage.setItem('_savedDraft', 'N')
+        showhideItemBidDuration();
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        sessionStorage.setItem('_savedDraft', 'Y')
+        fetchSeaExportDetails();
+    }
+    // showhideItemBidDuration();
+});
+
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
+
+
 $("#cancelBidBtn").hide();
 $('#file-excelparameter').change(handleFileparameter);
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
@@ -806,8 +882,7 @@ var FormWizard = function () {
                         notEqualTo: 0
                     },
                     txttargetprice: {
-                        maxlength: 50,
-                        number: true
+                        maxlength: 50                                              
                     },
                     txtCeilingPrice: {
                         required: true,

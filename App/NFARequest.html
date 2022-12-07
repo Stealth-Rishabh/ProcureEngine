@@ -39,7 +39,6 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
@@ -81,8 +80,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive"  />
                 </a>
 
             </div>
@@ -94,8 +93,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                           <b> <span id="spanUserName" class="username username-hide-on-mobile">
+                            </span></b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -109,7 +108,7 @@
 
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container" >
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -206,10 +205,10 @@
                                             <div class="tab-content">
 
                                                 <div class="tab-pane active" id="tab1">
-                                                    <div class="alert alert-success" style='display: none;'>
+                                                    <div class="alert alert-success" >
                                                         <span id="spansuccess1"> </span>
                                                     </div>
-                                                    <div class="alert alert-danger" style='display: none; '>
+                                                    <div class="alert alert-danger" >
                                                         <span id="spandanger"> </span>
                                                     </div>
 
@@ -225,7 +224,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td colspan="15" style="text-align: center; color: Red">
+                                                                        <td colspan="15" class="norecord" >
                                                                             No record's found
                                                                         </td>
                                                                     </tr>
@@ -362,7 +361,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-1">
-                                                                    <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" style="cursor:pointer" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to
+                                                                    <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
                                                                                   View All Matrix">
                                                                         <i class="fa fa-search"></i>
                                                                     </a>
@@ -403,10 +402,10 @@
 
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
-                                                    <div class="alert alert-block alert-danger" id="errordivSeq" style="display: none">
+                                                    <div class="alert alert-block alert-danger" id="errordivSeq" >
                                                         <span id="errorSeq"></span>
                                                     </div>
-                                                    <div class="alert alert-success" id="successdivSeq" style="display: none">
+                                                    <div class="alert alert-success" id="successdivSeq" >
                                                         <span id="successSeq"></span>
                                                     </div>
 
@@ -414,7 +413,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' style="text-decoration:none;">Responses</a>
+                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' >Responses</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse2 class="panel-collapse collapse in">
@@ -469,7 +468,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc_TC" href='#collapse' style="text-decoration:none;">Attachments, if any</a>
+                                                                    <a class="accordion-toggle collapsed notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse'>Attachments, if any</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse class="panel-collapse collapse">
@@ -488,7 +487,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-4">
-                                                                                <span style="width:300px!important" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span  class="btn blue width300px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
@@ -690,7 +689,7 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq" style="display: none">
+                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq" >
                                                                 <span id="errorApproverSeq"></span>
                                                             </div>
 
@@ -757,7 +756,7 @@
                         </div>
                     </div>
                     <div class="table-scrollable">
-                        <div class="scroller" style="height:400px;" data-always-visible="1" data-rail-visible="0">
+                        <div class="scroller scroller400"  data-always-visible="1" data-rail-visible="0">
                             <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
                         </div>
                     </div>
@@ -780,7 +779,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
+                    <div class="modal-body modalbody1" >
 
                         <p class="ppolicy-text">
                             Using this page user can configure bids related to Sea export shipments and invite vendors to participate on specified date and time.<br />
@@ -859,7 +858,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-4  control-label" style="padding-top: 0px !important;">IsActive</label>
+                                <label class="col-md-4  control-label paddingtop0px" >IsActive</label>
                                 <div class="col-md-8">
                                     <input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
                                 </div>
@@ -879,7 +878,7 @@
                                 <input type="text" id="searchPop-up" placeholder="Search" class="form-control  input-circle" />
                             </div><br />
                             <div class="table-scrollable">
-                                <div class="scroller" style="height:200px;" data-always-visible="1" data-rail-visible="0">
+                                <div class="scroller scroller200"  data-always-visible="1" data-rail-visible="0">
                                     <table class="table table-striped table-bordered table-hover" id="tblFetchParamMaster"></table>
                                 </div>
                             </div>

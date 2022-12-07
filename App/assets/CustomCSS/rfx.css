@@ -1,0 +1,61 @@
+﻿#cfct {
+   list-style: none ;
+}
+.navbar-brand {
+    padding:4px !important;
+}
+
+#logoimage {
+  height:38px;
+  width:180px;
+}
+
+#spanUserName {
+    font-weight: bold;
+}
+
+.page-container {
+    display: none
+}
+#tblAttachmentsElem {
+    list-style: none;
+    padding-left: inherit;
+}
+#txtsubCategory {
+    margin: 0 auto;
+}
+#attach-file1 {
+    text-decoration: none !important;
+}
+#ajaxFileDelete {
+    float:left;
+    margin-top:-5px;
+    cursor:pointer;
+    margin-left: 3px;
+}
+#modalbodypolicy {
+height: 450px; 
+overflow-y: scroll;
+}
+.nopaddingleft {
+    padding-left: 0px !important;
+}
+#scroller1 {
+    height: 300px;
+}
+#scroller2 {
+    height: 200px;
+}
+#tblvendorlist {
+    width:100%;
+}
+#tblAttachmentsElemPrev {
+    list-style: none;
+    display: grid;
+    padding-left: 0px;
+}
+#checkboxinline {
+    margin-left: -16px;
+}
+
+
