@@ -1073,7 +1073,7 @@ jQuery("#ParticipantName").typeahead({
     }
 
 });
-
+//abheedev bug 590
 function validatePanNumber(pan) {
    
     clearform();
@@ -1462,7 +1462,7 @@ function ExtendParticipants() {
 
 
 }
-
+//abheedev bug 590
 function clearform() {
     
     jQuery("#ParticipantName").val('');
@@ -1479,11 +1479,6 @@ function clearform() {
     jQuery("#txtAlternateeMailID").val('');
     jQuery('#hdnParticipantID').val('0');
     $("#ddlCountry").val('111');
-    
-    
-    
-   
-
 
     $('.childchkbox').each(function () {
         jQuery(this).closest('span#spancheckedvendorgroup').removeAttr('class');

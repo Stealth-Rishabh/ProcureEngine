@@ -1,0 +1,50 @@
+﻿@media print {
+    .pagebreak {
+        page-break-before: always;
+    }
+    /* page-break-after works, as well */
+}
+
+@page {
+    size: landscape;
+}
+
+@page {
+    size: A4 landscape;
+    margin: 10%;
+}
+
+@media screen {
+    div.divFooter {
+        display: none;
+    }
+}
+
+@media print {
+    div.divFooter {
+        position: fixed;
+        bottom: 0;
+    }
+}
+
+* {
+    -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+    print-color-adjust: exact !important; /*Firefox*/
+}
+
+input#file-excelparameter {
+    position: fixed;
+    top: -120px;
+}
+
+.container {
+    height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    font-family: Verdana, serif;
+    /* font-family: Garamond, serif !important;*/
+}
