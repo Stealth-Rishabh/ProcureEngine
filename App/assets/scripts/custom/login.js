@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -148,9 +148,9 @@ var Login = function () {
 
     function validateUser() {
 
-       // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-        //  sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+       sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+       //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
         debugger;
         var path = window.location.pathname;
@@ -196,6 +196,10 @@ var Login = function () {
                             break;
                         case "Your account has been Locked due to multiple failed Login attempts.":
                             successMsg = "Your account has been Locked due to multiple failed Login attempts."
+                            isSuccess = false;
+                            break;
+                        case "User Name does not exists.":
+                            successMsg = "User Name does not exists."
                             isSuccess = false;
                             break;
                         default:
@@ -246,48 +250,45 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
+                    var successMsg = "";
+                    var isSuccess = true;
                     switch (data.token) {
                         case "You are accessing an Invalid URL.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('You are accessing an Invalid URL.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            isSuccess = false;
+                            successMsg = "You are accessing an Invalid URL.";
                             break;
                         case "Your account has been Locked. Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked. Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            isSuccess = false;
+                            successMsg = "Your account has been Locked. Please contact administrator.";
                             break;
                         case "You have entered an incorrect Password.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            isSuccess = false;
+                            successMsg = "Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect.";
                             break;
                         case "Something went wrong!!! Please contact administrator.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Something went wrong!!! Please contact administrator.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            isSuccess = false;
+                            successMsg = "Something went wrong!!! Please contact administrator.";
                             break;
                         case "Your account has been Locked due to multiple failed Login attempts.":
-                            jQuery.unblockUI();
-                            $('#alrt1').show();
-                            $('#alertmessage1').html('Your account has been Locked due to multiple failed Login attempts.')
-                            App.scrollTo($('#alrt1'), -200);
-                            $('#alrt1').fadeOut(5000);
+                            isSuccess = false;
+                            successMsg = "Your account has been Locked due to multiple failed Login attempts.";
                             break;
+                        case "User Name does not exists.":
+                            successMsg = "User Name does not exists."
+                            isSuccess = false;
                         default:
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.token)
                             fnGetUserBasicDetails(lastPart)
                             break;
 
+                    }
+                    if (!isSuccess) {
+                        jQuery.unblockUI();
+                        $('#alrt1').show();
+                        $('#alertmessage1').html('You are accessing an Invalid URL.')
+                        App.scrollTo($('#alrt1'), -200);
+                        $('#alrt1').fadeOut(5000);
                     }
                     //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                     //sessionStorage.setItem("Token", data.token)
@@ -324,10 +325,10 @@ var Login = function () {
                     sessionStorage.setItem("CustomerID", value.customerID);
                     sessionStorage.setItem("UserID", value.userID);
                     sessionStorage.setItem("UserName", value.userName);
-                    sessionStorage.setItem("EmailID", value.emailID);
-                    sessionStorage.setItem("MobileNo", value.mobileNo);
+                    //sessionStorage.setItem("EmailID", value.emailID);
+                    //sessionStorage.setItem("MobileNo", value.mobileNo);
                     sessionStorage.setItem("RoleID", value.roleID);
-                    sessionStorage.setItem("ContactEmailID", value.contactEmailID);
+                    //sessionStorage.setItem("ContactEmailID", value.contactEmailID);
                     sessionStorage.setItem("DefaultCurrency", value.defaultCurrency);
                     sessionStorage.setItem("UserType", value.userType);
                     sessionStorage.setItem("VendorId", value.vendorID);
