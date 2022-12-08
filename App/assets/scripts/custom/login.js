@@ -276,6 +276,7 @@ var Login = function () {
                         case "User Name does not exists.":
                             successMsg = "User Name does not exists."
                             isSuccess = false;
+                            break;
                         default:
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.token)
@@ -286,7 +287,7 @@ var Login = function () {
                     if (!isSuccess) {
                         jQuery.unblockUI();
                         $('#alrt1').show();
-                        $('#alertmessage1').html('You are accessing an Invalid URL.')
+                        $('#alertmessage1').html(successMsg)
                         App.scrollTo($('#alrt1'), -200);
                         $('#alrt1').fadeOut(5000);
                     }
