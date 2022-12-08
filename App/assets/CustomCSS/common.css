@@ -1,0 +1,418 @@
+﻿
+.alert-success {
+    display: none;
+}
+
+.alert-danger {
+    display: none;
+}
+
+
+/*abheedev bug laptop responsive issue*/
+.addmorebutton {
+    margin-left: 85%;
+}
+
+/*abheedev bug 340*/
+body {
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+}
+
+.badge.badge-empty {
+    height: 12px !important;
+    width: 12px !important;
+}
+
+.date-picker {
+    z-index: 1151 !important;
+}
+#divalertSerach {
+    display: none;
+    text-align: center;
+}
+
+#divalerterrsearch {
+    display: none;
+    text-align: center;
+}
+#divalertpull {
+    display: none;
+    text-align: center;
+}
+
+.divalertstyle {
+    display: none;
+    text-align: center;
+}
+
+input#file3 {
+    position: fixed;
+    top: -100px;
+}
+
+input#file-excel {
+    position: fixed;
+    top: -120px;
+}
+
+input#file-excelparameter {
+    position: fixed;
+    top: -120px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.has-success {
+    border-color: #27a4b0 !important;
+}
+
+.container {
+    height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*abhhedev bug 52 start*/
+.hovertext {
+    position: relative;
+}
+
+    .hovertext:before {
+        content: attr(data-hover);
+        visibility: hidden;
+        opacity: 0;
+        width: 200px;
+        opacity: .9;
+        color: rgb(6, 6, 6);
+        background-color: #74A892;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px 5px;
+        transition: opacity 1s ease-in-out;
+        position: absolute;
+        z-index: 2;
+        right: 100%;
+        bottom: 110%;
+    }
+
+    .hovertext:hover:before {
+        opacity: .9;
+        visibility: visible;
+    }
+
+/*abhhedev bug 52 end*/
+
+
+tr, td {
+    border: 1px solid black;
+}
+
+    tr.header {
+        cursor: pointer;
+    }
+
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 1200px;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .addmorebutton {
+        margin-left: 65%;
+    }
+}
+
+@media only screen and (min-width: 1250px) {
+    .table .btn {
+        margin-right: -23% !important;
+    }
+}
+
+.modalbody1{
+    height: 450px;
+    overflow-y: scroll;
+}
+.greencls {
+    color: green !important;
+}
+
+.bluecls {
+    color: blue !important;
+}
+
+.margin11pxauto {
+    margin: 11px auto
+}
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+    background-color: #555;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    width: 80px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+}
+
+.chat-popup-admin {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+}
+.checkboxinline1 {
+    margin-left: -16px;
+}
+.cursorpointer {
+    cursor: pointer;
+}
+/* Add styles to the form container */
+.form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+
+    /* Full-width textarea */
+    .form-container textarea {
+        width: 100%;
+        /*padding: 15px;
+                        margin: 5px 0 22px 0;*/
+        border: none;
+        background: #f1f1f1;
+        resize: none;
+        min-height: 50px;
+    }
+
+
+    .form-container .cancel {
+        background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover, .open-button:hover {
+        opacity: 1;
+    }
+
+
+
+.form-horizontal .form-control-static {
+    width: 100%;
+}
+
+.fixed-header {
+    position: fixed;
+}
+
+.noborderbackground {
+    border: none !important;
+    background: none !important;
+}
+.notextdeco {
+    text-decoration: none;
+}
+
+.page-quick-sidebar-wrapper {
+    right: -310px;
+    width: 310px;
+}
+
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
+        position: initial !important;
+        margin-left: 310px;
+        width: 310px !important;
+    }
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-list {
+        width: 310px !important;
+    }
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-content-item-shown .page-quick-sidebar-list {
+        margin-left: -310px;
+    }
+
+.actions-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50% !important;
+}
+
+.page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
+    margin-top: 5px;
+}
+
+.page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item .page-quick-sidebar-nav {
+    padding: 0px 10px 0px 0px !important;
+}
+
+
+
+.page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-users .media-list .media .media-status {
+    right: 20px !important;
+}
+
+.paddingleft7px {
+    padding-left: 7px !important;
+}
+.paddingtop0px {
+    padding-top: 0px !important;
+}
+
+.tab-content > .active {
+    padding-right: 10%;
+}
+.tab-content > .active {
+    margin-right: 10%;
+}
+/*abheedev backlog 333*/
+thead {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    border: 2px solid darkgrey;
+}
+.table-scrollable {
+    overflow-y: auto !important;
+    max-height: 500px;
+}
+
+.txtaligncentre {
+    text-align: center
+}
+
+.txtalignleft {
+    text-align: left;
+}
+
+    .vendorlist {
+        padding: 12px 10px 11px 10px;
+    }
+/*login.html*/
+.user-login-5 .login-container > .login-content {
+    margin-top: 20%;
+}
+
+.select2-drop.select2-display-none.select2-with-searchbox.select2-drop-active ul.select2-results.nav.nav-pills {
+    display: flex;
+    flex-flow: column;
+}
+
+
+/*@abheedev multilingual*/
+.changeLanguage {
+    position: absolute;
+    right: 160px;
+    top: 11px;
+}
+
+@media only screen and (max-width: 600px) {
+    .changeLanguage {
+        position: absolute;
+        right: 3%;
+    }
+}
+.margintop4px {
+    margin-top: 4px;
+}
+.nopaddingleft {
+    padding-left: 0px !important;
+}
+
+.nopaddingtop {
+    padding-top: 0px !important;
+}
+.nodisplay {
+    display: none;
+}
+.norecord {
+    text-align: center;
+    color: Red
+}
+
+/*participatebid*/
+.page-quick-sidebar-wrapper {
+    right: -310px;
+    width: 310px;
+}
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
+        margin-left: 0px;
+    }
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
+        width: 310px !important;
+    }
+
+    .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
+        padding: 20px 10px 15px 10px;
+    }
+
+.page-footer {
+    color: #FFF !important;
+}
+.scroller300 {
+   height:300px;
+}
+.scroller400 {
+    height: 400px;
+}
+.scroller200 {
+    height: 200px;
+}
+
+.scrolruom {
+    height: 250px;
+    display: block !important;
+}
+.textalignleft {
+    text-align: left !important;
+}
+.width100 {
+    width: 100%;
+}
+.width300px {
+    width: 300px !important
+}
+
+.navbar-brand {
+    padding: 4px !important;
+}
+
+#logoimage {
+    height: 38px;
+    width: 180px;
+}
+
+.page-container {
+    display: none
+}

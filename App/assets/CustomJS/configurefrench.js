@@ -1822,7 +1822,8 @@ function fetchFrenchBidDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + sessionStorage.getItem('CurrentBidID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,

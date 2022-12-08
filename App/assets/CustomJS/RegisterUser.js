@@ -547,13 +547,19 @@ jQuery("#txtSearch").keyup(function () {
 
 function fetchUserDetails(UserID) {
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var userReqObj = {
+        "UserID": UserID,
+        "UserType": "R"
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + UserID + "&UserType=R",
+        //url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + UserID + "&UserType=R",
+        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
             cc = 0;

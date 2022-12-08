@@ -7,7 +7,8 @@ var RFQID = getUrlVarsURL(decryptedstring)["RFQID"]
 function FetchInvitedVendorsForeRFQ() {
    
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,

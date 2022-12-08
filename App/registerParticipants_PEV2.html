@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+
     <link rel="shortcut icon" href="../favicon.ico" />
     <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -52,9 +53,11 @@
     <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
+
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script> <!--abheedev bug 353 line added-->
@@ -104,7 +107,7 @@
                         </div>
                     </li>
                 </ul>
-                <br/>
+                <br />
             </div>
         </div>
         <div class="page-content-wrapper">
@@ -266,7 +269,7 @@
                                                             City <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
-                                                           
+
                                                             <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
                                                         </div>
                                                     </div>
@@ -367,7 +370,7 @@
                                                         </div>
 
                                                     </div>
-                                                   
+
                                                     <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                         <label class="col-md-3 control-label">
                                                             &nbsp;
@@ -383,7 +386,7 @@
                                                             </div>
                                                             <div class="tools">
                                                                 <a href="javascript:;" class="collapse"></a>
-                                                                
+
                                                             </div>
                                                         </div>
                                                         <div class="portlet-body">
@@ -420,7 +423,7 @@
                                         </div>
                                         <div class="row" id="displayTable">
                                             <div class="col-md-12">
-                                                
+
 
                                                 <div class="tabbable tabbable-custom boxless tabbable-reversed" style="overflow:unset;">
                                                     <ul class="nav nav-tabs">
@@ -1204,9 +1207,11 @@
 
         </div>
     </div>
+   
     <script type="text/javascript">
 
         jQuery(document).ready(function () {
+          
             callPagejs('RegisterParticipants_PEV2.js');
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');
@@ -1222,6 +1227,7 @@
                     });
                 }
             }
+           
             App.init();
             setCommonData();
             fetchMenuItemsFromSession(9, 10);
@@ -1250,7 +1256,7 @@
             $('#ddlState').select2({
                 searchInputPlaceholder: "Search State",
                 allowClear: true
-            }).on('change', function () { $(this).valid();});
+            }).on('change', function () { $(this).valid(); });
             $('#ddlCity').select2({
                 searchInputPlaceholder: "Search City",
                 allowClear: true

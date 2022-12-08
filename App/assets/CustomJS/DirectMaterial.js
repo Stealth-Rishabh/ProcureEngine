@@ -13,19 +13,25 @@ jQuery('#btnpull').click(function (e) {
 });
 
 function fetchVendorparticipanType() {
-
+    var bidTypeRequestObj = {
+        "CustomerID": CustId,
+        "BidTypeID": 0,
+        "ExcludeStatus": "N"
+    }
     jQuery.ajax({
 
         type: "GET",
 
         contentType: "application/json; charset=utf-8",
 
-        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        //url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&BidTypeID=0&excludeStatus=N&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        //url: sessionStorage.getItem("APIPath") + "BidType/fetchBidType",
 
         cache: false,
 
         crossDomain: true,
-
+        //data:JSON.stringify(bidTypeRequestObj),
         dataType: "json",
 
         success: function (bidTypedata) {

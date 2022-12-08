@@ -1,3 +1,69 @@
+jQuery(document).ready(function () {
+   
+    $('[data-toggle="popover"]').popover({})
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 52);
+    FetchCurrency('0');
+
+    fetchRegisterUser();
+    fetchBidType();
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+    }, 2000);
+
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchVendorGroup('M', 0); // used to fetch product category
+    showhideItemBidDuration();
+    var _BidID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+
+    if (_BidID == null)
+        sessionStorage.setItem('CurrentBidID', 0)
+
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchCoalDetails();
+    }
+
+});
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
 $("#cancelBidBtn").hide();
 
 $('#file-excelparameter').change(handleFileparameter);
@@ -11,21 +77,7 @@ jQuery("#txtApprover").keyup(function () {
 });
 sessionStorage.setItem('hdnApproverid', 0);
 
-var _BidID;
-if (window.location.search) {
-    var param = getUrlVars()["param"]
-    var decryptedstring = fndecrypt(param);
-    _BidID = getUrlVarsURL(decryptedstring)["BidID"];
 
-    if (_BidID == null) {
-        _BidID = 0;
-        sessionStorage.setItem('CurrentBidID', 0)
-    }
-    else {
-        sessionStorage.setItem('CurrentBidID', _BidID)
-        fetchCoalDetails();
-    }
-}
 
 function cancelbid() {
     CancelBidDuringConfig(_BidID, 'BID');
@@ -556,11 +608,11 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
-    } 
+    }
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -1889,7 +1941,8 @@ function fetchCoalDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?BidID=" + sessionStorage.getItem('CurrentBidID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,

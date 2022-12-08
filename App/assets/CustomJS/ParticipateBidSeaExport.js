@@ -520,9 +520,14 @@ function fetchBidHeaderDetails(bidId) {
 
     var url = '';
 
-
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": bidId,
+        "VendorID": _vendorID
+    }
 
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
 
 
 
@@ -537,6 +542,7 @@ function fetchBidHeaderDetails(bidId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
 
         cache: false,
+        //data: JSON.stringify(bidDetailsVendorObj),
 
         crossDomain: true,
 

@@ -1318,16 +1318,17 @@ function fetchallexportdetails() {
     $('#extendedDurationPara').hide();
 
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        //bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 7) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 8) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
-        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
+        bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
 
     jQuery.ajax({
@@ -1564,17 +1565,17 @@ function fetchallexportdetails() {
                         if ($('#hdnClosingval').val() == "S") {
                             $(".staggered-item").show();
 
-                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th class=hide>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th class=Paction>Action</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th class=Paction>Action</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
                             jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                         }
                         else {
                             jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th class=hide>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                         }
 
                     }
                     else {
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Starting Price</th><th>Last Invoice Price</th><th class=hide>Show H1 Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Mask Vendor</th><th>Quantity</th><th>UOM</th><th>Starting Price</th><th>Last Invoice Price</th><th class=hide>Show H1 Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").attr("disabled", "disabled");
                         $('#btndiv').hide()
                         $('#plusbtn').attr("disabled", "disabled");
@@ -1672,12 +1673,12 @@ function fetchallexportdetails() {
                     if ($('#hdnClosingval').val() == "S") {
                         $(".staggered-item").show();
 
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
                     else {
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
 
                     for (var i = 0; i < BidData[0].bidCoalDetails.length; i++) {
@@ -1743,7 +1744,7 @@ function fetchallexportdetails() {
 
                     $('#hdnauctiontype').val(BidData[0].bidDetails[0].bidForID)
                     if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").removeAttr("disabled", "disabled");
                         $('#btndiv').show()
                         $('#plusbtn').removeAttr("disabled", "disabled");
@@ -1751,7 +1752,7 @@ function fetchallexportdetails() {
                         jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     }
                     if (BidData[0].bidDetails[0].bidForID == 82) {
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th class=hide>Show L1 Price</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th class=hide>Show L1 Price</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").attr("disabled", "disabled");
                         $('#btndiv').hide()
                         $('#plusbtn').attr("disabled", "disabled");
@@ -1811,7 +1812,7 @@ function fetchallexportdetails() {
                     $('#wrap_scrollerPrevtab_0').show();
 
                     $('#hdnauctiontype').val(BidData[0].bidDetails[0].bidForID)
-                    $("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    $("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     $("#txtBidDurationForBidOpen").removeAttr("disabled", "disabled");
                     $('#btndiv').show()
                     $('#plusbtn').removeAttr("disabled", "disabled");
@@ -2164,7 +2165,8 @@ function fnGetBidApprovers() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchBidApprover/?EventID=" + jQuery('#ddlbid').val() + "&Type=Bid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

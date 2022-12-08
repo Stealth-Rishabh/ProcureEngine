@@ -1,4 +1,66 @@
-﻿// bug 584 abheedev 
+﻿jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    $("#ddlCategoryMultiple").select2();
+
+    Metronic.init();
+    Layout.init();
+
+    //$('#ddlCategoryMultiple').select2({
+    //        placeholder: "Select Category",
+    //        allowClear: true
+    //    });
+    var _VQID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+    }
+
+    if (_VQID == null || _VQID == undefined) {
+        sessionStorage.setItem('CurrentVQID', 0)
+        fetchRFIQuestions('VQL');
+    }
+    else {
+
+        sessionStorage.setItem('CurrentVQID', _VQID)
+        //setTimeout(function () {
+        //    fetchRFIDetails();
+        //},4000)
+
+        fetchRFIDetailsForTab2('VQL');
+    }
+    //setTimeout(function () {
+    fetchCategorymaster();
+    //   }, 4000)
+    fetchVendorDetail();
+    FormWizard.init();
+    FormValidate();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(1, 25);
+    //ComponentsDropdowns.init();
+});
+
+
+
+// bug 584 abheedev 
 $('#txtmobileNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
