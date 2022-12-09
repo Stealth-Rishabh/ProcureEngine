@@ -400,9 +400,9 @@ function fetchRFIDetails() {
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
             
-            jQuery('#txtrfiSubject').val(BidData[0].RFIMaster[0].RFISubject)
+            jQuery('#txtrfiSubject').val(StringDecodingMechanism(BidData[0].RFIMaster[0].RFISubject))
             jQuery('#txtrfideadline').val(BidData[0].RFIMaster[0].RFIDeadline)
-            jQuery('#txtrfidescription').val(BidData[0].RFIMaster[0].RFIDescription)
+            jQuery('#txtrfidescription').val(StringDecodingMechanism(BidData[0].RFIMaster[0].RFIDescription))
             jQuery('#txtattachdescription').val(BidData[0].RFIMaster[0].RFIAttachmentDescription)
             
             $("#cancelBidBtn").show();

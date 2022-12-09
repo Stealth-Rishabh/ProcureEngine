@@ -2082,12 +2082,12 @@ function editRow(icount) {
 
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
-    var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n')
-    var RFQRemark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Descriptiontxt = StringDecodingMechanism$("#desc" + icount).html().replace(/<br>/g, '\n')
+    var RFQRemark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n')
 
     //sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
 
-    $('#txtshortname').val($("#sname" + icount).text())
+    $('#txtshortname').val(StringDecodingMechanism($("#sname" + icount).text()))
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
     $('#txtquantitiy').val(thousands_Sep_Text(removeThousandSeperator($("#quan" + icount).text())))
@@ -2099,7 +2099,7 @@ function editRow(icount) {
     $("#txttat").val($("#tat" + icount).text())
     $('#txtPono').val($("#pono" + icount).text())
     $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
-    $('#txtvendorname').val($("#povname" + icount).text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#povname" + icount).text()))
     $('#txtPODate').val($("#podate" + icount).text())
     $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     $('#add_or').text('Modify');

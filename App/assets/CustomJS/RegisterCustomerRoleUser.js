@@ -929,16 +929,16 @@ function fetchCustomerDetails(customerid) {
             if (data.length > 0) {
                 sessionStorage.setItem("hdnCustomerID", data[0].customerID)
                 sessionStorage.setItem("hdnAdminID", data[0].adminID)
-                $('#txtcustomername').val(data[0].customerName);
+                $('#txtcustomername').val(StringDecodingMechanism(data[0].customerName));
                 $('#txttermscondition').val(data[0].generalConditions);
                 $('#dropcurrency').val(data[0].defaultCurrency);
                 $('#txtnobids').val(data[0].noOfBid);
                 $('#from').val(data[0].subscriptionFrom);
                 $('#to').val(data[0].subscriptionTo);
                 $('#txtmobileNo').val(data[0].adminMobile);
-                $('#txtAddress1').val(data[0].customerAddress);
+                $('#txtAddress1').val(StringDecodingMechanism(data[0].customerAddress));
                 $('#txtUserEmailID').val(data[0].adminEmail);
-                $('#txtadminfirstname').val(data[0].adminName);
+                $('#txtadminfirstname').val(StringDecodingMechanism(data[0].adminName));
                 $('#txtwebsite').val(data[0].website);
                 $('#txturlextension').val(data[0].urlExtension);
                 $('#phoneno').val(data[0].phoneNo);

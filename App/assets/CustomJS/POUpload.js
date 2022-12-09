@@ -557,7 +557,7 @@ function fetchAttachments() {
                 $('#add_or').removeAttr('disabled')
                 sessionStorage.setItem('hdnVendorID', data[0].vendorID);
                 $('#txtVendor').val(data[0].vendorName)
-                $('#txtvendorremarks').val(data[0].userRemarks)
+                $('#txtvendorremarks').val(StringDecodingMechanism(data[0].userRemarks))
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");

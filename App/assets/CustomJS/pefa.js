@@ -2240,9 +2240,9 @@ function fetchScrapSalesBidDetails() {
             var strp = '';
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject))
 
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails))
 
             jQuery('#txtbidDate').val(dtst)
             jQuery("#dropCurrency").val(BidData[0].bidDetails[0].currencyID).attr("selected", "selected");

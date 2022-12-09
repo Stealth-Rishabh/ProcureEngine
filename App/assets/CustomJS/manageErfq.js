@@ -726,12 +726,12 @@ function editRow(divName, RFQParameterId, rowid) {
         // $('#btnsubmit').text('Submit');
     }
     $('#responsive').modal('show');
-    var Descriptiontxt = $("#" + rowid).find("td:eq(6)").text().replace(/<br>/g, '\n')
-    var RFQRemark = $("#" + rowid).find("td:eq(9)").text().replace(/<br>/g, '\n')
+    var Descriptiontxt = StringDecodingMechanism($("#" + rowid).find("td:eq(6)").text().replace(/<br>/g, '\n'))
+    var RFQRemark = StringDecodingMechanism($("#" + rowid).find("td:eq(9)").text().replace(/<br>/g, '\n'))
 
     sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
 
-    $('#txtshortname').val($("#" + rowid).find("td:eq(2)").text())
+    $('#txtshortname').val(StringDecodingMechanism($("#" + rowid).find("td:eq(2)").text()))
     $('#txtItemCode').val($("#" + rowid).find("td:eq(1)").text())
     $('#txttargetprice').val($("#" + rowid).find("td:eq(3)").text())
 
@@ -744,11 +744,11 @@ function editRow(divName, RFQParameterId, rowid) {
     $('#txtItemRemarks').val(RFQRemark)
     $('#txtbiddescriptionP').val(Descriptiontxt)
 
-    $('#txtedelivery').val($("#" + rowid).find("td:eq(7)").text())
+    $('#txtedelivery').val(StringDecodingMechanism($("#" + rowid).find("td:eq(7)").text()))
     $("#txttat").val($("#" + rowid).find("td:eq(8)").text())
     $('#txtPono').val($("#" + rowid).find("td:eq(10)").text())
     $('#txtunitrate').val($("#" + rowid).find("td:eq(12)").text())
-    $('#txtvendorname').val($("#" + rowid).find("td:eq(11)").text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#" + rowid).find("td:eq(11)").text()))
     $('#txtPODate').val($("#" + rowid).find("td:eq(13)").text())
     $('#txtpovalue').val($("#" + rowid).find("td:eq(14)").text())
     $('#add_or').text('Modify');
@@ -2029,6 +2029,7 @@ jQuery("#search").keyup(function () {
     });
 });
 function saveBidSurrogate() {
+    var _cleanString = StringEncodingMechanism($("#bidSurrogateReason").val());
     if ($('#bidSurrogateToName').val() == '') {
         error1.find("span").html('Please Fill name.');
         error1.show();
@@ -2072,7 +2073,8 @@ function saveBidSurrogate() {
         "Name": $("#bidSurrogateToName").val(),
         "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
         "EmailId": $("#bidSurrogateToEmail").val(),
-        "Reason": $("#bidSurrogateReason").val(),
+        //"Reason": $("#bidSurrogateReason").val(),
+        "Reason": _cleanString,
         "vendorEmailId": sessionStorage.getItem("hdnselectedEmail"),
         "vendorID": parseInt(sessionStorage.getItem("hdnselectedvendor")),
         "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid'),

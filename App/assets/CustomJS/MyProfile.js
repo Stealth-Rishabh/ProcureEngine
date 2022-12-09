@@ -354,8 +354,8 @@ function fetchVendorDetails() {
             $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
             $('#vendorEmailID').html(detail[0].EmailID)
-            $('#vendoraddress').val(detail[0].Address1)
-            $('#vendorCity').val(detail[0].CityName)
+            $('#vendoraddress').val(StringDecodingMechanism(detail[0].Address1))
+            $('#vendorCity').val(StringDecodingMechanism(detail[0].CityName))
             $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
             $('#vendorpanno').html(detail[0].PANNo)
@@ -795,7 +795,7 @@ function fetchMyProfileVendor() {
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
             $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
-            $('#vendoraddress').val(vendordetails[0].Address1)
+            $('#vendoraddress').val(StringDecodingMechanism(vendordetails[0].Address1))
 
              $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
 

@@ -472,9 +472,9 @@ function fetchRFIDetails() {
 
                 jQuery('#tblServicesProduct').empty();
                 jQuery('#tblTempVendorslist').empty();
-                jQuery('#txtrfiSubject').val(BidData[0].vqMaster[0].vqSubject)
+                jQuery('#txtrfiSubject').val(StringDecodingMechanism(BidData[0].vqMaster[0].vqSubject))
                 jQuery('#txtrfideadline').val(BidData[0].vqMaster[0].vqDeadline)
-                jQuery('#txtrfidescription').val(BidData[0].vqMaster[0].vqDescription)
+                jQuery('#txtrfidescription').val(StringDecodingMechanism(BidData[0].vqMaster[0].vqDescription))
                 jQuery('#txtattachdescription').val(BidData[0].vqMaster[0].vqAttachmentDescription)
 
                 $("#cancelBidBtn").show();
@@ -1657,9 +1657,9 @@ function fetchRFIDetailsForPreview() {
     
     var AttachementFileName = '',_productCat, _txtCategories=[];
 
-    jQuery('#txtrfiSubjectPrev').html($('#txtrfiSubject').val())
+    jQuery('#txtrfiSubjectPrev').html(StringEncodingMechanism($('#txtrfiSubject').val()))
     jQuery('#txtrfideadlinePrev').html($('#txtrfideadline').val())
-    jQuery('#txtrfidescriptionPrev').html($('#txtrfidescription').val())
+    jQuery('#txtrfidescriptionPrev').html(StringEncodingMechanism($('#txtrfidescription').val()))
     
     _productCat = $("#ddlCategoryMultiple");
     for (var i = 0; i < _productCat[0].selectedOptions.length; i++) {

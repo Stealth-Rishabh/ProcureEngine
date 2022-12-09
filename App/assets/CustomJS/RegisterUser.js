@@ -284,13 +284,13 @@ function fetchRegisterUser() {
 
 function EditUser(ctrl) {
 
-    jQuery("#txtUsername").val(jQuery(ctrl).closest('tr').find("td").eq(1).html());
+    jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
     jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td").eq(2).html());
     jQuery("#txtmobilno").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtemail").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
     jQuery("#txtemail").closest('.form-group').removeClass('has-error').find('span').hide()
-    jQuery("#txtdesignation").val(jQuery(ctrl).closest('tr').find("td").eq(4).html());
+    jQuery("#txtdesignation").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(4).html()));
     jQuery("#txtdesignation").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#ddlroleMaster").val(jQuery(ctrl).closest('tr').find("td").eq(7).html());
     jQuery("#ddlroleMaster").closest('.form-group').removeClass('has-error').find('span').hide()

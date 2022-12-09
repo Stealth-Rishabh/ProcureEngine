@@ -599,6 +599,7 @@ function removeQuotationCA(shname, price, subtime, caid, caheaderid) {
     sessionStorage.setItem("caheaderid", caheaderid)
 }
 function deletePEFAquote() {
+    var _cleanString1 = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -613,7 +614,8 @@ function deletePEFAquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "PSID": parseInt(sessionStorage.getItem("psid")),
         "PSHeaderID": 0,
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString1,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID")
 

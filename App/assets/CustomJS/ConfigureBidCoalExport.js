@@ -1283,8 +1283,8 @@ function ConfigureBidForCoalTab2() {
             if ($.trim(this_row.find('td:eq(23)').html()) != '') {
                 povalue = removeThousandSeperator($.trim(this_row.find('td:eq(23)').html()));
             }
-            var remark = $.trim(this_row.find('td:eq(5)').html()).replace(/'/g, "");
-            var description = $.trim(this_row.find('td:eq(4)').html()).replace(/'/g, "");
+            var remark = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').html()).replace(/'/g, ""));
+            var description = StringEncodingMechanism($.trim(this_row.find('td:eq(4)').html()).replace(/'/g, ""));
             if ($('#ddlbidclosetype').val() == "A") {
                 itmduartion = 0;
                 BidDuration = BidDuration + 0;
@@ -1804,7 +1804,7 @@ function editvalues(icount) {
     //$('#rowidPrev').val(rowidPrev.id)
 
     // var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n')
-    var Remark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Remark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'))
 
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txtdestinationPort').val($("#destinationport" + icount).text())
@@ -1952,9 +1952,9 @@ function fetchCoalDetails() {
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate));
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject))
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails))
             //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
             jQuery('#txtbidDate').val(dtst)
             //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
@@ -2206,7 +2206,7 @@ function fetchPSBidDetailsForPreview() {
     var hidevendor = 'No';
     jQuery('#mapedapproverPrev').html('');
 
-    jQuery('#txtBidSubjectPrev').html($('#txtBidSubject').val())
+    jQuery('#txtBidSubjectPrev').html(StringEncodingMechanism($('#txtBidSubject').val()))
 
     if ($('#ddlbidclosetype').val() == "S") {
         jQuery('#txtBidDurationPrev').html(sessionStorage.getItem('TotalBidDuration'))
@@ -2214,7 +2214,7 @@ function fetchPSBidDetailsForPreview() {
     else {
         jQuery('#txtBidDurationPrev').html($('#txtBidDuration').val())
     }
-    jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
+    jQuery('#txtbiddescriptionPrev').html(StringEncodingMechanism($('#txtbiddescription').val()))
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
     jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())

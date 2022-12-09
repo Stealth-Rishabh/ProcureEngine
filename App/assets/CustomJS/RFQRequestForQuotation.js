@@ -1512,9 +1512,9 @@ jQuery.ajax({
         success: function (RFQData) {
         
             sessionStorage.setItem('hddnRFQID', RFQData[0].RFQId)
-            jQuery('#txtrfqSubject').val(RFQData[0].RFQSubject)
-            setTimeout( function(){$('#dropCurrency').val(RFQData[0].RFQCurrencyId).attr("selected", "selected");}, 1000)
-            jQuery('#txtrfqdescription').val(RFQData[0].RFQDescription)
+            jQuery('#txtrfqSubject').val(StringDecodingMechanism(RFQData[0].RFQSubject))
+            setTimeout(function () { $('#dropCurrency').val(RFQData[0].RFQCurrencyId).attr("selected", "selected"); }, 1000)
+            jQuery('#txtrfqdescription').val(StringDecodingMechanism(RFQData[0].RFQDescription))
             jQuery('#txtrfqDuration').val(RFQData[0].RFQDeadline)
             jQuery('#txtConversionRate').val(RFQData[0].RFQConversionRate);
             jQuery('#txtRFQReference').val(RFQData[0].RFQReference)
@@ -1810,7 +1810,7 @@ $('#back_prev_btn').click(function() {
 function fetchPSBidDetailsForPreview() {
     var TermsConditionFileName = '';
     var AttachementFileName = '';
-    
+
     jQuery('#lblRfqsubject').html($('#txtrfqSubject').val())
     jQuery('#lblrfqdeadline').html($('#txtrfqDuration').val())
     jQuery('#lblrfqdescription').html($('#txtrfqdescription').val())

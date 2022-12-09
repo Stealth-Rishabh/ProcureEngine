@@ -1580,10 +1580,10 @@ function saveQuotation() {
         $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
             if (_RFQBidType == 'Open') {
-                vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''"))
+                vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
             }
             else {
-                vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17) input[type="text"]').val()))
+                vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
 
@@ -1640,7 +1640,7 @@ function saveQuotation() {
 
         });
 
-        var _cleanString = StringEncodingMechanism($('#txtvendorremarks').val());
+        var _cleanString2 = StringEncodingMechanism($('#txtvendorremarks').val());
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1648,7 +1648,7 @@ function saveQuotation() {
             "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
             "CommercialTerms": commercialterms,
             //"VendorRemarks": $('#txtvendorremarks').val(),
-            "VendorRemarks": _cleanString,
+            "VendorRemarks": _cleanString2,
             "PreviousVersion": PreviousVersion,
             "AttachString": attchquery
         };

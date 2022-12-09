@@ -575,11 +575,11 @@ function InsUpdBankerDetails() {
                             }
                         }); 
                     });
-                    $('#txtname').val(data[0].VendorName)
+                    $('#txtname').val(StringDecodingMechanism(data[0].VendorName))
                     $('#lblcontackpersonalName').text(data[0].VendorName)
                     $('#txtmobileno').val(data[0].VendorMobileNo)
                     $('#lblcontactpsersonalMobileNo').text(data[0].VendorMobileNo)
-                    $('#txtofficeaddress').val(data[0].OfficeAddress)
+                    $('#txtofficeaddress').val(StringDecodingMechanism(data[0].OfficeAddress))
                     $('#lblcontactpersonofficeAddress').text(data[0].OfficeAddress)
                     $('#txtofficezipcode').val(data[0].OfficeZipCode)
                     $('#lblcontactpersonzipcode').text(data[0].OfficeZipCode)
@@ -587,7 +587,7 @@ function InsUpdBankerDetails() {
                     $('#contactpersonlofficephoneno').text(data[0].OfficePhoneNo)
                     $('#txtofficefax').val(data[0].OfficeFaxNo)
                     $('#lblcontactpersonlofficefax').text(data[0].OfficeFaxNo)
-                    $('#txtworksaddress').val(data[0].WorkAddress)
+                    $('#txtworksaddress').val(StringDecodingMechanism(data[0].WorkAddress))
                     $('#lblcontactpersonworkaddress').text(data[0].WorkAddress)
                     $('#txtworkzipcode').val(data[0].WorkZipCode)
                     $('#lblcontactpersonworkzipcode').text(data[0].WorkZipCode)
@@ -618,12 +618,12 @@ function InsUpdBankerDetails() {
                     $('#lblexpimpcodeno').text(data[0].ExporterImporterCodeNo)
 
                     $('#txtcategory').val(data[0].Category)
-                    $('#txtcategoryname').val(data[0].CategoryName)
-                    $('#txtcategoryaddress').val(data[0].CategoryAddress)
+                    $('#txtcategoryname').val(StringDecodingMechanism(data[0].CategoryName))
+                    $('#txtcategoryaddress').val(StringDecodingMechanism(data[0].CategoryAddress))
                     $('#txtcountry').val(data[0].CategoryCountry)
                     $('#txtphone').val(data[0].CategoryPhone)
                     $('#txtemail').val(data[0].CategoryEMail)
-                    $('#txtcontactpersonname').val(data[0].CategoryContactPersonName)
+                    $('#txtcontactpersonname').val(StringDecodingMechanism(data[0].CategoryContactPersonName))
                     $('#txtcontactpersonmobileno').val(data[0].CategoryContactPersonMobileNo)
 
                     $('#lblcategory').text(data[0].Category)
@@ -634,8 +634,8 @@ function InsUpdBankerDetails() {
                     $('#lblcalemail').text(data[0].CategoryEMail)
                     $('#lblcatcontactpersonname').text(data[0].CategoryContactPersonName)
                     $('#lblcalcontactMobileno').text(data[0].CategoryContactPersonMobileNo)
-              
-                    $('#txtclientname').val(data[0].ClientName)
+
+                    $('#txtclientname').val(StringDecodingMechanism(data[0].ClientName))
                     $('#txtclientPhone').val(data[0].ClientPhone)
                     $('#txtclientaddress').val(data[0].ClientAddress)
                     $('#txtclientscopeofwork').val(data[0].ScopeOfWork)
@@ -646,8 +646,8 @@ function InsUpdBankerDetails() {
                     $('#lblclientaddress').text(data[0].ClientAddress)
                     $('#lblclientscopofwork').text(data[0].ScopeOfWork)
                     $('#lbclientemail').text(data[0].ClientEmail)
-               
-                    $('#txtbank').val(data[0].Bank)
+
+                    $('#txtbank').val(StringDecodingMechanism(data[0].Bank))
                     $('#txtbranch').val(data[0].Branch)
                     $('#txtneftno').val(data[0].NEFTNo)
                     $('#txtrtgsno').val(data[0].RTGSNo)

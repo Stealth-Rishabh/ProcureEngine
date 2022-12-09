@@ -756,10 +756,10 @@ $('#txtcompanyemail').on('keyup', function () {
 
 function EditProduct(ctrl) {
     clearform()
-    jQuery("#ParticipantName").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
-    jQuery("#ContactName").val(jQuery(ctrl).closest('tr').find("td").eq(4).html());
+    jQuery("#ParticipantName").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(3).html()));
+    jQuery("#ContactName").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(4).html()));
     jQuery("#ParticipantName").closest('.form-group').removeClass('has-error')//.find('span').hide()
-    jQuery("#txtAddress").val(jQuery(ctrl).closest('tr').find("td").eq(5).text());
+    jQuery("#txtAddress").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(5).text()));
     jQuery("#txtAddress").closest('.form-group').removeClass('has-error')//.find('span').hide()
     jQuery("#txtCity").val(jQuery(ctrl).closest('tr').find("td").eq(6).html());
     jQuery("#txtCity").closest('.form-group').removeClass('has-error')//.find('span').hide()

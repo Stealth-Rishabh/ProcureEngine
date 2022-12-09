@@ -791,19 +791,19 @@ function RFIFetchCompanyHeader(QuestionFor) {
            
             if (data.length > 0) {
                 //alert(data[0].CompanyPhone)
-                            $('#txtCompanyName').val(data[0].CompanyName);
-                            $('#txtPhoneNo').val(data[0].CompanyPhone);
-                            $('#txtofficeAddress').val(data[0].OfficedAddress);
+                $('#txtCompanyName').val(StringDecodingMechanism(data[0].CompanyName));
+                $('#txtPhoneNo').val(data[0].CompanyPhone);
+                $('#txtofficeAddress').val(StringDecodingMechanism(data[0].OfficedAddress));
                             $('#txtfactoryAddress').val(data[0].FactoryAdress);
-                            $('#txtemailID').val(data[0].CompanyEmail);
-                            $('#txtParentcompName').val(data[0].ParentCompany);
+                $('#txtemailID').val(data[0].CompanyEmail);
+                $('#txtParentcompName').val(StringDecodingMechanism(data[0].ParentCompany));
                             $('#txtFaxNo').val(data[0].FaxNumber);
                             $('#txtWebsite').val(data[0].CompanyWebsite);
                             $('#ddlOwnership').val(data[0].Ownership);
                             $('#txtemployeeNum').val(data[0].EmployeeCount);
                             $('#txtbriefDesc').val(data[0].KeyProjects);
-                            $('#ddlTitle').val(data[0].Title);
-                            $('#txtContactName').val(data[0].KeyPersonName);
+                $('#ddlTitle').val(data[0].Title);
+                $('#txtContactName').val(StringDecodingMechanism(data[0].KeyPersonName));
                             $('#txtcontactNo').val(data[0].KeyPersonNo);
                          
                             $('#txtCity').val(data[0].City);

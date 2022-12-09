@@ -1389,7 +1389,7 @@ function fnRecall() {
     });
 }
 function DisableActivityRecall() {
-    var _cleanString3 = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
+    var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
 
     var data = {
         "NFAID": parseInt(idx),
@@ -1398,7 +1398,7 @@ function DisableActivityRecall() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActivityDescription": jQuery("#lbltitle").text(),
         //"Remarks": jQuery("#txtRemarksrecall").val()
-        "Remarks": _cleanString3
+        "Remarks": _cleanString
     }
 
     jQuery.ajax({

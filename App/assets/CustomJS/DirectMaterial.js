@@ -1066,8 +1066,8 @@ function ConfigureBidForProductTab2() {
 
 function ConfigureBidForProductTab3() {
 
-    var _cleanString3 = StringEncodingMechanism(jQuery("#txtBidSubject").val());
-    var _cleanString4 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
@@ -1101,9 +1101,9 @@ function ConfigureBidForProductTab3() {
         "BidID": sessionStorage.getItem('CurrentBidID'),
         "UserID": sessionStorage.getItem('UserID'),
        //"BidSubject": jQuery("#txtBidSubject").val(),
-        "BidSubject": _cleanString3,
+        "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
-        "BidDescription": _cleanString4,
+        "BidDescription": _cleanString2,
         "BidDate": jQuery("#txtbidDate").val(),
         "BidTime": jQuery("#txtbidTime").val(),
         "BidDuration": jQuery("#txtBidDuration").val(),
@@ -1811,7 +1811,7 @@ function editvalues(rowid, rowidPrev) {
     $('#rowid').val(rowid.id)
     $('#rowidPrev').val(rowidPrev.id)
 
-    $('#txtshortname').val($("#" + rowid.id).find("td:eq(1)").text())
+    $('#txtshortname').val(StringDecodingMechanism($("#" + rowid.id).find("td:eq(1)").text()))
 
     $('#txttargetprice').val($("#" + rowid.id).find("td:eq(2)").text())
 
@@ -1819,7 +1819,7 @@ function editvalues(rowid, rowidPrev) {
 
     $('#dropuom').val($("#" + rowid.id).find("td:eq(4)").text())
 
-    $('#txtbiddescriptionP').val($("#" + rowid.id).find("td:eq(5)").text())
+    $('#txtbiddescriptionP').val(StringDecodingMechanism($("#" + rowid.id).find("td:eq(5)").text()))
 
     $('#txtContractDuration').val($("#" + rowid.id).find("td:eq(6)").text())
 
@@ -1971,9 +1971,9 @@ function fetchProductServicesBidDetails() {
         dataType: "json",
         success: function (BidData) {
 
-            jQuery('#txtBidSubject').val(BidData[0].BidDetails[0].BidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].BidDetails[0].BidSubject))
             jQuery('#txtBidDuration').val(BidData[0].BidDetails[0].BidDuration)
-            jQuery('#txtbiddescription').val(BidData[0].BidDetails[0].BidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].BidDetails[0].BidDetails))
             jQuery('#txtbidDate').val(BidData[0].BidDetails[0].BidDate)
             jQuery('#txtbidTime').val(BidData[0].BidDetails[0].BidTime)
             jQuery("#dropCurrency").val(BidData[0].BidDetails[0].CurrencyID).attr("selected", "selected");
