@@ -79,7 +79,7 @@
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
 
-
+    
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -174,7 +174,7 @@
                                     <i class="fa fa-gift"></i>CREATE - PPC REQUEST
                                 </div>
                                 <div class="tools hidden-xs">
-                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="cancelbid()">Cancel</button>
                                     <a href="javascript:;" class="collapse hidden-xs"></a>
                                 </div>
                             </div>
@@ -590,7 +590,7 @@
 
                                                                                         <div class="radio-list">
                                                                                             <label class="radio-inline">
-                                                                                                <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedP" /> ProcurEngine
+                                                                                                <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedP" checked /> ProcurEngine
                                                                                             </label>
                                                                                             <label class="radio-inline">
                                                                                                 <input type="radio" name="optionenquiryissued" value="Email" id="optionenquiryissuedE" />Email
@@ -637,13 +637,13 @@
 
                                                                                         <div class="radio-list">
                                                                                             <label class="radio-inline">
-                                                                                                <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedPout" checked /> ProcurEngine
+                                                                                                <input type="radio" name="optionenquiryissuedout" value="ProcurEngine" id="optionenquiryissuedPout" checked /> ProcurEngine
                                                                                             </label>
                                                                                             <label class="radio-inline">
-                                                                                                <input type="radio" name="optionenquiryissued" value="Email" id="optionenquiryissuedEout" />Email
+                                                                                                <input type="radio" name="optionenquiryissuedout" value="Email" id="optionenquiryissuedEout" />Email
                                                                                             </label>
                                                                                             <label class="radio-inline">
-                                                                                                <input type="radio" name="optionenquiryissued" value="Fax" id="optionenquiryissuedFout" />Fax
+                                                                                                <input type="radio" name="optionenquiryissuedout" value="Fax" id="optionenquiryissuedFout" />Fax
                                                                                             </label>
                                                                                         </div>
 
@@ -1748,7 +1748,7 @@
             FetchCurrency("0");
             setCommonData();
             CKEDITOR.replace('txtRemark');
-            fetchMenuItemsFromSession(1, 60);
+            fetchMenuItemsFromSession(1, 64);
             ComponentsPickers.init();
             fetchParticipantsVender();// fetch all vendors for advance search
 
