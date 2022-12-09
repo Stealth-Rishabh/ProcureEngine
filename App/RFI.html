@@ -231,7 +231,7 @@
                                                                        Attachment
                                                                    </label>
                                                                    <div class="col-md-4">
-                                                                       <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />
+                                                                       <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
                                                                    </div>
                                                                    <div class="col-md-3">
                                                                        <input type="file" class="form-control" tabindex="5"
@@ -527,7 +527,7 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-7">
-                                   <input type="text" class="form-control" id="txtsubCategory" name="txtsubCategory" style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Sub Category" />
+                                   <input type="text" class="form-control" id="txtsubCategory" name="txtsubCategory" style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Sub Category" onkeyup="replaceQuoutesFromString(this)"/>
 								</div>
 								<div class="col-lg-1" style=" padding-left:0px !important; ">
                                     <a href="javascript:;" class="btn blue" onclick="addnewSubCategory()"><i class="fa fa-plus"></i></a>                                                
@@ -540,7 +540,7 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-8">
-                                    <textarea id="txtQuestiondescription" name="txtQuestiondescription" class="form-control" rows="6" autocomplete="off" placeholder="Description"></textarea>
+                                    <textarea id="txtQuestiondescription" name="txtQuestiondescription" class="form-control" rows="6" autocomplete="off" placeholder="Description" onkeyup="replaceQuoutesFromString(this)"></textarea>
 								</div>
                                 </div>
                             <div class="form-group">
@@ -586,7 +586,7 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="txtQuestCategory" name="txtQuestCategory" value="" autocomplete="off" disabled="disabled"/>
+                                    <input type="text" class="form-control" id="txtQuestCategory" name="txtQuestCategory" value="" autocomplete="off" disabled="disabled" />
                                     <input type="hidden" id="hdnsubCatID" value="0" />
                                 </div>
                             </div>
@@ -597,7 +597,7 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-8">
-                                    <textarea class="form-control" rows="3" autocomplete="off" maxlength="64" placeholder="Sub Category" id="txtqSubcategory" name="txtqSubcategory"></textarea>
+                                    <textarea class="form-control" rows="3" autocomplete="off" maxlength="64" placeholder="Sub Category" id="txtqSubcategory" name="txtqSubcategory" onkeyup="replaceQuoutesFromString(this)"></textarea>
 
                                 </div>
 								</div> 

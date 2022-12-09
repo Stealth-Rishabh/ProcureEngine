@@ -354,8 +354,8 @@ function fetchVendorDetails() {
             $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
             $('#vendorEmailID').html(detail[0].EmailID)
-            $('#vendoraddress').val(detail[0].Address1)
-            $('#vendorCity').val(detail[0].CityName)
+            $('#vendoraddress').val(StringDecodingMechanism(detail[0].Address1))
+            $('#vendorCity').val(StringDecodingMechanism(detail[0].CityName))
             $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
             $('#vendorpanno').html(detail[0].PANNo)
@@ -795,7 +795,7 @@ function fetchMyProfileVendor() {
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
             $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
-            $('#vendoraddress').val(vendordetails[0].Address1)
+            $('#vendoraddress').val(StringDecodingMechanism(vendordetails[0].Address1))
 
              $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
 
@@ -1072,6 +1072,11 @@ function formvalidatevendor() {
 }
 
 function updMobileNo() {
+
+    var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
+    var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
 
@@ -1079,8 +1084,11 @@ function updMobileNo() {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
         "MobileNo": $('#usermobileno').val(),
-        "Address1": $('#vendoraddress').val(),
-        "Address2": $('#vendorCity').val(),
+        //"Address1": $('#vendoraddress').val(),
+        "Address1": _cleanString,
+
+        //"Address2": $('#vendorCity').val(),
+        "Address2": _cleanString1,
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": '',
         "Designation": $('#userdesignation').val(),
@@ -1135,17 +1143,28 @@ function updMobileNo() {
 
 function updVnedorMobileNo() {
 
+
+    var _cleanString2 = StringEncodingMechanism($('#vendoraddress').val());
+    var _cleanString3 = StringEncodingMechanism($('#vendorCity').val());
+    var _cleanString4 = StringEncodingMechanism($('#personname').val());
+
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var data = {
         "UserID": sessionStorage.getItem("VendorId"),
         "UserType": sessionStorage.getItem('UserType'),
         "MobileNo": $('#vendormobileno').val(),
-        "Address1": $('#vendoraddress').val(),
-        "Address2": $('#vendorCity').val(),
+        //"Address1": $('#vendoraddress').val(),
+        "Address1": _cleanString2,
+
+        //"Address2": $('#vendorCity').val(),
+        "Address2": _cleanString3,
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": $('#vendoralternateemail').val(),
         "Designation": "",
-        "ContactPerson": $('#personname').val(),
+        //"ContactPerson": $('#personname').val(),
+        "ContactPerson": _cleanString4,
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
 
@@ -1192,10 +1211,16 @@ function updVnedorMobileNo() {
 
 function updateVendor() {
 
+    var _cleanString5 = StringEncodingMechanism(jQuery("#vendorname").text().trim());
+    var _cleanString6 = StringEncodingMechanism(jQuery("#vendoraddress").val().trim());
+    var _cleanString7 = StringEncodingMechanism(jQuery("#bankname").val().trim());
+    var _cleanString8 = StringEncodingMechanism(jQuery("#accountholder").val().trim());
+    var _cleanString9 = StringEncodingMechanism(jQuery("#personname").val().trim());
+
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var msmetype = jQuery("#ddlMSMEClass option:selected").val().trim();
+    var msmetype = StringEncodingMechanism(jQuery("#ddlMSMEClass option:selected").val().trim());
     var gstclass = jQuery("#ddlGSTclass option:selected").val().trim();
     var paymentterm = parseInt(jQuery("#ddPayTerms option:selected").val().trim());
     var natureofest = jQuery("#ddlNatureEstaiblishment option:selected").text();
@@ -1303,17 +1328,21 @@ function updateVendor() {
         "cityID": parseInt(jQuery("#ddlCity").val()),
         "cityName": citynamevalue,
         "pinCode": jQuery("#pincode").val().trim(),
-        "vendorName": jQuery("#vendorname").text().trim(),
-        "vendorAdd": jQuery("#vendoraddress").val().trim(),
+        //"vendorName": jQuery("#vendorname").text().trim(),
+        "vendorName": _cleanString5,
+        //"vendorAdd": jQuery("#vendoraddress").val().trim(),
+        "vendorAdd": _cleanString6,
         "tAN": jQuery("#tan").val().trim(),
         "tDSTypeId": tdstype,
         "tDSTypeName": tdsname,
         "gSTClass": gstclassvalue,
         "payTermID": paymenttermvalue,
-        "bankName": jQuery("#bankname").val().trim(),
+        //"bankName": jQuery("#bankname").val().trim(),
+        "bankName": _cleanString7,
         "bankAccount": jQuery("#bankaccount").val().trim(),
         "iFSCCode": jQuery("#ifsccode").val().trim(),
-        "accountName": jQuery("#accountholder").val().trim(),
+        //"accountName": jQuery("#accountholder").val().trim(),
+        "accountName": _cleanString8,
         "mSMECheck": jQuery("#ddlMSME option:selected").val(),
         "mSMEType": msmeselectvalue,
         "mSMENo": jQuery("#txtUdyam").val().trim(),
@@ -1326,7 +1355,8 @@ function updateVendor() {
         "AltEmailID": jQuery("#vendorAltEmailID").val().trim(),
         "currencyLast2FY": jQuery("#currency2LastFiscalupdate option:selected").text().trim(),
         "currencyLastFY": jQuery("#currencyLastFiscalupdate option:selected").text().trim(),
-        "contactName": jQuery("#personname").val().trim(),
+        //"contactName": jQuery("#personname").val().trim(),
+        "contactName": _cleanString9,
         "mobile": jQuery("#vendormobileno").val().trim(),
         "gSTFile": gstfilename,
         "pANFile": panfilename,

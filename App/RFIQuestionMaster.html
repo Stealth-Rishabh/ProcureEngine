@@ -31,7 +31,7 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
-
+   
     <link rel="shortcut icon" href="../favicon.ico" />
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -157,7 +157,7 @@
                                                     <!--<option value="VRB">VQL and RFI Both</option>-->
                                                     <option value="VQL">Vendor Qualification</option>
                                                     <option value="RFI">Request For Information (RFI)</option>
-                                                    <option value="VAA">Vendor Assistment</option>
+                                                    <option value="VAA">Vendor Assestment</option>
                                                 </select>
                                             </div>
 
@@ -191,12 +191,12 @@
 
                                     </div>
                                     <!-- <div class="form-group" >
-                                        <label class="col-lg-4 col-sm-2 control-label">Item/Service<span class="required">*</span></label>
-                                        <div class="col-lg-8">
+        <label class="col-lg-4 col-sm-2 control-label">Item/Service<span class="required">*</span></label>
+        <div class="col-lg-8">
 
-                                            <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4" multiple></select>
-                                        </div>
-                                    </div>-->
+            <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4" multiple></select>
+        </div>
+    </div>-->
 
 
                                     <div class="form-group">
@@ -211,28 +211,31 @@
 
                                     <div class="col-md-4">
                                     </div>
-
+                                   
                                     <div class="col-md-8" id="POItablediv">
                                         <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
-                                            <thead>
+                                            <thead >
                                                 <tr>
-                                                    <th></th>
-                                                    <th>
+                                                   <th></th>
+                                                    <th id=" crite">
                                                         CRITERIA
 
                                                     </th>
-                                                    <th>
-                                                        SCORE
+                                                    <th id="scor">
+                                                       SCORE
                                                     </th>
-
+                                                  
                                                 </tr>
                                             </thead>
+                                            <tbody id="tdata">
+
+                                            </tbody>
 
 
 
 
                                         </table>
-
+                                        
                                     </div>
 
 
@@ -275,7 +278,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                        </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -328,25 +331,25 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+						<div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+						 <p class="ppolicy-text">                           
+							The purpose of this screen is to create question repository under following categories
+						</p>
+						<ul style="list-style: none !important;">
+						<li>1. Company Information</li>
+						<li>2. Financial Information</li>
+						<li>3. Company Capabilities</li>
+						<li>4. Technical Information</li>
+						</ul>
                         <p class="ppolicy-text">
-                            The purpose of this screen is to create question repository under following categories
-                        </p>
-                        <ul style="list-style: none !important;">
-                            <li>1. Company Information</li>
-                            <li>2. Financial Information</li>
-                            <li>3. Company Capabilities</li>
-                            <li>4. Technical Information</li>
-                        </ul>
-                        <p class="ppolicy-text">
-                            In every category user can add/modify/deactivate questions that can be grouped by using question subcategory.
-                            User can also mark questions as mandatory and can specify if supporting document is required.
-                        </p>
+                           In every category user can add/modify/deactivate questions that can be grouped by using question subcategory. 
+						   User can also mark questions as mandatory and can specify if supporting document is required.
+						</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div id="SubCategory" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -387,7 +390,7 @@
                                     </span>
                                 </label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control" rows="3" autocomplete="off" placeholder="Sub Category" id="txtqSubcategory" name="txtqSubcategory"></textarea>
+                                    <textarea class="form-control" rows="3" autocomplete="off" placeholder="Sub Category" id="txtqSubcategory" name="txtqSubcategory" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                 </div>
 
                             </div>
@@ -456,12 +459,12 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function () {
-
+           
             Pageloaded()
-
+           
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
+                 window.location = sessionStorage.getItem('MainUrl');
             }
             else {
                 if (sessionStorage.getItem("UserType") == "E") {
@@ -479,9 +482,9 @@
             setCommonData();
             FormValidate();
             fetchQuestionCategory();
-            //  fetchCategorymaster();
+         //  fetchCategorymaster();
             //fetchRFIDetails();
-            //  $("#ddlCategoryMultiple").select2();
+          //  $("#ddlCategoryMultiple").select2();
             addvendor();
         });
     </script>

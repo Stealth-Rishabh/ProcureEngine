@@ -76,14 +76,18 @@ function FetchInvitedVendorsForRFIRFQ() {
 
 
 function CancelRFIRFQ(MailPermit) {
+    var _cleanString = StringEncodingMechanism($('#rq_subject').html());
+    var _cleanString2 = StringEncodingMechanism($('#rq_description').html().replace(/'/g, " "));
     var Data = {
 
         "RFIRFQID": $('#hddn_RQID_txt').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "MailParam": MailPermit,
-        "RQSubj": $('#rq_subject').html(),
-        "RQDescription": $('#rq_description').html().replace(/'/g, " "),
+        //"RQSubj": $('#rq_subject').html(),
+        "RQSubj": _cleanString,
+        //"RQDescription": $('#rq_description').html().replace(/'/g, " "),
+        "RQDescription": _cleanString2,
         "RQDeadLin": $('#rq_deadline').html()
 
     };

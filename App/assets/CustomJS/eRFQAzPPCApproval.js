@@ -1746,11 +1746,17 @@ function validateAppsubmitData() {
         }
     });
 }
+
+
+
 function fnFWDeRFQ() {
+    var _cleanString = StringEncodingMechanism($('#txtbidspecification').val());
+
     var Approvers = {
         "ApproverType": "P",
         "FromUserId": sessionStorage.getItem('UserID'),
-        "Remarks": $('#txtbidspecification').val(),
+        //"Remarks": $('#txtbidspecification').val(),
+        "Remarks": _cleanString,
         "RFQID": parseInt(RFQID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Forward",
@@ -1794,11 +1800,13 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalCommercialApp() {
+    var _cleanString2 = StringEncodingMechanism($('#txtRemarksAppC').val());
 
     var approvalbyapp = {
         "ApproverType": AppType,
         "FromUserId": sessionStorage.getItem('UserID'),
-        "Remarks": $('#txtRemarksAppC').val(),
+        //"Remarks": $('#txtRemarksAppC').val(),
+        "Remarks": _cleanString2,
         "RFQID": parseInt(RFQID),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Approver",
@@ -1947,11 +1955,13 @@ function AwardCommeRFQ() {
             jQuery.unblockUI();
 
         }
+        var _cleanString3 = StringEncodingMechanism($('#txtRemarksAppC').val());
         else {
             var approvalbyapp = {
                 "ApproverType": "P",
                 "FromUserId": sessionStorage.getItem('UserID'),
-                "Remarks": $('#txtRemarksAppC').val(),
+                //"Remarks": $('#txtRemarksAppC').val(),
+                "Remarks": _cleanString3,
                 "RFQID": parseInt(RFQID),
                 "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
                 "ActionType": "Approver",

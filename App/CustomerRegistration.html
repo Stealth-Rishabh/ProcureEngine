@@ -155,13 +155,13 @@
 														<div class="form-group">
                                                                 <label class="control-label col-md-3">Customer Name</label>
                                                                 <div class="col-md-9">
-                                                                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Customer Name" id="txtcustomername" name="txtcustomername" />
+                                                                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Customer Name" id="txtcustomername" name="txtcustomername" onkeyup="replaceQuoutesFromString(this)"/>
                                                                 </div>
                                                         </div>														
                                                         <div class="form-group">
                                                             <label class="control-label col-md-3">Address</label>
                                                             <div class="col-md-9">                                                                
-                                                                <textarea class="form-control placeholder-no-fix" autocomplete="off" placeholder="Address" rows="3" id="txtcustaddress" name="txtcustaddress"></textarea>
+                                                                <textarea class="form-control placeholder-no-fix" autocomplete="off" placeholder="Address" rows="3" id="txtcustaddress" name="txtcustaddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>													
 														<div class="form-group">
@@ -208,7 +208,7 @@
 														<div class="form-group">
                                                             <label class="control-label col-md-3">Admin&nbsp;Name</label>
                                                             <div class="col-md-9">                                                                
-                                                                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Admin Name" rows="3" id="txtcustAdminName" name="txtcustAdminName">
+                                                                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Admin Name" rows="3" id="txtcustAdminName" name="txtcustAdminName" onkeyup="replaceQuoutesFromString(this)">
                                                             </div>
                                                         </div>
 														<div class="form-group">

@@ -397,7 +397,7 @@
                                                                 Your Remarks (If any):
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <textarea id="txtvendorremarks" name="txtvendorremarks" rows="4" class="form-control maxlength" maxlength="2000"></textarea>
+                                                                <textarea id="txtvendorremarks" name="txtvendorremarks" rows="4" class="form-control maxlength" maxlength="2000" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -799,7 +799,7 @@
                                 </label>
                                 <div class="col-md-10">
 
-                                    <textarea id="txtRemarks" name="txtRemarks" class="form-control" rows="4" tabindex='2'></textarea>
+                                    <textarea id="txtRemarks" name="txtRemarks" class="form-control" rows="4" tabindex='2' onkeyup="replaceQuoutesFromString(this)"></textarea>
                                 </div>
                             </div>
                         </div>

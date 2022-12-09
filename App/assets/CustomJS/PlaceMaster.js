@@ -65,6 +65,8 @@ function FormValidate() {
 
 function insupdPlacemaster() {
 
+    var _cleanString = StringEncodingMechanism($('#Placename').val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery("#checkboxactive").is(':checked')) {
@@ -76,7 +78,8 @@ function insupdPlacemaster() {
 
     var data = {
         "PlaceID":  $('#hddnplacemaster').val(),
-        "PlaceName": $('#Placename').val(),
+        //"PlaceName": $('#Placename').val(),
+        "PlaceName": _cleanString,
         "isActive": status,
         "CreatedBy": sessionStorage.getItem("UserID"),
         "CustomerID": sessionStorage.getItem("CustomerID")

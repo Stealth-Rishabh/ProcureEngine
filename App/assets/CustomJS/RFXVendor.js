@@ -764,20 +764,20 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
         dataType: "json",
         success: function (data) {
                 if (data.length > 0) {
-                //alert(data[0].CompanyPhone)
-                            $('#txtCompanyName').val(data[0].companyName);
+                    //alert(data[0].CompanyPhone)
+                    $('#txtCompanyName').val(StringDecodingMechanism(data[0].companyName));
                             $('#txtPhoneNo').val(data[0].companyPhone);
-                            $('#txtofficeAddress').val(data[0].officedAddress);
-                            $('#txtfactoryAddress').val(data[0].factoryAdress);
-                            $('#txtemailID').val(data[0].companyEmail);
-                            $('#txtParentcompName').val(data[0].parentCompany);
+                    $('#txtofficeAddress').val(data[0].officedAddress);
+                    $('#txtfactoryAddress').val(StringDecodingMechanism(data[0].factoryAdress));
+                    $('#txtemailID').val(data[0].companyEmail);
+                    $('#txtParentcompName').val(StringDecodingMechanism(data[0].parentCompany));
                             $('#txtFaxNo').val(data[0].faxNumber);
                             $('#txtWebsite').val(data[0].companyWebsite);
                             $('#ddlOwnership').val(data[0].ownership);
                             $('#txtemployeeNum').val(data[0].employeeCount);
                             $('#txtbriefDesc').val(data[0].keyProjects);
-                            $('#ddlTitle').val(data[0].title);
-                            $('#txtContactName').val(data[0].keyPersonName);
+                    $('#ddlTitle').val(data[0].title);
+                    $('#txtContactName').val(StringDecodingMechanism(data[0].keyPersonName));
                             $('#txtcontactNo').val(data[0].keyPersonNo);
                             $('#txtcontactEmail').val(data[0].keyPersonEmail);
                             $('#txtCity').val(data[0].city);
@@ -935,6 +935,11 @@ function Filltblfinancedetails() {
 }
 
 function InsUpdTab1Data(locText) {
+    var _cleanString = StringEncodingMechanism($('#txtCompanyName').val());
+    var _cleanString = StringEncodingMechanism($('#txtofficeAddress').val());
+    var _cleanString = StringEncodingMechanism($('#txtParentcompName').val());
+    var _cleanString = StringEncodingMechanism($('#txtContactName').val());
+    
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vals = 0;
@@ -960,19 +965,23 @@ function InsUpdTab1Data(locText) {
     var Tab1Data = {
         "RFIID":parseInt(sessionStorage.getItem('CurrentRFIID')),
         "VendorId": parseInt(sessionStorage.getItem('VendorId')),
-        "CompanyName": $('#txtCompanyName').val(),
+        //"CompanyName": $('#txtCompanyName').val(),
+        "CompanyName": _cleanString,
         "CompanyPhone": $('#txtPhoneNo').val(),
-        "OfficedAddress": $('#txtofficeAddress').val(),
+        //"OfficedAddress": $('#txtofficeAddress').val(),
+        "OfficedAddress": _cleanString,
         "CompanyEmail": $('#txtemailID').val(),
         "FactoryAdress": $('#txtfactoryAddress').val(),
-        "ParentCompany": $('#txtParentcompName').val(),
+        //"ParentCompany": $('#txtParentcompName').val(),
+        "ParentCompany": _cleanString,
         "FaxNumber": $('#txtFaxNo').val(),
         "CompanyWebsite": $('#txtWebsite').val(),
         "Ownership": $('#ddlOwnership option:selected').text(),
         "EmployeeCount": $('#txtemployeeNum').val(),
         "KeyProjects": $('#txtbriefDesc').val(),
         "Title": $('#ddlTitle option:selected').text(),
-        "KeyPersonName": $('#txtContactName').val(),
+        //"KeyPersonName": $('#txtContactName').val(),
+        "KeyPersonName": _cleanString,
         "KeyPersonNo": $('#txtcontactNo').val(),
         "KeyPersonEmail": $('#txtcontactEmail').val(),
         "InsertQuery": InsertQuery,

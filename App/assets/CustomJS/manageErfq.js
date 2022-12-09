@@ -374,6 +374,11 @@ function FormValidate() {
 
 }
 function InsUpdRFQDEtailTab1() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#RFQSubject").text());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#RFQDescription").text());
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var TermsConditionFileName = '';
@@ -392,10 +397,12 @@ function InsUpdRFQDEtailTab1() {
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hdnrfqid')),
-        "RFQSubject": jQuery("#RFQSubject").text(),
+        //"RFQSubject": jQuery("#RFQSubject").text(),
+        "RFQSubject": _cleanString,
         "RFQStartDate": StartDT,
         "RFQEndDate": EndDT,
-        "RFQDescription": jQuery("#RFQDescription").text(),
+        //"RFQDescription": jQuery("#RFQDescription").text(),
+        "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt($('#currencyid').val()),
         "RFQConversionRate": parseFloat(jQuery("#ConversionRate").text()),
         "RFQTermandCondition": TermsConditionFileName,
@@ -719,12 +726,12 @@ function editRow(divName, RFQParameterId, rowid) {
         // $('#btnsubmit').text('Submit');
     }
     $('#responsive').modal('show');
-    var Descriptiontxt = $("#" + rowid).find("td:eq(6)").text().replace(/<br>/g, '\n')
-    var RFQRemark = $("#" + rowid).find("td:eq(9)").text().replace(/<br>/g, '\n')
+    var Descriptiontxt = StringDecodingMechanism($("#" + rowid).find("td:eq(6)").text().replace(/<br>/g, '\n'))
+    var RFQRemark = StringDecodingMechanism($("#" + rowid).find("td:eq(9)").text().replace(/<br>/g, '\n'))
 
     sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
 
-    $('#txtshortname').val($("#" + rowid).find("td:eq(2)").text())
+    $('#txtshortname').val(StringDecodingMechanism($("#" + rowid).find("td:eq(2)").text()))
     $('#txtItemCode').val($("#" + rowid).find("td:eq(1)").text())
     $('#txttargetprice').val($("#" + rowid).find("td:eq(3)").text())
 
@@ -737,16 +744,21 @@ function editRow(divName, RFQParameterId, rowid) {
     $('#txtItemRemarks').val(RFQRemark)
     $('#txtbiddescriptionP').val(Descriptiontxt)
 
-    $('#txtedelivery').val($("#" + rowid).find("td:eq(7)").text())
+    $('#txtedelivery').val(StringDecodingMechanism($("#" + rowid).find("td:eq(7)").text()))
     $("#txttat").val($("#" + rowid).find("td:eq(8)").text())
     $('#txtPono').val($("#" + rowid).find("td:eq(10)").text())
     $('#txtunitrate').val($("#" + rowid).find("td:eq(12)").text())
-    $('#txtvendorname').val($("#" + rowid).find("td:eq(11)").text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#" + rowid).find("td:eq(11)").text()))
     $('#txtPODate').val($("#" + rowid).find("td:eq(13)").text())
     $('#txtpovalue').val($("#" + rowid).find("td:eq(14)").text())
     $('#add_or').text('Modify');
 }
 function InsUpdProductSevices() {
+
+    var _cleanString3 = StringEncodingMechanism($('#txtshortname').val());
+    var _cleanString4 = StringEncodingMechanism($('#txtItemRemarks').val());
+    var _cleanString5 = StringEncodingMechanism($("#txtedelivery").val());
+
     var TP = 0;
     var unitrate = 0;
     var povalue = 0;
@@ -762,20 +774,23 @@ function InsUpdProductSevices() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
 
-    var Description = $('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " ");
+    var Description = StringEncodingMechanism($('#txtbiddescriptionP').val().replace(/\n/g, '<br />').replace(/'/g, " "));
     var Remark = '';
     var data = {
         "RFQParameterId": parseInt(sessionStorage.getItem('CurrentRFQParameterId')),
         "RFQId": parseInt(sessionStorage.getItem('hdnrfqid')),
-        "RFQShortName": $('#txtshortname').val(),
+        //"RFQShortName": $('#txtshortname').val(),
+        "RFQShortName": _cleanString3,
         "RFQTargetPrice": parseFloat(TP),
         "RFQItemCode": $('#txtItemCode').val(),
         "RFQuantity": parseFloat(removeThousandSeperator($('#txtquantitiy').val())),
         "RFQUomId": $('#dropuom').val(),
-        "RFQRemark": $('#txtItemRemarks').val(),
+        //"RFQRemark": $('#txtItemRemarks').val(),
+        "RFQRemark": _cleanString4,
         "RFQDescription": Description,
         "TAT": parseFloat($("#txttat").val()),
-        "RFQDelivery": $("#txtedelivery").val(),
+        //"RFQDelivery": $("#txtedelivery").val(),
+        "RFQDelivery": _cleanString5,
         "RFQPoNo": $("#txtPono").val(),
         "RFQUnitRate": parseFloat(unitrate),
         "RFQVendorName": $("#txtvendorname").val(),
@@ -2014,6 +2029,7 @@ jQuery("#search").keyup(function () {
     });
 });
 function saveBidSurrogate() {
+    var _cleanString = StringEncodingMechanism($("#bidSurrogateReason").val());
     if ($('#bidSurrogateToName').val() == '') {
         error1.find("span").html('Please Fill name.');
         error1.show();
@@ -2057,7 +2073,8 @@ function saveBidSurrogate() {
         "Name": $("#bidSurrogateToName").val(),
         "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
         "EmailId": $("#bidSurrogateToEmail").val(),
-        "Reason": $("#bidSurrogateReason").val(),
+        //"Reason": $("#bidSurrogateReason").val(),
+        "Reason": _cleanString,
         "vendorEmailId": sessionStorage.getItem("hdnselectedEmail"),
         "vendorID": parseInt(sessionStorage.getItem("hdnselectedvendor")),
         "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid'),
