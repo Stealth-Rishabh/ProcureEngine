@@ -599,6 +599,7 @@ function removeQuotationCA(shname, price, subtime, caid, caheaderid) {
     sessionStorage.setItem("caheaderid", caheaderid)
 }
 function deletePEFAquote() {
+    var _cleanString1 = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -613,7 +614,8 @@ function deletePEFAquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "PSID": parseInt(sessionStorage.getItem("psid")),
         "PSHeaderID": 0,
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString1,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID")
 
@@ -663,11 +665,16 @@ function deletePEFAquote() {
     jQuery.unblockUI();
 }
 function deleteFAquote() {
+
+    var _cleanString = StringEncodingMechanism($('#txtremarks').val());
+
+
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
         AttachementFileName = jQuery('#fileToUpload').html();
     }
+
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
     var QuoteProduct = {
         "VendorID": parseInt($('#ddlvendors').val()),
@@ -677,7 +684,8 @@ function deleteFAquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "FRID": parseInt(sessionStorage.getItem("psid")),
         "FrenchHeaderID": 0,
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID"),
         "QuantityAllocated": parseFloat(sessionStorage.getItem("QuantityAllocated"))
@@ -728,6 +736,10 @@ function deleteFAquote() {
     jQuery.unblockUI();
 }
 function deletePSquote() {
+
+    var _cleanString2 = StringEncodingMechanism($('#txtremarks').val());
+
+
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -742,7 +754,8 @@ function deletePSquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "PSID": parseInt(sessionStorage.getItem("psid")),
         "PSHeaderID": parseInt(sessionStorage.getItem("psheaderid")),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString2,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID")
 
@@ -793,6 +806,10 @@ function deletePSquote() {
     jQuery.unblockUI();
 }
 function deleteCoalquote() {
+
+    var _cleanString3 = StringEncodingMechanism($('#txtremarks').val());
+
+
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -807,7 +824,8 @@ function deleteCoalquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "CAID": parseInt(sessionStorage.getItem("caid")),
         "CAHeaderID": parseInt(sessionStorage.getItem("caheaderid")),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString3,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID")
 
@@ -4373,11 +4391,18 @@ function saveBidSurrogate() {
 
     }
 
+    var _cleanString4 = StringEncodingMechanism($("#bidSurrogateToName").val());
+    var _cleanString5 = StringEncodingMechanism($("#bidSurrogateReason").val());
+
+
+
     var Data = {
-        "Name": $("#bidSurrogateToName").val(),
+        //"Name": $("#bidSurrogateToName").val(),
+        "Name": _cleanString4,
         "BidId": parseInt(sessionStorage.getItem('hdnbid')),
         "EmailId": $("#bidSurrogateToEmail").val(),
-        "Reason": $("#bidSurrogateReason").val(),
+        //"Reason": $("#bidSurrogateReason").val(),
+        "Reason": _cleanString5,
         "vendorEmailId": sessionStorage.getItem("hdnselectedEmail"),
         "vendorID": parseInt(sessionStorage.getItem("hdnselectedvendor")),
         "EncryptedLink": "BidID=" + sessionStorage.getItem('hdnbid'),

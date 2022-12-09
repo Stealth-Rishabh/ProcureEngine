@@ -649,6 +649,14 @@ function paintmenus() {
 sessionStorage.setItem("hdnCustomerID", 0)
 sessionStorage.setItem("hdnAdminID", 0)
 function ins_updCustomer() {
+
+    var _cleanString = StringEncodingMechanism($('#txtcustomername').val());
+    var _cleanString2 = StringEncodingMechanism($('#txtAddress1').val());
+    var _cleanString3 = StringEncodingMechanism($('#txtadminfirstname').val());
+    
+
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
     var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
@@ -693,15 +701,18 @@ function ins_updCustomer() {
     }
     if (checkimageExtension(logo)) {
         var data = {
-            'CustomerName': $('#txtcustomername').val(),
-            'CustomerAddress': $('#txtAddress1').val(),
+            //'CustomerName': $('#txtcustomername').val(),
+            'CustomerName': _cleanString,
+            //'CustomerAddress': $('#txtAddress1').val(),
+            'CustomerAddress': _cleanString2,
             'CountryID': parseInt($('#dropCountry').val()),
             'StateID': parseInt(state),
             'CityID': parseInt(city),
             'PinCode': parseInt(pincode),
             'Website': $('#txtwebsite').val(),
             'PhoneNo': $('#phoneno').val(),
-            'AdminName': $('#txtadminfirstname').val(),
+            //'AdminName': $('#txtadminfirstname').val(),
+            'AdminName': _cleanString3,
             'AdminEmail': $('#txtUserEmailID').val(),
             'AdminMobile': $('#txtmobileNo').val(),
             'SubscriptionType': '',
@@ -918,16 +929,16 @@ function fetchCustomerDetails(customerid) {
             if (data.length > 0) {
                 sessionStorage.setItem("hdnCustomerID", data[0].customerID)
                 sessionStorage.setItem("hdnAdminID", data[0].adminID)
-                $('#txtcustomername').val(data[0].customerName);
+                $('#txtcustomername').val(StringDecodingMechanism(data[0].customerName));
                 $('#txttermscondition').val(data[0].generalConditions);
                 $('#dropcurrency').val(data[0].defaultCurrency);
                 $('#txtnobids').val(data[0].noOfBid);
                 $('#from').val(data[0].subscriptionFrom);
                 $('#to').val(data[0].subscriptionTo);
                 $('#txtmobileNo').val(data[0].adminMobile);
-                $('#txtAddress1').val(data[0].customerAddress);
+                $('#txtAddress1').val(StringDecodingMechanism(data[0].customerAddress));
                 $('#txtUserEmailID').val(data[0].adminEmail);
-                $('#txtadminfirstname').val(data[0].adminName);
+                $('#txtadminfirstname').val(StringDecodingMechanism(data[0].adminName));
                 $('#txtwebsite').val(data[0].website);
                 $('#txturlextension').val(data[0].urlExtension);
                 $('#phoneno').val(data[0].phoneNo);

@@ -223,6 +223,8 @@ function deleterow(icount) {
 
 var PriceDetails = [];
 function insPoDetails() {
+
+    var _cleanString = StringEncodingMechanism($('#txtvendorremarks').val());
     var items = '', PriceDetails = [];
     var ObserverDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
@@ -282,6 +284,8 @@ function insPoDetails() {
             })
         }
         debugger;
+        
+
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
@@ -289,7 +293,8 @@ function insPoDetails() {
             "UserID": sessionStorage.getItem('UserID'),
             "Flag": 'SendToVendor',
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "UserRemarks": $('#txtvendorremarks').val(),
+            //"UserRemarks": $('#txtvendorremarks').val(),
+            "UserRemarks": _cleanString,
             "ObserverDetails": ObserverDetails,
             "ObserverEmail": ccEmails
         };
@@ -433,6 +438,9 @@ jQuery("#txtVendor").typeahead({
 
 });
 function addAttachments() {
+    var _cleanString2 = StringEncodingMechanism($('#AttachDescription1').val());
+
+
     if (jQuery('#file1').val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Attach File Properly');
@@ -464,7 +472,8 @@ function addAttachments() {
             "POAttachment": attchname,
             "UserID": sessionStorage.getItem('UserID'),
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "POAttachmentDescription": $('#AttachDescription1').val()
+           // "POAttachmentDescription": $('#AttachDescription1').val()
+            "POAttachmentDescription": _cleanString2
         }
         // alert(JSON.stringify(Attachments))
         // console.log(JSON.stringify(Attachments))
@@ -548,7 +557,7 @@ function fetchAttachments() {
                 $('#add_or').removeAttr('disabled')
                 sessionStorage.setItem('hdnVendorID', data[0].vendorID);
                 $('#txtVendor').val(data[0].vendorName)
-                $('#txtvendorremarks').val(data[0].userRemarks)
+                $('#txtvendorremarks').val(StringDecodingMechanism(data[0].userRemarks))
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");
@@ -897,6 +906,8 @@ function printdataSeaBid(result) {
 }
 
 function InsupdProductfromExcel() {
+
+    var _cleanString3 = StringEncodingMechanism($('#txtvendorremarks').val());
     $("#success-excelparameter").hide();
     $("#error-excelparameter").hide();
     $('#loader-msgparameter').html('Processing. Please Wait...!');
@@ -930,7 +941,8 @@ function InsupdProductfromExcel() {
             "UserID": sessionStorage.getItem('UserID'),
             "Flag": 'Insert',
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "UserRemarks": $('#txtvendorremarks').val()
+            //"UserRemarks": $('#txtvendorremarks').val()
+            "UserRemarks": _cleanString3
         };
 
         jQuery.ajax({

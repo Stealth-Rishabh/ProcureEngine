@@ -452,9 +452,9 @@ function fetchRFXDetails() {
         
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
-            jQuery('#txtRFXSubject').val(BidData[0].rfxMaster[0].rfxSubject)
+            jQuery('#txtRFXSubject').val(StringDecodingMechanism(BidData[0].rfxMaster[0].rfxSubject))
             jQuery('#txtRFXdeadline').val(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
-            jQuery('#txtRFXdescription').val(BidData[0].rfxMaster[0].rfxDescription)
+            jQuery('#txtRFXdescription').val(StringDecodingMechanism(BidData[0].rfxMaster[0].rfxDescription))
             jQuery('#txtattachdescription').val(BidData[0].rfxMaster[0].rfxAttachmentDescription)
             jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
             $("#cancelBidBtn").show();
@@ -634,6 +634,9 @@ function fetchRFXDetailsForTab2(applicableFor) {
 }
 
 function RFXConfigureTab1() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtRFXdescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var AttachementFileName = '',queryAttachment="", queryCategories="";
     if (($('#attach-file').html() != '') && ($('#file2').val() == '')) {
@@ -670,9 +673,11 @@ function RFXConfigureTab1() {
     var Tab1Data = {
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "RFXSubject": jQuery("#txtRFXSubject").val(),
+        //"RFXSubject": jQuery("#txtRFXSubject").val(),
+        "RFXSubject": _cleanString,
         "RFXDeadline": jQuery('#txtRFXdeadline').val(),
-        "RFXDescription": jQuery("#txtRFXdescription").val(),
+        //"RFXDescription": jQuery("#txtRFXdescription").val(),
+        "RFXDescription": _cleanString2,
         "RFXAttachmentDescription": 'NA',  
         "RFXAttachment": 'NA',
         "UserId": sessionStorage.getItem('UserID'),
@@ -1245,6 +1250,7 @@ jQuery("#txtsubCategory").typeahead({
 });
 
 function InsUpdQuestionSubcategory() {
+    var _cleanString3 = StringEncodingMechanism($('#txtqSubcategory').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1259,7 +1265,8 @@ function InsUpdQuestionSubcategory() {
     var data = {
         "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
         "QuestionSubCategoryID": parseInt($('#hdnsubCatID').val()),
-        "QuestionSubCategory": $('#txtqSubcategory').val(),
+        //"QuestionSubCategory": $('#txtqSubcategory').val(),
+        "QuestionSubCategory": _cleanString3,
         "isActive": status,
         "customerId": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -1368,6 +1375,7 @@ if (window.location.search) {
     var decryptedstring = fndecrypt(param)
 }
 function insupdRFXQuestionMaster() {
+    var _cleanString4 = StringEncodingMechanism($('#txtQuestiondescription').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -1381,7 +1389,8 @@ function insupdRFXQuestionMaster() {
     var data = {
         "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
         "QuestionSubCategoryID": parseInt(sessionStorage.getItem("hdnSubCategoryID")),
-        "QuestionDescription": $('#txtQuestiondescription').val(),
+        //"QuestionDescription": $('#txtQuestiondescription').val(),
+        "QuestionDescription": _cleanString4,
         "Mandatory": mandatory,
         "Attachement": status,
         "QuestionID": 0,
@@ -2078,15 +2087,19 @@ function RFXSubmitTempVendors() {
 }
 
 function RFXInsUpdConfigurationSubmit() {
+    var _cleanString5 = StringEncodingMechanism($("#txtRFXSubject").val());
+    var _cleanString6 = StringEncodingMechanism($('#txtRFXdescription').val());
   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
         
         var TempCompany = {
             'RFXID': parseInt(sessionStorage.getItem('CurrentRFXID')),
-            'SubjectRFX': $("#txtRFXSubject").val(),
+            //'SubjectRFX': $("#txtRFXSubject").val(),
+            'SubjectRFX': _cleanString5,
             'CustomerId': parseInt(sessionStorage.getItem('CustomerID')),
-            'RFXDescription': $('#txtRFXdescription').val(),
+            //'RFXDescription': $('#txtRFXdescription').val(),
+            'RFXDescription': _cleanString6,
             'RFXDeadline': $('#txtRFXdeadline').val(),
             'UserId': sessionStorage.getItem('UserID')
             

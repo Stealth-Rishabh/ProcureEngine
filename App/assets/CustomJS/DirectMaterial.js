@@ -913,6 +913,9 @@ var FormWizard = function () {
 //sessionStorage.setItem('CurrentBidID', 0)
 
 function ConfigureBidForProductTab1() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -930,6 +933,8 @@ function ConfigureBidForProductTab1() {
         AttachementFileName = jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
     }
 
+   
+
     var Tab1Data = {
 
         "BidId": sessionStorage.getItem('CurrentBidID'),
@@ -938,8 +943,10 @@ function ConfigureBidForProductTab1() {
         "CountryID": jQuery("#ddlCountry option:selected").val(),
         "BidForID": 6,
         "BidDuration": jQuery("#txtBidDuration").val(),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         "BidDate": jQuery("#txtbidDate").val(),
         "BidTime": jQuery("#txtbidTime").val(),
         "CurrencyID": jQuery("#dropCurrency option:selected").val(),
@@ -1058,6 +1065,10 @@ function ConfigureBidForProductTab2() {
 }
 
 function ConfigureBidForProductTab3() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#tblvendorlist> tbody > tr").each(function (index) {
@@ -1083,12 +1094,16 @@ function ConfigureBidForProductTab3() {
         InsertQuery = "Print 1";
     }
 
+    
+
     var Tab3data = {
         "BidVendors": InsertQuery,
         "BidID": sessionStorage.getItem('CurrentBidID'),
         "UserID": sessionStorage.getItem('UserID'),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+       //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         "BidDate": jQuery("#txtbidDate").val(),
         "BidTime": jQuery("#txtbidTime").val(),
         "BidDuration": jQuery("#txtBidDuration").val(),
@@ -1796,7 +1811,7 @@ function editvalues(rowid, rowidPrev) {
     $('#rowid').val(rowid.id)
     $('#rowidPrev').val(rowidPrev.id)
 
-    $('#txtshortname').val($("#" + rowid.id).find("td:eq(1)").text())
+    $('#txtshortname').val(StringDecodingMechanism($("#" + rowid.id).find("td:eq(1)").text()))
 
     $('#txttargetprice').val($("#" + rowid.id).find("td:eq(2)").text())
 
@@ -1804,7 +1819,7 @@ function editvalues(rowid, rowidPrev) {
 
     $('#dropuom').val($("#" + rowid.id).find("td:eq(4)").text())
 
-    $('#txtbiddescriptionP').val($("#" + rowid.id).find("td:eq(5)").text())
+    $('#txtbiddescriptionP').val(StringDecodingMechanism($("#" + rowid.id).find("td:eq(5)").text()))
 
     $('#txtContractDuration').val($("#" + rowid.id).find("td:eq(6)").text())
 
@@ -1956,9 +1971,9 @@ function fetchProductServicesBidDetails() {
         dataType: "json",
         success: function (BidData) {
 
-            jQuery('#txtBidSubject').val(BidData[0].BidDetails[0].BidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].BidDetails[0].BidSubject))
             jQuery('#txtBidDuration').val(BidData[0].BidDetails[0].BidDuration)
-            jQuery('#txtbiddescription').val(BidData[0].BidDetails[0].BidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].BidDetails[0].BidDetails))
             jQuery('#txtbidDate').val(BidData[0].BidDetails[0].BidDate)
             jQuery('#txtbidTime').val(BidData[0].BidDetails[0].BidTime)
             jQuery("#dropCurrency").val(BidData[0].BidDetails[0].CurrencyID).attr("selected", "selected");

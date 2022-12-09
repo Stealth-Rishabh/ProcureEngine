@@ -442,10 +442,11 @@ function getIP() {
     });
 }
 function sendChatMsgs() {
+    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
 
     var data = {
 
-        "ChatMsg": $("#txtChatMsg").val(),
+        "ChatMsg": _cleanString,
 
         "fromID": sessionStorage.getItem("UserID"),
 

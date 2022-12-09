@@ -489,6 +489,7 @@ function Isattachment() {
 }
 
 function Filltblfinancedetails() {
+    
     $('#tblfinancedetails').empty();
     $('#tblfinancedetails').append('<thead><tr><th>Year</th><th>Turnover</th><th>Annual Profit After Tax</th></tr></thead>')
     var today = new Date();
@@ -501,6 +502,7 @@ function Filltblfinancedetails() {
 }
 
 function ApproveRFI(For) {
+    var _cleanString = StringEncodingMechanism($('#txtrejectreason').val());
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -509,7 +511,8 @@ function ApproveRFI(For) {
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         'UserId':sessionStorage.getItem('UserID'),
         'For': For,
-        'Remarks': $('#txtrejectreason').val(),
+        //'Remarks': $('#txtrejectreason').val(),
+        'Remarks': _cleanString,
         "UserName": sessionStorage.getItem('UserName'),
         "UserEmail": sessionStorage.getItem('EmailID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))

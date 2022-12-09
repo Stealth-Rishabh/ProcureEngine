@@ -86,13 +86,14 @@ function ChangePassword() {
     }
     if (isSubmit) {
         var data = {
-            "EmailID": sessionStorage.getItem("EmailID"),
+            //"EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
             "NewPassword": $("#nPassword").val(),
             "UserType": sessionStorage.getItem("UserType"),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
         //console.log(JSON.stringify(data))
+        var isSuccess = true;
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             type: "POST",
@@ -100,21 +101,25 @@ function ChangePassword() {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-
-                if (data.isSuccess == "-1") {
-                    jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
-                    Changepassworderror.show();
-                    Changepassworderror.fadeOut(5000);
-                    jQuery.unblockUI();
-                    return false;
+                switch (data.successCount) {
+                    case 1:
+                        jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
+                        Changepasswordsuccess.show();
+                        Changepasswordsuccess.fadeOut(5000);
+                        clearResetForm();
+                        jQuery.unblockUI();
+                        isSuccess = true;
+                        break;
+                    default:
+                        jQuery("#errorpassword").html(data.successMsg);
+                        Changepassworderror.show();
+                        Changepassworderror.fadeOut(5000);
+                        jQuery.unblockUI();
+                        isSuccess = false;
+                        break;
                 }
-                else {
-
-                    jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
-                    Changepasswordsuccess.show();
-                    Changepasswordsuccess.fadeOut(5000);
-                    clearResetForm();
-                    jQuery.unblockUI();
+                if (!isSuccess) {
+                    return false;
                 }
             },
             error: function (xhr, status, error) {

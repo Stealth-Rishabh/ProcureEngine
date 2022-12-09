@@ -189,7 +189,7 @@
                                                 Bid Subject
                                             </label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" name="txtFlatNo">
+                                                <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" name="txtFlatNo" onkeyup="replaceQuoutesFromString(this)">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -197,7 +197,7 @@
                                                 Bid Description
                                             </label>
                                             <div class="col-md-8">
-                                                <textarea id="txtBidDescription" class="form-control" placeholder="Enter Bid Description" name="txtBidDescription"></textarea>
+                                                <textarea id="txtBidDescription" class="form-control" placeholder="Enter Bid Description" name="txtBidDescription" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">

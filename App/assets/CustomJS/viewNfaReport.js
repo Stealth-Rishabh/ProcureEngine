@@ -724,6 +724,9 @@ function validateAppsubmitData() {
 
 }
 function ApprovalApp() {
+
+
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var approvalbyapp = {

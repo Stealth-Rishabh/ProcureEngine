@@ -1162,14 +1162,20 @@ function fnConfirmRegretted() {
     });
 
 }
+
 function fnRegreteRFQ() {
+
+    var _cleanString = StringEncodingMechanism($('#txtRemarks').val());
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     $('#SaveExsist').attr("disabled", "disabled");
     var RegretData = {
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-        "Remarks": $('#txtRemarks').val(),
+        //"Remarks": $('#txtRemarks').val(),
+        "Remarks": _cleanString,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     //  alert(JSON.stringify(RegretData))
@@ -1454,10 +1460,10 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
                 var vendorRemarks = "";
                 if (_RFQBidType == 'Open') {
-                    vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                    vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''"))
                 }
                 else {
-                    vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
+                    vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17) input[type="text"]').val()))
 
                 }
                 // Price = Price + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
@@ -1580,17 +1586,22 @@ function saveQuotation() {
         $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
             if (_RFQBidType == 'Open') {
-                vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''")
+                vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17)').find('textarea').val()).replace(/'/g, "''"))
             }
             else {
-                vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
+                vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17) input[type="text"]').val()))
 
             }
+
+            var _cleanString2 = StringEncodingMechanism($.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")));
+
+
             var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQId": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
+                //"RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
+                "RFQShortName": _cleanString2,
                 "RFQUomId": removeThousandSeperator($.trim(this_row.find('td:eq(3)').html())),
                 "RFQuantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
                 "RFQDelivery": $.trim(this_row.find('td:eq(7)').html()),
@@ -1610,16 +1621,21 @@ function saveQuotation() {
 
         $("#tblRFQLevelTCForQuot > tbody > tr").each(function () {
             var this_row = $(this);
+            var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"));
+
             var comm = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQID": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"),
+                //"Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()).replace(/'/g, "''"),
+                "Remarks": _cleanString3,
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N'
             };
             commercialterms.push(comm)
         });
+
+        var _cleanString4 = StringEncodingMechanism($('#txtvendorremarks').val());
 
         var Tab2data = {
             "PriceDetails": PriceDetails,
@@ -1627,7 +1643,9 @@ function saveQuotation() {
             "VendorId": parseInt(sessionStorage.getItem('VendorId')),
             "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
             "CommercialTerms": commercialterms,
-            "VendorRemarks": $('#txtvendorremarks').val()
+            //"VendorRemarks": $('#txtvendorremarks').val(),
+            "VendorRemarks": _cleanString4
+
         };
         // console.log(JSON.stringify(Tab2data))
         //alert(JSON.stringify(Tab2data))

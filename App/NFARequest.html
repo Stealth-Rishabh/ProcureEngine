@@ -169,7 +169,7 @@
                                     <i class="fa fa-gift"></i>CREATE - NFA REQUEST
                                 </div>
                                 <div class="tools hidden-xs">
-                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelNFABtn" onclick="cancelbid()">Cancel</button>
                                     <a href="javascript:;" class="collapse hidden-xs"></a>
                                 </div>
                             </div>
@@ -287,7 +287,7 @@
                                                                 Amount<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18"   pattern="[0-9]+" onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18"   onkeyup="localecommaseperator(this)" />
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -295,7 +295,7 @@
                                                                 Budget
                                                             </label>
                                                             <div class="col-md-2">
-                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18"  pattern="[0-9]+" onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18"  onkeyup="localecommaseperator(this)" />
                                                             </div>
 
                                                             <div class="col-md-1">
@@ -336,7 +336,7 @@
                                                                 Project Name<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" />
+                                                                <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" onkeyup="replaceQuoutesFromString(this)"/>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -348,6 +348,12 @@ function fetchMsme() {
     }
 }
 function SubmitVendorRegistration() {
+    var _cleanString = StringEncodingMechanism($("#ddlCompanyName").val().trim());
+    var _cleanString2 = StringEncodingMechanism($("#txtBank").val().trim());
+    var _cleanString3 = StringEncodingMechanism($("#txtAccountHolder").val().trim());
+    var _cleanString4 = StringEncodingMechanism($("#txtContName").val().trim());
+    var _cleanString5 = StringEncodingMechanism($("#txtContName2").val().trim());
+
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];
@@ -409,7 +415,8 @@ function SubmitVendorRegistration() {
             "vendorCatID": parseInt($("#ddlVendorType").val()),
             "vendorCatName": $("#ddlVendorType option:selected").text().trim(),
             "product": $("#txtProduct").val(),
-            "vendorName": $("#ddlCompanyName").val().trim(),
+            //"vendorName": $("#ddlCompanyName").val().trim(),
+            "vendorName": _cleanString,
             "vendorAdd": $("#txtAdd1").val().trim(),
             "countryID": parseInt($("#ddlCountry").val()),
             "countryName": $("#ddlCountry option:selected").text().trim(),
@@ -425,10 +432,12 @@ function SubmitVendorRegistration() {
             "gSTClass": gstclassvalue,
             "ServiceTaxNo": $("#txtGst").val().trim(),
             "payTermID": paymenttermvalue,
-            "bankName": $("#txtBank").val().trim(),
+            //"bankName": $("#txtBank").val().trim(),
+            "bankName": _cleanString2,
             "bankAccount": $("#txtAcNo").val().trim(),
             "iFSCCode": $("#txtIFSC").val().trim(),
-            "accountName": $("#txtAccountHolder").val().trim(),
+            //"accountName": $("#txtAccountHolder").val().trim(),
+            "accountName": _cleanString3,
             "mSMECheck": $("#ddlMSME option:selected").val(),
             "mSMEType": msmeselectvalue,
             "mSMENo": $("#txtUdyam").val().trim(),
@@ -436,10 +445,12 @@ function SubmitVendorRegistration() {
             "secondLastTurnover": $("#txt2LastFiscal").val().trim(),
             "previousTurnoverYear": $("#txtLastFiscalyear").val().trim(),
             "secondLastTurnoverYear": $("#txt2LastFiscalyear").val().trim(),
-            "contactName": $("#txtContName").val().trim(),
+            //"contactName": $("#txtContName").val().trim(),
+            "contactName": _cleanString4,
             "contactEmailID": $("#txtEmail").val().trim(),
             "mobile": $("#txtMobile").val().trim(),
-            "contactNameMD": $("#txtContName2").val().trim(),
+            //"contactNameMD": $("#txtContName2").val().trim(),
+            "contactNameMD": _cleanString5,
             "mobileMD": $("#txtMobile2").val().trim(),
             "AltEmailID": $("#txtEmail2").val().trim(),
             "gSTFile": gstfilename,

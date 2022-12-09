@@ -93,6 +93,7 @@ function fetchBidFor() {
 
 }
 function insupdVehicleMaster() {
+    var _cleanString = StringEncodingMechanism($('#vtype').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -108,7 +109,8 @@ function insupdVehicleMaster() {
       
         "VehicleTypeID": $('#hdnvehiclemaster').val(),
         "BidforID": $('#ddlBidFor').val(),
-        "VehicleTypeName": $('#vtype').val(),
+        //"VehicleTypeName": $('#vtype').val(),
+        "VehicleTypeName": _cleanString,
         "isActive": status,
         "CreatedBy": sessionStorage.getItem("UserID"),
         "CustomerID": sessionStorage.getItem("CustomerID")
