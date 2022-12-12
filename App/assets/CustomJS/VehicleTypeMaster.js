@@ -3,6 +3,36 @@ var Vehicleerror = $('#errordiv');
 var Vehiclesuccess = $('#successdiv');
 Vehiclesuccess.hide();
 Vehicleerror.hide();
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
+
+    fetchMenuItemsFromSession(19, 21);
+    setCommonData();
+    FormValidate();
+    fetcVehicledetail();
+    fetchBidFor();
+
+});
+//
+
+
 function FormValidate() {
  
     $('#vehiclemaster').validate({

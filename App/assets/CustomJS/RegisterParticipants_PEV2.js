@@ -1,9 +1,78 @@
 jQuery(document).ready(function () {
+    //FROM HTML
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    App.init();
+    setCommonData();
+    fetchMenuItemsFromSession(9, 10);
+    FormValidation.init();
+
+    fetchParticipantsVenderTable();
+    fetchMapCategory('M', 0);
+
+    fetchBidType();// for serach vendor
+    clearform();
+    fetchCountry();
+    //abheedev 25/11/2022
+    $('#ddlCountry').select2({
+        searchInputPlaceholder: "Search Country",
+    })
+    $('#ddlCountryCd').select2({
+        searchInputPlaceholder: "Dialing Code",
+        //allowClear: true
+    });
+
+    $('#ddlCountryCdPhone').select2({
+        searchInputPlaceholder: "Dialing Code",
+        // allowClear: true
+    });
+
+    $('#ddlState').select2({
+        searchInputPlaceholder: "Search State",
+        allowClear: true
+    }).on('change', function () { $(this).valid(); });
+    $('#ddlCity').select2({
+        searchInputPlaceholder: "Search City",
+        allowClear: true
+    }).on('change', function () { $(this).valid(); });
+    $('#ddlpreferredTime').select2().on('change', function () { $(this).valid(); });
+    //***********
+
+
     jQuery("#btnsumbit").click(function () {
 
         dynamiccontrolvalidation();
     });
 });
+//FROM HTML
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "-" + month + "-" + year + "/ " + hour + ":" + mins;
+
+    tableToExcel('tblParticipantsExport', 'Participant Details', 'Participant Details - ' + postfix + '.xls');
+
+});
+//
+
 
 $('#txtUI,txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",

@@ -1,6 +1,31 @@
 ﻿var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
+    setCommonData();
+    fetchUserBids();
+    fetchMenuItemsFromSession(9, 18);
+    FormValidate()
 
+});
+//
 
 var error1 = $('.alert-danger');
 var success1 = $('.alert-success');

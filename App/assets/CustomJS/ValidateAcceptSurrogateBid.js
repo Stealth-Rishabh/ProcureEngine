@@ -7,7 +7,19 @@ var BIDTypeID = '';
 var BidClosingType = '';
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//FROM HTML
+jQuery(document).ready(function () {
 
+    $('.page-container').show();
+    Metronic.init();
+    Layout.init();
+    App.init();
+
+    fetchBidHeaderDetails();
+    formvalidate();
+
+});
+//
 function fetchBidHeaderDetails() {
 
     var url = '';

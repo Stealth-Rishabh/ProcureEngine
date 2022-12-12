@@ -110,21 +110,21 @@
 
 
 
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="pev3">
         //jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         $(document).ready(function () {
             callPagejs('ViewReport2.js');
             
-            getCurrenttime();
-            param = getUrlVars()["param"];
-            decryptedstring = fndecrypt(param);
-            BidID = getUrlVarsURL(decryptedstring)["BidID"];
-            BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
-            BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
-            ReportBind(BidID, BidTypeID, BidForID)
-            fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
-            FetchRecomendedVendor(BidID)
-            fnfetchvendortotalSummary(BidID, BidTypeID)
+            //getCurrenttime();
+            //param = getUrlVars()["param"];
+            //decryptedstring = fndecrypt(param);
+            //BidID = getUrlVarsURL(decryptedstring)["BidID"];
+            //BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
+            //BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
+            //ReportBind(BidID, BidTypeID, BidForID)
+            //fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
+            //FetchRecomendedVendor(BidID)
+            //fnfetchvendortotalSummary(BidID, BidTypeID)
 
 
         });
