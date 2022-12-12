@@ -15,7 +15,113 @@ jQuery(document).ready(function () {
     });
     $('#txtLastFiscalyear').val(getCurrentFinancialYear())
     $('#txt2LastFiscalyear').val(getlastFinancialYear())
+    //FROM HTML
+    sessionStorage.setItem('CustomerID', "1")
+    Pageloaded()
+
+
+
+    setInterval(function () { Pageloaded() }, 15000);
+
+
+
+    $('.page-container').show();
+
+
+
+
+
+
+
+    $("#ddlCategoryMultiple").select2();
+
+    $("#ddlTypeofProduct").select2();
+
+    $("#ddlProduct").select2();
+
+    $("#ddlState").select2();
+
+    $("#ddlCity").select2();
+
+    $("#ddlTds").select2();
+
+    $("#ddPayTerms").select2();
+
+    $("#ddlCountry").select2();
+
+    Metronic.init();
+
+    Layout.init();
+
+
+
+
+
+    var _VQID;
+
+    if (window.location.search) {
+
+        var param = getUrlVars()["param"]
+
+        var decryptedstring = fndecrypt(param)
+
+        _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+
+    }
+
+    fetchCategorymaster();
+    fetchCategorymaster1();
+    fetchCountry();
+    fetchProduct();
+    fetchTDS();
+    fetchPaymentTerms();
+
+
+    FormWizard.init();
+    FormValidate();
+
+    ComponentsPickers.init();
+
+
+
+    ComponentsDropdowns.init();
 });
+
+function addMoreAttachment1() {
+
+    _count = ($("#tblAttachmentsElem > li").length + 1);
+
+    console.log("count ==> ", _count);
+
+    $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
+
+        '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
+
+        '<div class="col-md-4">' +
+
+        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
+
+        '</div>' +
+
+        '<div class="col-md-3">' +
+
+        '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
+
+        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
+
+        '</div>' +
+
+        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
+
+        '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
+
+        '</div>' +
+
+        '</div></li>'
+
+    );
+
+}
 
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });

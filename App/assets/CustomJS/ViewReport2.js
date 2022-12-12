@@ -3,7 +3,23 @@ var BidTypeID = "";
 var BidForID = "";
 
 var postfix = ''
+//FROM HTML
+$(document).ready(function () {
+    
+    getCurrenttime();
+    param = getUrlVars()["param"];
+    decryptedstring = fndecrypt(param);
+    BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
+    BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
+    ReportBind(BidID, BidTypeID, BidForID)
+    fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
+    FetchRecomendedVendor(BidID)
+    fnfetchvendortotalSummary(BidID, BidTypeID)
 
+
+});
+//*******
 $('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
 

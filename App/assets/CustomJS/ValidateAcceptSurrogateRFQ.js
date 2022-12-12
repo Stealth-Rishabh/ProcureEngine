@@ -5,7 +5,20 @@ var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
 //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//FROM HTML
+jQuery(document).ready(function () {
 
+    $('.page-container').show();
+    Metronic.init();
+    Layout.init();
+    App.init();
+
+    //setCommonData();
+    fetchReguestforQuotationDetailseRFQ();
+    formvalidate();
+
+});
+//
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 

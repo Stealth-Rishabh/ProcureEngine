@@ -1,6 +1,64 @@
 
 
 var _RFQBidType = "";
+
+//FROM HTML
+jQuery(document).ready(function () {
+
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param)
+
+    var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+    var version = getUrlVarsURL(decryptedstring)["Ver"];
+    var Type = getUrlVarsURL(decryptedstring)["Type"];
+
+    if (_RFQid == null)
+        sessionStorage.setItem('hddnRFQID', 0)
+    else {
+
+        sessionStorage.setItem('RFQVersionId', version)
+        sessionStorage.setItem('hddnRFQID', _RFQid)
+        if ((Type != undefined) || Type == "Query" && sessionStorage.getItem('RFQVersionId') == "00") {
+            GetQuestions();
+
+        }
+        else {
+            GetSubmittedQuery();
+        }
+        fetchReguestforQuotationDetails();
+        setTimeout(function () {
+            fetchRFIParameteronload(version)
+        }, 1000);
+
+        fetchRFQResponse('Question', version);
+        fetchRFQResponse('Attachment', version);
+
+    }
+    Metronic.init();
+    Layout.init();
+    multilingualLanguage();
+    setCommonData();
+
+});
+//
+
 function GetQuestions() {
 
     jQuery.ajax({
