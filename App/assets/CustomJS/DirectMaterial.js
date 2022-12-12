@@ -1,4 +1,46 @@
-﻿
+﻿jQuery(document).ready(function () {
+    
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 27);
+    fetchBidTypeMapping();
+    FetchCurrency('0');
+    FetchContinent('0');
+    FetchVenderForrfirfq()
+    fetchRegisterUser('6');
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    //fetchPendingBidDataTab1();
+
+    var _BidID = getUrlVars()["BidID"];
+    if (_BidID == null)
+        sessionStorage.setItem('CurrentBidID', 0)
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchProductServicesBidDetails();
+    }
+
+});
+
 
 jQuery('#btnpush').click(function (e) {
 

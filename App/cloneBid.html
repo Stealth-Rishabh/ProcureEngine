@@ -72,8 +72,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
@@ -84,8 +84,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b><span id="spanUserName"  class="username username-hide-on-mobile">
+                            </span></b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -98,7 +98,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay" >
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -156,7 +156,7 @@
                                                 <div class="col-md-9">
 
                                                     <input type="hidden" value="0" id="ddlBidType" />
-                                                    <p class="form-control-static ddlBidType" style="font-size:14px;"></p>
+                                                    <p class="form-control-static ddlBidType font14px" ></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
 
                                     </div>
                                     <div class="form-actions fluid">
-                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                        <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                                             <input type="submit" id="btnrfirfq" value="Go" class="btn yellow" />
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text">
                             The purpose of RFI/RFQ report is to see the details of RFI/RFQ responses received from vendors using our sourcing portal.
                             The report can be taken out using one or many filtration parameters.
@@ -255,34 +255,9 @@
     </div>
 
 
-    <script>
+    <script nonce="clobi">
         jQuery(document).ready(function () {
-            callPagejs('cloneBid.js');
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-            App.init();
-            Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
-            fetchMenuItemsFromSession(7, 26);
-            formvalidate();
-
+            callPagejs('cloneBid.js');           
         });
     </script>
 

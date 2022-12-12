@@ -1,3 +1,40 @@
+jQuery(document).ready(function () {
+    
+    $('.thousandseparated').inputmask();
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    App.init();
+    Metronic.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchUserBids();
+    fetchMenuItemsFromSession(9, 18);
+    FormValidate();
+
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtnoofextensiontab_0');
+    document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+        document.getElementById('file-excelparameter').click();
+    });
+    $('#file-excelparameter').change(handleFileparameter);
+
+});
+
 var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 var biddatetime = getCurrentDateddmmyyyy();

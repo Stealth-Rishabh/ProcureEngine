@@ -1,4 +1,31 @@
-﻿var APIPath = sessionStorage.getItem('APIPath');
+﻿jQuery(document).ready(function () {
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    App.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(9, 10);
+    formValidation();
+    fillCountryDropDown('ddlcustcountry', 0);
+    FetchCustomerDetails();
+
+});
+
+
+var APIPath = sessionStorage.getItem('APIPath');
 
 
 function formValidation() {

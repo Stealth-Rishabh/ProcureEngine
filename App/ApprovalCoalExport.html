@@ -77,8 +77,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive"  />
                 </a>
             </div>
             <div class="top-menu">
@@ -86,8 +86,8 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
+                          <b>  <span id="spanUserName" 
+                                  class="username username-hide-on-mobile"></span></b><i class="fa fa-angle-down">
                             </i>
                         </a>
                         <ul class="dropdown-menu">
@@ -101,7 +101,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container">
+    <div class="page-container nodisplay">
         <div class="page-content-wrapper">
             <div class="page-content">
                 <div class="page-bar">
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
+                                <div id="divalerterr" class="alert alert-danger divalertstyle" >
                                     <span id="spanerterr"></span>
                                 </div>
                                 <div class="form-body">
@@ -209,7 +209,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-control" style="display:none;">
+                                    <div class="form-control nodisplay" >
                                         <label class="col-md-2 control-label">
                                             Target Price :
                                         </label>
@@ -220,13 +220,13 @@
                                         <label class="col-md-2 control-label">
                                             Terms & Condition :
                                         </label>
-                                        <a id="lnkTermsAttachment" href="javascript:;" style="text-decoration: none;" onclick="DownloadFile(this)" class="control-label"></a>
+                                        <a id="lnkTermsAttachment" href="javascript:;"  onclick="DownloadFile(this)" class="control-label notextdeco"></a>
                                     </div>
                                     <div class="form-control">
                                         <label class="col-md-2 control-label">
                                             Attachment (Any Other) :
                                         </label>
-                                        <a id="lnkAnyOtherAttachment" href="javascript:;" style="text-decoration: none;" onclick="DownloadFile(this)" class="control-label"></a>
+                                        <a id="lnkAnyOtherAttachment" href="javascript:;"  onclick="DownloadFile(this)" class="control-label notextdeco"></a>
                                     </div>
                                 </div>
                             </div>
@@ -245,7 +245,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="table-responsive" style="overflow: auto">
+                                <div class="table-responsive overflowauto" >
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
                                             <tr>
@@ -264,15 +264,13 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <!--<div>&nbsp;</div>
-                                    <table class="table table-bordered hide" style="width:50%!important" id="tblbidvendortotalsummary">
-                                    </table>-->
+                                   
                                 </div>
                                 <div class="mt-element-step hide" id="div_statusbar">
 
@@ -281,13 +279,13 @@
 
                                     </div>
                                 </div>
-                                <div class="table-responsive display-none" style="overflow: auto" id="divforapprovalprocess">
+                                <div class="table-responsive display-none overflowauto"  id="divforapprovalprocess">
                                     <table class="table table-bordered" id="tblapprovalprocess">
                                         <thead>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -295,7 +293,7 @@
                                     </table>
 
                                 </div>
-                                <div id="divRemarksForward" class="col-md-12" style="display: none;">
+                                <div id="divRemarksForward" class="col-md-12 nodisplay" >
                                     <div class="row">
                                         <div class="col-md-12" id="frmdivremarksforward">
                                             <div id="Div1" class="portlet-body form">
@@ -303,10 +301,10 @@
                                                 <form action="#" id="formsubmitadmin" class="form-horizontal">
 
                                                     <div class="form-body">
-                                                        <div class="alert alert-success" id="successdiv1" style="display: none">
+                                                        <div class="alert alert-success nodisplay" id="successdiv1" >
                                                             <span>Transaction Successfull..</span>
                                                         </div>
-                                                        <div id="RevertComment" style="display: none" class="form-group">
+                                                        <div id="RevertComment"  class="form-group nodisplay">
                                                             <label class="col-md-4 control-label">
                                                                 Last Comment
                                                             </label>
@@ -325,8 +323,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding: 8px 5px;">
-                                                        <div class="col-md-offset-2 col-md-12" style="text-align: center">
+                                                    <div class="form-group padding85px" >
+                                                        <div class="col-md-offset-2 col-md-12 txtaligncentre" >
 
                                                             <button id="btnExportToExcel" type="button" class="btn blue">
                                                                 Export To Excel
@@ -348,17 +346,17 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" id="frmdivforward" style="display:none; height: 250px; overflow-y:scroll;">
+                                        <div class="col-md-6 divstyle250" id="frmdivforward" >
                                             <form action="#" id="form1" class="form-horizontal">
                                                 <div class="form-body">
 
-                                                    <div class="table-scrollable" style="overflow: auto">
+                                                    <div class="table-scrollable overflowauto" >
                                                         <table class="table table-bordered" id="tblremarksforward">
                                                             <thead>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                    <td colspan="15" class="norecord">
                                                                         No record's found
                                                                     </td>
                                                                 </tr>
@@ -373,7 +371,7 @@
 
                                 </div>
 
-                                <div id="divRemarksApp" class="col-md-12" style="display: none;">
+                                <div id="divRemarksApp" class="col-md-12 nodisplay" >
                                     <div class="row">
                                         <div class="col-md-12" id="frmdivremarksapprover">
                                             <div id="entryForm" class="portlet-body form">
@@ -381,7 +379,7 @@
                                                 <form action="#" id="frmsubmitapp" class="form-horizontal">
 
                                                     <div class="form-body">
-                                                        <div class="alert alert-success" id="successdiv" style="display: none">
+                                                        <div class="alert alert-success" id="successdiv" >
                                                             <span id="success">Transaction Successfull..</span>
                                                         </div>
                                                         <div class="form-group">
@@ -419,8 +417,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding: 10px 5px;">
-                                                        <div class="col-md-offset-4 col-md-12" style="text-align: center">
+                                                    <div class="form-group padding105px" >
+                                                        <div class="col-md-offset-4 col-md-12 txtaligncentre" >
                                                             <button id="btnExportToExcel1" type="button" class="btn blue">
                                                                 Export To Excel
                                                             </button>
@@ -439,7 +437,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                                        <div class="col-md-6 divstyle250"  id="frmdivapprove">
 
                                             <form action="#" id="form2" class="form-horizontal">
 
@@ -452,7 +450,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                    <td colspan="15" class="norecord">
                                                                         No record's found
                                                                     </td>
                                                                 </tr>
@@ -465,21 +463,21 @@
                                         </div>
 
                                     </div>
-                                    <div style="clear: both;">
+                                    <div class="clearboth">
                                     </div>
 
                                 </div>
 
-                                <div id="divRemarksAwarded" class="col-md-12" style="display: none;">
+                                <div id="divRemarksAwarded" class="col-md-12 nodisplay" >
                                     <div class="row">
                                         <div class="col-md-12" id="frmdivremarksawarded">
                                             <div id="Div3" class="portlet-body form">
                                                 <form action="#" id="formAwardedsubmit" class="form-horizontal">
                                                     <div class="form-body">
-                                                        <div class="alert alert-success" id="successdiv2" style="display: none">
+                                                        <div class="alert alert-success" id="successdiv2" >
                                                             <span>Transaction Successfull..</span>
                                                         </div>
-                                                        <div class="alert alert-danger" style='display:none;' id="diverrordiv2">
+                                                        <div class="alert alert-danger"  id="diverrordiv2">
                                                             <span id="errordiv2"> </span>
                                                         </div>
                                                         <div class="form-group hide">
@@ -506,14 +504,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="table-scrollable" style="overflow: auto; display: none;" id="divtableaward">
+                                                            <div class="table-scrollable overflowautonone"  id="divtableaward">
                                                                 <table class="table table-bordered" id="tblremarksvendorsawared">
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding: 10px 5px;">
-                                                        <div class="col-md-offset-2 col-md-12" style="text-align: center">
+                                                    <div class="form-group padding105px" >
+                                                        <div class="col-md-offset-2 col-md-12 txtaligncentre" >
                                                             <button id="btnSubmitAward" type="button" class="btn green" onclick="AwardBid()">
                                                                 Submit
                                                             </button>&nbsp;&nbsp;
@@ -528,19 +526,19 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" id="frmdivawarded" style="display:none; height: 250px; overflow-y:scroll;">
+                                        <div class="col-md-6 divstyle250" id="frmdivawarded">
                                             <form action="#" id="form3" class="form-horizontal">
                                                 <div class="form-body">
 
 
 
-                                                    <div class="table-scrollable" style="overflow: auto">
+                                                    <div class="table-scrollable overflowauto" >
                                                         <table class="table table-bordered" id="tblremarksawared">
                                                             <thead>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                    <td colspan="15" class="norecord">
                                                                         No record's found
                                                                     </td>
                                                                 </tr>
@@ -653,7 +651,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                        <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                             <button id="btnsubmitmodifyProductServices" type="submit" class="btn yellow">
                                 Submit
                             </button>
@@ -676,10 +674,10 @@
                         <div class="portlet-body">
                             <form action="#" class="form-horizontal" id="frmRemarksCancel">
                                 <div class="form-body">
-                                    <div class="alert alert-danger" id="msgErrorL1" style='display: none;'>
+                                    <div class="alert alert-danger" id="msgErrorL1" >
                                         <span id=""> </span>
                                     </div>
-                                    <div class="alert alert-success" id="msgSuccessL1" style='display: none;'>
+                                    <div class="alert alert-success" id="msgSuccessL1" s>
                                         <span id=""> </span>
                                     </div>
                                     <div class="form-group">
@@ -693,7 +691,7 @@
                                     </div>
                                 </div>
                                 <div class="form-actions fluid">
-                                    <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                    <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                                         <button id="SaveExsist" type="submit" class="btn green">
                                             Submit
                                         </button>
@@ -736,7 +734,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style=" overflow-y: scroll;">
+                    <div class="modal-body overflowyscroll" >
                         <div id="Approver" class="display-none">
                             <h4 class="ppolicy-head4">  Approver </h4>
                             <p class="ppolicy-text">
@@ -806,10 +804,10 @@
                     </div>
 
                     <div class="portlet-body form">
-                        <div class="alert alert-success" id="successapp" style='display: none;'>
+                        <div class="alert alert-success" id="successapp" >
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorapp" style='display: none; '>
+                        <div class="alert alert-danger" id="diverrorapp">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmApprover" class="form-horizontal" role="form">
@@ -861,48 +859,10 @@
         </div>
     </div>
     <!-- END PAGE LEVEL SCRIPTS -->
-    <script>
+    <script nonce="approvalcoalexport">
         jQuery(document).ready(function () {
             callPagejs('BidVendorSummarySea.js,ApprovalCoalExport.js');
-            var param = getUrlVars()["param"];
-            var decryptedstring = fndecrypt(param);
-            jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
-                if (getUrlVarsURL(decryptedstring)["App"] == 'N') {
-
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-                else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Approver") {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-                else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Admin") {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-            });
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            Metronic.init();
-            Layout.init();
-            QuickSidebar.init();
-            App.init();
-            setCommonData();
-            FormValidation.init();
+            
         });
     </script>
 

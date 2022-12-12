@@ -71,16 +71,16 @@
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
-            <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+            <a class="navbar-brand" href="index.html" >
+                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
             </a>
-            <div class="col-md-4" style="padding:10px !important;">
+            <div class="col-md-4 padding10px" >
                 <div class="form-group">
-                    <label class="control-label col-md-8 bold text-right" style="font-size:17px!important;color:white">
+                    <label class="control-label col-md-8 bold text-right labelstyle2" >
                         Time left (HH:MM:SS):
                     </label>
                     <div class="col-md-3">
-                        <label id="lblTimeLeft" class="bold text-left" style="font-size:17px!important;color:white">
+                        <label id="lblTimeLeft" class="bold text-left labelstyle2">
                         </label>
                         <input type="hidden" id="hdnDuration" />
 
@@ -90,8 +90,8 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <!--&nbsp;-->
-                    <div id="spinnerBidclosingTab" class="display-none col-md-6" style="padding:8px !important;">
-                        <div class="input-group" style="width:140px;">
+                    <div id="spinnerBidclosingTab" class="display-none col-md-6 padding8px" >
+                        <div class="input-group width140px">
 
                             <div class="spinner-buttons input-group-btn">
                                 <button type="button" class="btn spinner-down red" id="minusbtn">
@@ -108,16 +108,16 @@
                         </div>
 
                     </div>
-                    <div class="col-md-1" style="padding:8px !important;display:none;" id="btndiv">
+                    <div class="col-md-1 divstyle1" id="btndiv">
                         <button id="btnextendA" type="button" class="btn green" onclick="fnTimeUpdate()">
                             Go
                         </button>
 
                     </div>
-                    <div class="col-md-2 text-right" style="margin-left:30px!important">
-                        <p id="extendedDurationPara" style="color:white; font-weight: 600;display:none">Time&nbsp;Extended&nbsp;Successfully</p>
+                    <div class="col-md-2 text-right marginleft30px" >
+                        <p id="extendedDurationPara" class="labelstyle3" >Time&nbsp;Extended&nbsp;Successfully</p>
                     </div>
-                    <div class="col-md-1" style="padding:8px !important;display:none;" id="btnpause">
+                    <div class="col-md-1 divstyle1"  id="btnpause">
                         <button id="btnpause" type="button" class="btn yellow" href="#pauseauction" data-toggle="modal">
                             Pause
                         </button>
@@ -133,8 +133,8 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
+                           <b> <span id="spanUserName"
+                                  class="username username-hide-on-mobile"></span></b><i class="fa fa-angle-down">
                             </i>
                         </a>
                         <ul class="dropdown-menu">
@@ -143,9 +143,9 @@
                         </ul>
                     </li>
                     <li class="dropdown dropdown-quick-sidebar-toggler" id="lichat">
-                        <div class="pulsate-regular" style="padding:12px;">
+                        <div class="pulsate-regular padding12px" >
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat">
-                                <i class="fa fa-wechat" style="color:#ffb848;"></i>
+                                <i class="fa fa-wechat wechatcolor"></i>
                             </a>
                         </div>
                     </li>
@@ -185,7 +185,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidSubject" style="text-align:left" class="col-md-10 control-label text-left">
+                                                <label id="lblbidSubject"  class="col-md-10 control-label text-left txtalignleft">
                                                 </label>
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@
                                                     Bid Details:
                                                 </label>
                                                 <!--<div class="col-md-10">-->
-                                                <label id="lblbiddetails" style="text-align:left" class=" col-md-10 control-label text-left">
+                                                <label id="lblbiddetails"  class=" col-md-10 control-label text-left txtalignleft">
                                                 </label>
                                                 <!--</div>-->
                                             </div>
@@ -268,11 +268,11 @@
                                         <label class="col-md-2 control-label">
                                             Target Price:
                                         </label>
-                                        <label id="lblbidprice" style="display:none">
+                                        <label id="lblbidprice" class="nodisplay">
                                         </label>
-                                        <div class="col-md-10" id="divTargetPrice" style="display:none">
+                                        <div class="col-md-10 nodisplay" id="divTargetPrice" >
 
-                                            <div class="table-responsive" style="overflow: auto; ">
+                                            <div class="table-responsive overflowauto" >
                                                 <table class="table table-striped table-bordered table-hover" id="tbltargetPrice">
                                                     <thead>
                                                         <tr><th></th><th>Min</th><th>45+</th><th>100+</th><th>300+</th><th>500+</th><th>1000+</th></tr>
@@ -302,7 +302,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="form-control" id="divModelClass" style="display:none">
+                                    <div class="form-control nodisplay" id="divModelClass" >
                                         <label class="col-md-2 control-label">
                                             Model Class:
                                         </label>
@@ -350,7 +350,7 @@
                             <div class="portlet-body form">
 
                                 
-                                <div class="table-responsive" style="overflow: auto" id="divforBidsummary">
+                                <div class="table-responsive overflowauto"  id="divforBidsummary">
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
                                             <tr>
@@ -384,7 +384,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -394,13 +394,13 @@
                                     
                                 </div>
                                 
-                                <div class="table-responsive display-none" style="overflow: auto" id="divfordetailreport">
+                                <div class="table-responsive display-none overflowauto" id="divfordetailreport">
                                     <table class="table table-bordered" id="tblbidsummarypercentagewise">
                                         <thead>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -409,10 +409,10 @@
                                     
                                 </div>
                                 <br />
-                                <div class="form-actions fluid" style="padding: 10px 5px;">
-                                    <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                <div class="form-actions fluid padding105px" >
+                                    <div class="col-md-offset-3 col-md-6 txtaligncentre">
                                         
-                                        <button id="butCancelbid" type="submit" class="btn red" style="display:none;">
+                                        <button id="butCancelbid" type="submit" class="btn red nodisplay" >
                                             Cancel
                                         </button>
                                         <button id="btnExportToExcel" type="button" class="btn blue">
@@ -433,7 +433,7 @@
                         
                         <div class="clearfix"></div>
                         <!--<h1>Chat</h1>-->
-                        <div class="scroller" style="height: 150px;position:absolute;left:2px;right:7px" data-always-visible="1" data-rail-visible="0">
+                        <div class="scroller scroller150" data-always-visible="1" data-rail-visible="0">
                             <div class="general-item-list" id="">
                                 
                             </div>
@@ -473,7 +473,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
                         <div class="page-quick-sidebar-list" id="tab1quicksidebarlist">
-                            <div class="scroller" style="height:590px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                            <div class="scroller scroller590"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
                                 <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd">
                                     <ul class="media-list list-items" id="vendorsChatlist">
                                     </ul>
@@ -485,15 +485,15 @@
                                 <div class="page-quick-sidebar-nav">
                                     <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list" id="backbutton">
                                         
-                                        <i class="icon-arrow-left" style="color:red;"></i><!--Back-->
+                                        <i class="icon-arrow-left colorred"></i><!--Back-->
                                     </a>&nbsp;
-                                    <label id="chat-label" class="control-label text-center bold" style="font-size:small!important"></label>
+                                    <label id="chat-label" class="control-label text-center bold fontsizesmall" ></label>
                                 </div>
-                                <div class="scroller" style="height: 496px;">
+                                <div class="scroller scroller496">
                                     <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                     </div>
                                 </div>
-                                <div class="page-quick-sidebar-chat-user-form" id="chattypeform" style="position:absolute;bottom:1px;background:#393939;width:100%;">
+                                <div class="page-quick-sidebar-chat-user-form divchatstyle" id="chattypeform" >
 
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
@@ -513,11 +513,11 @@
                         <div class="page-quick-sidebar-item2">
                             <div class="page-quick-sidebar-chat-user">
                                 
-                                <div class="scroller" style="height: 496px;">
+                                <div class="scroller scroller496" >
                                     <div class="page-quick-sidebar-chat-user-messages" id="listBroadCastMessages">
                                     </div>
                                 </div>
-                                <div class="page-quick-sidebar-chat-user-form" style="position:absolute;bottom:1px;background:#393939;width:100%;">
+                                <div class="page-quick-sidebar-chat-user-form divchatstyle">
                                     
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
@@ -564,7 +564,7 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                    <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
 
                     </div>
                 </div>
@@ -614,10 +614,10 @@
                     </div>
 
                     <div class="portlet-body form">
-                        <div class="alert alert-success" id="successpau" style='display: none;'>
+                        <div class="alert alert-success" id="successpau" >
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorpau" style='display: none; '>
+                        <div class="alert alert-danger" id="diverrorpau">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmpauseauction" class="form-horizontal" role="form">
@@ -643,118 +643,13 @@
             </div>
         </div>
     </div>
-    <script>
+    <script nonce="bidad">
         jQuery(document).ready(function () {
-            callPagejs('BidAdmin.js,BidVendorSummary.js,BidVendorSummarySea.js');
-            fnToCheckUserIPaccess();
-            $(window).focus(function () {
-                if (_bidClosingType == "S" && BidForID == "7") {
-                    fnrefreshStaggerTimerdataonItemClose()
-                }
-                else {
-                    fetchBidTime();
-                }
-
-                $(window).blur();
-            });
-            $('ul#chatList').slimScroll({
-                height: '250px'
-            });
-            jQuery('#btnExportToExcel').click(function () {
-                if (getUrlVars()["BidTypeID"] == "2") {
-                    tableToExcel(['tbldetails', 'tblprice', 'tblBidSummary', 'tblapprovalprocess'], ['BidDetails', 'Price', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-                else {
-                    tableToExcel(['tbldetails', 'tblBidSummary'], ['BidDetails', 'Bid Summary'], 'BidSummary')
-                }
-            });
-            setInterval(function () { Pageloaded() }, 15000);
-            /*if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }*/
-            Metronic.init();
-            Layout.init();
-
-            setCommonData();
-            $(".pulsate-regular").css('animation', 'none');
-
+            callPagejs('BidAdmin.js,BidVendorSummary.js,BidVendorSummarySea.js');           
         });
 
     </script>
-    <script type="text/javascript">
-
-        var tableToExcel = (function () {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
-                    + '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>'
-                    + '<Styles>'
-                    + '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>'
-                    + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
-                    + '</Styles>'
-                    + '{worksheets}</Workbook>'
-                , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
-                , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
-                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-            return function (tables, wsnames, wbname, appname) {
-                var ctx = "";
-                var workbookXML = "";
-                var worksheetsXML = "";
-                var rowsXML = "";
-
-                for (var i = 0; i < tables.length; i++) {
-                    if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
-                    for (var j = 0; j < tables[i].rows.length; j++) {
-                        rowsXML += '<Row>'
-                        for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
-                            var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
-                            var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
-                            var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
-                            dataValue = (dataValue) ? dataValue : tables[i].rows[j].cells[k].innerHTML;
-                            var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
-                            dataFormula = (dataFormula) ? dataFormula : (appname == 'Calc' && dataType == 'DateTime') ? dataValue : null;
-                            ctx = {
-                                attributeStyleID: (dataStyle == 'Currency' || dataStyle == 'Date') ? ' ss:StyleID="' + dataStyle + '"' : ''
-                                , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
-                                , data: (dataFormula) ? '' : dataValue
-                                , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
-                            };
-                            rowsXML += format(tmplCellXML, ctx);
-                        }
-                        rowsXML += '</Row>'
-                    }
-                    ctx = { rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i };
-                    worksheetsXML += format(tmplWorksheetXML, ctx);
-                    rowsXML = "";
-                }
-
-                ctx = { created: (new Date()).getTime(), worksheets: worksheetsXML };
-                workbookXML = format(tmplWorkbookXML, ctx);
-
-
-
-                var link = document.createElement("A");
-                link.href = uri + base64(workbookXML);
-                link.download = wbname || 'Workbook.xls';
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-            }
-        })();
-    </script>
+   
 
 </body>
 <!-- END BODY -->

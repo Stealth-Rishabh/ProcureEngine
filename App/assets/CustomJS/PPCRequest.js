@@ -1,4 +1,41 @@
-﻿
+﻿jQuery(document).ready(function () {
+    
+    $('[data-toggle="popover"]').popover({})
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    FetchCurrency("0");
+    setCommonData();
+    CKEDITOR.replace('txtRemark');
+    fetchMenuItemsFromSession(1, 60);
+    ComponentsPickers.init();
+    fetchParticipantsVender();// fetch all vendors for advance search
+
+    BindPurchaseOrg();
+    bindConditionDDL();
+
+});
 $("#cancelNFABtn").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
