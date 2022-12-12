@@ -1,5 +1,78 @@
 ﻿var error = $('.alert-danger');
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if ((sessionStorage.getItem("UserType") == "V") || (sessionStorage.getItem("UserType") == "P")) {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
 
+    $('#dropbidType').select2({
+        placeholder: "Select Bid Type",
+        allowClear: true
+    });
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    var _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+
+    if (_VQID == null) {
+        sessionStorage.setItem('CurrentVQID', 0)
+
+    }
+
+    else {
+        sessionStorage.setItem('CurrentVQID', _VQID)
+        fetchRFIDetails();
+        RFIFetchCompanyHeader('CompanyInfo')
+        RFIFetchFinanceHeader();
+        fetchQuestionsForVendors('CompanyInfo')
+        fetchQuestionsForVendors('FinancialInfo');
+        fetchQuestionsForVendors('CompanyCapabilities');
+        fetchQuestionsForVendors('TechnicalInfo');
+
+    }
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    Filltblfinancedetails();
+
+
+    $("#ddlCategoryMultiple").select2();
+});
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
+
+//get file path from client system
+function getNameFromPath(strFilepath) {
+    // alert(strFilepath);
+    var objRE = new RegExp(/([^\/\\]+)$/);
+    var strName = objRE.exec(strFilepath);
+
+    if (strName == null) {
+        return null;
+    }
+    else {
+        return strName[0];
+    }
+
+}
 var success = $('.alert-success');
 var _noAttachment = false;
 $(".preview_div").hide();

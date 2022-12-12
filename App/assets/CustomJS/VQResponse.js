@@ -2,6 +2,72 @@
 
 var success = $('.alert-success');
 
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+
+    $('#dropbidType').select2({
+        placeholder: "Select Bid Type",
+        allowClear: true
+    });
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    var _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+    var _VendorID = getUrlVarsURL(decryptedstring)["VendorID"];
+    var _pageType = getUrlVarsURL(decryptedstring)["PageType"];
+    var _finalStatus = getUrlVarsURL(decryptedstring)["FinalStatus"];
+
+
+    if (_pageType == null || _pageType == '' || typeof _pageType == 'undefined') {
+        $('.button-submit').show();
+        $('.button-reject').show();
+        $("#spnFinalStatus").hide()
+    } else {
+        $('.button-submit').hide();
+        $('.button-reject').hide();
+        $("#spnFinalStatus").show().html("Status : " + _finalStatus);
+    }
+
+    if (_VQID == null) {
+        sessionStorage.setItem('CurrentVQID', 0)
+        sessionStorage.setItem('VendorId', 0);
+    }
+    else {
+
+        sessionStorage.setItem('CurrentVQID', _VQID)
+        sessionStorage.setItem('VendorId', _VendorID)
+        fetchRFIDetails();
+        RFIFetchCompanyHeader('CompanyInfo')
+        RFIFetchFinanceHeader();
+        fetchQuestionsForVendors('CompanyInfo')
+        fetchQuestionsForVendors('FinancialInfo');
+        fetchQuestionsForVendors('CompanyCapabilities');
+        fetchQuestionsForVendors('TechnicalInfo');
+    }
+    formvalidate();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(0, 0);
+    Filltblfinancedetails()
+
+});
+
 var form = $('#rejectionForm');
 function formvalidate() {
         form.validate({
