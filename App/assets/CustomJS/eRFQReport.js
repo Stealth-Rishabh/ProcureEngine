@@ -1,4 +1,90 @@
+jQuery(document).ready(function () {
 
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl')//"login.html";
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    param = getUrlVars()["param"]
+    decryptedstring = fndecrypt(param)
+    var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+    var _VendorId = getUrlVarsURL(decryptedstring)["VendorId"];
+    var _RFQVersionId = getUrlVarsURL(decryptedstring)["RFQVersionId"];
+    var _rfqVersionText = getUrlVarsURL(decryptedstring)["RFQVersionTxt"];
+
+    if (_RFQid == null) {
+        sessionStorage.setItem('hddnRFQID', 0)
+        sessionStorage.setItem('hddnVendorId', 0)
+        sessionStorage.setItem('RFQVersionId', 0)
+        $("#spnFinalStatus").hide();
+    }
+    else {
+
+        sessionStorage.setItem('hddnRFQID', _RFQid)
+        sessionStorage.setItem('hddnVendorId', _VendorId)
+        sessionStorage.setItem('RFQVersionId', _RFQVersionId)
+        fetchReguestforQuotationDetails();
+        RFQFetchQuotedPriceReport()
+        GetQuestions();
+        $("#spnFinalStatus").show().html("Version : " + _rfqVersionText.replace('%20', ' '));
+    }
+
+    setCommonData();
+    fetchMenuItemsFromSession(0, 0);
+});
+
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
+
+$("#btnprint").click(function (e) {
+    $('#div4').addClass('hide');
+    $('#tbldetails').removeClass('hide');
+    setTimeout(function () {
+        window.print(); $('#div4').removeClass('hide');
+        $('#tbldetails').addClass('hide');
+    }, 800)
+
+})
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    //Export To Excel
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('table_wrapper');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+    var a = document.createElement('a');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'RFQDetails -' + postfix + '.xls';
+
+    a.click();
+
+
+
+});
 var max = getUrlVarsURL(decryptedstring)["max"];
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));

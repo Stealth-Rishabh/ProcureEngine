@@ -68,8 +68,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
@@ -80,8 +80,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -94,7 +96,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -197,7 +199,7 @@
                                                 <label class="col-md-3 control-label">
                                                     Description:
                                                 </label>
-                                                <p class="form-control-static col-md-9" style="padding-left: 8px; !important;" id="rq_description"></p>
+                                                <p class="form-control-static col-md-9 paddingleft8px" id="rq_description"></p>
 
                                             </div>
                                         </div>
@@ -228,7 +230,7 @@
 
                                     <div class="clearfix"></div>
                                     <div class="form-actions fluid">
-                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                        <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                                             <a id="btn_cancl_rfirfq" class="btn btn-sm red"><i class="fa fa-times"></i> Cancel RFQ </a>
                                             <a id="ext_btn" href="javascript:;" class="btn btn-sm blue"><i class="fa fa-reply"></i> Exit </a>
                                             <a id="send_remainder" href="javascript:;" class="btn btn-sm green hide" onclick="sendremainderstoparicipants()"><i class="fa fa-arrow-right"></i>  Send Reminder </a>
@@ -256,7 +258,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text">
                             The purpose of VQ/RFQ report is to see the details of VQ/RFQ responses received from vendors using our sourcing portal.
                             The report can be taken out using one or many filtration parameters.
@@ -335,42 +337,11 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="erfqsta">
         jQuery(document).ready(function () {
 
             callPagejs('eRFQStatus.js');
-            formValidation()
-            $(function () {
-                $('#datetimepicker').datetimepicker({
-                    minDate: new Date()
-                });
-            });
-            ComponentsPickers.init();
-
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            Metronic.init();
-            Layout.init();
-
-            setCommonData();
-            fetchMenuItemsFromSession(0, 0);
-            FetchInvitedVendorsForeRFQ();
-
+           
         });
 
 

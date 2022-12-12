@@ -1,3 +1,35 @@
+jQuery(document).ready(function () {
+   
+    Pageloaded()
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    ComponentsPickers.init();
+    FormValidation.init();
+    setCommonData();
+
+});
+
+
 var _BidID;
 var _BidTypeID;
 if (window.location.search) {

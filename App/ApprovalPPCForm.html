@@ -79,22 +79,21 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
             </div>
-            <!--<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            </a>-->
+            
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                           <b> <span id="spanUserName"  class="username username-hide-on-mobile">
+                            </span> </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -107,7 +106,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay" >
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -151,10 +150,10 @@
                                 <!-- BEGIN FORM-->
                                 <form action="#" class="form-horizontal" id="frmIntroduction">
                                     <div class="form-body">
-                                        <div class="alert alert-success" style='display: none;'>
+                                        <div class="alert alert-success" >
                                             <span id="spansuccess1"> </span>
                                         </div>
-                                        <div class="alert alert-danger" style='display: none; '>
+                                        <div class="alert alert-danger" >
                                             <span id="spandanger"> </span>
                                         </div>
 
@@ -240,7 +239,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-1 hide">
-                                                        <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" style="cursor:pointer" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to
+                                                        <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal"  class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
                                                                                   View All Matrix">
                                                             <i class="fa fa-search"></i>
                                                         </a>
@@ -708,12 +707,12 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div id="divRemarksAppComm" class="col-md-12 row" style="display: none;">
+                                            <div id="divRemarksAppComm" class="col-md-12 row nodisplay" >
 
                                                 <div class="col-md-12" id="frmdivremarksapprover">
                                                     <div id="entryForm" class="portlet-body form">
                                                         <div class="form-body">
-                                                            <div class="alert alert-success" id="successdiv" style="display: none">
+                                                            <div class="alert alert-success" id="successdiv" >
                                                                 <span id="success">Transaction Successfull..</span>
                                                             </div>
 
@@ -747,7 +746,7 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                                                <div class="col-md-6 divstyle250" id="frmdivapprove">
                                                     <div class="table-scrollable">
 
                                                         <table class="table table-bordered" id="tblremarksapprover">
@@ -755,7 +754,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                    <td colspan="15" class="norecord">
                                                                         No record's found
                                                                     </td>
                                                                 </tr>
@@ -808,7 +807,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text">
                             The purpose of RFQ summary report is to see the details of various rfq configured and participated using our sourcing portal.
                             The report can be taken out using one or many filtration parameters. The filter parameters are;  RFQ Subject, RFQ Status, From Date,Configured By,Report Type From and To Date.
@@ -834,38 +833,10 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    <script>
+    <script nonce="approvalppcform">
         jQuery(document).ready(function () {
             callPagejs('approvalppcform.js');
-            Pageloaded()
-            formvalidate();
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            App.init();
-            Metronic.init(); Layout.init(); setCommonData();
-            ComponentsPickers.init();
-            addvendor();
-            fetchParticipantsVender();// fetch all vendors for advance search
-            fetchVendorAutoComplete(0)
-            BindPurchaseOrg();
-            FetchCurrency("0");
-
+           
         });
     </script>
 

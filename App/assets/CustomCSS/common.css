@@ -24,6 +24,22 @@ body {
     width: 12px !important;
 }
 
+.closebutton1 {
+    float: left;
+    margin-top: 3px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.closebutton2 {
+    float: left;
+    margin-top: -5px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+.clearboth {
+    clear: both;
+}
 .date-picker {
     z-index: 1151 !important;
 }
@@ -45,6 +61,43 @@ body {
     display: none;
     text-align: center;
 }
+
+.divstyle250 {
+    display: none;
+    height: 250px;
+    overflow-y: scroll;
+}
+.divstyle1 {
+    padding: 8px !important;
+    display: none;
+}
+
+.divchatstyle {
+    position: absolute;
+    bottom: 1px;
+    background: #393939;
+    width: 100%;
+}
+#filepthterms {
+    text-decoration: none !important;
+    float: left;
+    word-break: break-all !important;
+    margin-top: 9px
+}
+#filepthattach {
+    text-decoration: none !important;
+    float: left;
+    word-break: break-all !important;
+}
+#filepthtermsPrev {
+    text-decoration: none;
+    word-break: break-all !important;
+}
+#filepthattachPrev {
+    text-decoration: none;
+    word-break: break-all !important;
+}
+
 
 input#file3 {
     position: fixed;
@@ -144,6 +197,26 @@ tr, td {
     height: 450px;
     overflow-y: scroll;
 }
+
+
+
+
+.modalbody2 {
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.modalbody3 {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.modalbody4 {
+    height: 150px;
+    overflow-y: scroll;
+}
+
+
 .greencls {
     color: green !important;
 }
@@ -155,19 +228,36 @@ tr, td {
 .margin11pxauto {
     margin: 11px auto
 }
-/* Button used to open the chat form - fixed at the bottom of the page */
-.open-button {
-    background-color: #555;
-    color: white;
-    padding: 16px 20px;
-    border: none;
-    cursor: pointer;
-    opacity: 0.8;
-    position: fixed;
-    bottom: 23px;
-    right: 28px;
-    width: 80px;
+.marginleftneg11px {
+    margin-left: -11px !important
 }
+.margin0auto {
+    margin: 0 auto;
+}
+
+.margin30pxauto {
+    margin: 30px auto
+}
+.marginleft5px {
+    margin-left: 5px !important
+}
+.marginleft30px {
+    margin-left:30px!important
+}
+
+    /* Button used to open the chat form - fixed at the bottom of the page */
+    .open-button {
+        background-color: #555;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+        position: fixed;
+        bottom: 23px;
+        right: 28px;
+        width: 80px;
+    }
 
 /* The popup chat - hidden by default */
 .chat-popup {
@@ -230,13 +320,30 @@ tr, td {
 .fixed-header {
     position: fixed;
 }
+.h3margin1 {
+    margin: 36px 0px 25px 0px !important;
+}
 
 .noborderbackground {
     border: none !important;
     background: none !important;
 }
+.nobordertopbackground {
+    background: none !important;
+    border-top: none !important;
+}
 .notextdeco {
     text-decoration: none;
+}
+
+.notextdecoFleft {
+    text-decoration: none !important;
+    float: left;
+}
+
+.notextdecoTalign {
+    text-align: left;
+    text-decoration: none !important;
 }
 
 .page-quick-sidebar-wrapper {
@@ -286,7 +393,31 @@ tr, td {
 .paddingtop0px {
     padding-top: 0px !important;
 }
+.paddingtop7px {
+    padding-top: 7px !important;
+}
 
+.padding8px {
+    padding: 8px !important;
+}
+.paddingleft8px {
+    padding-left: 8px !important;
+}
+.padding5px {
+    padding: 5px !important;
+}
+.padding10px {
+    padding: 10px !important;
+}
+.padding12px {
+    padding: 12px !important;
+}
+.padding85px {
+    padding: 8px 5px;
+}
+.padding105px {
+    padding: 10px 5px;
+}
 .tab-content > .active {
     padding-right: 10%;
 }
@@ -305,14 +436,31 @@ thead {
     overflow-y: auto !important;
     max-height: 500px;
 }
+.txtalignjustify {
+    text-align: justify
+}
+
 
 .txtaligncentre {
     text-align: center
 }
 
 .txtalignleft {
-    text-align: left;
+    text-align: left !important;
 }
+.txtleftnone {
+    text-align: left;
+    text-decoration: none !important;
+}
+
+
+
+.txtpointernone {
+    text-decoration: none;
+    cursor: pointer !important;
+}
+
+
 
     .vendorlist {
         padding: 12px 10px 11px 10px;
@@ -354,11 +502,34 @@ thead {
 .nodisplay {
     display: none;
 }
+displayflexcentre {
+    display: flex;
+    justify-content: center;
+}
+
 .norecord {
     text-align: center;
     color: Red
 }
+.novishid {
+    visibility: hidden !important;
+}
 
+.overflowauto {
+    overflow: auto !important;
+}
+.overflowunset {
+    overflow: unset !important;
+}
+
+.overflowautonone {
+    overflow: auto;
+    display: none;
+}
+
+.overflowyscroll{
+    overflow-y: scroll;
+}
 /*participatebid*/
 .page-quick-sidebar-wrapper {
     right: -310px;
@@ -380,14 +551,55 @@ thead {
 .page-footer {
     color: #FFF !important;
 }
+.pstyle1 {
+    color: #3c763d;
+    font-weight: 600;
+    display: none;
+}
 .scroller300 {
    height:300px;
 }
 .scroller400 {
     height: 400px;
 }
+.scroller496 {
+    height: 496px;
+}
+.scroller590 {
+    height: 590px
+}
 .scroller200 {
     height: 200px;
+}
+.scroller250 {
+    height: 250px !important;
+}
+.scroller150 {
+    height: 150px;
+    position: absolute;
+    left: 2px;
+    right: 7px
+}
+.scroller250none {
+    height: 250px !important;
+    display: none;
+}
+.scroller350none {
+    height: 350px;
+    display: none;
+}
+
+.scroller350 {
+    height: 350px !important;
+   
+}
+
+.scroller800 {
+    height: 800px !important;
+}
+
+.scroller845 {
+    height: 845px !important;
 }
 
 .scrolruom {
@@ -397,11 +609,40 @@ thead {
 .textalignleft {
     text-align: left !important;
 }
+.textalignright {
+    text-align: right !important;
+}
 .width100 {
     width: 100%;
 }
+.width50 {
+  width:50%!important ;
+}
+
+.width130px {
+    width: 130px !important;
+}
+.width140px {
+    width:140px !important;
+}
 .width300px {
     width: 300px !important
+}
+.width350px {
+    width: 350px !important 
+}
+
+.width390px {
+    width: 390px !important 
+}
+.width380px {
+    width: 380px !important 
+}
+.width800px {
+    width: 800px !important 
+}
+.width920px {
+    width: 920px !important
 }
 
 .navbar-brand {
@@ -413,6 +654,61 @@ thead {
     width: 180px;
 }
 
-.page-container {
+.labelstyle1 {
+    text-align:left;
+    padding-left:40px!important
+}
+
+.labelstyle2 {
+    font-size: 17px !important;
+    color: white;
+}
+
+.labelstyle3 {
+    color: white;
+    font-weight: 600;
     display: none
+}
+
+.labelstyle4 {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    color: red;
+}
+.labelstyle5 {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    color: darkblue;
+}
+
+.colorred {
+    color: red;
+}
+
+.colorfff {
+    color: #FFF !important;
+}
+
+.bgcolor1 {
+    background-color: #ffb848 !important
+}
+
+.fontsizesmall {
+    font-size: small !important
+}
+
+.wechatcolor {
+    color: #ffb848;
+}
+
+.font13px {
+    font-size: 13px !important;
+}
+
+.width150px {
+    width: 150px !important;
+}
+
+.liststylenone {
+    list-style: none !important;
 }

@@ -76,8 +76,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
             </div>
             <div class="top-menu">
@@ -85,8 +85,8 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
+                           <b> <span id="spanUserName" 
+                                  class="username username-hide-on-mobile"></span></b><i class="fa fa-angle-down">
                             </i>
                         </a>
                         <ul class="dropdown-menu">
@@ -121,8 +121,8 @@
                                     <a href="" class="expand"></a>
                                 </div>
                             </div>
-                            <div class="portlet-body form " style="display: none;">
-                                <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
+                            <div class="portlet-body form nodisplay" >
+                                <div id="divalerterr" class="alert alert-danger divalertstyle" >
                                     <span id="spanerterr"></span>
                                 </div>
                                 <div class="form-body">
@@ -208,7 +208,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-control" style="display:none;">
+                                    <div class="form-control nodisplay" >
                                         <label class="col-md-2 control-label">
                                             Target Price :
                                         </label>
@@ -219,13 +219,13 @@
                                         <label class="col-md-2 control-label">
                                             Terms & Condition :
                                         </label>
-                                        <a id="lnkTermsAttachment" href="javascript:;" style="text-decoration: none;" onclick="DownloadFile(this)" class="control-label"></a>
+                                        <a id="lnkTermsAttachment" href="javascript:;"  onclick="DownloadFile(this)" class="control-label notextdeco"></a>
                                     </div>
                                     <div class="form-control">
                                         <label class="col-md-2 control-label">
                                             Attachment (Any Other) :
                                         </label>
-                                        <a id="lnkAnyOtherAttachment" href="javascript:;" style="text-decoration: none;" onclick="DownloadFile(this)" class="control-label"></a>
+                                        <a id="lnkAnyOtherAttachment" href="javascript:;"  onclick="DownloadFile(this)" class="control-label notextdeco"></a>
                                     </div>
                                 </div>
                             </div>
@@ -252,9 +252,9 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
 
-                                                    <label class="control-label col-md-2" style="text-align:left;padding-left:40px!important"><b>Enquiry Subject:</b></label>
+                                                    <label class="control-label col-md-2 labelstyle1" ><b>Enquiry Subject:</b></label>
                                                     <div class="col-md-10">
-                                                        <label class="control-label" id="lblenquirysubject" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="lblenquirysubject"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,20 +262,20 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Introduction:</label>
+                                                    <b> <label class="control-label col-md-5">Introduction:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtintroduction" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtintroduction" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Cost Benefit Analysis:</label>
+                                                    <b> <label class="control-label col-md-5">Cost Benefit Analysis:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtcostbenefit" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtcostbenefit" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,20 +285,20 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Budget Availabilty:</label>
+                                                    <b> <label class="control-label col-md-5">Budget Availabilty:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtbudgetavailbilty" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtbudgetavailbilty" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Party to whom Work order is given:</label>
+                                                    <b> <label class="control-label col-md-5">Party to whom Work order is given:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtpartordergiven" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtpartordergiven" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -310,42 +310,20 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Justification for award of contract other than L1: </label>
+                                                    <b> <label class="control-label col-md-5">Justification for award of contract other than L1: </label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtawardotherthanL1" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtawardotherthanL1"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Justification for Less than 3 Quotes:</label>
+                                                    <b>  <label class="control-label col-md-5">Justification for Less than 3 Quotes:</label></b>
                                                     <div class="col-md-7">
 
 
-                                                        <label class="control-label" id="txtlessthan3quotes" style="text-align:right;"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Completion Schedule:</label>
-                                                    <div class="col-md-7">
-
-                                                        <label class="control-label" id="txtcompletionsechdule" style="text-align:right;"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Rational for spliting the order: </label>
-                                                    <div class="col-md-7">
-
-                                                        <label class="control-label" id="txtsplitingmorethan01" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtlessthan3quotes" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -353,22 +331,44 @@
                                         </div>
                                         <div class="row">
 
-
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Rational for issuing RFQ to vendors:</label>
+                                                    <b><label class="control-label col-md-5">Completion Schedule:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtrationalrfqvendor" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtcompletionsechdule" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Enquiry not sent to these Vendors (with reasons): </label>
+                                                    <b> <label class="control-label col-md-5">Rational for spliting the order: </label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtenquirynotsent" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtsplitingmorethan01"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b>  <label class="control-label col-md-5">Rational for issuing RFQ to vendors:</label></b>
+                                                    <div class="col-md-7">
+
+                                                        <label class="control-label textalignright" id="txtrationalrfqvendor" ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b> <label class="control-label col-md-5">Enquiry not sent to these Vendors (with reasons): </label></b>
+                                                    <div class="col-md-7">
+
+                                                        <label class="control-label textalignright" id="txtenquirynotsent" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,9 +379,9 @@
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">General Remarks:</label>
+                                                    <b> <label class="control-label col-md-5">General Remarks:</label></b>
                                                     <div class="col-md-7">
-                                                        <label class="control-label" id="txtgemeralremarks" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtgemeralremarks" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,7 +393,7 @@
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-4" style="font-weight:bold;">Enquiry Issued on:</label>
+                                                    <b> <label class="control-label col-md-4">Enquiry Issued on:</label></b>
                                                     <div class="col-md-8">
                                                         <label id="RFQConfigueron" class="control-label"></label>
                                                     </div>
@@ -401,7 +401,7 @@
                                             </div>
                                             <div class="col-md-7">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-3" style="font-weight:bold;">Enquiry Issued through:</label>
+                                                    <b><label class="control-label col-md-3">Enquiry Issued through:</label></b>
                                                     <div class="col-md-9">
 
                                                         <div class="radio-list">
@@ -435,7 +435,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Lowest Price Offer:</label>
+                                                    <b>  <label class="control-label col-md-5">Lowest Price Offer:</label></b>
                                                     <div class="col-md-7">
                                                         <div class="radio-list">
                                                             <label class="radio-inline">
@@ -450,7 +450,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Repeat Order:</label>
+                                                    <b> <label class="control-label col-md-5">Repeat Order:</label></b>
                                                     <div class="col-md-7">
                                                         <div class="radio-list">
                                                             <label class="radio-inline">
@@ -467,19 +467,19 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Supported enclosure(Please specify):</label>
+                                                    <b> <label class="control-label col-md-5">Supported enclosure(Please specify):</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtsupportedenclosure" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtsupportedenclosure" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Comparatives statement of final price:</label>
+                                                    <b> <label class="control-label col-md-5">Comparatives statement of final price:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="tctcomfinalprice" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="tctcomfinalprice"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -487,10 +487,10 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Quotations of the parties:</label>
+                                                    <b> <label class="control-label col-md-5">Quotations of the parties:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtquotationparties" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtquotationparties" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -500,41 +500,19 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Order recommended on (Party):</label>
+                                                    <b> <label class="control-label col-md-5">Order recommended on (Party):</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtorderrecparty" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtorderrecparty" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Purchase Order/Work Order Value: </label>
+                                                    <b> <label class="control-label col-md-5">Purchase Order/Work Order Value: </label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtworkordervalue" style="text-align:right;"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Internal Cost Estimate:</label>
-                                                    <div class="col-md-7">
-
-
-                                                        <label class="control-label" id="txtinternalcost" style="text-align:right;"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Terms (Ex- works/FOR/FOB/CIF): </label>
-                                                    <div class="col-md-7">
-
-
-                                                        <label class="control-label" id="txtterms" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtworkordervalue" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -542,19 +520,21 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Scope of Work:</label>
+                                                    <b><label class="control-label col-md-5">Internal Cost Estimate:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtscopework" style="text-align:right;"></label>
+
+                                                        <label class="control-label textalignright" id="txtinternalcost" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Deliverables: </label>
+                                                    <b> <label class="control-label col-md-5">Terms (Ex- works/FOR/FOB/CIF): </label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtdeliverables" style="text-align:right;"></label>
+
+                                                        <label class="control-label textalignright" id="txtterms" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -562,19 +542,19 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Payment terms:</label>
+                                                    <b><label class="control-label col-md-5">Scope of Work:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtpaymentterms" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtscopework" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Applicable taxes & duties and their applicability: </label>
+                                                    <b>  <label class="control-label col-md-5">Deliverables: </label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtapplicabletax" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtdeliverables" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -582,18 +562,19 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Whether LD applicable:</label>
+                                                    <b> <label class="control-label col-md-5">Payment terms:</label></b>
                                                     <div class="col-md-7">
 
-                                                        <label class="control-label" id="txtLDapplicable" style="text-align:right;"></label>
+                                                        <label class="control-label textalignright" id="txtpaymentterms" ></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">Whether CPBG applicable:</label>
+                                                    <b> <label class="control-label col-md-5">Applicable taxes & duties and their applicability: </label></b>
                                                     <div class="col-md-7">
-                                                        <label class="control-label" id="txtCPBGapplicable" style="text-align:right;"></label>
+
+                                                        <label class="control-label textalignright" id="txtapplicabletax" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -601,9 +582,28 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5" style="font-weight:bold;">PR Details:</label>
+                                                    <b>  <label class="control-label col-md-5">Whether LD applicable:</label></b>
                                                     <div class="col-md-7">
-                                                        <label class="control-label" id="txtPRdetails" style="text-align:right;"></label>
+
+                                                        <label class="control-label textalignright" id="txtLDapplicable" ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b> <label class="control-label col-md-5">Whether CPBG applicable:</label></b>
+                                                    <div class="col-md-7">
+                                                        <label class="control-label textalignright" id="txtCPBGapplicable" ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b> <label class="control-label col-md-5">PR Details:</label></b>
+                                                    <div class="col-md-7">
+                                                        <label class="control-label textalignright" id="txtPRdetails" ></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -620,7 +620,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="divRemarksApp" class="col-md-12" style="display: none;">
+                <div id="divRemarksApp" class="col-md-12 nodisplay" >
                     <div class="row">
                         <div class="col-md-12" id="frmdivremarksapprover">
                             <div id="entryForm" class="portlet-body form">
@@ -664,8 +664,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="padding: 10px 5px;">
-                                        <div class="col-md-offset-4 col-md-12" style="text-align: center">
+                                    <div class="form-group padding105px">
+                                        <div class="col-md-offset-4 col-md-12 txtaligncentre" >
 
                                             <button id="btnExportToExcel1" type="button" class="btn blue">
                                                 Export To Excel
@@ -685,7 +685,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                        <div class="col-md-6 divstyle250"  id="frmdivapprove">
 
                             <form action="#" id="form2" class="form-horizontal">
 
@@ -698,7 +698,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                    <td colspan="15" class="norecord">
                                                         No record's found
                                                     </td>
                                                 </tr>
@@ -724,8 +724,8 @@
                                     <a href="" class="expand"></a>
                                 </div>
                             </div>
-                            <div class="portlet-body form" style="display: none;">
-                                <div class="table-responsive" style="overflow: auto">
+                            <div class="portlet-body form nodisplay" >
+                                <div class="table-responsive overflowauto" >
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
                                             <tr>
@@ -744,7 +744,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -795,7 +795,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style=" overflow-y: scroll;">
+                    <div class="modal-body overflowyscroll">
                         <div id="Approver" class="display-none">
                             <h4 class="ppolicy-head4">  Approver </h4>
                             <p class="ppolicy-text">
@@ -851,112 +851,13 @@
     </div>
     <!-- END PAGE LEVEL SCRIPTS -->
 
-    <script>
+    <script nonce="bapa">
 
         jQuery(document).ready(function () {
             callPagejs('BidVendorSummarySea.js,bidazppcApproval.js');
-            jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
-                if (getUrlVars()["App"] == 'N') {
-
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-                else if (getUrlVars()["App"] == 'Y' && getUrlVars()["FwdTo"] == "Approver") {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-                else if (getUrlVars()["App"] == 'Y' && getUrlVars()["FwdTo"] == "Admin") {
-                    tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
-                }
-            });
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            Metronic.init();
-            Layout.init();
-            QuickSidebar.init();
-            App.init();
-            setCommonData();
-            FormValidation.init();
         });
     </script>
-    <script type="text/javascript">
-
-        var tableToExcel = (function () {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
-                    + '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>'
-                    + '<Styles>'
-                    + '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>'
-                    + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
-                    + '</Styles>'
-                    + '{worksheets}</Workbook>'
-                , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
-                , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
-                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-            return function (tables, wsnames, wbname, appname) {
-                var ctx = "";
-                var workbookXML = "";
-                var worksheetsXML = "";
-                var rowsXML = "";
-
-                for (var i = 0; i < tables.length; i++) {
-                    if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
-                    for (var j = 0; j < tables[i].rows.length; j++) {
-                        rowsXML += '<Row>'
-                        for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
-                            var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
-                            var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
-                            var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
-                            dataValue = (dataValue) ? dataValue : tables[i].rows[j].cells[k].innerHTML;
-                            var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
-                            dataFormula = (dataFormula) ? dataFormula : (appname == 'Calc' && dataType == 'DateTime') ? dataValue : null;
-                            ctx = {
-                                attributeStyleID: (dataStyle == 'Currency' || dataStyle == 'Date') ? ' ss:StyleID="' + dataStyle + '"' : ''
-                                , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
-                                , data: (dataFormula) ? '' : dataValue
-                                , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
-                            };
-                            rowsXML += format(tmplCellXML, ctx);
-                        }
-                        rowsXML += '</Row>'
-                    }
-                    ctx = { rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i };
-                    worksheetsXML += format(tmplWorksheetXML, ctx);
-                    rowsXML = "";
-                }
-
-                ctx = { created: (new Date()).getTime(), worksheets: worksheetsXML };
-                workbookXML = format(tmplWorkbookXML, ctx);
-
-
-
-                var link = document.createElement("A");
-                link.href = uri + base64(workbookXML);
-                link.download = wbname || 'Workbook.xls';
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        })();
-    </script>
-
+   
 
 
 </body>

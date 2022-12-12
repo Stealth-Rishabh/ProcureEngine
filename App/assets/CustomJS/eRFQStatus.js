@@ -1,3 +1,38 @@
+jQuery(document).ready(function () {
+
+    formValidation()
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            minDate: new Date()
+        });
+    });
+    ComponentsPickers.init();
+
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+
+    setCommonData();
+    fetchMenuItemsFromSession(0, 0);
+    FetchInvitedVendorsForeRFQ();
+
+});
 
 
 param = getUrlVars()["param"]

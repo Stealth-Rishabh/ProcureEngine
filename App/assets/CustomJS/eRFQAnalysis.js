@@ -1,4 +1,39 @@
-﻿
+﻿jQuery(document).ready(function () {
+   
+    var $table = $('#tblRFQComprative');
+    $table.floatThead({
+        position: 'fixed'
+    });
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+
+    fetchRFIRFQSubjectforReport('RFQ')
+    formvalidate();
+    ComponentsPickers.init();
+    fetchMenuItemsFromSession(7, 44);
+    fetchRegisterUser();
+
+});
 
 if (window.location.search) {
 

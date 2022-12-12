@@ -34,15 +34,48 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+
+
+
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/lib/markdown.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <!-- BEGIN PAGE LEVEL STYLES -->
+
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/CustomJS/Auction.js"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -52,8 +85,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
                            
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -66,7 +101,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay" >
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -224,7 +259,7 @@
                                                             </div>
                                                         </div>
 														
-														<h3 class="form-section" style="margin: 36px 0px 25px 0px !important;">Subscription Details</h3>
+														<h3 class="form-section h3margin1" >Subscription Details</h3>
 														<div class="form-group">
                                                             <label class="control-label col-md-3">Subscription Type</label>
                                                             <div class="radio-list col-md-9">                                                                
@@ -264,14 +299,14 @@
                                                             </div>
 															
                                                         </div>
-														<div class="form-group" style="visibility: hidden !important;">
+														<div class="form-group novishid" >
                                                             <label class="control-label col-md-3">City/Town</label>
 																<div class="col-md-9">                                           
 																	<select class="form-control placeholder-no-fix" name="" id=""><option value="">Select City/Town</option> </select>
 																</div>															
                                                         </div>
 														
-														<div class="form-actions" style="background: none !important; border-top: none !important;">
+														<div class="form-actions nobordertopbackground">
 														<div class="rows">
 														<div class="col-md-offset-9 col-md-9">
 														<button class="btn btn-primary" type="submit" id="btn_submit">Submit</button>
@@ -315,7 +350,7 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff" >
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -335,7 +370,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text">
                             Using this screen admin can register vendors and their representatives for the several type of bid like Air shipments, Domestic shipments, Sea shipments, Product & Services and Warehouse rentals.
 
@@ -352,64 +387,10 @@
         </div>
     </div>
 
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-	<script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-	  
-	  
-	
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap-markdown/lib/markdown.js"></script>
-    <!-- END PAGE LEVEL PLUGINS -->
-	<script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <script src="assets/CustomJS/CustomerReg.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/CustomJS/Auction.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="cure">
 
         jQuery(document).ready(function () {
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                 window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-			Metronic.init();
-            App.init();
-			ComponentsPickers.init();	
-            setCommonData();
-            fetchMenuItemsFromSession(9, 10);
-			formValidation();
-			fillCountryDropDown('ddlcustcountry', 0);
-			FetchCustomerDetails();
-                      
+            callPagejs('CustomerReg.js');           
         });
     </script>
     <!-- END JAVASCRIPTS -->

@@ -412,12 +412,16 @@ function removeThousandSeperator(val) {
     return val;
 }
 function minmax(value, min, max) {
-    if (parseInt(value) < min || isNaN(parseInt(value)))
+    if (parseInt(value) < min || isNaN(parseInt(value))) 
+        
         return '';
+  
     else if (parseInt(value) > max)
+        
         return max;
     else
         return value;
+
 }
 
 function addMinutes(time, minsToAdd) {

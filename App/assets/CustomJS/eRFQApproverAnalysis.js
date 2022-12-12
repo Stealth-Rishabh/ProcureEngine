@@ -1,4 +1,51 @@
+jQuery(document).ready(function () {
+    callPagejs('eRFQApproverAnalysis.js');
+    Pageloaded();
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    validateAppsubmitData();
+   
 
+});
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    //Export To Excel
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('table_wrapper');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+    var a = document.createElement('a');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'RFQDetails -' + postfix + '.xls';
+
+    a.click();
+
+});
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
