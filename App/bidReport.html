@@ -87,8 +87,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
@@ -101,8 +101,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -115,7 +117,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -273,7 +275,7 @@
                                             </div>
                                         </div>
                                         <div class="form-actions fluid">
-                                            <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
                                                 <input type="submit" id="btnSubject" value="Submit" class="btn yellow" />
                                             </div>
                                         </div>
@@ -311,7 +313,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2">
                         <p class="ppolicy-text">
                             The purpose of bid summary report is to see the details of various bids configured and participated using our sourcing portal.
                             The report can be taken out using one or many filtration parameters. The filter parameters are; Bid Type, Bid For, Bid Subject, Bid Status,Configured By,Report Type, From Date and To Date.
@@ -342,10 +344,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorEditEvent" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorEditEvent">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessEditEvent" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessEditEvent">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -391,7 +393,8 @@
     </div>
 
 
-    <script>
+    <script nonce="brepo">
+        
         jQuery(document).ready(function () {
             callPagejs('BidVendorSummary.js');
             Pageloaded()
@@ -422,8 +425,8 @@
             });
 
         });
-    </script>
 
+    </script>
     <!-- END JAVASCRIPTS -->
 </body>
 

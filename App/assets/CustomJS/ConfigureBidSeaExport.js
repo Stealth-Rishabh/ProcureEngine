@@ -888,7 +888,6 @@ var FormWizard = function () {
                         required: true,
                         notEqualTo: 0,
                         maxlength: 50,
-
                     },
                     txtminimumdecreament: {
                         required: true

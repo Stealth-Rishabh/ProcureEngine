@@ -94,8 +94,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="#" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="#" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
 
             </div>
@@ -104,8 +104,8 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
+                           <b> <span id="spanUserName"
+                                  class="username username-hide-on-mobile"></span></b><i class="fa fa-angle-down">
                             </i>
                         </a>
                         <ul class="dropdown-menu">
@@ -142,7 +142,7 @@
 
                             </i>
                         </li>
-                        <li><a href="javascript:;" style="text-decoration:none;">Bid Pre Approval</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="javascript:;" class="notextdeco">Bid Pre Approval</a> <i class="fa fa-angle-right"></i></li>
                     </ul>
                 </div>
                 <div class="row">
@@ -160,7 +160,7 @@
                             </div>
                             <div class="portlet-body form">
 
-                                <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
+                                <div id="divalerterr" class="alert alert-danger divalertstyle" >
                                     <span id="spanerterr"></span>
                                 </div>
                                 <form class="form-horizontal" role="form">
@@ -251,7 +251,7 @@
 
                                                 <label class="control-label col-md-4">Term & Condition:</label>
                                                 <div class="col-md-8">
-                                                    <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;" onclick="DownloadFile(this)">
+                                                    <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev"  onclick="DownloadFile(this)">
                                                     </a>
                                                 </div>
 
@@ -261,7 +261,7 @@
 
                                                 <label class="control-label col-md-4">Attachment (If Any):</label>
                                                 <div class="col-md-8">
-                                                    <a class="form-control-static" id="filepthattachPrev" style="text-decoration: none;" onclick="DownloadFile(this)"></a>
+                                                    <a class="form-control-static notextdeco" id="filepthattachPrev"  onclick="DownloadFile(this)"></a>
                                                 </div>
 
                                             </div>
@@ -348,7 +348,7 @@
                                                 <form action="#" id="frmsubmitapp" class="form-horizontal">
 
                                                     <div class="form-body">
-                                                        <div class="alert alert-success" id="successdiv" style="display: none">
+                                                        <div class="alert alert-success" id="successdiv" >
                                                             <span id="success">Transaction Successfull..</span>
                                                         </div>
                                                         <div class="form-group hide" id="divlastcomment">
@@ -430,8 +430,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding: 10px 5px;">
-                                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                                    <div class="form-group padding105px" >
+                                                        <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                                                             <button id="btnSubmitApp" type="submit" class="btn green">
                                                                 Submit
                                                             </button>
@@ -443,7 +443,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                                        <div class="col-md-6 divstyle250"  id="frmdivapprove">
 
                                             <form action="#" id="form2" class="form-horizontal">
 
@@ -456,7 +456,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="15" style="text-align: center; color: Red">
+                                                                    <td colspan="15" class="norecord">
                                                                         No record's found
                                                                     </td>
                                                                 </tr>
@@ -540,7 +540,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text"><b></b></p>
                         <p class="ppolicy-text"><b></b></p>
                         <p class="ppolicy-text"><b></b></p>
@@ -573,37 +573,11 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="bidpa">
 
         jQuery(document).ready(function () {
             callPagejs('BidPreApproval.js');
-            Pageloaded()
-
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-            Metronic.init();
-            Layout.init();
-            ComponentsPickers.init();
-            FormValidation.init();
-            setCommonData();
-
+           
         });
     </script>
     <!-- END JAVASCRIPTS -->

@@ -72,16 +72,18 @@
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
-            <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
             </a>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
+                            <b>
+                                <span id="spanUserName"
+                                      class="username username-hide-on-mobile"></span>
+                            </b><i class="fa fa-angle-down">
                             </i>
                         </a>
                         <ul class="dropdown-menu">
@@ -114,8 +116,8 @@
                             <div class="portlet-title">
                                 <div class="caption">
 
-                                    <i class="fa fa-gift"></i>Bid Summary <!--<span class="badge badge-primary" style="font-size: 13px !important;font-weight:500!important" id="bid_status"></span>-->
-                                    <label class="control-label bold" id="bid_status" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                    <i class="fa fa-gift"></i>Bid Summary 
+                                    <label class="control-label bold labelstyle4" id="bid_status" >
                                     </label>
                                 </div>
                                 <!--
@@ -135,7 +137,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidSubject" style="text-align:left" class="col-md-10 control-label text-left">
+                                                <label id="lblbidSubject"  class="col-md-10 control-label text-left textalignleft">
                                                 </label>
                                             </div>
                                         </div>
@@ -147,7 +149,7 @@
                                                     Bid Details:
                                                 </label>
                                                 <!-- <div class="col-md-10"> -->
-                                                <label id="lblbiddetails" style="text-align:justify" class="col-md-11 control-label text-left">
+                                                <label id="lblbiddetails"  class="col-md-11 control-label text-left txtalignjustify">
                                                 </label>
                                                 <!-- </div> -->
                                             </div>
@@ -218,11 +220,11 @@
                                         <label class="col-md-2 control-label">
                                             Target Price:
                                         </label>
-                                        <label id="lblbidprice" style="display:none">
+                                        <label id="lblbidprice" class="nodisplay">
                                         </label>
-                                        <div class="col-md-10" id="divTargetPrice" style="display:none">
+                                        <div class="col-md-10 nodisplay" id="divTargetPrice" >
 
-                                            <div class="table-responsive" style="overflow: auto; ">
+                                            <div class="table-responsive overflowauto" >
                                                 <table class="table table-striped table-bordered table-hover" id="tbltargetPrice">
                                                     <thead>
                                                         <tr><th></th><th>Min</th><th>45+</th><th>100+</th><th>300+</th><th>500+</th><th>1000+</th></tr>
@@ -252,7 +254,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="form-control" id="divModelClass" style="display:none">
+                                    <div class="form-control nodisplay" id="divModelClass">
                                         <label class="col-md-2 control-label">
                                             Model Class:
                                         </label>
@@ -295,7 +297,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="table-responsive" style="overflow: auto" id="divforBidsummary">
+                                <div class="table-responsive overflowauto"  id="divforBidsummary">
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
                                             <tr>
@@ -318,7 +320,7 @@
                                         <tbody>
 
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -328,33 +330,33 @@
                                 </div>
 
 
-                                <div class="table-responsive display-none" style="overflow: auto" id="divfordetailreport">
+                                <div class="table-responsive display-none overflowauto"  id="divfordetailreport">
                                     <table class="table table-bordered valign-center-th" id="tblBidSummary">
                                         <thead>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <h3 class="form-section hide" id="HRTotsumm">Supplier Wise Summary</h3>
-                                    <table class="table table-bordered hide" style="width:50%!important" id="tblbidvendortotalsummary">
+                                    <table class="table table-bordered hide width50"  id="tblbidvendortotalsummary">
                                     </table>
                                 </div>
                                 <div class="mt-element-step hide" id="div_statusbar">
                                     <div class="row step-no-background step-line container" id="divappendstatusbar">
                                     </div>
                                 </div>
-                                <div class="table-responsive display-none" style="overflow: auto" id="divforapprovalprocess">
+                                <div class="table-responsive display-none overflowauto"  id="divforapprovalprocess">
                                     <table class="table table-bordered" id="tblapprovalprocess">
                                         <thead>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="15" style="text-align: center; color: Red">
+                                                <td colspan="15" class="norecord">
                                                     No record's found
                                                 </td>
                                             </tr>
@@ -363,10 +365,10 @@
 
                                 </div>
                                 <br />
-                                <div class="form-actions fluid" style="padding: 10px 5px;">
+                                <div class="form-actions fluid padding105px" >
                                     <p class="display-none" id="PPrintBy"><label class="pull-left "><b>Print By :&nbsp;&nbsp;</b></label><label id="lblprintByname" class="control-label pull-left"></label></p>
                                     <p class="display-none" id="Pdate"> <label class="pull-right"><b>Date :&nbsp;&nbsp;</b></label><label id="lbldate" class="control-label pull-right"></label></p>
-                                    <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                    <div class="col-md-offset-3 col-md-6 txtaligncentre" >
 
                                         <button id="btnExportToExcel" type="button" class="btn blue forbtnpause">
                                             Export To Excel
@@ -408,10 +410,10 @@
                 <div class="portlet-body">
                     <form action="#" class="form-horizontal" id="frmRemarksCancel">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorL1" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorL1" >
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessL1" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessL1" >
                                 <span id=""> </span>
                             </div>
                             <div class="form-group">
@@ -425,7 +427,7 @@
                             </div>
                         </div>
                         <div class="form-actions fluid">
-                            <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre" >
                                 <button id="SaveExsist" type="submit" class="btn green">
                                     Submit
                                 </button>
@@ -464,7 +466,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2 ">
                         <h4 class="ppolicy-head4">  Bid Summary  </h4>
                         <p class="ppolicy-text display-none" id="Air">
                             All vendor's Quote will be displayed in "Bid Summary" filed.<br />
@@ -512,10 +514,10 @@
                         </div>
 
                         <div class="modal-body">
-                            <div class="alert alert-success" style='display: none;'>
+                            <div class="alert alert-success" >
                                 <span id="spansuccess1"> </span>
                             </div>
-                            <div class="alert alert-danger" style='display: none; '>
+                            <div class="alert alert-danger">
                                 <span id="spandanger"> </span>
                             </div>
 
@@ -524,13 +526,13 @@
                                 <input type="text" id="search" placeholder="Search..." class="form-control" />
                             </div>
 
-                            <div class="scroller" style="height: 250px;" data-always-visible="1" data-rail-visible="0">
+                            <div class="scroller scroller250"  data-always-visible="1" data-rail-visible="0">
                                 <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                     <thead class="flip-content">
                                         <tr>
                                             <th width="20%">
                                                 <div class="col-md-10 checkbox-list">
-                                                    <label class="checkbox-inline" style="margin-left: -16px;">
+                                                    <label class="checkbox-inline checkboxinline1">
                                                         <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />&nbsp;All
                                                     </label>
                                                 </div>
@@ -544,7 +546,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="modal-footer" style="padding: 10px !important;">
+                        <div class="modal-footer padding10px" >
                             <button type="button" class="btn green" onclick="invitevendors()">Invite Vendors</button>
                         </div>
                     </div>
@@ -572,7 +574,7 @@
                             <i class="fa fa-search"></i>
                             <input type="text" id="search" placeholder="Search..." class="form-control" />
                         </div>
-                        <div class="scroller" style="height:350px;display:none;" data-always-visible="1" data-rail-visible="0" id="connscroll">
+                        <div class="scroller scroller350none"  data-always-visible="1" data-rail-visible="0" id="connscroll">
                             <div class="col-md-12">
                                 <table class="table table-striped table-bordered table-hover table-condensed flip-content" id="tblIPHistory"></table>
                             </div>
@@ -635,7 +637,7 @@
     </script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
-    <script>
+    <script nonce="bidsum">
 
         jQuery(document).ready(function () {
             callPagejs('BidVendorSummary.js,BidVendorSummarySea.js');

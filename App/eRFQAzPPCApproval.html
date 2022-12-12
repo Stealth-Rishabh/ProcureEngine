@@ -77,8 +77,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" ">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
@@ -89,8 +89,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                           <b> <span id="spanUserName" class="username username-hide-on-mobile">
+                            </span></b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -103,7 +103,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -145,7 +145,7 @@
                                     <a id="showHide" href="javascript:;" class="expand"></a>
                                 </div>
                             </div>
-                            <div id="entryForm" class="portlet-body form" style="display:none">
+                            <div id="entryForm" class="portlet-body form nodisplay" >
                                 <form action="#" class="form-horizontal" id="RFIRFQREport">
                                     <div class="alert alert-danger display-hide text-center">
                                         <span id="error"></span>
@@ -162,7 +162,7 @@
                                                         RFQ Subject:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFQSubject" class="control-label" style="text-align:left">
+                                                        <label id="RFQSubject" class="control-label txtalignleft" >
                                                         </label>
                                                     </div>
                                                 </div>
@@ -174,7 +174,7 @@
                                                         Ref No.:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="refno" class="control-label" style="text-align:left">
+                                                        <label id="refno" class="control-label txtalignleft" >
                                                         </label>
 
                                                     </div>
@@ -190,7 +190,7 @@
                                                         RFQ Description:
                                                     </label>
                                                     <div class="col-md-10">
-                                                        <label id="RFQDescription" style="text-align:left" class="control-label">
+                                                        <label id="RFQDescription"  class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -204,15 +204,15 @@
                                                         Currency:
                                                     </label>
                                                     <div class="col-md-1">
-                                                        <label id="Currency" class="control-label" style="text-align:left">
+                                                        <label id="Currency" class="control-label txtalignleft">
                                                         </label>
 
                                                     </div>
-                                                    <label class="control-label col-md-3" style="text-align:left">
+                                                    <label class="control-label col-md-3 txtalignleft" >
                                                         Conversion Rate:
                                                     </label>
                                                     <div class="col-md-1">
-                                                        <label id="ConversionRate" class="control-label" style="text-align:left">
+                                                        <label id="ConversionRate" class="control-label txtalignleft" >
                                                         </label>
                                                     </div>
                                                 </div>
@@ -223,7 +223,7 @@
                                                         RFQ Deadline:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFQDeadline" class="control-label" style="text-align:left">
+                                                        <label id="RFQDeadline" class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -237,7 +237,7 @@
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label class="control-label">
-                                                            <a href="javascript:;" onclick="DownloadFile(this)" id="TermCondition" style="text-align:left; text-decoration: none !important;">
+                                                            <a href="javascript:;" onclick="DownloadFile(this)" id="TermCondition" class="txtleftnone">
 
                                                             </a>
                                                         </label>
@@ -250,7 +250,7 @@
                                                         RFQ Configured By:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="lblrfqconfigby" class="control-label" style="text-align:left">
+                                                        <label id="lblrfqconfigby" class="control-label txtalignleft" >
 
                                                         </label>
                                                     </div>
@@ -290,12 +290,12 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
 
                                                                 Introduction:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblintroduction" class="control-label" style="text-align:left">
+                                                                <label id="lblintroduction" class="control-label txtalignleft">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -303,11 +303,11 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
 
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Cost Benefit Analysis:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblcostbenfit" class="control-label" style="text-align:left">
+                                                                <label id="lblcostbenfit" class="control-label txtalignleft">
                                                                 </label>
 
                                                             </div>
@@ -319,22 +319,22 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Budget Availabilty:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblbudgetavail" style="text-align:left" class="control-label">
+                                                                <label id="lblbudgetavail" class="control-label txtalignleft">
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Party to whom Work order is given:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblpartyordergiven" style="text-align:left" class="control-label">
+                                                                <label id="lblpartyordergiven"  class="control-label txtalignleft">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -343,11 +343,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Justification for award of contract other than L1 :
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblawardL1" class="control-label" style="text-align:left">
+                                                                <label id="lblawardL1" class="control-label txtalignleft">
                                                                 </label>
 
                                                             </div>
@@ -356,11 +356,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Justification for Less than 3 Quotes:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lbllessthan3quotes" class="control-label" style="text-align:left">
+                                                                <label id="lbllessthan3quotes" class="control-label txtalignleft" >
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -370,11 +370,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Completion Schedule:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblcompletionsechdule" class="control-label" style="text-align:left">
+                                                                <label id="lblcompletionsechdule" class="control-label txtalignleft" >
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -382,11 +382,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Rational for spliting the order:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label class="control-label" id="lblrationalspliting" style="text-align:left">
+                                                                <label class="control-label txtalignleft" id="lblrationalspliting" >
 
                                                                 </label>
                                                             </div>
@@ -398,11 +398,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Rational for issuing RFQ to vendors:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblissuingrfqtovendor" class="control-label" style="text-align:left">
+                                                                <label id="lblissuingrfqtovendor" class="control-label txtalignleft">
 
                                                                 </label>
                                                             </div>
@@ -411,11 +411,11 @@
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Enquiry not sent to these Vendors (with reasons):
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblenquirynotsent" class="control-label" style="text-align:left">
+                                                                <label id="lblenquirynotsent" class="control-label txtalignleft">
 
                                                                 </label>
                                                             </div>
@@ -425,11 +425,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 General Remarks:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblgeneralremarks" class="control-label" style="text-align:left">
+                                                                <label id="lblgeneralremarks" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -442,11 +442,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Enquiry Issued on :
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblenquiryissuedon" class="control-label" style="text-align:left">
+                                                                <label id="lblenquiryissuedon" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -455,11 +455,11 @@
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Enquiry Issued through :
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblenquiryissuedthrough" class="control-label" style="text-align:left">
+                                                                <label id="lblenquiryissuedthrough" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -468,18 +468,18 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <table id="tblvendors" class="table table-bordered " border="0" cellpadding="1" cellspacing="1"></table>
+                                                        <table id="tblvendors" class="table table-bordered" border="0" cellpadding="1" cellspacing="1"></table>
                                                     </div>
                                                 </div>
                                                 <h3 class="form-section">Recommendation</h3>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Lowest Price Offer:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lbllowestpriceoffer" class="control-label" style="text-align:left">
+                                                                <label id="lbllowestpriceoffer" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -488,11 +488,11 @@
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Repeat Order :
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblrepeatorder" class="control-label" style="text-align:left">
+                                                                <label id="lblrepeatorder" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -502,11 +502,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Supported enclosure(Please specify):
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblsupportedenclosure" class="control-label" style="text-align:left">
+                                                                <label id="lblsupportedenclosure" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -515,11 +515,11 @@
 
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Comparatives statement of final  price :
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblfinalprice" class="control-label" style="text-align:left">
+                                                                <label id="lblfinalprice" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -529,11 +529,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Quotations of the parties:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblquotationparties" class="control-label" style="text-align:left">
+                                                                <label id="lblquotationparties" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -546,11 +546,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Order recommended on (Party):
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblorderrecomparty" class="control-label" style="text-align:left">
+                                                                <label id="lblorderrecomparty" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -558,11 +558,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Purchase Order/Work Order Value:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblpurchaseorder" class="control-label" style="text-align:left">
+                                                                <label id="lblpurchaseorder" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -573,11 +573,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Internal Cost Estimate:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblinternalcost" class="control-label" style="text-align:left">
+                                                                <label id="lblinternalcost" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -585,11 +585,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Terms (Ex- works/ FOR/ FOB/ CIF):
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblterms" class="control-label" style="text-align:left">
+                                                                <label id="lblterms" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -600,11 +600,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Scope of Work:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblscopeofwork" class="control-label" style="text-align:left">
+                                                                <label id="lblscopeofwork" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -612,11 +612,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Deliverables:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lbldeliverables" class="control-label" style="text-align:left">
+                                                                <label id="lbldeliverables" class="control-label txtalignleft">
 
                                                                 </label>
                                                             </div>
@@ -627,11 +627,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Payment terms:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblapymentterms" class="control-label" style="text-align:left">
+                                                                <label id="lblapymentterms" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -639,11 +639,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft">
                                                                 Applicable taxes & duties and their applicability:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lbltaxesduties" class="control-label" style="text-align:left">
+                                                                <label id="lbltaxesduties" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -654,11 +654,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Whether LD applicable:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblLD" class="control-label" style="text-align:left">
+                                                                <label id="lblLD" class="control-label txtalignleft">
 
                                                                 </label>
                                                             </div>
@@ -666,11 +666,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 Whether CPBG applicable:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblCPBG" class="control-label" style="text-align:left">
+                                                                <label id="lblCPBG" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -681,11 +681,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4 bold" style="text-align:left">
+                                                            <label class="control-label col-md-4 bold txtalignleft" >
                                                                 PR Details:
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <label id="lblPRDetails" class="control-label" style="text-align:left">
+                                                                <label id="lblPRDetails" class="control-label txtalignleft" >
 
                                                                 </label>
                                                             </div>
@@ -705,7 +705,7 @@
                                             </div>
 
                                         </form>
-                                        <div id="divRemarksForward" class="col-md-12" style="display: none;">
+                                        <div id="divRemarksForward" class="col-md-12 nodisplay" >
                                             <div class="row">
                                                 <div class="col-md-12" id="frmdivremarksforward">
                                                     <div id="Div1" class="portlet-body form">
@@ -713,10 +713,10 @@
                                                         <form action="#" id="formsubmitadmin" class="form-horizontal">
 
                                                             <div class="form-body">
-                                                                <div class="alert alert-success" id="successdiv1" style="display: none">
+                                                                <div class="alert alert-success" id="successdiv1" >
                                                                     <span>Transaction Successfull..</span>
                                                                 </div>
-                                                                <div id="RevertComment" style="display: none" class="form-group">
+                                                                <div id="RevertComment"  class="form-group nodisplay">
                                                                     <label class="col-md-4 control-label">
                                                                         Last Comment
                                                                     </label>
@@ -735,8 +735,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group" style="padding: 10px 5px;">
-                                                                <div class="col-md-12" style="text-align: center">
+                                                            <div class="form-group padding105px" >
+                                                                <div class="col-md-12 txtaligncentre" >
 
 
                                                                     <button id="btnSubmitAdmin" type="submit" class="btn green">
@@ -748,17 +748,17 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" id="frmdivforward" style="display:none; height: 250px; overflow-y:scroll;">
+                                                <div class="col-md-6 divstyle250" id="frmdivforward">
                                                     <form action="#" id="form1" class="form-horizontal">
                                                         <div class="form-body">
 
-                                                            <div class="table-scrollable" style="overflow: auto">
+                                                            <div class="table-scrollable overflowauto" >
                                                                 <table class="table table-bordered" id="tblremarksforward">
                                                                     <thead>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td colspan="15" style="text-align: center; color: Red">
+                                                                            <td colspan="15" class="norecord">
                                                                                 No record's found
                                                                             </td>
                                                                         </tr>
@@ -772,7 +772,7 @@
                                             </div>
 
                                         </div>
-                                        <div id="divRemarksAppComm" class="col-md-12" style="display: none;">
+                                        <div id="divRemarksAppComm" class="col-md-12 nodisplay" >
                                             <div class="row">
                                                 <div class="col-md-12" id="frmdivremarksapprover">
                                                     <div id="entryForm" class="portlet-body form">
@@ -780,7 +780,7 @@
                                                         <form action="#" id="frmsubmitappComm" class="form-horizontal">
 
                                                             <div class="form-body">
-                                                                <div class="alert alert-success" id="successdiv" style="display: none">
+                                                                <div class="alert alert-success" id="successdiv" >
                                                                     <span id="success">Transaction Successfull..</span>
                                                                 </div>
 
@@ -810,8 +810,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group" style="padding: 10px 5px;">
-                                                                <div class="col-md-offset-1 col-md-12" style="text-align: center">
+                                                            <div class="form-group padding105px" >
+                                                                <div class="col-md-offset-1 col-md-12 txtaligncentre" >
 
                                                                     <button id="btnSubmitApp" type="submit" class="btn green">
                                                                         Submit
@@ -822,7 +822,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" style="display:none; height: 250px; overflow-y:scroll;" id="frmdivapprove">
+                                                <div class="col-md-6 divstyle250"  id="frmdivapprove">
 
                                                     <form action="#" id="form2" class="form-horizontal">
 
@@ -835,7 +835,7 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td colspan="15" style="text-align: center; color: Red">
+                                                                            <td colspan="15" class="norecord">
                                                                                 No record's found
                                                                             </td>
                                                                         </tr>
@@ -848,20 +848,20 @@
                                                 </div>
                                                 <!--</div>-->
                                             </div>
-                                            <div style="clear: both;">
+                                            <div class="clearboth">
                                             </div>
 
                                         </div>
-                                        <div id="divRemarksAwarded" class="col-md-12" style="display: none;">
+                                        <div id="divRemarksAwarded" class="col-md-12 nodisplay">
                                             <div class="row">
                                                 <div class="col-md-12" id="frmdivremarksawarded">
                                                     <div id="Div3" class="portlet-body form">
                                                         <form action="#" id="formAwardedsubmit" class="form-horizontal">
                                                             <div class="form-body">
-                                                                <div class="alert alert-success" id="successdiv2" style="display: none">
+                                                                <div class="alert alert-success" id="successdiv2">
                                                                     <span>Transaction Successfull..</span>
                                                                 </div>
-                                                                <div class="alert alert-danger" style='display:none;' id="diverrordiv2">
+                                                                <div class="alert alert-danger"  id="diverrordiv2">
                                                                     <span id="errordiv2"> </span>
                                                                 </div>
                                                                 <div class="form-group ">
@@ -888,14 +888,14 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <div class="table-scrollable" style="overflow: auto; display: none;" id="divtableaward">
+                                                                    <div class="table-scrollable overflowautonone"  id="divtableaward">
                                                                         <table class="table table-bordered" id="tblremarksvendorsawared">
                                                                         </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group" style="padding: 10px 5px;">
-                                                                <div class="col-md-12" style="text-align: center">
+                                                            <div class="form-group padding105px" >
+                                                                <div class="col-md-12 txtaligncentre" >
                                                                     <button id="btnSubmitAward" type="button" class="btn green" onclick="AwardCommeRFQ()">
                                                                         Submit
                                                                     </button>
@@ -905,19 +905,19 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" id="frmdivawarded" style="display:none; height: 250px; overflow-y:scroll;">
+                                                <div class="col-md-6 divstyle250" id="frmdivawarded" >
                                                     <form action="#" id="form3" class="form-horizontal">
                                                         <div class="form-body">
 
 
 
-                                                            <div class="table-scrollable" style="overflow: auto">
+                                                            <div class="table-scrollable overflowauto" >
                                                                 <table class="table table-bordered" id="tblremarksawared">
                                                                     <thead>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td colspan="15" style="text-align: center; color: Red">
+                                                                            <td colspan="15" class="norecord">
                                                                                 No record's found
                                                                             </td>
                                                                         </tr>
@@ -971,7 +971,7 @@
                                                 <table class="table table-striped table-bordered table-hover hide" border="1" id="tblRFQComprativeForExcelQ">
                                                     <thead></thead>
                                                 </table>
-                                                <table class="table table-striped table-bordered table-hover" id="tblCommercialApprovalprev" style="display:none;">
+                                                <table class="table table-striped table-bordered table-hover nodisplay" id="tblCommercialApprovalprev">
                                                     <thead></thead>
                                                 </table>
                                             </div>
@@ -979,12 +979,7 @@
 
                                         </div>
 
-                                        <!--<div class="row">
-                                            <div class="col-md-offset-5 col-md-2">
-                                                <a href='javascript:;' class="btn green" id="btn-reInvite" onclick="checkForSelectedVendors()">Submit</a>
-                                            </div>
-
-                                        </div>-->
+                                       
                                     </div>
                                     <div class="tab-pane" id="tab_1">
                                         <div class="table-scrollable">
@@ -1041,10 +1036,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form" id="frmMapApprover">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorApp" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorApp" >
                                 <span id="spandanger"> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessApp" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessApp" >
                                 <span id=""> </span>
                             </div>
                             <div class="form-group">
@@ -1100,69 +1095,6 @@
             </div>
         </div>
     </div>
-    <!--<div id="MapFCApprover" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-reorder"></i>Map Finance Controller Approver
-                    </div>
-                    <div class="tools">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <form class="form-horizontal" role="form" id="frmMapFCApprover">
-                        <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorFCApp" style='display: none;'>
-                                <span id="spandangerFC"> </span>
-                            </div>
-                            <div class="alert alert-success" id="msgSuccessFCApp" style='display: none;'>
-                                <span id=""> </span>
-                            </div>
-                            <div class="form-group">
-                                <input id="hdnApproverFCID" value="0" type="hidden" />
-                                <input id="hdnAppFCEmailIDID" value="0" type="hidden" />
-                                <div class="col-md-12">
-                                    <label class="control-label col-md-4">
-                                        Finance Controller<span class="required"> *</span>
-                                    </label>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApproverFC"
-                                               data-provide="typeahead" autocomplete="off" name="txtApproverFC" />
-                                    </div>
-
-                                    <div class="col-md-1">
-                                        <button type="button" id="AddbtnFC" onclick="addApproversFC()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group" id="divapprover">
-                                <div class="col-md-12">
-                                    <table class="table table-striped table-bordered table-hover" id="tblapproversFC"></table>
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-offset-8 col-md-9">
-                                            <button type="submit" class="btn green" id="btnFCSubmit" disabled> Submit for FC Approval</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>-->
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -1175,7 +1107,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text">
                             The purpose of RFI/RFQ report is to see the details of RFI/RFQ responses received from vendors using our sourcing portal.
                             The report can be taken out using one or many filtration parameters.
@@ -1200,64 +1132,16 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    <script>
+    <script nonce="erfqaz">
 
         jQuery(document).ready(function () {
             callPagejs('eRFQAzPPCApproval.js');
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
-            formvalidate();
-            validateAppsubmitData();
-            fetchRegisterUser();
-
+           
         });
     </script>
 
 
-    <script type="text/javascript">
-        $("#btnExport").click(function (e) {
-
-            var dt = new Date();
-            var day = dt.getDate();
-            var month = dt.getMonth() + 1;
-            var year = dt.getFullYear();
-            var hour = dt.getHours();
-            var mins = dt.getMinutes();
-            var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-
-            //Export To Excel
-            var data_type = 'data:application/vnd.ms-excel';
-            var table_div = document.getElementById('table_wrapper');
-            var table_html = table_div.outerHTML.replace(/ /g, '%20');
-
-            var a = document.createElement('a');
-            a.href = data_type + ', ' + table_html;
-
-            a.download = 'RFQDetails -' + postfix + '.xls';
-
-            a.click();
-
-        });
-    </script>
-
+    
 
 
     <!-- END JAVASCRIPTS -->
