@@ -189,7 +189,7 @@
                                                         </label>
                                                         <div class="col-md-4">
 
-                                                            <input type="text" class="form-control" id="txtcustomername" name="txtcustomername"
+                                                            <input type="text" class="form-control" id="txtcustomername" name="txtcustomername" onkeyup="replaceQuoutesFromString(this)"
                                                                    style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" />
 
                                                         </div>
@@ -228,7 +228,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input class="form-control" type="text" value="" id="txtAddress1" name="txtAddress1" autocomplete="off" />
+                                                            <input class="form-control" type="text" value="" id="txtAddress1" name="txtAddress1" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
 
 
                                                         </div>
@@ -318,7 +318,7 @@
 
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" name="txtemail" id="txtemail" />
+                                                            <input type="text" class="form-control" name="txtemail" id="txtemail" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
 
 
@@ -332,7 +332,7 @@
 
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input class="form-control" type="text" value="" id="phoneno" name="phoneno" />
+                                                            <input class="form-control" type="tel" value="" id="phoneno" name="phoneno" pattern="[1-9]{1}[0-9]{9}" maxlength="10" min="10" />
                                                         </div>
                                                         <div class="inputgroup">
                                                             <label class="control-label col-md-2">
@@ -382,7 +382,7 @@
                                                             User Name
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtadminfirstname" name="txtadminfirstname" />
+                                                            <input type="text" class="form-control" id="txtadminfirstname" name="txtadminfirstname" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
 
                                                         <label class="control-label col-md-2">
@@ -391,7 +391,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtUserEmailID" name="txtUserEmailID" autocomplete="off" />
+                                                            <input type="text" class="form-control" id="txtUserEmailID" name="txtUserEmailID" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">

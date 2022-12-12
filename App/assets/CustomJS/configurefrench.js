@@ -1010,6 +1010,10 @@ var FormWizard = function () {
 }();
 
 function ConfigureBidInsfrenchTab1() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -1049,14 +1053,18 @@ function ConfigureBidInsfrenchTab1() {
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
     }
+
+    
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         "BidTypeID": 9,
         "BidForID": parseInt($("#ddlAuctiontype option:selected").val()),
         "BidDuration": parseInt(bidDuration),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         "BidDate": StartDT,
         //"BidDate": jQuery("#txtbidDate").val(),
         //"BidTime": jQuery("#txtbidTime").val(),
@@ -1123,6 +1131,7 @@ function ConfigureBidInsfrenchTab1() {
 }
 
 function ConfigureBidInsfrenchTab2() {
+    var _cleanString3 = StringEncodingMechanism($.trim($('#itemname' + i).text()));
     var targetPrice;
     var lastInvoiceprice = 0, i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1138,11 +1147,13 @@ function ConfigureBidInsfrenchTab2() {
             if ($.trim($('#TP' + i).text()) != '') {
                 targetPrice = $.trim($('#TP' + i).text());
             }
+            
 
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim($('#itemcode' + i).text()),
-                "ItemName": $.trim($('#itemname' + i).text()),
+                //"ItemName": $.trim($('#itemname' + i).text()),
+                "ItemName": _cleanString3,
                 "Description": "",
                 "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                 "Quantity": parseFloat(removeThousandSeperator($.trim($('#quantity' + i).text()))),
@@ -1883,9 +1894,9 @@ function fetchFrenchBidDetails() {
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
 
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject))
 
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails))
             //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
             //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#txtbidDate').val(dtst)
@@ -2210,10 +2221,10 @@ function fetchPSBidDetailsForPreview() {
     var hidevendor = 'No';
     jQuery('#mapedapproverPrev').html('');
 
-    jQuery('#txtBidSubjectPrev').html($('#txtBidSubject').val())
+    jQuery('#txtBidSubjectPrev').html(StringEncodingMechanism($('#txtBidSubject').val()))
     jQuery('#txtBidDurationPrev').html($('#txtBidDuration').val())
     $("#ddlauctiontypePrev").html($("#ddlAuctiontype option:selected").html())
-    jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
+    jQuery('#txtbiddescriptionPrev').html(StringEncodingMechanism($('#txtbiddescription').val()))
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
     //jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())

@@ -1276,7 +1276,8 @@ var FormWizard = function () {
 
 sessionStorage.setItem('CurrentBidID', 0)
 function ConfigureBidForSeaExportTab1() {
-
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -1329,15 +1330,16 @@ function ConfigureBidForSeaExportTab1() {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
         //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
-    var _bidSubject = StringEncodingMechanism(jQuery("#txtBidSubject").val());
-    var _bidDesc = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+    
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         //"BidSubject": jQuery("#txtBidSubject").val(),
         //"BidDescription": jQuery("#txtbiddescription").val(),
-        "BidSubject": _bidSubject,
-        "BidDescription": _bidDesc,
+        //"BidSubject": _bidSubject,
+        "BidSubject": _cleanString,
+        //"BidDescription": _bidDesc,
+        "BidDescription": _cleanString2,
         "BidDate": StartDT,
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
@@ -1555,8 +1557,8 @@ function ConfigureBidForSeaExportTab2() {
                 if ($.trim(this_row.find('td:eq(22)').html()) != '') {
                     povalue = removeThousandSeperator($.trim(this_row.find('td:eq(22)').html()));
                 }
-                var remark = $.trim(this_row.find('td:eq(5)').html()).replace(/'/g, "");
-                var description = $.trim(this_row.find('td:eq(4)').html()).replace(/'/g, "");
+                var remark = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').html()).replace(/'/g, ""));
+                var description = StringEncodingMechanism($.trim(this_row.find('td:eq(4)').html()).replace(/'/g, ""));
                 if ($('#ddlbidclosetype').val() == "A") {
                     itmduartion = 0;
                     BidDuration = BidDuration + 0;
@@ -1568,6 +1570,7 @@ function ConfigureBidForSeaExportTab2() {
                     totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt($.trim(this_row.find('td:eq(15)').html()))
 
                 }
+                var _cleanString = StringEncodingMechanism($.trim(this_row.find('td:eq(20)').html()));
 
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1590,7 +1593,8 @@ function ConfigureBidForSeaExportTab2() {
                     "ShowStartPrice": $.trim(this_row.find('td:eq(17)').html()),
                     "PoUnitRate": parseFloat(unitrate),
                     "PoNo": $.trim(this_row.find('td:eq(19)').html()),
-                    "PoVendorName": $.trim(this_row.find('td:eq(20)').html()),
+                    //"PoVendorName": $.trim(this_row.find('td:eq(20)').html()),
+                    "PoVendorName": _cleanString,
                     "PoDate": $.trim(this_row.find('td:eq(21)').html()),
                     "PoValue": parseFloat(povalue),
                     "PullRFQID": parseInt($.trim(this_row.find('td:eq(23)').html())),
@@ -1627,7 +1631,8 @@ function ConfigureBidForSeaExportTab2() {
                 if ($("#povalue" + index).text() != '') {
                     povalue = removeThousandSeperator($("#povalue" + index).text());
                 }
-                var remark = $("#remarks" + index).text().replace(/'/g, "");
+                var remark = StringEncodingMechanism($("#remarks" + index).text().replace(/'/g, ""));
+                var _cleanString = StringEncodingMechanism($("#povendorname" + index).text());
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     "ItemCode": $("#itemcode" + index).text(),
@@ -1649,7 +1654,8 @@ function ConfigureBidForSeaExportTab2() {
                     "ShowStartPrice": "N",
                     "PoUnitRate": parseFloat(unitrate),
                     "PoNo": $("#pono" + index).text(),
-                    "PoVendorName": $("#povendorname" + index).text(),
+                    //"PoVendorName": $("#povendorname" + index).text(),
+                    "PoVendorName": _cleanString,
                     "PoDate": $("#podate" + index).text(),
                     "PoValue": parseFloat(povalue),
                     "PullRFQID": 0,
@@ -2401,7 +2407,7 @@ function editvalues(icount) {
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
     
-    var Remark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Remark = StringEncodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'));
 
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txtdestinationPort').val($("#destinationport" + icount).text())
@@ -2425,7 +2431,7 @@ function editvalues(icount) {
 
     $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
     $('#txtPono').val($("#pono" + icount).text())
-    $('#txtvendorname').val($("#povendorname" + icount).text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#povendorname" + icount).text()))
     $('#txtPODate').val($("#podate" + icount).text())
     $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     $('#txtfloorPrice').val(removeThousandSeperator($("#floorprice" + icount).text()))

@@ -297,7 +297,7 @@
                                                         </label>
                                                         <div class="col-md-3">
                                                             <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
-                                                                   name="txtcompanyemail">
+                                                                   name="txtcompanyemail" onkeyup="replaceQuoutesFromString(this)">
                                                         </div>
                                                         <label class="control-label col-md-2">Alternate Email</label>
 
@@ -308,7 +308,7 @@
                                                         </div>
 
                                                         <div class="col-md-3">
-                                                            <input type="text" style="text-align:left!important" placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control" disabled />
+                                                            <input type="text" style="text-align:left!important" placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control" disabled onkeyup="replaceQuoutesFromString(this)"/>
 
                                                         </div>
                                                     </div>
@@ -404,7 +404,7 @@
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch">
+                                                        <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)">
 
                                                         <div class="table-scrollable">
                                                             <table class="table table-striped table-bordered table-hover" id="tblParticipantsVender">

@@ -197,6 +197,10 @@ function FetchAllCustomer() {
 }
 var status = "";
 function RegisterParticipants() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
+    var _cleanString1 = StringEncodingMechanism(jQuery("#txtAddress").val());
+   
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -251,8 +255,10 @@ function RegisterParticipants() {
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-        "ParticipantName": jQuery("#ParticipantName").val(),
-        "Address": jQuery("#txtAddress").val(),
+        //"ParticipantName": jQuery("#ParticipantName").val(),
+        "ParticipantName": _cleanString,
+        //"Address": jQuery("#txtAddress").val(),
+        "Address": _cleanString1,
         "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
         "CountryName": jQuery("#ddlCountry option:selected").text(),
         "StateID": parseInt(jQuery("#ddlState option:selected").val()),

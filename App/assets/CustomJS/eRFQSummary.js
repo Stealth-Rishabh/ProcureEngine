@@ -56,9 +56,10 @@ $('#ddlconfiguredby').on('change', function (e) {
 });
 
 function fetchregisterusers() {
+    var Uid = sessionStorage.getItem('UserID');
     var userData = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "UserID": encodeURIComponent(sessionStorage.getItem('UserID')),
+        "UserID": Uid,
         "Isactive": 'N'
     }
 

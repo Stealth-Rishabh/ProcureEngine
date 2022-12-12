@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="tools hidden-xs">
 
-                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="cancelbid()">Cancel</button>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
@@ -255,8 +255,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control"
-                                                                       placeholder="Enter Reference Number(If any)" id="txtRFQReference"
-                                                                       maxlength="50" autocomplete="off" name="txtRFQReference" tabindex='7'>
+                                                                       placeholder="Enter Reference Number(If any)" id="txtRFQReference " 
+                                                                       maxlength="50" autocomplete="off" name="txtRFQReference" tabindex='7' onkeyup="replaceQuoutesFromString(this)">
                                                             </div>
 
                                                         </div>

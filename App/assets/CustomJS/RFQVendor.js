@@ -692,6 +692,7 @@ function stringDivider(str, width, spaceReplacer) {
 }
 
 function RFQparameterinsert() {
+    var _cleanString = StringEncodingMechanism($('#txtvendorremarks').val());
   
     var PriceDetails = '';
     var AttachementFileName = '';
@@ -729,7 +730,8 @@ function RFQparameterinsert() {
                 "RFQID": sessionStorage.getItem('CurrentrfiID'),
                 "VendorId": sessionStorage.getItem('VendorId'),
                 "RFQVersionId": sessionStorage.getItem('RFQVersionId'),
-                "VendorRemarks": $('#txtvendorremarks').val()
+                //"VendorRemarks": $('#txtvendorremarks').val()
+                "VendorRemarks": _cleanString
 
             };
             //alert(JSON.stringify(Tab2data))
@@ -828,6 +830,7 @@ function fileUploader(RFQID, VendorId, FileInputID) {
 
 
 function RFQparameterinsertforsubmit() {
+    var _cleanString2 = StringEncodingMechanism($('#txtvendorremarks').val());
    
     var PriceDetails = '';
     var AttachementFileName = '';
@@ -867,7 +870,8 @@ function RFQparameterinsertforsubmit() {
             "UserEmail": sessionStorage.getItem('EmailID'),
             "CustomerID": sessionStorage.getItem('CustomerID'),
             "RFQVersionId": sessionStorage.getItem('RFQVersionId'),
-            "VendorRemarks": $('#txtvendorremarks').val()
+            //"VendorRemarks": $('#txtvendorremarks').val()
+            "VendorRemarks": _cleanString2
         };
        // alert(JSON.stringify(Tab2data))
         jQuery.ajax({
@@ -915,6 +919,7 @@ function RFQparameterinsertforsubmit() {
 var Price = 0;
 var PriceTax = 0;
 function RFQparametercomponetinsert() {
+    var _cleanString3 = StringEncodingMechanism($('#txtvendorremarks').val());
    
     $('#loader-msg').html('Processing. Please Wait...!');
     $('.progress-form').show();
@@ -947,7 +952,8 @@ function RFQparametercomponetinsert() {
             "Price": Price,
             "RFQVendorPricewithTax": PriceTax,
             "RFQVersionId": sessionStorage.getItem('RFQVersionId'),
-            "VendorRemarks": $('#txtvendorremarks').val()
+            //"VendorRemarks": $('#txtvendorremarks').val()
+            "VendorRemarks": _cleanString3
 
         };
         // alert(JSON.stringify(Tab2data))
@@ -1082,6 +1088,7 @@ function fileDeletefromdbForItem(closebtnid, fileid, filepath, itemID) {
 
 
 function saveQuotationWithoutBoq(isButtonclick) {
+    var _cleanString4 = StringEncodingMechanism($('#txtvendorremarks').val());
     //btnSave  Button ID
  
     var PriceDetails = '';
@@ -1122,7 +1129,8 @@ function saveQuotationWithoutBoq(isButtonclick) {
             "RFQID": sessionStorage.getItem('CurrentrfiID'),
             "VendorId": sessionStorage.getItem('VendorId'),
             "RFQVersionId": sessionStorage.getItem('RFQVersionId'),
-            "VendorRemarks": $('#txtvendorremarks').val()
+            //"VendorRemarks": $('#txtvendorremarks').val()
+            "VendorRemarks": _cleanString4
 
 
         };

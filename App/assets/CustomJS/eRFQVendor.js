@@ -1211,14 +1211,20 @@ function fnConfirmRegretted() {
     });
 
 }
+
+
 function fnRegreteRFQ() {
+    var _cleanString = StringEncodingMechanism($('#txtRemarks').val());
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     $('#SaveExsist').attr("disabled", "disabled");
     var RegretData = {
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
-        "Remarks": $('#txtRemarks').val(),
+        //"Remarks": $('#txtRemarks').val(),
+        "Remarks": _cleanString,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     jQuery.ajax({
@@ -1534,10 +1540,10 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
                 var vendorRemarks = "";
                 if (_RFQBidType == 'Open') {
-                    vendorRemarks = $.trim(this_row.find('td:eq(17)').find('textarea').val())//.replace(/'/g, "''")
+                    vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17)').find('textarea').val()))//.replace(/'/g, "''")
                 }
                 else {
-                    vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
+                    vendorRemarks = StringEncodingMechanism($.trim(this_row.find('td:eq(17) input[type="text"]').val()))
 
                 }
                 var Pdetails = {
@@ -1659,11 +1665,14 @@ function saveQuotation() {
                 vendorRemarks = $.trim(this_row.find('td:eq(17) input[type="text"]').val())
 
             }
+
+            var _cleanString = StringEncodingMechanism($.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")));
             var quotes = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQParameterId": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQId": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
+                //"RFQShortName": $.trim(this_row.find('td:eq(2)').text().replace(/'/g, "''")),
+                "RFQShortName": _cleanString,
                 "RFQUomId": removeThousandSeperator($.trim(this_row.find('td:eq(3)').html())),
                 "RFQuantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(4)').html()))),
                 "RFQDelivery": $.trim(this_row.find('td:eq(7)').html()),
@@ -1690,11 +1699,14 @@ function saveQuotation() {
                 _otherTC = parseInt(_otherTC);
             }
 
+            var _cleanString = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').find('textarea').val()));
+
             var comm = {
                 "VendorID": parseInt(sessionStorage.getItem('VendorId')),
                 "RFQTCID": parseInt($.trim(this_row.find('td:eq(0)').html())),
                 "RFQID": parseInt($.trim(this_row.find('td:eq(1)').html())),
-                "Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
+                //"Remarks": $.trim(this_row.find('td:eq(5)').find('textarea').val()),//.replace(/'/g, "''"),
+                "Remarks": _cleanString,
                 "Version": parseInt(sessionStorage.getItem('RFQVersionId')),
                 "FinalStatus": 'N',
                 "OtherTermCondition": _otherTC//($.trim(this_row.find('td:eq(6)').html()))
@@ -1706,13 +1718,16 @@ function saveQuotation() {
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
 
         });
+
+        var _cleanString2 = StringEncodingMechanism($('#txtvendorremarks').val());
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
             "VendorId": parseInt(sessionStorage.getItem('VendorId')),
             "RFQVersionId": parseInt(sessionStorage.getItem('RFQVersionId')),
             "CommercialTerms": commercialterms,
-            "VendorRemarks": $('#txtvendorremarks').val(),
+            //"VendorRemarks": $('#txtvendorremarks').val(),
+            "VendorRemarks": _cleanString2,
             "PreviousVersion": PreviousVersion,
             "AttachString": attchquery
         };

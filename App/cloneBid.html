@@ -167,7 +167,7 @@
                                                     Search Text<span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-9">
-                                                    <input type="text" class="form-control" id="txtSearchText" name="txtSearchText" autocomplete="off" placeholder="Search Text" />
+                                                    <input type="text" class="form-control" id="txtSearchText" name="txtSearchText" autocomplete="off" placeholder="Search Text" onkeyup="replaceQuoutesFromString(this)"/>
                                                 </div>
                                             </div>
 
@@ -183,7 +183,7 @@
                                         <div class="form-body">
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch">
+                                                    <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)">
                                                 </div>
                                             </div>
                                         </div>
