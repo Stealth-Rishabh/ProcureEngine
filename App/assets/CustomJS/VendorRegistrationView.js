@@ -1,4 +1,50 @@
 
+jQuery(document).ready(function () {
+    Pageloaded()
+    Metronic.init();
+    fetchCategorymaster1();
+    $('#ddlTypeofProduct').select2({
+        placeholder: "Type of Product",
+        allowClear: true
+    });
+    Layout.init();
+
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    var _tmpVendorID = getUrlVarsURL(decryptedstring)["tmpVendorID"];
+
+    var _VendorID = getUrlVarsURL(decryptedstring)["VendorID"];
+    var _VRID = getUrlVarsURL(decryptedstring)["VRID"];
+
+    var _NVendorID;
+    if (_VendorID == undefined && _VendorID == null) {
+        _NVendorID = 0;
+    } else {
+        _NVendorID = _VendorID;
+    }
+
+    if (_tmpVendorID == null) {
+        sessionStorage.setItem('tmpVendorID', 0)
+        sessionStorage.setItem('VendorID', _NVendorID);
+        //fetchCategorymaster1();
+    } else {
+        sessionStorage.setItem('tmpVendorID', _tmpVendorID);
+        sessionStorage.setItem('VendorID', _NVendorID);
+        sessionStorage.setItem('VRID', _VRID);
+        //fetchCategorymaster1();
+        //fetchVendorRegistrationDetails();
+    }
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem("UserType") == "E") {
+        $('.page-container').show();
+    }
+    //fetchCategorymaster1();
+    fetchVendorRegistrationDetails();
+    //FormValidate();
+    ComponentsPickers.init();
+});
+
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({

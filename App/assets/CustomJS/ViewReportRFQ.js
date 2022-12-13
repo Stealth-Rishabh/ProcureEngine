@@ -5,6 +5,38 @@ function getCurrenttime() {
     $('#printed_on').html(postfix);
 }
 
+$(document).ready(function () {
+
+    getCurrenttime();
+    param = getUrlVars()["param"];
+    decryptedstring = fndecrypt(param);
+    RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+    var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
+    var BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    var Version = getUrlVarsURL(decryptedstring)["Version"];
+    $('#hdnRfqID').val(RFQID)
+    $('#hdnversion').val(Version)
+    fetchReguestforQuotationDetails(RFQID)
+    if (FromPage == "RASumm") {
+        fetchrfqcomprativeRA(RFQID, BidID)
+    }
+    else {
+        fetchrfqcomprative(RFQID)
+    }
+    fetchAttachments();
+    fetchApproverRemarks(RFQID);
+    setTimeout(function () {
+        jQuery.unblockUI();
+    }, 1500);
+    setTimeout(function () {
+
+        saveAspdf()
+
+
+    }, 2000)
+
+});
+
 var RFqsub = "";
 var Bidno;
 function fetchReguestforQuotationDetails(RFQID) {

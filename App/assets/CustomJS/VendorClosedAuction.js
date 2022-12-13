@@ -1,7 +1,39 @@
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
 
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    multilingualLanguage();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchBidHeaderDetails();
+
+});
+//
 function fetchBidHeaderDetails() {
 
     var url = '';

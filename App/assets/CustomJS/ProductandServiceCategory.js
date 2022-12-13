@@ -3,7 +3,32 @@ var Vehicleerror = $('#errordiv');
 var Vehiclesuccess = $('#successdiv');
 var Vehicleerror1 = $('#errordiv1');
 var Vehiclesuccess1 = $('#successdiv1');
+//FROM HTML
+jQuery(document).ready(function () {
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
 
+    fetchMenuItemsFromSession(19, 23);
+    setCommonData();
+    FormValidate();
+    fetchRFIQuestiondetail();
+    //fetchRFICategory();
+
+});
+//******
 function FormValidate() {
  
     $('#RFIQuestionmaster').validate({

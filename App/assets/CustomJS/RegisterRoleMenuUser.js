@@ -2,6 +2,39 @@
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(19, 38);
+
+    fetchRoleMaster();
+    fetchAllRoleMaster();
+    fetchRegisterUser();
+});
+//
 var FormWizard = function () {
 
     return {

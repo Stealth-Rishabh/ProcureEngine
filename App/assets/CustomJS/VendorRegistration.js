@@ -1,5 +1,16 @@
 ﻿
 $(document).ready(function () {
+
+    //FROM HTML
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    Metronic.init();
+    Layout.init();
+    QuickSidebar.init();
+    FormWizard.init();
+    setCommonData();
+
+    ///
     FetchCategoryMaster();
     FetchVendorRegistrationDetails();
     $("#add_new").click(function () {
