@@ -1,20 +1,5 @@
 ﻿<!DOCTYPE html>
-<!--
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
-Version: 4.7.5
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
+
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
@@ -48,7 +33,9 @@ License: You must have a valid license purchased only from themeforest(the above
           type="text/css" />
     <link href="assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+
     <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -81,8 +68,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="page-header navbar navbar-fixed-top">
             <div class="page-header-inner">
                 <div class="page-logo">
-                    <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                        <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                    <a class="navbar-brand" href="index.html" >
+                        <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                     </a>
 
                 </div>
@@ -93,9 +80,11 @@ License: You must have a valid license purchased only from themeforest(the above
                         <li class="dropdown dropdown-user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                data-hover="dropdown" data-close-others="true">
-                                <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                                <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                                </span><i class="fa fa-angle-down"></i>
+                               
+                                <b>
+                                    <span id="spanUserName" class="username username-hide-on-mobile">
+                                    </span>
+                                </b><i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -108,7 +97,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <div class="clearfix"> </div>
 
-        <div class="page-container" style="display:none">
+        <div class="page-container nodisplay">
 
             <div class="page-sidebar-wrapper">
                 <div class="page-sidebar navbar-collapse collapse">
@@ -255,7 +244,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                             <div class="form-actions col-lg-offset-9">
-                                                <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                                <div class="col-md-offset-3 col-md-6 txtaligncentre">
                                                     <button type="submit" class="btn green" id="submitbtn" value="SUBMIT">
                                                         <i class="fa fa-check "></i> Submit
                                                     </button>
@@ -287,7 +276,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="btn-group">
                                             <div class="input-icon">
                                                 <i class="fa fa-search"></i>
-                                                <input type="text" id="txtseach" placeholder="Search" class="form-control input-circle" style="width:400px" onkeyup="replaceQuoutesFromString(this)"/>
+                                                <input type="text" id="txtseach" placeholder="Search" class="form-control input-circle width400px"  onkeyup="replaceQuoutesFromString(this)"/>
                                             </div>
                                         </div>
 
@@ -313,7 +302,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END QUICK SIDEBAR -->
         </div>
         <div class="page-footer">
-            <div class="page-footer" style="color: #FFF !important;">
+            <div class="page-footer colorfff">
                 2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
             </div>
             <div class="scroll-to-top">
@@ -326,35 +315,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <div class="quick-nav-overlay"></div>
 
-    <script>
-        // jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
+    <script nonce="menuma">
+        
         $(document).ready(function () {
-            callPagejs('MenuMaster.js');
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            //App.init();
-
-            fetchMenuItemsFromSession(45, 36);
-            setCommonData();
-            FormValidation()
-            setTimeout(function () {
-                fnfetchMenus()
-            }, 500)
-
+            callPagejs('MenuMaster.js');           
         })
 
     </script>

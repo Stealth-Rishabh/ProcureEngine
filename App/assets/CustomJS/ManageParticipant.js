@@ -1,3 +1,63 @@
+jQuery(document).ready(function () {
+    
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
+    setCommonData();
+    fetchMenuItemsFromSession(45, 41);
+    FormValidation.init();
+    FetchAllCustomer();
+
+
+    fetchBidType();// for serach vendor
+    clearform();
+    fetchCountry();
+    $('#ddlCountry').select2({
+
+        searchInputPlaceholder: "Search Country",
+    });
+    $('#ddlCountryCd').select2({
+        searchInputPlaceholder: "Dialing Code",
+    });
+
+    $('#ddlCountryCdPhone').select2({
+        searchInputPlaceholder: "Dialing Code",
+    });
+
+    $('#ddlState').select2({
+        searchInputPlaceholder: "Search State",
+        allowClear: true
+    });
+    $('#ddlCity').select2({
+        searchInputPlaceholder: "Search City",
+        allowClear: true
+    });
+});
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "-" + month + "-" + year + "/ " + hour + ":" + mins;
+
+    tableToExcel('tblParticipantsExport', 'Participant Details', 'Participant Details - ' + postfix + '.xls');
+
+});
 var FormValidation = function () {
     var ValidateParticipants = function () {
         var form1 = $('#entryForm');

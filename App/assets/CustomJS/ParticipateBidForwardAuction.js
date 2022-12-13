@@ -1,3 +1,42 @@
+jQuery(document).ready(function () {
+    
+    Pageloaded();
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchVendorDetails();
+    handlevalidation();
+    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+        $('#LiISsurrogate').removeClass('hide')
+    }
+    else {
+        $('#LiISsurrogate').addClass('hide')
+    }
+    $(".pulsate-regular").css('animation', 'none');
+
+});
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';

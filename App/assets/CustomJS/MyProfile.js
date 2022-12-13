@@ -1,3 +1,33 @@
+jQuery(document).ready(function () {
+   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    App.init();
+    setCommonData();
+
+
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+            $('#frmprofile').show()
+            $('#frmprofilevendor').hide();
+            prefferedTimezone();
+            fetchUserDetails();
+
+            fetchMenuItemsFromSession(0, 0);
+            formvalidate();
+            $('#bid').removeClass('page-sidebar-closed page-full-width');
+        }
+
+
+    }
+
+
+});
+
 var APIPath = sessionStorage.getItem("APIPath");
 
 jQuery(document).ready(function () {

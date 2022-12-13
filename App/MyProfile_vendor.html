@@ -71,8 +71,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
             </div>
 
@@ -85,8 +85,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile_vendor.html"><i class="icon-user"></i><span data-i18n="myprofile">My Profile</span> </a></li>
@@ -99,7 +101,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -141,7 +143,7 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="VendorHome.html" data-i18n="home" style="text-decoration:none;">Home</a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="VendorHome.html" data-i18n="home" class="notextdeco">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
                         <li>
@@ -163,17 +165,17 @@
                                 <div class="tools">
                                     &nbsp;
 
-                                    <label class="control-label bold hide" data-i18n="completeprofile" id="lblmszforcompleteP" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                    <label class="control-label bold hide labelstyle4" data-i18n="completeprofile" id="lblmszforcompleteP" >
                                         Please complete your profile to unlock your registration with other companies
                                     </label>
                                 </div>
                             </div>
                             <div class="portlet-body form acordion_tabs">
-                                <div class="page-container mt-0" style="display:none">
-                                    <div class="alert alert-block alert-danger" id="errordiv" style="display: none">
+                                <div class="page-container mt-0 nodisplay" >
+                                    <div class="alert alert-block alert-danger" id="errordiv">
                                         <span id="error"></span>
                                     </div>
-                                    <div class="alert alert-success" id="successdiv" style="display: none">
+                                    <div class="alert alert-success" id="successdiv">
                                         <span id="success"></span>
                                     </div>
                                     <form class="form-horizontal" role="form" id="frmprofilevendornew">
@@ -186,7 +188,7 @@
                                         </div>
                                         <div class="form-body">
                                             <div class="progress">
-                                                <div class="progress-bar progress-bar-striped active" id="progresstotal" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                                <div class="progress-bar progress-bar-striped active width100" id="progresstotal" role="progressbar" aria-valuemin="0" aria-valuemax="100" >
                                                     <span id="totalpercent"></span>
                                                 </div>
                                             </div>
@@ -205,16 +207,16 @@
                                                             </h4>
 
                                                         </div>
-                                                        <div id="collapse2" class="panel-collapse collapse" seqno="3" style="height: 0px;">
+                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3" >
                                                             <div class="panel-body">
                                                                 <div class="row" id="tab1check">
                                                                     <div class="col-lg-12">
                                                                         <div class="row">
                                                                             <div class="col-md-6">
-                                                                                <h4 class="text-capitalize text-center" data-i18n="primarycontactdetail" style="font-weight:600; margin-bottom:20px;">Primary Contact Detail</h4>
+                                                                                <h4 class="text-capitalize text-center headstyle1" data-i18n="primarycontactdetail" >Primary Contact Detail</h4>
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="name">
+                                                                                        <label class="col-md-3 control-label txtalignleft"  data-i18n="name">
                                                                                             Name
                                                                                         </label>
                                                                                         <div class="col-md-9 xyz">
@@ -226,7 +228,7 @@
 
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12 ">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="mobileno">
+                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
                                                                                             Mobile No
                                                                                         </label>
                                                                                         <div class="col-md-2 xyz">
@@ -243,7 +245,7 @@
 
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="emailid">
+                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="emailid">
                                                                                             Email ID
                                                                                         </label>
                                                                                         <div class="col-md-9 ">
@@ -254,10 +256,10 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-6">
-                                                                                <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;" data-i18n="alternatecontactdetail">Alternate Contact Detail</h4>
+                                                                                <h4 class="text-capitalize text-center headstyle1"  data-i18n="alternatecontactdetail">Alternate Contact Detail</h4>
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="name">
+                                                                                        <label class="col-md-3 control-label txtalignleft"  data-i18n="name">
                                                                                             Name
                                                                                         </label>
                                                                                         <div class="col-md-9">
@@ -269,7 +271,7 @@
 
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="mobileno">
+                                                                                        <label class="col-md-3 control-label txtalignleft"  data-i18n="mobileno">
                                                                                             Mobile No
                                                                                         </label>
                                                                                         <div class="col-md-2">
@@ -286,7 +288,7 @@
 
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label" style="text-align:left" data-i18n="emailid">
+                                                                                        <label class="col-md-3 control-label txtalignleft"  data-i18n="emailid">
                                                                                             Email ID
                                                                                         </label>
                                                                                         <div class="col-md-9">
@@ -297,7 +299,7 @@
                                                                                 </div>
                                                                                 <div class="col-lg-12">
                                                                                     <div class="form-group">
-                                                                                        <label class="control-label col-md-3" style="text-align:left" data-i18n="preferredzone">Preferred Time/Zone:</label>
+                                                                                        <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Time/Zone:</label>
                                                                                         <div class="col-md-9">
                                                                                             <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
                                                                                                 <option>Select</option>
@@ -331,7 +333,7 @@
                                                                 <div class="row">
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="natureofestablishment">
+                                                                            <label class="col-md-3 control-label txtalignleft" data-i18n="natureofestablishment">
                                                                                 Nature of Establishment
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -360,7 +362,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="product">
+                                                                            <label class="col-md-3 control-label txtalignleft" data-i18n="product">
                                                                                 Product
                                                                             </label>
                                                                             <div class="col-md-9">
@@ -372,7 +374,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="companyname">
+                                                                            <label class="col-md-3 control-label txtalignleft"  data-i18n="companyname">
                                                                                 Company Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -384,7 +386,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="address">
+                                                                            <label class="col-md-3 control-label txtalignleft"  data-i18n="address">
                                                                                 Address
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -396,7 +398,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left" data-i18n="country">
+                                                                            <label class="col-md-3 control-label txtalignleft"  data-i18n="country">
                                                                                 Country
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -413,7 +415,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 City
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -434,13 +436,13 @@
 
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
                                                                             Companies
                                                                         </label>
                                                                         <div class="col-md-9">
                                                                             <input type="text" class="form-control"
                                                                                    id="vendorComp" name="vendorComp" autocomplete="off" readonly />
-                                                                            <!--<label id="vendorComp" name="vendorComp" class="label control-label"></label>-->
+                                                                           
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -464,12 +466,12 @@
                                                                 </a>
                                                             </h4>
 
-                                                        </div><div id="collapse1" class="panel-collapse collapse" seqno="2" style="height: 0px;">
+                                                        </div><div id="collapse1" class="panel-collapse collapse noheight" seqno="2" >
                                                             <div class="panel-body">
                                                                 <div class="row">
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 GST Vendor Class
                                                                             </label>
                                                                             <div class="col-md-3">
@@ -494,20 +496,19 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="control-label col-md-3" style="text-align:left">
+                                                                            <label class="control-label col-md-3 txtalignleft" >
                                                                                 Attach GST REG 06GST certificate
                                                                             </label>
                                                                             <div class="col-md-3 ">
-                                                                                <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem">
+                                                                                <ul  class="nopaddingleft liststylenone" id="tblAttachmentsElem">
                                                                                     <li>
                                                                                         <div class="inputgroup">
                                                                                             <div class="att_input">
                                                                                                 <input type="file" class="form-control" tabindex="5" id="filegst"
                                                                                                        onchange="checkfilesize(this)" />
                                                                                                 <span class="help-block uploadedfile">
-                                                                                                    <!--<a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" name="gstattach"  style="text-align:left; text-decoration: none !important;">
-                                                                                                    test</a>-->
-                                                                                                    <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;"></a>
+                                                                                                    
+                                                                                                    <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" class="txtleftnone" ></a>
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
@@ -519,7 +520,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 PAN
                                                                             </label>
                                                                             <div class="col-md-3">
@@ -533,13 +534,13 @@
                                                                                 </label>
 
                                                                                 <div class="col-md-3 ">
-                                                                                    <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem2">
+                                                                                    <ul class="liststylenone nopaddingleft" id="tblAttachmentsElem2">
                                                                                         <li>
                                                                                             <div class="inputgroup">
                                                                                                 <div class="att_input">
                                                                                                     <input type="file" class="form-control" tabindex="5" id="filepan"
                                                                                                            onchange="checkfilesize(this)" />
-                                                                                                    <span class="help-block uploadedfile"> <a href="javascript:;" id="panattach" onclick="DownloadFile(this)" style="text-align:left; text-decoration: none !important;"></a></span>
+                                                                                                    <span class="help-block uploadedfile"> <a href="javascript:;" id="panattach" onclick="DownloadFile(this)" class="txtleftnone"></a></span>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </li>
@@ -551,17 +552,17 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft" >
                                                                                 Attach Cancelled Cheque
                                                                             </label>
                                                                             <div class="col-md-3">
-                                                                                <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElemCheck">
+                                                                                <ul class="liststylenone nopaddingleft" id="tblAttachmentsElemCheck">
                                                                                     <li>
                                                                                         <div class="inputgroup">
                                                                                             <div class="att_input">
                                                                                                 <input type="file" class="form-control" tabindex="5" id="filecheck"
                                                                                                        onchange="checkfilesize(this)" />
-                                                                                                <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" style="text-align:left; text-decoration: none !important;"></a></span>
+                                                                                                <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone" ></a></span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </li>
@@ -582,7 +583,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 Payment Terms
                                                                             </label>
                                                                             <div class="col-md-9">
@@ -593,7 +594,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 Name of Bank
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -605,7 +606,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11 ">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 Bank A/c No
                                                                             </label>
                                                                             <div class="col-md-3 ">
@@ -627,7 +628,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 Account Holder Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -659,13 +660,13 @@
                                                                 </a>
                                                             </h4>
                                                         </div>
-                                                        <div id="collapse3" class="panel-collapse collapse" seqno="4" style="height: 0px;">
+                                                        <div id="collapse3" class="panel-collapse collapse noheight" seqno="4" >
                                                             <div class="panel-body">
                                                                 <div class="row">
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
                                                                             <div class="inputgroup">
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label txtalignleft">
                                                                                     MSME
                                                                                 </label>
                                                                                 <div class="col-md-3">
@@ -695,7 +696,7 @@
 
                                                                     <div class="form-group hideInput hide">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 MSME Udyam No.<span class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-3 xyz">
@@ -708,11 +709,11 @@
                                                                                     Attach MSME Udyam certificate<span class="required"> *</span>
                                                                                 </label>
                                                                                 <div class="col-md-3 xyz">
-                                                                                    <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem3">
+                                                                                    <ul class="liststylenone nopaddingleft" id="tblAttachmentsElem3">
                                                                                         <li>
                                                                                             <input type="file" class="form-control" tabindex="5" id="filemsme" name="filemsme"
                                                                                                    onchange="checkfilesize(this)" />
-                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" style="text-align:left; text-decoration: none !important;"></a></span>
+                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" class="txtleftnone" ></a></span>
                                                                                         </li>
                                                                                     </ul>
                                                                                 </div>
@@ -722,13 +723,13 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft" >
                                                                                 Last FY Turn Over
                                                                             </label>
 
                                                                             <div class="select_input_area">
                                                                                 <div class="col-md-1">
-                                                                                    <select class="form-control" id="currencyLastFiscalupdate" name="currencyLastFiscalupdate" style="padding:0px!important">
+                                                                                    <select class="form-control nopadding" id="currencyLastFiscalupdate" name="currencyLastFiscalupdate">
                                                                                         <option value="INR" selected data-i18n="inr">INR</option>
                                                                                         <option value="USD" data-i18n="usd">USD</option>
                                                                                         <option value="EUR" data-i18n="eur">EUR</option>
@@ -754,13 +755,13 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 2nd Last FY Turn Over
                                                                             </label>
 
                                                                             <div class="select_input_area">
                                                                                 <div class="col-md-1">
-                                                                                    <select class="form-control" id="currency2LastFiscalupdate" name="currency2LastFiscalupdate" style="padding:0px!important">
+                                                                                    <select class="form-control nopadding" id="currency2LastFiscalupdate" name="currency2LastFiscalupdate">
                                                                                         <option value="INR" selected>INR</option>
                                                                                         <option value="USD">USD</option>
                                                                                         <option value="EUR">EUR</option>
@@ -793,7 +794,7 @@
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="submit" class="btn btn-success">
-                                                        Update <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                                        Update <i class="m-icon-swapright m-icon-white marginleft5px" ></i>
                                                     </button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -817,12 +818,12 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="page-container mt-0" style="display:none">
+                                <div class="page-container mt-0 nodisplay">
 
-                                    <div class="alert alert-block alert-danger" id="companieserrordiv" style="display: none">
+                                    <div class="alert alert-block alert-danger" id="companieserrordiv" >
                                         <span id="sendcompanieserror"></span>
                                     </div>
-                                    <div class="alert alert-success" id="companiessuccessdiv" style="display: none">
+                                    <div class="alert alert-success" id="companiessuccessdiv" >
                                         <span id="sendcompaniessuccess"></span>
                                     </div>
                                     <form class="form-horizontal" role="form" id="frmprofilevendornewcompany">
@@ -837,15 +838,15 @@
                                                                 <select class="form-control" id="txtCompanies" name="txtCompanies" onchange="fnAddCustomers()"></select>
                                                             </div>
                                                         </div>
-                                                        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                                        <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                             <div id="divcompanieslist" class="portlet-body flip-scroll table-scrollable">
-                                                                <table style="width:100%;" id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                <table  id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content width100">
                                                                     <thead class="flip-content">
                                                                         <tr>
                                                                             <th width="20%">
                                                                                 <div class="col-md-10 checkbox-list">
-                                                                                    <label class="checkbox-inline" style="margin-left: -16px;">
-                                                                                        <!--<input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All-->#
+                                                                                    <label class="checkbox-inline checkboxinline1">
+                                                                                        #
                                                                                     </label>
                                                                                 </div>
                                                                             </th>
@@ -871,7 +872,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Selected Companies</th>
-                                                                        <th style="width:5px!important">#</th>
+                                                                        <th class="width5px">#</th>
                                                                     </tr>
                                                                 </thead>
                                                             </table>
@@ -882,7 +883,7 @@
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="button" class="btn btn-success" onclick="sendToCompanies()">
-                                                        Send <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                                        Send <i class="m-icon-swapright m-icon-white marginleft5px"></i>
                                                     </button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -902,7 +903,7 @@
     </div>
 
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -929,13 +930,13 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                    <div class="scroller scroller300" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="myproven">
 
         jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {

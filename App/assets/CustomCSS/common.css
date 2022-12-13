@@ -98,6 +98,10 @@ body {
     word-break: break-all !important;
 }
 
+.headstyle1 {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
 
 input#file3 {
     position: fixed;
@@ -237,6 +241,9 @@ tr, td {
 
 .margin30pxauto {
     margin: 30px auto
+}
+.margintop22px {
+    margin-top: 22px !important
 }
 .marginleft5px {
     margin-left: 5px !important
@@ -453,11 +460,21 @@ thead {
     text-decoration: none !important;
 }
 
+.txtleftbold {
+    text-align: left;
+    font-weight: bold
+}
+
 
 
 .txtpointernone {
     text-decoration: none;
     cursor: pointer !important;
+}
+.txtpointerleftnone {
+    text-align: left;
+    text-decoration: none !important;
+    cursor: pointer
 }
 
 
@@ -489,8 +506,17 @@ thead {
         right: 3%;
     }
 }
+.noheight {
+    height: 0px !important;
+}
 .margintop4px {
     margin-top: 4px;
+}
+.marginleft60px {
+    margin-left: 60px;
+}
+.nopadding {
+    padding: 0px !important;
 }
 .nopaddingleft {
     padding-left: 0px !important;
@@ -562,6 +588,9 @@ displayflexcentre {
 .scroller400 {
     height: 400px;
 }
+.scroller490 {
+    height: 490px;
+}
 .scroller496 {
     height: 496px;
 }
@@ -618,7 +647,18 @@ displayflexcentre {
 .width50 {
   width:50%!important ;
 }
-
+.width5 {
+    width: 5% !important;
+}
+.width10 {
+    width: 10% !important;
+}
+.width5px {
+    width: 5px !important;
+}
+.width120px {
+    width: 120px !important;
+}
 .width130px {
     width: 130px !important;
 }
@@ -638,14 +678,30 @@ displayflexcentre {
 .width380px {
     width: 380px !important 
 }
+.width400px {
+    width: 400px !important
+}
+.width480px {
+    width: 480px !important
+}
+.width500px {
+    width: 500px !important
+}
 .width800px {
     width: 800px !important 
 }
 .width920px {
     width: 920px !important
 }
+.width620px {
+    width: 620px !important
+}
 
 .navbar-brand {
+    padding: 4px !important;
+}
+
+.navbar-language {
     padding: 4px !important;
 }
 
@@ -681,6 +737,21 @@ displayflexcentre {
     color: darkblue;
 }
 
+.labelstyle6 {
+    text-align: left;
+    font-weight: 600;
+}
+
+.labelstyle7 {
+    color: red;
+    font-size: 17px !important;
+}
+
+.labelstyle8 {
+    color: red;
+    font-size: 17px !important;
+    text-align: left !important;
+}
 .colorred {
     color: red;
 }
@@ -703,6 +774,9 @@ displayflexcentre {
 
 .font13px {
     font-size: 13px !important;
+}
+.font17px {
+    font-size: 17px !important;
 }
 
 .width150px {
