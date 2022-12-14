@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -31,10 +31,13 @@ if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+    var Type = getUrlVarsURL(decryptedstring)["Type"];
     $('#hdnRfqID').val(RFQID);
     var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
     jQuery("#txtrfirfqsubject").val((sub) + ' - ' + RFQID)//decodeURIComponent
-
+    if (Type != undefined && Type.toLowerCase() == "aw") {
+        $('#btn_commercial').addClass('hide');
+    }
     fetchReguestforQuotationDetails()
     FetchRFQVersion();
     fetchAttachments();
@@ -102,14 +105,36 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             // ShowPrice = data[0].ShowPrice[0].ShowQuotedPrice;
-            sessionStorage.setItem('ShowPrice', '');
+            var ShowPrice = 'N'
+            var _CurrentDate = new Date();
 
+            var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
+
+            if (_rfqBidType != 'Open') {
+                if (bidopeningdate != null || bidopeningdate != '') {
+                    if (_RFQOpenDate <= _CurrentDate) {
+                        ShowPrice = 'Y';
+                        $('#btnPDF').show()
+                    }
+                }
+                else {
+                    ShowPrice = 'N';
+                    $('#btnPDF').hide()
+                }
+            }
+            else {
+                ShowPrice = 'Y';
+                $('#btnPDF').show()
+
+            }
+            // sessionStorage.setItem('ShowPrice', '');
+            sessionStorage.setItem('ShowPrice', ShowPrice);
 
             if (data[0].vendorNames.length > 0) {
                 Vendor = data[0].vendorNames;
                 $('#displayTable').show();
                 $('#btnExport').show()
-                $('#btnPDF').show()
+                //$('#btnPDF').show()
                 $("#btnDownloadFile").hide()
                 if ($('#hdnUserID').val() == sessionStorage.getItem('UserID')) {
                     $('#cancl_btn').show();
@@ -767,12 +792,13 @@ function fetchrfqcomprative() {
                 jQuery("#tblRFQComprativeForExcelQ").append(strExcelQ);
 
                 if ($("#ddlrfqVersion option:selected").val() == 99) {
-
+                    $("#btn_commercial").removeClass('hide');
                     $("#btn_techmapaaprover").addClass('hide');
                     $(".lambdafactor").addClass('hide');
 
                 }
                 else {
+                    $("#btn_commercial").addClass('hide');
                     if ($("#ddlrfqVersion option:selected").val() == '0') {
                         $("#btn_techmapaaprover").show()
                     }
@@ -782,36 +808,54 @@ function fetchrfqcomprative() {
 
                 }
 
+                //** check if RFQ is awarded then commercial button hidden
+                if (Type != undefined && Type.toLowerCase() == "aw") {
+                    $("#btn_commercial").addClass('hide');
+                }
+                //** check if commercial approval initiated
+                if (data[0].commApprover[0].isFwdCommApp == "Y") {
+                    $('#btn_commercial').attr('disabled', 'disabled')
+                    $('#btn_commercial').text('Approval Pending')
+                }
+                else {
+                    $('#btn_commercial').removeAttr('disabled')
+                    $('#btn_commercial').text('Commercial Approval')
+                }
+
                 //** check if technical approval initiated
                 if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() == "rfq") {
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
-
+                    $('#btn_commercial').hide();
                 }
                 else if (data[0].techApprover[0].isFwdTechApp == "C" && TechnicalApproval.toLowerCase() == "rfq") {
-
+                    $('#btn_commercial').show();
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Technical Approved')
                 }
                 else if (data[0].techApprover[0].isFwdTechApp == "N" && TechnicalApproval.toLowerCase() == "rfq") {
-
+                    $('#btn_commercial').hide();
                     $('#btn_techmapaaprover').removeAttr('disabled')
                     $('#btn_techmapaaprover').text('Technical Approval')
                 }
                 else if (data[0].techApprover[0].isFwdTechApp == "Y" && TechnicalApproval.toLowerCase() != "rfq") { //|| allvendorresponse=='N'
                     $('#btn_techmapaaprover').attr('disabled', 'disabled')
                     $('#btn_techmapaaprover').text('Tech Approval Pending')
-
+                    $('#btn_commercial').show();
                 }
                 else {
+                    $('#btn_commercial').show();
                     $('#btn_techmapaaprover').removeAttr('disabled')
                     $('#btn_techmapaaprover').text('Technical Approval')
                 }
-
-
+                if (ShowPrice == "N") {
+                    $('#btn_commercial').hide();
+                }
+                else {
+                    $('#btn_commercial').show();
+                }
             }
             else {
-
                 $('#displayTable').show();
                 $('#displayComparativetabs').show();
                 $('<tr><td style="color:red !important; text-align: center;" colspan="5"> No results </td></tr>').appendTo('#tblRFQComprative');
@@ -842,7 +886,7 @@ function fetchrfqcomprative() {
 
 var form = $('#RFIRFQREport');
 var formApprover = $('#frmMapApprover');
-
+var formCommApprover = $('#frmcommMapApprover');
 function formvalidate() {
 
     form.validate({
@@ -893,24 +937,22 @@ function formvalidate() {
             }
             else {
 
-                fetchReguestforQuotationDetails();
-                if (sessionStorage.getItem('CustomerID') == "32" || sessionStorage.getItem('CustomerID') == "29") {
-                    fetchRFQPPCApproverStatus($('#hdnRfqID').val());
-                }
-                else {
-                    fetchRFQApproverStatus($('#hdnRfqID').val());
-                }
-                fetchAttachments();
-                fetchApproverRemarks('C');
+                //fetchReguestforQuotationDetails();
+                /* if (sessionStorage.getItem('CustomerID') == "32" || sessionStorage.getItem('CustomerID') == "29") {
+                     fetchRFQPPCApproverStatus($('#hdnRfqID').val());
+                 }
+                 else {
+                     fetchRFQApproverStatus($('#hdnRfqID').val());
+                 }*/
+                //fetchAttachments();
+                //fetchApproverRemarks('C');
 
                 fetchAzPPcFormDetails();
-                fetchRFQPPCApproverStatus($('#hdnRfiRfqID').val());
                 fetchrfqcomprative()
             }
         }
 
     });
-
     $("#frmReInvite").validate({
 
         doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -1017,14 +1059,147 @@ function formvalidate() {
 
         }
     });
-}
 
+    // Forward to Commercial Approver Validation
+    formCommApprover.validate({
+
+        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+            txtfwdToCommApproverrem: {
+                required: true
+            }
+        },
+
+        messages: {
+
+        },
+
+        invalidHandler: function (event, validator) {
+        },
+
+        highlight: function (element) {
+            $(element).closest('.col-md-9').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.col-md-9').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            fnSendActivityToCommercial();
+        }
+
+    });
+}
+function fnSendActivityToCommercial() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var Approvers = {
+        "ApproverType": "C",
+        "FromUserId": sessionStorage.getItem('UserID'),
+        "Remarks": $('#txtfwdToCommApproverrem').val(),
+        "RFQID": parseInt($('#hdnRfqID').val()),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ActionType": "Forward",
+        "Action": 'Forward',
+        "Vendors": '',
+        "AwardQuery": ''
+    }
+    console.log(JSON.stringify(Approvers))
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQCommercialActivity",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Approvers),
+        dataType: "json",
+        success: function (data) {
+
+            $('#msgSuccesscommApp').show();
+            $('#msgSuccesscommApp').html('RFQ Sent to Commercial Approver successfully!');
+            Metronic.scrollTo($('#msgSuccesscommApp'), -200);
+            $('#msgSuccesscommApp').fadeOut(7000);
+            $('#txtfwdToCommApproverrem').val('')
+            // $('#btn_commercial').attr('disabled', 'disabled')
+            $("#btn_commercial").addClass('hide');
+            jQuery.unblockUI();
+            setTimeout(function () {
+                $("#FwdCommercialApprover").modal('hide');
+                fetchrfqcomprative();
+                FetchInvitedVendorsForeRFQ();
+            }, 1000)
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    });
+}
+function CloseForwardpopup() {
+    $('#FwdCommercialApprover').modal('hide')
+}
+function FetchInvitedVendorsForeRFQ() {
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            if (data.length > 0) {
+                $('#tblVendorSummary tbody').empty();
+                $('#displayVendorTable').show();
+
+                for (var i = 0; i < data.length; i++) {
+
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + fnConverToLocalTime(data[i].responseDate) + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    if (data[i].rqStatus.toLowerCase() != 'close' && data[i].rqStatus.toLowerCase != 'regretted') {
+
+                    }
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
 function fetchAzPPcFormDetails() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + $("#hdnRfqID").val() + "&BidID=0",
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + $("#hdnRfqID").val() + "&BidID=0&nfaID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1038,6 +1213,7 @@ function fetchAzPPcFormDetails() {
                 $('#tabApp').removeClass('hide')
                 $('#tabApp').addClass('active')
                 $('#LiViewPPCApproval').addClass('active')
+                $('#Licommercial').removeClass('active')
                 $('#LiViewPPCApproval').removeClass('hide')
                 $('#tab_0').addClass('hide')
                 $('#btn_fillPPCForm').attr('disabled', 'disabled')
@@ -1055,7 +1231,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#lblissuingrfqtovendor').html(data[0].azureDetails[0].issuingRFQtoVendor);
                 jQuery('#lblenquirynotsent').html(data[0].azureDetails[0].enquirynotsentvendors);
 
-                jQuery('#lblenquiryissuedon').html(data[0].azureDetails[0].enquiryIssuedOn);
+                jQuery('#lblenquiryissuedon').html(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
                 jQuery('#lblenquiryissuedthrough').html(data[0].azureDetails[0].enquiryIssuedthrogh);
                 jQuery('#lbllowestpriceoffer').html(data[0].azureDetails[0].recomOrderLowPriceOffer == 'Y' ? 'Yes' : 'No');
                 jQuery('#lblsupportedenclosure').html(data[0].azureDetails[0].recomSuppEnclosure);
@@ -1122,19 +1298,19 @@ function fetchAzPPcFormDetails() {
                 }
             }
             else {
-                if ($("#ddlrfqVersion option:selected").val() != 99) {
+                /*if ($("#ddlrfqVersion option:selected").val() != 99) {
                     $('#btn_fillPPCForm').attr('disabled', 'disabled')
                 }
                 else {
 
                     $('#btn_fillPPCForm').removeAttr('disabled')
-                }
-
+                }*/
                 $('#tab_0').removeClass('hide')
                 $('#tabApp').addClass('hide')
                 $('#tabApp').removeClass('active')
                 $('#LiViewPPCApproval').removeClass('active')
                 $('#LiViewPPCApproval').addClass('hide')
+                $('#Licommercial').addClass('active')
             }
         },
         error: function (xhr, status, error) {

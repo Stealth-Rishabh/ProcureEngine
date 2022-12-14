@@ -65,13 +65,13 @@ jQuery("#txtrfirfqsubject").typeahead({
 
             $('#hdnRfqID').val(map[item].rfqid);
             fetchReguestforQuotationDetails()
-
-            if (sessionStorage.getItem('CustomerID') == "32") {
+            fetchRFQApproverStatus(map[item].rfqid);
+            /*if (sessionStorage.getItem('CustomerID') == "32") {
                 fetchRFQPPCApproverStatus(map[item].rfqid);
             }
             else {
                 fetchRFQApproverStatus(map[item].rfqid);
-            }
+            }*/
             FetchRFQVersion();
             fetchAttachments();
             fetchApproverRemarks('C');
@@ -166,6 +166,7 @@ function fetchApproverRemarks(Type) {
             $('#tblCommercialApproval').empty()
             $('#tblCommercialApprovalprev').empty()
             if (data.length > 0) {
+
                 $('#tblCommercialApproval').removeClass('hide')
                 $('#tblCommercialApprovalprev').removeClass('hide')
                 $('#tblCommercialApproval').append('<tr><th>Action</th><th>For</th><th>Remarks</th><th  class=hide>Action Type</th><th>Date</th></tr>')
@@ -389,6 +390,7 @@ function fetchReguestforQuotationDetails() {
                 _rfqBidType = RFQData[0].general[0].rfqBidType;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem('RFQBidType', _rfqBidType)
+
                 if (_rfqBidType == 'Closed') {
                     $('#div_bidopendate').show()
                     if (bidopeningdate != null || bidopeningdate != '') {
