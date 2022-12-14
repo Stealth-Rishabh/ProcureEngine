@@ -1811,8 +1811,8 @@ function checkExcelUpload(fileid) {
 //abheedev bug 443 end
 //htmlencode
 function StringEncodingMechanism(maliciousText) {
-    debugger;
-    var returnStr = maliciousText.replaceAll('&', '&amp;');
+    var returnStr = maliciousText;
+    returnStr = returnStr.replaceAll('&', '&amp;');
     returnStr = returnStr.replaceAll('<', '&lt;');
     returnStr = returnStr.replaceAll('>', '&gt;');
     returnStr = returnStr.replaceAll('"', '&quot;');
@@ -1823,8 +1823,8 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-    debugger;
-    var returnStr = returnStr.replaceAll('&lt;', '<');
+    var returnStr = maliciousText;
+    returnStr = returnStr.replaceAll('&lt;', '<');
     returnStr = returnStr.replaceAll('&gt;', '>');
     returnStr = returnStr.replaceAll('&quot;', '"');
     returnStr = returnStr.replaceAll("&#x27;", "'");

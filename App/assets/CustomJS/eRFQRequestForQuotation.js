@@ -2082,8 +2082,8 @@ function editRow(icount) {
 
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
-    var Descriptiontxt = StringDecodingMechanism$("#desc" + icount).html().replace(/<br>/g, '\n')
-    var RFQRemark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Descriptiontxt = StringDecodingMechanism($("#desc" + icount).html().replace(/<br>/g, '\n'))
+    var RFQRemark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'))
 
     //sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
 
