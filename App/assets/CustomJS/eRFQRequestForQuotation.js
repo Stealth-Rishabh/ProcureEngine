@@ -621,7 +621,7 @@ var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
 function InsUpdRFQDEtailTab1() {
-
+    debugger
     var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfqdescription").val());
 
@@ -655,6 +655,7 @@ function InsUpdRFQDEtailTab1() {
     var showP = 'Y';
     if (rowCounttech >= 1) {
         $("#tblapproverstech >tbody >tr").each(function () {
+            debugger
             var this_row = $(this);
             showP = 'Y';
 
@@ -1512,6 +1513,7 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
+    debugger
     var num = 0;
     var maxinum = 0;
     var status = "true";
@@ -1528,6 +1530,7 @@ function fnApproversQuery() {
     }
     else {
         $("#tblapproverstech tr:gt(0)").each(function () {
+            debugger
             var this_row = $(this);
 
             if ($.trim(this_row.find('td:eq(3)').html()) == sessionStorage.getItem('hdnApproverid')) {
@@ -1608,6 +1611,7 @@ function fnApproversQuery() {
             num = 0;
             maxinum = 0;
             $("#tblapproverstech >tbody>tr").each(function () {
+                debugger
                 var this_rowtech = $(this);
                 //num = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
                 num = (this_rowtech.closest('tr').attr('id')).substring(11, (this_rowtech.closest('tr').attr('id')).length)
@@ -2399,7 +2403,7 @@ function RFQInviteVendorTab3() {
 
 function fnsubmitRFQ() {
 
-
+    debugger
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
 
@@ -2590,6 +2594,7 @@ function ValidateVendor() {
 }
 
 function fetchReguestforQuotationDetails() {
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -2600,7 +2605,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            debugger
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
@@ -2629,7 +2634,7 @@ function fetchReguestforQuotationDetails() {
             jQuery('#txtstartdatettime').val(dtst);
             jQuery('#txtenddatettime').val(dtend);
             $("#cancelBidBtn").show();
-
+          
             if (RFQData[0].general[0].rfqTermandCondition != '') {
                 $('#file1').attr('disabled', true);
                 $('#closebtn').removeClass('display-none');

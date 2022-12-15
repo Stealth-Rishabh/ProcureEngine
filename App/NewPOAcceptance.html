@@ -75,14 +75,14 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <!--<img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />-->
+                <a class="navbar-brand" href="index.html" >
+                    
                 </a>
 
             </div>
             <!--@abheedev-->
             <div class="changeLanguage">
-                <select class="navbar-language" href="index.html" style="padding:4px !important;">
+                <select class="navbar-language" href="index.html">
                     <option data-locale="en" value="en">English</option>
                     <option data-locale="fr" value="fr">French</option>
 
@@ -95,8 +95,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -109,7 +111,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -172,7 +174,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="alert alert-block alert-danger" id="errordiv" style="display: none">
+                                <div class="alert alert-block alert-danger" id="errordiv">
                                     <span id="error"></span>
                                 </div>
                                 <!--Begin Form -->
@@ -186,7 +188,7 @@
                                                 PO ID:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="POID" class="control-label" style="text-align:left;font-weight:600;">
+                                                <label id="POID" class="control-label labelstyle6" >
                                                 </label>
 
                                             </div>
@@ -197,7 +199,7 @@
                                                 PO Status:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="POStatus" class="control-label" style="text-align:left;font-weight:600;">
+                                                <label id="POStatus" class="control-label labelstyle6">
                                                 </label>
 
                                             </div>
@@ -208,7 +210,7 @@
                                                 Date:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="PODate" class="control-label" style="text-align:left">
+                                                <label id="PODate" class="control-label txtalignleft">
                                                 </label>
 
 
@@ -240,22 +242,22 @@
                                                 Remarks:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="txtvendorremarks" class="control-label" style="text-align:left" onkeyup="replaceQuoutesFromString(this)"></label>
+                                                <label id="txtvendorremarks" class="control-label txtalignleft"  onkeyup="replaceQuoutesFromString(this)"></label>
 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <h3 class="form-section hide" id="HDHistory">History</h3>
-                                            <div class="col-md-12 hide" id="frmdivforward" style="height: 150px; overflow-y:scroll;">
+                                            <div class="col-md-12 hide modalbody4" id="frmdivforward">
                                                 <form action="#" id="form1" class="form-horizontal">
                                                     <div class="form-body">
-                                                        <div class="table-scrollable" style="overflow: auto">
+                                                        <div class="table-scrollable overflowauto">
                                                             <table class="table table-bordered" id="tblremarksforward">
                                                                 <thead>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td colspan="15" style="text-align: center; color: Red">
+                                                                        <td colspan="15" class="norecord">
                                                                             No record's found
                                                                         </td>
                                                                     </tr>
@@ -301,7 +303,7 @@
                                                         <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
 
                                                     </div>
-                                                    <div class="col-md-2" style="margin-top:22px!important">
+                                                    <div class="col-md-2 margintop22px" >
                                                         <button type="submit" class="btn btn-success" id="btnacceptrejectPO">Submit</button>
                                                     </div>
 
@@ -389,7 +391,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2">
                         <h4 class="ppolicy-head4">RFQ Details</h4>
                         <p class="ppolicy-text">
 
@@ -424,53 +426,10 @@
             </div>
         </div>
     </div>
-    <script>
+    <script nonce="npacc">
         jQuery(document).ready(function () {
             callPagejs('NewPOAcceptance.js');
-            $('.maxlength').maxlength({
-                limitReachedClass: "label label-danger",
-                alwaysShow: true
-            });
-
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-
-            var param = getUrlVars()["param"]
-            var decryptedstring = fndecrypt(param);
-            var POID = getUrlVarsURL(decryptedstring)["POHID"];
-            if (POID == null)
-                sessionStorage.setItem('hddnPOHID', 0)
-            else {
-
-                sessionStorage.setItem('hddnPOHID', POID)
-                setTimeout(function () {
-                    fetchPODetails('Attachment');
-                    fetchPODetails('Details');
-                    FetchRecomendedVendor();
-                    $('#POID').html(POID)
-                }, 1000)
-            }
-            Metronic.init();
-            Layout.init();
-            formvalidate();
-
-            setCommonData();
-
+          
         });
 
 

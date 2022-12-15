@@ -1,4 +1,40 @@
-﻿function fetchReguestforQuotationDetails() {
+﻿jQuery(document).ready(function () {
+  
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+
+    var version = 0;
+    if (sessionStorage.getItem('RFQVersionId') > 0) {
+        version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
+
+    }
+    sessionStorage.setItem('hddnRFQID', _RFQid)
+    fetchReguestforQuotationDetails();
+    fetchRFIParameteronload(getUrlVarsURL(decryptedstring)["Ver"]);
+
+    Metronic.init();
+    setCommonData();
+
+});
+
+function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
     jQuery.ajax({

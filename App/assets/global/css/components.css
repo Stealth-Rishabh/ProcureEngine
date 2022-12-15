@@ -958,7 +958,7 @@ Customized Bootstrap Buttons
 /* Default buttons */
 .btn {
   border-width: 0;
-  padding: 7px 14px;
+  padding: 7px 13px;
   font-size: 14px;
   outline: none !important;
   background-image: none !important;
@@ -2224,8 +2224,8 @@ input[type="color"].spinner {
 
 /* Form labels */
 label {
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 13px;
 }
 
 /* Static form control */

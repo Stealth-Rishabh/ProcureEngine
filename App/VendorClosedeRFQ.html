@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -35,22 +35,65 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+   
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+
+    <!--translating file for i18n plugin - abhi@dev-->
+
+    <script type="module" src="assets/plugins/jquery.i18n/CLDRPluralRuleParser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.messagestore.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.fallbacks.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.language.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.parser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/history.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/url.js"></script>
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <!--<img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />-->
+                <a class="navbar-brand" href="index.html" >
+                   
                 </a>
 
             </div>
             <!--@abheedev multilingual-->
             <div class="changeLanguage">
-                <select class="navbar-language" href="index.html" style="padding:4px !important;">
+                <select class="navbar-language" href="index.html" >
                     <option data-locale="en" value="en">English</option>
                     <option data-locale="fr" value="fr">French</option>
 
@@ -62,14 +105,13 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                          
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
-                        <!--<ul class="dropdown-menu">
-                            <li><a href="MyProfile.html" class="hide"><i class="icon-user"></i>My Profile </a></li>
-                            <li><a href="javascript:;" id="logOut_btn" class="hide"><i class="fa fa-key"></i>Log Out </a></li>
-                        </ul>-->
+                       
                     </li>
                 </ul>
             </div>
@@ -77,7 +119,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -135,8 +177,8 @@
                                 <div class="caption" data-i18n="captionrfq">
                                     RFQ Closed Details
                                 </div>
-                                <div class="actions" style="display:flex; align-items:center;">
-                                    <a id="btn_ReSubmit" href="javascript:;" class="btn btn-sm green-haze" onclick="ReSubmitQuotes()" style="margin-top: 1px;"><i class="fa fa-arrow-right"></i> <span data-i18n="modifyquotes">Modify Quotes</span>  </a>
+                                <div class="actions displayflexaligncentre" >
+                                    <a id="btn_ReSubmit" href="javascript:;" class="btn btn-sm green-haze margintop1px" onclick="ReSubmitQuotes()" ><i class="fa fa-arrow-right"></i> <span data-i18n="modifyquotes">Modify Quotes</span>  </a>
                                 </div>
 
                             </div>
@@ -240,7 +282,7 @@
 
                                                 <label class="control-label col-md-4" data-i18n="termcondition">Term & Condition:</label>
                                                 <div class="col-md-8">
-                                                    <a class="form-control-static" href="javascript:;" onclick="DownloadFile(this)" id="filepthtermsPrev" style="text-decoration: none;">
+                                                    <a class="form-control-static notextdeco" href="javascript:;" onclick="DownloadFile(this)" id="filepthtermsPrev" >
                                                     </a>
                                                 </div>
 
@@ -264,8 +306,8 @@
                                                     <table class=" table table-striped table-bordered table-hover" id="tblRFQtechqueryPrev"></table>
                                                 </div>
                                             </div>
-                                            <div class="form-group" style="padding: 10px 5px;">
-                                                <div class="col-md-12" style="text-align: center">
+                                            <div class="form-group padding105px" >
+                                                <div class="col-md-12 txtaligncentre" >
                                                     <button id="btnsubmitquery" type="button" onclick="fnsubmitQuery()" class="btn green">
                                                         Submit
                                                     </button>
@@ -337,7 +379,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <h4 class="ppolicy-head4">RFQ Details</h4>
                         <p class="ppolicy-text">
 
@@ -394,115 +436,20 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <!--<div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
-
-                    </div>-->
+                  
                 </div>
             </div>
         </div>
     </div>
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/VendorClosedeRFQ.js"></script>
-
-    <!--translating file for i18n plugin - abhi@dev-->
-
-    <script type="module" src="assets/plugins/jquery.i18n/CLDRPluralRuleParser.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.messagestore.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.fallbacks.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.language.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.parser.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/history.js"></script>
-    <script type="module" src="assets/plugins/jquery.i18n/url.js"></script>
-
-    <!--<script>
+    
+    <script nonce="pev3">
         jQuery(document).ready(function () {
-
-
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            var param = getUrlVars()["param"]
-            var decryptedstring = fndecrypt(param)
-
-            var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
-            var version = getUrlVarsURL(decryptedstring)["Ver"];
-            var Type = getUrlVarsURL(decryptedstring)["Type"];
-
-            if (_RFQid == null)
-                sessionStorage.setItem('hddnRFQID', 0)
-            else {
-
-                sessionStorage.setItem('RFQVersionId', version)
-                sessionStorage.setItem('hddnRFQID', _RFQid)
-                if ((Type != undefined) || Type == "Query" && sessionStorage.getItem('RFQVersionId') == "00") {
-                    GetQuestions();
-
-                }
-                else {
-                    GetSubmittedQuery();
-                }
-                fetchReguestforQuotationDetails();
-                setTimeout(function () {
-                    fetchRFIParameteronload(version)
-                }, 1000);
-
-                fetchRFQResponse('Question', version);
-                fetchRFQResponse('Attachment', version);
-
-            }
-            Metronic.init();
-            Layout.init();
-            multilingualLanguage();
-            setCommonData();
+            callPagejs('VendorClosedeRFQ.js');  
 
         });
 
 
-    </script>-->
+    </script>
 
 </body>
 
