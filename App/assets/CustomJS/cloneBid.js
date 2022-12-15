@@ -130,7 +130,7 @@ function fetchBidDetailsForCloning() {
                 for (var i = 0; i < data.length; i++) {
                     var details = (data[i].bidDetails).replace(/(\r\n|\n|\r)/gm, "");
                    
-                    $("<tr><td>" + data[i].eventNo + "</td><td>" + data[i].bidSubject + "</td><td>" + data[i].bidDetails + "</td><td>" + data[i].bidDate + "</td><td>" + data[i].bidTime + "</td><td>" + data[i].status + "</td><td><button class=\"btn btn-sm btn-primary\" type=\"button\" Onclick=\"confirmCloningBid(\'" + data[i].bidId + "'\,\'" + data[i].bidSubject + "'\,\'" + details + "'\,\'" + data[i].bidDate + "'\,\'" + data[i].eventNo + "'\)\" >Clone</button></td></tr>").appendTo('#tblBidDetails');
+                    $("<tr><td>" + data[i].eventNo + "</td><td>" + data[i].bidSubject + "</td><td>" + data[i].bidDetails + "</td><td>" + fnConverToLocalTime(data[i].bidDate) + "</td><td>" + data[i].status + "</td><td><button class=\"btn btn-sm btn-primary\" type=\"button\" Onclick=\"confirmCloningBid(\'" + data[i].bidId + "'\,\'" + data[i].bidSubject + "'\,\'" + details + "'\,\'" + fnConverToLocalTime(data[i].bidDate) + "'\,\'" + data[i].eventNo + "'\)\" >Clone</button></td></tr>").appendTo('#tblBidDetails');
                 }
 
             } else {

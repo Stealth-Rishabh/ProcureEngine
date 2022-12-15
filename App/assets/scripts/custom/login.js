@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -148,15 +148,15 @@ var Login = function () {
 
     function validateUser() {
 
-     //  sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+       sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
         debugger;
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-       // lastPart = 'vendor'
+        //lastPart = 'vendor'
         var LinkUrl = window.location.href;
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
@@ -183,7 +183,7 @@ var Login = function () {
                             isSuccess = false;
                             break;
                         case "Your account has been Locked. Please contact administrator.":
-                            successMsg = "You are accessing an Invalid URL."
+                            successMsg = "Your account has been Locked. Please contact administrator."
                             isSuccess = false;
                             break;
                         case "You have entered an incorrect Password.":

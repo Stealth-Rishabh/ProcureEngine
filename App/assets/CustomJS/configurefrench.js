@@ -1148,7 +1148,7 @@ function ConfigureBidInsfrenchTab2() {
                 targetPrice = $.trim($('#TP' + i).text());
             }
             
-
+            var _cleanString3 = StringEncodingMechanism($.trim($('#itemname' + i).text()));
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim($('#itemcode' + i).text()),

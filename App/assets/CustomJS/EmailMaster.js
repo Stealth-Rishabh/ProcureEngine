@@ -119,6 +119,7 @@ function emailMaster() {
    // var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let regex = /&(nbsp|amp|quot|lt|gt);/g;
     let mailsubdata = mailsubdata1.replace(regex, "");
+    let mailsubdata = $('#emailSubject').val().replace(regex, "");
     var emailBody_data = CKEDITOR.instances['emailBody'].getData();
     var mailbodydata1 = emailBody_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let mailbodydata = mailbodydata1.replace(regex, "");
