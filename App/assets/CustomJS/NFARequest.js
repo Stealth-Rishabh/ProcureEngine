@@ -1,3 +1,4 @@
+$("#cancelNFABtn").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
@@ -23,13 +24,13 @@ if (window.location.search) {
     else {
         $('#divreverted').addClass('hide')
     }
-    setTimeout(function () {
-        GetOverviewmasterbyId(idx);
-    }, 1000)
+    GetOverviewmasterbyId(idx);
 }
 
-$("#cancelNFABtn").hide();
-$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
+function cancelbid() {
+    CancelBidDuringConfig(idx, 'NFA');
+}
+//$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
@@ -43,6 +44,10 @@ jQuery(document).ready(function () {
         allowMinus: false,
         'removeMaskOnSubmit': true
 
+    });
+    $('.MaxLength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
     });
 
 });
@@ -112,7 +117,7 @@ var FormWizard = function () {
             }
 
             form.validate({
-                
+
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
 
                 errorElement: 'span', //default input error message container
@@ -157,9 +162,6 @@ var FormWizard = function () {
                     txtBudget: {
                         minlength: 1,
                         maxlength: 18//3
-                    },
-                    txtProjectName: {
-                        required: true
                     }
 
                 },
@@ -296,14 +298,26 @@ var FormWizard = function () {
 
                     var flag = "T";
 
-                   
+
 
                     if (index == 1) {
 
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
-
+                        if ($("#ddlCategory").val() == 1) {
+                            $('#txtProjectName').val('');
+                            $('#txtProjectName').rules('add', {
+                                required: false
+                            });
+                            $(".isProject").hide();
+                        }
+                        else {
+                            $(".isProject").show();
+                            $('#txtProjectName').rules('add', {
+                                required: true
+                            });
+                        }
                         if (form.valid() == false) {
                             form.validate();
                             $('.alert-danger').show();
@@ -322,6 +336,13 @@ var FormWizard = function () {
                             $('#form_wizard_1').find('.button-previous').hide();
                             return false;
                         }
+                        else if ((sessionStorage.getItem("hdnEventrefId") == '0' || $('#txtEventref').val() == "") && $('#ddlEventType').val() != 0) {
+                            $('.alert-danger').show();
+                            $('#spandanger').html('Please Select Event Details Properly');
+                            Metronic.scrollTo($(".alert-danger"), -500);
+                            $('.alert-danger').fadeOut(8000);
+                            return false;
+                        }
                         else {
                             Savedata();
                             GetNfaOverviewParams();
@@ -338,7 +359,7 @@ var FormWizard = function () {
                     }
                     //abheedev bug 385 
                     else if (index == 2) {
-                      
+
                         form.validate();
 
                         // abheedev backlog 286 start
@@ -363,24 +384,22 @@ var FormWizard = function () {
                             $('.alert-danger').fadeOut(5000);
                             return false;
                         }
-                       
+
                         if (flag == "T") {
-                            
-                            
+
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                            // abheedev backlog 286 end
                         }
                     }
-                    //abheedev bug 385 end
+
                     handleTitle(tab, navigation, index);
                     if (ApproverCtr === 0)
                         $('.button-submit').hide();
 
                 },
-                //abheedev 24/11/2022
+                //Pooja 24/11/2022
                 onPrevious: function (tab, navigation, index) {
                     $("#tblNFAOverviewParam tr:gt(0)").each(function () {
                         var this_row = $(this);
@@ -433,16 +452,16 @@ var FormWizard = function () {
 $("#ddlCategory").on('change', function () {
     if ($(this).val() == 1) {
         $('#txtProjectName').val('');
-         $('#txtProjectName').rules('add', {
-             required: false
-         });
+        $('#txtProjectName').rules('add', {
+            required: false
+        });
         $(".isProject").hide();
     }
     else {
         $(".isProject").show();
-         $('#txtProjectName').rules('add', {
-             required: true
-         });
+        $('#txtProjectName').rules('add', {
+            required: true
+        });
     }
 });
 function FetchCurrency(CurrencyID) {
@@ -518,28 +537,27 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-       
+
             if (res.result.length > 0) {
+                $("#txtEventref").val(res.result[0].eventReftext);
+                $("#txtTitle").val(res.result[0].nfaSubject);
+                $("#txtNFADetail").val(res.result[0].nfaDescription);
+                $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
                     GetEventRefData();
-                    $("#txtEventref").val(res.result[0].eventReftext);
-                    $("#txtTitle").val(res.result[0].nfaSubject);
-                    $("#txtNFADetail").val(res.result[0].nfaDescription);
-                    $("#ddlEventType").val(res.result[0].eventID);
+                    CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
                     sessionStorage.setItem('hdnEventForID', res.result[0].bidForID);
-                }, 900)
-
+                }, 900);
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
+
                 //abheedev bug385 start
-                $("#txtAmountFrom").val((res.result[0].nfaAmount).toLocaleString(sessionStorage.getItem("culturecode")));
-                $("#txtBudget").val((res.result[0].nfaBudget).toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
-                CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
-
 
 
                 if (res.result[0].nfaCategory == 1) {
@@ -572,16 +590,17 @@ function GetOverviewmasterbyId(idx) {
 var objEventData = [];
 
 $("#ddlEventType").on("change", function () {
+    $("#txtEventref").val('');
+    $("#txtTitle").val('');
+    $("#txtNFADetail").val('');
+    sessionStorage.setItem("hdnEventrefId", 0);
     GetEventRefData();
 
 })
 function GetEventRefData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var EventTypeId = $("#ddlEventType option:selected").val();
-    $("#txtEventref").val('');
-    $("#txtTitle").val('');
-    $("#txtNFADetail").val('');
-    sessionStorage.setItem("hdnEventrefId", 0);
+
     var url = "NFA/FetchNFAEventRef?CustomerId=" + parseInt(CurrentCustomer) + "&EventTypeid=" + parseInt(EventTypeId);
 
     var getData = callajaxReturnSuccess(url, "Get", {})
@@ -759,15 +778,24 @@ function addmoreattachments() {
     else {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-        rowAttach = rowAttach + 1;
 
+        var num = 0;
+        var maxinum = -1;
+        $("#tblAttachments >tbody>tr").each(function () {
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+        rowAttach = parseInt(maxinum) + 1;
 
         var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         str += '<td class=hide>' + attchname + '</td>'
 
         str += '<td class=style="width:47%!important"><a id=aeRFQFile' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
 
-        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach + ',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
+        str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach + ',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
         fnUploadFilesonAzure('fileToUpload1', attchname, 'NFAOverview/' + parseInt(idx));
 
@@ -777,14 +805,10 @@ function addmoreattachments() {
 
     }
 };
-function deleteattachrow(rowid, rowidPrev, filename, aID, srno) {
+function deleteattachrow(rowid, filename, aID, srno) {
 
-    rowAttach = rowAttach - 1;
+
     $('#' + rowid.id).remove();
-    $('#' + rowidPrev.id).remove();
-
-
-
     ajaxFileDelete('', '', filename, 'eRFQAttachment', aID, srno)
 };
 
@@ -899,7 +923,6 @@ sessionStorage.setItem("hdnNfaOverviewIdx", 0);
 $("#txtDetails").typeahead({
     source: function (query, process) {
         var data = NFAOverviewDetails;
-        
         usernames = [];
         map = {};
         var username = "";
@@ -992,6 +1015,7 @@ $("#txtProjectName").on("keyup", function () {
 
 //abheedev backlog 286
 function Savedata() {
+
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1224,7 +1248,6 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function FetchMatrixApprovers() {
-    
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
     var groupId = $('#ddlPurchasegroup option:selected').val()//sessionStorage.getItem("hdnPurchaseGroupID");
@@ -1392,11 +1415,12 @@ function BindAttachmentsOfEdit() {
     GetFilesData.success(function (res) {
         $('#tblAttachments').empty();
         $('#tblAttachmentsPrev').empty();
+        //alert(res.result.length)
         if (res != null) {
             if (res.result.length > 0) {
 
                 $.each(res.result, function (key, value) {
-                    rowAttach = ++key;
+                    rowAttach = key;
                     var str = '<tr id=trAttachid' + rowAttach + '><td style="width:47%!important">' + value.nfaFileDescription + '</td>';
                     str += '<td class=hide>' + value.nfaFileName + '</td>'
 
@@ -1619,12 +1643,11 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-  
+
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-      
         $("#ddlCondition").empty();
         $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No exception"));
         if (res.result != null) {

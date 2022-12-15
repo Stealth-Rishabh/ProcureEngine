@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     Pageloaded()
     $('ul#chatList').slimScroll({
         height: '250px'
@@ -38,7 +38,6 @@ jQuery(document).ready(function () {
     $(".pulsate-regular").css('animation', 'none');
 
 });
-
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -230,7 +229,7 @@ function fetchVendorDetails() {
         success: function (data, status, jqXHR) {
 
             if (data.length == 1 && data[0].status.toLowerCase() != 'pause') {
-
+                sessionStorage.setItem('CustomerID', data[0].customerID)
                 $('#tblParticipantsService').show();
                 jQuery("#tblParticipantsServiceBeforeStartBid").hide();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -308,18 +307,7 @@ function fetchVendorDetails() {
 
 }
 
-
-
-var clientIP = "";
-
-$.getJSON("https://api.ipify.org?format=json", function (data) {
-
-    // Setting text of element P with id gfg
-    clientIP = data.ip;
-
-});
-
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&machineIP=" + clientIP).withAutomaticReconnect().build();
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
@@ -660,9 +648,7 @@ function fetchBidTime() {
 }
 function sendChatMsgs() {
     var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
-
     var data = {
-        //"ChatMsg": $("#txtChatMsg").val(),
         "ChatMsg": _cleanString,
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
@@ -964,14 +950,9 @@ function closeBidAir() {
 function fetchBidHeaderDetails(bidId) {
 
     var url = '';
-    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
-    var bidDetailsVendorObj = {
-        "BidID": bidId,
-        "VendorID": _vendorID
-    }
 
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
-    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -979,7 +960,6 @@ function fetchBidHeaderDetails(bidId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
-        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
             console.log("dataa > ", data)

@@ -1,42 +1,21 @@
 ﻿var idx = 0;
-
+var allUsers = [];
 $(document).ready(function () {
-    $('[data-toggle="popover"]').popover({})
-    Pageloaded()
 
-    setInterval(function () { Pageloaded() }, 15000);
-    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-        window.location = sessionStorage.getItem('MainUrl');
-    }
-    else {
-        if (sessionStorage.getItem("UserType") == "E") {
-            $('.page-container').show();
-        }
-        else {
-            bootbox.alert("You are not Authorize to view this page", function () {
-                parent.history.back();
-                return false;
-            });
-        }
-    }
-
-    Metronic.init();
-    Layout.init();
     var path = window.location.pathname;
     page = path.split("/").pop();
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
         idx = parseInt(getUrlVarsURL(decryptedstring)["nfaIdx"]);
-        AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
-        $('#lblNFAID').html('NFA ID :' + idx)
+        $('#lblNFAID').html('PPC ID :' + idx)
         $('#lblnfa').html(idx)
-
     }
 
     if (idx != null) {
-        BindSaveparams();
-        $('#divNFADetails').show();
+
+        $('#divPPCDetails').show();
+        Bindtab2DataforPreview();
         GetOverviewmasterbyId(idx);
         BindAttachmentsOfEdit();
         FetchRecomendedVendor();
@@ -47,6 +26,97 @@ $(document).ready(function () {
     }
 
 });
+function Bindtab2DataforPreview() {
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            if (data[0].azureDetails.length > 0) {
+                $('#tblvendorsprev').empty();
+                jQuery('#lblintroduction').html(data[0].azureDetails[0].introduction)
+                jQuery('#lblcostbenfit').html(data[0].azureDetails[0].costBenefitAnalysis)
+                jQuery('#lblrepeatorder').html(data[0].azureDetails[0].recomRepeatOrder == 'Y' ? 'Yes' : 'No')
+                jQuery('#lblbudgetavail').html(data[0].azureDetails[0].budgetavailabilty);
+                jQuery('#lblpartyordergiven').html(data[0].azureDetails[0].workordergiven);
+                jQuery('#lblawardL1').html(data[0].azureDetails[0].awardcontractthanL1);
+                jQuery('#lbllessthan3quotes').html(data[0].azureDetails[0].lessthan3Quotes);
+                jQuery('#lblcompletionsechdule').html(data[0].azureDetails[0].completionsechdule);
+                jQuery('#lblrationalspliting').html(data[0].azureDetails[0].splitingorder01Vendor);
+                jQuery('#lblgeneralremarks').html(data[0].azureDetails[0].generalRemarks);
+                jQuery('#lblissuingrfqtovendor').html(data[0].azureDetails[0].issuingRFQtoVendor);
+                jQuery('#lblenquirynotsent').html(data[0].azureDetails[0].enquirynotsentvendors);
+
+                jQuery('#lblenquiryissuedon').html(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
+                jQuery('#lblenquiryissuedthrough').html(data[0].azureDetails[0].enquiryIssuedthrogh);
+                jQuery('#lbllowestpriceoffer').html(data[0].azureDetails[0].recomOrderLowPriceOffer == 'Y' ? 'Yes' : 'No');
+                jQuery('#lblsupportedenclosure').html(data[0].azureDetails[0].recomSuppEnclosure);
+                jQuery('#lblfinalprice').html(data[0].azureDetails[0].recomCompFinalPrice);
+                jQuery('#lblquotationparties').html(data[0].azureDetails[0].recomQuotationofParties);
+                jQuery('#lblorderrecomparty').html(data[0].azureDetails[0].workOrderRecomParty);
+                jQuery('#lblpurchaseorder').html(data[0].azureDetails[0].purchaseOrder);
+                jQuery('#lblinternalcost').html(data[0].azureDetails[0].internalCostestimate);
+                jQuery('#lblterms').html(data[0].azureDetails[0].terms);
+                jQuery('#lblscopeofwork').html(data[0].azureDetails[0].scopeofwork);
+                jQuery('#lbldeliverables').html(data[0].azureDetails[0].deliverables);
+                jQuery('#lblapymentterms').html(data[0].azureDetails[0].paymentterms);
+                jQuery('#lbltaxesduties').html(data[0].azureDetails[0].applicableTaxduty);
+                jQuery('#lblLD').html(data[0].azureDetails[0].whetherLDApplicable);
+                jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
+                jQuery('#lblPRDetails').html(data[0].azureDetails[0].prDetails);
+                if (data[0].biddingVendor.length > 0) {
+
+                    $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
+                    for (i = 0; i < data[0].biddingVendor.length; i++) {
+
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            TPI = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "NA") {
+                            TPI = "NA";
+                        }
+                        else {
+                            TPI = "No";
+                        }
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
+                            validatescm = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
+                            validatescm = "NA";
+                        }
+                        else {
+                            validatescm = "No";
+                        }
+
+                        //**** Prev vendor Details Start
+                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
+                        //**** Prev vendor Details end
+
+                    }
+                }
+
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+}
+
 
 var nfaid
 function GetOverviewmasterbyId(idx) {
@@ -59,10 +129,12 @@ function GetOverviewmasterbyId(idx) {
 
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-                if (res.result[0].nfaCategory == "1")
+                if (res.result[0].nfaCategory == "2") {
                     $(".clsHide").hide();
-                else
+                }
+                else {
                     $(".clsHide").show();
+                }
 
                 //if (res.result[0].eventID == 0) {
                 //    $(".clsHideEvent").hide();
@@ -79,7 +151,8 @@ function GetOverviewmasterbyId(idx) {
                 $('#logoimg').attr("src", res.result[0].logoImage);
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
-                $("#lblProjectName").text(res.result[0].projectName);
+                // $("#lblProjectName").text(res.result[0].projectName);
+                $("#lblProjectName").text(res.result[0].project);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
 
                 $("#lblPurOrg").text(res.result[0].orgName);
@@ -102,7 +175,7 @@ function GetOverviewmasterbyId(idx) {
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + res.result[0].eventReftext + "</a>");
                 }
                 else if (res.result[0].eventtypeName == "ON") {
-                    $("#lblEventType").text("Outside NFA")
+                    $("#lblEventType").text("Outside PPC")
                     $("#lblEventId").html("<a style='text-decoration:none;cursor:pointer' onclick=getSummary(\'" + res.result[0].eventRefernce + "'\, \'" + res.result[0].bidForID + "'\,\'" + res.result[0].bidTypeID + "'\,\'0'\) href = 'javascript:;' >" + "Not Applicable" + "</a>");
                 }
                 else {
@@ -127,7 +200,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblRemark").html(res.result[0].remarks);
                 setTimeout(function () {
                     saveAspdf()
-                }, 3000);
+                }, 3000)
                 $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
 
             }
@@ -138,6 +211,8 @@ function GetOverviewmasterbyId(idx) {
         jQuery.unblockUI();
     });
 };
+
+
 
 function getSummary(bidid, bidforid, bidtypeid, RFQID) {
 
@@ -185,26 +260,6 @@ function BindAttachmentsOfEdit() {
 
 };
 
-function BindSaveparams() {
-    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=NFApp";
-
-    var ParamData = callajaxReturnSuccess(url, "Get", {})
-    ParamData.success(function (res) {
-        if (res != null) {
-            $("#tblNFAOverviewParam").empty();
-            if (res.result.length > 0) {
-                $("#tblNFAOverviewParam").append("<thead><tr><th class='bold' style='width:50%!important'>Question</th><th class='bold' style='width:40%!important'>Response</th></tr></thead>");
-                $.each(res.result, function (key, value) {
-                    $("#tblNFAOverviewParam").append('<tr id=trNfaParam' + value.idx + '><td>' + value.paramtext + '</td><td>' + value.paramRemark + '</td><td class=hide>' + value.idx + '</td></tr>');
-
-                });
-            }
-        }
-        else {
-            $("#tblNFAOverviewParam").hide();
-        }
-    })
-}
 function DownloadFile(aID) {
 
     fnDownloadAttachments($("#" + aID.id).html(), 'NFAOverview/' + parseInt(idx));
@@ -321,6 +376,7 @@ function fetchApproverStatus() {
     });
 }
 
+
 function FetchRecomendedVendor() {
 
     jQuery.ajax({
@@ -332,6 +388,7 @@ function FetchRecomendedVendor() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+
             $('#tblNFaHistory').empty()
             if (data.length > 0) {
                 $('#divforapprovalprocess').show()
@@ -339,7 +396,6 @@ function FetchRecomendedVendor() {
                 for (var i = 0; i < data.length; i++) {
                     $('#tblNFaHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                 }
-                $('#frmdivapprove').show()
             }
             else {
                 $('#tblNFaHistory').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
@@ -407,13 +463,12 @@ function GetQuestions() {
         }
     })
 }
-function DownloadFileVendor(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'NFA/' + idx + '/NFAQuery');
-}
 
 $('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
+
     postfix = new Date()
+
     $('#printed_on').html(postfix);
 }
 function saveAspdf() {
@@ -423,8 +478,10 @@ function saveAspdf() {
         pagesplit: true
     };
     pdf.addHTML(document.body, options, function () {
-        pdf.save('nfareport.pdf');
+        pdf.save('PPCReport.pdf');
         window.close();
 
     });
+
+
 }

@@ -11,7 +11,7 @@ $(document).ready(function () {
         IsApp = getUrlVarsURL(decryptedstring)["App"]
         FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"]
         AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
-        $('#lblNFAID').html('NFA ID :' + idx)
+        $('#lblNFAID').html('ID :' + idx)
         $('#lblnfa').html(idx)
         $('#divRemarksApp').hide();
     }
@@ -28,12 +28,10 @@ $(document).ready(function () {
             $('#divPPCDetails').hide();
         }
         GetOverviewmasterbyId(idx);
-
         BindAttachmentsOfEdit();
         fetchRegisterUser();
         FetchRecomendedVendor();
         fetchApproverStatus();
-
         GetQuestions();
 
         if (IsApp == 'N' && FwdTo != 'Admin') {
@@ -161,7 +159,7 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
-    } 
+    }
 
     jQuery.ajax({
         type: "POST",
@@ -206,16 +204,32 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-                if (res.result[0].nfaCategory == "1")
-                    $(".clsHide").hide();
-                else
-                    $(".clsHide").show();
+                debugger;
+                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+                    if (res.result[0].nfaCategory == "2") {
+                        $(".clsHide").hide();
+                    }
+                    else {
+                        $(".clsHide").show();
+                    }
 
-                if (res.result[0].eventID == 0) {
-                    $(".clsHideEvent").hide();
                 }
-                else
-                    $(".clsHideEvent").show();
+                else {
+                    if (res.result[0].nfaCategory == "1") {
+                        $(".clsHide").hide();
+                    }
+                    else {
+                        $(".clsHide").show();
+                    }
+
+                }
+
+                $("#lblProjectName").text(res.result[0].projectName);
+                //if (res.result[0].eventID == 0) {
+                //    $(".clsHideEvent").hide();
+                //}
+                //else
+                //    $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetailsdesc").html("<b>Descrition:</b>");
@@ -226,7 +240,7 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
-                $("#lblProjectName").text(res.result[0].projectName);
+
                 $("#lblbudget").text(res.result[0].budgetStatustext);
 
                 $("#lblPurOrg").text(res.result[0].orgName);
@@ -258,10 +272,10 @@ function GetOverviewmasterbyId(idx) {
                 }
 
                 if (res.result[0].remarks != '') {
-                    $(".clsHide").show();
+                    $(".clsremark").show();
                 }
                 else {
-                    $(".clsHide").hide();
+                    $(".clsremark").hide();
                 }
                 //abheedev backlog 471
                 if (res.result[0].conditionName == "") {
@@ -272,7 +286,7 @@ function GetOverviewmasterbyId(idx) {
                 }
                 //abheedev backlog 286
                 $("#lblRemark").html(res.result[0].remarks);
-                $("#NFa_ConfiguredBy").html("NFA Request Configured By :" + res.result[0].createdBy);
+                $("#NFa_ConfiguredBy").html("Configured By :" + res.result[0].createdBy);
 
             }
         }
@@ -721,9 +735,7 @@ function validateAppsubmitData() {
 
 }
 function ApprovalApp() {
-
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var approvalbyapp = {
@@ -787,7 +799,6 @@ function DelegateUser() {
             "NFAID": parseInt(idx),
             "FromUserId": sessionStorage.getItem("UserID"),
             "ActivityDescription": jQuery("#lbltitle").text(),
-            //"Remarks": jQuery("#txtdelegate").val(),
             "Remarks": _cleanString2,
             "Action": "Delegate",
             "DelgateTo": parseInt($('#hdndelegateuserid').val()),
@@ -1390,14 +1401,12 @@ function fnRecall() {
 }
 function DisableActivityRecall() {
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
-
     var data = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem('UserID'),
         "Action": 'Recalled',
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActivityDescription": jQuery("#lbltitle").text(),
-        //"Remarks": jQuery("#txtRemarksrecall").val()
         "Remarks": _cleanString
     }
 
@@ -1438,6 +1447,11 @@ function DisableActivityRecall() {
 
 function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
-    window.open("viewNfaReport.html?param=" + encrypdata, "_blank")
+    if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+        window.open("viewPPCReport.html?param=" + encrypdata, "_blank")
+    }
+    else {
+        window.open("viewNfaReport.html?param=" + encrypdata, "_blank")
+    }
 
 }

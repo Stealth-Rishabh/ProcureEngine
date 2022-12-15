@@ -19,7 +19,6 @@ jQuery(document).ready(function () {
     formvalidate();
 
 });
-//
 function fetchBidHeaderDetails() {
 
     var url = '';
@@ -80,13 +79,8 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblConvRate").text(data[0].conversionRate);
                     jQuery("#lblstatus").text(data[0].conversionRate);
                     jQuery("#lblConvRate").text(data[0].conversionRate);
-<<<<<<< HEAD
-                    //abheedev bug 381 start
                     jQuery('#TermandCondition').attr("name", data[0].termsConditions)
-                       
-                     //abheedev bug 381 end
                     jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
-
                     /*}
                     else {
                         bootbox.alert("This bid has not yet started !!!", function () {
@@ -300,7 +294,7 @@ function fnGtrTokenValidatePassword() {
 
     })
 }
-//abheedev bug 381
+
 jQuery('#bidchkIsAccepted').click(function () {
     if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
         $('#btnContinue').attr("disabled", false);
@@ -309,7 +303,6 @@ jQuery('#bidchkIsAccepted').click(function () {
         $('#btnContinue').attr("disabled", true);
     }
 });
-//abheedev bug 381 end
 function formvalidate() {
     $('#AccprtGNc').validate({
         errorElement: 'span', //default input error message container
