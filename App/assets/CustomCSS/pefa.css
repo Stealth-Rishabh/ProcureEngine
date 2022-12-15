@@ -98,3 +98,8 @@
 #diverrorapp {
     display: none;
 }
+
+.tab-content > .active {
+    margin-right: 10%;
+   
+}

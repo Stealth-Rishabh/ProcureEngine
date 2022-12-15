@@ -1,4 +1,50 @@
-﻿
+﻿jQuery(document).ready(function () {
+  
+    $('.maxlength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    var POID = getUrlVarsURL(decryptedstring)["POHID"];
+    if (POID == null)
+        sessionStorage.setItem('hddnPOHID', 0)
+    else {
+
+        sessionStorage.setItem('hddnPOHID', POID)
+        setTimeout(function () {
+            fetchPODetails('Attachment');
+            fetchPODetails('Details');
+            FetchRecomendedVendor();
+            $('#POID').html(POID)
+        }, 1000)
+    }
+    Metronic.init();
+    Layout.init();
+    formvalidate();
+
+    setCommonData();
+
+});
 
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)

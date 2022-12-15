@@ -1062,7 +1062,7 @@ function deleteRFITempVendors(RowID) {
 
 function RFISubmitTempVendors() {
     var _cleanString4 = StringEncodingMechanism(jQuery("#txtrfiSubject").val());
-    var _cleanString5 = StringEncodingMechanismjQuery('#txtrfidescription').val());
+    var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfidescription').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     

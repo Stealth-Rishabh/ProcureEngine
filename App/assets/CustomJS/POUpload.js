@@ -1,4 +1,41 @@
-﻿$(".thousandseparated").inputmask({
+﻿jQuery(document).ready(function () {
+   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    fetchMenuItemsFromSession(49, 50);
+
+    fetchParticipantsVender();
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    fetchRegisterUser();
+    setTimeout(function () {
+        fnfillInstructionExcel();
+    }, 1000)
+});
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
+
+$('#file-excelparameter').change(handleFileparameter);
+
+$(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
     groupSeparator: ",",
