@@ -11,38 +11,38 @@ $('.MaxLength').maxlength({
 });
 
 
-    $(".thousandsep").inputmask(
-        {
-            alias: "decimal",
+$(".thousandsep").inputmask(
+    {
+        alias: "decimal",
 
-            rightAlign: false,
+        rightAlign: false,
 
-            numericInput: true,
+        numericInput: true,
 
-            groupSeparator: ",",
+        groupSeparator: ",",
 
-            radixPoint: ".",
+        radixPoint: ".",
 
-            autoGroup: true,
+        autoGroup: true,
 
-            integerDigits: 40,
+        integerDigits: 40,
 
-            digitsOptional: true,
+        digitsOptional: true,
 
-            allowPlus: false,
+        allowPlus: false,
 
-            allowMinus: false,
+        allowMinus: false,
 
-            clearMaskOnLostFocus: true,
+        clearMaskOnLostFocus: true,
 
-            supportsInputType: ["text", "tel", "password"],
+        supportsInputType: ["text", "tel", "password"],
 
-            removeMaskOnSubmit: true,
+        removeMaskOnSubmit: true,
 
-            //autoUnmask: true
+        //autoUnmask: true
 
-        }
-    );
+    }
+);
 
 
 
@@ -134,7 +134,7 @@ function SearchInGridview(tableName, value) {
 
 //abheedev bug 385
 //bug 569 abheedev 01/12/2022
-function localecommaseperator(ele) {  
+function localecommaseperator(ele) {
     var regex = /[^\d,]+/g
     var str = ele.value;
     if ((regex.test(str))) {
@@ -194,8 +194,14 @@ function onlyNumberKey(evt) {
     return true;
 }
 function callPagejs(pagejs) {
+    var locale = sessionStorage.getItem("localcode")
+    var js = [];
+    /*if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')
+    {
+      js = ["assets/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker."+locale+".js?v=" + Math.random(),"assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker."+locale+".js?v=" + Math.random()];
+    }*/
 
-    var js = ["assets/CustomJS/Auction.js?v=" + Math.random()];
+    js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')
     for (var i = 0; i < Pages.length; i++) {
         js.push("assets/CustomJS/" + Pages[i] + "?v=" + Math.random());
@@ -204,30 +210,51 @@ function callPagejs(pagejs) {
     for (var i = 0; i < js.length; i++) {
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
+    /* if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')  
+        {
+          handleDateTimepicker(locale);
+        }*/
 }
-function handleDateTimepicker() {
-    var js = ["assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js?v=" + Math.random(), "assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=" + Math.random()];
-    var $head = $("head");
-    for (var i = 0; i < js.length; i++) {
-        $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
-    }
+function handleDateTimepicker(locale) {
+
+    //var tz = moment().tz('Asia/Baghdad').format();
+    //alert(GetCurrentDateTime())
+
+    //var theStDate = new Date()
+    // var newYork    = moment.tz(theStDate, "Asia/Baghdad");
+    // theStDate   =newYork.format()          
+    // theStDate = new Date(newYork.format() + ' UTC');
+
+    /*  if (sessionStorage.getItem('preferredtimezone') != null) {
+          theStDate = theStDate.toLocaleString("ar", {
+              timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+          })
+          
+      }
+      else {
+          theStDate = theStDate.toLocaleString("en-GB", {
+              dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+          })
+
+      }*/
+
+
     if (jQuery().datepicker) {
         $('.date-picker').datepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
+            locale: locale,
+            language: locale,
+            //startDate: theStDate
         });
         $(".form_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        $(".form_advance_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
+            locale: locale,
+            language: locale,
+            // startDate: theStDate
         });
 
         $(".form_meridian_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
+            locale: locale,
+            language: locale,
+            //startDate: theStDate
         });
         //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
     }

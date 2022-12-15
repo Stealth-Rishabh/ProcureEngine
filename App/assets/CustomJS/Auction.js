@@ -1,9 +1,9 @@
 function logoutFunction() {
     sessionStorage.clear();
-    sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapp.azurewebsites.net');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
-function handleDateTimepicker() {
+/*function handleDateTimepicker() {
     if (jQuery().datepicker) {
         $('.date-picker').datepicker({
             locale: 'zh-CN',
@@ -24,7 +24,7 @@ function handleDateTimepicker() {
         });
         //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
     }
-}
+}*/
 function error401Messagebox(error) {
 
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
@@ -392,7 +392,6 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 function thousands_separators_input(ele) {
-    debugger
     var valArr, val = ele.value;
     val = val.replaceAll(/[^0-9\.]/g, '');
 
@@ -412,16 +411,12 @@ function removeThousandSeperator(val) {
     return val;
 }
 function minmax(value, min, max) {
-    if (parseInt(value) < min || isNaN(parseInt(value))) 
-        
+    if (parseInt(value) < min || isNaN(parseInt(value)))
         return '';
-  
     else if (parseInt(value) > max)
-        
         return max;
     else
         return value;
-
 }
 
 function addMinutes(time, minsToAdd) {
@@ -454,7 +449,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-
+    //alert(JSON.stringify(Cancelbid))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -511,26 +506,64 @@ function replaceQuoutesFromString(ele) {
 
     var str = '';
     str = ele.value;
-    str = str.replace(/['"#&~`<>_^]/g, '');
+    str = str.replace(/'/g, '');
+    str = str.replace(/"/g, '');
+    //@abheedev bug368 start
+    str = str.replace(/#/g, '');
+    //  str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
+    str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    str = str.replace(/_/g, '');
+    str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
 }
-
-
-function replaceQuoutesFromStringFromExcel(ele) {
+/*function replaceQuoutesFromStringFromExcel(ele) {
+    var str = '';
     
+    if (ele != "" && ele != undefined) {
+    str = str.replace(/'/g, '');
+    str = str.replace(/"/g, '');
+    //@abheedev bug368 start
+    str = str.replace(/#/g, '');
+  //  str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
+    str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    str = str.replace(/_/g, '');
+     str = str.replace(/^/g, '');
+    }
+    //ele.value = str;
+    return str;
+}*/
+function replaceQuoutesFromStringFromExcel(ele) {
     var str = '';
 
     if (ele != "" && ele != undefined) {
-        str = ele.replace(/['"#&~`<>_^]/g, '');
+        str = ele.replace(/'/g, '');
+        str = ele.replace(/"/g, '');
+        str = ele.replace(/#/g, '');
+        str = ele.replace(/&/g, '');
+        str = ele.replace(/~/g, '');
+        str = ele.replace(/`/g, '');
+        str = ele.replace(/</g, '');
+        str = ele.replace(/>/g, '');
+        str = ele.replace(/_/g, '');
+        str = ele.replace(/^/g, '');
     }
+
     //ele.value = str;
     return str;
 }
 
-
-
-/////******* Chat functions*********/////////////////////////////
+////******* Chat functions*********/////////////////////////////
 function openForm() {
     //updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
     $(".pulsate-regular").css('animation', 'none');
@@ -577,22 +610,16 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
+    debugger;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
-    var chatData = {
-        "UserID": userId,
-        "BidID": parseInt(_bidId),
-        "UserType": sessionStorage.getItem("UserType"),
-        "MsgType": msgType
-    }
+    
     jQuery.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
-        data: JSON.stringify(chatData),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
@@ -633,20 +660,12 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
-    var _bidId = getUrlVarsURL(decryptedstring)['BidID']
-    _bidId = parseInt(_bidId)
-    var chatData = {
-        "UserID": sessionStorage.getItem("UserID"),
-        "BidID": _bidId,
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-    }
     jQuery.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: JSON.stringify(chatData),
+        data: "{}",
         cache: false,
         dataType: "json",
         success: function (data) {
@@ -1788,7 +1807,7 @@ var tablesToExcel = (function () {
 })();
 //abheedev bug 443 start
 function checkExcelUpload(fileid) {
-    debugger
+
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -1818,7 +1837,7 @@ function StringEncodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('"', '&quot;');
     returnStr = returnStr.replaceAll("'", '&#x27;');
     returnStr = returnStr.replaceAll('/', '&#x2F;');
-    //returnStr = returnStr.replaceAll('alert(', 'alert-');
+    // returnStr = returnStr.replaceAll('alert(', 'alert-');
     return returnStr;
 }
 
@@ -1829,7 +1848,7 @@ function StringDecodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll('&quot;', '"');
     returnStr = returnStr.replaceAll("&#x27;", "'");
     returnStr = returnStr.replaceAll('&#x2F;', '/');
-    //returnStr = returnStr.replaceAll('alert-', 'alert(');
+    // returnStr = returnStr.replaceAll('alert-', 'alert(');
     returnStr = maliciousText.replaceAll('&amp;', '&');
     return returnStr;
 }
@@ -1893,7 +1912,6 @@ function fromUTF8Array(data) { // array of bytes
 }
 
 function checkPasswordValidation(value) {
-    debugger;
     const isWhitespace = /^(?=.*\s)/;
     if (isWhitespace.test(value)) {
         return "Password must not contain Whitespaces.";
@@ -1930,4 +1948,43 @@ function checkPasswordValidation(value) {
     }
     return "SUCCESS";
 
+}
+//common function
+function RegisterUser_fetchRegisterUser(data) {
+    jQuery.ajax({
+        //type: "GET",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+
+            if (data.length > 0) {
+                return data;
+            }
+            else {
+                return '';
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+
+    });
 }

@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     $('[data-toggle="popover"]').popover({})
 
     Pageloaded()
@@ -1252,7 +1252,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 
 var totalitemdurationstagger = 0;
 function ConfigureBidForCoalTab2() {
-    var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(21)').html()));
+
     var targetPrice;
     var unitrate = 0
     var BidDuration = 0;
@@ -1296,6 +1296,7 @@ function ConfigureBidForCoalTab2() {
                 totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt($.trim(this_row.find('td:eq(16)').html()))
 
             }
+            var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(21)').html()));
 
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),

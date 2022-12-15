@@ -1,40 +1,56 @@
 ﻿
+jQuery(document).ready(function () {
+    $(".thousand").inputmask({
+        alias: "decimal",
+        rightAlign: false,
+        groupSeparator: ",",
+        radixPoint: ".",
+        autoGroup: true,
+        integerDigits: 40,
+        digitsOptional: true,
+        allowPlus: false,
+        allowMinus: false,
+        'removeMaskOnSubmit': true
 
-function addMoreAttachment1() {
+    });
+    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+    $('#txt2LastFiscalyear').val(getlastFinancialYear())
+});
+//function addMoreAttachment1() {
 
-    _count = ($("#tblAttachmentsElem > li").length + 1);
+//    _count = ($("#tblAttachmentsElem > li").length + 1);
 
-    console.log("count ==> ", _count);
+//    console.log("count ==> ", _count);
 
-    $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
+//    $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
 
-        '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
+//        '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
 
-        '<div class="col-md-4">' +
+//        '<div class="col-md-4">' +
 
-        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
+//        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
 
-        '</div>' +
+//        '</div>' +
 
-        '<div class="col-md-3">' +
+//        '<div class="col-md-3">' +
 
-        '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
+//        '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
 
-        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
+//        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
 
-        '</div>' +
+//        '</div>' +
 
-        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
+//        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
 
-        '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
+//        '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
 
-        '</div>' +
+//        '</div>' +
 
-        '</div></li>'
+//        '</div></li>'
 
-    );
+//    );
 
-}
+//}
 
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
