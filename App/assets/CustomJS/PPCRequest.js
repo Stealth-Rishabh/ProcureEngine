@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function () {
-    
+
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -340,7 +340,7 @@ var FormWizard = function () {
                             $('#ddlBudget').val('NB');
                         }
 
-                        if ($("#ddlCategory").val() == 1 || $("#ddlCategory").val() == 2) {
+                        if ($("#ddlCategory").val() == 2) {//$("#ddlCategory").val() == 1 || 
                             $('#txtProjectName').val('');
                             $('#txtProjectName').rules('add', {
                                 required: false
@@ -526,7 +526,7 @@ var FormWizard = function () {
 }();
 
 $("#ddlCategory").on('change', function () {
-    if ($(this).val() == 1 || $(this).val() == 2) {
+    if ($(this).val() == 2) {//$(this).val() == 1 ||
         $('#txtProjectName').val('');
         $('#txtProjectName').rules('add', {
             required: false
@@ -628,14 +628,14 @@ function GetOverviewmasterbyId(idx) {
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
 
-                if (res.result[0].nfaCategory == 1) {
+                if (res.result[0].nfaCategory == 2) {//res.result[0].nfaCategory == 1
 
                     $(".isProject").hide();
                 }
                 else {
                     $(".isProject").show();
                 }
-                $("#txtProjectName").val(res.result[0].projectName);
+                $("#txtProjectName option:selected").text(res.result[0].projectName);
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
                 $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
@@ -783,6 +783,7 @@ $("#txtEventref").typeahead({
         if (map[item].refId != "0") {
             sessionStorage.setItem('hdnEventrefId', map[item].refId);
             sessionStorage.setItem('hdnEventForID', map[item].bidForID);
+
             BidDate = map[item].bidDate;
 
             jQuery('#RFQConfigueron').html(fnConverToLocalTime(BidDate))
@@ -1018,12 +1019,12 @@ function Savedata() {
     var p_amount = removeThousandSeperator($("#txtAmountFrom").val());
     var _budget = 0;
     if ($("#txtBudget").val() != '') {
-        _budget = parseInt($("#txtBudget").val());
+        _budget = removeThousandSeperator($("#txtBudget").val());
     }
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
-    var p_projectname = $("#txtProjectName option:selected").val();
+    var p_projectname = $("#txtProjectName option:selected").text();
     var budgetStatus = $("#ddlBudget option:selected").val();
     p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
@@ -1587,26 +1588,30 @@ function FetchBidVendors() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+
             var bidate = new Date();
             $('#tblvendors').empty();
 
             if (data[0].bidDate != null) {
-                bidate = data[i].bidDate;
+                bidate = data[0].bidDate;
+                jQuery('#RFQConfigueron').html(fnConverToLocalTime(bidate));
             }
-            jQuery('#RFQConfigueron').html(fnConverToLocalTime(bidate));
-            $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
-            for (var i = 0; i < data.length; i++) {
 
-                $('#tblvendors').append("<tr><td class=hide>" + data[i].vendorID + "</td><td>" + data[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
-                $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
-                $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
-                $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + '  /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' checked />No</label></div>')
-                $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
-                $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
+            if (data.length > 0) {
+                $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
+                for (var i = 0; i < data.length; i++) {
 
+                    $('#tblvendors').append("<tr><td class=hide>" + data[i].vendorID + "</td><td>" + data[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td><td id=TDpolyticExp" + i + "></td><td id=TDvalidatescm" + i + "></td><td id=TPI" + i + "></td></tr>")
+                    $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y" checked /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N"  />No</label></div>')
+                    $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y"  checked/> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  />No</label></div>')
+                    $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + '  /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' checked />No</label></div>')
+                    $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
+                    $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' checked /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
+
+                }
+                $('#tblvendors').append("<tr><td colspan=5></td><td><span class='help-block'><b>Note*</b><br>Y - IF TPI ALREADY DONE</br> N - TPI WILL BE DONE WHILE PLACING THE ORDER WITH FINAL VENDOR</br>Not Applicable - TPI not required</span></td></tr>")
+                $('#tblvendors').append("</tbody>");
             }
-            $('#tblvendors').append("<tr><td colspan=5></td><td><span class='help-block'><b>Note*</b><br>Y - IF TPI ALREADY DONE</br> N - TPI WILL BE DONE WHILE PLACING THE ORDER WITH FINAL VENDOR</br>Not Applicable - TPI not required</span></td></tr>")
-            $('#tblvendors').append("</tbody>");
 
         },
         error: function (xhr, status, error) {
@@ -2258,11 +2263,7 @@ function addvendor() {
     else {
         $('#btnvendordelete' + i).show();
     }
-    /* form.validate()
-     $('#vendorSearch' + i).rules('add', {
-         required: true,
-         notEqualTo: 0
-     });*/
+
 
 
 
@@ -2278,157 +2279,3 @@ function deleteLFrow(rowid) {
 }
 
 //***** Unused Code
-//function GetNfaOverviewParams() {
-
-//    var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
-
-//    var ParamData = callajaxReturnSuccess(url, "Get", {})
-//    ParamData.success(function (res) {
-
-//        if (res != null) {
-//            $("#ddlNFAParam").empty();
-//            if (res.result.length > 0) {
-//                $("#ddlNFAParam").append("<option value=0>Select</option>");
-//                $.each(res.result, function (key, value) {
-//                    $('#ddlNFAParam').append('<option value=' + value.idx + ' id=nfaparamoption' + value.idx + ' >' + value.paramtext + '</option>');
-//                });
-//            }
-//            else {
-//                $("#ddlNFAParam").append("<option value=0>Select</option>");
-//            }
-//        }
-//        else {
-//            $("#ddlNFAParam").append("<option value=0>Select</option>");
-//        }
-//    })
-//}
-
-
-//function fnaddQuestion() {
-//    fnApproversNBQuery(parseInt($("#ddlNFAParam option:selected").val()), $("#ddlNFAParam option:selected").text());/*, $("#txtNfaParamAns").val()*/
-//}
-
-//function fnApproversNBQuery(rownum, question) {
-
-//    if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
-//        $('#errordivSeq').show();
-//        $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
-//        Metronic.scrollTo($("#errordivSeq"), -200);
-//        $('#errordivSeq').fadeOut(7000);
-
-//        return false;
-//    }
-
-//    var status = true
-//    $("#tblNFAOverviewParam tr:gt(0)").each(function () {
-//        var this_row = $(this);
-//        if ($.trim(this_row.find('td:eq(3)').html()) == $("#ddlNFAParam").val()) {
-//            status = false
-//        }
-//    });
-
-//    if (status == false) {
-//        $('#errordivSeq').show();
-//        $('#errorSeq').html('NFA Response is already mapped for this NFA overview.');
-//        Metronic.scrollTo($("#errordivSeq"), -200);
-//        $('#errordivSeq').fadeOut(7000);
-
-//        return false;
-//    }
-//    else {
-//        //abheedev backlog 286 start
-
-//        if (!jQuery("#tblNFAOverviewParam thead").length) {
-//            jQuery("#tblNFAOverviewParam").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:40%!important'>Description</th><th class='bold' style='width:55%!important'>Description</th></tr></thead>");
-//            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000></textarea></td><td class=hide>' + rownum + '</td></tr>');
-//        }
-//        //abheedev backlog 286 end
-//        else {
-//            jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td  class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
-//        }
-
-
-//        $("#ddlNFAParam").val('');
-//        $('#nfaparamoption' + rownum).remove();
-
-//    }
-//    //abheedev backlog 286 start
-//    form.validate();
-//    $('#paramremark' + rownum).rules('add', {
-//        required: true,
-//        // minlength: 50,
-//        maxlength: 10000,
-//    });
-//    $('#paramremark' + rownum).maxlength({
-//        limitReachedClass: "label label-danger",
-//        alwaysShow: true
-//    });
-//}
-
-//function deleteNFAParams(rowid) {
-//    $('#ddlNFAParam').append('<option value=' + rowid + ' id=nfaparamoption' + rowid + ' >' + $('#ques' + rowid).text() + '</option>');
-//    $('#trNfaParam' + rowid).remove();
-
-//}
-
-//function Savetab2Data() {
-
-//    var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
-//    Paramdata = [];
-//    objData = {};
-//    $("#tblNFAOverviewParam tr:gt(0)").each(function () {
-//        var this_row = $(this);
-//        var remarks = $.trim(this_row.find('td:eq(2)').find('textarea').val()).replace(/'/g, "''");
-//        objData = {
-//            Paramidx: parseInt($.trim(this_row.find('td:eq(3)').html())),
-//            paramtext: $.trim(this_row.find('td:eq(1)').html()),
-//            paramremark: remarks
-
-//        };
-//        Paramdata.push(objData);
-//    });
-
-//    var SaveparamData = callajaxReturnSuccess(url, "Post", JSON.stringify(Paramdata));
-//    SaveparamData.success(function (res) {
-
-//    });
-//    SaveparamData.error(function (error) {
-
-//    });
-//};
-
-//function fnSendActivitytoCommercialForPPCApp() {
-//    var Data = {
-//        "ApproverType": "C",
-//        "RFQID": parseInt(RFQID),
-//        "CreatedBy": sessionStorage.getItem('UserID'),
-//        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-//        "Type": "SendActivityToCommForPPC",
-//        "IsApproverObserver": '',
-//        "PPCApprovers": ''
-//    }
-//    //alert(JSON.stringify(Data))
-//    jQuery.ajax({
-//        url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval/",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        type: "POST",
-//        data: JSON.stringify(Data),
-//        contentType: "application/json; charset=utf-8",
-//        success: function (data) {
-//            return;
-//        },
-
-//        error: function (xhr, status, error) {
-
-//            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('spandanger', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-//        }
-//    })
-//}

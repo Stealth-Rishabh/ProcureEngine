@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
 
-
+    
     var date = new Date();
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
@@ -621,6 +621,10 @@ var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
 function InsUpdRFQDEtailTab1() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfqdescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
 
@@ -680,13 +684,17 @@ function InsUpdRFQDEtailTab1() {
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
     var _RFQBidType = 'Open';
 
+    
+
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        "RFQSubject": jQuery("#txtrfqSubject").val(),
+        //"RFQSubject": jQuery("#txtrfqSubject").val(),
+        "RFQSubject": _cleanString,
         "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
         "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        "RFQDescription": jQuery("#txtrfqdescription").val(),
+        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "RFQTermandCondition": TermsConditionFileName,
@@ -851,7 +859,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+         
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -983,7 +991,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-
+    
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -991,7 +999,7 @@ function fnsavetermscondition(isbuttonclick) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
             if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
-
+               
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
             if ($.trim(this_row.find('td:eq(0)').text()) == '0' && $('#terms' + index).val() != "" && $('#terms' + index).val() != null) {
@@ -2074,12 +2082,12 @@ function editRow(icount) {
 
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
-    var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n')
-    var RFQRemark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Descriptiontxt = StringDecodingMechanism($("#desc" + icount).html().replace(/<br>/g, '\n'))
+    var RFQRemark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'))
 
     //sessionStorage.setItem('CurrentRFQParameterId', RFQParameterId)
 
-    $('#txtshortname').val($("#sname" + icount).text())
+    $('#txtshortname').val(StringDecodingMechanism($("#sname" + icount).text()))
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txttargetprice').val(thousands_Sep_Text(removeThousandSeperator($("#TP" + icount).text())))
     $('#txtquantitiy').val(thousands_Sep_Text(removeThousandSeperator($("#quan" + icount).text())))
@@ -2091,7 +2099,7 @@ function editRow(icount) {
     $("#txttat").val($("#tat" + icount).text())
     $('#txtPono').val($("#pono" + icount).text())
     $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
-    $('#txtvendorname').val($("#povname" + icount).text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#povname" + icount).text()))
     $('#txtPODate').val($("#podate" + icount).text())
     $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     $('#add_or').text('Modify');
@@ -2342,12 +2350,14 @@ function RFQInviteVendorTab3() {
         }
     });
 
+    var _cleanString3 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
 
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
-        "subject": jQuery('#txtrfqSubject').val(),
+        //"subject": jQuery('#txtrfqSubject').val(),
+        "subject": _cleanString3,
         "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -2386,8 +2396,12 @@ function RFQInviteVendorTab3() {
         }
     });
 }
+
 function fnsubmitRFQ() {
 
+
+    var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+    var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
@@ -2395,9 +2409,11 @@ function fnsubmitRFQ() {
 
             "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
             "UserID": sessionStorage.getItem('UserID'),
-            "subject": jQuery('#txtrfqSubject').val(),
+            //"subject": jQuery('#txtrfqSubject').val(),
+            "subject": _cleanString4,
             "RFQEndDate": jQuery('#txtenddatettime').val(),
-            "RFQDescription": jQuery('#txtrfqdescription').val(),
+            //"RFQDescription": jQuery('#txtrfqdescription').val(),
+            "RFQDescription": _cleanString5,
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         };
         jQuery.ajax({
@@ -3165,7 +3181,7 @@ function isDate(ExpiryDate) {
     return true;
 }
 function fnSeteRFQparameterTable() {
-
+    
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
         $("#success-excelparameter").hide();
