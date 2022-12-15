@@ -97,7 +97,7 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
+                           
                             <b>
                                 <span id="spanUserName" class="username username-hide-on-mobile">
                                 </span>
@@ -114,7 +114,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -337,8 +337,8 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="attach-file" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
+                                                                <a href="javascript:;" class="linkstyle2" id="attach-file" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none closebutton1" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -684,7 +684,7 @@
                                                                         <!--abheedev bug 572 -->
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-5">
-                                                                                <span id="btnblue" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span id="btnblue" class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
@@ -793,15 +793,15 @@
                                                                     </div>
                                                                     <!--bug388 abheedev start-->
                                                                 </div>
-                                                                <div class="scroller" id="scroller1" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                                                <div class="scroller scroller300" id="scroller1" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
                                                                             <thead class="flip-content">
                                                                                 <tr width="50%">
                                                                                     <th width="20%">
                                                                                         <div class="col-md-8 checkbox-list">
-                                                                                            <label class="checkbox-inline" id="checkbox1">
+                                                                                            <label class="checkbox-inline checkboxinline1" id="checkbox1">
                                                                                                 <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
                                                                                             </label>
                                                                                         </div>
@@ -1093,15 +1093,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <!--abheedev bug 443 again-->
-                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
-                        <button class="close" data-close="alert"></button>
-                        <span id="errormsg2"></span>
-                    </div>
-                    <div class="alert alert-success display-hide" id="successdiv2">
-                        <button class="close" data-close="alert"></button>
-                        <span id="successmsg2"></span>
-                    </div>-->
+                   
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1187,7 +1179,7 @@
                                                     <label class="col-md-12 text-left">
                                                         2. Please enter <b>UOM</b> from given below:
                                                     </label><br /><br />
-                                                    <div class="scroller" data-always-visible="1" data-rail-visible="0" id="scrolrUOM">
+                                                    <div class="scroller scrolruom" data-always-visible="1" data-rail-visible="0" id="scrolrUOM">
                                                         <div id="ULUOM_instructions"></div>
                                                     </div>
 
@@ -1211,7 +1203,7 @@
         </div>
     </div>
     <div class="row hide ">
-        <a id="A"></a>
+        <a id="A" class="nodisplay"></a>
         <table id="tbleRFQdetails" class="table table-striped table-bordered table-hover hide">
             <thead>
                 <tr id="Trhead">
@@ -1258,7 +1250,7 @@
                         <span id="successmsg"></span>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-body" id="modalbody1">
+                        <div class="modal-body modalbody3" id="modalbody1">
                             <p class="ppolicy-text">
                                 Using this page user can define RFQ details and invite vendors to respond before specified deadline.<br />
                                 There are three steps to complete this process. All the mandatory information is marked with * sign.
@@ -1320,10 +1312,10 @@
 
                     <div class="portlet-body form">
                         <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                            <div id="divalertSerach" class="alert alert-success">
+                            <div id="divalertSerach" class="alert alert-success divalertstyle">
                                 <span id="spansuccess1serach"></span>
                             </div>
-                            <div id="divalerterrsearch" class="alert alert-danger">
+                            <div id="divalerterrsearch" class="alert alert-danger divalertSerach">
                                 <span id="spanerterrserach"></span>
                             </div>
                             <div class="form-body">
@@ -1346,7 +1338,7 @@
                                     </div>
 
 
-                                    <div class="col-lg-1 col-lg-offset-2" id="collgstyle">
+                                    <div class="col-lg-1 col-lg-offset-2 margintop4px" id="collgstyle">
                                         <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
                                     </div>
                                 </div>
@@ -1360,7 +1352,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" id="scroller2" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                        <div class="scroller scroller400" id="scroller2" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>

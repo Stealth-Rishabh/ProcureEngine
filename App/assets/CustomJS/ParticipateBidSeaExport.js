@@ -1,3 +1,60 @@
+jQuery(document).ready(function () {
+    
+    Pageloaded()
+
+    $('ul#chatList').slimScroll({
+        height: '250px'
+    });
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+
+    fetchVendorDetails();
+    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+        $('#LiISsurrogate').removeClass('hide')
+    }
+    else {
+        $('#LiISsurrogate').addClass('hide')
+    }
+    $(".pulsate-regular").css('animation', 'none');
+
+    //$(window).unload(function () {
+    //    alert("you are leaving from page");
+    //});
+
+});
+
+var lockResolver;
+if (navigator && navigator.locks && navigator.locks.request) {
+    const promise = new Promise((res) => {
+        lockResolver = res;
+    });
+
+    navigator.locks.request('Bidlock', { mode: "shared" }, () => {
+        return promise;
+    });
+}
 var url = '';
 
 /////****** Chat Start*****************/////
