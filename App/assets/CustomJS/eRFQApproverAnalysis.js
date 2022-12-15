@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    callPagejs('eRFQApproverAnalysis.js');
+   
     Pageloaded();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {

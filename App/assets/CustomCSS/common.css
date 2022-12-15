@@ -203,7 +203,7 @@ input[type=number] {
 
 
 
-@media (min-width: 992px) {
+/*@media (min-width: 992px) {
     .modal-lg {
         width: 1200px;
     }
@@ -213,7 +213,7 @@ input[type=number] {
     .addmorebutton {
         margin-left: 65%;
     }
-}
+}*/
 /*
 @media only screen and (min-width: 1250px) {
     .table .btn {
