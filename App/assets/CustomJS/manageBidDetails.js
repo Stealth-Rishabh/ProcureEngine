@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
     $('#file-excelparameter').change(handleFileparameter);
 
 });
-
+var _finalStatus = "";
 var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 var biddatetime = getCurrentDateddmmyyyy();
@@ -1393,7 +1393,7 @@ function fetchallexportdetails() {
             jQuery("#dropCurrencyPrevtab_0").html(BidData[0].bidDetails[0].currencyName)
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
             jQuery('#txtConversionRatePrevtab_0').html(BidData[0].bidDetails[0].conversionRate)
-
+            _finalStatus = BidData[0].bidDetails[0].finalStatus
             if (sessionStorage.getItem("hdnbidtypeid") == 7 || sessionStorage.getItem("hdnbidtypeid") == 8) {
 
                 if ($.trim(BidData[0].bidDetails[0].showRankToVendor) == "Y") {
@@ -1491,6 +1491,12 @@ function fetchallexportdetails() {
                         $('#btn-add-new-item').removeAttr("disabled");
                     }
                 }
+            }
+            if (_finalStatus == 'Awarded') {
+                $('#btnbidchangedttime').attr("disabled", "disabled")
+            }
+            else {
+                $('#btnbidchangedttime').removeAttr("disabled")
             }
             //$("#ctrlbidTimeandDate").attr('onclick', "editValues('divbidTimePrevtab_0', 'txtbidDatePrevtab_0')");
             $("#ctrlbidTimeandDate").attr('onclick', "editValues('', 'txtbidDatePrevtab_0')");
@@ -2310,8 +2316,16 @@ function DateandtimevalidateForBidOpen(ismailsend) {
 
     }
     else {
-        var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
-        Dateandtimevalidate(BidDate, ismailsend, '');
+        if ($('#ddlBidStatus option:selected').text().toLowerCase() != "close") {
+            var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+            Dateandtimevalidate(BidDate, ismailsend, '');
+        }
+        else {
+            erroropenbid.show();
+            $('#erropenbid').html('Please set status to OPEN before proceeding');
+            erroropenbid.fadeOut(3000);
+            App.scrollTo(erroropenbid, -200);
+        }
 
     }
 
