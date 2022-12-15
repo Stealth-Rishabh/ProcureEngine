@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -28,7 +28,9 @@
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet">
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <link rel="stylesheet" href="assets/CustomCSS/ViewNFAReport.css">
 
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -66,61 +68,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-    <!--abheedev backlog 471-->
-    <style type="text/css" media="print">
-        @media print {
-            .pagebreak {
-                page-break-before: always;
-            }
-            /* page-break-after works, as well */
-        }
-
-        @page {
-            size: landscape;
-        }
-
-        @page {
-            size: A4 landscape;
-            margin: 10%;
-        }
-
-        @media screen {
-            div.divFooter {
-                display: none;
-            }
-        }
-
-        @media print {
-            div.divFooter {
-                position: fixed;
-                bottom: 0;
-            }
-        }
-    </style>
-
-    <style>
-        * {
-            -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
-            print-color-adjust: exact !important; /*Firefox*/
-        }
-
-        input#file-excelparameter {
-            position: fixed;
-            top: -120px;
-        }
-
-        .container {
-            height: 95px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        body {
-            font-family: Verdana, serif;
-            /* font-family: Garamond, serif !important;*/
-        }
-    </style>
+    <!--abheedev backlog 471-->   
 </head>
 <body class="page-full-width">
 
@@ -134,10 +82,10 @@
             <div class="page-content">
 
 
-                <div style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;">
-                    <div style="float: left;"><img id="logoimg" src="" /></div>
-                    <div style="clear: both;"></div>
-                    <label style="text-align: center;">NFA Report Summary</label>
+                <div class="divprintstyle">
+                    <div class="float-left"><img id="logoimg" src="" /></div>
+                    <div class="clearboth"></div>
+                    <label class="txtaligncentre">NFA Report Summary</label>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -408,12 +356,12 @@
                 </div>
                 <div claass="row">
                     <div class="col-md-6">
-                        <div style="width: auto; float: left;">Printed By: <span id="printed_by"></span></div>
+                        <div class="widthautoleft">Printed By: <span id="printed_by"></span></div>
 
                     </div>
                     <div class="col-md-6">
 
-                        <div style="width: auto; float: right;">Printed On: <span id="printed_on"></span></div>
+                        <div class="widthautoright">Printed On: <span id="printed_on"></span></div>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -426,28 +374,7 @@
         jQuery(document).ready(function () {
 
             callPagejs('viewNfaReport.js');
-            //$('[data-toggle="popover"]').popover({})
-            //Pageloaded()
-
-            //setInterval(function () { Pageloaded() }, 15000);
-            //if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-            //    window.location = sessionStorage.getItem('MainUrl');
-            //}
-            //else {
-            //    if (sessionStorage.getItem("UserType") == "E") {
-            //        $('.page-container').show();
-            //    }
-            //    else {
-            //        bootbox.alert("You are not Authorize to view this page", function () {
-            //            parent.history.back();
-            //            return false;
-            //        });
-            //    }
-            //}
-
-            //Metronic.init();
-            //Layout.init();
-
+          
         });
 
     </script>

@@ -260,6 +260,9 @@ input[type=number] {
 .marginleftneg11px {
     margin-left: -11px !important
 }
+.marginright10px {
+    margin-right: 10px !important
+}
 
 .marginleft110px {
     margin-left: 110px !important;
@@ -275,6 +278,13 @@ input[type=number] {
 
 .margintop1px {
     margin-top: 1px !important
+}
+.margintopneg1px {
+    margin-top: -1px !important
+}
+
+.margintopneg2px {
+    margin-top: -2px !important
 }
 
 .margintop5px {
@@ -444,6 +454,11 @@ input[type=number] {
     padding-left: 7px !important;
 }
 
+.paddingleft60none {
+    padding-left: 60px;
+    border-bottom: none;
+}
+
 .paddingtop0px {
     padding-top: 0px !important;
 }
@@ -479,6 +494,9 @@ input[type=number] {
 .padding105px {
     padding: 10px 5px;
 }
+.padding66px {
+    padding: 6px 6px;
+}
 /*
 .tab-content > .active {
     padding-right: 10%;
@@ -488,7 +506,6 @@ input[type=number] {
     margin-right: 10%;
    
 }*/
-
 /*
 tr, td {
     border: 1px solid black;
@@ -672,6 +689,11 @@ tr.header {
     display: none;
 }
 
+.scroller100 {
+    height: 100px;
+}
+
+
 .scroller300 {
     height: 300px;
 }
@@ -830,6 +852,28 @@ tr.header {
     width: 620px !important
 }
 
+.widthautoleft {
+    width: auto;
+    float: left;
+}
+.widthautoright {
+    width: auto;
+    float: right;
+}
+.width100collaspe {
+    width: 100%;
+    border-collapse: collapse;
+}
+.width63collaspe {
+    width: 63%;
+    border-collapse: collapse;
+}
+.collaspenone
+{
+    border-collapse: collapse;
+    display: none;
+}
+
 .navbar-brand {
     padding: 4px !important;
 }
@@ -918,6 +962,9 @@ tr.header {
 .bgcolor2 {
     background-color: #67809f !important
 }
+.bgcolor3 {
+    background: #44b6ae !important;
+}
 
 .fontsizesmall {
     font-size: small !important
@@ -961,6 +1008,11 @@ tr.header {
     list-style: none;
     display: grid;
     padding-left: 0px;
+}
+
+.liststyletwo {
+    list-style: none;
+    padding-left: inherit;
 }
 
 
