@@ -70,3 +70,41 @@
     opacity: 0.1;
     z-index: -999999;
 }
+
+.reportstyle1 {
+    height: auto;
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.reportstyle2 {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 30px;
+    padding-bottom: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 200;
+    text-align: center;
+}
+.reportstyle3 {
+    float: right;
+    margin-top: 1.2%;
+}
+.reportstyle4 {
+    background-color: #428bca;
+    border-radius: 12px !important;
+    padding: 2px 8px 0px 8px;
+    color: #FFF;
+}
+
+.reportstyle5 {
+    font-size: 19px;
+    text-align: left;
+    color: #FFF;
+}
+
+.reportstyle6 {
+    width: auto;
+    float: right !important;
+    font-size: 14px !important;
+}
