@@ -1141,8 +1141,45 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
-    } 
-    allUsers = RegisterUser_fetchRegisterUser(data);
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
+    jQuery.ajax({
+        //type: "GET",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            if (data.length > 0) {
+                allUsers = data;
+
+            }
+            else {
+                allUsers = '';
+            }
+
+        },
+        error: function (xhr, status, error) {
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+
+    });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 jQuery("#txtApprover").keyup(function () {

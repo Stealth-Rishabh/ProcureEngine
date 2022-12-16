@@ -802,37 +802,37 @@ function fetchRegisterUser() {
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
-    //jQuery.ajax({
-    //    type: "POST",
-    //    contentType: "application/json; charset=utf-8",
-    //    url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //    cache: false,
-    //    crossDomain: true,
-    //    data: JSON.stringify(data),
-    //    dataType: "json",
-    //    success: function (data) {
-    //        if (data.length > 0) {
-    //            allUsers = data;
-    //        }
-    //        else {
-    //            allUsers = '';
-    //        }
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            if (data.length > 0) {
+                allUsers = data;
+            }
+            else {
+                allUsers = '';
+            }
 
-    //    },
-    //    error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //        var err = eval("(" + xhr.responseText + ")");
-    //        if (xhr.status == 401) {
-    //            error401Messagebox(err.Message);
-    //        }
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
 
-    //        return false;
-    //        jQuery.unblockUI();
-    //    }
+            return false;
+            jQuery.unblockUI();
+        }
 
-    //});
-    allUsers = RegisterUser_fetchRegisterUser(data);
+    });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 jQuery("#txtApprover").keyup(function () {

@@ -66,7 +66,7 @@ document.getElementById('browseBtnExcelParameter').addEventListener('click', fun
     document.getElementById('file-excelparameter').click();
 });
 
-
+var allUsers = "";
 $("#cancelBidBtn").hide();
 $('#file-excelparameter').change(handleFileparameter);
 $("#spnParamAttach").hide();
@@ -1381,16 +1381,55 @@ function GetQuestions() {
     })
 }
 
-var allUsers
+
 function fetchRegisterUser() {
+    debugger;
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     var data = {
         "CustomerID": custId,
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
-    allUsers = RegisterUser_fetchRegisterUser(data);
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
+    jQuery.ajax({
+        //type: "GET",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            if (data.length > 0) {
+                allUsers = data;
 
+            }
+            else {
+                allUsers = '';
+            }
+
+        },
+        error: function (xhr, status, error) {
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+
+    });
+    ////var defUsr = RegisterUser_fetchRegisterUser(data);
+    ////allUsers = defUsr;
+    //debugger;
 }
 jQuery("#txtApprover").keyup(function () {
     sessionStorage.setItem('hdnApproverid', '0');
@@ -1399,6 +1438,7 @@ jQuery("#txtApprover").keyup(function () {
 sessionStorage.setItem('hdnApproverid', 0);
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
+        debugger;
         var data = allUsers;
         usernames = [];
         map = {};

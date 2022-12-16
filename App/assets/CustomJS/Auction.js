@@ -1953,9 +1953,11 @@ function checkPasswordValidation(value) {
 }
 //common function
 function RegisterUser_fetchRegisterUser(docData) {
+    debugger;
     var data = docData;
+    var dataToReturn = "";
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
-    jQuery.ajax({
+    (async () => {jQuery.ajax({
         //type: "GET",
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1966,17 +1968,18 @@ function RegisterUser_fetchRegisterUser(docData) {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
+            debugger;
             if (data.length > 0) {
-                return data;
+                dataToReturn = data;
+                
             }
             else {
-                return '';
+                dataToReturn = '';
             }
 
         },
         error: function (xhr, status, error) {
-
+            debugger;
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1991,4 +1994,6 @@ function RegisterUser_fetchRegisterUser(docData) {
 
 
     });
+    })();
+    return dataToReturn;
 }
