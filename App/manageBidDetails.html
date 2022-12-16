@@ -937,33 +937,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!--<div class="inputgroup">
-                                                                                        <label class="control-label col-md-4"> Bid ReOpen Date/Time:</label>
-
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                                                                 data-date-start-date="+0d">
-                                                                                                <input type="text" id="txtreopenDate" name="txtreopenDate" class="form-control afterrunning" readonly>
-                                                                                                <span class="input-group-btn">
-                                                                                                    <button class="btn default afterrunning" id="btncalreopen" type="button">
-                                                                                                        <i class="fa fa-calendar"></i>
-                                                                                                    </button>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group">
-                                                                                                <input type="text" id="txreopenTime" name="txreopenTime" class="form-control timepicker timepicker-no-seconds afterrunning"
-                                                                                                       readonly>
-                                                                                                <span class="input-group-btn">
-                                                                                                    <button class="btn default" type="button">
-                                                                                                        <i class="fa fa-clock-o"></i>
-                                                                                                    </button>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                    </div>-->
+                                                                                  
                                                                                 </div>
 
                                                                             </div>
@@ -2130,12 +2104,13 @@
                                                       onkeyup="replaceQuoutesFromString(this)"></textarea>
                                         </div>
                                     </div>
+                                    <!-- abheedev bug 605 16/12/2022 -->
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />
+                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" onchange="checkfilesize(this)" />
                                         </div>
                                     </div>
 

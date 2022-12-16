@@ -292,8 +292,9 @@ jQuery("#txtSearch").keyup(function () {
 $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
+//abheedev bug 605 16/12/2022
 function checkfilesize(fileid) {
-
+   
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -306,6 +307,7 @@ function checkfilesize(fileid) {
         default:
             jQuery(".alert-success").hide();
             jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#err").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png"); //for remove quotes
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
