@@ -733,39 +733,8 @@ function fetchRegisterUser() {
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     } 
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-
-            if (data.length > 0) {
-                allUsers = data;
-            }
-            else {
-                allUsers = '';
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = xhr.responseText 
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-        }
-
-    });
-
+    
+    allUsers = RegisterUser_fetchRegisterUser(data);
 }
 
 

@@ -549,41 +549,7 @@ function fetchRegisterUser() {
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-       // url: APIPath + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-            
-            if (data.length > 0) {
-                sessionStorage.setItem('hdnAllUsers', JSON.stringify(data))
-            }
-            else {
-                error.show();
-                $('#spandanger').html('No Users Found...');
-                Metronic.scrollTo(error, -200);
-                error.fadeOut(3000);
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form-wizard');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })
+    allUsers = RegisterUser_fetchRegisterUser(data);
 }
 jQuery("#txtusername").typeahead({
     source: function (query, process) {

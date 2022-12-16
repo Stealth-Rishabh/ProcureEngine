@@ -1952,7 +1952,9 @@ function checkPasswordValidation(value) {
 
 }
 //common function
-function RegisterUser_fetchRegisterUser(data) {
+function RegisterUser_fetchRegisterUser(docData) {
+    var data = docData;
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
         //type: "GET",
         type: "POST",
