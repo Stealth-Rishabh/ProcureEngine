@@ -194,6 +194,7 @@ function onlyNumberKey(evt) {
     return true;
 }
 function callPagejs(pagejs) {
+  
     var locale = sessionStorage.getItem("localcode")
     var js = [];
     /*if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')
@@ -207,9 +208,11 @@ function callPagejs(pagejs) {
         js.push("assets/CustomJS/" + Pages[i] + "?v=" + Math.random());
     }
     var $head = $("head");
+   
     for (var i = 0; i < js.length; i++) {
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
+
     /* if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')  
         {
           handleDateTimepicker(locale);

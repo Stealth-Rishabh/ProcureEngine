@@ -22,7 +22,7 @@ jQuery(document).ready(function () {
     }
     setCommonData();
     App.init();
-    multilingualLanguage()
+  //  multilingualLanguage()
     Tasks.initDashboardWidget();
     fetchMappedCustomers();
     setTimeout(function () {

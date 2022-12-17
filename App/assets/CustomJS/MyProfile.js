@@ -1,10 +1,12 @@
+
+
 jQuery(document).ready(function () {
    
-    Pageloaded()
+/*    Pageloaded()*/
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();
-
+   
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -24,7 +26,7 @@ jQuery(document).ready(function () {
 
 
     }
-
+   
 
 });
 
@@ -529,7 +531,7 @@ function fetchMyProfileVendor() {
 
 
             var vendorComps = JSON.parse(data[1].jsondata);
-            //console.log(vendordetails[a].preferredtimezone);
+          
             var vendorCompstxt = ''
             for (var i = 0; i < vendorComps.length; i++) {
                 vendorCompstxt = vendorCompstxt + vendorComps[i].customername + ' | ';
@@ -689,11 +691,7 @@ function fetchMyProfileVendor() {
 
                 }
             }, 800)
-            /*  else {
-                  console.log("esle")
-                  $('#ddPayTerms').val(0).select2().trigger('change');
-  
-              }*/
+           
 
             if (vendordetails[0].CountryID !== "" && vendordetails[0].CountryID != null && vendordetails[0].CountryID != undefined) {
                 $('#ddlCountry').val(vendordetails[0].CountryID)
@@ -1102,7 +1100,7 @@ function formvalidatevendor() {
 }
 
 function updMobileNo() {
-
+    debugger
     var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
     var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
 
@@ -1136,7 +1134,7 @@ function updMobileNo() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            
             if (data == "1") {
                 profileerror.hide();
                 jQuery("#success").text("Your data is updated successfully..");
@@ -1172,7 +1170,7 @@ function updMobileNo() {
 }
 
 function updVnedorMobileNo() {
-
+    
 
     var _cleanString2 = StringEncodingMechanism($('#vendoraddress').val());
     var _cleanString3 = StringEncodingMechanism($('#vendorCity').val());
@@ -1205,7 +1203,7 @@ function updVnedorMobileNo() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+          
             if (data == "1") {
                 profileerror.hide();
                 jQuery("#success").text("Your data is updated successfully..");
@@ -1240,7 +1238,7 @@ function updVnedorMobileNo() {
 }
 
 function updateVendor() {
-
+   
     var _cleanString5 = StringEncodingMechanism(jQuery("#vendorname").text().trim());
     var _cleanString6 = StringEncodingMechanism(jQuery("#vendoraddress").val().trim());
     var _cleanString7 = StringEncodingMechanism(jQuery("#bankname").val().trim());
@@ -1340,8 +1338,8 @@ function updateVendor() {
         msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
 
-
-
+    debugger
+ 
     var data = {
         "ParticipantID": parseInt(sessionStorage.getItem('VendorId')),
         "tmpVendorID": parseInt(sessionStorage.getItem('tmpVendorID')),
@@ -1414,7 +1412,7 @@ function updateVendor() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             if ($('#filegst').val() != '') {
                 fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
@@ -1449,7 +1447,7 @@ function updateVendor() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1777,7 +1775,7 @@ function sendToCompanies() {
 
     }
   
-    //console.log(JSON.stringify(datainfo));
+    
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorExtend",
@@ -1836,7 +1834,7 @@ function CalContactDetailPercent() {
     for (var i = 0; i < totalInputs; i++) {
         if (inputs[i].value !== '' && inputs[i].value !== null && inputs[i].value !== undefined) {
             inputsWithValue = inputsWithValue + 1;
-            console.log(inputs[i]);
+          
         }
     }
 
@@ -2093,7 +2091,7 @@ function numberonly() {
 }
 //translation code begin by abhee
 function multilingualLanguage() {
-
+    debugger
     var set_locale_to = function (locale) {
         if (locale) {
             $.i18n().locale = locale;
@@ -2108,7 +2106,7 @@ function multilingualLanguage() {
         }).done(function () {
             set_locale_to(url('?locale'));
 
-            console.log($.i18n().locale)
+           
             $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
 
 
@@ -2116,7 +2114,7 @@ function multilingualLanguage() {
 
             History.Adapter.bind(window, 'statechange', function () {
                 set_locale_to(url('?locale'));
-                console.log("i am here")
+ 
             });
             $('.navbar-language').change(function (e) {
                 e.preventDefault();
