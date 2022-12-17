@@ -129,8 +129,8 @@ function fnToCheckUserIPaccess() {
 //////--------------****************************** add Approvers*********************************
 var allUsers
 function fetchRegisterUser(Type) {
-    var url = ''
-    url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser"
+    //var url = ''
+    //url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser"
     var data = [];
     if (Type.toLowerCase() == "ppc") {
         data = {
@@ -148,6 +148,7 @@ function fetchRegisterUser(Type) {
         }
         //url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N"
     }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
         //type: "GET",
         type: "POST",
@@ -159,9 +160,9 @@ function fetchRegisterUser(Type) {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
@@ -169,7 +170,7 @@ function fetchRegisterUser(Type) {
 
         },
         error: function (xhr, status, error) {
-
+            debugger;
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -184,6 +185,7 @@ function fetchRegisterUser(Type) {
 
 
     });
+    
 }
 
 jQuery("#txtApprover").keyup(function () {

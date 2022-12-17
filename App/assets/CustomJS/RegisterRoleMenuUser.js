@@ -549,41 +549,44 @@ function fetchRegisterUser() {
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
+        //type: "GET",
         type: "POST",
         contentType: "application/json; charset=utf-8",
-       // url: APIPath + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            
             if (data.length > 0) {
-                sessionStorage.setItem('hdnAllUsers', JSON.stringify(data))
+                allUsers = data;
+
             }
             else {
-                error.show();
-                $('#spandanger').html('No Users Found...');
-                Metronic.scrollTo(error, -200);
-                error.fadeOut(3000);
+                allUsers = '';
             }
+
         },
         error: function (xhr, status, error) {
-
+            debugger;
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form-wizard');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
+
         }
-    })
+
+
+    });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 }
 jQuery("#txtusername").typeahead({
     source: function (query, process) {
