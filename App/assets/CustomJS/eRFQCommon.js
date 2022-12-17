@@ -832,6 +832,7 @@ function fetchRegisterUser() {
         }
 
     });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 jQuery("#txtApprover").keyup(function () {
