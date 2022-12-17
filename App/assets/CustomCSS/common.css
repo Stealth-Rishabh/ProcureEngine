@@ -599,7 +599,7 @@ tr.header {
 }
 
 .noheight {
-    height: 0px !important;
+    height: 0px ;
 }
 
 .margintop4px {

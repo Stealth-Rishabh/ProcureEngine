@@ -842,6 +842,7 @@ jQuery("#txtApprover").keyup(function () {
 
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
+        
         var data = allUsers;
         usernames = [];
         map = {};
