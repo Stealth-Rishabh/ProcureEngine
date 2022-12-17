@@ -99,26 +99,6 @@ $('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversion
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
-var _RFQid;
-if (window.location.search) {
-    var param = getUrlVars()["param"]
-    var decryptedstring = fndecrypt(param)
-    _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
-
-    if (_RFQid == null) {
-        sessionStorage.setItem('hddnRFQID', 0)
-        _RFQid = 0;
-    }
-    else {
-        sessionStorage.setItem('hddnRFQID', _RFQid)
-        fnGetTermsCondition();
-        fetchAttachments();
-        fnGetApprovers();
-        GetQuestions();
-        fetchReguestforQuotationDetails();
-        fetchRFIParameteronload();
-    }
-}
 
 function cancelbid() {
     CancelBidDuringConfig(_RFQid, 'eRFQ');
@@ -129,7 +109,7 @@ jQuery.validator.addMethod(
     function (elementValue, element, param) {
         return elementValue != param;
     },
-    //"Value cannot be {0}"
+  
     "This field is required."
 );
 jQuery.validator.addMethod("dollarsscents", function (value, element) {
@@ -620,7 +600,7 @@ var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
 function InsUpdRFQDEtailTab1() {
-    debugger
+    
     var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtrfqdescription").val());
 
@@ -654,7 +634,7 @@ function InsUpdRFQDEtailTab1() {
     var showP = 'Y';
     if (rowCounttech >= 1) {
         $("#tblapproverstech >tbody >tr").each(function () {
-            debugger
+           
             var this_row = $(this);
             showP = 'Y';
 
@@ -1185,31 +1165,6 @@ function addmoreattachments() {
         //** function to insert record in DB after file upload on Blob
         fnsaveAttachmentsquestions();
 
-        //var arr = $("#tblAttachments tr");
-
-        //$.each(arr, function (i, item) {
-        //    var currIndex = $("#tblAttachments tr").eq(i);
-        //    var matchText = currIndex.find("td:eq(1)").text().toLowerCase();
-
-        //    if (rowAttach == 1) {
-        //        //** Upload Files on Azure PortalDocs folder first Time
-        //        fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-        //     }
-
-        //    $(this).nextAll().each(function (i, inItem) {
-        //        if (matchText == $(this).find("td:eq(1)").text().toLowerCase()) {
-        //            $(this).remove();
-        //        }
-        //        if (matchText != $(this).find("td:eq(1)").text().toLowerCase()) {
-        //                //** Upload Files on Azure PortalDocs folder
-        //             fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
-
-        //        }
-
-
-        //    });
-
-        //});
         jQuery("#AttachDescription1").val('')
         jQuery('#fileToUpload1').val('')
 
@@ -1393,6 +1348,7 @@ function fetchRegisterUser() {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -1432,6 +1388,7 @@ jQuery("#txtApprover").keyup(function () {
 sessionStorage.setItem('hdnApproverid', 0);
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
+         
         var data = allUsers;
         usernames = [];
         map = {};
@@ -1512,7 +1469,7 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
-    debugger
+ 
     var num = 0;
     var maxinum = 0;
     var status = "true";
@@ -1529,7 +1486,7 @@ function fnApproversQuery() {
     }
     else {
         $("#tblapproverstech tr:gt(0)").each(function () {
-            debugger
+       
             var this_row = $(this);
 
             if ($.trim(this_row.find('td:eq(3)').html()) == sessionStorage.getItem('hdnApproverid')) {
@@ -1610,7 +1567,7 @@ function fnApproversQuery() {
             num = 0;
             maxinum = 0;
             $("#tblapproverstech >tbody>tr").each(function () {
-                debugger
+              
                 var this_rowtech = $(this);
                 //num = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
                 num = (this_rowtech.closest('tr').attr('id')).substring(11, (this_rowtech.closest('tr').attr('id')).length)
@@ -1667,7 +1624,7 @@ function deleteApprow(rowid, rowidPrev, apptype) {
     $('#' + rowidPrev.id).remove();
 
     if (apptype == "C") {
-        //commApp = commApp - 1;
+        
         commAppsrno = commAppsrno - 1;
         var rowCount = jQuery('#tblapprovers >tbody>tr').length;
         if (rowCount >= 1) {
@@ -1686,7 +1643,7 @@ function deleteApprow(rowid, rowidPrev, apptype) {
         }
     }
     else {
-        // TechApp = TechApp - 1;
+       
         TechAppsrno = TechAppsrno - 1;
         var rowCount = jQuery('#tblapproverstech >tbody> tr').length;
         if (rowCount >= 1) {
@@ -1717,6 +1674,7 @@ function fnGetApprovers() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+          
             var str = "";
             var strP = "";
             var strtech = "";
@@ -2402,7 +2360,6 @@ function RFQInviteVendorTab3() {
 
 function fnsubmitRFQ() {
 
-    debugger
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
 
@@ -2412,10 +2369,10 @@ function fnsubmitRFQ() {
 
             "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
             "UserID": sessionStorage.getItem('UserID'),
-            //"subject": jQuery('#txtrfqSubject').val(),
+           
             "subject": _cleanString4,
             "RFQEndDate": jQuery('#txtenddatettime').val(),
-            //"RFQDescription": jQuery('#txtrfqdescription').val(),
+           
             "RFQDescription": _cleanString5,
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         };
@@ -2560,16 +2517,7 @@ function ValidateVendor() {
 
     var status = "false";
 
-    // $("#tblvendorlist> tbody > tr").each(function (index) {
-
-    //    if ($(this).find("span#spanchecked").attr('class') == 'checked') {
-    //             status = "True";
-    //    }
-    //    else {
-    //        status == "false";
-    //    }
-
-    //});
+   
     if ($("#selectedvendorlists> tbody > tr").length == 0) {
         status == "false";
     }
@@ -2604,7 +2552,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            debugger
+           
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
@@ -3469,7 +3417,7 @@ function addMoreTermsCondition() {
     });
 
     i = parseInt(maxinum) + 1;
-    //Metronic.scrollTo($("#tr" + i), 350);
+   
     var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
     str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
     str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
