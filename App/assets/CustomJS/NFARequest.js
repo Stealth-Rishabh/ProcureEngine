@@ -299,7 +299,6 @@ var FormWizard = function () {
                     var flag = "T";
 
 
-
                     if (index == 1) {
 
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
@@ -437,7 +436,8 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             $('#form_wizard_1 .button-submit').click(function () {
-
+             //bug588 abheedev
+                $('#form_wizard_1 .button-submit').prop('disabled', true);
                 ConfirmSaveApprovers();
 
             }).hide();
@@ -1296,13 +1296,19 @@ function ConfirmSaveApprovers() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    debugger
+                    $('.modal-footer .btn-success').prop('disabled', true);
+                  
                     SaveApproversConfirmation();
+
+                   
                 }
             },
             cancel: {
                 label: "No",
                 className: "btn-default",
                 callback: function () {
+                    $('.modal-footer btn-default').prop('disabled', true);
                     return true;
 
                 }

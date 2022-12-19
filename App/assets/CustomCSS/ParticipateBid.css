@@ -92,3 +92,21 @@ input[type=number] {
     .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
         padding: 20px 10px 15px 10px;
     }
+
+  /*  
+      inline style
+*/
+
+
+.alert-success {
+    display: none;
+}
+
+.alert-danger {
+    display: none;
+}
+
+
+.padding12px {
+    padding: 12px !important;
+}
