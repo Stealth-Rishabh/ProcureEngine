@@ -603,7 +603,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+      
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -869,50 +869,6 @@ var FormWizard = function () {
                 }
 
             });
-            /* var formApprover = $('#frmApprover');
-             formApprover.validate({
- 
-                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-                 errorElement: 'span', //default input error message container
-                 errorClass: 'help-block help-block-error', // default input error message class
-                 focusInvalid: false, // do not focus the last invalid input
-                 rules: {
- 
-                 },
- 
-                 invalidHandler: function (event, validator) {
-                 },
-                 highlight: function (element) {
-                     $(element).closest('.col-md-7').addClass('has-error');
- 
-                 },
-                 unhighlight: function (element) {
-                     $(element).closest('.col-md-7').removeClass('has-error');
- 
-                 },
-                 errorPlacement: function (error, element) {
- 
-                 },
-                 success: function (label) {
-                 },
-                 submitHandler: function (form) {
- 
- 
-                     if ($('#tblpreBidapprovers >tbody >tr').length == 0) {
-                         $('.alert-danger').show();
-                         $('#spandangerapp').html('Please Map Approver.');
-                         $('.alert-danger').fadeOut(5000);
-                         return false;
- 
-                     }
-                     else {
-                         MapBidapprover();
-                     }
- 
-                 }
- 
-             });*/
-
             var handleTitle = function (tab, navigation, index) {
 
                 var total = navigation.find('li').length;
@@ -984,7 +940,7 @@ var FormWizard = function () {
                     success.hide();
 
                     error.hide();
-
+                   
                     if (index == 1) {
                         if (form.valid() == false) {
 
@@ -1070,7 +1026,7 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             $('#form_wizard_1 .button-submit').click(function () {
-
+              
                 if ($('#tblServicesProduct >tbody >tr').length == 0) {
                     $('#form_wizard_1').bootstrapWizard('previous');
                     error.show();
@@ -1294,8 +1250,7 @@ function ConfigureBidInsPefaTab1() {
 
 function ConfigureBidInsPefaTab2() {
 
-    var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
-    var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
+   
 
     var targetPrice;
     var lastInvoiceprice = 0;
@@ -1309,6 +1264,8 @@ function ConfigureBidInsPefaTab2() {
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
+                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
+                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
                 i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
 
                 targetPrice = 0
@@ -1324,7 +1281,7 @@ function ConfigureBidInsPefaTab2() {
                 }
 
                 
-
+              
 
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1494,6 +1451,7 @@ function ConfigurePEFAVendorsave() {
     });
 }
 function ConfigureBidInsPefaTab3() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
 
@@ -1535,6 +1493,7 @@ function ConfigureBidInsPefaTab3() {
                 data: JSON.stringify(Tab3data),
                 dataType: "json",
                 success: function (data) {
+                   
                     jQuery.unblockUI();
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
@@ -1545,7 +1504,7 @@ function ConfigureBidInsPefaTab3() {
 
                 },
                 error: function (xhr, status, error) {
-
+                   
                     var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
@@ -2645,6 +2604,7 @@ function Dateandtimevalidate(indexNo) {
 // For Bid Preview
 
 function fetchPSBidDetailsForPreview() {
+    
     var TermsConditionFileName = '';
     var AttachementFileName = '';
     var hidevendor = 'No';

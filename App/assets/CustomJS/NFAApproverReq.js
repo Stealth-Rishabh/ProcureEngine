@@ -597,7 +597,7 @@ var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
 function validateAppsubmitData() {
-
+    
 
     form1.validate({
         errorElement: 'span',
@@ -1292,6 +1292,7 @@ function submitQuery() {
     }
 
 }
+//abheedev bug 588
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from Approver, Click Yes for  Continue ",
@@ -1300,6 +1301,7 @@ function fnquerywithdaw() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true);
                     withdrawquery();
                 }
             },
@@ -1307,6 +1309,7 @@ function fnquerywithdaw() {
                 label: "No",
                 className: "btn-warning",
                 callback: function () {
+                    $('.modal-footer .btn-warning').prop('disabled', true);
                     return true;
 
                 }
@@ -1385,6 +1388,7 @@ function withdrawquery() {
 
 
 }
+//abheedev bug 588
 function fnRecall() {
     bootbox.dialog({
         message: "Do you want to Recall NFA, Click Yes for  Continue ",
@@ -1393,6 +1397,7 @@ function fnRecall() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true);
                     DisableActivityRecall();
                 }
             },
@@ -1400,6 +1405,7 @@ function fnRecall() {
                 label: "No",
                 className: "btn-warning",
                 callback: function () {
+                    $('.modal-footer .btn-warning').prop('disabled', true);
                     return true;
 
                 }

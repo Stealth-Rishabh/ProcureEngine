@@ -551,8 +551,8 @@ tr.header {
 }
 
 .txtleftbold {
-    text-align: left;
-    font-weight: bold
+    text-align: left !important;
+    font-weight: bold !important;
 }
 
 
