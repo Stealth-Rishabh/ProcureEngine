@@ -1844,6 +1844,7 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
+    debugger;
     var returnStr = maliciousText;
     returnStr = returnStr.replaceAll('&lt;', '<');
     returnStr = returnStr.replaceAll('&gt;', '>');
@@ -1851,7 +1852,7 @@ function StringDecodingMechanism(maliciousText) {
     returnStr = returnStr.replaceAll("&#x27;", "'");
     returnStr = returnStr.replaceAll('&#x2F;', '/');
     // returnStr = returnStr.replaceAll('alert-', 'alert(');
-    returnStr = maliciousText.replaceAll('&amp;', '&');
+    returnStr = returnStr.replaceAll('&amp;', '&');
     return returnStr;
 }
 

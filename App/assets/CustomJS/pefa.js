@@ -1294,9 +1294,8 @@ function ConfigureBidInsPefaTab1() {
 
 function ConfigureBidInsPefaTab2() {
 
-    var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
-    var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
-
+    
+    
     var targetPrice;
     var lastInvoiceprice = 0;
     var mininc = 0; i = 0;
@@ -1323,7 +1322,7 @@ function ConfigureBidInsPefaTab2() {
                     lastInvoiceprice = removeThousandSeperator($.trim($('#LIPrice' + i).text()));
                 }
 
-                
+                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
 
 
                 tab2Items = {
@@ -1369,7 +1368,7 @@ function ConfigureBidInsPefaTab2() {
                     mininc = $.trim($('#minincrement' + i).text())
                 }
 
-                
+                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),

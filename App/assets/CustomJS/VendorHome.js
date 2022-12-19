@@ -364,11 +364,11 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if (linkurl.indexOf('?') != -1) {
-        linkurl = linkurl + "locale=" + $.i18n().locale;;
+        linkurl = linkurl;// + "locale=" + $.i18n().locale;;
     }
     else if (linkurl.indexOf('#') != -1) {
         e.preventDefault()
-        linkurl = linkurl + "locale=" + $.i18n().locale;
+        linkurl = linkurl;// + "locale=" + $.i18n().locale;
     }
 
     /*//else if (this.href.indexOf('javascript:') != -1) {
@@ -377,7 +377,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
     //} */
 
     else {
-        linkurl = linkurl + "locale=" + $.i18n().locale;
+        linkurl = linkurl;// + "locale=" + $.i18n().locale;
     }
 
 
@@ -1089,14 +1089,15 @@ function fetchBidHeaderDetails() {
                 jQuery('.bidtc').show();
                 jQuery('.rfqtc').hide();
 
-
+                var _cleanString = StringDecodingMechanism(data[0].bidSubject);
+                var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
                 //abheedev
                 $('#uniform-chkIsAccepted').find("span").removeClass('checked');
                 $('#btnContinue').attr("disabled", true);
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidsubject").text(_cleanString);
+                jQuery("#lblbidDetails").text(_cleanString2);
                 jQuery("#lblbiddate").text(localBidDate);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
