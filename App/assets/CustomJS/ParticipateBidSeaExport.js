@@ -1,7 +1,5 @@
 jQuery(document).ready(function () {
-
     Pageloaded()
-
     $('ul#chatList').slimScroll({
         height: '250px'
     });
