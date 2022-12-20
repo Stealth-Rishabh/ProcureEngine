@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
     fetchBidType();// for serach vendor
     FetchUOM(sessionStorage.getItem("CustomerID"));
     BindNoExtensions('txtBidExtension');
-    var _BidID;
+   /* var _BidID;
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param);
@@ -44,7 +44,7 @@ jQuery(document).ready(function () {
         sessionStorage.setItem('CurrentBidID', _BidID)
         fetchScrapSalesBidDetails();
         sessionStorage.setItem('_savedDraft', 'Y')
-    }
+    }*/
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
