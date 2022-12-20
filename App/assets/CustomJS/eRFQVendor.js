@@ -868,14 +868,7 @@ function fetchRFQResponse(Flag, version) {
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
-                        //if (parseInt(sessionStorage.getItem('RFQVersionId')) > parseInt(data[i].version)) {
-                        //    $('#Removebtnattach' + i).attr('disabled', 'disabled')
-                        //}
-                        //else {
-                        //    $('#Removebtnattach' + i).removeAttr('disabled')
-                        //}
-
-
+                       
                     }
                     PreviousVersion = data[0].version;
                 }

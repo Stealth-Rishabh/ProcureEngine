@@ -1,4 +1,5 @@
-﻿jQuery(document).ready(function () {
+﻿var _VQID;
+jQuery(document).ready(function () {
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -22,43 +23,43 @@
     Metronic.init();
     Layout.init();
 
-    //$('#ddlCategoryMultiple').select2({
-    //        placeholder: "Select Category",
-    //        allowClear: true
-    //    });
-    var _VQID;
+
+   
     if (window.location.search) {
+      
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
         _VQID = getUrlVarsURL(decryptedstring)["VQID"];
     }
 
     if (_VQID == null || _VQID == undefined) {
+       
         sessionStorage.setItem('CurrentVQID', 0)
         fetchRFIQuestions('VQL');
     }
     else {
 
         sessionStorage.setItem('CurrentVQID', _VQID)
-        //setTimeout(function () {
-        //    fetchRFIDetails();
-        //},4000)
+       
 
         fetchRFIDetailsForTab2('VQL');
     }
-    //setTimeout(function () {
+    
     fetchCategorymaster();
-    //   }, 4000)
+   
     fetchVendorDetail();
     FormWizard.init();
     FormValidate();
     ComponentsPickers.init();
     setCommonData();
     fetchMenuItemsFromSession(1, 25);
-    //ComponentsDropdowns.init();
+   
 });
 
-
+function cancelbid() {
+   
+    CancelBidDuringConfig(_VQID, 'VQ');
+}
 
 // bug 584 abheedev 
 $('#txtmobileNo').maxlength({
@@ -325,7 +326,7 @@ var FormWizard = function() {
                     success.hide();
 
                     error.hide();
-
+                   
                     if (index == 1) {
                         if (form.valid() == false) {
                             return false;
@@ -657,7 +658,7 @@ function fetchRFIDetailsForTab2(applicableFor) {
 }
 
 function RFIConfigureTab1() {
-    debugger
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var AttachementFileName = '', queryAttachment = "", queryCategories = "";  filename = "";
     if ($('#attach-file').html() != '') {
@@ -726,7 +727,6 @@ function RFIConfigureTab1() {
 
         success: function (data) {
            
-            sessionStorage.setItem('CurrentVQID', parseInt(data));
             $("#tblAttachmentsElem> li").each(function (index) {
                 //** Upload Files on Azure PortalDocs folder
               
@@ -776,7 +776,7 @@ function ValidateQuestions() {
 }
 
 function RFIConfigureTab2() {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     var UsID = sessionStorage.getItem('UserID')
@@ -827,7 +827,8 @@ function RFIConfigureTab2() {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            else{
+            else {
+                
                 $('#form_wizard_1').bootstrapWizard('previous');
                 $('.button-submit').hide()
                 $('#submit_vendors').hide()
@@ -895,7 +896,7 @@ function fetchTempVendors() {
    }
 
 function checkForDuplicateVendor() {
-       debugger
+      
        var EmailID = '';
        var count = 0;
        
@@ -923,7 +924,7 @@ function checkForDuplicateVendor() {
 function AddTempvendors() {
 
     var _cleanString3 = StringEncodingMechanism($('#txtcompany').val());
-    debugger
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
         
@@ -1670,6 +1671,7 @@ function fetchRFIDetailsForPreview() {
     jQuery("#productCatPrev").html(_txtCategories);
                                              
     var ptTbl = '';
+    $("#tblAttachmentsElemPrev").empty(); 
     $("#tblAttachmentsElem> li").each(function (index) {
         if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
             ptTbl = $(this);
