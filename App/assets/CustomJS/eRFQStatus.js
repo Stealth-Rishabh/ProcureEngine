@@ -110,7 +110,8 @@ function sendremainderstoparicipants() {
         var data = {
             "QueryString": checkedValue,
             "RFQID": parseInt(RFQID),
-            "UserID": sessionStorage.getItem("UserID")
+            "UserID": sessionStorage.getItem("UserID"),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
       console.log(checkedValue)
         jQuery.ajax({
