@@ -1,3 +1,4 @@
+var _BidID;
 jQuery(document).ready(function () {
    
     $('[data-toggle="popover"]').popover({})
@@ -49,7 +50,7 @@ jQuery(document).ready(function () {
     fetchRFIRFQSubjectforReport('RFQ')
     fetchVendorGroup('M', 0); // used to fetch product category
 
-    var _BidID;
+   
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param);
@@ -78,7 +79,7 @@ $("#cancelBidBtn").hide();
 $('#file-excelparameter').change(handleFileparameter);
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 //abheedev bug 507
-var _BidID;
+
 
 jQuery(document).ready(function () {
     $("#txtWeightageval").inputmask({ 

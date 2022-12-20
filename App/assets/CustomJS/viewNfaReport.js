@@ -424,7 +424,7 @@ function saveAspdf() {
     };
     pdf.addHTML(document.body, options, function () {
         pdf.save('nfareport.pdf');
-        window.close();
+         window.close();
 
     });
 }

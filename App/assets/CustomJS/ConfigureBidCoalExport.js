@@ -1,3 +1,4 @@
+var _BidID;
 jQuery(document).ready(function () {
 
     $('[data-toggle="popover"]').popover({})
@@ -45,7 +46,7 @@ jQuery(document).ready(function () {
     fetchParticipantsVender();// fetch all vendors for advance search
     fetchVendorGroup('M', 0); // used to fetch product category
     showhideItemBidDuration();
-    var _BidID;
+   
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param);
