@@ -383,14 +383,15 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            var _curentRFQStatus = '';
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
                 _rfqBidType = RFQData[0].general[0].rfqBidType;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem('RFQBidType', _rfqBidType)
-
+                _curentRFQStatus = RFQData[0].general[0].rfqStatus;
+                sessionStorage.setItem('CurrentRFQStatus', _curentRFQStatus)
                 if (_rfqBidType == 'Closed') {
                     $('#div_bidopendate').show()
                     if (bidopeningdate != null || bidopeningdate != '') {
@@ -404,7 +405,15 @@ function fetchReguestforQuotationDetails() {
                 else {
                     $('#div_bidopendate').hide()
                 }
+                //CODE HERE
+                if (_curentRFQStatus != 'Cancel') {
+                    $('#cancl_btn').show();
 
+                }
+                else {
+                    $('#cancl_btn').hide();
+
+                }
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
