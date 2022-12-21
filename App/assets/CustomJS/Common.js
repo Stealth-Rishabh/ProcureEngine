@@ -194,7 +194,7 @@ function onlyNumberKey(evt) {
     return true;
 }
 function callPagejs(pagejs) {
-  
+    
     var locale = sessionStorage.getItem("localcode")
     var js = [];
     /*if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')

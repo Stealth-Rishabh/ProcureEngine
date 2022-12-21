@@ -1,8 +1,8 @@
 ﻿sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -148,15 +148,14 @@ var Login = function () {
 
     function validateUser() {
 
-       sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+       //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+       sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
-        debugger;
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-        //lastPart = 'vendor'
+        // lastPart = 'vendor'
         var LinkUrl = window.location.href;
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
@@ -233,9 +232,7 @@ var Login = function () {
         }
         else {
             var userPass = jQuery("#password").val().trim();
-            //var encryptedString = CryptoJS.AES.encrypt(userPass, "8080808080808080").toString();
-            //var encryptedString = toUTF8Array(userPass);
-            //var decryptedString = (CryptoJS.AES.decrypt(encryptedString, "/")).toString(CryptoJS.enc.Utf8);
+            
             var encryptedString = userPass;
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
