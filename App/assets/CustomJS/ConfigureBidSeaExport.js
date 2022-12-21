@@ -4274,4 +4274,15 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
-
+function CheckMask() {
+    debugger;
+    if ($('#drphideVendor').val() == "Y") {
+        alert("You have chosen to Mask Participants");
+    }
+}
+//$("#drphideVendor").change(function () {
+//    debugger;
+//    if ($('#drphideVendor').val() == "Y") {
+//        alert("You have chosen to Mask Participants");
+//    }
+//});
