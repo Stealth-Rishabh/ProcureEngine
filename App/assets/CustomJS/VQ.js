@@ -1,5 +1,4 @@
-﻿var _VQID;
-jQuery(document).ready(function () {
+﻿jQuery(document).ready(function () {
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -23,8 +22,8 @@ jQuery(document).ready(function () {
     Metronic.init();
     Layout.init();
 
-
-   
+    
+    var _VQID;
     if (window.location.search) {
       
         var param = getUrlVars()["param"]
@@ -56,10 +55,7 @@ jQuery(document).ready(function () {
    
 });
 
-function cancelbid() {
-   
-    CancelBidDuringConfig(_VQID, 'VQ');
-}
+
 
 // bug 584 abheedev 
 $('#txtmobileNo').maxlength({
