@@ -152,18 +152,20 @@ var Login = function () {
        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
+        debugger;
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-        // lastPart = 'vendor'
+        //lastPart = 'vendor'
         var LinkUrl = window.location.href;
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
-
-
+            debugger;
+            var pwd = fnencrypt(jQuery("#password").val().trim());
+            var encryptedString = pwd.toString();
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
-                "Password": jQuery("#password").val().trim()
+                "Password": encryptedString
             }
 
             jQuery.ajax({
@@ -231,9 +233,11 @@ var Login = function () {
 
         }
         else {
-            var userPass = jQuery("#password").val().trim();
-            
-            var encryptedString = userPass;
+            var userPass = fnencrypt(jQuery("#password").val().trim());
+            //var encryptedString = CryptoJS.AES.encrypt(userPass, "8080808080808080").toString();
+            //var encryptedString = toUTF8Array(userPass);
+            //var decryptedString = (CryptoJS.AES.decrypt(encryptedString, "/")).toString(CryptoJS.enc.Utf8);
+            var encryptedString = userPass.toString();
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
                 //"Password": jQuery("#password").val().trim(),
