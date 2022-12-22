@@ -23,7 +23,7 @@ jQuery(document).ready(function () {
     Metronic.init();
     Layout.init();
 
-
+    debugger
    
     if (window.location.search) {
       
@@ -386,7 +386,7 @@ var FormWizard = function() {
             $('#form_wizard_1').find('#submit_vendors').hide();
 
             $('#form_wizard_1 #submit_vendors').click(function() {
-
+                debugger
                 if ($('#tblTempVendorslist >tbody >tr').length == 0) {                    
                            error.show();
                            $('#spandanger').html('Please Enter Vendors For RFI..')
@@ -510,7 +510,9 @@ function fetchRFIDetails() {
 
 
                 }
+                debugger
                 if (BidData[0].tempVendors.length > 0) {
+                    
                     jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
                     for (var i = 0; i < BidData[0].tempVendors.length; i++) {
                         jQuery('#tblTempVendorslist').append("<tr><td>" + BidData[0].tempVendors[i].companyName + "</td><td>" + BidData[0].tempVendors[i].emailId + "</td><td>" + BidData[0].tempVendors[i].mobileNo + "</td><td>" + BidData[0].tempVendors[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + BidData[0].tempVendors[i].rowID + "\",\"" + BidData[0].tempVendors[i].companyName + "\",\"" + BidData[0].tempVendors[i].emailId + "\",\"" + BidData[0].tempVendors[i].mobileNo + "\",\"" + BidData[0].tempVendors[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFITempVendors(\"" + BidData[0].tempVendors[i].rowID + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
@@ -863,7 +865,7 @@ function fetchTempVendors() {
             dataType: "json",
 
             success: function (data) {
-
+                debugger
             jQuery("#tblTempVendorslist").empty();
                 if (data.length > 0) {
                     jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
@@ -899,7 +901,7 @@ function checkForDuplicateVendor() {
       
        var EmailID = '';
        var count = 0;
-       
+       debugger
        $("#tblTempVendorslist tr:gt(1)").each(function() {
            EmailID = $.trim($(this).find('td:eq(1)').html())
            
@@ -922,6 +924,7 @@ function checkForDuplicateVendor() {
    }
 
 function AddTempvendors() {
+    debugger
 
     var _cleanString3 = StringEncodingMechanism($('#txtcompany').val());
 
@@ -955,7 +958,7 @@ function AddTempvendors() {
             dataType: "json",
 
             success: function (data) {
-               
+                debugger
                 $('#txtcompany').val('');
                 $('#txtemailId').val('');
                 $('#txtmobileNo').val('');
@@ -1748,6 +1751,7 @@ function getRFIQuestionsForPreview() {
 }
 
 function getVendorsForPreview() {
+    debugger
     jQuery("#tblTempVendorslistPrev").empty();
     
     jQuery('#tblTempVendorslistPrev').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th></tr></thead>')

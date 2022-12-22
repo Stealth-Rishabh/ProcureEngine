@@ -971,7 +971,7 @@ tr.header {
 }
 
 .wechatcolor {
-    color: #ffb848;
+    color: #ffb848 !important;
 }
 
 .font13px {
@@ -1026,4 +1026,9 @@ tr.header {
     text-decoration: none !important;
     float: left;
     margin-top: 9px
+}
+
+.pulsateregular {
+    padding: 12px;
+    animation: 0s ease 0s 1 normal none running none !important;
 }

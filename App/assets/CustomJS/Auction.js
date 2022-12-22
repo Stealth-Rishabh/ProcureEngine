@@ -547,7 +547,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
-   
+   debugger
     $(".pulsate-regular").css('animation', 'none');
 }
 
