@@ -614,14 +614,21 @@ function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
     debugger;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
-    
+    var data = {
+        "UserID": userId,
+        "BidID": _bidId,
+        "UserType": sessionStorage.getItem("UserType"),
+        "msgType": msgType
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
@@ -749,14 +756,21 @@ function fetchUserChats(userId, msgType) {
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
-
+    var data = {
+        "UserID": userId,
+        "BidID": _bidId,
+        "UserType": sessionStorage.getItem("UserType"),
+        "msgType": msgType
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POSt",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data, status, jqXHR) {
             $("#chatList").empty();
