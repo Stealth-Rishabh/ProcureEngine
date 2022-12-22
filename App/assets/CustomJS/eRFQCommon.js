@@ -406,7 +406,7 @@ function fetchReguestforQuotationDetails() {
                     $('#div_bidopendate').hide()
                 }
                 //CODE HERE
-                if (_curentRFQStatus != 'Cancel') {
+                if (_curentRFQStatus.toLowerCase() != 'cancel') {
                     $('#cancl_btn').show();
 
                 }

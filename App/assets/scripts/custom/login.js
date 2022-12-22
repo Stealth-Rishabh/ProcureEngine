@@ -152,7 +152,6 @@ var Login = function () {
        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
-        debugger;
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
@@ -160,7 +159,6 @@ var Login = function () {
         var LinkUrl = window.location.href;
 
         if (lastPart.toLocaleLowerCase() == "vendor") {
-            debugger;
             var pwd = fnencrypt(jQuery("#password").val().trim());
             var encryptedString = pwd.toString();
             var data = {
@@ -175,7 +173,6 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
-                    debugger;
                     var successMsg = "";
                     var isSuccess = true;
                     switch (data.token) {
@@ -264,7 +261,7 @@ var Login = function () {
                             break;
                         case "You have entered an incorrect Password.":
                             isSuccess = false;
-                            successMsg = "Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect.";
+                            successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect.';
                             break;
                         case "Something went wrong!!! Please contact administrator.":
                             isSuccess = false;
@@ -339,6 +336,7 @@ var Login = function () {
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
                     //abheedev bug 385
                     sessionStorage.setItem("culturecode", value.cultureCode);
+                    sessionStorage.setItem("localcode", value.localecode);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
