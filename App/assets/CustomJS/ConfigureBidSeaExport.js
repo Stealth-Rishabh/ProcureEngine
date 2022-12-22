@@ -4277,12 +4277,11 @@ function fnfillInstructionExcel() {
 function CheckMask() {
     debugger;
     if ($('#drphideVendor').val() == "Y") {
-        alert("You have chosen to Mask Participants");
+        alert("You have chosen to Mask Participants. This will hide all vendor names");
     }
 }
-//$("#drphideVendor").change(function () {
-//    debugger;
-//    if ($('#drphideVendor').val() == "Y") {
-//        alert("You have chosen to Mask Participants");
-//    }
-//});
+function ShowHidePrice() {
+    if ($('#checkshowstartprice').val() == "N") {
+        alert("You have chosen to Hide Prices. This will be treated as an open auction");
+    }
+}

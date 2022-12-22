@@ -3456,3 +3456,13 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
+function CheckMask() {
+    if ($('#drphideVendor').val() == "Y") {
+        alert("You have chosen to Mask Participants. This will hide all vendor names");
+    }
+}
+function ShowHidePrice() {
+    if ($('#showstartprice').val() == "N") {
+        alert("You have chosen to Hide Prices. This will be treated as an open auction");
+    }
+}
