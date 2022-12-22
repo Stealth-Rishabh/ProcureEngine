@@ -642,12 +642,19 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
+    var _bidId = parseInt(getUrlVarsURL(decryptedstring)['BidID']);
+    var data = {
+        "UserID": sessionStorage.getItem("UserID"),
+        "BidID": _bidId,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
+        data: JSON.stringify(data),
         cache: false,
         dataType: "json",
         success: function (data) {
