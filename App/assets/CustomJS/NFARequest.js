@@ -140,6 +140,10 @@ var FormWizard = function () {
                         required: true
 
                     },
+                    ddlCondition:
+                    {
+                        required: true
+                    },
                     dropCurrency: {
                         required: true
                     },
@@ -1655,6 +1659,7 @@ function bindConditionDDL() {
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlCondition").empty();
+        $("#ddlCondition").append(jQuery("<option></option>").val("").html("Select"));
         $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No exception"));
         if (res.result != null) {
             if (res.result.length > 0) {
