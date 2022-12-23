@@ -1,4 +1,4 @@
-﻿var Changepassworderror = $('#errordivChangePassword');
+var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
@@ -66,8 +66,9 @@ function handleChangePasword() {
 
 }
 function ChangePassword() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if ($("#nPassword").val() != $("#reEnterPass").val()) {
+    if ($("#nPassword").val().toLowerCase() != $("#reEnterPass").val().toLowerCase()) {
         jQuery("#errorpassword").text("Password not matched..");
         Changepassworderror.show();
         Changepassworderror.fadeOut(5000);
@@ -92,20 +93,21 @@ function ChangePassword() {
             contentType: "application/json; charset=utf-8",
             EnableViewState:false,
             success: function (data, status, jqXHR) {
-                //if (data == "1") {
-
+                if (data.isSuccess == "-1") {
+                    jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
+                    Changepassworderror.show();
+                    Changepassworderror.fadeOut(5000);
+                    jQuery.unblockUI();
+                    return false;
+                 }
+                else {
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
                     Changepasswordsuccess.fadeOut(5000);
                     clearResetForm();
                     jQuery.unblockUI();
-                //}
-                //else {
-                //    jQuery("#errorpassword").html("Please try again with correct current password..");
-                //    Changepassworderror.show();
-                //    Changepassworderror.fadeOut(5000);
-                //    jQuery.unblockUI();
-                //}
+                }
+                
             },
             error: function (xhr, status, error) {
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
@@ -205,7 +207,20 @@ function fetchPendingBid() {
             if (data[0].pendingActivity.length > 0) {
                 $('#totalrecord').text('(' +data[0].pendingActivity.length+')')
                 for (var i = 0; i < data[0].pendingActivity.length; i++) {
-                   
+                   var _bidStatus = data[0].pendingActivity[i].bidStatus
+                        if (_bidStatus == null || _bidStatus == '') {
+                            if (data[0].pendingActivity[i].startDate != null || data[0].pendingActivity[i].startDate != '') {
+                             
+                                var StartDate = fnConverToShortDT(data[0].pendingActivity[i].startDate);
+                             
+                                _bidStatus = StartDate;
+                            }
+
+                            if (data[0].pendingActivity[i].endDate != null || data[0].pendingActivity[i].endDate != '') {
+                                var EndDate = fnConverToShortDT(data[0].pendingActivity[i].endDate);
+                                _bidStatus = _bidStatus + '-' + EndDate;
+                            }
+                        }
                    
                     str = "<li><a href='javascript:;' onclick=fnOpenLink(\'" + data[0].pendingActivity[i].linkURL + "'\,\'" + data[0].pendingActivity[i].bidID + "'\,\'" + data[0].pendingActivity[i].isTermsConditionsAccepted + "'\,\'" + data[0].pendingActivity[i].bidTypeID + "',\'" + data[0].pendingActivity[i].version + "'\)>";
                     str += "<div class='col1'><div class='cont'>";
@@ -213,17 +228,22 @@ function fetchPendingBid() {
                     str += "<div class='cont-col2'><div class='desc'>" + data[0].pendingActivity[i].activityDescription + "&nbsp;&nbsp;";
                    
                    
-                    if (data[0].pendingActivity[i].isTermsConditionsAccepted != "Y") {
+                    if (data[0].pendingActivity[i].isTermsConditionsAccepted != "Y" && data[0].pendingActivity[i].rfqStatus == "N") {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + " </span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
                
                     }
-                    else {
+                   else if (data[0].pendingActivity[i].isTermsConditionsAccepted == "Y" && data[0].pendingActivity[i].rfqStatus != "C") {
                         str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + "</span>";
+               
+                    }
+                   else if (data[0].pendingActivity[i].isTermsConditionsAccepted == "Y" && data[0].pendingActivity[i].rfqStatus == "C") {
+                        str += "<span class='label label-sm label-info'>" + data[0].pendingActivity[i].bidTypeName + " </span>&nbsp;&nbsp;<span class='badge badge-success'> Submitted </span>";
                     }
                     str += "</div></div></div></div>";
                     
-                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
-                    str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
+                    str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
+                    //str += "<div class='date'><span class='label label-sm label-warning'>" + data[0].pendingActivity[i].bidStatus + "</span></div></div>";
+                    str += "<div class='date'><span class='label label-sm label-warning'>" + _bidStatus + "</span></div></div>";
                     str += "</a></li>";
                     jQuery('#UlPendingActivity').append(str);
                    
@@ -382,9 +402,9 @@ function fetchVQDetails() {
         success: function (BidData) {
             sessionStorage.setItem('CustomerID', BidData[0].vqMaster[0].customerID)
             attachment = BidData[0].vqMaster[0].vqAttachment.replace(/\s/g, "%20")
-           
+         
             jQuery('#RFISubject').text(BidData[0].vqMaster[0].vqSubject)
-            jQuery('#RFIDeadline').text(BidData[0].vqMaster[0].vqDeadline)
+            jQuery('#RFIDeadline').text(fnConverToShortDT(BidData[0].vqMaster[0].vqDeadline))
             jQuery('#RFIDescription').text(BidData[0].vqMaster[0].vqDescription)
 
         },
@@ -413,8 +433,9 @@ function fetchRFIDetails(){
         success: function (BidData) {
             sessionStorage.setItem('CustomerID', BidData[0].rfxMaster[0].customerID)
             sessionStorage.setItem('CurrentRFXID', BidData[0].rfxMaster[0].rfxid)
+           
             jQuery('#RFISubject').text(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#RFIDeadline').text(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#RFIDeadline').text(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#RFIDescription').text(BidData[0].rfxMaster[0].rfxDescription)
 
         },
@@ -443,16 +464,22 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            
+             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
+              jQuery('.rfqtc').show();
+             jQuery('.bidtc').hide();
+                 
+             $('#uniform-chkIsAccepted').find("span").removeClass('checked');    
+              $('#btnContinue').attr("disabled", true);
+              
             jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
            
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(RFQData[0].general[0].rfqDescription)
             
-            jQuery('#rfqstartdate').text(RFQData[0].general[0].rfqStartDate)
-            jQuery('#rfqenddate').text(RFQData[0].general[0].rfqEndDate)
-            sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
+            jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+              jQuery('#rfqTermandCondition').attr("name",RFQData[0].general[0].rfqTermandCondition)
            
         },
         error: function (xhr, status, error) {
@@ -467,6 +494,22 @@ function fetchReguestforQuotationDetailseRFQ() {
     });
     jQuery.unblockUI();
 }
+
+function DownloadFile(aID) {
+
+
+    fnDownloadAttachments($("#" + aID.id).attr("name") , 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
+}
+
+
+function DownloadbidFile(aID) {
+
+
+    fnDownloadAttachments($("#" + aID.id).attr("name") , 'Bid/' + sessionStorage.getItem('hddnRFQID'));
+}
+
+
+
 function acceptBidTermsAuction() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorID = 0;
@@ -603,17 +646,20 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='col1'><div class='cont'>";
                         str += "<div class='cont-col1'><div class='label label-sm label-success'><i id=iconbidd" + i + "></i></div></div>";
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
-                        if (BidData[i].isTermsConditionsAccepted != "Y") {
+                        if (BidData[i].isTermsConditionsAccepted != "Y" && BidData[i].rfqStatus == "N") {
                             
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-danger'> new </span>";
                         }
-                        else {
+                        else if  (BidData[i].isTermsConditionsAccepted == "Y" && BidData[0].rfqStatus != "C") {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
-                        
+                        else if (BidData[i].isTermsConditionsAccepted == "Y" && BidData[i].rfqStatus == "C") {
+                            
+                            str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>&nbsp;&nbsp;<span class='badge badge-success'> Submitted </span>";
+                        }
                         str += "</div></div></div></div>";
 
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
                         jQuery('#UlPendingActivity').append(str);
@@ -657,7 +703,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
@@ -702,7 +748,7 @@ function fetchBidDataDashboard(requesttype) {
                             str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         }
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                        
@@ -745,7 +791,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
 
@@ -789,7 +835,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<div class='cont-col2'><div class='desc'>" + BidData[i].activityDescription + "&nbsp;&nbsp;";
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                         str += "</div></div></div></div>";
-                        str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                        str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                         str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                         str += "</a></li>";
@@ -839,7 +885,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "<span class='label label-sm label-info'>" + BidData[i].bidTypeName + "</span>";
                     }
                     str += "</div></div></div></div>";
-                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                    str += "<div class='col2' style='width: 140px !important; margin-left:-140px !important;'>";
 
                     str += "<div class='date'><span class='label label-sm label-warning'>" + BidData[i].bidStatus + "</span></div></div>";
                     str += "</a></li>";
@@ -947,15 +993,23 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            console.log("dataa > ", data)
+          
             if (data.length == 1) {
+                var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
                 sessionStorage.setItem('CustomerID', data[0].customerID)
+                sessionStorage.setItem('hddnRFQID', data[0].bidID)
+                 jQuery('.bidtc').show();
+                 jQuery('.rfqtc').hide();
+                 
+                $('#uniform-chkIsAccepted').find("span").removeClass('checked');    
+                 $('#btnContinue').attr("disabled", true);
+             
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(data[0].bidSubject);
                 jQuery("#lblbidDetails").text(data[0].bidDetails);
-                jQuery("#lblbiddate").text(data[0].bidDate);
-                jQuery("#lblbidtime").text(data[0].bidTime);
+                jQuery("#lblbiddate").text(localBidDate);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
                 jQuery("#lblbidfor").text(data[0].bidFor);
 
@@ -965,7 +1019,7 @@ function fetchBidHeaderDetails() {
                 jQuery("a#lnkAnyOtherAttachment").text(data[0].attachment);
                 jQuery("a#lnkAnyOtherAttachment").attr("href", "PortalDocs/Bid/" + sessionStorage.getItem("BidID") + "/" + anyotherAttachment)
 
-                
+                jQuery('#bidTermandCondition').attr("name",data[0].termsConditions)
 
                 jQuery("#lblbidduration").text(data[0].bidDuration);
                 jQuery("#lblcurrency").text(data[0].currencyName);
@@ -1116,3 +1170,11 @@ function fetchMappedCustomers() {
     });
     jQuery.unblockUI();
 }
+jQuery('#bidchkIsAccepted').click(function () {
+    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
+        $('#btnContinue').attr("disabled", false);
+    }
+    else {
+        $('#btnContinue').attr("disabled", true);
+    }
+});

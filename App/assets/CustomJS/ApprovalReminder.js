@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 function FetchAllCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -26,6 +26,7 @@ function FetchAllCustomer() {
                     $('#ddlCustomer').prop('disabled',true)
                    }
                 }
+                 FetchAllpendingWith();
         },
         error: function (xhr, status, error) {
               
@@ -112,7 +113,7 @@ function FetchViewAllPendingBids() {
 
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
-                    str += "<td>" + BidData[i].pendingSince + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].pendingSince) + "</td>";
                     str += "</tr>";
                     jQuery('#tbldetails').append(str);
 
@@ -227,7 +228,7 @@ function FetchAllCloseBids() {
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
                     str += "<td class=hide id=pendingon"+i+">" + BidData[i].toUserId + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
-                    str += "<td>" + BidData[i].pendingSince + "</td>";
+                    str += "<td>" + fnConverToLocalTime(BidData[i].pendingSince) + "</td>";
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
 

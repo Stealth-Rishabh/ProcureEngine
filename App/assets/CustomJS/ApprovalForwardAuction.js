@@ -1,4 +1,4 @@
-﻿var BidID = "";
+var BidID = "";
 var ButtonType = '';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
@@ -347,17 +347,17 @@ var FormValidation = function () {
                 txtRemarksAward: {
                     required: true
                 },
-                drpVendors: {
-                    required: false
-                }
+                //drpVendors: {
+                //    required: true
+                //}
             },
             messages: {
                 txtRemarksAward: {
                     required: "Please enter your comment"
                 },
-                drpVendors: {
-                    required: "Please enter your Vendor"
-                }
+                //drpVendors: {
+                //    required: "Please enter your Vendor"
+                //}
             },
 
             invalidHandler: function (event, validator) { //display error alert on form submit              

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,6 +33,19 @@
 
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+    
+       body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
+        }
+   
+   
+       .form-horizontal .form-control-static {
+          padding-top: 7px;
+          width: 100%;
+        }
+   
          .tileDesign {
             padding: 10px;
             width: 90% !important;
@@ -439,15 +452,15 @@
                                                 </label>
                                                 <!--</div>-->
                                             </div>
-                                            <div class="col-md-4 ">
+                                            <!--<div class="col-md-4 ">-->
                                                 <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                                <!--<label class="col-md-6 control-label" style="text-align:left">
                                                     Bid Time:
                                                 </label>
                                                 <label class="col-md-6 control-label" id="lblbidtime" style="text-align:left">
-                                                </label>
+                                                </label>-->
                                                 <!--</div>-->
-                                            </div>
+                                            <!--</div>-->
                                             <div class="col-md-4 ">
                                                 <!--<div class="form-control">-->
                                                 <label class="col-md-6 control-label" style="text-align:left">
@@ -614,15 +627,19 @@
                                     </div>
                                   
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-11 control-label">I accept the above Bid Details and agree to  participate in this bid as per above terms. &nbsp; <input type="checkbox" id="chkIsAccepted" name="chkIsAccepted"></label>
-                                        <div class="col-md-1">
-
-                                            <!--<label class="checkbox-inline">-->
-                                               
-                                            <!--</label>-->
-                                        </div>
+                                      <div class="form-group">
+                                        <label class="col-md-11 control-label rfqtc" style="display:none;">I hereby accept the 
+                                         <a  id="rfqTermandCondition" href="javascript:;" onclick="DownloadFile(this)">Terms and Conditions </a>
+                                        of this RFQ and agree to participate as per above RFQ details.  &nbsp; <input type="checkbox" id="chkIsAccepted" name="rfqchkIsAccepted"></label>
+                                      
+                                      
+                                       <label class="col-md-11 control-label bidtc" style="display:none;">I hereby accept the 
+                                         <a  id="bidTermandCondition" href="javascript:;" onclick="DownloadbidFile(this)">Terms and Conditions </a>
+                                        of this bid  and agree to participate as per above bid details.  &nbsp; <input type="checkbox" id="bidchkIsAccepted" name="bidchkIsAccepted"></label>
+                                      
+                                    
                                     </div>
+                                   
 
                                     <div class="form-actions fluid">
                                         <div class="col-md-offset-3 col-md-6" style="text-align: center">

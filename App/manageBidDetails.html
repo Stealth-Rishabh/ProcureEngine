@@ -1,8 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+       <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+  
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -29,6 +31,12 @@
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />-->
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
@@ -37,6 +45,12 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
 
+   <style>
+        input#file-excelparameter {
+            position: fixed;
+            top: -120px;
+        }
+    </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -262,29 +276,28 @@
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Bid Date:</label>
-                                                                                    <div class="col-md-3">
+                                                                                    <div class="col-md-4">
                                                                                         <p class="form-control-static" id="txtbidDatePrevtab_0"></p>
 
                                                                                     </div>
 
-                                                                                    <label class="control-label col-md-2">Time:</label>
+                                                                                    <!--<label class="control-label col-md-2">Time:</label>
                                                                                     <div class="col-md-3">
                                                                                         <p class="form-control-static" id="txtbidTimePrevtab_0"></p>
 
-                                                                                    </div>
+                                                                                    </div>-->
                                                                                 </div>
                                                                             </div>
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
-                                                                                <!--<div class="form-group">
-                                                                                    <label class="control-label col-md-4">Time:</label>
-                                                                                    <div class="col-md-8">
-                                                                                        <p class="form-control-static" id="txtbidTimePrevtab_0">
-
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">Bid Type:</label>
+                                                                                    <div class="col-md-4">
+                                                                                        <p class="form-control-static" id="txtBidType">
                                                                                         </p>
-                                                                                        <a class="isDisabledClass" onclick="editValues('divbidTimePrevtab_0','')"><i class="fa fa-pencil"></i></a>
+
                                                                                     </div>
-                                                                                </div>-->
+                                                                                </div>
                                                                             </div>
                                                                             <!--/span-->
                                                                         </div>
@@ -374,10 +387,10 @@
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Display Vendors their Rank:</label>
-                                                                                    <div class="col-md-9">
+                                                                                    <label class="control-label col-md-4">Display Vendors their Rank:</label>
+                                                                                    <div class="col-md-8">
                                                                                         <p class="form-control-static" id="showL1l2"></p>
-                                                                                        <a  id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
 
                                                                                     </div>
                                                                                 </div>
@@ -397,8 +410,8 @@
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Mask Participants during Bidding:</label>
-                                                                                    <div class="col-md-9">
+                                                                                    <label class="control-label col-md-4">Mask Participants during Bidding:</label>
+                                                                                    <div class="col-md-8">
                                                                                         <p class="form-control-static" id="hidevendor"></p>
                                                                                         <a class=isDisabledClass id="ctrlhidevendor" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
 
@@ -417,6 +430,19 @@
                                                                             </div>
                                                                         </div>
 
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-offset-9 col-md-4">
+                                                                                            <button id="btn-add-new-item" class="btn green" type="button">Add New</button>
+                                                                                            <!--<button id="btn-add-new-item" class="btn green" type="button" onclick="editValues('divbidItemsPrevtab_0','')">Add New</button>-->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--write here-->
+                                                                        </div>
 
                                                                         <h3 class="form-section">Participants details</h3>
                                                                         <div class="row">
@@ -558,7 +584,7 @@
                                                 </div>
                                                 <div class="tab-pane " id="tab_3">
 
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12" id="divremovequotes">
                                                         <!-- BEGIN Portlet PORTLET-->
                                                         <div class="portlet light ">
 
@@ -651,7 +677,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <!--/span-->
-                                                                                <div class="col-md-6">
+                                                                                <!--<div class="col-md-6">
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-4">Time:</label>
                                                                                         <div class="col-md-8">
@@ -660,7 +686,7 @@
                                                                                             </p>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div>-->
                                                                                 <!--/span-->
                                                                             </div>
                                                                             <!--/row-->
@@ -819,7 +845,7 @@
                                                                                     <div class="col-md-6">
                                                                                         <select class="form-control" id="ddlBidStatus" onchange="fnshowDatetime()">
                                                                                             <!--<option value="">Select All</option>-->
-                                                                                            <option value="1">OPEN</option>
+                                                                                            <option value="1" id="optopen">OPEN</option>
                                                                                             <option value="2">CLOSE</option>
                                                                                             <!--<option value="3" id="opPauseval" class="hide">PAUSE</option>-->
                                                                                         </select>
@@ -828,33 +854,23 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
+                                                                                  
                                                                                     <div class="inputgroup">
-                                                                                        <label class="control-label col-md-4"> Bid Date/Time:</label>
-
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                                                                 data-date-start-date="+0d">
-                                                                                                <input type="text" id="txtbidDate" name="txtbidDate" class="form-control dttime afterrunning" readonly>
+                                                                                        <label class="col-md-3 control-label">
+                                                                                            Bid Date/Time<span class="required"> *</span>
+                                                                                        </label>
+                                                                                      <div class="col-md-5">
+                                                                                            <div class="input-group date form_datetime form_datetime bs-datetime">
+                                                                                                <input type="text" class="form-control dttime" id="txtbidDate" name="txtbidDate" placeholder="Bid Date/Time" autocomplete="off" readonly>
                                                                                                 <span class="input-group-btn">
-                                                                                                    <button class="btn default dttime afterrunning" id="btncalopendate" type="button">
+                                                                                                    <button class="btn default date-set dttime" type="button" id="btncalopendate">
                                                                                                         <i class="fa fa-calendar"></i>
                                                                                                     </button>
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group">
-                                                                                                <input type="text" id="txtbidTime" name="txtbidTime" class="form-control timepicker timepicker-no-seconds dttime afterrunning"
-                                                                                                       readonly>
-                                                                                                <span class="input-group-btn">
-                                                                                                    <button class="btn default afterrunning" type="button" id="btnopentime">
-                                                                                                        <i class="fa fa-clock-o"></i>
-                                                                                                    </button>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-
                                                                                     </div>
+
                                                                                 </div>
 
                                                                             </div>
@@ -880,6 +896,21 @@
                                                                             <div class="col-md-6" style="display:none;" id="divreopendttime">
                                                                                 <div class="form-group">
                                                                                     <div class="inputgroup">
+                                                                                        <label class="col-md-3 control-label">
+                                                                                            Bid ReOpen Date/Time:<!--<span class="required"> *</span>-->
+                                                                                        </label>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                                                                <input type="text" size="16" class="form-control" id="txtreopenDate" name="txtreopenDate" placeholder="Reopen Date/Time" autocomplete="off" readonly>
+                                                                                                <span class="input-group-btn">
+                                                                                                    <button class="btn default date-set" type="button" id="btncal">
+                                                                                                        <i class="fa fa-calendar"></i>
+                                                                                                    </button>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--<div class="inputgroup">
                                                                                         <label class="control-label col-md-4"> Bid ReOpen Date/Time:</label>
 
                                                                                         <div class="col-md-3">
@@ -905,7 +936,7 @@
                                                                                             </div>
                                                                                         </div>
 
-                                                                                    </div>
+                                                                                    </div>-->
                                                                                 </div>
 
                                                                             </div>
@@ -1123,6 +1154,9 @@
                                                                             <button type="button" onclick="submitprebidprice()" class="btn green " id="btnprebid">
                                                                                 Submit
                                                                             </button>
+                                                                            <button type="button" data-toggle="modal" href="#PrePriciing" class="btn btn-danger" id="btnprebidexcel">
+                                                                                Excel
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </form>
@@ -1165,6 +1199,98 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
+    
+    	    <div class="row hide">
+        <a id="A" style="display:none;"></a>
+        <table id="tblBiddetailsPreprice" class="table table-striped table-bordered table-hover hide">
+            <thead>
+                <tr id="Trhead">
+                    <th data-style="NonMandatory">VendorID</th>
+                    <th data-style="Mandatory">Vendor</th>
+                    <th data-style="Mandatory">ItemID</th>
+                    <th data-style="Mandatory">ItemName</th>
+                    <th data-style="Mandatory">Price</th>
+                </tr>
+            </thead>
+        </table>
+        <table class="table table-bordered" id="tblUOM"></table>
+    </div>
+    <div id="PrePriciing" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Upload Pre Price for Bid using excel file
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg2"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv2">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg2"></span>
+                    </div>
+                    <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="progress-form display-none" id="modalLoaderparameter">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msgparameter">
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter" />
+                                        <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter" style="text-decoration:none;">Instructions</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger display-hide" id="error-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="errspan-excelparameter"></span>
+                                    </div>
+                                    <div class="alert alert-success  display-hide" id="success-excelparameter">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="succspan-excelparameter" class="text-center"></span><br />
+                                        <div class="col-md-12 col-md-offset-5" id="btnyesno">
+                                            <!--<button class="btn green" type="button" onclick="InsupdProductfromExcel()">Yes</button>-->
+                                            <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
+                                            <button class="btn yellow" id="btnNoUpload" type="button" onclick="fnNoUpload()">No</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="instructionsDivParameter">
+                                        <button class="close" data-close="alert"></button>
+                                        1. Please ensure all <b>Prices</b> and <b>Quantity</b> are in Number format, and <b>Dates</b> in Date format.
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -1198,22 +1324,25 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-reorder"></i>Edit Event
+                        <i class="fa fa-reorder"></i>Add/Edit Event
                     </div>
                     <div class="tools">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" id="frmItemeditvalues">
                         <div class="form-body">
-                            <div class="alert alert-success" id="msgSuccessEditEvent" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessItemEvent" style='display:none;'>
+                                <span id=""></span>
+                            </div>
+                            <div class="alert alert-danger" id="msgErrorItemEvent" style='display: none;'>
                                 <span id=""> </span>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group" id="divbidDatePrevtab_0">
-                                        <div class="inputgroup">
+                                        <!--<div class="inputgroup">
                                             <label class="control-label col-md-4">
                                                 Bid Date<span class="required"> *</span>
                                             </label>
@@ -1228,10 +1357,27 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                        </div>-->
+                                        <!---->
+                                        <div class="inputgroup">
+                                            <label class="col-md-3 control-label">
+                                                Bid Date/Time<span class="required"> *</span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                    <input type="text" size="16" class="form-control" id="txtinputBidDatePrevtab_0" name="txtinputBidDatePrevtab_0" autocomplete="off" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default date-set" type="button" id="btncal">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <!--<div class="col-md-5">
                                     <div class="form-group" id="divbidTimePrevtab_0">
                                         <div class="inputgroup">
                                             <label class="control-label col-md-5">
@@ -1250,9 +1396,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-md-2">
-                                    <!--<div></div>-->
+
                                     <button type="button" class="btn green" id="btn-submit-datetime" onclick="Dateandtimevalidate()"> Go</button>
                                 </div>
                             </div>
@@ -1345,7 +1491,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 RaAuctionFields">
+                                        <div class="col-md-4 RaAuctionFields xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtdestinationPort" name="txtdestinationPort" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1356,7 +1502,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 faEngilshAuctionFields">
+                                        <div class="col-md-4 faEngilshAuctionFields xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtshortname" name="txtshortname" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1367,7 +1513,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 RaAuctionFields">
+                                        <div class="col-md-4 RaAuctionFields xyz">
                                             <input type="text" id="txtbiddescriptionP" name="txtbiddescriptionP" class="form-control"
                                                    onkeyup="replaceQuoutesFromString(this)" />
                                         </div>
@@ -1380,12 +1526,12 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
 
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
 
                                             <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
                                                    data-provide="typeahead" autocomplete="off" name="txtUOM" />
@@ -1394,20 +1540,18 @@
                                         <label class="control-label col-md-2">
                                             Selected Currency
                                         </label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" id="txtselectedCurrency" name="txtselectedCurrency" autocomplete="off" readonly />
 
                                         </div>
-                                        <!---->
+
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-2">
                                             Target Unit Price
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txttargetprice" name="txttargetprice" number="true" autocomplete="off" /><!--onkeyup="thousands_separators_input(this)"-->
-
-
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkmaskvendor" name="checkmaskvendor">
@@ -1437,14 +1581,14 @@
                                             Ceiling/ Max Price<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
-
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkshowstartPrice" name="checkshowstartPrice">
-                                                <option value="N">No</option>
-                                                <option value="Y">Yes</option>
+                                                <option value="Y">Show</option>
+                                                <option value="N">Hide</option>
+
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 RaAuctionFields" id="lblmindec">
@@ -1456,8 +1600,8 @@
                                         <label class="control-label col-md-2 fadutchAuctionFields" id="lblcelingfloor">
                                             Starting Price<span class="required">*</span>
                                         </label>
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreament" name="txtminimumdecreament" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
 
@@ -1475,7 +1619,7 @@
                                             Price Increament Frequency<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" id="txtpricefrequency" name="txtpricefrequency" maxlength="3" number="true" autocomplete="off" />
 
                                         </div>
@@ -1483,7 +1627,7 @@
                                             Price Increament Amount<span class="required"> *</span>
                                         </label>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtpriceincreamentamount" name="txtpriceincreamentamount" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
@@ -1493,8 +1637,8 @@
                                             <label class="control-label col-md-2 RaAuctionFields">
                                                 Bid Duration <span class="required">*</span>
                                             </label>
-                                            <div class="col-md-3 RaAuctionFields">
-                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" />
+                                            <div class="col-md-3 RaAuctionFields xyz">
+                                                <input type="text" class="form-control " id="txtitembidduration" name="txtitembidduration" autocomplete="off" onkeyup="removeZero(this)" />
                                             </div>
                                             <label class="control-label col-md-1 RaAuctionFields">
                                                 (in&nbsp;minutes)
@@ -1504,7 +1648,7 @@
                                             Show L1 Price
                                         </label>
                                         <div class="col-md-2 RAFAEnglishonly" id="divshowprice">
-                                            <select class="form-control no-space" id="checkL1Price" name="checkL1Price">
+                                            <select class="form-control no-space lambdafactor" id="checkL1Price" name="checkL1Price">
                                                 <option value="N">No</option>
                                                 <option value="Y">Yes</option>
                                             </select>
@@ -1512,8 +1656,8 @@
                                         <label class="control-label col-md-1 RAFAEnglishonly" id="lblGST">
                                             GST
                                         </label>
-                                        <div class="col-md-1 RAFAEnglishonly" id="divGST">
-                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" />
+                                        <div class="col-md-1 RAFAEnglishonly xyz" id="divGST">
+                                            <input type="text" class="form-control " id="txtGST" name="txtGST" autocomplete="off" onkeyup="removeZero(this)" />
                                         </div>
                                     </div>
                                 </div>
@@ -1524,7 +1668,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 xyz">
                                             <input type="text" class="form-control" maxlength="200" id="txtItemnameFrench" name="txtItemnameFrench" autocomplete="off"
                                                    onkeyup="replaceQuoutesFromString(this)" />
 
@@ -1546,7 +1690,7 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtquantitiyfrench" name="txtquantitiyfrench" number="true" autocomplete="off" onkeyup="checkminmax(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                         <div class="col-md-2">
@@ -1570,9 +1714,9 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 xyz minq">
-                                            <input type="tel" class="form-control  text-right" id="txtminquantitiy"
-                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" />
+                                        <div class="col-md-4 xyz minq xyz">
+                                            <input type="tel" class="form-control  text-right thousandseparated" id="txtminquantitiy"
+                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" onkeyup="fnclearmsz('spnminq')" />
                                             <span for="txtminquantitiy" class="help-block help-block-error hide" id="spnminq"></span>
 
                                         </div>
@@ -1581,9 +1725,9 @@
                                                 *
                                             </span>
                                         </label>
-                                        <div class="col-md-4 xyz maxq">
-                                            <input type="tel" class="form-control text-right " id="txtmaxquantitiy"
-                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" />
+                                        <div class="col-md-4 xyz maxq xyz">
+                                            <input type="tel" class="form-control text-right thousandseparated" id="txtmaxquantitiy"
+                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" onkeyup="fnclearmsz('spnmaxq')" />
                                             <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq"></span><!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
                                     </div>
@@ -1615,23 +1759,23 @@
                                         <label class="control-label  col-md-2">
                                             Bid Start Price<span class="required"> *</span>
                                         </label>
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                         </div>
                                         <div class="col-md-2">
                                             <select class="form-control no-space" id="checkshowstartPricefrench" name="checkshowstartPricefrench">
-                                                <option value="N">No</option>
-                                                <option value="Y">Yes</option>
+                                                <option value="Y">Show</option>
+                                                <option value="N">Hide</option>
+
                                             </select>
                                         </div>
-
                                         <label class="control-label col-md-2">
                                             Minimum&nbsp;Increment<span class="required">*</span>
                                         </label>
 
-                                        <div class="col-md-2">
-                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <div class="col-md-2 xyz">
+                                            <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamentfrench" name="txtminimumdecreamentfrench" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
                                         </div>
 
                                         <div class="col-md-2">
@@ -1640,7 +1784,6 @@
                                                 <option value="P">%age</option>
                                             </select>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
 
@@ -1661,13 +1804,13 @@
                             <div id="divBidItemsFa"></div>
 
                         </div>
-
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-offset-11 col-md-9">
-                                            <button type="button" id="btn-submit-modal" class="btn green" onclick="formSubmitEditEvent()"> Submit</button>
+                                            <!--<button type="button" id="btn-submit-modal" class="btn green" onclick="formSubmitEditEvent()"> Submit</button>-->
+                                            <button type="submit" id="btn-submit-modal" class="btn green"> Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1706,7 +1849,7 @@
                                         Minimun Decreament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumdecreamenttab_0" name="txtminimumdecreamenttab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -1761,7 +1904,7 @@
                                         Bid Start Price<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
 
@@ -1811,7 +1954,7 @@
                                         Minimun Increament<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                        <input type="tel" class="form-control thousandseparated" id="txtminimumincreamenttab_0" name="txtminimumincreamenttab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
 
                                     </div>
                                     <div class="col-md-2">
@@ -1986,7 +2129,7 @@
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-                                             <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />                                  
+                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />
                                         </div>
                                     </div>
 
@@ -2197,13 +2340,14 @@
     <!-- END PAGE LEVEL PLUGINS -->
     <script src="assets/SignalRjs/signalr.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <script src="assets/scripts/core/app.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js"></script>
-    <script src="assets/CustomJS/manageBidDetails.js" type="text/javascript"></script>
-
+    <script src="assets/CustomJS/manageBidDetails.js?v-2" type="text/javascript"></script>
+    
 
     <script type="text/javascript">
 
@@ -2233,8 +2377,13 @@
             fetchUserBids();
             fetchMenuItemsFromSession(9, 18);
             FormValidate();
+
             FetchUOM(sessionStorage.getItem("CustomerID"));
             BindNoExtensions('txtnoofextensiontab_0');
+                 document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+                document.getElementById('file-excelparameter').click();
+            });
+            $('#file-excelparameter').change(handleFileparameter);
 
 
         });

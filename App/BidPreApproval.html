@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -40,6 +41,20 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
 
+<style>
+    
+    body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            
+        }
+   
+   
+       .form-horizontal .form-control-static {
+          
+          width: 100%;
+        }
+</style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
 
@@ -106,6 +121,7 @@
                                 </div>
 
                                 <div class="tools">
+                                    <span id="bid_EventID" class="align-right"></span>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
@@ -159,7 +175,7 @@
 
                                             </div>
                                             <!--/span-->
-                                            <div class="col-md-6">
+                                            <!--<div class="col-md-6">
 
                                                 <label class="control-label col-md-4">Time:</label>
                                                 <div class="col-md-8">
@@ -168,7 +184,7 @@
                                                     </p>
                                                 </div>
 
-                                            </div>
+                                            </div>-->
                                             <!--/span-->
                                         </div>
                                         <!--/row-->
@@ -244,9 +260,14 @@
 
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-md-6">
                                                 <div class="display-none" id="wrap_scrollerPrevApp">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblapproversPrev"></table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="display-none" id="wrap_scrollerprePrevApp">
+                                                    <table class=" table table-striped table-bordered table-hover" id="tblapproversPrePrev"></table>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,6 +296,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <h3 class="form-section display-none" id="h3Preapprovalhistory">Pre Approval History</h3>
+                                        <div class="row display-none" id="divPreapprovalhistory">
+                                            <div class="col-md-7">
+
+
+                                                <table class="table table-bordered" id="tblBidPreapprovalHistory">
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                                 <div id="divRemarksApp" class="col-md-12">
@@ -297,12 +327,12 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group hide" id="divTimeChange">
+                                                        <div class="form-group" id="divTimeChange">
                                                             <div class="Input-group">
                                                                 <label class="control-label col-md-2">
-                                                                    Bid Date<span class="required"> *</span>
+                                                                    Bid Date/Time<span class="required"> *</span>
                                                                 </label>
-                                                                <div class="col-md-3 xyz">
+                                                                <!--<div class="col-md-3 xyz">
                                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                          data-date-start-date="+0d">
                                                                         <input type="text" id="txtbidDate" autocomplete="off" name="txtbidDate" class="form-control" readonly>
@@ -312,9 +342,19 @@
                                                                             </button>
                                                                         </span>
                                                                     </div>
+                                                                </div>-->
+                                                                <div class="col-md-5">
+                                                                    <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                                        <input type="text" size="16" class="form-control" id="txtbidDate" name="txtbidDate" placeholder="Bid Date/Time" autocomplete="off" readonly>
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn default date-set" type="button" id="btncal">
+                                                                                <i class="fa fa-calendar"></i>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="inputgroup">
+                                                            <!--<div class="inputgroup">
                                                                 <label class="control-label col-md-2">
                                                                     Bid Start Time<span class="required"> *</span>
                                                                 </label>
@@ -329,7 +369,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="Input-group xyz">
@@ -339,8 +379,8 @@
                                                                 <div class="col-md-3">
                                                                     <select class="form-control" id="ddlActionType" name="ddlActionType">
                                                                         <option value="">Select</option>
-                                                                        <option value="Approved">Approved</option>
-                                                                        <option value="Revert">Revert</option>
+                                                                        <option value="Pre-Approved">Approved</option>
+                                                                        <option value="Pre-Revert">Revert</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -519,18 +559,18 @@
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-   
-    
+
+
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    
+
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
 
     <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-   
+
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
@@ -572,8 +612,9 @@
 
             Metronic.init();
             Layout.init();
-           ComponentsPickers.init();
+            ComponentsPickers.init();
             FormValidation.init();
+            setCommonData();
 
         });
     </script>

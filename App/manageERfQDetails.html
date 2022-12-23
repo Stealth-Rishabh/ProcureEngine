@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+   <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -21,7 +22,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-    
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -187,7 +188,7 @@
                                                         Add Vendors
                                                     </a>
                                                 </li>
-                                                <li id="litab1">
+                                                <li id="litab2">
                                                     <a href="#tab_3" data-toggle="tab">
                                                         Reopen Quotes
                                                     </a>
@@ -339,11 +340,29 @@
                                                                                         <label class="control-label col-md-4">Technical Approval:</label>
                                                                                         <div class="col-md-8">
                                                                                             <p class="form-control-static" id="lbltechnicalApproval"></p>
-                                                                                           
+
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="row" id="divRFQOpenDate">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label id="lblOpenDate" class="control-label col-md-4">
+                                                                                            RFQ Open Date:
+                                                                                        </label>
+                                                                                        <div class="col-md-8">
+                                                                                            <label id="lblRFQOpenDate" class="control-label" style="text-align:left">
+                                                                                            </label>&nbsp;
+                                                                                            <a class="isDisabledOpenClass" id="ctrlRFQOpenDates" style="cursor:pointer" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                                                        </div>
+
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
                                                                         </div>
                                                                         <h3 class="form-section hide">Approvers</h3>
                                                                         <div class="row hide">
@@ -665,6 +684,8 @@
                                                                             <div id="daterr"></div>
 
                                                                         </div>
+                                                                        <!--For Bid Open Date-->
+
 
 
 
@@ -1013,6 +1034,26 @@
                                     <div class="col-md-3">
                                         <span style="width:390px!important" class="btn blue"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
 
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="form-group hide" id="divRFQOpenAfterClosedRFQ_0">
+                                <div class="inputgroup">
+                                    <label class="control-label col-md-3">
+                                        RFQ Open Date<span class="required"> *</span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group date form_datetime form_datetime bs-datetime " >
+                                            <input type="text" class="form-control" id="txtbidopendatetime" name="txtbidopendatetime" placeholder="If required" autocomplete="off" readonly>
+                                            <span class="input-group-btn">
+                                                <button class="btn default date-set" type="button" id="btncal">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
 
                                     </div>
                                 </div>

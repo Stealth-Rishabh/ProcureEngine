@@ -1,4 +1,4 @@
-﻿var Changepassworderror = $('#errordivChangePassword');
+var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
@@ -75,8 +75,7 @@ function ChangePassword() {
         jQuery.unblockUI();
         return;
     }
-    else
-    {
+    else {
         var data = {
             "EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -84,7 +83,7 @@ function ChangePassword() {
             "UserType": sessionStorage.getItem("UserType"),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-       // console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/ChangePassword",
             type: "POST",
@@ -92,20 +91,22 @@ function ChangePassword() {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function (data, status, jqXHR) {
-               // if (data == "1") {
+
+                if (data.isSuccess == "-1") {
+                    jQuery("#errorpassword").html("Old Password is not correct.Please try again with correct password.");
+                    Changepassworderror.show();
+                    Changepassworderror.fadeOut(5000);
+                    jQuery.unblockUI();
+                    return false;
+                }
+                else {
 
                     jQuery("#sucessPassword").html("Your Password has been Changed successfully..");
                     Changepasswordsuccess.show();
                     Changepasswordsuccess.fadeOut(5000);
                     clearResetForm();
                     jQuery.unblockUI();
-                //}
-                //else {
-                //    jQuery("#errorpassword").html("Please try again with correct current password..");
-                //    Changepassworderror.show();
-                //    Changepassworderror.fadeOut(5000);
-                //    jQuery.unblockUI();
-                //}
+                }
             },
             error: function (xhr, status, error) {
 
@@ -134,7 +135,7 @@ function fnOpenLink(linkurl, isobserver) {
     window.location = linkurl;
 }
 function fnConfirmArchive(RFQID) {
-    
+
     bootbox.dialog({
         message: "Are you sure you want to Archive this activity ? ",
         buttons: {
@@ -226,16 +227,16 @@ function fetchDashboardData() {
                     }
                     str += "</div></div></div></div>";
 
-                    str += "<div class='col2' style='width: 110px !important; margin-left:-110px !important;'>";
+                    str += "<div class='col2'><div class='date' style='padding:0px 0px 0px 0px!important;color:#fff!important;'>";
 
-                    str += "<div class='date'><span class='label label-sm label-info'>" + BidData[0].pendingActivity[i].receiptDt + "</span></div></div>";
+                    str += "<span class='label-sm label-info'>" + fnConverToLocalTime(BidData[0].pendingActivity[i].receiptDt) + "</span></div></div>";
                     str += "</li>";
                     jQuery('#UlPendingActivity').append(str);
-                   
+
                     if (BidData[0].pendingActivity[i].bidTypeName == 'VQ') {
                         jQuery('#icon' + i).addClass('fa fa-question-circle');
                     }
-                   else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
+                    else if (BidData[0].pendingActivity[i].bidTypeName == 'VR') {
                         jQuery('#icon' + i).addClass('fa fa-question-circle');
                     }
                     else if (BidData[0].pendingActivity[i].bidTypeName == 'RFI') {
@@ -281,6 +282,7 @@ function fetchDashboardData() {
                     str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
                     str += "</div></div></div></div>";
                     str += "<div class='col2'>";
+                    //str += "<div class='date'>" + fnConverToLocalTime(BidData[0].todayBidStatus[i].bidStatus) + "</div></div>";
                     str += "<div class='date'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
                     str += "</a></li>";
                     jQuery('#all_pending_bids_list').append(str);
@@ -328,7 +330,25 @@ function fetchDashboardData() {
             if (BidData[0].todayBidStatus.length > 0) {
 
                 for (var i = 0; i < BidData[0].todayBidStatus.length; i++) {
+                    var _bidStatus = BidData[0].todayBidStatus[i].bidStatus
+                    if (_bidStatus == null || _bidStatus == '') {
+                        if (BidData[0].todayBidStatus[i].startDate != null || BidData[0].todayBidStatus[i].startDate != '') {
+                            var StartDate = fnConverToShortDT(BidData[0].todayBidStatus[i].startDate);
 
+                            //StartDate = moment(StartDate).format('DD-MMM');
+                            _bidStatus = StartDate;
+                        }
+
+                        if (BidData[0].todayBidStatus[i].endDate != null || BidData[0].todayBidStatus[i].endDate != '') {
+
+                            var EndDate = fnConverToShortDT(BidData[0].todayBidStatus[i].endDate);
+
+                            //EndDate = moment(EndDate).format('DD-MMM');
+                            _bidStatus = _bidStatus + '-' + EndDate;
+                        }
+
+
+                    }
                     str = "<li><a href='" + BidData[0].todayBidStatus[i].linkURL + "'>";
 
                     str += "<div class='col1'><div class='cont'>";
@@ -341,8 +361,9 @@ function fetchDashboardData() {
                         str += "<span class='label label-sm label-info'>" + BidData[0].todayBidStatus[i].bidTypeName + "</span>";
                     }
                     str += "</div></div></div></div>";
-                    str += "<div class='col2' style='width: 105px !important; margin-left:-105px !important;'>";
-                    str += "<div class='date1'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
+                    str += "<div class='col2'>";
+                    //str += "<div class='date1'>" + BidData[0].todayBidStatus[i].bidStatus + "</div></div>";
+                    str += "<div class='date1'>" + _bidStatus + "</div></div>";
                     str += "</a></li>";
                     jQuery('#ulList').append(str);
 
@@ -448,6 +469,7 @@ function fetchBidDataDashboard(requesttype) {
                         str += "</div></div></div></div>";
 
                         str += "<div class='col2'>";
+                        //str += "<div class='date'>" + fnConverToLocalTime(BidData[i].bidStatus) + "</div></div>";
                         str += "<div class='date'>" + BidData[i].bidStatus + "</div></div>";
                         str += "</a></li>";
                         jQuery('#ulList').append(str);

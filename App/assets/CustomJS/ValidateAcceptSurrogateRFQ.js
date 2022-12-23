@@ -1,4 +1,4 @@
-﻿var param = getUrlVars()["param"]
+var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
@@ -19,8 +19,16 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            var EndDate = new Date(data[0].rfqEndDate.replace('-', ''));
+            
+            sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
+            
+            setTimeout(function () {
+            var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-',''));
+            
+            //var currentTime = fnConverToLocalTime(new Date());
             var currentTime = new Date();
+            
+            
             if (EndDate > currentTime) {
                 sessionStorage.setItem('hddnRFQRFIID', data[0].rfqid)
                 sessionStorage.setItem('CustomerID', data[0].customerID)
@@ -34,10 +42,10 @@ function fetchReguestforQuotationDetailseRFQ() {
                 jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
                 jQuery('#ConversionRate').html(data[0].rfqConversionRate);
                 jQuery('#refno').html(data[0].rfqConversionRate);
-                jQuery('#RFQStartDate').text(data[0].rfqStartDate)
-                jQuery('#RFQStartDateTT').text(data[0].rfqStartDate)
-                jQuery('#RFQEndDate').text(data[0].rfqEndDate)
-                jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
+                jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
+                jQuery('#RFQStartDateTT').text(fnConverToLocalTime(data[0].rfqStartDate))
+                jQuery('#RFQEndDate').text(fnConverToLocalTime(data[0].rfqEndDate))
+                jQuery('#RFQDeadlineTT').text(fnConverToLocalTime(data[0].rfqEndDate))
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
                 
@@ -51,6 +59,7 @@ function fetchReguestforQuotationDetailseRFQ() {
                    
                 });
             }
+            },500);
            
 
         }

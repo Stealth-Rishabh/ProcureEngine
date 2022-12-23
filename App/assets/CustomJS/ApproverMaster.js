@@ -1,4 +1,4 @@
-﻿var WBList = {};
+var WBList = {};
 var OBList = [];
 var NBList = [];
 var WbSR = 0;
@@ -135,7 +135,6 @@ function validateApproverMaster() {
         $("#ddlApproveltype").css("border-color", "");
         v_approverType = false;
     }
-    debugger;
     if ($("#txtAmountFrom").val() == "") {
         $("#txtAmountFrom").css("border-color", "red");
         amountfrom = true;
@@ -352,7 +351,6 @@ function AddWBApprovers() {
     if (validateWBADD()) {
         return false;
     }
-    debugger;
     ++WbSR;
     var ApproverID = $("#ddlWBApprover option:selected").val();
     var ApproverName = $("#ddlWBApprover option:selected").text();
@@ -384,7 +382,6 @@ function AddOBApprovers() {
     if (validateOBADD()) {
         return false;
     }
-    debugger;
     ++ObSR;
     var ApproverID = $("#ddlOBApprover option:selected").val();
     var ApproverName = $("#ddlOBApprover option:selected").text();
@@ -416,7 +413,6 @@ function AddNBApprovers() {
     if (validateNBADD()) {
         return false;
     }
-    debugger;
     ++NbSR;
     var ApproverID = $("#ddlNBApprover option:selected").val();
     var ApproverName = $("#ddlNBApprover option:selected").text();

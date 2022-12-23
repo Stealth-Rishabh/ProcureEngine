@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 function FetchAllCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -39,26 +39,39 @@ function FetchAllCustomer() {
 
 }
 function FetchAllOpenBids() {
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var Fromdate = "1900-01-01";
-    var Todate = "1900-01-01";
+    var Fromdate = new Date("2000-01-01 01:00:00");
+    var Todate = new Date();
+    var CustId = null;
     if (jQuery("#txtFromDate").val() != "" && jQuery("#txtFromDate").val()==null) {
-        Fromdate = jQuery("#txtFromDate").val();
+        Fromdate = new Date($("#txtFromDate").val().replace('-',''));
     }
     if (jQuery("#txtToDate").val() != "" && jQuery("#txtToDate").val() == null) {
-        Todate = jQuery("#txtFromDate").val();
+        Todate = new Date($("#txtToDate").val().replace('-', ''));
     }
-   // alert(APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val())
+    if(jQuery("#ddlCustomer option:selected").val() !="" && jQuery("#ddlCustomer option:selected").val() !=null){
+        CustId = parseInt(jQuery("#ddlCustomer option:selected").val());
+    }
+    var TabData = {
+        "CustomerId": CustId,
+        "FromDate": Fromdate,
+        "ToDate": Todate
+    }
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
+        //url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
+        url: APIPath + "BidVendorSummary/fetchAllOpenBids/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        //data: '',
+        data: JSON.stringify(TabData),
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
+        //success: function (data) {
            
             jQuery("#tblVendorSummary").empty();
             if (BidData.length > 0) {
@@ -71,8 +84,9 @@ function FetchAllOpenBids() {
                     str += "<td>" + BidData[i].configuredBy + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
 
-                    var datearray = BidData[i].bidDate.split("/");
-                    BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
+                    //var datearray = BidData[i].bidDate.split("/");
+                    //BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
+                    BidDate = fnConverToLocalTime(BidData[i].bidDate);
                     str += "<td>" + BidDate + "</td>";
                     
                     str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].ampm + "</td>";

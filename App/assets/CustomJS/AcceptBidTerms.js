@@ -1,4 +1,4 @@
-﻿jQuery('#chkIsAccepted').click(function () {
+jQuery('#chkIsAccepted').click(function () {
     if (jQuery('#chkIsAccepted').is(':checked') == true) {
         $('#btnContinue').attr("disabled", false);
     }
@@ -51,7 +51,7 @@ function acceptBidTerms() {
         "VendorID": vendorID,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   alert(JSON.stringify(acceptTerms))
+ 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         type: "POST",

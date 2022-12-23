@@ -262,7 +262,6 @@ function uploadfile() {
         cache: false,
         data: data, 
         success: function (data, textStatus, xhr) {
-            debugger;
             MSG = data
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

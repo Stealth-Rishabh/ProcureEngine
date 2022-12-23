@@ -1,26 +1,41 @@
-﻿//$("#ulMain").toggleClass("page-sidebar-menu").toggleClass("page-sidebar-menu page-sidebar-menu-closed");
-//$("#bid").toggleClass("page-header-fixed page-quick-sidebar-over-content").toggleClass("page-header-fixed page-quick-sidebar-over-content page-sidebar-closed");
 function logoutFunction() {
     sessionStorage.clear();
     sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 function error401Messagebox(error) {
-    //bootbox.alert(error + "<br> Session has expired Please Login again.", function () {
+    
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
         window.location = sessionStorage.getItem('MainUrl');
         sessionStorage.clear();
         return false;
     });
 }
+
 if (sessionStorage.getItem('CustomerID') == 32) {
     $('#lichngepass').hide()
 }
 else {
     $('#lichngepass').show()
 }
-function fnErrorMessageText(spanid,formid) {
-   
+function getCurrentFinancialYear() {
+    var financial_year = "";
+    var today = new Date();
+    if ((today.getMonth() + 1) <= 3) {
+        financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear()-1)
+    } else {
+        financial_year = (today.getFullYear()-1) + "-" + (today.getFullYear())
+    }
+    return financial_year;
+}
+function getlastFinancialYear() {
+    var financial_year = "";
+    var today = new Date();
+    financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear()-1)
+    return financial_year;
+}
+function fnErrorMessageText(spanid, formid) {
+
     if (formid != '') {
         $('#' + formid).bootstrapWizard('previous')
         $('.button-next').removeClass('hide');
@@ -29,11 +44,10 @@ function fnErrorMessageText(spanid,formid) {
     $('.alert-danger').show();
     $('#' + spanid).html('').html('Some error occured . Please contact administrator');
     $('.alert-danger').fadeOut(8000);
-    
-   // App.scrollTo(error1, -200);
+
     jQuery.unblockUI();
     return false;
-    
+
 }
 function getCurrentTime(date) {
     var hours = date.getHours(),
@@ -59,18 +73,18 @@ function getCurrentDateddmmyyyy() {
     biddatetime = dd + '/' + mm + '/' + yyyy;
     return biddatetime;
 }
-function fnredirecttoHome(){
-	if(sessionStorage.getItem('UserType')=="V"){
-		window.location="VendorHome.html"
-	}
-	else if(sessionStorage.getItem('UserType')=="P"){
-        
-	    window.history.back();
-	}
-	else if(sessionStorage.getItem('UserType')=="E"){
-	
-		window.location="index.html"
-	}
+function fnredirecttoHome() {
+    if (sessionStorage.getItem('UserType') == "V") {
+        window.location = "VendorHome.html"
+    }
+    else if (sessionStorage.getItem('UserType') == "P") {
+
+        window.history.back();
+    }
+    else if (sessionStorage.getItem('UserType') == "E") {
+
+        window.location = "index.html"
+    }
 }
 function gritternotification(msz) {
 
@@ -101,28 +115,26 @@ function calltoaster(msz, title, type) {
         "timeOut": "0",
         "hideDuration": "0",
         "showEasing": "swing"
-        // "showDuration": "1000",
-       //"hideEasing": "linear",
-        //"showMethod": "fadeIn",
-        //"hideMethod": "fadeOut"
+        
     }
     if (type == 'success') {
-        toastr.success(msz, title, options);
+        toastr.success(decodeURIComponent(msz), title, options);
     } else if (type == 'error') {
-        toastr.error(msz, 'Error');
+        toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
-        toastr.warning(msz, 'Warning');
+        toastr.warning(decodeURIComponent(msz), 'Warning');
     } else {
-        toastr.info(msz, 'Information', options);
-  }
-   // toastr.success(msz, title)
+        toastr.info(decodeURIComponent(msz), 'Information', options);
+    }
+  
 }
 function setCommonData() {
+   
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
 }
 function minutes_with_leading_zeros(dtmin) {
-  
+
     return (dtmin < 10 ? '0' : '') + dtmin;
 }
 
@@ -168,12 +180,12 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     jQuery.each(jQuery.parseJSON(data), function (key, value) {
         if (value.parentMenuID == '0') {
             if (parentmenuid == value.menuID) {
-                
+
                 jQuery('#ulMain').append("<li class='active'><a href='javascript:;'><i class='" + value.iconClass + "'></i><span class='title'>" + value.menuName + "</span><span class='arrow'></span></a><ul class='sub-menu' id=MenuHeader" + i + "></ul></li>");
             }
             else
                 jQuery('#ulMain').append("<li ><a href='javascript:;' ><i class='" + value.iconClass + "'></i><span class='title'>" + value.menuName + "</span><span class='arrow'></span></a><ul class='sub-menu' id=MenuHeader" + i + "></ul></li>");
-                
+
 
             jQuery.each(jQuery.parseJSON(data), function (key, value1) {
                 if (value.menuID == value1.parentMenuID) {
@@ -193,11 +205,11 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
 
 }
 function CheckOnlineStatus(msg) {
-    
-   
+
+
     var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
     if (condition == "OFFLINE") {
-        
+
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -212,32 +224,31 @@ function CheckOnlineStatus(msg) {
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        //$('#basic').modal('show');
+     
         toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
-       
-        
+
+
     }
     else {
-        
-       // toastr.clear();
+
     }
-   
+
 }
 function Pageloaded() {
-  
+
     CheckOnlineStatus("load");
     document.body.addEventListener("offline", function () {
-        
+
         CheckOnlineStatus("offline")
     }, false);
     document.body.addEventListener("online", function () {
-        
+
         CheckOnlineStatus("online")
-        
+
     }, false);
 }
 function BindNoExtensions(divid) {
-   
+
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
     for (var i = 0; i <= 10; i++) {
 
@@ -248,7 +259,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblVendorSummary tbody").find("tr"), function () {
-        console.log($(this).text());
+      
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -256,32 +267,32 @@ jQuery("#txtSearch").keyup(function () {
     });
 });
 
-$('#logOut_btn').click(function() {
+$('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
 function checkfilesize(fileid) {
 
-    var ftype= $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
-    
+    var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
+
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
     var fname = fn.substring(fn.lastIndexOf('/') + 1, fn.lastIndexOf('.'));
     var size = $('#' + fileid.id)[0].files[0].size;
-   
+
     switch (ftype.toLowerCase()) {
-        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':case 'jpg':case 'jpeg':case 'png':
             break;
         default:
             jQuery(".alert-success").hide();
-            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx");
+            jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
             return false
-        }
+    }
     //if (size > 5242880)// checks the file more than 5 MB
     //{
-    
+
     if (fname.length > 70) {
         $('.alert-danger').html('File Name should not be more than 70 charachters!')
         $('.alert-danger').show();
@@ -290,8 +301,8 @@ function checkfilesize(fileid) {
         $('#' + fileid.id).val('')
         return false;
     }
-   else if (size > 7340032) {
-       // $('#spandanger,#spanerrordomestic').html('Filesize must be less than or equal to 5 MB.!')
+    else if (size > 7340032) {
+      
         $('.alert-danger').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
@@ -320,25 +331,29 @@ function thousands_Sep_Text(num) {
     return num_parts.join(".");
 }
 function thousands_separators(num) {
+    var res="";
+if(num!=null && num!=undefined){
+        x = num.toString();
+       
+        x = x.replace(/,/g, '');
     
-    x = num.toString();
-    x = x.replace(/,/g, '');
-   
-    var afterPoint = '';
-    if (x.indexOf('.') > 0)
-        afterPoint = x.substring(x.indexOf('.'), x.length);
-    x = Math.floor(x);
-    x = x.toString();
-    var lastThree = x.substring(x.length - 3);
-    var otherNumbers = x.substring(0, x.length - 3);
-    if (otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+        var afterPoint = '';
+        if (x.indexOf('.') > 0)
+            afterPoint = x.substring(x.indexOf('.'), x.length);
+        x = Math.floor(x);
+        x = x.toString();
+        var lastThree = x.substring(x.length - 3);
+         
+        var otherNumbers = x.substring(0, x.length - 3);
+        if (otherNumbers != '')
+            lastThree = ',' + lastThree;
+        res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+    }
     return res;
 }
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
-  
+
     x = num.toString();
     x = x.replace(/,/g, '');
 
@@ -352,12 +367,12 @@ function thousands_separators_NonMadCol(ele) {
     if (otherNumbers != '')
         lastThree = ',' + lastThree;
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-    ele.value= res;
+    ele.value = res;
 }
 function thousands_separators_input(ele) {
     var valArr, val = ele.value;
     val = val.replace(/[^0-9\.]/g, '');
-   
+
     if (val != "") {
         valArr = val.split('.');
         valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
@@ -367,16 +382,15 @@ function thousands_separators_input(ele) {
 }
 
 function removeThousandSeperator(val) {
-    if (val.length > 4)
-    {
+    if (val.length > 4) {
         val = val.replace(/,/g, '');
-        
+
     }
     return val;
 }
 function minmax(value, min, max) {
     if (parseInt(value) < min || isNaN(parseInt(value)))
-        return 0;
+        return '';
     else if (parseInt(value) > max)
         return max;
     else
@@ -393,53 +407,21 @@ function addMinutes(time, minsToAdd) {
 function convertTo24Hour(time) {
     var hours = parseInt(time.substr(0, 2));
 
-    //if (hours < 10) {
-    //     hours = parseInt(hours.substr(0, 1))
-    //}
-    
     if (time.indexOf('am') != -1 && hours == 12) {
         time = time.replace('12', '0');
     }
-  
+
     if (time.indexOf('pm') != -1 && hours < 12) {
         time = time.replace(hours, (hours + 12));
     }
     time = time.replace(/(am|pm)/, '');
     time = time.substr(time.length - 6)
-   
+
     return time;
 }
-function CancelBidDuringConfig() {
-    var _bidId;
-    var _for;
 
-    if (sessionStorage.getItem("CurrentBidID") != '0' && sessionStorage.getItem("CurrentBidID") != null) {
-        _for = 'BID';
-        _bidId = sessionStorage.getItem("CurrentBidID")
-    }
 
-    else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-        _for = 'eRFQ';
-        _bidId = sessionStorage.getItem("hddnRFQID");
-    }
-        //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-        //    _for = 'RFQ';
-        //    _bidId = sessionStorage.getItem("hddnRFQID");
-        // }
-    else if (sessionStorage.getItem("CurrentRFXID") != '0' && sessionStorage.getItem("CurrentRFXID") != null) {
-
-        _for = 'RFI';
-        _bidId = sessionStorage.getItem("CurrentRFXID");
-    }
-    else if (sessionStorage.getItem("hdnNFAID") != '0' && sessionStorage.getItem("hdnNFAID") != null) {
-
-        _for = 'NFA';
-        _bidId = sessionStorage.getItem("hdnNFAID");
-    }
-    else {
-        _for = 'VQ';
-        _bidId = sessionStorage.getItem("CurrentVQID");
-    }
+function CancelBidDuringConfig(_bidId, _for) {
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -447,7 +429,7 @@ function CancelBidDuringConfig() {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-    //alert(JSON.stringify(Cancelbid))
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -483,7 +465,99 @@ function CancelBidDuringConfig() {
                 });
             }
             else {
-                bootbox.alert("VQ Cancelled successfully.", function () {
+                bootbox.alert("Event Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function CancelBidDuringConfigold() {
+    var _bidId;
+    var _for;
+
+    if (sessionStorage.getItem("CurrentBidID") != '0' && sessionStorage.getItem("CurrentBidID") != null) {
+        _for = 'BID';
+        _bidId = sessionStorage.getItem("CurrentBidID")
+    }
+
+    else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
+        _for = 'eRFQ';
+        _bidId = sessionStorage.getItem("hddnRFQID");
+    }
+    //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
+    //    _for = 'RFQ';
+    //    _bidId = sessionStorage.getItem("hddnRFQID");
+    // }
+    else if (sessionStorage.getItem("CurrentRFXID") != '0' && sessionStorage.getItem("CurrentRFXID") != null) {
+
+        _for = 'RFI';
+        _bidId = sessionStorage.getItem("CurrentRFXID");
+    }
+    else if (sessionStorage.getItem("hdnNFAID") != '0' && sessionStorage.getItem("hdnNFAID") != null) {
+
+        _for = 'NFA';
+        _bidId = sessionStorage.getItem("hdnNFAID");
+    }
+    else {
+        _for = 'VQ';
+        _bidId = sessionStorage.getItem("CurrentVQID");
+    }
+    var Cancelbid = {
+        "BidID": parseInt(_bidId),
+        "For": _for,
+        "Remarks": "Draft",
+        "SendMail": '',
+        "UserID": sessionStorage.getItem('UserID')
+    };
+  
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        cache: false,
+        data: JSON.stringify(Cancelbid),
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            if (data == '1' && _for == 'BID') {
+                bootbox.alert("Bid Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+            else if (_for == 'eRFQ') {
+                bootbox.alert("RFQ Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+            else if (_for == 'NFA') {
+                bootbox.alert("NFA Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+            else if (data == '1' && _for == 'RFI') {
+                bootbox.alert("RFI Cancelled successfully.", function () {
+                    window.location = "index.html";
+                    return false;
+                });
+            }
+            else {
+                bootbox.alert("Event Cancelled successfully.", function () {
                     window.location = "index.html";
                     return false;
                 });
@@ -501,22 +575,62 @@ function CancelBidDuringConfig() {
 }
 
 function replaceQuoutesFromString(ele) {
+
     var str = '';
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
+    //@abheedev bug368 start
     str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
+  //  str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
     str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    str = str.replace(/_/g, '');
+    str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
 }
+/*function replaceQuoutesFromStringFromExcel(ele) {
+    var str = '';
+    
+    if (ele != "" && ele != undefined) {
+    str = str.replace(/'/g, '');
+    str = str.replace(/"/g, '');
+    //@abheedev bug368 start
+    str = str.replace(/#/g, '');
+  //  str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
+    str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    str = str.replace(/_/g, '');
+     str = str.replace(/^/g, '');
+    }
+    //ele.value = str;
+    return str;
+}*/
 function replaceQuoutesFromStringFromExcel(ele) {
     var str = '';
-    str = ele.replace(/'/g, '');
-    str = str.replace(/"/g, '');
-    str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
+    
+    if (ele != "" && ele != undefined) {
+        str = ele.replace(/'/g, '');
+        str = ele.replace(/"/g, '');
+        str = ele.replace(/#/g, '');
+        str = ele.replace(/&/g, '');
+        str = ele.replace(/~/g, '');
+        str = ele.replace(/`/g, '');
+        str = ele.replace(/</g, '');
+        str = ele.replace(/>/g, '');
+        str = ele.replace(/_/g, '');
+        str = ele.replace(/^/g, '');
+    }
+
     //ele.value = str;
     return str;
 }
@@ -531,8 +645,8 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 //** when click on vendor from List
-function openChatDiv(name, email, vendorId,connectionid,userid,contactperson) {
-  
+function openChatDiv(name, email, vendorId, connectionid, userid, contactperson) {
+
     $("#chat-label").html(contactperson + '(' + name + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
@@ -544,22 +658,20 @@ function openChatDiv(name, email, vendorId,connectionid,userid,contactperson) {
     else {
         $('#chatbtn').removeClass('hide')
         $('#txtChatMsg').removeClass('hide')
-       
+
     }
-    ////updateMsgReadFlag(getUrlVarsURL(decryptedstring)["BidID"], vendorId,'A');
-    //$(".pulsate-regular").css('animation', 'none');
-   
+ 
 }
 
 function closeChatsForAdmin() {
     document.getElementById("chatWindow").style.display = "none";
-    
+
 }
 
 function openBroadcastMessage() {
     fetchBroadcastMsgs(sessionStorage.getItem("UserID"), 'B');
     $(".pulsate-regular").css('animation', 'none');
-  
+
 }
 function closeChatsForAdminB() {
     document.getElementById("broadcastMsgdiv").style.background = 'none';
@@ -570,6 +682,7 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
+  
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     jQuery.ajax({
         type: "GET",
@@ -580,7 +693,7 @@ function fetchBroadcastMsgs(userId, msgType) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
@@ -618,9 +731,7 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //$('#quick_sidebar_tab_1').removeAttr('Class')
-    jQuery.ajax({
+      jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
@@ -637,7 +748,7 @@ function fetchvendor() {
                 var vName = '';
                 for (var i = 0; i < data.length; i++) {
                     if (vName != data[i].vendorName) {
-                        
+
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + ' onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status">'
                             + '<span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
@@ -663,23 +774,20 @@ function fetchvendor() {
                             + '</li>');
 
                     }
-                    
+
                     if (data[i].connected == true) {
                         $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
                         $('#v' + data[i].userID).removeAttr('disabled')
-                       // $('#chatbtn').addClass('hide')
-                       // $('#txtChatMsg').addClass('hide')
+                      
                     }
                     else {
                         $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
                         $('#v' + data[i].userID).attr('disabled', 'disabled')
-                       // $('#chatbtn').addClass('hide')
-                      //  $('#txtChatMsg').addClass('hide')
-                       
+                      
                     }
                     vName = data[i].vendorName
                 }
-                //  }
+              
             }
             QuickSidebar.init();
         },
@@ -698,7 +806,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-   
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -717,7 +825,7 @@ function fetchUserChats(userId, msgType) {
             if (data.length > 0) {
                 $(".pulsate-regular").css('animation', 'none');
                 for (var i = 0; i < data.length; i++) {
-                    
+
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#chatList").append('<div class="post in">'
                             + '<div class="message">'
@@ -774,7 +882,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            //fetchvendor(vendorId);
+         
             return true;
 
         },
@@ -822,11 +930,11 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-   
+    
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
@@ -834,16 +942,16 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
         processData: false,
         data: formData,
         success: function (data) {
-          //  alert('success')
+            //  alert('success')
             return;
         },
         error: function (xhr, status, error) {
             $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
-                Metronic.scrollTo(error, -200);
-                $(".alert-danger").show();
-                $(".alert-danger").fadeOut(5000);
-                jQuery.unblockUI();
-            
+            Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI();
+
         }
     });
 }
@@ -868,7 +976,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //            //{
 //            //    fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + FileName)
 //            //}
-           
+
 //            return;
 //        },
 //        error: function (xhr, status, error) {
@@ -877,7 +985,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //            $(".alert-danger").show();
 //            $(".alert-danger").fadeOut(5000);
 //            jQuery.unblockUI();
-            
+
 //        }
 //    });
 
@@ -885,31 +993,172 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-  
-        jQuery.ajax({
+    
+
+    jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
-        type: "GET",
+        type: "Get",
         cache: false,
         crossDomain: true,
         success: function (data) {
+        //abheedev bug 353 start line 894 to 922.
+         if(data.indexOf('<?xml') != -1) //if file is xml then give error
+         {
            
-            console.log(data)
-            var downloadwindow = window.open(data, "_blank");
-            downloadwindow.focus();
-        },
-        error: function () {
             $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
-            Metronic.scrollTo(error, -200);
+          //  Metronic.scrollTo(error, -200);
+            $(".alert-danger").show();
+            $(".alert-danger").fadeOut(5000);
+            jQuery.unblockUI(); 
+          }
+          else
+          {
+               var downloadwindow = window.open(data, "_blank");
+               downloadwindow.focus();
+          }
+        
+        },
+       
+        error: function () {
+           
+            $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
+          //  Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
             $(".alert-danger").fadeOut(5000);
             jQuery.unblockUI();
         }
-    }) 
+    })
+}
+//abheedev bug 353 end
+function fnConverToLocalTime(dttime) {
+    if (dttime != null) {
+        var theStDate = new Date(dttime)
+        theStDate = new Date(theStDate + ' UTC');
+        
+        if (sessionStorage.getItem('preferredtimezone')!=null)
+        {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+         })
+        }
+        else
+        {
+           theStDate = theStDate.toLocaleString("en-GB", {
+           dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+         })
+          
+        }
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+function formatDate(date) {
+  return [
+    padTo2Digits(date.getDate()),
+    padTo2Digits(date.getMonth() + 1),
+    date.getFullYear(),
+  ].join('/');
+}
 
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+function fnConverToLocalTimeWithSeconds(dttime) {
+    if (dttime != null) {
+        var theStDate = new Date(dttime)
+        theStDate = new Date(theStDate + ' UTC');
+        
+        if (sessionStorage.getItem('preferredtimezone')!=null)
+        {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+         })
+        }
+        else
+        {
+           theStDate = theStDate.toLocaleString("en-GB", {
+           dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+         })
+          
+        }
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+
+function fnConverToShortDT(dttime) {
+    if (dttime != null) {
+
+    
+        var theStDate = new Date(dttime)
+        theStDate = theStDate.toDateString()
+    
+        theStDate = new Date(theStDate + ' UTC');
+        if (sessionStorage.getItem('preferredtimezone')!=null)
+        {
+        theStDate = theStDate.toLocaleString("en-IN", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
+        })
+        }
+        else
+        {
+            theStDate = theStDate.toLocaleString("en-IN", { dateStyle: "medium"})
+        }
+        theStDate = theStDate.replace('at', '-');
+        return theStDate;
+    }
+    else return '..'
+}
+
+function fnConverToTime(dttime) {
+    if (dttime != null) {
+
+        var theStDate = new Date(dttime)
+
+        theStDate = new Date(theStDate + ' UTC');
+
+        theStDate = theStDate.toLocaleString("en-IN", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "full", hourCycle: "h24", timeStyle: "short"
+        })
+       
+
+        theStDate = theStDate.replace('at', ' ');
+
+        var currentDate = new Date(theStDate);
+        var dtst = moment(currentDate).format('HH:mm:ss');
+      
+        //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
+        return dtst;
+    }
+    else return '..'
+}
+
+function fnReturnTimeFromDate(dttime) {
+    var dtst = '';
+    if (dttime != null) {
+      //  console.log
+        dttime = dttime.replace('-','');
+        dttime = dttime.replace('at','');
+        
+        var theStDate = new Date(dttime);
+       
+        theStDate = theStDate.toLocaleString('en-GB').trim();
+ 
+        var currentDate = new Date(theStDate);
+  
+        dtst = moment(currentDate).format('HH:mm:ss');
+    
+    }
+    else {
+        dtst = '..'
+    }
+    return dtst;
 }
 
 //** Delete Files from Blob
-function fnFileDeleteAzure(filename, foldername,deletionfor,srno) {
+function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
     var data = {
         "filename": filename,
         "foldername": foldername
@@ -921,14 +1170,15 @@ function fnFileDeleteAzure(filename, foldername,deletionfor,srno) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            if (deletionfor == 'VAttachment' && srno != 0) {
+            if (deletionfor == 'VAttachment'  && srno != 0) {
+              
                 fileDeletefromdb(srno, deletionfor)
             }
             $('#spansuccess1').html('File Deleted Successfully');
             success.show();
             Metronic.scrollTo(success, -200);
             success.fadeOut(5000);
-         
+
         },
         error: function (xhr, status, error) {
             $(".alert-danger").find("span").html('').html(filename + " Couldn't deleted successfully from Azure");
@@ -965,9 +1215,9 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 var allvendorsforautocomplete;
- 
+
 function fetchParticipantsVender() {
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -977,18 +1227,18 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-           
+
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
-               
+
             }
             else {
                 allvendorsforautocomplete = '';
-               
+
             }
         },
         error: function (xhr, status, error) {
-          
+
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1013,7 +1263,7 @@ jQuery("#txtsearchvendor").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-           
+
             vname = username.participantName + ' (' + username.companyEmail + ')'
             map[vname] = username;
             usernames.push(vname);
@@ -1029,7 +1279,7 @@ jQuery("#txtsearchvendor").typeahead({
 
         }
         else {
-            gritternotification('Please select Vendor  properly!!!');
+            gritternotification('Please select Vendor!!!');
         }
 
         return item;
@@ -1038,7 +1288,7 @@ jQuery("#txtsearchvendor").typeahead({
 });
 jQuery("#txtsearchcat").keyup(function () {
     sessionStorage.setItem('hdnCategoryGrpID', '0');
-    
+
 });
 sessionStorage.setItem('hdnCategoryGrpID', 0);
 jQuery("#txtsearchcat").typeahead({
@@ -1062,7 +1312,7 @@ jQuery("#txtsearchcat").typeahead({
             // getCategoryWiseVendors(map[item].CategoryID);
         }
         else {
-            gritternotification('Please select Group Category  properly!!!');
+            gritternotification('Please select Group Category !!!');
         }
 
         return item;
@@ -1124,12 +1374,12 @@ function fetchBidType() {
             jQuery.unblockUI();
         }
     });
-   
+
 }
 
 function fnfetchCatVendors() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
+    // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1151,7 +1401,7 @@ function fnfetchCatVendors() {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#spanerterrserach').text('No data found')
                 $('#div_table').addClass('hide');
-               // App.scrollTo(jQuery('#divalerterrsearch'), -200);
+                // App.scrollTo(jQuery('#divalerterrsearch'), -200);
 
                 return false;
             }
@@ -1171,7 +1421,7 @@ function fnfetchCatVendors() {
             return false;
             jQuery.unblockUI();
         }
-        
+
     })
 
     setTimeout(function () {
@@ -1203,21 +1453,21 @@ function getUrlVarsURL(URLString) {
 
 
 var code = {
-   
-        encryptMessage: function(messageToencrypt, secretkey){
-            var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
-            return encryptedMessage.toString();
-        },
-         decryptMessage: function(encryptedMessage, secretkey){
-                var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
-                var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
-                return decryptedMessage;
-         }
+    encryptMessage: function (messageToencrypt, secretkey) {
+        var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
+        return encryptedMessage.toString();
+    },
+    decryptMessage: function (encryptedMessage, secretkey) {
+        var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
+        var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+        return decryptedMessage;
+    }
 }
 //var key = 'MAKV2SPBNI99212';
 function fnEnryptURL(URL) {
-  
+
     var hashes = URL.slice(URL.indexOf('?') + 1)//.split('&')
     var encryptedstring = encrypt(hashes)
     var url = URL.split("?")[0] + "?param=" + encryptedstring
@@ -1236,19 +1486,19 @@ var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
-    {
-        keySize: 128 / 8,
-        iv: iv,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-    });
+        {
+            keySize: 128 / 8,
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
     return (encryptedtext)
 }
 function fndecrypt(message) {
 
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
-    
+
     var dncryptedpassword = CryptoJS.AES.decrypt(message, key,
         {
             keySize: 128 / 8,
@@ -1354,54 +1604,54 @@ var tableToExcelMultipleSheetwithoutColor = (function () {
 var tableToExcelMultipleWorkSheet = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
-      + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
-    + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
-      + '           <Author>Qompare</Author>'
-      + '           <Created>{created}</Created>'
-      + '       </DocumentProperties>'
-    + '     <Styles>'
-     + '           <Style ss:ID="Header">'
-      + '               <Alignment ss:Vertical="Bottom"/>'
-    + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
-      + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="NonMandatory">'
-      + '              <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat ss:Format=""/>'
-      + '               <Protection/>'
-      + '           </Style>'
-       + '         <Style ss:ID="Mandatory">'
-      + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-        + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
-   
-    + ' </Styles>'
-    + ' {worksheets}'
-      + '</Workbook>'
+            + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
+            + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
+            + '           <Author>Qompare</Author>'
+            + '           <Created>{created}</Created>'
+            + '       </DocumentProperties>'
+            + '     <Styles>'
+            + '           <Style ss:ID="Header">'
+            + '               <Alignment ss:Vertical="Bottom"/>'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
+            + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="NonMandatory">'
+            + '              <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat ss:Format=""/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Mandatory">'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
+
+            + ' </Styles>'
+            + ' {worksheets}'
+            + '</Workbook>'
         , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
         , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
         , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
@@ -1452,7 +1702,7 @@ var tableToExcelMultipleWorkSheet = (function () {
         document.body.removeChild(link);
     }
 })();
-   
+
 var tableToExcel = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -1468,77 +1718,77 @@ var tableToExcel = (function () {
 
 var tablesToExcel = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
-    , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
-      + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
-    + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
-      + '           <Author>Qompare</Author>'
-      + '           <Created>{created}</Created>'
-      + '       </DocumentProperties>'
-    + '     <Styles>'
-      + '           <Style ss:ID="Default" ss:Name="Normal">'
-      + '               <NumberFormat ss:Format=""/>'
-      + '           </Style>'
-      + '           <Style ss:ID="Header">'
-      + '               <Alignment ss:Vertical="Bottom"/>'
-    + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
-      + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
+        , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
+            + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
+            + '     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">'
+            + '           <Author>Qompare</Author>'
+            + '           <Created>{created}</Created>'
+            + '       </DocumentProperties>'
+            + '     <Styles>'
+            + '           <Style ss:ID="Default" ss:Name="Normal">'
+            + '               <NumberFormat ss:Format=""/>'
+            + '           </Style>'
+            + '           <Style ss:ID="Header">'
+            + '               <Alignment ss:Vertical="Bottom"/>'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="2" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:FontName="Calibri" ss:Size="12" ss:Color="#000000"/>'
+            + '               <Interior ss:Color="#cccccc" ss:Pattern="Solid" />'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
 
-    + '         <Style ss:ID="NonMandatory">'
-      + '              <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-       + '         <Style ss:ID="Mandatory">'
-      + '             <Borders>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
-      + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
-    + '             </Borders>'
-      + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
-      + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="Missed">'
-      + '               <Borders/>'
-      + '               <Font ss:Color="#ff0000"></Font>'
-      + '               <Interior ss:Color="#ff0000" ss:Pattern="Solid"></Interior>'
-      + '               <NumberFormat/>'
-      + '               <Protection/>'
-      + '           </Style>'
-    + '         <Style ss:ID="Decimals">'
-      + '               <NumberFormat ss:Format="Fixed"/>'
-      + '           </Style>'
-    + ' </Styles>'
-    + ' {worksheets}'
-      + '</Workbook>'
-    , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}">'
-      + '   <ss:Table>'
-      + '       {rows}' 
-      + '   </ss:Table>'
-      + '</Worksheet>'
-    , tmplCellXML = '           <ss:Cell{attributeStyleID}{attributeFormula}>'
-      + '               <ss:Data ss:Type="{nameType}">{data}</ss:Data>'
-      + '           </ss:Cell>'
-    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            + '         <Style ss:ID="NonMandatory">'
+            + '              <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000" ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFAD" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Mandatory">'
+            + '             <Borders>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Right"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Left"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Top"/>'
+            + '                   <Border ss:Color="#000000" ss:Weight="1" ss:LineStyle="Continuous" ss:Position="Bottom"/>'
+            + '             </Borders>'
+            + '               <Font ss:Color="#000000"  ss:FontName="Calibri" ss:Size="12"></Font>'
+            + '               <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Missed">'
+            + '               <Borders/>'
+            + '               <Font ss:Color="#ff0000"></Font>'
+            + '               <Interior ss:Color="#ff0000" ss:Pattern="Solid"></Interior>'
+            + '               <NumberFormat/>'
+            + '               <Protection/>'
+            + '           </Style>'
+            + '         <Style ss:ID="Decimals">'
+            + '               <NumberFormat ss:Format="Fixed"/>'
+            + '           </Style>'
+            + ' </Styles>'
+            + ' {worksheets}'
+            + '</Workbook>'
+        , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}">'
+            + '   <ss:Table>'
+            + '       {rows}'
+            + '   </ss:Table>'
+            + '</Worksheet>'
+        , tmplCellXML = '           <ss:Cell{attributeStyleID}{attributeFormula}>'
+            + '               <ss:Data ss:Type="{nameType}">{data}</ss:Data>'
+            + '           </ss:Cell>'
+        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
     return function (tables, wsnames, wbname, appname) {
         var ctx = "";
         var workbookXML = "";
@@ -1562,9 +1812,9 @@ var tablesToExcel = (function () {
                     dataFormula = (dataFormula) ? dataFormula : (appname == 'Calc' && dataType == 'DateTime') ? dataValue : null;
                     ctx = {
                         attributeStyleID: (dataStyle == 'NonMandatory' || dataStyle == 'Mandatory' || dataStyle == 'Missed' || dataStyle == 'Header') ? ' ss:StyleID="' + dataStyle + '"' : ''
-                           , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
-                           , data: (dataFormula) ? '' : dataValue
-                           , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
+                        , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
+                        , data: (dataFormula) ? '' : dataValue
+                        , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
                     };
                     rowsXML += format(tmplCellXML, ctx);
                 }
@@ -1586,3 +1836,26 @@ var tablesToExcel = (function () {
         document.body.removeChild(link);
     }
 })();
+//abheedev bug 443 start
+function checkExcelUpload(fileid) {
+
+    var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
+
+    var fn = $('#' + fileid.id)[0].files[0].name; // get file type
+    var fname = fn.substring(fn.lastIndexOf('/') + 1, fn.lastIndexOf('.'));
+    var size = $('#' + fileid.id)[0].files[0].size;
+
+    switch (ftype.toLowerCase()) {
+        case 'xlsx':
+            break;
+        default:
+            jQuery(".alert-success").hide();
+            jQuery(".alert-danger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx");
+            jQuery(".alert-danger").show();
+            jQuery(".alert-danger").fadeOut(5000);
+            Metronic.scrollTo($('.alert-danger'), -200);
+            $('#' + fileid.id).val('')
+            return false
+    }  
+}
+//abheedev bug 443 end

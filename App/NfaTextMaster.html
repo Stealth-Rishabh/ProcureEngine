@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -21,7 +22,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -145,43 +146,52 @@
                                     <div class="form-body">
                                         <input type="hidden" id="hdnParamID" value="0">
                                         <div class="form-group">
-                                            <label class="col-12 col-sm-2 control-label">
-                                               Question <span class="required"> *</span>
+                                            <label class="col-12 col-sm-3 control-label">
+                                                Purchase Org <span class="required"> *</span>
                                             </label>
-                                            <div class="col-12 col-sm-10">
-                                                <textarea rows="5" cols="7" id="txtParamText" class="form-control MaxLength" rows="6"
-                                                          autocomplete="off" maxlength="1000" onkeyup="replaceQuoutesFromString(this)" placeholder="Only 1000 character(s) allowed"></textarea>
-
-
-                                                <label class="control-label">
-                                                    <input type="checkbox" id="chkIsActive" checked name="chkIsActive" class="form-control col-12 col-sm-12 JustifyCenter ">
-                                                    IsActive
-                                                </label>&nbsp;&nbsp;&nbsp;
-                                                <label class="control-label">
-                                                    <input type="checkbox" id="chkIsdefault" checked name="chkIsdefault" class="form-control col-12 col-sm-12 JustifyCenter ">
-                                                    Pre Populated Question
+                                            <div class="col-12 col-sm-9">
+                                                <select id="ddlPurchaseOrg" name="ddlPurchaseOrg"  class="form-control"></select>
+                                            </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-12 col-sm-3 control-label">
+                                                    Question <span class="required"> *</span>
                                                 </label>
+                                                <div class="col-12 col-sm-9">
+                                                    <!--abheedev bug 385 1-->
+                                                    <textarea rows="5" cols="7" id="txtParamText" class="form-control MaxLength"
+                                                              autocomplete="off" maxlength="1000" placeholder="Only 1000 character(s) allowed"></textarea>
+                                                    <!--abheedev bug 385 1-->
+
+                                                    <label class="control-label">
+                                                        <input type="checkbox" id="chkIsActive" checked name="chkIsActive" class="form-control col-12 col-sm-12 JustifyCenter ">
+                                                        IsActive
+                                                    </label>&nbsp;&nbsp;&nbsp;
+                                                    <label class="control-label">
+                                                        <input type="checkbox" id="chkIsdefault" checked name="chkIsdefault" class="form-control col-12 col-sm-12 JustifyCenter ">
+                                                        Pre Populated Question
+                                                    </label>
+                                                </div>
+
                                             </div>
 
                                         </div>
 
-                                    </div>
 
 
-
-                                    <div class="form-actions fluid">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-sm-offset-4">
-                                                <button type="button" onclick="onSave();" id="submitbtnmaster" class="btn yellow ">
-                                                    Save
-                                                </button>
-                                                <button type="button" onclick="onClear();" id="clear-btn" class="btn green">
-                                                    Clear
-                                                </button>
+                                        <div class="form-actions fluid">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-sm-offset-4">
+                                                    <button type="button" onclick="onSave();" id="submitbtnmaster" class="btn yellow ">
+                                                        Save
+                                                    </button>
+                                                    <button type="button" onclick="onClear();" id="clear-btn" class="btn green">
+                                                        Clear
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+</form>
                             </div>
                         </div>
                     </div>
@@ -310,7 +320,7 @@
             App.init();
             fetchMenuItemsFromSession(19, 57);
             setCommonData();
-            
+
 
         });
     </script>

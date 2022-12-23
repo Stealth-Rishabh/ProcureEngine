@@ -1,7 +1,6 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
 $("#spnParamAttach").hide();
 var error = $('.alert-danger');
-
 var success = $('.alert-success');
 
 var form = $('#submit_form');
@@ -9,7 +8,7 @@ var Vehicleerror = $('#errordiv');
 var Vehiclesuccess = $('#successdiv');
 var Vehicleerror1 = $('#errordiv1');
 var Vehiclesuccess1 = $('#successdiv1');
-
+$('#file-excelparameter').change(handleFileparameter);
 var currentdate = new Date();
 $(".thousandseparated").inputmask({
     alias: "decimal",
@@ -30,6 +29,30 @@ $('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversion
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+ var _RFQid;
+            if (window.location.search) {
+                var param = getUrlVars()["param"]
+                var decryptedstring = fndecrypt(param)
+                _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+                 
+                  if (_RFQid == null){
+                     sessionStorage.setItem('hddnRFQID', 0)
+                     _RFQid=0;
+                  }
+                  else{
+                    sessionStorage.setItem('hddnRFQID', _RFQid)
+                    fnGetTermsCondition();
+                    fetchAttachments();
+                    fnGetApprovers();
+                    GetQuestions();
+                    fetchReguestforQuotationDetails();
+                    fetchRFIParameteronload();
+                  }
+            }
+
+function cancelbid() {
+    CancelBidDuringConfig(_RFQid, 'eRFQ');
+}
 var totalFileSize = 0;
 jQuery.validator.addMethod(
     "notEqualTo",
@@ -113,9 +136,6 @@ var FormWizard = function () {
                         required: true
 
                     },
-                    //dropuom: {
-                    //    required: true
-                    //},
                     txtUOM: {
                         required: true
                     },
@@ -123,9 +143,6 @@ var FormWizard = function () {
                         number: true,
                         dollarsscents: true
                     },
-                    //txtlastinvoiceprice: {
-                    //    number: true
-                    //},
                     txtquantitiy: {
                         required: true,
                         maxlength: 18,
@@ -141,14 +158,9 @@ var FormWizard = function () {
                         maxlength: 50
                     },
                     txtItemRemarks: {
-                        required: true,
+                        //required: true,
                         maxlength: 200
                     },
-                    //txttat: {
-                    //    digits: true,
-                    //    maxlength: 4,
-                    //    //notEqualTo: 0
-                    //},
                     txtPono: {
                         maxlength: 20,
                         /* required: true*/
@@ -205,11 +217,9 @@ var FormWizard = function () {
                 highlight: function (element) {
 
                     $(element)
-
                         .closest('.inputgroup').removeClass('has-success').addClass('has-error');
 
                     $(element)
-
                         .closest('.col-md-4,.xyz,.col-md-2').removeClass('has-success').addClass('has-error');
 
                 },
@@ -242,7 +252,6 @@ var FormWizard = function () {
                 },
 
                 submitHandler: function (form) {
-                    // success.show();
                     error.hide();
                 }
             });
@@ -426,6 +435,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
+                      
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
@@ -441,6 +451,7 @@ var FormWizard = function () {
                     }
                     else if (index == 3) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
+                         
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
                             Metronic.scrollTo($(".alert-danger"), -200);
@@ -488,6 +499,7 @@ var FormWizard = function () {
 
             $('#form_wizard_1 .button-submit').click(function () {
                 if ($('#tblServicesProduct > tbody >tr').length == 0) {
+                 
                     $('#form_wizard_1').bootstrapWizard('previous');
                     error.show();
 
@@ -564,12 +576,25 @@ function InsUpdRFQDEtailTab1() {
         })
     }
 
+
+
+
+
+    var StartDT = new Date();
+    if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
+        StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+    }
+
+
+    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+    var _RFQBidType = 'Open';
+
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
         "RFQSubject": jQuery("#txtrfqSubject").val(),
-        "RFQStartDate": jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
-        "RFQEndDate": jQuery("#txtenddatettime").val(),
+        "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
+        "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
         "RFQDescription": jQuery("#txtrfqdescription").val(),
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
@@ -578,12 +603,12 @@ function InsUpdRFQDEtailTab1() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
+        "RFQBidType": _RFQBidType,
         "TechnicalApproval": $("#drp_TechnicalApp").val()
 
-
     };
-    //console.log(JSON.stringify(Tab1Data))
-    //alert(JSON.stringify(Tab1Data))
+
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -623,11 +648,13 @@ function InsUpdRFQDEtailTab1() {
     jQuery.unblockUI();
 }
 function InsUpdRFQDEtailTab2() {
+
     var tab2Items = '', ItemDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var rowCount = jQuery('#tblServicesProduct tr').length;
     if (rowCount > 1) {
         $("#tblServicesProduct tr:gt(0)").each(function () {
+
             targetPrice = 0, TAT = 0;
             unitrate = 0;
             povalue = 0, i = 1, tab2Data = '';
@@ -644,6 +671,11 @@ function InsUpdRFQDEtailTab2() {
             if ($.trim(this_row.find('td:eq(15)').html()) != '') {
                 povalue = removeThousandSeperator($.trim(this_row.find('td:eq(15)').html()));
             }
+
+            var PODt = new Date($.trim(this_row.find('td:eq(14)').html()))
+            PODt = PODt.toDateString();
+
+
             var remark = $.trim(this_row.find('td:eq(10)').html()).replace(/'/g, "");
             var description = $.trim(this_row.find('td:eq(7)').html()).replace(/'/g, "");
             tab2Items = {
@@ -662,8 +694,6 @@ function InsUpdRFQDEtailTab2() {
                 "PoVendorName": $.trim(this_row.find('td:eq(12)').html()),
                 "PoDate": $.trim(this_row.find('td:eq(14)').html()),
                 "PoValue": parseFloat(removeThousandSeperator(povalue))
-
-
             }
             ItemDetails.push(tab2Items)
         })
@@ -675,8 +705,8 @@ function InsUpdRFQDEtailTab2() {
 
     };
 
-    // console.log(JSON.stringify(Tab2data))
 
+    
     jQuery.ajax({
 
         type: "POST",
@@ -730,6 +760,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+           
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -738,21 +769,32 @@ function fnGetTermsCondition() {
                 for (var i = 0; i < data.length; i++) {
 
                     var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
-                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
-                    str += "<td>" + data[i].name + "</td>";
+                    if (data[i].id != 0) {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                    }
+                    else {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick = 'deleteterms(" + i +")' > <i class='glyphicon glyphicon-remove-circle'></i></button ></td>";
+                    }
+                   
+                    if (data[i].id != 0) {
+                        str += "<td>" + data[i].name + "</td>";
+                    }
+                    else {
+                        str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=50 value='" + data[i].name + "'   autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+                    }
 
 
-                    var strPrev = "<tr><td>" + data[i].name + "</td>";
+                    var strPrev = "<tr id=trTermsprev" + i + "><td>" + data[i].name + "</td>";
 
                     str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
-                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
 
 
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
                         jQuery('#tblTermsCondition').append(str);
 
                     }
-                    $('#rem' + i).maxlength({
+                    $('.maxlength').maxlength({
                         limitReachedClass: "label label-danger",
                         alwaysShow: true
                     });
@@ -845,12 +887,17 @@ function CheckTerms(event, ID) {
 
 }
 function fnsavetermscondition(isbuttonclick) {
+ 
     var checkedValue = '2~I~#';
+    var checkedOtherTerms = '';
     $("#tblTermsCondition> tbody > tr").each(function (index) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
-            if ($.trim(this_row.find('td:eq(0)').text()) != '2') {
+            if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
                 checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0') {
+                checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
             }
             //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
         }
@@ -859,11 +906,11 @@ function fnsavetermscondition(isbuttonclick) {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QueryString": checkedValue,
-            "ConditionType": jQuery("#ddlConditiontype").val()
+            "ConditionType": jQuery("#ddlConditiontype").val(),
+            "OtherTermsCondition": checkedOtherTerms
 
         }
-        // console.log(JSON.stringify(Attachments))
-        // alert(JSON.stringify(Attachments))
+        
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -875,8 +922,10 @@ function fnsavetermscondition(isbuttonclick) {
             dataType: "json",
             success: function (data) {
 
-
+               
                 fnGetTermsCondition();
+                
+                
                 if (isbuttonclick == 'Y') {
                     $('.alert-success').show();
                     $('#spansuccess1').html('Terms & Condition saved successfully!');
@@ -981,6 +1030,20 @@ function addmoreattachments() {
         var attchname = jQuery('#fileToUpload1').val().substring(jQuery('#fileToUpload1').val().lastIndexOf('\\') + 1)
         attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
         rowAttach = rowAttach + 1;
+
+        var num = 0;
+        var maxinum = 0;
+        $("#tblAttachments tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowAttach = parseInt(maxinum) + 1;
+
         if (!jQuery("#tblAttachmentsPrev thead").length) {
             jQuery('#tblAttachmentsPrev').append("<thead><tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr></thead>");
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
@@ -988,8 +1051,6 @@ function addmoreattachments() {
         else {
             var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important">' + jQuery("#AttachDescription1").val() + '</td>';
         }
-
-
         strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + attchname + '</a></td>';
         jQuery('#tblAttachmentsPrev').append(strprev);
 
@@ -1001,6 +1062,7 @@ function addmoreattachments() {
 
         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger"  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + attchname + '\',aeRFQFile' + rowAttach + ',0)" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
         jQuery('#tblAttachments').append(str);
+
         fnUploadFilesonAzure('fileToUpload1', attchname, 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 
         //** function to insert record in DB after file upload on Blob
@@ -1115,6 +1177,19 @@ function addquestions() {
     }
     else {
         rowques = rowques + 1;
+        var num = 0;
+        var maxinum = 0;
+        $("#tblquestions tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
+
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        rowques = parseInt(maxinum) + 1;
         if (!jQuery("#tblQuestionsPrev thead").length) {
             jQuery('#tblQuestionsPrev').append("<thead><tr><th class='bold' style='width:50%!important'>Questions</th><th class='bold' style='width:50%!important'>Requirement</th></tr></thead>");
         }
@@ -1192,7 +1267,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1310,6 +1385,8 @@ var TechApp = 0;
 var commAppsrno = 0;
 var TechAppsrno = 0;
 function fnApproversQuery() {
+    var num = 0;
+    var maxinum = 0;
     var status = "true";
     var UserID = sessionStorage.getItem('hdnApproverid');
     var UserName = jQuery("#txtApprover").val();
@@ -1350,15 +1427,27 @@ function fnApproversQuery() {
     else {
 
         if ($('#ddlapprovertype').val() == "C") {
-            commApp = commApp + 1;
+            //commApp = commApp + 1;
             commAppsrno = commAppsrno + 1;
+            num = 0;
+            maxinum = 0;
+            $("#tblapprovers >tbody>tr").each(function (i) {
 
+                var this_row = $(this);
+                num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+
+                if (parseInt(num) > parseInt(maxinum)) {
+                    maxinum = num;
+                }
+            });
+
+            commApp = parseInt(maxinum) + 1;
             if (!jQuery("#tblapprovers thead").length) {
                 jQuery("#tblapprovers").append("<thead><tr><th colspan=4  style='text-align:center;' class='bold'>Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commAppsrno + '</td><td class=hide>' + UserID + '</td></tr>');
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
             }
             else {
-                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + commAppsrno + '</td><td class=hide>' + UserID + '</td></tr>');
+                jQuery("#tblapprovers").append('<tr id=trAppid' + commApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + commApp + ',trAppidPrev' + commApp + ',\'C\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
             }
 
             $('#wrap_scrollerPrevApp').show();
@@ -1366,23 +1455,50 @@ function fnApproversQuery() {
             if (!jQuery("#tblapproversPrev thead").length) {
 
                 jQuery("#tblapproversPrev").append("<thead><tr><th colspan=2  style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td></td></tr>');
             }
             else {
-                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td>' + commApp + '</td></tr>');
+                jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + commApp + '><td>' + UserName + '</td><td></td></tr>');
             }
+            var rowcount = jQuery('#tblapprovers >tbody>tr').length;
+
+            if (rowcount >= 1) {
+                $("#tblapprovers tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(index));
+                });
+                $("#tblapproversPrev tr:gt(0)").each(function (i) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(1)').html(i));
+                });
+            }
+
         }
         else {
-            TechApp = TechApp + 1;
+
+            //TechApp = TechApp + 1;
             TechAppsrno = TechAppsrno + 1;
+            num = 0;
+            maxinum = 0;
+            $("#tblapproverstech >tbody>tr").each(function () {
+                var this_rowtech = $(this);
+                //num = (this_row.closest('tr').attr('id')).substring(11, (this_row.closest('tr').attr('id')).length)
+                num = (this_rowtech.closest('tr').attr('id')).substring(11, (this_rowtech.closest('tr').attr('id')).length)
+
+                if (parseInt(num) > parseInt(maxinum)) {
+                    maxinum = num;
+                }
+            });
+
+            TechApp = parseInt(maxinum) + 1;
             jQuery("#tblapproverstech").removeClass('hide')
             jQuery("#tblapproversPrevtech").removeClass('hide')
             if (!jQuery("#tblapproverstech thead").length) {
                 jQuery("#tblapproverstech").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
-                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
             }
             else {
-                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
+                jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
             }
 
             $('#wrap_scrollerPrevApptech').show();
@@ -1390,12 +1506,25 @@ function fnApproversQuery() {
             if (!jQuery("#tblapproversPrevtech thead").length) {
 
                 jQuery("#tblapproversPrevtech").append("<thead><tr><th colspan=3  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold'>Show Price</th></tr></thead>");
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td></td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             else {
-                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td id=tdshowp' + TechApp + '></td></tr>');
+                jQuery("#tblapproversPrevtech").append('<tr id=trAppidPrevtech' + TechApp + '><td>' + UserName + '</td><td></td><td id=tdshowp' + TechApp + '></td></tr>');
             }
             $('#tdshowp' + TechApp).text('No');
+            var rowcount = jQuery('#tblapproverstech >tbody>tr').length;
+
+            if (rowcount >= 1) {
+                $("#tblapproverstech tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(index));
+                });
+                $("#tblapproversPrevtech tr:gt(0)").each(function (i) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(1)').html(i));
+                });
+            }
+
         }
         jQuery("#txtApprover").val('');
         sessionStorage.setItem('hdnApproverid', '0')
@@ -1410,8 +1539,8 @@ function deleteApprow(rowid, rowidPrev, apptype) {
     if (apptype == "C") {
         //commApp = commApp - 1;
         commAppsrno = commAppsrno - 1;
-        var rowCount = jQuery('#tblapprovers tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblapprovers >tbody>tr').length;
+        if (rowCount >= 1) {
             i = 0;
             $("#tblapprovers tr:gt(0)").each(function () {
                 var this_row = $(this);
@@ -1429,8 +1558,8 @@ function deleteApprow(rowid, rowidPrev, apptype) {
     else {
         // TechApp = TechApp - 1;
         TechAppsrno = TechAppsrno - 1;
-        var rowCount = jQuery('#tblapproverstech tr').length;
-        if (rowCount > 1) {
+        var rowCount = jQuery('#tblapproverstech >tbody> tr').length;
+        if (rowCount >= 1) {
             i = 0;
             $("#tblapproverstech tr:gt(0)").each(function () {
                 var this_row = $(this);
@@ -1596,8 +1725,10 @@ function fetchRFIParameteronload() {
                 for (var i = 0; i < data[0].parameters.length; i++) {
                     rowAppItems = rowAppItems + 1
                     rowAppItemsrno = rowAppItemsrno + 1;
-                    jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button type=button class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type=button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
+                    //abheedev bug 388 start
+                    jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button type=button class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type=button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
                     jQuery('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
+                    //abheedev bug 388 end
                 }
 
                 //for previe table
@@ -1639,7 +1770,7 @@ function InsUpdProductSevices() {
             i = 1;
             $("#tblServicesProduct tr:gt(0)").each(function () {
 
-                if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
+                if ($.trim($('#sname' + i).html()) == $('#txtshortname').val() && $('#txtItemCode').val() != "" && ($.trim($('#itemcode' + i).html()) == $('#txtItemCode').val() && $.trim($('#TP' + i).html()) == $('#txttargetprice').val() && $.trim($('#quan' + i).html()) == $("#txtquantitiy").val() || $.trim($('#uom' + i).html()) == $("#dropuom").val() && $.trim($('#remarks' + i).html()) == $('#txtItemRemarks').val() && $.trim($('#desc' + i).html()) == $('#txtbiddescriptionP').val() && $.trim($('#delivery' + i).html()) == $('#txtedelivery').val() && $.trim($('#povalue').html()) == $('#txtpovalue').val() && $.trim($('#unitrate').html()) == $('#txtunitrate').val() && $.trim($('#pono' + i).html()) == $("#txtPono").val() && $.trim($('#povname' + i).html()) == $("#txtvendorname").val() && $.trim($('#podate' + i).html()) == $("#txtPODate").val() && $.trim($('#tat' + i).html()) == $("#txttat").val())) {
                     st = "false"
                 }
                 i++;
@@ -1775,12 +1906,28 @@ function ParametersQuery() {
     //quan=thousands_separators(parseFloat(removeThousandSeperator($('#txtquantitiy').val())).round(3))
     quan = thousands_separators($('#txtquantitiy').val())
 
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+    i = parseInt(maxinum) + 1;
+
     if (!jQuery("#tblServicesProduct thead").length) {
+        //abheedev bug 388 start
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+          //abheedev bug 388 end
     }
     else {
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+        //abheedev bug 388 start
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(3)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+        //abheedev bug 388 end
     }
 
     $('#scrolr').show();
@@ -1830,13 +1977,14 @@ function editRow(icount) {
 
 }
 function deleterow(TrId, Trprevid) {
+    
     //rowAppItems = rowAppItems - 1;
     rowAppItemsrno = rowAppItemsrno - 1;
     $('#' + TrId.id).remove();
     $('#' + Trprevid.id).remove();
-    var rowCount = jQuery('#tblServicesProduct tr').length;
+    var rowCount = jQuery('#tblServicesProduct >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1) {
+    if (rowCount >= 1) {
         $("#tblServicesProduct tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(0)').html(i));
@@ -1990,6 +2138,7 @@ function displayUOM() {
 
 
 jQuery("#txtSearch").keyup(function () {
+  
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblvendorlist tbody").find("tr"), function () {
@@ -2047,12 +2196,14 @@ function FetchCurrency(CurrencyID) {
 
 }
 function RFQInviteVendorTab3() {
+    
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var InsertQuery = '';
 
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
-        if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "") {
+        if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "" && $.trim($(this).find('td:eq(0)').html()) != null) {
             InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
         }
         else {
@@ -2070,16 +2221,17 @@ function RFQInviteVendorTab3() {
         }
     });
 
+
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         "subject": jQuery('#txtrfqSubject').val(),
-        "Deadline": jQuery('#txtenddatettime').val(),
+        "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     };
-    // console.log(JSON.stringify(Tab3data))
+
     jQuery.ajax({
 
         type: "POST",
@@ -2091,6 +2243,7 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
+
 
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
@@ -2113,6 +2266,8 @@ function RFQInviteVendorTab3() {
     });
 }
 function fnsubmitRFQ() {
+    
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
         var Tab3data = {
@@ -2120,11 +2275,10 @@ function fnsubmitRFQ() {
             "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
             "UserID": sessionStorage.getItem('UserID'),
             "subject": jQuery('#txtrfqSubject').val(),
-            "Deadline": jQuery('#txtenddatettime').val(),
+            "RFQEndDate": jQuery('#txtenddatettime').val(),
             "RFQDescription": jQuery('#txtrfqdescription').val(),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         };
-        // console.log(JSON.stringify(Tab3data))
         jQuery.ajax({
 
             type: "POST",
@@ -2330,8 +2484,12 @@ function fetchReguestforQuotationDetails() {
                 jQuery("#tblapproversPrevtech").addClass('hide')
             }
             jQuery('#txtRFQReference').val(RFQData[0].general[0].rfqReference)
-            jQuery('#txtstartdatettime').val(RFQData[0].general[0].rfqStartDate)
-            jQuery('#txtenddatettime').val(RFQData[0].general[0].rfqEndDate)
+
+            var dtst = (fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
+            var dtend = (fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
+
+            jQuery('#txtstartdatettime').val(dtst);
+            jQuery('#txtenddatettime').val(dtend);
             $("#cancelBidBtn").show();
 
             if (RFQData[0].general[0].rfqTermandCondition != '') {
@@ -2442,7 +2600,6 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
         "DeletionFor": deletionFor,
         "RFQID": parseInt(sessionStorage.getItem('hddnRFQID'))
     }
-    //alert(JSON.stringify(Attachments))
     jQuery.ajax({
 
         type: "POST",
@@ -2504,16 +2661,17 @@ function fetchPSBidDetailsForPreview() {
     jQuery.unblockUI();
 
 }
-
+//abheedev bug 479
 $("#btninstructionexcelparameter").click(function () {
     var ErrorUOMMsz = '<ul class="col-md-5 text-left">';
     var ErrorUOMMszRight = '<ul class="col-md-5 text-left">'
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+    
     for (var i = 0; i < parseInt(quorem); i++) {
-        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].UOM + '</li>';
+        ErrorUOMMsz = ErrorUOMMsz + '<li>' + allUOM[i].uomid + '</li>';
         var z = (parseInt(quorem) + i);
         if (z <= allUOM.length - 1) {
-            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].UOM + '</li>';
+            ErrorUOMMszRight = ErrorUOMMszRight + '<li>' + allUOM[z].uomid + '</li>';
         }
     }
     ErrorUOMMsz = ErrorUOMMsz + '</ul>'
@@ -2551,6 +2709,7 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
+    
 
     //Get the files from Upload control
     var files = e.target.files;
@@ -2569,6 +2728,7 @@ function handleFileparameter(e) {
             sheet_name_list.forEach(function (y) { /* iterate through sheets */
                 //Convert the cell value to Json
                 var sheet1 = workbook.SheetNames[0];
+              
                 //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
                 var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
                 if (roa.length > 0) {
@@ -2576,7 +2736,7 @@ function handleFileparameter(e) {
                 }
             });
             //Get the first column first cell value
-            //alert(JSON.stringify(result))
+
             printDataparameter(result)
         };
         reader.readAsArrayBuffer(f);
@@ -2615,18 +2775,14 @@ function isValidDate(str) {
 }
 var Rowcount = 0;
 function printDataparameter(result) {
-
+   
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
-    // var numberOnly = /^[0-9]+$/;
-    //var numberOnly = /^[0-9]\d*(\.\d+)?$/;
-    // var numberOnly = /^[0-18]\d*(\.\d[0-3]+)?$/;
     var numberOnly = /^\d+(?:\.\d{1,3})?$/;
 
     $("#temptableForExcelDataparameter").empty();
     $("#temptableForExcelDataparameter").append("<tr><th>ItemService</th><th>ItemCode</th><th>TargetPrice</th><th>Quantity</th><th>UOM</th><th>Description</th><th>TAT</th><th>DeliveryLocation</th><th>Remarks</th><th>PoNo</th><th>VendorName</th><th>UnitRate</th><th>PoDate</th><th>PoValue</th></tr>");
-    // checking validat  alert(loopcount)
     var targetPrice = 0;
     var TAT = 0;
     var unitrate = 0
@@ -2665,13 +2821,8 @@ function printDataparameter(result) {
             podate = $.trim(result[i].PoDate);
             // podatejv = new Date(podate);
         }
-        //var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
-        //var formats = [
-        //    moment.ISO_8601,
-        //    "MM/DD/YYYY  :)  HH*mm*ss"
-        //];
 
-        // alert(moment(podatejv, formats, true).isValid())
+
 
         if ($.trim(result[i].PoNo) != '') {
             pono = $.trim(result[i].PoNo);
@@ -2684,7 +2835,7 @@ function printDataparameter(result) {
             itemcode = $.trim(result[i].ItemCode);
 
         }
-        //alert($.trim(result[i].Remarks))
+       
         if ($.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Item/Service can not be blank or length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2698,13 +2849,13 @@ function printDataparameter(result) {
             return false;
         }
 
-        else if ($.trim(result[i].Remarks) == '' || $.trim(result[i].Remarks).length > 200) {
+        else if ($.trim(result[i].Remarks) != '' && $.trim(result[i].Remarks).length > 200) {
             $("#error-excelparameter").show();
-            $("#errspan-excelparameter").html('Remarks can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
+            $("#errspan-excelparameter").html('Remarks length should be 200 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].Quantity) == '') {
+        else if ($.trim(result[i].Quantity) == '' || $.trim(result[i].Quantity) == '0') {
             $("#error-excelparameter").show();
 
             $("#errspan-excelparameter").html('Quantity can not be blank of item no ' + (i + 1) + '. Please fill and upload the file again.');
@@ -2758,7 +2909,7 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-        else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].ItemService) > 100) {
+        else if ($.trim(result[i].DeliveryLocation) == '' || $.trim(result[i].DeliveryLocation).length > 100) {
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('Delivery Location can not be blank or length should be 100 characters of item no ' + (i + 1) + '. Please fill and upload the file again.');
             $("#file-excelparameter").val('');
@@ -2771,12 +2922,11 @@ function printDataparameter(result) {
             $("#file-excelparameter").val('');
             return false;
         }
-
+       
         else {
             // if values are correct then creating a temp table
 
             $("<tr><td>" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td>" + replaceQuoutesFromStringFromExcel(itemcode) + "</td><td>" + targetPrice + "</td><td>" + result[i].Quantity + "</td><td>" + result[i].UOM + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Description) + "</td><td>" + TAT + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].DeliveryLocation) + "</td><td>" + replaceQuoutesFromStringFromExcel(result[i].Remarks) + "</td><td>" + replaceQuoutesFromStringFromExcel(pono) + "</td><td>" + replaceQuoutesFromStringFromExcel(povendorname) + "</td><td>" + unitrate + "</td><td>" + podate + "</td><td>" + povalue + "</td></tr>").appendTo("#temptableForExcelDataparameter");
-
             var arr = $("#temptableForExcelDataparameter tr");
 
             $.each(arr, function (i, item) {
@@ -2801,21 +2951,26 @@ function printDataparameter(result) {
     var ErrorUOMMsz = '';
     var ErrorUOMMszRight = '';
     Rowcount = 0;
+   
     // check for UOM
-
-    $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
-        var this_row = $(this);
-        excelCorrect = 'N';
+    //console.log( $("#temptableForExcelDataparameter tr:gt(0)").length)
+    
+   
+     $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
+        // console.log( $("#temptableForExcelDataparameter>tbody >tr").length)
+         var this_row = $(this);
+         excelCorrect = 'N';
         Rowcount = Rowcount + 1;
-
+        //console.log(this_row.find('td:eq(0)').text())
         for (var i = 0; i < allUOM.length; i++) {
-
+          
             if ($.trim(this_row.find('td:eq(4)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
                 excelCorrect = 'Y';
             }
 
         }
         var quorem = (allUOM.length / 2) + (allUOM.length % 2);
+        
         if (excelCorrect == "N") {
             $("#error-excelparameter").show();
             ErrorUOMMsz = 'UOM not filled properly at row no ' + Rowcount + '. Please choose UOM from given below: <br><ul class="col-md-3 text-left">';
@@ -2835,13 +2990,14 @@ function printDataparameter(result) {
         }
 
     });
-    // alert(excelCorrect)
+
     if (excelCorrect == "Y") {
         $("#error-excelparameter").hide();
         // $("#errspan-excelparameter").html('');
         $("#success-excelparameter").show();
         $('#btnsforYesNo').show()
-        $("#succspan-excelparameter").html('Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.');
+        //abheedev backlog 405
+        $("#succspan-excelparameter").html('<p>Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.</p>\n <p style="color:red"><b>Special characters like -\',\", #,&,~  shall be removed from the text during upload. Please check your text accordingly.</b></p>');
         $("#file-excelparameter").val('');
         excelCorrect = '';
         if (st == 'false') {
@@ -2910,11 +3066,15 @@ function fnSeteRFQparameterTable() {
             var this_row = $(this);
 
             if (!jQuery("#tblServicesProduct thead").length) {
+                //abheedev bug 388 start
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                //abheedev bug 388 start
             }
             else {
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                //abheedev bug 388 start
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
+                //abheedev bug 388 end
             }
 
             $('#scrolr').show();
@@ -3042,15 +3202,13 @@ jQuery("#txtSearch").typeahead({
 
         if (map[item].participantID != "0") {
 
-            //sessionStorage.setItem('hdnVendorID', map[item].participantID);
             vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
             jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    // console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
-
+                    
                     //** remove from main table if already selected in selected List
                     if (map[item].participantID == $(this).find("td:eq(0)").text()) {
                         $('#vList' + map[item].participantID).remove();
@@ -3076,7 +3234,6 @@ function getCategoryWiseVendors(categoryID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
 
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
@@ -3160,3 +3317,40 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
 }
 
+function addMoreTermsCondition() {
+
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblTermsCondition tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(2, (this_row.closest('tr').attr('id')).length)
+
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
+    //Metronic.scrollTo($("#tr" + i), 350);
+    var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
+    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms("+i+")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
+    str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled checked/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
+    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+    jQuery('#tblTermsCondition').append(str);
+    $('.maxlength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
+   /* form.validate()
+    $('#terms' + i).rules('add', {
+         required: true
+         
+     });*/
+
+}
+function deleteterms(icount) {
+    $('#tr' + icount).remove();
+    $('#trTermsprev' + icount).remove();
+}

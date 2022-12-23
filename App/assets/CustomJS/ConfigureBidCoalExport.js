@@ -1,19 +1,6 @@
-﻿$("#cancelBidBtn").hide();
+$("#cancelBidBtn").hide();
+$('#file-excelparameter').change(handleFileparameter);
 
-jQuery(document).ready(function () {
-    $("#txtlastinvoiceprice,#txtquantitiy,#txtCeilingPrice,#txtminimumdecreament,#txtitembidduration").inputmask({//,#txttargetprice,#txtunitrate,#txtpovalue
-        alias: "decimal",
-        rightAlign: false,
-        groupSeparator: ",",
-        radixPoint: ".",
-        autoGroup: true,
-        integerDigits: 40,
-        digitsOptional: true,
-        allowPlus: false,
-        allowMinus: false,
-        'removeMaskOnSubmit': true
-    });
-});
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -23,6 +10,10 @@ jQuery("#txtApprover").keyup(function () {
 });
 sessionStorage.setItem('hdnApproverid', 0);
 
+
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
         var data = allUsers;
@@ -51,6 +42,9 @@ jQuery("#txtApprover").typeahead({
 
 });
 var rowApp = 0;
+var rowpreBidApp = 0;
+var rownum = 0;
+var rownumprebid = 0;
 function fnApproversQuery(EmailID, UserID, UserName) {
     var status = "true";
     $("#tblapprovers tr:gt(0)").each(function () {
@@ -76,41 +70,211 @@ function fnApproversQuery(EmailID, UserID, UserName) {
     }
     else {
         rowApp = rowApp + 1;
+        rowpreBidApp = rowpreBidApp + 1;
+        var num = 0;
+        var maxidnum = 0;
+        $("#tblapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+
+            num = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
+                maxidnum = num;
+            }
+        });
+
+        rownum = parseInt(maxidnum) + 1;
+
         if (!jQuery("#tblapprovers thead").length) {
             jQuery("#tblapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ',trAppidPrev' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ',trAppidPrev' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><a class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
         }
 
-
+        //** Preview
         $('#wrap_scrollerPrevApp').show();
         if (!jQuery("#tblapproversPrev thead").length) {
 
             jQuery("#tblapproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr>');
+            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr>');
         }
         else {
-            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rowApp + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr>');
+            jQuery("#tblapproversPrev").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr>');
         }
+
+
+        //** Pre Approvers
+        /*  num = 0;
+         maxidnum = 0;
+         $("#tblpreBidapprovers tr:gt(0)").each(function () {
+             var this_row = $(this);
+             num = (this_row.closest('tr').attr('id')).substring(10)
+             if (num > maxidnum) {
+                 maxidnum = num;
+             }
+         });
+ 
+         rownumprebid = parseInt(maxidnum) + 1;
+ 
+         if (!jQuery("#tblpreBidapprovers thead").length) {
+             jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+             jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+         }
+         else {
+             jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rowpreBidApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+         }
+ 
+         if (!jQuery("#tblpreBidapprovers1 thead").length) {
+ 
+             jQuery("#tblpreBidapprovers1").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+             jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rownumprebid + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+         }
+         else {
+             jQuery("#tblpreBidapprovers1").append('<tr id=trpreAppidPrev' + rownumprebid + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td></td></tr>');
+         }
+         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
+         var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+ 
+         if (rowcount >= 1) {
+             $("#tblapprovers tr:gt(0)").each(function (index) {
+                 var this_row = $(this);
+                 $.trim(this_row.find('td:eq(3)').html(index + 1));
+             });
+             $("#tblapproversPrev tr:gt(0)").each(function (index) {
+                 var this_row = $(this);
+                 $.trim(this_row.find('td:eq(3)').html(index + 1));
+             });
+         }
+         if (rowcountPre >= 1) {
+             $("#tblpreBidapprovers tr:gt(0)").each(function (index) {
+                 var this_row = $(this);
+                 $.trim(this_row.find('td:eq(3)').html(index + 1));
+             });
+             $("#tblpreBidapprovers1 tr:gt(0)").each(function (index) {
+                 var this_row = $(this);
+                 $.trim(this_row.find('td:eq(3)').html(index + 1));
+             });
+         }*/
     }
 }
-function deleteApprow(rowid, rowidPrev) {
+function deleteApprow(IDcount) {
+
     rowApp = rowApp - 1;
-    $('#' + rowid.id).remove();
-    $('#' + rowidPrev.id).remove();
-    var rowCount = jQuery('#tblapprovers tr').length;
+    $('#trAppid' + IDcount).remove();
+    $('#trAppidPrev' + IDcount).remove();
+    $('#trpreAppidPrev' + IDcount).remove();
+    $('#trpreAppid' + IDcount).remove();
+    var rowCount = jQuery('#tblapprovers >tbody>tr').length;
     var i = 1;
-    if (rowCount > 1) {
+    if (rowCount >= 1) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
             $.trim(this_row.find('td:eq(3)').html(i));
             i++;
         });
+        i = 1;
+        $("#tblapproversPrev tr:gt(0)").each(function () {
+            var this_row = $(this);
+            $.trim(this_row.find('td:eq(3)').html(i));
+            i++;
+        });
+    }
+
+    /*  var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+      if (rowcountPre >= 1) {
+          i = 1;
+          $("#tblpreBidapprovers tr:gt(0)").each(function () {
+              var this_row = $(this);
+              $.trim(this_row.find('td:eq(3)').html(i));
+              i++;
+          });
+          i = 1;
+          $("#tblpreBidapprovers1 tr:gt(0)").each(function () {
+              var this_row = $(this);
+              $.trim(this_row.find('td:eq(3)').html(i));
+              i++;
+          });
+      }*/
+}
+/*function addBidpreApprovers(EmailID, UserID, UserName) {
+    var status = "true";
+    $("#tblpreBidapprovers tr:gt(0)").each(function () {
+        var this_row = $(this);
+        if ($.trim(this_row.find('td:eq(4)').html()) == sessionStorage.getItem('hdnpreApproverid')) {
+            status = "false"
+        }
+    });
+
+    if (UserID == "0" || jQuery("#txtpreApproverBid").val() == "") {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else if (status == "false") {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Approver is already mapped for this Reverse Auction.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else {
+        rowpreBidApp = rowpreBidApp + 1;
+        num = 0;
+        maxidnum = 0;
+        $("#tblpreBidapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10)
+            if (num > maxidnum) {
+                maxidnum = num;
+            }
+        });
+        rownumprebid = parseInt(maxidnum) + 1;
+        if (!jQuery("#tblpreBidapprovers thead").length) {
+            jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+        }
+        else {
+            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+        }
+        var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+        if (rowcountPre >= 1) {
+            $("#tblpreBidapprovers tr:gt(0)").each(function (index) {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(3)').html(index + 1));
+            });
+            $("#tblpreBidapprovers1 tr:gt(0)").each(function (index) {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(3)').html(index + 1));
+            });
+        }
+
     }
 }
+function deletepreApprow(IDcount) {
+    rowpreBidApp = rowpreBidApp - 1;
+    $('#trpreAppidPrev' + IDcount).remove();
+    $('#trpreAppid' + IDcount).remove();
 
+    var i = 1;
+    var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+    if (rowcountPre >= 1) {
+        i = 1;
+        $("#tblpreBidapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+            $.trim(this_row.find('td:eq(3)').html(i));
+            i++;
+        });
+        i = 1;
+        //$("#tblpreBidapprovers1 tr:gt(0)").each(function () {
+        //    var this_row = $(this);
+        //    $.trim(this_row.find('td:eq(3)').html(i));
+        //    i++;
+        //});
+    }
+}*/
 
 var vendorsForAutoComplete;
 var allUOM = '';
@@ -376,7 +540,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -484,9 +648,9 @@ var FormWizard = function () {
                         required: true
                     },
 
-                    txtbidTime: {
-                        required: true
-                    },
+                    //txtbidTime: {
+                    //    required: true
+                    //},
 
                     mapedapprover: {
                         required: true
@@ -507,7 +671,7 @@ var FormWizard = function () {
                         maxlength: 2000
                     },
                     txtbiddescriptionP: {
-                        required: false,
+                        // required: false,
                         maxlength: 200
                     },
                     txtquantitiy: {
@@ -827,14 +991,16 @@ function ConfigureBidForCoalTab1() {
 
         })
     }
-
+    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         "BidSubject": jQuery("#txtBidSubject").val(),
         "BidDescription": jQuery("#txtbiddescription").val(),
-        "BidDate": jQuery("#txtbidDate").val(),
-        "BidTime": jQuery("#txtbidTime").val(),
+        //"BidDate": jQuery("#txtbidDate").val(),
+        "BidDate": StartDT,
+        //"BidTime": jQuery("#txtbidTime").val(),
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "BidTypeID": 8,
@@ -1015,17 +1181,16 @@ function ConfigureBidForCoalTab2() {
 
     totalitemdurationstagger = 0;
 
-    var rowCount = jQuery('#tblServicesProduct tr').length;
-    if (rowCount > 1) {
+    var rowCount = jQuery('#tblServicesProduct >tbody>tr').length;
+    if (rowCount >= 1) {
 
         var ItemStatus = 'Open';
         $("#tblServicesProduct tr:gt(0)").each(function () {
 
             targetPrice = 0
             unitrate = 0;
-            povalue = 0, i = 1, itmduartion = 0; tab2Data = '';
+            povalue = 0, itmduartion = 0; tab2Data = '';
             var this_row = $(this);
-
 
             if ($.trim(this_row.find('td:eq(6)').html()) != '') {
                 targetPrice = $.trim(this_row.find('td:eq(6)').html());
@@ -1279,10 +1444,12 @@ function InsUpdSeaExport() {
             st = "true";
 
             $("#tblServicesProduct tr:gt(0)").each(function () {
+                var this_row = $(this);
+                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val() && $.trim($('#remarks' + i).html()) != $('#txtbiddescriptionP').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#dropuom").val() && $.trim($('#CP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mindec' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#deconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val() && $.trim($('#itemdura' + i).html()) != $("#txtitembidduration").val() && $.trim($('#gst' + i).html()) != $("#txtGST").val()) {
                     st = "false"
                 }
-                i++;
+
             });
 
             if ($('#dropuom').val() == '') {
@@ -1395,7 +1562,7 @@ function InsUpdSeaExport() {
         }
 
         else {
-            st = "true"; i = 0;
+            st = "true";
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
@@ -1438,14 +1605,15 @@ function InsUpdSeaExport() {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
 
                         var this_row = $(this);
+                        i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                         if ($.trim($('#destinationport' + i).html()) == $('#txtdestinationPort').val()) {
-                            status = "false"
+                            st = "false"
                         }
-                        i++;
+                        // i++;
                     });
 
 
-                    if (status == "false") {
+                    if (st == "false") {
                         error.show();
                         $('#spandanger').html('Data already exists...');
                         Metronic.scrollTo(error, -200);
@@ -1476,8 +1644,18 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 function ParametersQuery() {
 
-    var i;
-    i = rowAppItems;
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
     var status = $('#checkmaskvendor option:selected').val();
     var MaskL1Price = $('#checkmaskL1price option:selected').val();
     var ShowStartPrice = $('#checkshowstartprice option:selected').val();
@@ -1499,11 +1677,11 @@ function ParametersQuery() {
 
     if (!jQuery("#tblServicesProduct thead").length) {
         jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>GST%</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + ' >' + $('#txtdestinationPort').val() + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + ' >' + $('#txtbiddescriptionP').val() + '</td><td class=text-right id=TP' + i + ' >' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + ' >' + $("#dropuom").val() + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendor' + i + ' >' + status + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=decon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=deconval' + i + ' >' + $("#drpdecreamenton").val() + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators($("#txtGST").val()) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td class=itemclass id=itemdura' + i + '  >' + itemBidDuration + '</td><td id=maskL1' + i + '>' + MaskL1Price + '</td><td id=showstart' + i + ' >' + ShowStartPrice + '</td><td class=text-right id=unitrate' + i + ' >' + thousands_separators($("#txtunitrate").val()) + '</td><td id=pono' + i + ' >' + $("#txtPono").val() + '</td><td id=povendorname' + i + ' >' + $("#txtvendorname").val() + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><a type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td  style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + ' >' + $('#txtdestinationPort').val() + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + ' >' + $('#txtbiddescriptionP').val() + '</td><td class=text-right id=TP' + i + ' >' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + ' >' + $("#dropuom").val() + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendor' + i + ' >' + status + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=decon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=deconval' + i + ' >' + $("#drpdecreamenton").val() + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators($("#txtGST").val()) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td class=itemclass id=itemdura' + i + '  >' + itemBidDuration + '</td><td id=maskL1' + i + '>' + MaskL1Price + '</td><td id=showstart' + i + ' >' + ShowStartPrice + '</td><td class=text-right id=unitrate' + i + ' >' + thousands_separators($("#txtunitrate").val()) + '</td><td id=pono' + i + ' >' + $("#txtPono").val() + '</td><td id=povendorname' + i + ' >' + $("#txtvendorname").val() + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
     }
     else {
 
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + ' >' + $('#txtdestinationPort').val() + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + ' >' + $('#txtbiddescriptionP').val() + '</td><td class=text-right id=TP' + i + ' >' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + ' >' + $("#dropuom").val() + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendor' + i + ' >' + status + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=decon' + i + ' >' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=deconval' + i + ' >' + $("#drpdecreamenton").val() + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators($("#txtGST").val()) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td class=itemclass id=itemdura' + i + ' >' + itemBidDuration + '</td><td id=maskL1' + i + ' >' + MaskL1Price + '</td><td id=showstart' + i + ' >' + ShowStartPrice + '</td><td class=text-right id=unitrate' + i + ' >' + thousands_separators($("#txtunitrate").val()) + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povendorname' + i + ' >' + $("#txtvendorname").val() + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><a type="button" class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=destinationport' + i + ' >' + $('#txtdestinationPort').val() + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + ' >' + $('#txtbiddescriptionP').val() + '</td><td class=text-right id=TP' + i + ' >' + thousands_separators($('#txttargetprice').val()) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($('#txtquantitiy').val()) + '</td><td id=uom' + i + ' >' + $("#dropuom").val() + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($('#txtCeilingPrice').val()) + '</td><td id=maskvendor' + i + ' >' + status + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($('#txtminimumdecreament').val()) + '</td><td id=decon' + i + ' >' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=deconval' + i + ' >' + $("#drpdecreamenton").val() + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators($("#txtGST").val()) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators($("#txtlastinvoiceprice").val()) + '</td><td class=itemclass id=itemdura' + i + ' >' + itemBidDuration + '</td><td id=maskL1' + i + ' >' + MaskL1Price + '</td><td id=showstart' + i + ' >' + ShowStartPrice + '</td><td class=text-right id=unitrate' + i + ' >' + thousands_separators($("#txtunitrate").val()) + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povendorname' + i + ' >' + $("#txtvendorname").val() + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators($("#txtpovalue").val()) + '</td></tr>');
 
     }
 
@@ -1687,12 +1865,15 @@ function fetchCoalDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            var str = '';
+            var strp = '';
+            var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate));
             jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
             jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
-            jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
-            jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
+            //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
+            jQuery('#txtbidDate').val(dtst)
+            //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
             $('#drphideVendor').val(BidData[0].bidDetails[0].hideVendor)
             //jQuery('#txtBidExtension').val(BidData[0].bidDetails[0].noofBidExtension == -1 ? "" : BidData[0].bidDetails[0].noofBidExtension)
@@ -1751,11 +1932,12 @@ function fetchCoalDetails() {
             $('#wrap_scrollerPrevApp').show();
             jQuery('#tblapprovers').append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
             jQuery('#tblapproversPrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-
+            rowpreBidApp = 0;
+            rowApp = 0;
             for (var i = 0; i < BidData[0].bidApproverDetails.length; i++) {
-                rowApp = rowApp + 1;
+                // rowApp = rowApp + 1;
                 str = '<tr id=trAppid' + (i + 1) + '>';
-                str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(trAppid' + (i + 1) + ',trAppidPrev' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+                str += '<td><a type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></a></td>';
                 str += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
                 str += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
 
@@ -1764,7 +1946,7 @@ function fetchCoalDetails() {
 
                 jQuery('#tblapprovers').append(str);
 
-
+                //** Preview
                 strp = '<tr id=trAppidPrev' + (i + 1) + '>';
 
                 strp += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
@@ -1772,6 +1954,25 @@ function fetchCoalDetails() {
 
                 strp += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td></tr>";
                 jQuery('#tblapproversPrev').append(strp);
+                /*//** Pre Approver
+                str = '';
+
+                //rowpreBidApp = rowpreBidApp + 1;
+                str = '<tr id=trpreAppid' + (i + 1) + '>';
+                str += '<td><a type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletepreApprow(' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></a></td>';
+                str += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
+                str += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
+                str += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td>";
+                str += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td></tr>";
+                jQuery('#tblpreBidapprovers').append(str);
+
+                strp = '';
+                strp = '<tr id=trpreAppidPrev' + (i + 1) + '>';
+                strp += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
+                strp += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
+                strp += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td>";
+                strp += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td></tr>";
+                jQuery('#tblpreBidapprovers1').append(strp);*/
 
             }
             totalitemdurationstagger = 0;
@@ -1799,7 +2000,7 @@ function fetchCoalDetails() {
 
 
 
-                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><button class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td style="width:20%!important;" id=itemcode' + i + '>' + BidData[0].bidCoalDetails[i].itemCode + '</td><td id=destinationport' + i + '>' + BidData[0].bidCoalDetails[i].destinationPort + '</td><td class=hide>' + BidData[0].bidCoalDetails[i].description + '</td><td id=remarks' + i + '>' + BidData[0].bidCoalDetails[i].remarks + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].targetprice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + '</td><td id=uom' + i + '>' + BidData[0].bidCoalDetails[i].uom + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + '</td><td id=maskvendor' + i + ' >' + BidData[0].bidCoalDetails[i].maskVendor + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].minimumDecreament) + '</td><td  id=decon' + i + '  >' + decrementon + '</td><td class=hide id=deconval' + i + ' >' + BidData[0].bidCoalDetails[i].decreamentOn + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].gst) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + i + ' >' + BidData[0].bidCoalDetails[i].itemBidDuration + '</td><td id=maskL1' + i + ' >' + BidData[0].bidCoalDetails[i].maskL1Price + '</td><td id=showstart' + i + '>' + BidData[0].bidCoalDetails[i].showStartPrice + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + '</td><td id=pono' + i + '  >' + BidData[0].bidCoalDetails[i].poNo + '</td><td id=povendorname' + i + '>' + BidData[0].bidCoalDetails[i].poVendorName + '</td><td id=podate' + i + '>' + BidData[0].bidCoalDetails[i].poDate + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + '</td></tr>');
+                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + BidData[0].bidCoalDetails[i].itemCode + '</td><td id=destinationport' + i + '>' + BidData[0].bidCoalDetails[i].destinationPort + '</td><td class=hide>' + BidData[0].bidCoalDetails[i].description + '</td><td id=remarks' + i + '>' + BidData[0].bidCoalDetails[i].remarks + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].targetprice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + '</td><td id=uom' + i + '>' + BidData[0].bidCoalDetails[i].uom + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + '</td><td id=maskvendor' + i + ' >' + BidData[0].bidCoalDetails[i].maskVendor + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].minimumDecreament) + '</td><td  id=decon' + i + '  >' + decrementon + '</td><td class=hide id=deconval' + i + ' >' + BidData[0].bidCoalDetails[i].decreamentOn + '</td><td class="text-right" id=gst' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].gst) + '</td><td class="text-right hide" id=LIP' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + i + ' >' + BidData[0].bidCoalDetails[i].itemBidDuration + '</td><td id=maskL1' + i + ' >' + BidData[0].bidCoalDetails[i].maskL1Price + '</td><td id=showstart' + i + '>' + BidData[0].bidCoalDetails[i].showStartPrice + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + '</td><td id=pono' + i + '  >' + BidData[0].bidCoalDetails[i].poNo + '</td><td id=povendorname' + i + '>' + BidData[0].bidCoalDetails[i].poVendorName + '</td><td id=podate' + i + '>' + BidData[0].bidCoalDetails[i].poDate + '</td><td class=text-right id=povalue' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + '</td></tr>');
                     jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td style="width:20%!important;" id=itemcodeprev' + i + '>' + BidData[0].bidCoalDetails[i].itemCode + '</td><td id=destinationportprev' + i + '>' + BidData[0].bidCoalDetails[i].destinationPort + '</td><td  class=hide>' + BidData[0].bidCoalDetails[i].description + '</td><td id=remarksprev' + i + '>' + BidData[0].bidCoalDetails[i].remarks + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].targetprice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].quantity) + '</td><td id=uomprev' + i + '>' + BidData[0].bidCoalDetails[i].uom + '</td><td class=text-right id=CPprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].ceilingPrice) + '</td><td id=maskvendorprev' + i + '>' + BidData[0].bidCoalDetails[i].maskVendor + '</td><td class=text-right id=mindecprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].minimumDecreament) + '</td><td id=deconprev' + i + '>' + decrementon + '</td><td class=hide id=deconvalprev' + i + '>' + BidData[0].bidCoalDetails[i].decreamentOn + '</td><td class="text-right" id=gstprev' + i + ' >' + thousands_separators(BidData[0].bidCoalDetails[i].gst) + '</td><td class="text-right hide" id=LIPprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].lastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + i + '>' + BidData[0].bidCoalDetails[i].itemBidDuration + '</td><td id=maskL1prev' + i + '>' + BidData[0].bidCoalDetails[i].maskL1Price + '</td><td id=showstartprev' + i + '>' + BidData[0].bidCoalDetails[i].showStartPrice + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].poUnitRate) + '</td><td id=ponoprev' + i + '>' + BidData[0].bidCoalDetails[i].poNo + '</td><td id=povendornameprev' + i + ' >' + BidData[0].bidCoalDetails[i].poVendorName + '</td><td  id=podateprev' + i + '>' + BidData[0].bidCoalDetails[i].poDate + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators(BidData[0].bidCoalDetails[i].poValue) + '</td></tr>');
                     totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(BidData[0].bidCoalDetails[i].itemBidDuration)
 
@@ -1850,18 +2051,27 @@ function DownloadFile(aID) {
 
 
 function Dateandtimevalidate(indexNo) {
+    var StartDT = new Date();
+    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
 
+    }
+    var Tab1Data = {
+        "BidDate": StartDT
+    }
+    //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/?BidDate=" + jQuery("#txtbidDate").val() + "&BidTime=" + jQuery("#txtbidTime").val(),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(Tab1Data),
         dataType: "json",
-        success: function (RFQData) {
+        success: function (data) {
 
-            if (RFQData[0].bidId == 1) {
+            if (data == '1') {
                 if (indexNo == 'index1') {
                     ConfigureBidForCoalTab1();
                     fetchPSBidDetailsForPreview();
@@ -2594,7 +2804,8 @@ function printdataSeaBid(result) {
         $("#error-excelparameter").hide();
         $("#errspan-excelparameter").html('');
         $("#success-excelparameter").show()
-        $("#succspan-excelparameter").html('Excel file is found ok. Do you want to upload? \n This will clean your existing Data.')
+        //abheedev backlog 405
+        $("#succspan-excelparameter").html('<p>Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.</p>\n <p style="color:red"><b>Special characters like -\',\", #,&,~  shall be removed from the text during upload. Please check your text accordingly.</b></p>');
         $("#file-excelparameter").val('');
         excelCorrect = '';
         if (st == 'false') {
@@ -2625,11 +2836,11 @@ function fnSetCoalparameterTable() {
             if (!jQuery("#tblServicesProduct thead").length) {
                 jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>GST%</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
 
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td id=destinationport' + i + ' >' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(6)').html())) + '</td><td id=uom' + i + ' >' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(8)').html())) + '</td><td id=maskvendor' + i + ' >' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(10)').html())) + '</td><td id=decon' + i + ' >' + decon + '</td><td class=hide id=deconval' + i + ' >' + $.trim(this_row.find('td:eq(11)').html()) + '</td><td class="text-right" id=gst' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(12)').html())) + '</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=itemclass id=itemdura' + i + '>' + $.trim(this_row.find('td:eq(14)').html()) + '</td><td id=maskL1' + i + '  >' + $.trim(this_row.find('td:eq(16)').html()) + '</td><td id=showstart' + i + ' >' + $.trim(this_row.find('td:eq(17)').html()) + '</td><td id=unitrate' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(18)').html())) + '</td><td id=pono' + i + ' >' + $.trim(this_row.find('td:eq(19)').html()) + '</td><td id=povendorname' + i + ' >' + $.trim(this_row.find('td:eq(20)').html()) + '</td><td id=podate' + i + ' >' + $.trim(this_row.find('td:eq(21)').html()) + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(22)').html())) + '</td></tr>');
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><a type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td id=destinationport' + i + ' >' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(6)').html())) + '</td><td id=uom' + i + ' >' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(8)').html())) + '</td><td id=maskvendor' + i + ' >' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(10)').html())) + '</td><td id=decon' + i + ' >' + decon + '</td><td class=hide id=deconval' + i + ' >' + $.trim(this_row.find('td:eq(11)').html()) + '</td><td class="text-right" id=gst' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(12)').html())) + '</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=itemclass id=itemdura' + i + '>' + $.trim(this_row.find('td:eq(14)').html()) + '</td><td id=maskL1' + i + '  >' + $.trim(this_row.find('td:eq(16)').html()) + '</td><td id=showstart' + i + ' >' + $.trim(this_row.find('td:eq(17)').html()) + '</td><td id=unitrate' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(18)').html())) + '</td><td id=pono' + i + ' >' + $.trim(this_row.find('td:eq(19)').html()) + '</td><td id=povendorname' + i + ' >' + $.trim(this_row.find('td:eq(20)').html()) + '</td><td id=podate' + i + ' >' + $.trim(this_row.find('td:eq(21)').html()) + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(22)').html())) + '</td></tr>');
 
             }
             else {
-                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td id=destinationport' + i + ' >' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(6)').html())) + '</td><td id=uom' + i + ' >' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(8)').html())) + '</td><td id=maskvendor' + i + ' >' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(10)').html())) + '</td><td id=decon' + i + ' >' + decon + '</td><td class=hide id=deconval' + i + ' >' + $.trim(this_row.find('td:eq(11)').html()) + '</td><td class="text-right" id=gst' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(12)').html())) + '</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=itemclass id=itemdura' + i + '>' + $.trim(this_row.find('td:eq(14)').html()) + '</td><td id=maskL1' + i + '  >' + $.trim(this_row.find('td:eq(16)').html()) + '</td><td id=showstart' + i + ' >' + $.trim(this_row.find('td:eq(17)').html()) + '</td><td id=unitrate' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(18)').html())) + '</td><td id=pono' + i + ' >' + $.trim(this_row.find('td:eq(19)').html()) + '</td><td id=povendorname' + i + ' >' + $.trim(this_row.find('td:eq(20)').html()) + '</td><td id=podate' + i + ' >' + $.trim(this_row.find('td:eq(21)').html()) + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(22)').html())) + '</td></tr>');
+                jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><a type="button" class="btn btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td id=destinationport' + i + ' >' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td  class=hide>' + $('#txtdescription').val() + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class=text-right id=quan' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(6)').html())) + '</td><td id=uom' + i + ' >' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=CP' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(8)').html())) + '</td><td id=maskvendor' + i + ' >' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class=text-right id=mindec' + i + ' >' + thousands_separators($.trim(this_row.find('td:eq(10)').html())) + '</td><td id=decon' + i + ' >' + decon + '</td><td class=hide id=deconval' + i + ' >' + $.trim(this_row.find('td:eq(11)').html()) + '</td><td class="text-right" id=gst' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(12)').html())) + '</td><td class="text-right hide" id=LIP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=itemclass id=itemdura' + i + '>' + $.trim(this_row.find('td:eq(14)').html()) + '</td><td id=maskL1' + i + '  >' + $.trim(this_row.find('td:eq(16)').html()) + '</td><td id=showstart' + i + ' >' + $.trim(this_row.find('td:eq(17)').html()) + '</td><td id=unitrate' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(18)').html())) + '</td><td id=pono' + i + ' >' + $.trim(this_row.find('td:eq(19)').html()) + '</td><td id=povendorname' + i + ' >' + $.trim(this_row.find('td:eq(20)').html()) + '</td><td id=podate' + i + ' >' + $.trim(this_row.find('td:eq(21)').html()) + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(22)').html())) + '</td></tr>');
 
             }
 
@@ -2732,7 +2943,3 @@ function fnfillInstructionExcel() {
 
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
-
-
-
-

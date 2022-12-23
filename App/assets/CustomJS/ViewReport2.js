@@ -1,4 +1,4 @@
-﻿var BidID = "";
+var BidID = "";
 var BidTypeID = "";
 var BidForID = "";
 
@@ -87,6 +87,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
                 BidForID = data[0].bidForID
 
                 _bidclosingtype = data[0].bidClosingType;
+                var _bidDate = fnConverToLocalTime(data[0].bidDate);
 
 
 
@@ -94,7 +95,8 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
                 jQuery('#tblprice').css('display', 'none');
                 jQuery('#thmodelclass').css('display', 'none');
 
-                jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + data[0].bidDate + ' - ' + data[0].bidTime + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
+                //jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + data[0].bidDate + ' - ' + data[0].bidTime + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
+                jQuery('#tbldetails').append("<tr><td><b>Bid Subject:</b> " + data[0].bidSubject + "</td><td><b>Bid Description:</b> " + data[0].bidDetails + "</td></tr><tr><td><b>Bid Date/Time:</b> " + _bidDate + "</td><td><b>Bid Type:</b> " + data[0].bidTypeName + "</td></tr><tr><td><b>Bid For:</b> " + data[0].bidFor + "</td><td><b>Bid Duration:</b> " + data[0].bidDuration + " mins</td></tr><tr><td id='tdCurrency'><b>Currency:</b> " + data[0].currencyName + "</td><td><b>Event ID:</b> " + BidID + "</td></tr>")
                 jQuery('#trtargetprice').css('display', 'none');
 
             }
@@ -126,6 +128,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 }
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -330,7 +333,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                         }
                         else {
-                            var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
+                            var str = "<tr id=lowa" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"; //<td>&nbsp;</td><td>&nbsp;</td>
                         }
 
                         str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].biddedQuantity) + "</td><td class=text-right >" + thousands_separators(data[i].quantityAllocated) + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
@@ -675,11 +678,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thvendor').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thvendor').hide();
                     }
                 }
@@ -749,20 +752,23 @@ function fetchGraphData(itemId, counter) {
                 $("#tblForTrendGraphs" + counter).append('<tr><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th><th style="border:none;">&nbsp;</th><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th><th style="border:none;">&nbsp;</th><th width=10%>Submission Time</th><th width=10%>Quoted Price</th><th width=10%>Vendor</th></tr>');
                 for (var i = 0; i < parseInt(quorem); i++) {
                     _date = new Date(data[i].submissionTime);
-                    _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()));
+                    //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()));
+                    _finaldate = fnConverToLocalTime(_date);
                     str = str + '<tr><td>' + _finaldate + '</td><td>' + data[i].quotedPrice + '</td><td>' + data[i].vendorName + '</td><td style="border: none;">&nbsp;</td>';
 
                     var z = (parseInt(quorem) + i);
                     if (z <= data.length - 1) {
                         _date = new Date(data[z].submissionTime);
-                        _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[z].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getSeconds()));
+                        //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[z].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[z].submissionTime).getSeconds()));
+                        _finaldate = fnConverToLocalTime(_date);
                         str = str + '<td>' + _finaldate + '</td><td>' + data[z].quotedPrice + '</td><td>' + data[z].vendorName + '</td><td style="border: none;">&nbsp;</td>';
                     }
 
                     var o = (parseInt(quorem) * 2) + i;
                     if (o <= data.length - 1) {
                         _date = new Date(data[o].submissionTime);
-                        _finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[o].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getSeconds()));
+                        //_finaldate = _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[o].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getMinutes() + ":" + minutes_with_leading_zeros(new Date(data[o].submissionTime).getSeconds()));
+                        _finaldate = fnConverToLocalTime(_date);
                         str = str + '<td>' + _finaldate + '</td><td>' + data[o].quotedPrice + '</td><td>' + data[o].vendorName + '</td></tr>';
                     }
 
@@ -822,13 +828,14 @@ function linegraphsforItems(itemId, counter) {
                 minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
                 maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
 
-                $('#lblbidstarttime').text(data[0].bidStartEndTime[0].bidStartTime);
-                $('#lblbidendtime').text(data[0].bidStartEndTime[0].bidEndTime);
+                $('#lblbidstarttime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidStartTime));
+                $('#lblbidendtime').text((data[0].bidStartEndTime[0].bidEndTime));
 
                 if (data[0].submissionTime.length > 0) {
 
                     for (var x = 0; x < data[0].submissionTime.length; x++) {
-                        graphtime.push(data[0].submissionTime[x].subTime);
+
+                        graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
                     }
 
                 }
@@ -844,13 +851,14 @@ function linegraphsforItems(itemId, counter) {
                         values = null;;
 
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
+                            var _subTime = fnConverToLocalTime(data[0].quotesDetails[j].subTime);
                             if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+                                Quotes = Quotes + '["' + _subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
                                 values = data[0].quotesDetails[j].quotedPrice;
                             }
                             else {
 
-                                Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                                Quotes = Quotes + '["' + _subTime + '",' + values + '],';
                             }
                         }
 

@@ -1,4 +1,4 @@
-﻿
+
 var max = getUrlVarsURL(decryptedstring)["max"];
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
@@ -23,12 +23,12 @@ function fetchReguestforQuotationDetails() {
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
 
-            jQuery('#RFQDeadline').html(RFQData[0].general[0].rfqStartDate + ' / ' + RFQData[0].general[0].rfqEndDate)
+            jQuery('#RFQDeadline').html(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' / ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate)
             $('#TermCondition').html(RFQData[0].general[0].rfqTermandCondition)
 
-            $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
-            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + RFQData[0].general[0].rfqEndDate + "</td></tr>")
+            $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname></td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
+            $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td id=tdVendorname>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td></td></tr>")
 
             jQuery('#refno').html(RFQData[0].general[0].rfqReference)
 
@@ -50,7 +50,7 @@ function fetchReguestforQuotationDetails() {
     });
 
 }
-
+var verArray = [];
 function RFQFetchQuotedPriceReport() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -88,11 +88,14 @@ function RFQFetchQuotedPriceReport() {
 
                 for (var i = 0; i < data[0].quotesDetails.length; i++) {
 
-                    var taxHRTextinc = stringDivider("Landed Unit Price (Without GST)", 12, "<br/>\n");
-                    var taxHRTextEx = stringDivider("Landed Unit Price (With GST)", 12, "<br/>\n");
-                    var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 12, "<br/>\n");
+                    var taxHRTextinc = stringDivider("Unit Price (Without GST)", 18, "<br/>\n");
+                    var taxHRTextEx = stringDivider("Unit Price (With GST)", 18, "<br/>\n");
+                    var HRUnitRate = stringDivider("Amount (Inc. Taxes)", 18, "<br/>\n");
+
                     var totalamount = 0.0;
                     var bsicpercentageofGST = 0.0;
+                    var _basicPrice = data[0].quotesDetails[i].rfqVendorPricewithoutGST;
+                    comments = '';
                     //if (data[i].RFQBoq == 'Y ') { 
                     if (data[0].quotesDetails[i].rfqDescription != "") {
                         description = stringDivider(data[0].quotesDetails[i].rfqDescription, 45, "<br/>\n");
@@ -107,15 +110,27 @@ function RFQFetchQuotedPriceReport() {
                         }
                         if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {
                             totalamount = data[0].quotesDetails[i].rfqVendorPricewithTax * data[0].quotesDetails[i].quantity;
-                            jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithoutGST) + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithTax) + '</b></td><td class=text-right><b>' + thousands_separators(totalamount.round(3)) + '</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
-                            jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithoutGST) + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithTax) + '</b></td><td class=text-right><b>' + thousands_separators(totalamount.round(3)) + '</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                            if (_basicPrice > 0) {
+                                jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithoutGST) + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithTax) + '</b></td><td class=text-right><b>' + thousands_separators(totalamount.round(3)) + '</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                                jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithoutGST) + '</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].rfqVendorPricewithTax) + '</b></td><td class=text-right><b>' + thousands_separators(totalamount.round(3)) + '</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                            }
+                            else {
+                                jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                                jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                            }
                             totalamountsum = totalamountsum + totalamount;
                             withoutGSTValue = data[0].quotesDetails[i].rfqVendorPricewithoutGST
                         }
                         else {
+                            if (_basicPrice > 0) {
 
-                            jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
-                            jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                                jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                                jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td class=text-right><b>Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                            }
+                            else {
+                                jQuery('#tblServicesProduct').append('<thead id=headid' + i + '><tr style="background: #ccc; color:grey;"><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                                jQuery('#tblServicesProductforexcel').append('<thead id=headid' + i + '><tr><td style="width:40%!important;"><b>' + data[0].quotesDetails[i].rfqShortName + '&nbsp(TC Given Below)</b></td><td class=text-right><b>' + thousands_separators(data[0].quotesDetails[i].quantity) + '</b></td><td><b>' + data[0].quotesDetails[i].uom + '</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td class=text-right><b>Not Quoted</b></td><td><b>' + description + '</b></td><td><b>' + comments + '</b></td></tr></thead>');
+                            }
 
                         }
                     }
@@ -127,12 +142,24 @@ function RFQFetchQuotedPriceReport() {
 
                         if (j == 0) {
                             if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {
-                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>' + (data[0].quotesDetails[i].unitRate) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
-                                jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>' + (data[0].quotesDetails[i].unitRate) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                if (_basicPrice > 0) {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>' + (data[0].quotesDetails[i].unitRate) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>' + (data[0].quotesDetails[i].unitRate) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
+                                else {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
                             }
                             else {
-                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
-                                jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                if (_basicPrice > 0) {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
+                                else {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>Basic Price</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + '' + '</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
                             }
                         }
 
@@ -146,14 +173,24 @@ function RFQFetchQuotedPriceReport() {
                                 bsicpercentageofGST = data[0].quotesDetails[i].unitRate * (data[0].quotesDetails[j].termRate / 100)
                             }
                             if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {
-
-                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + (data[0].quotesDetails[j].termRate) + '%</td><td class=text-right>' + bsicpercentageofGST.round(3) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
-                                jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + data[0].quotesDetails[j].termRate + '%</td><td class=text-right>' + bsicpercentageofGST.round(3) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                if (_basicPrice > 0) {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + (data[0].quotesDetails[j].termRate) + '%</td><td class=text-right>' + bsicpercentageofGST.round(3) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>' + data[0].quotesDetails[j].termRate + '%</td><td class=text-right>' + bsicpercentageofGST.round(3) + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
+                                else {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Not Quoted</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Not Quoted</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
                             }
                             else {
-
-                                jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Quoted</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
-                                jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Quoted</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                if (_basicPrice > 0) {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Quoted</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Quoted</td><td class=text-right>Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
+                                else {
+                                    jQuery("#tblServicesProduct > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Not Quoted</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                    jQuery("#tblServicesProductforexcel  > #headid" + i + "").append('<tr id=trid' + j + '><td>' + data[0].quotesDetails[j].termName + '</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td  class=text-right>Not Quoted</td><td class=text-right>Not Quoted</td><td class=text-right>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td></tr>');
+                                }
                             }
                         }
                     }
@@ -190,7 +227,10 @@ function RFQFetchQuotedPriceReport() {
                 jQuery('#tblquestions').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
                 jQuery('#tblquestionsprev').append("<thead><tr><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
                 for (var i = 0; i < data[0].questions.length; i++) {
-                    jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestions");
+                    var attachQA = data[0].questions[i].attachementQA;
+                    //jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestions");
+                    jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
+                    //strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
                     jQuery('<tr id=trid' + i + '><td style="width:20%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestionsprev");
                 }
             }
@@ -214,6 +254,12 @@ function RFQFetchQuotedPriceReport() {
                     else {
                         version = sessionStorage.getItem('RFQVersionId');
                     }
+
+                    if (data[0].attachments[i].rfqVersionId != null || data[0].attachments[i].rfqVersionId != '' || data[0].attachments[i].rfqVersionId != 'undefined') {
+                        version = data[0].attachments[i].rfqVersionId
+
+                    }
+                    verArray[i] = version;
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
                 }
@@ -242,7 +288,9 @@ function RFQFetchQuotedPriceReport() {
     });
 
 }
-function DownloadFileVendor(aID) {
+function DownloadFileVendor(aID, versionId) {
+    var arrelement = aID.id.replace('attchvendor', '')
+    arrelement = parseInt(arrelement);
     if (sessionStorage.getItem('RFQVersionId') == 99) {
         version = max;
     }

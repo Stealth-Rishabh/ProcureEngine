@@ -1,9 +1,9 @@
-﻿
+
 
 
 //Save Purchase Group Code
 $(document).ready(function () {
-   
+
     BindPurchaseOrg();
     bindPurchaseGroupData();
 });
@@ -13,7 +13,7 @@ function onGroupSaveClick() {
         $("#errormsg").text("Special characters not allowed.");
         $("#errordiv1").show();
         $("#errordiv1").fadeOut(5000)
-      
+
         return false;
     }
     if (ValidatePurchaseGroup()) {
@@ -21,18 +21,30 @@ function onGroupSaveClick() {
     }
     SavePurchaseGroup();
 }
+$(document).on('keyup', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+        $(this).css("border-color", "");
+    }
+});
+function fnclearcss(aid) {
 
+    $('#' + aid.id).css("border-color", "");
+}
+$(document).on('onchange', '.form-control', function () {
+    if ($.trim($('.form-control').val()).length) {
+
+    }
+});
 function ValidatePurchaseGroup() {
     var groupName = false;
+
     var OrgID = false;
     if ($("#txtPurchaseGroup").val() == "") {
         $("#txtPurchaseGroup").css("border-color", "red");
-       
         groupName = true;
     }
     else {
         $("#txtPurchaseGroup").css("border-color", "");
-      
         groupName = false;
     }
     if ($("#ddlPurchaseOrg option:selected").val() == 0) {
@@ -55,7 +67,7 @@ function ValidatePurchaseGroup() {
 function BindPurchaseOrg() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer)+"&IsActive=0";
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlPurchaseOrg").html('');
@@ -89,16 +101,16 @@ function bindPurchaseGroupData() {
 
         if (res.result.length > 0) {
             $('#searchmaster').show();
-            $('#tblPurchaseGroupMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Group</th><th>Org.</th><th>Status</th></tr></thead>');
+            $('#tblPurchaseGroupMaster').append('<thead><tr><th>Sr#</th><th>Actions</th><th>Org.</th><th>Group</th><th>Status</th></tr></thead>');
 
             $.each(res.result, function (key, value) {
-                
+
                 if (value.active == true)
                     Status = "<span>Active</span>";
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.groupName + '</td><td>' + value.orgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.orgName + '</td><td>' + value.groupName + '</td><td>' + Status + '</td></tr>')
             });
         }
         else {
@@ -166,10 +178,10 @@ function ClearControl() {
     $('input:checkbox[name=chkIsActive]').attr('checked', true);
     $('#chkIsActive').parents('span').addClass('checked');
     $("#hdnPurchaseGroupId").val('0')
-     $("#submitbtnmaster").text("Save");
+    $("#submitbtnmaster").text("Save");
 }
 
-function onGroupEdit(rowid,checked,orgid) {
+function onGroupEdit(rowid, checked, orgid) {
     var rowID = $('#' + rowid);
     if (checked == true) {
 
@@ -184,7 +196,7 @@ function onGroupEdit(rowid,checked,orgid) {
 
     }
     var idxParam = rowid.replace('rowid_', '');
-    $("#txtPurchaseGroup").val(rowID.find('td:eq(2)').text());
+    $("#txtPurchaseGroup").val(rowID.find('td:eq(3)').text());
     $("#hdnPurchaseGroupId").val(idxParam);
     $("#ddlPurchaseOrg").val(orgid);
 
@@ -236,7 +248,7 @@ function onClear() {
 function BindData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer)+"&IsActive=2";
+    var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=2";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#tblmodelPurchaseOrg").empty();
@@ -340,7 +352,7 @@ function SaveUpdateData() {
 
     });
     SaveUpdateData.error(function (xhr, status, error) {
-      
+
         var err = eval("(" + xhr.responseText + ")");
         if (xhr.status === 400) {
             alert(JSON.stringify(err.errors));

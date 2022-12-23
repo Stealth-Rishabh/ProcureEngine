@@ -1,4 +1,4 @@
-﻿var error = $('#errordiv');
+var error = $('#errordiv');
 var success = $('#successdiv');
 var subcaterror = $('#errordiv1');
 var subcatsuccess = $('#successdiv1');
@@ -44,29 +44,30 @@ function FormValidate() {
             jQuery("#errormsg").text("You have some form errors. Please check below.");
             subcaterror.show();
             subcaterror.fadeOut(6000)
-
+            App.scrollTo(subcaterror, -300);
         },
 
         highlight: function (element) { // hightlight error inputs
-            $(element).closest('.col-lg-8').addClass('has-error'); // set error class to the control group
-            $(element).closest('.col-lg-7').addClass('has-error'); // set error class to the control group
+            $(element).closest('.xyz').addClass('has-error'); // set error class to the control group
+            $(element).closest('.xyz').addClass('has-error'); // set error class to the control group
 
         },
         unhighlight: function (element) { // revert the change done by hightlight
             $(element)
-                .closest('.col-lg-8').removeClass('has-error'); // set error class to the control group
+                .closest('.xyz').removeClass('has-error'); // set error class to the control group
             $(element)
-                .closest('.col-lg-7').removeClass('has-error'); // set error class to the control group
+                .closest('.xyz').removeClass('has-error'); // set error class to the control group
         },
 
         success: function (label) {
-            label.closest('.col-lg-8').removeClass('has-error');
-            label.closest('.col-lg-7').removeClass('has-error');
+            label.closest('.xyz').removeClass('has-error');
+            label.closest('.xyz').removeClass('has-error');
             label.remove();
         },
 
         submitHandler: function (form) {
             var id = document.activeElement.getAttribute('id');
+
             if (id.trim() == "submitbtnmaster") {
                 emailMaster();
             } else {
@@ -79,11 +80,8 @@ function FormValidate() {
 }
 
 function emailMaster() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
-    var emailSubject_data = CKEDITOR.instances['emailSubject'].getData();
-    var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
+  
     let regex = /&(nbsp|amp|quot|lt|gt);/g;
     let mailsubdata = mailsubdata1.replace(regex, "");
     var emailBody_data = CKEDITOR.instances['emailBody'].getData();
@@ -105,7 +103,7 @@ function emailMaster() {
             }
         });
         if (arrNewStr != '' && arrNewStr != null) {
-            var subjectVariables = arrNewStr.toString().replace(/,/g, "");
+            var subjectVariables = arrNewStr.toString().replace(/[,:]/g, "");
         } else {
             var subjectVariables = '';
         }
@@ -120,7 +118,7 @@ function emailMaster() {
             }
         });
         if (arrNewStrBody != '' && arrNewStrBody != null) {
-            var bodyVariables = arrNewStrBody.toString().replace(/,/g, "");
+            var bodyVariables = arrNewStrBody.toString().replace(/[,:]/g, "");
         } else {
             var bodyVariables = '';
         }
@@ -129,7 +127,7 @@ function emailMaster() {
 
     var data = {
         "emailEvent": $('#emailEventName').val(),
-        "emailSubject": emailSubject_data,
+        "emailSubject": $('#emailSubject').val(),
         "mailTo": $('#emailTo').val(),
         "mailCC": $('#emailCc').val(),
         "mailBCC": $('#emailBcc').val(),
@@ -141,7 +139,7 @@ function emailMaster() {
         "createdBy": sessionStorage.getItem('UserID')
 
     }
-    //console.log(JSON.stringify(data)); 
+    console.log(JSON.stringify(data));
 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "EmailMaster/EmailMasterSubmit",
@@ -189,7 +187,7 @@ function emailMaster() {
 }
 
 function fetchEmailMasters() {
-    //debugger;    
+ 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -252,7 +250,8 @@ function editemailEvent(emailMstID) {
             $('#submitbtnmaster').addClass('hide');
             $('#emailEventName').val(fetchEmail[0].emailEvent);
             $('#emailEventName').attr('disabled', 'disabled');
-            CKEDITOR.instances['emailSubject'].setData(fetchEmail[0].emailSubject.replace(/\\n/g, ''));
+
+            $('#emailSubject').val(fetchEmail[0].emailSubject);
             $('#emailTo').val(fetchEmail[0].mailTo);
             $('#emailCc').val(fetchEmail[0].mailCC);
             $('#emailBcc').val(fetchEmail[0].mailBCC);
@@ -278,8 +277,8 @@ function editemailEvent(emailMstID) {
 function updateEmailMaster() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
-    var emailSubject_data = CKEDITOR.instances['emailSubject'].getData();
+
+    var emailSubject_data = $('#emailSubject').val();
     var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let regex = /&(nbsp|amp|quot|lt|gt);/g;
     let mailsubdata = mailsubdata1.replace(regex, "");
@@ -302,7 +301,7 @@ function updateEmailMaster() {
             }
         });
         if (arrNewStr != '' && arrNewStr != null) {
-            var subjectVariables = arrNewStr.toString().replace(/,/g, "");
+            var subjectVariables = arrNewStr.toString().replace(/[,:]/g, "");
         } else {
             var subjectVariables = '';
         }
@@ -317,7 +316,7 @@ function updateEmailMaster() {
             }
         });
         if (arrNewStrBody != '' && arrNewStrBody != null) {
-            var bodyVariables = arrNewStrBody.toString().replace(/,/g, "");
+            var bodyVariables = arrNewStrBody.toString().replace(/[,:]/g, "");
         } else {
             var bodyVariables = '';
         }
@@ -326,7 +325,7 @@ function updateEmailMaster() {
 
     var data = {
         "emailMstID": parseInt($('#emailMstID').val().trim()),
-        "emailSubject": emailSubject_data,
+        "emailSubject": $('#emailSubject').val(),
         "mailTo": $('#emailTo').val(),
         "mailCC": $('#emailCc').val(),
         "mailBCC": $('#emailBcc').val(),
@@ -391,7 +390,8 @@ function resetEmailmaster() {
     $('#updatebtnmaster').addClass('hide');
     $('#emailEventName').val('');
     $('#emailEventName').removeAttr('disabled', 'disabled');
-    CKEDITOR.instances['emailSubject'].setData('');
+    $('#emailSubject').val('');
+
     $('#emailTo').val('');
     $('#emailCc').val('');
     $('#emailBcc').val('');
@@ -404,7 +404,7 @@ function resetEmailmaster() {
 function resetMailmaster() {
     $('#emailEventName').val('');
     $('#emailEventName').removeAttr('disabled', 'disabled');
-    CKEDITOR.instances['emailSubject'].setData('');
+    $('#emailSubject').val('');
     $('#emailTo').val('');
     $('#emailCc').val('');
     $('#emailBcc').val('');

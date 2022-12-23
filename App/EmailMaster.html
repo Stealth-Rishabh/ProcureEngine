@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -193,12 +194,13 @@
                                                 Email Subject :<span class="required"> *</span>
                                             </label>
                                             <div class="col-lg-8" style="padding-top: 7px;">
-                                                <span style="color:red;">Please use prefix in given form eg. Vendor Registration Request ~VendorName</span>
+                                                <span style="color:red;">Please use prefix in given form eg. Vendor Registration Request : ~VendorName</span>
                                             </div>
                                             <div class="col-lg-12 margin-top-10">
-                                                <!--<input type="text" id="emailSubject" name="emailSubject" class="form-control" rows="6"
-                                                autocomplete="off" placeholder="Email Subject" onkeyup="replaceQuoutesFromString(this)" />-->
-                                                <textarea class="" id="emailSubject" name="emailSubject"></textarea><br />
+                                                <input type="text" id="emailSubject" name="emailSubject" class="form-control" rows="6"
+                                                       autocomplete="off" placeholder="Email Subject" onkeyup="replaceQuoutesFromString(this)" />
+
+                                                <br />
 
 
                                             </div>
@@ -266,13 +268,13 @@
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
-                            <div class="portlet-body" style="height: 445px !important;">
+                            <div class="portlet-body" style="height: 845px !important;">
                                 <!--<div class="input-icon display-none" id="searchmaster">
                                     <i class="fa fa-search"></i>
                                     <input type="text" id="search" placeholder="Search" class="form-control  input-circle" />
                                 </div>
                                 </br>-->
-                                <div class="scroller" style="height: 370px;" data-always-visible="1" data-rail-visible="0">
+                                <div class="scroller" style="height: 800px;" data-always-visible="1" data-rail-visible="0">
                                     <div class="table-scrollable">
                                         <table class="table table-striped table-bordered table-hover col-sm-4" id="tblFetchEmailMastr">
                                         </table>
@@ -351,21 +353,16 @@
                 }
             }
             App.init();
-            CKEDITOR.replace('emailSubject', {
-                fullPage: true,
-                uiColor: '#efe8ce'
-            });
+
             CKEDITOR.replace('emailBody');
             CKEDITOR.replace('emailFooter');
             CKEDITOR.replace('emailSignature');
 
-            //fetchMenuItemsFromSession(19, 22);
             setCommonData();
-            //myFunction();
+
             FormValidate();
             fetchEmailMasters();
-            //fetchQuestionCategory();
-
+            fetchMenuItemsFromSession(19, 62);
 
         });
 
@@ -373,14 +370,7 @@
     </script>
     <script>
 
-                        //function myFunction() {
-                        //    alert("hello")
-                        //    debugger
-                        //    //Get data written in first Editor
-                        //    var editor_data = CKEDITOR.instances['editor1'].getData();
-                        //    console.log("i h >>>>>",editor_data)
 
-                        //}
     </script>
     <!-- END JAVASCRIPTS -->
 </body>

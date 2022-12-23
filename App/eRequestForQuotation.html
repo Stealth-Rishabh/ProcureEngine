@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-    <!--<meta http-equiv="Cache-control" content="public">-->
+    <meta http-equiv="Cache-control" content="public">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -38,7 +38,57 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
     <style>
+        body {
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }
+
+        .form-horizontal .form-control-static {
+            width: 100%;
+        }
+
+        .tab-content > .active {
+            padding-right: 10%;
+        }
+
         input#file3 {
             position: fixed;
             top: -100px;
@@ -52,6 +102,57 @@
         input#file-excelparameter {
             position: fixed;
             top: -120px;
+        }
+
+
+        /*abhhedev bug 52 start*/
+        .hovertext {
+            position: relative;
+        }
+
+            .hovertext:before {
+                content: attr(data-hover);
+                visibility: hidden;
+                opacity: 0;
+                width: 200px;
+                opacity: .9;
+                color: rgb(6, 6, 6);
+                background-color: #74A892;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 5px;
+                transition: opacity 1s ease-in-out;
+                position: absolute;
+                z-index: 2;
+                right: 100%;
+                bottom: 110%;
+            }
+
+            .hovertext:hover:before {
+                opacity: .9;
+                visibility: visible;
+            }
+
+        /*abhhedev bug 52 end*/
+
+
+        /*abheedev bug laptop responsive issue*/
+        .addmorebutton {
+            margin-left: 85%;
+        }
+
+
+
+        @media only screen and (max-width: 750px) {
+            .addmorebutton {
+                margin-left: 65%;
+            }
+        }
+
+        @media only screen and (min-width: 1250px) {
+            .table .btn {
+                margin-right: -23% !important;
+            }
         }
     </style>
 </head>
@@ -136,7 +237,7 @@
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
-                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help </a>
                         </div>
                     </div>
                 </div>
@@ -151,7 +252,7 @@
                                 </div>
                                 <div class="tools hidden-xs">
 
-                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelBidBtn"  onclick="cancelbid()">Cancel</button>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
@@ -159,22 +260,33 @@
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-wizard">
                                         <div class="form-body">
+                                           
                                             <ul class="nav nav-pills nav-justified steps">
                                                 <li>
                                                     <a href="#tab1" data-toggle="tab" class="step">
                                                         <span class="number">1 </span><span class="desc"><i class="fa fa-check"></i>General</span>
                                                     </a>
                                                 </li>
+
+
+
+
+
+
                                                 <li>
                                                     <a href="#tab2" data-toggle="tab" class="step">
                                                         <span class="number">2 </span><span class="desc"><i class="fa fa-check"></i>Items/Services</span>
                                                     </a>
                                                 </li>
+
+
                                                 <li>
                                                     <a href="#tab3" data-toggle="tab" class="step">
                                                         <span class="number">3 </span><span class="desc"><i class="fa fa-check"></i>Additional Details</span>
                                                     </a>
                                                 </li>
+
+
 
                                                 <li>
                                                     <a href="#tab4" data-toggle="tab" class="step active">
@@ -182,6 +294,8 @@
                                                         <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
                                                     </a>
                                                 </li>
+
+
 
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
@@ -199,11 +313,12 @@
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
-                                                                RFQ Subject<span class="required"> *</span>
+                                                                RFQ Subject
+                                                                <span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                       maxlength="100" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                                       maxlength="50" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
 
@@ -216,7 +331,7 @@
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control"
                                                                        placeholder="Enter Reference Number(If any)" id="txtRFQReference"
-                                                                       maxlength="15" autocomplete="off" name="txtRFQReference" tabindex='7'>
+                                                                       maxlength="50" autocomplete="off" name="txtRFQReference" tabindex='7'>
                                                             </div>
 
                                                         </div>
@@ -295,8 +410,8 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="attach-file" style="text-decoration: none !important; float:left;" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
+                                                                <a href="javascript:;" id="attach-file" style="text-decoration: none !important; float:left; margin-top:9px" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:3px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -342,11 +457,17 @@
                                                                 </label>
 
                                                             </div>
+                                                            <!--bug 52 start-->
                                                             <div class="inputgroup">
                                                                 <div class="col-md-1 pull-right">
                                                                     <button type="button" id="Addbtn1" onclick="fnApproversQuery()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+
+                                                                    <span class="hovertext" data-hover="Enter approver name on select approver input then click plus button">
+                                                                        <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                    </span>
                                                                 </div>
                                                             </div>
+                                                            <!--bug 52 end-->
                                                             <div class="inputgroup">
                                                                 <div class="col-md-3">&nbsp;</div>
                                                                 <div class="col-md-4">
@@ -373,17 +494,23 @@
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
-
+                                                        <!--bug 52 start-->
                                                         <label class="control-label col-md-2">
-                                                            Item/Service Name  <span class="required">
+                                                            Item/Service Name
+                                                            <span class="hovertext" data-hover="please add short name for the respective item">
+                                                                <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                            </span>
+
+                                                            <span class="required">
                                                                 *
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-4">
+                                                        <!--bug 52 end-->
+                                                        <div class="col-md-3">
                                                             <input type="text" class="form-control" id="txtshortname" name="txtshortname"
                                                                    autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
-
                                                         </div>
+
 
                                                         <label class="control-label col-md-2">
                                                             Item Code  <span class="required">
@@ -400,10 +527,16 @@
 
 
                                                     <div class="form-group">
-
+                                                        <!--bug 52 start-->
                                                         <label class="control-label col-md-2">
-                                                            Description<span class="required"> *</span>
+                                                            Description
+                                                            <span class="hovertext" data-hover="please provide the bid description of the Item/Service">
+                                                                <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span class="required"> *</span>
+
                                                         </label>
+                                                        <!--bug 52 end-->
                                                         <div class="col-md-10 xyz">
                                                             <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
                                                                       rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
@@ -411,7 +544,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label col-md-2">
-                                                            Remarks<span class="required"> * </span>
+                                                            Remarks
                                                         </label>
                                                         <div class="col-md-4">
                                                             <input type="text" id="txtItemRemarks" name="txtItemRemarks"
@@ -474,14 +607,14 @@
                                                         <div class="col-md-3 xyz">
 
                                                             <label class="control-label">PO Number</label>
-                                                            <input type="text" id="txtPono" autocomplete="off" name="txtPono" class="form-control" placeholder="PO Number" maxlength="20" onkeyup="replaceQuoutesFromString(this)">
+                                                            <input type="text" id="txtPono" autocomplete="off" name="txtPono" class="form-control" placeholder="PO Number" maxlength="20" onkeyup="replaceQuoutesFromString(this)" />
 
 
                                                         </div>
                                                         <div class="col-md-3 xyz">
 
                                                             <label class="control-label">Vendor Name</label>
-                                                            <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" autocomplete="off" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
+                                                            <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" autocomplete="off" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)" />
 
 
                                                         </div>
@@ -505,7 +638,7 @@
                                                                         <i class="fa fa-calendar"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly>
+                                                                <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly />
                                                                 <div id="daterr"></div>
                                                             </div>
 
@@ -528,9 +661,16 @@
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" href="#RfqParameterexcel">Excel Upload</button>
-                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
-                                                                <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                                <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">
+                                                                    Add
+                                                                </button>
 
+                                                                <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                                <!--bug 52 start-->
+                                                                <span class="hovertext" data-hover="click add button once u have submitted all required details">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+                                                                <!--bug 52 end-->
                                                             </div>
                                                         </div>
 
@@ -551,11 +691,7 @@
                                                             </div>
                                                             <div id=collapse1 class="panel-collapse collapse">
                                                                 <div class="panel-body">
-
-
                                                                     <div class="col-md-12">
-
-
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-2">
                                                                                 <select class="form-control" onchange="fnGetTermsCondition()" id="ddlConditiontype" name="ddlConditiontype">
@@ -563,19 +699,31 @@
 
 
                                                                                 </select>
+
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-9">
                                                                                 <table class="table table-striped table-bordered table-hover" id="tblTermsCondition"></table>
+
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-1">
                                                                                 <input type="button" id="btnS" value="Save" class="btn btn-primary" onclick="fnsavetermscondition('Y')" />
+
                                                                             </div>
                                                                         </div>
 
+
+                                                                        <label class="addmorebutton">
+                                                                            <a href="javascript:;" class="btn btn-primary" onclick="addMoreTermsCondition()">
+                                                                                Add more <i class="m-icon-swapright m-icon-white">
+                                                                                </i>
+                                                                            </a>
+                                                                        </label>
 
 
                                                                     </div>
@@ -584,7 +732,6 @@
 
 
                                                             </div>
-
 
                                                         </div>
                                                         <div class="panel panel-default">
@@ -603,19 +750,25 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-3">
                                                                                 <input type="text" maxlength="100" class="form-control" id="AttachDescription1" name="AttachDescription1" placeholder="Attachment Description" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                         </div>
+                                                                        <!--abheedev bug 572 -->
                                                                         <div class="inputgroup">
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-5">
                                                                                 <span style="width:390px!important" class="btn blue"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="col-md-1">
+                                                                        <!--bug 52 start-->
+                                                                        <div class="col-md-2">
                                                                             <button type="button" id="Addbtn1" onclick="addmoreattachments(this)" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                                            <span class="hovertext" data-hover="click add button once u have selected your attachement and written description about it">
+                                                                                <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                            </span>
                                                                         </div>
+                                                                        <!--bug 52 end-->
 
                                                                     </div>
                                                                     <div class="clearfix">&nbsp;</div>
@@ -707,19 +860,20 @@
                                                                                data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
                                                                         <input type="text" autocomplete="off" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
                                                                     </div>
+                                                                    <!--bug388 abheedev start-->
                                                                     <div class="col-md-2">
-                                                                        <button href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</button>
+                                                                        <a href="#Advancesearch" data-toggle="modal" class="tooltips btn btn-sm btn-success" data-placement="left" data-original-title="Click here to search vendor by name or category"><i class="fa fa-search"></i> Advance Vendor Search</a>
                                                                     </div>
-
+                                                                    <!--bug388 abheedev start-->
                                                                 </div>
-                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
                                                                         <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                                                             <thead class="flip-content">
-                                                                                <tr>
+                                                                                <tr width="50%">
                                                                                     <th width="20%">
-                                                                                        <div class="col-md-10 checkbox-list">
+                                                                                        <div class="col-md-8 checkbox-list">
                                                                                             <label class="checkbox-inline" style="margin-left: -16px;">
                                                                                                 <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />All
                                                                                             </label>
@@ -791,7 +945,7 @@
                                             <div class="col-md-6">
 
                                                 <label class="col-md-4 control-label">
-                                                    RFQ Subject:
+                                                    RFQ Subject :
                                                 </label>
                                                 <div class="col-md-8">
                                                     <p class="form-control-static" id="lblRfqsubject">
@@ -1012,14 +1166,15 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    <div class="alert alert-danger display-hide" id="errordiv2">
+                    <!--abheedev bug 443 again-->
+                    <!--<div class="alert alert-danger display-hide" id="errordiv2">
                         <button class="close" data-close="alert"></button>
                         <span id="errormsg2"></span>
                     </div>
                     <div class="alert alert-success display-hide" id="successdiv2">
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg2"></span>
-                    </div>
+                    </div>-->
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1043,7 +1198,8 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
-                                        <input type="file" id="file-excelparameter" name="file-excelparameter" />
+                                        <!--abheedev bug 443-->
+                                        <input type="file" id="file-excelparameter" name="file-excelparameter" onchange="checkExcelUpload(this);" />
                                         <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
                                     </div>
                                     <div class="col-md-6">
@@ -1079,7 +1235,8 @@
                                                         1. Open excel sheet and write follwing columns in first row:
                                                     </label>
                                                     <br /><br />
-                                                    <ul class='no-padding col-md-2 text-left'>
+                                                    <!--abheedev bug 479-->
+                                                    <ul class='no-padding col-md-6 text-left'>
                                                         <li>ItemCode</li>
                                                         <li>ItemService</li>
                                                         <li>Description</li>
@@ -1276,7 +1433,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                        <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1295,51 +1452,15 @@
         </div>
     </div>
 
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Moment.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/eRFQRequestForQuotation.js"></script>
     <script>
 
         jQuery(document).ready(function () {
+            
+            callPagejs('Moment.js,eRFQRequestForQuotation.js');
             var date = new Date();
             date.setDate(date.getDate() - 1);
-           $('#txtPODate').datepicker({ startDate: "-1d" }); 
-
+            $('#txtPODate').datepicker({ startDate: "-1d" });
             Pageloaded()
 
             setInterval(function () { Pageloaded() }, 15000);
@@ -1359,25 +1480,7 @@
             }
             Metronic.init();
             Layout.init();
-            var _RFQid;
-            if (window.location.search) {
-                var param = getUrlVars()["param"]
-                var decryptedstring = fndecrypt(param)
-                _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
-            }
-
-            if (_RFQid == null)
-                sessionStorage.setItem('hddnRFQID', 0)
-            else {
-                sessionStorage.setItem('hddnRFQID', _RFQid)
-                fnGetTermsCondition();
-                fetchAttachments();
-                fnGetApprovers();
-                GetQuestions();
-                fetchReguestforQuotationDetails();
-                fetchRFIParameteronload();
-
-            }
+           
             FormWizard.init();
             ComponentsPickers.init();
             setCommonData();
@@ -1402,8 +1505,6 @@
         document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
             document.getElementById('file-excelparameter').click();
         });
-
-        $('#file-excelparameter').change(handleFileparameter);
 
     </script>
 </body>

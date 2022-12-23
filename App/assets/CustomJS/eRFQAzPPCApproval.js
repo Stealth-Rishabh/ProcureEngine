@@ -1,14 +1,17 @@
-﻿if (window.location.search) {
+if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
+
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
     var AppType = getUrlVarsURL(decryptedstring)["AppType"];
-    var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
+    var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
+
 
     if (AppType == "P" && AppStatus != 'Reverted' && AppStatus != 'Award') {
         $('#btn_fillPPCForm').hide();
         $('#btn_mapaaprover').hide();
+        //$('#btn_mapFCaaprover').hide();
         $('#divRemarksAppComm').show();
         $('#divRemarksForward').hide();
         $('#divRemarksAwarded').hide();
@@ -16,6 +19,7 @@
     else if (AppType == "P" && AppStatus == 'Reverted') {
         $('#btn_fillPPCForm').hide();
         $('#btn_mapaaprover').hide();
+        //$('#btn_mapFCaaprover').hide();
         $('#divRemarksAppComm').hide();
         $('#divRemarksForward').show();
         $('#divRemarksAwarded').hide();
@@ -24,6 +28,7 @@
     else if (AppType == "C" && AppStatus == 'Approved') {
         $('#btn_fillPPCForm').hide();
         $('#btn_mapaaprover').hide();
+        //$('#btn_mapFCaaprover').hide();
         $('#divRemarksAppComm').hide();
         $('#divRemarksForward').show();
         $('#divRemarksAwarded').hide();
@@ -31,17 +36,39 @@
     else if (AppStatus == "Award" && FwdTo == 'Admin') {
         $('#btn_fillPPCForm').hide();
         $('#btn_mapaaprover').hide();
+        // $('#btn_mapFCaaprover').hide();
         $('#divRemarksAppComm').hide();
         $('#divRemarksForward').hide();
         $('#divRemarksAwarded').show();
     }
-    else {
+    else if (AppType == "F" && AppStatus == 'Reverted') {
+        fetchRegisterUser();
         $('#btn_fillPPCForm').show();
+        $('#btn_mapaaprover').show();
+        // $('#btn_mapFCaaprover').hide();
+        $('#divRemarksAppComm').hide();
+        $('#divRemarksForward').hide();
+        $('#divRemarksAwarded').hide();
+
+    }
+    else if (AppType == "F" && FwdTo == 'FC') {
+
+        $('#btn_fillPPCForm').hide();
+        $('#divRemarksAppComm').show();
+        //$('#btn_mapFCaaprover').hide();
+        $('#btn_mapaaprover').hide();
+        $('#divRemarksAwarded').hide();
+    }
+    else {
+        fetchRegisterUser();
+        $('#btn_fillPPCForm').show();
+        // $('#btn_mapFCaaprover').show();
         $('#btn_mapaaprover').show();
         $('#divRemarksAppComm').hide();
         $('#divRemarksAwarded').hide();
 
     }
+
     if (sessionStorage.getItem('IsObserver') == "Y") {
         $('#btn_fillPPCForm').hide();
         $('#btn_mapaaprover').hide();
@@ -63,7 +90,6 @@
 
 
 }
-
 
 function getSummary(vendorid, version) {
 
@@ -713,7 +739,6 @@ function fetchrfqcomprative() {
     // jQuery.unblockUI();
 
 }
-
 function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
 
@@ -983,19 +1008,29 @@ function fetchAzPPcFormDetails() {
                 jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#lblPRDetails').html(data[0].azureDetails[0].pRDetails);
                 var validatescm = "Yes";
+                var TPI = "Yes"
                 if (data[0].biddingVendor.length > 0) {
-                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
+                    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
                         if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
                             validatescm = "Yes";
                         }
-                        if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "N") {
                             validatescm = "No";
                         }
                         else {
                             validatescm = "NA";
                         }
-                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td></tr>")
+                        if (data[0].biddingVendor[i].tpi == "Y") {
+                            TPI = "Yes";
+                        }
+                        else if (data[0].biddingVendor[i].tpi == "N") {
+                            TPI = "No";
+                        }
+                        else {
+                            TPI = "NA";
+                        }
+                        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
                     }
                     $('#tblvendors').append("</tbody>");
                 }
@@ -1049,7 +1084,7 @@ function fetchRegisterUser() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0&Isactive=N",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1086,7 +1121,6 @@ jQuery("#txtApprover").keyup(function () {
     $('#hdnApproverID').val('0')
 
 });
-
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
         var data = allUsers;
@@ -1107,6 +1141,19 @@ jQuery("#txtApprover").typeahead({
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             $('#hdnApproverID').val(map[item].userID)
             $('#hdnAppEmailIDID').val(map[item].emailID)
+            var firstTestrole = map[item].roleName.split(' ').shift()
+            if (firstTestrole.toLowerCase() == "finance") {
+                $('#drp_isAppObs').attr('disabled', 'disabled');
+                $('#hdnApproverType').val('F')
+                $('#optFC').show();
+                $('#drp_isAppObs').val('F')
+            }
+            else {
+                $('#drp_isAppObs').removeAttr('disabled');
+                $('#hdnApproverType').val('P')
+                $('#optFC').hide();
+                $('#drp_isAppObs').val('A');
+            }
 
         }
         else {
@@ -1117,6 +1164,9 @@ jQuery("#txtApprover").typeahead({
     }
 
 });
+
+
+//var formFCApprover = $('#frmMapFCApprover');
 var formApprover = $('#frmMapApprover');
 var formAward = $('#formAwardedsubmit')
 var errorawd = $('.alert-danger', formAward);
@@ -1154,6 +1204,36 @@ function formvalidate() {
         }
 
     });
+    //formFCApprover.validate({
+
+    //    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+    //    errorElement: 'span', //default input error message container
+    //    errorClass: 'help-block help-block-error', // default input error message class
+    //    focusInvalid: false, // do not focus the last invalid input
+    //    rules: {
+
+    //    },
+    //    invalidHandler: function (event, validator) {
+    //    },
+
+    //    highlight: function (element) {
+    //        $(element).closest('.col-md-6').addClass('has-error');
+
+    //    },
+    //    unhighlight: function (element) {
+    //        $(element).closest('.col-md-6').removeClass('has-error');
+
+    //    },
+    //    errorPlacement: function (error, element) {
+
+    //    },
+    //    success: function (label) {
+    //    },
+    //    submitHandler: function (form) {
+    //        MapFCApprover();
+    //    }
+
+    //});
     formAward.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -1210,11 +1290,14 @@ function formvalidate() {
 }
 var rowApp = 0;
 function addApprovers() {
-    var status = "true"; var Apptype = ''
+    var status = "true"; var Apptype = ''; var FCStatus = "true"
     $("#tblapprovers tr:gt(0)").each(function () {
         var this_row = $(this);
         if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
             status = "false"
+        }
+        if ($.trim(this_row.find('td:eq(6)').html()) == $('#hdnApproverType').val() && $('#hdnApproverType').val() == 'F') {
+            FCStatus = "false"
         }
     });
     if ($('#hdnApproverID').val() == "0" || jQuery("#txtApprover").val() == "") {
@@ -1224,21 +1307,42 @@ function addApprovers() {
         $('.alert-danger').fadeOut(7000);
         jQuery("#txtApprover").val('')
         jQuery("#hdnApproverID").val('0')
+        $('#hdnApproverType').val('0')
+        $('#drp_isAppObs').removeAttr('disabled');
+        $('#drp_isAppObs').val('A');
         return false;
     }
     else if (status == "false") {
         $('.alert-danger').show();
-        $('#spandanger').html('PPC Approver is already mapped for this RFQ.');
+        $('#spandanger').html('Approver is already mapped for this RFQ.');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000);
         jQuery("#txtApprover").val('')
         jQuery("#hdnApproverID").val('0')
+        $('#drp_isAppObs').removeAttr('disabled');
+        $('#drp_isAppObs').val('A');
+        $('#hdnApproverType').val('0')
+        return false;
+    }
+    else if (FCStatus == "false") {
+        $('.alert-danger').show();
+        $('#spandanger').html('FC Approver is already mapped for this RFQ.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        jQuery("#txtApprover").val('')
+        jQuery("#hdnApproverID").val('0')
+        $('#drp_isAppObs').removeAttr('disabled');
+        $('#drp_isAppObs').val('A');
+        $('#hdnApproverType').val('0')
         return false;
     }
     else {
         rowApp = rowApp + 1;
-        if ($('#drp_isAppObs').val() == "A") {
-
+        if ($('#drp_isAppObs').val() == "F" && $('#hdnApproverType').val() == "F") {
+            Apptype = 'Finance Controller Approver';
+            $('#drp_isAppObs').val('A')
+        }
+        else if ($('#drp_isAppObs').val() == "A" && $('#hdnApproverType').val() != "F") {
             Apptype = 'Approver';
         }
         else {
@@ -1247,10 +1351,10 @@ function addApprovers() {
 
         if (!jQuery("#tblapprovers thead").length) {
             jQuery("#tblapprovers").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Role</th></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td><td class=hide>' + $('#hdnApproverType').val() + '</td></tr>');
         }
         else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td></tr>');
+            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApprover").val() + '</td><td>' + $('#hdnAppEmailIDID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td><td class=hide>' + $('#hdnApproverType').val() + '</td></tr>');
         }
 
         if (jQuery('#tblapprovers tr').length == 1) {
@@ -1262,7 +1366,8 @@ function addApprovers() {
         jQuery("#txtApprover").val('')
         jQuery("#drp_isAppObs").val('A')
         jQuery("#hdnApproverID").val('0')
-
+        $('#hdnApproverType').val('0')
+        $('#drp_isAppObs').removeAttr('disabled');
     }
 }
 function deleteApprow(approwid) {
@@ -1279,85 +1384,110 @@ function deleteApprow(approwid) {
 function MapApprover() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
+    var FCCheck = 'N';
+    var PPCCheck = 'N';
     var rowCount = jQuery('#tblapprovers tr').length;
     if (rowCount > 1) {
         $("#tblapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-            approvers = approvers + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(5)').html()) + '#';
+            approvers = approvers + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(5)').html()) + '~' + $.trim(this_row.find('td:eq(6)').html()) + '#';
+            if ($.trim(this_row.find('td:eq(6)').html()) == "F") {
+                FCCheck = "Y";
+            }
+            if ($.trim(this_row.find('td:eq(6)').html()) == "P") {
+                PPCCheck = "Y";
+            }
         })
     }
-    var Approvers = {
-        "ApproverType": "P",
-        "RFQID": parseInt($('#hdnRfqID').val()),
-        "CreatedBy": sessionStorage.getItem('UserID'),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "Type": "SendActivityToPPC",
-        "IsApproverObserver": $('#drp_isAppObs').val(),
-        "PPCApprovers": approvers
+    if (FCCheck == "N") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Select atleast one Finance Controller Approver for RFQ Approval');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        approvers = '';
+        jQuery.unblockUI();
+        return false;
     }
-
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Approvers),
-        dataType: "json",
-        success: function (data) {
-            // if (data.length > 0) {
-
-            //if (data == "1") {
-
-            $('#msgSuccessApp').show();
-            $('#msgSuccessApp').html('Activity Forward to PPC Approvers successfully!');
-            Metronic.scrollTo($('#msgSuccessApp'), -200);
-            $('#msgSuccessApp').fadeOut(7000);
-            bootbox.dialog({
-                message: "Activity Forward to PPC Approvers successfully!",
-                buttons: {
-                    confirm: {
-                        label: "Yes",
-                        className: "btn-success",
-                        callback: function () {
-                            window.location = "index.html";
-
-                        }
-                    }
-
-                }
-            });
-            return false;
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-
+    else if (PPCCheck == "N") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Select atleast one PPC Approver for RFQ Approval');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        approvers = '';
+        jQuery.unblockUI();
+        return false;
+    }
+    else {
+        var Approvers = {
+            "ApproverType": "P",
+            "RFQID": parseInt($('#hdnRfqID').val()),
+            "CreatedBy": sessionStorage.getItem('UserID'),
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+            "Type": "SendActivityCommToFC",
+            "IsApproverObserver": $('#drp_isAppObs').val(),
+            "PPCApprovers": approvers
         }
 
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Approvers),
+            dataType: "json",
+            success: function (data) {
 
-    });
+                $('#msgSuccessApp').show();
+                $('#msgSuccessApp').html('Activity Forward to FC Approvers successfully!');
+                Metronic.scrollTo($('#msgSuccessApp'), -200);
+                $('#msgSuccessApp').fadeOut(7000);
+                bootbox.dialog({
+                    message: "Activity Forward to FC Approvers successfully!",
+                    buttons: {
+                        confirm: {
+                            label: "Yes",
+                            className: "btn-success",
+                            callback: function () {
+                                window.location = "index.html";
+
+                            }
+                        }
+
+                    }
+                });
+                return false;
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', '');
+                }
+                jQuery.unblockUI();
+                return false;
+
+            }
+
+
+        });
+    }
 }
 
 function fnOpenPopupApprovers() {
     fnGetApprovers();
 }
 
-
 $("#MapppcApprover").on("hidden.bs.modal", function () {
     jQuery("#txtApprover").val('')
     $('#hdnApproverID').val('0')
-
+    $('#hdnApproverType').val('0')
+    $('#hdnAppEmailIDID').val('0')
 });
 function fnGetApprovers() {
     jQuery.ajax({
@@ -1375,7 +1505,7 @@ function fnGetApprovers() {
             if (data[0].approvers.length > 0) {
                 for (var i = 0; i < data[0].approvers.length; i++) {
 
-                    if (data[0].approvers[i].approverType == "P") {
+                    if (data[0].approvers[i].approverType == "P" || data[0].approvers[i].approverType == "F") {
                         rowApp = rowApp + 1;
                         if (rowApp == 1) {
                             jQuery('#tblapprovers').append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Role</th></thead><tbody>");
@@ -1384,13 +1514,16 @@ function fnGetApprovers() {
                         str += '<td><button type="button" class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
                         str += "<td>" + data[0].approvers[i].userName + "</td>";
                         str += "<td>" + data[0].approvers[i].emailID + "</td>";
-                        if (data[0].approvers[i].showQuotedPrice == "A") {
+                        if (data[0].approvers[i].showQuotedPrice == "A" && data[0].approvers[i].approverType == "F") {
+                            str += "<td>Finance Controller Approver</td>";
+                        }
+                        else if (data[0].approvers[i].showQuotedPrice == "A" && data[0].approvers[i].approverType != "F") {
                             str += "<td>Approver</td>";
                         }
                         else {
                             str += "<td>Observer</td>";
                         }
-                        str += "<td class=hide>" + data[0].approvers[i].showQuotedPrice + "</td></tr>";
+                        str += "<td class=hide>" + data[0].approvers[i].showQuotedPrice + "</td><td class=hide>" + data[0].approvers[i].approverType + "</td></tr>";
                         jQuery('#tblapprovers').append(str);
                     }
 
@@ -1426,6 +1559,8 @@ function fnGetApprovers() {
     })
 }
 
+
+
 function fetchApproverRemarks() {
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1460,7 +1595,7 @@ function fetchApproverRemarks() {
                 $('#frmdivremarksapprover').addClass('col-md-6');
                 for (var i = 0; i < data.length; i++) {
 
-                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td class=hide>' + data[i].forwardedTo + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
+                    $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].forwardedTo + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].remarks + '</td><td>' + data[i].receiptDt + '</td></tr>')
 
                 }
                 $('#frmdivapprove').show()
@@ -1651,7 +1786,7 @@ function fnFWDeRFQ() {
 function ApprovalCommercialApp() {
 
     var approvalbyapp = {
-        "ApproverType": "P",
+        "ApproverType": AppType,
         "FromUserId": sessionStorage.getItem('UserID'),
         "Remarks": $('#txtRemarksAppC').val(),
         "RFQID": parseInt(RFQID),
@@ -1865,3 +2000,279 @@ function AwardCommeRFQ() {
     }
 }
 
+//***** Commenteed Code
+//var allFCUsers
+//function fetchRegisterFCUser() {
+//    jQuery.ajax({
+//        type: "GET",
+//        contentType: "application/json; charset=utf-8",
+//        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=00",
+//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+//        cache: false,
+//        crossDomain: true,
+//        dataType: "json",
+//        success: function (data) {
+
+//            if (data.length > 0) {
+//                allFCUsers = data;
+//            }
+//            else {
+//                allFCUsers = '';
+//            }
+
+//        },
+//        error: function (xhr, status, error) {
+
+//            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+//            if (xhr.status == 401) {
+//                error401Messagebox(err.Message);
+//            }
+//            else {
+//                fnErrorMessageText('error', '');
+//            }
+//            jQuery.unblockUI();
+//            return false;
+
+//        }
+
+
+//    });
+
+//}
+
+//jQuery("#txtApproverFC").keyup(function () {
+//    $('#hdnApproverFCID').val('0')
+
+//});
+
+//jQuery("#txtApproverFC").typeahead({
+//    source: function (query, process) {
+//        var data = allFCUsers;
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            map[username.userName] = username;
+//            usernames.push(username.userName);
+//        });
+
+//        process(usernames);
+
+//    },
+//    minLength: 2,
+//    updater: function (item) {
+//        if (map[item].userID != "0") {
+//            sessionStorage.setItem('hdnApproverFCID', map[item].userID);
+//            $('#hdnApproverFCID').val(map[item].userID)
+//            $('#hdnAppFCEmailIDID').val(map[item].emailID)
+
+//        }
+//        else {
+//            gritternotification('Please select Finance Controller properly!!!');
+//        }
+
+//        return item;
+//    }
+
+//});
+
+
+//var rowFCApp = 0;
+//function addApproversFC() {
+//    var status = "true"; var Apptype = ''
+//    $("#tblapproversFC tr:gt(0)").each(function () {
+//        var this_row = $(this);
+//        if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverFCID').val()) {
+//            status = "false"
+//        }
+//    });
+//    if ($('#hdnApproverFCID').val() == "0" || jQuery("#txtApproverFC").val() == "") {
+//        $('.alert-danger').show();
+//        $('#spandangerFC').html('Please Select Approver Properly');
+//        Metronic.scrollTo($(".alert-danger"), -200);
+//        $('.alert-danger').fadeOut(7000);
+//        jQuery("#txtApproverFC").val('')
+//        jQuery("#hdnApproverFCID").val('0')
+//        return false;
+//    }
+//    else if (status == "false") {
+//        $('.alert-danger').show();
+//        $('#spandangerFC').html('FC Approver is already mapped for this RFQ.');
+//        Metronic.scrollTo($(".alert-danger"), -200);
+//        $('.alert-danger').fadeOut(7000);
+//        jQuery("#txtApproverFC").val('')
+//        jQuery("#hdnApproverFCID").val('0')
+//        return false;
+//    }
+//    else {
+//        rowFCApp = rowFCApp + 1;
+
+//        if (!jQuery("#tblapproversFC thead").length) {
+//            jQuery("#tblapproversFC").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th></thead>");
+//            jQuery("#tblapproversFC").append('<tr id=trFCAppid' + rowFCApp + '><td class=hide>' + $('#hdnApproverFCID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteAppFCrow(trFCAppid' + rowFCApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApproverFC").val() + '</td><td>' + $('#hdnAppFCEmailIDID').val() + '</td></tr>');
+//        }
+//        else {
+//            jQuery("#tblapproversFC").append('<tr id=trFCAppid' + rowFCApp + '><td class=hide>' + $('#hdnApproverFCID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteAppFCrow(trFCAppid' + rowFCApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApproverFC").val() + '</td><td>' + $('#hdnAppFCEmailIDID').val() + '</td></tr>');
+//        }
+
+//        if (jQuery('#tblapproversFC tr').length == 1) {
+//            jQuery('#btnFCSubmit').attr("disabled", "disabled");
+//        }
+//        else {
+//            jQuery('#btnFCSubmit').removeAttr("disabled");
+//        }
+//        jQuery("#txtApproverFC").val('')
+//        jQuery("#hdnApproverFCID").val('0')
+
+//    }
+//}
+//function deleteAppFCrow(approwid) {
+//    rowFCApp = rowFCApp - 1;
+//    $('#' + approwid.id).remove()
+
+//    if (jQuery('#tblapproversFC tr').length == 1) {
+//        jQuery('#btnFCSubmit').attr("disabled", "disabled");
+//    }
+//    else {
+//        jQuery('#btnFCSubmit').removeAttr("disabled");
+//    }
+//}
+//function MapFCApprover() {
+//    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+//    var approvers = '';
+//    var rowCount = jQuery('#tblapproversFC tr').length;
+//    if (rowCount > 1) {
+//        $("#tblapproversFC tr:gt(0)").each(function () {
+//            var this_row = $(this);
+//            approvers = approvers + $.trim(this_row.find('td:eq(0)').html()) + '#';
+//        })
+//    }
+//    var Approvers = {
+//        "ApproverType": "F",
+//        "RFQID": parseInt($('#hdnRfqID').val()),
+//        "CreatedBy": sessionStorage.getItem('UserID'),
+//        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+//        "Type": "SendActivityCommToFC",
+//        "IsApproverObserver": '',
+//        "PPCApprovers": approvers
+//    }
+//    //alert(JSON.stringify(Approvers))
+//    jQuery.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: sessionStorage.getItem("APIPath") + "Azure/ins_PPCApproval",
+//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+//        crossDomain: true,
+//        async: false,
+//        data: JSON.stringify(Approvers),
+//        dataType: "json",
+//        success: function (data) {
+
+//            $('#msgSuccessApp').show();
+//            $('#msgSuccessApp').html('Activity Forward to Finance Controller Approver successfully!');
+//            Metronic.scrollTo($('#msgSuccessApp'), -200);
+//            $('#msgSuccessApp').fadeOut(7000);
+//            bootbox.dialog({
+//                message: "Activity Forward to Finance Controller Approver successfully!",
+//                buttons: {
+//                    confirm: {
+//                        label: "Yes",
+//                        className: "btn-success",
+//                        callback: function () {
+//                            window.location = "index.html";
+
+//                        }
+//                    }
+
+//                }
+//            });
+//            return false;
+
+//        },
+//        error: function (xhr, status, error) {
+
+//            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+//            if (xhr.status == 401) {
+//                error401Messagebox(err.Message);
+//            }
+//            else {
+//                fnErrorMessageText('spandangerFC', '');
+//            }
+//            jQuery.unblockUI();
+//            return false;
+
+//        }
+
+
+//    });
+//}
+
+//function fnOpenPopupFCApprovers() {
+//    fnGetFCApprovers();
+//}
+
+//$("#MapFCApprover").on("hidden.bs.modal", function () {
+//    jQuery("#txtApproverFC").val('')
+//    $('#hdnApproverFCID').val('0')
+
+//});
+//function fnGetFCApprovers() {
+//    jQuery.ajax({
+//        type: "GET",
+//        contentType: "application/json; charset=utf-8",
+//        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+//        cache: false,
+//        crossDomain: true,
+//        dataType: "json",
+//        success: function (data) {
+//            var str = "";
+
+//            jQuery("#tblapproversFC").empty();
+//            if (data[0].approvers.length > 0) {
+//                for (var i = 0; i < data[0].approvers.length; i++) {
+
+//                    if (data[0].approvers[i].approverType == "F") {
+//                        rowFCApp = rowFCApp + 1;
+//                        if (rowFCApp == 1) {
+//                            jQuery('#tblapproversFC').append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th></thead><tbody>");
+//                        }
+//                        str = "<tr id=trFCAppid" + rowFCApp + "><td class=hide>" + data[0].approvers[i].userID + "</td>";
+//                        str += '<td><button type="button" class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteAppFCrow(trFCAppid' + rowFCApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
+//                        str += "<td>" + data[0].approvers[i].userName + "</td>";
+//                        str += "<td>" + data[0].approvers[i].emailID + "</td></tr>";
+
+//                        jQuery('#tblapproversFC').append(str);
+//                    }
+
+//                }
+//                jQuery('#tblapproversFC').append("</tbody>")
+
+//                if (jQuery('#tblapproversFC tr').length <= 1) {
+//                    jQuery('#btnFCSubmit').attr("disabled", "disabled");
+//                }
+//                else {
+//                    jQuery('#btnFCSubmit').removeAttr("disabled");
+//                }
+//            }
+//            else {
+
+//            }
+
+//        },
+//        error: function (xhr, status, error) {
+
+//            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+//            if (xhr.status == 401) {
+//                error401Messagebox(err.Message);
+//            }
+//            else {
+//                fnErrorMessageText('error', '');
+//            }
+//            jQuery.unblockUI();
+//            return false;
+
+//        }
+
+//    })
+//}

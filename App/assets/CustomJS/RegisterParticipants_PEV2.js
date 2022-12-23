@@ -1,20 +1,31 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
     jQuery("#btnsumbit").click(function () {
+
         dynamiccontrolvalidation();
     });
 });
 
-$('#txtUI,txtPanNo,#txtTINNo').maxlength({
+$('#txtUI,txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
-
+jQuery.validator.addMethod(
+    "notEqualTo",
+    function (elementValue, element, param) {
+        return elementValue != param;
+    },
+    //"Value cannot be {0}"
+    "This field is required."
+);
+var _vendorId = "";
 var FormValidation = function () {
+
+
     var ValidateParticipants = function () {
         var form1 = $('#entryForm');
         var error1 = $('.alert-danger', form1);
         var success1 = $('.alert-success', form1);
-
+        //abheedev 24 / 11 / 2022
         form1.validate({
             errorElement: 'span',
             errorClass: 'help-block',
@@ -34,6 +45,9 @@ var FormValidation = function () {
                 txtCity: {
                     required: true
                 },
+                txtZipCd: {
+                    required: true
+                },
                 txtPanNo: {
                     required: true
                 },
@@ -42,13 +56,13 @@ var FormValidation = function () {
                 },
                 txtPhoneNo: {
                     required: true,
-                    maxlength: 50
-
+                    number: true
+                    
                 },
                 txtMobileNo: {
                     required: true,
-                    number: true,
-                    maxlength: 50,
+                    number: true
+                   
                 },
                 txtcompanyemail: {
                     required: true,
@@ -62,6 +76,30 @@ var FormValidation = function () {
                 txtAlternateeMailID: {
                     required: true,
                     email: true
+                },
+                ddlCountryCd: {
+                    required: true
+                    //notEqualTo: 0
+                },
+                ddlCountry: {
+                    required: true,
+                    notEqualTo: 0
+                },
+                ddlCountryCdPhone: {
+                    required: true
+                    //notEqualTo: 0
+                },
+                ddlState: {
+                    required: true,
+                    notEqualTo: 0
+                },
+                ddlCity: {
+                    required: true,
+                    notEqualTo: 0
+                },
+                ddlpreferredTime: {
+                    required: true,
+                    
                 }
             },
             messages: {
@@ -74,6 +112,7 @@ var FormValidation = function () {
                 txtCity: {
                     required: "Please enter city name"
                 },
+
                 txtPanNo: {
                     required: "Please enter pan no"
                 },
@@ -94,6 +133,9 @@ var FormValidation = function () {
                 },
                 ContactName: {
                     required: "Please enter contact person name"
+                },
+                ddlpreferredTime: {
+                    required: "Please select your preferred time zone"
                 }
 
             },
@@ -106,25 +148,25 @@ var FormValidation = function () {
 
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-
+                    .closest('.form-group,.reqcls').addClass('has-error'); // set error class to the control group
+                           
             },
 
             unhighlight: function (element) { // revert the change done by hightlight
                 $(element)
-                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    .closest('.form-group,.reqcls').removeClass('has-error'); // set error class to the control group
 
 
             },
 
             success: function (label) {
                 label
-                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    .closest('.form-group,.reqcls').removeClass('has-error'); // set success class to the control group
 
             },
 
             submitHandler: function (form) {
-
+              
                 var flag = "T";
 
 
@@ -180,8 +222,11 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
+
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
         status = 'Y';
     }
@@ -210,22 +255,34 @@ function RegisterParticipants() {
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
         "ParticipantName": jQuery("#ParticipantName").val(),
         "Address": jQuery("#txtAddress").val(),
-        "City": jQuery("#txtCity").val(),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").text(),
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
         "PanNo": jQuery("#txtPanNo").val(),
         "TinNo": jQuery("#txtTINNo").val(),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
         "PhoneNo": jQuery("#txtPhoneNo").val(),
         "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        //New Check
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        // "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val().attr("selected", "selected")) ,
         "IsActive": status,
         "UserID": sessionStorage.getItem('UserID'),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
         "MobileNo": jQuery("#txtMobileNo").val(),
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
         "AlternateEmailID": $('#txtAlternateeMailID').val(),
         "ProductCatID": InsertQuery
 
+
     };
-    // console.log(JSON.stringify(RegisterParticipants))
-    //alert(JSON.stringify(RegisterParticipants))
+
+   
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -234,6 +291,8 @@ function RegisterParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
+
+
 
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
@@ -267,12 +326,12 @@ function RegisterParticipants() {
             return false;
         }
 
-    });
+    })
 
 }
 var dataforExistedEmailforExtend = "";
 function fnshowexistedVendorForextend() {
-
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -282,24 +341,29 @@ function fnshowexistedVendorForextend() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            if (data.length > 0) {
+                if (data[0].encryptedVendorCreatedBy == sessionStorage.getItem('UserID')) {
+                    $('#spanerterr').text("This email address is already registerd with another company.");
+                    jQuery('#divalerterr').slideDown('show');
+                    App.scrollTo(jQuery('#divalerterr'), -200);
+                }
+                else {
+                    $('#divForexistVendor').modal('show')
+                    $('#spnmsz').text("This email address is already registerd with following details.");
+                    $('#tblforexistedVendor').empty();
 
-            if (data[0].encryptedVendorCreatedBy == sessionStorage.getItem('UserID')) {
-                $('#spanerterr').text("This email address is already registerd with another company.");
-                jQuery('#divalerterr').slideDown('show');
-                App.scrollTo(jQuery('#divalerterr'), -200);
-            }
-            else {
-                $('#divForexistVendor').modal('show')
-                $('#spnmsz').text("This email address is already registerd with following details.");
-                $('#tblforexistedVendor').empty();
+                    if (data.length > 0) {
+                        dataforExistedEmailforExtend = data;
+                        $('#tblforexistedVendor').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th class=hide></th></tr></thead><tbody>")
+                        for (var i = 0; i < data.length; i++) {
+                            addr1 = data[0].address1.replace(/\n/g, " ");
+                            addr2 = data[0].address2.replace(/\n/g, " ");
+                            //$('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].zipCode + "'\,\'" + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
-                if (data.length > 0) {
-                    dataforExistedEmailforExtend = data;
-                    $('#tblforexistedVendor').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th class=hide></th></tr></thead><tbody>")
-                    for (var i = 0; i < data.length; i++) {
-                        addr1 = data[0].address1.replace(/\n/g, " ");
-                        addr2 = data[0].address2.replace(/\n/g, " ");
-                        $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
+
+                        }
                     }
                 }
             }
@@ -332,7 +396,11 @@ function fnfetchDetailsforExtension() {
 
     addr1 = data[0].address1.replace(/\n/g, " ");
     addr2 = data[0].address2.replace(/\n/g, " ");
-    ExtendVendor(data[0].vendorID, data[0].vendorName, data[0].contactPerson, data[0].emailID, data[0].phone, data[0].mobileNo, addr1, addr2, data[0].serviceTaxNo.toUpperCase(), data[0].isActive, data[0].panNo.toUpperCase(), data[0].buttonName, data[0].vendorCode, data[0].alternateEmailID)
+
+    //  ExtendVendor(data[0].vendorID, data[0].zipCode, data[0].vendorName, data[0].contactPerson, data[0].emailID, data[0].phone, data[0].mobileNo, addr1, addr2, data[0].serviceTaxNo.toUpperCase(), data[0].isActive, data[0].panNo.toUpperCase(), data[0].buttonName, data[0].vendorCode, data[0].alternateEmailID, data[0].countryID, data[0].stateID, data[0].cityID)
+
+
+    ExtendVendor(data[0].vendorID, data[0].vendorName, data[0].contactPerson, data[0].emailID, data[0].dialingCodePhone, data[0].phone, data[0].dialingCodeMobile, data[0].mobileNo, addr1, addr2, data[0].zipCode, data[0].serviceTaxNo.toUpperCase(), data[0].isActive, data[0].panNo.toUpperCase(), data[0].buttonName, data[0].vendorCode, data[0].alternateEmailID, data[0].countryID, data[0].stateID, data[0].prefferedTZ, data[0].cityID)
     $('#divForexistVendor').modal('hide')
 }
 function NotificationforExtendVendor() {
@@ -393,27 +461,29 @@ function fetchParticipantsVenderTable() {
         dataType: "json",
         success: function (Venderdata) {
 
+
             jQuery("#tblParticipantsVender > tbody").empty();
-           
             if (Venderdata.length > 0) {
                 vendorsForAutoComplete = Venderdata;
                 jQuery.each(Venderdata, function (key, value) {
                     var str = "";
                     var addr1 = (value.address).replace(/\n/g, " ");
 
-                    var addr2 = (value.city).replace(/\n/g, " ");
+                    var addr2 = (value.cityName).replace(/\n/g, " ");
                     if (value.mapBtnRequired == 'N') {
                         str = "<tr><td style=\"text-align:center;width:10%!important;\">";
                         if (sessionStorage.getItem('UserID') == value.createdBy) {
 
                             if (value.actionType == "EditVendor") {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+
+
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">No</td>";
 
                             }
                             else {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\ )\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";//Edit
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">Yes</td>";
 
@@ -421,14 +491,16 @@ function fetchParticipantsVenderTable() {
                         }
                         else {
                             if (value.actionType == "EditVendor") {
-                                //str += "<a href=\"#\"   class=\"btn btn-xs grey\">Not Editable</a>&nbsp;&nbsp;";
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                                //abheedev
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'EditCustomerVendor'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                                //abheedev
                                 str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                                 str += "<td style=\"width:10%!important;\">No</td>";
 
                             }
                             else {
-                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
+                                
+                                str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + encodeURIComponent(addr1) + "'\,\'" + encodeURIComponent(addr2) + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.prefferedTZ + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
                                 str += "<td style=\"width:10%!important;\">External</td>";
                                 str += "<td style=\"width:10%!important;\">Yes</td>";
 
@@ -439,7 +511,7 @@ function fetchParticipantsVenderTable() {
                         str = "<tr><td style=\"text-align:right;width:10%!important;\">";
                         str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                     }
-                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.city + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
                     str += "<td style=\"width:5%!important;\">" + value.isActive + "</td>";
                     str += "</td></tr>";
                     jQuery('#tblParticipantsVender > tbody').append(str);
@@ -447,6 +519,52 @@ function fetchParticipantsVenderTable() {
             }
             else {
                 jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
+            }
+            fetchParticipantsparked();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
+function fetchParticipantsparked() {
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsparkedVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (Venderdata) {
+
+            jQuery("#tblParticipantsparked > tbody").empty();
+
+            if (Venderdata.length > 0) {
+
+                jQuery.each(Venderdata, function (key, value) {
+                    var str = "";
+
+                   
+                    str = "<tr><td style=\"text-align:center;width:10%!important;\">";
+                    str += "<a href=\"#\" target=_blank  onclick =\"fnApprove_reject(\'" + value.linkURL + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Action</a></td>";
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td class=bold style=\"width:10%!important;color:darkblue!important;cursor:pointer\" onclick =\"fnViewDetails(\'" + value.participantID + "'\,\'0'\)\" >" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                    str += "</td></tr>";
+                    jQuery('#tblParticipantsparked > tbody').append(str);
+                });
+            }
+            else {
+                jQuery('#tblParticipantsparked > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
             }
         },
         error: function (xhr, status, error) {
@@ -462,6 +580,169 @@ function fetchParticipantsVenderTable() {
             return false;
         }
     });
+}
+function fnViewDetails(tmpvendorid, vendorid) {
+    $('#viewalldetails').modal('show')
+    sessionStorage.setItem('tmpVendorID', tmpvendorid)
+    fetchVendorRegistrationDetails(tmpvendorid, vendorid);
+
+}
+function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + tmpvendorid + "&VendorID=" + vendorid,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (json) {
+
+            var companydetails = JSON.parse(json[0].jsondata);
+            if (json.length > 1) {
+
+                var categorydetails = JSON.parse(json[1].jsondata);
+               
+            }
+            _vendorId = companydetails[0].VendorID;
+            sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
+            if (companydetails[0].PM[0].paymentTerm != "" && companydetails[0].PM[0].paymentTerm != null && companydetails[0].PM[0].paymentTerm != undefined) {
+                jQuery('#paymentterms').html(companydetails[0].PM[0].paymentTerm);
+            }
+            else {
+                jQuery('#paymentterms').html();
+            }
+
+            if (companydetails[0].VendorCode != "" && companydetails[0].VendorCode != null && companydetails[0].VendorCode != undefined) {
+                $('#hdnvendorCode').val(companydetails[0].VendorCode);
+                $('#spnvendorcode').text(companydetails[0].VendorCode)
+            } else {
+                var vendorCode = '';
+                $('#hdnvendorCode').val(vendorCode);
+                $('#spnvendorcode').text('')
+            }
+
+            if (companydetails[0].GSTFile != "" && companydetails[0].GSTFile != null && companydetails[0].GSTFile != undefined) {
+                $('#gstattach').show();
+                $('#gstattach').html(companydetails[0].GSTFile);
+
+            } else {
+
+                $('#gstattach').hide();
+            }
+
+            if (companydetails[0].PANFile != "" && companydetails[0].PANFile != null && companydetails[0].PANFile != undefined) {
+                $('#panattach').show();
+                $('#panattach').html(companydetails[0].PANFile);
+
+            } else {
+
+                $('#panattach').hide();
+            }
+
+            if (companydetails[0].MSMEFile != "" && companydetails[0].MSMEFile != null && companydetails[0].MSMEFile != undefined) {
+                $('#msmeattach').show();
+                $('#msmeattach').html(companydetails[0].MSMEFile);
+
+            } else {
+
+                $('#msmeattach').hide();
+            }
+
+            if (companydetails[0].cancelledCheck != "" && companydetails[0].cancelledCheck != null && companydetails[0].cancelledCheck != undefined) {
+                $('#checkattach').show();
+                $('#checkattach').html(companydetails[0].cancelledCheck);
+
+            } else {
+
+                $('#checkattach').hide();
+            }
+
+            if (companydetails[0].MSMECheck == 'Y') {
+                $('.hideInput').removeClass('hide');
+            } else {
+                $('.hideInput').addClass('hide');
+            }
+
+            if (companydetails[0].GSTClass == 0) {
+                var gstclass = '';
+            } else {
+                var gstclass = companydetails[0].GSTClass;
+            }
+
+            if (companydetails[0].PreviousTurnover != "" && companydetails[0].PreviousTurnover != null && companydetails[0].PreviousTurnover != undefined) {
+                jQuery('#lastFY').html(companydetails[0].currencyLastFY + ' ' + companydetails[0].PreviousTurnover);
+            }
+            else {
+                jQuery('#lastFY').html();
+            }
+
+            if (companydetails[0].SecondLastTurnover != "" && companydetails[0].SecondLastTurnover != null && companydetails[0].SecondLastTurnover != undefined) {
+                jQuery('#seclastFY').html(companydetails[0].currencyLast2FY + ' ' + companydetails[0].SecondLastTurnover);
+            }
+            else {
+            }
+
+
+            if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
+                jQuery('#pincode').html(companydetails[0].pinCode);
+            }
+            else {
+                jQuery('#pincode').html('');
+            }
+
+
+            jQuery('#gstvendorclass').html(gstclass);
+            jQuery('#ddlTypeofproduct').html(categorydetails);
+            jQuery('#gstno').html(companydetails[0].ServiceTaxNo);
+            jQuery('#natureofest').html(companydetails[0].EstName);
+            jQuery('#vendortype').html(companydetails[0].VendorCatName);
+            jQuery('#product').html(companydetails[0].product);
+            jQuery('#companyname').html(companydetails[0].VendorName);
+            jQuery('#address').html(companydetails[0].Address1);
+            jQuery('#country').html(companydetails[0].CountryName);
+            jQuery('#state').html(companydetails[0].StateName);
+            jQuery('#city').html(companydetails[0].CityName);
+           
+            jQuery('#panno').html(companydetails[0].PANNo);
+            jQuery('#panfilename').html(companydetails[0].PANFile);
+            jQuery('#TDStype').html(companydetails[0].TDSTypeName);
+            jQuery('#tanno').html(companydetails[0].TAN);
+            jQuery('#bankname').html(companydetails[0].BankName);
+            jQuery('#bankaccountno').html(companydetails[0].BankAccount);
+            jQuery('#ifsccode').html(companydetails[0].IFSCCode);
+            jQuery('#accountholdername').html(companydetails[0].AccountName);
+            jQuery('#primaryname').html(companydetails[0].ContactPerson);
+            jQuery('#primarymobile').html(companydetails[0].MobileNo);
+            jQuery('#primaryemail').html(companydetails[0].EmailID);
+            jQuery('#altname').html(companydetails[0].ContactNameAlt);
+            jQuery('#altmobile').html(companydetails[0].Phone);
+            jQuery('#altemail').html(companydetails[0].AlternateEmailID);
+            jQuery('#msme').html(companydetails[0].MSMECheck);
+            jQuery('#msmeclass').html(companydetails[0].MSMEType);
+            jQuery('#msmeno').html(companydetails[0].MSMENo);
+            jQuery('#msmeattach').html(companydetails[0].MSMEFile);
+            jQuery('#txtLastFiscalyear').html(companydetails[0].PreviousTurnoverYear);
+            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear);
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}
+function fnApprove_reject(linkurl) {
+    window.open(linkurl);
+
 }
 $('#txtcompanyemail').on('keyup', function () {
 
@@ -489,6 +770,8 @@ function EditProduct(ctrl) {
     jQuery("#txtcompanyemail").closest('.form-group').removeClass('has-error')//.find('span').hide()
     jQuery("#txtAlternateeMailID").val(jQuery(ctrl).closest('tr').find("td").eq(11).html());
     jQuery("#txtAlternateeMailID").closest('.form-group').removeClass('has-error')//.find('span').hide()
+    jQuery("#ddlpreferredTime").val(jQuery(ctrl).closest('tr').find("td").eq(10).html());
+    jQuery("#ddlpreferredTime").closest('.form-group').removeClass('has-error').find('span').hide()
     var VendorID = jQuery(ctrl).closest('tr').find("td").eq(2).html();
     $('#hdnParticipantID').val(VendorID);
 
@@ -715,87 +998,24 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
 
     jQuery.each($("#tblParticipantsVender tbody").find("tr"), function () {
-        //console.log($(this).text());
+        
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
             jQuery(this).show();
     });
 });
-//function MapVendorCategories() {
+jQuery("#txtSearchparked").keyup(function () {
+    _this = this;
 
-//    var InsertQuery = '';
-
-//    $('.childchkbox').each(function() {
-//        if (this.checked) {
-//           // InsertQuery = InsertQuery + "select " + $(this).val() + "," + $("#hdnParticipantID").val() + "," + sessionStorage.getItem('CustomerID') + ",PE.Decrypt('" + UserID + "'),PE.FN_Now() union all ";
-//            InsertQuery = InsertQuery + $(this).val() + "#";
-//        }
-
-//    });
-
-//    if (InsertQuery == '') {
-
-//        jQuery('#divalerterr').find('span').text('Please select atleast one group!');
-//        jQuery('#divalerterr').slideDown('show');
-//        App.scrollTo(jQuery('#divalerterr'), -200);
-//        return false;
-//        setTimeout(function() {
-//            jQuery('#divalerterr').css('display', 'none');
-//        }, 5000);
-//    }
-
-
-//    var MapParticipants = {
-//        "CustomerID":parseInt(sessionStorage.getItem('CustomerID')),
-//        "InsertQuery": InsertQuery,
-//        "UserID": sessionStorage.getItem('UserID'),
-//        "VendorID": parseInt($("#hdnParticipantID").val())
-
-//    };
-//    //console.log(JSON.stringify(MapParticipants))
-//   // alert(JSON.stringify(MapParticipants))
-//    jQuery.ajax({
-//        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/MapParticpantsCategory/",
-//        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-//        type: "POST",
-//        data: JSON.stringify(MapParticipants),
-//        contentType: "application/json; charset=utf-8",
-//        success: function(data, status, jqXHR) {
-
-//        //if (data == '1') {
-//            jQuery('#divalertsucess').slideDown('show');
-//            App.scrollTo(jQuery('#divalertsucess'), -200);
-//            fetchParticipantsVenderTable();
-//            clearform();
-//        // }
-//            //else {
-
-//            //    jQuery('#divalerterr').slideDown('show');
-//            //    App.scrollTo(jQuery('#divalerterr'), -200);
-//            // }
-//            setTimeout(function() {
-//                jQuery('#divalertsucess').css('display', 'none');
-//                jQuery('#divalerterr').css('display', 'none');
-
-//            }, 5000);
-
-//        },
-//        error: function (xhr, status, error) {
-
-//            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-//            if (xhr.status == 401) {
-//                error401Messagebox(err.Message);
-//            }
-//            else {
-//                fnErrorMessageText('spanerterr', '');
-//            }
-//            jQuery.unblockUI();
-//            return false;
-//        }
-
-//    });
-//}
+    jQuery.each($("#tblParticipantsparked tbody").find("tr"), function () {
+        
+        if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
+            jQuery(this).hide();
+        else
+            jQuery(this).show();
+    });
+});
 
 jQuery("#txtSearchCategory").keyup(function () {
 
@@ -855,14 +1075,23 @@ jQuery("#ParticipantName").typeahead({
 });
 
 function validatePanNumber(pan) {
+    clearform();
+
+    // fnValidateGST();
     fnfetchfoundVendors();
 
 }
+
+function fnValidateGST() {
+
+
+}
+
+
 function fnfetchfoundVendors() {
 
     var UniqueId = "";
     if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
-        //UINo = $('#txtUI').val()
         if ($('#ddlUI').val().toLowerCase() == "servicetaxno") {
             UniqueId = "GST No."
         }
@@ -874,6 +1103,7 @@ function fnfetchfoundVendors() {
         App.scrollTo(jQuery('#divalerterr'), -200);
         $('#ddlUI').addClass('has-error')
     }
+
     else {
         jQuery.ajax({
             type: "GET",
@@ -884,6 +1114,8 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
+               
+               
                 if ($('#txtUI').val().length == "15" && $('#ddlUI').val().toLowerCase() == "servicetaxno") {
 
                     $('#divVendorForm').removeClass('hide')
@@ -906,10 +1138,18 @@ function fnfetchfoundVendors() {
                         addr1 = data[i].address1.replace(/\n/g, " ");
                         addr2 = data[i].address2.replace(/\n/g, " ");
                         if (data[i].buttonName == "Extend") {
-                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
                         }
                         else {
-                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            if (data[i].buttonName.toLowerCase() == "editcustomervendor") {
+                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
+                            }
+                            else {
+                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
+                            }
                         }
                     }
                 }
@@ -949,19 +1189,26 @@ function fnfetchfoundVendors() {
         jQuery('#divalerterr').css('display', 'none');
     }, 5000);
 }
+
 function AddVendor() {
+
     clearform();
     $('#divVendorForm').removeClass('hide')
     $('#ParticipantName').removeAttr('disabled')
+    $('#ContactName').removeAttr('disabled')
     $('#txtAddress').removeAttr('disabled')
-    $('#txtCity').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
+    $('#ddlCountryCd').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
     $('#txtcompanyemail').removeAttr('disabled')
     $('#chkalternatemail').removeAttr('disabled')
-    //$('#txtAlternateeMailID').removeAttr('disabled')
+    $('#ddlCountry').removeAttr('disabled')
+    $('#ddlState').removeAttr('disabled')
+    $('#ddlCity').removeAttr('disabled')
+    
     jQuery("#ContactName").removeAttr('disabled')
     $('#lbl_panmsz').addClass('hide');
     $('#hdnParticipantID').val('0');
@@ -981,21 +1228,32 @@ function AddVendor() {
 $("#txtUI").keyup(function () {
     clearform();
 });
-function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode, alternatemailid) {
+function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
+
 
     $('#hdnFlagType').val(buttonname);
     jQuery("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
     jQuery("#ParticipantName").val(vname);
     jQuery("#txtAddress").val(decodeURIComponent(addr1));
-    jQuery("#txtCity").val(decodeURIComponent(addr2));
+    
     jQuery("#txtPanNo").val(pan);
     jQuery("#txtTINNo").val(gst);
     jQuery("#txtPhoneNo").val(phone);
     jQuery("#txtMobileNo").val(mobile);
     jQuery("#ContactName").val(contactp);
     jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(alternatemailid);
+    jQuery("#txtAlternateeMailID").val(alternateemailid);
+    jQuery("#txtZipCd").val(zipcode)
+   
+    $('#ddlpreferredTime').val(prefferredTZ).trigger('change')
+
+    //@abheedev
+
+    $('#ddlCountryCd').val(dialingcode)//.trigger('change')
+    $('#ddlCountryCdPhone').val(dialingcodephone)//.trigger('change')
+
+
 
     if (isactive == "Y" || isactive.toLowerCase() == "yes") {
         jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
@@ -1005,6 +1263,16 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
         jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
         jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
     }
+
+    $('#ddlCountry').val(countryid).trigger('change')
+    setTimeout(function () {
+        $('#ddlState').val(stateid).trigger('change')
+    }, 500)
+
+    setTimeout(function () {
+
+        $('#ddlCity').val(cityid).trigger('change')
+    }, 1000)
     $('#divVendorForm').removeClass('hide');
     fetchMapCategory('Z', vendorid);
 
@@ -1012,47 +1280,85 @@ function EditVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, ad
         $('#ParticipantName').attr('disabled', 'disabled');
         $('#txtAddress').attr('disabled', 'disabled');
         $('#txtCity').attr('disabled', 'disabled');
+        $('#txtZipCd').attr('disabled', 'disabled');
         $('#txtPanNo').attr('disabled', 'disabled');
         $('#txtTINNo').attr('disabled', 'disabled');
+        $('#ddlCountryCdPhone').attr('disabled', 'disabled');
         $('#txtPhoneNo').attr('disabled', 'disabled');
+        $('#ddlCountryCd').attr('disabled', 'disabled');
         $('#txtMobileNo').attr('disabled', 'disabled');
         $('#txtcompanyemail').attr('disabled', 'disabled');
         $('#chkalternatemail').attr('disabled', 'disabled');
-        //$('#txtAlternateeMailID').attr('disabled', 'disabled')
+        $('#txtAlternateeMailID').attr('disabled', 'disabled')
         $("#ContactName").attr('disabled', 'disabled');
+        $("#ddlCountry").attr('disabled', 'disabled');
+        $("#ddlState").attr('disabled', 'disabled');
+        $("#ddlCity").attr('disabled', 'disabled');
+        $("#ddlpreferredTime").attr('disabled', 'disabled');
+        $("#chkIsActiveparticipant").attr('disabled', 'disabled');
         $('#lbl_panmsz').removeClass('hide');
     }
     else {
+
         $('#ParticipantName').removeAttr('disabled');
         $('#txtAddress').removeAttr('disabled');
         $('#txtCity').removeAttr('disabled');
+        $('#txtZipCd').removeAttr('disabled');
         $('#txtPanNo').removeAttr('disabled');
         $('#txtTINNo').removeAttr('disabled');
+        $('#ddlCountryCdPhone').removeAttr('disabled');
         $('#txtPhoneNo').removeAttr('disabled');
+        $('#ddlCountryCd').removeAttr('disabled');
         $('#txtMobileNo').removeAttr('disabled');
         $('#txtcompanyemail').removeAttr('disabled');
         $('#chkalternatemail').removeAttr('disabled');
+        $("#ddlCountry").removeAttr('disabled');
+        $("#ddlState").removeAttr('disabled');
+        $("#ddlCity").removeAttr('disabled');
         //$('#txtAlternateeMailID').removeAttr('disabled')
         jQuery("#ContactName").removeAttr('disabled');
         $('#lbl_panmsz').addClass('hide');
     }
 }
-function ExtendVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, addr2, gst, isactive, pan, buttonname, vendorcode) {
+function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
 
     $("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
     $('#hdnFlagType').val(buttonname);
     $("#ParticipantName").val(vname);
     $("#txtAddress").val(addr1);
-    $("#txtCity").val(addr2);
+   
+    $("#txtZipCd").val(zipcode);
     $("#txtPanNo").val(pan);
     $("#txtTINNo").val(gst);
     $("#txtPhoneNo").val(phone);
+
     $("#txtMobileNo").val(mobile);
     $("#ContactName").val(contactp);
 
+    $('#ddlCountry').val(countryid).trigger('change')
+    setTimeout(function () {
+        $('#ddlState').val(stateid).trigger('change')
+    }, 900)
+    setTimeout(function () {
+        $('#ddlCity').val(cityid).trigger('change')
+
+    }, 1500)
+   
+    $('#ddlpreferredTime').val(prefferredTZ) //.trigger('change')
+
+
     jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(emailid);
+    jQuery("#txtAlternateeMailID").val(alternateemailid);
+    //abheedev
+
+    $('#ddlCountryCd').val(dialingcode)//.trigger('change')
+    $('#ddlCountryCdPhone').val(dialingcodephone)//.trigger('change')
+
+
+
+
+
     $('#ParticipantName').attr('disabled', 'disabled');
     $('#txtAddress').attr('disabled', 'disabled');
     $('#txtCity').attr('disabled', 'disabled');
@@ -1062,8 +1368,15 @@ function ExtendVendor(vendorid, vname, contactp, emailid, phone, mobile, addr1, 
     $('#txtMobileNo').attr('disabled', 'disabled');
     $('#txtcompanyemail').attr('disabled', 'disabled');
     $('#chkalternatemail').attr('disabled', 'disabled');
-    // $('#txtAlternateeMailID').attr('disabled', 'disabled')
+    $('#txtAlternateeMailID').attr('disabled', 'disabled')
     jQuery("#ContactName").attr('disabled', 'disabled');
+    jQuery("#ddlCountry").attr('disabled', 'disabled');
+    jQuery("#ddlState").attr('disabled', 'disabled');
+    jQuery("#ddlCity").attr('disabled', 'disabled');
+    //@abheedev
+    $('#ddlCountryCd').attr('disabled', 'disabled')
+    $('#ddlCountryCdPhone').attr('disabled', 'disabled')
+
     $('#divVendorForm').removeClass('hide');
     $('#lbl_panmsz').removeClass('hide');
     if (isactive == "Y") {
@@ -1113,7 +1426,7 @@ function ExtendParticipants() {
                 $('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
                 clearform();
-                // MapVendorCategories();
+                
             }
             else {
                 $('#spanerterr').text('Vendor is already exists for this customer.')
@@ -1149,8 +1462,10 @@ function ExtendParticipants() {
 function clearform() {
 
     jQuery("#ParticipantName").val('');
+    jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
     jQuery("#txtCity").val('');
+    jQuery("#txtZipCd").val('');
     jQuery("#txtPanNo").val('');
     jQuery("#txtTINNo").val('');
     jQuery("#txtPhoneNo").val('');
@@ -1158,6 +1473,10 @@ function clearform() {
     jQuery("#ContactName").val('');
     jQuery("#txtcompanyemail").val('');
     jQuery('#hdnParticipantID').val('0');
+    $("#ddlCountry").val('111');
+    
+    $("#ddlState").val('0');
+    $("#ddlCity").val('0');
 
 
     $('.childchkbox').each(function () {
@@ -1166,13 +1485,20 @@ function clearform() {
     status = "True"
     $('#ParticipantName').removeAttr('disabled')
     $('#txtAddress').removeAttr('disabled')
-    $('#txtCity').removeAttr('disabled')
+    $('#ContactName').removeAttr('disabled')
+    //$('#txtCity').removeAttr('disabled')
+    $('#txtZipCd').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
+    $('#ddlCountryCd').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
     $('#txtcompanyemail').removeAttr('disabled')
     $('#chkalternatemail').removeAttr('disabled')
+    $('#ddlCountry').removeAttr('disabled')
+    $('#ddlState').removeAttr('disabled')
+    $('#ddlCity').removeAttr('disabled')
     jQuery("#hdnParticipantID").val(0)
     jQuery("#hdnParticipantCode").val(0)
     jQuery("#hdnFlagType").val(0)
@@ -1226,3 +1552,183 @@ jQuery("#txtSVendor").keyup(function () {
 
     });
 });
+function fetchCountry() {
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlCountry").empty();
+            $("#ddlCountryCd").empty();
+            $("#ddlCountryCdPhone").empty();
+            var vlal = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
+                    $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                }
+
+                $("#ddlCountry").val('111').trigger("change");
+                
+                $("#ddlCountryCd").val('111');
+                $("#ddlCountryCdPhone").val('111');
+               
+
+
+            }
+            else {
+                $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
+            }
+           
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
+
+function fetchState() {
+
+    var countryid = $('#ddlCountry option:selected').val();
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/State/?CountryID=" + countryid + "&StateID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlState").empty();
+            if (data.length > 0) {
+
+                $("#ddlState").append("<option value=0>Select State</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
+
+                }
+                $("#ddlState").trigger("change");
+            }
+            else {
+                $("#ddlState").append('<tr><td>No state found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+function fetchCity() {
+    var stateid = $('#ddlState').val();
+    if (stateid == null) {
+        stateid = 0;
+    }
+    
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlCity").empty();
+            if (data.length > 0) {
+                $("#ddlCity").append("<option value=0>Select City</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
+                }
+                $("#ddlCity").val('0').trigger("change");
+            }
+            else {
+                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+function DownloadFile(aID) {
+
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + _vendorId);
+}

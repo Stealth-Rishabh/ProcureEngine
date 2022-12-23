@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
@@ -19,6 +19,7 @@ jQuery(document).ready(function () {
 function fetchCountry() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
+        
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
@@ -33,6 +34,8 @@ function fetchCountry() {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    jQuery("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                    jQuery("#ddlCountryAltCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
                 jQuery("#ddlCountry").val('111').trigger("change");
 
@@ -55,6 +58,38 @@ function fetchCountry() {
             jQuery.unblockUI();
         }
 
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+           
+            jQuery("#ddlpreferredTime").empty();
+           jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
     });
 }
 
@@ -199,9 +234,9 @@ function fetchPaymentTerms() {
 
     });
 }
-
+var cc = 0;
 function fetchUserDetails() {
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -211,6 +246,8 @@ function fetchUserDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            
+            cc = 0;
             if (data.length > 0) {
 
                 let userdetails = JSON.parse(data[0].jsondata);
@@ -219,6 +256,32 @@ function fetchUserDetails() {
                 $('#userEmailID').html(userdetails[0].EmailID)
                 $('#userRole').html(userdetails[0].RoleName)
                 $('#userdesignation').val(userdetails[0].Designation)
+              
+              setTimeout(function () {
+                   //abheedev
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
+                }, 800)
+                let userOrg = JSON.parse(data[1].jsondata);
+                
+                if (userOrg.length > 0) {
+                    $('#userOrg').removeClass('hide')
+                    $('#tblpurchaseOrg').empty();
+                    $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th class=hide></th></tr></thead>');
+                    for (var i = 0; i < userOrg.length; i++) {
+                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userOrg[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userOrg[i].PurchaseGrpID + '</td><td>' + userOrg[i].PurchaseOrgName + '</td><td>' + userOrg[i].PurchaseGrpName + '</td><td class=hide><a class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userOrg[i].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        cc = cc + 1;
+                    }
+
+                    if (jQuery('#tblpurchaseOrg tr').length > 0) {
+                        $('#theadgroup').removeClass('hide');
+                    }
+                    else {
+                        $('#theadgroup').addClass('hide');
+                    }
+                }
+                else {
+                    $('#userOrg').addClass('hide')
+                }
 
             }
             jQuery.unblockUI();
@@ -238,12 +301,21 @@ function fetchUserDetails() {
     });
 
 }
+function deleterow(trid, rowcount, gid) {
 
+    $('#' + trid.id).remove()
+    cc = cc - 1;
+    if (jQuery('#tblpurchaseOrg tr').length == 1) {
+        $('#theadgroup').addClass('hide');
+    }
+    else {
+        $('#theadgroup').removeClass('hide');
+    }
+
+}
 //vendor myprofile.html
 function fetchVendorDetails() {
-
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
+     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
@@ -253,18 +325,27 @@ function fetchVendorDetails() {
         dataType: "json",
         success: function (data) {
             let detail = JSON.parse(data[0].jsondata);
-
             $('#vendorname').html(detail[0].VendorName)
+            $('#ddlCountryCd').val(detail[0].DialingCodeMobile)
             $('#vendormobileno').val(detail[0].MobileNo)
             $('#vendorEmailID').html(detail[0].EmailID)
-            $('#vendoraddress').val(detail[0].Address1 + detail[0].Address2)
+            $('#vendoraddress').val(detail[0].Address1)
             $('#vendorCity').val(detail[0].CityName)
+            $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
             $('#vendorpanno').html(detail[0].PANNo)
             $('#vendorservicetaxno').html(detail[0].ServiceTaxNo)
             $('#vendoralternateemail').val(detail[0].AlternateEmailID)
             $('#personname').val(detail[0].ContactPerson)
+            //$('#ddlpreferredTime').val(detail[0].preferredtimezone)           
+            $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
+              /*setTimeout(function () {
+                    $('#ddlpreferredTime').val(userdetails[0].preferredtimezone)
+                }, 800)*/
+          
+                
             $('#Vendorcode').html("<b>" + detail[0].VendorCode + "</b>")
+
 
             jQuery.unblockUI();
         },
@@ -283,10 +364,44 @@ function fetchVendorDetails() {
     });
 
 }
+function prefferedTimezone() {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
 
+            let lstTZ = JSON.parse(data[0].jsondata);
+          
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var tzID = parseInt(sessionStorage.getItem("timezoneid"));
+    $("#ddlpreferredTime").val(tzID)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -297,6 +412,16 @@ function fetchMyProfileVendor() {
         dataType: "json",
         success: function (data) {
             var vendordetails = JSON.parse(data[0].jsondata);
+           
+            var vendorComps = JSON.parse(data[1].jsondata);
+            //console.log(vendordetails[a].preferredtimezone);
+            var vendorCompstxt = ''
+            for (var i = 0; i < vendorComps.length; i++) {
+                vendorCompstxt = vendorCompstxt + vendorComps[i].customername + ' | ';
+
+            }
+
+            $('#vendorComp').val(vendorCompstxt.slice(0, -1));
 
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
@@ -321,7 +446,6 @@ function fetchMyProfileVendor() {
             }
             else {
                 $('.hideInput').addClass('hide');
-                $('#ddlMSME').attr("disabled", 'disabled');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
             }
 
@@ -330,7 +454,7 @@ function fetchMyProfileVendor() {
                 $('#ddlNatureEstaiblishment').val(vendordetails[0].EstTypeID);
 
             } else {
-                $('#ddlNatureEstaiblishment').val(0);
+                $('#ddlNatureEstaib lishment').val(0);
             }
 
             if (vendordetails[0].VendorCatID != "" && vendordetails[0].VendorCatID != undefined) {
@@ -445,7 +569,7 @@ function fetchMyProfileVendor() {
             }
             setTimeout(function () {
                 if (vendordetails[0].PayTermID !== "" && vendordetails[0].PayTermID != null && vendordetails[0].PayTermID != undefined) {
-                    console.log(vendordetails[0].PayTermID)
+                    
                     $('#ddPayTerms').val(vendordetails[0].PayTermID).trigger('change');
 
                 }
@@ -467,31 +591,137 @@ function fetchMyProfileVendor() {
                 }, 1500)
 
             }
+            if (vendordetails[0].DialingCodeMobile != "" && vendordetails[0].DialingCodeMobile != undefined && vendordetails[0].DialingCodeMobile != null) {
+                $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
+                
+            } 
+
+            if (vendordetails[0].DialingCodePhone != "" && vendordetails[0].DialingCodePhone != undefined && vendordetails[0].DialingCodePhone != null) {
+                $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
+                
+            } 
+
+
+            if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
+                $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
+               
+            } 
+            ///@abhhedev
+
+
+            if (vendordetails[0].PreviousTurnover != "" && vendordetails[0].AccountName != undefined) {
+                $('#txtLastFiscal').val(vendordetails[0].PreviousTurnover);
+                $('#txtLastFiscal').attr("disabled", 'disabled');
+            } else {
+
+                $('#txtLastFiscal').val();
+            }
+
+
+            if (vendordetails[0].SecondLastTurnover != "" && vendordetails[0].SecondLastTurnover != undefined) {
+                $('#txt2LastFiscal').val(vendordetails[0].SecondLastTurnover);
+                $('#txt2LastFiscal').attr("disabled", 'disabled');
+            } else {
+
+                $('#txt2LastFiscal').val();
+            }
+
+
+            if (vendordetails[0].currencyLastFY != "" && vendordetails[0].currencyLastFY != undefined) {
+                $('#currencyLastFiscalupdate').val(vendordetails[0].currencyLastFY);
+                $('#currencyLastFiscalupdate').attr("disabled", 'disabled');
+            } else {
+
+                $('#currencyLastFiscalupdate').val();
+            }
+
+            if (vendordetails[0].currencyLast2FY != "" && vendordetails[0].currencyLast2FY != undefined) {
+                $('#currency2LastFiscalupdate').val(vendordetails[0].currencyLast2FY);
+                $('#currency2LastFiscalupdate').attr("disabled", 'disabled');
+            } else {
+
+                $('#currency2LastFiscalupdate').val();
+            }
+
+
+            if (vendordetails[0].PreviousTurnoverYear != "" && vendordetails[0].PreviousTurnoverYear != undefined) {
+                $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear);
+                $('#txtLastFiscalyear').attr("disabled", 'disabled');
+            } else {
+
+                $('#txtLastFiscalyear').val();
+            }
+
+
+
+            if (vendordetails[0].SecondLastTurnoverYear != "" && vendordetails[0].SecondLastTurnoverYear != undefined) {
+                $('#txt2LastFiscalyear').val(vendordetails[0].currencyLastFY);
+                $('#txt2LastFiscalyear').attr("disabled", 'disabled');
+            } else {
+
+                $('#txt2LastFiscalyear').val();
+            }
+
+
+
+
+
+
+
+
+
+
             /* else {
                  setTimeout(function () {
                      calCompanyDetailPercent();
                  }, 1300)
              }*/
-
+            
+            
             $('#personname').val(vendordetails[0].ContactPerson)
             $('#personnamealt').val(vendordetails[0].ContactNameAlt)
             $('#vendorname').html(vendordetails[0].VendorName)
+            $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile)
             $('#vendormobileno').val(vendordetails[0].MobileNo)
             $('#vendorEmailID').html(vendordetails[0].EmailID)
             $('#vendorAltEmailID').val(vendordetails[0].AlternateEmailID)
+            $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone)
             $('#vendoraltmobileno').val(vendordetails[0].Phone)
-            $('#vendoraddress').val(vendordetails[0].Address1 + vendordetails[0].Address2)
+            $('#vendoraddress').val(vendordetails[0].Address1)
+           
+            $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid")}]`).attr("selected", "selected")
             // $('#vendorCity').val(data[0].city)
+            //SET HERE
+
+         /*   $('#ddlpreferredTime').on('change', function () {
+                console.log(sessionStorage.getItem("timezoneid"))
+                sessionStorage.setItem("timezoneid", $("#ddlpreferredTime option:selected").val().trim())
+               $("#ddlpreferredTime").find(`option[value=${sessionStorage.getItem("timezoneid") }]`).attr("selected", "selected")
+                
+            });*/
+            
             $('#vendorphone').val(data[0].phone)
             $('#vendorpanno').html(vendordetails[0].PANNo)
             $('#vendorservicetaxno').html(vendordetails[0].ServiceTaxNo)
             $('#vendoralternateemail').val(data[0].alternateEmailID)
+            //$('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid"))
             $('#pincode').val(vendordetails[0].pincode)
             $('#product').val(vendordetails[0].product)
             $('#txtLastFiscal').val(vendordetails[0].PreviousTurnover)
             $('#txt2LastFiscal').val(vendordetails[0].SecondLastTurnover)
-            $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear)
-            $('#txt2LastFiscalyear').val(vendordetails[0].SecondLastTurnoverYear)
+            if (vendordetails[0].PreviousTurnoverYear != "") {
+                $('#txtLastFiscalyear').val(vendordetails[0].PreviousTurnoverYear)
+            }
+            else {
+                $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+
+            }
+            if (vendordetails[0].PreviousTurnoverYear != "") {
+                $('#txt2LastFiscalyear').val(vendordetails[0].SecondLastTurnoverYear)
+            }
+            else {
+                $('#txt2LastFiscalyear').val(getlastFinancialYear())
+            }
 
             setTimeout(function () {
                 CalContactDetailPercent();
@@ -510,7 +740,7 @@ function fetchMyProfileVendor() {
             else {
                 fnErrorMessageText('errormsg', '');
             }
-            jQuery.unblockUI();
+            //   jQuery.unblockUI();
             return false;
         }
     });
@@ -518,7 +748,7 @@ function fetchMyProfileVendor() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('VendorId'));
 }
 var profileerror = $('#errordiv');
 var profilesuccess = $('#successdiv');
@@ -543,6 +773,7 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+
 function formvalidate() {
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -736,9 +967,9 @@ function formvalidatevendor() {
 }
 
 function updMobileNo() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+   jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-
+     
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
@@ -748,9 +979,10 @@ function updMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": '',
         "Designation": $('#userdesignation').val(),
-        "ContactPerson": ""
+        "ContactPerson": "",
+         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-    //alert(JSON.stringify(data))
+    console.log(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -805,7 +1037,8 @@ function updVnedorMobileNo() {
         "CompanyPhoneNo": $('#vendorphone').val(),
         "AlternateEmailID": $('#vendoralternateemail').val(),
         "Designation": "",
-        "ContactPerson": $('#personname').val()
+        "ContactPerson": $('#personname').val(),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
 
     jQuery.ajax({
@@ -850,6 +1083,8 @@ function updVnedorMobileNo() {
 }
 
 function updateVendor() {
+
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var msmetype = jQuery("#ddlMSMEClass option:selected").val().trim();
@@ -859,6 +1094,9 @@ function updateVendor() {
     var vendorcatname = jQuery("#ddlVendorType option:selected").text().trim();
     var statename = jQuery("#ddlState option:selected").text().trim();
     var cityname = jQuery("#ddlCity option:selected").text().trim();
+    
+    var dialingCd = jQuery("#ddlCountryCd option:selected").val().trim();
+    var dialingCdAlt = jQuery("#ddlCountryAltCd option:selected").val().trim();
     var tdstype = 0;
     var tdsname = '';
     var paymenttermvalue = 0;
@@ -939,6 +1177,8 @@ function updateVendor() {
         msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
 
+   
+
     var data = {
         "ParticipantID": parseInt(sessionStorage.getItem('VendorId')),
         "tmpVendorID": parseInt(sessionStorage.getItem('tmpVendorID')),
@@ -984,8 +1224,21 @@ function updateVendor() {
         "pANFile": panfilename,
         "mSMEFile": msmefilename,
         "cancelledCheck": checkfilename,
+        "DialingCodeMobile": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryAltCd option:selected").val()),
+       
+
+
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val())
+        
     }
-    //console.log(JSON.stringify(data));
+
+    
+
+
+    sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
+   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorProfileUpdate",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -995,22 +1248,22 @@ function updateVendor() {
         success: function (data, status, jqXHR) {
 
             if ($('#filegst').val() != '') {
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('tmpVendorID'));
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('VendorId'));
 
             }
 
@@ -1059,9 +1312,8 @@ function fetchMsme() {
         $('input[name="filemsme"]').rules('add', {
             required: true
         });
-        $('input[name="ddlMSMEClass"]').rules('add', {
-            required: true,
-            notEqualTo: 0
+        $('#ddlMSMEClass').rules('add', {
+            required: true
         });
 
 
@@ -1078,7 +1330,7 @@ $("#txtUdyam").keyup(function () {
 $("#filemsme").keyup(function () {
     $("#filemsme").css("border-color", "");
 });
-var customersForAutoComplete;
+var customersForAutoComplete = '';
 
 function fetchCompanyVR() {
     jQuery.ajax({
@@ -1090,8 +1342,18 @@ function fetchCompanyVR() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            customersForAutoComplete = JSON.parse(data[0].jsondata);
+            $("#txtCompanies").append("<option value=0>Select Companies</option>");
+            if (data.length > 1) {
+                customersForAutoComplete = JSON.parse(data[0].jsondata);
+                $("#txtCompanies").empty()
+                $("#txtCompanies").append("<option value=0>Select Companies</option>");
+                if (customersForAutoComplete.length > 0) {
 
+                    for (var i = 0; i < data.length; i++) {
+                        $("#txtCompanies").append("<option value=" + customersForAutoComplete[i].customerid + ">" + customersForAutoComplete[i].customername + "</option>");
+                    }
+                }
+            }
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -1110,62 +1372,92 @@ function fetchCompanyVR() {
 
     });
 }
+function fnAddCustomers() {
+    var cusid = $("#txtCompanies option:selected").val();
+    var cusname = $("#txtCompanies option:selected").text();
+    if (cusid != 0) {
+        sessionStorage.setItem('hdnVendorID', $("#txtCompanies option:selected").val());
+        var str = "<tr id=trcomp" + cusid + "><td class='hide'>" + cusid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + cusid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + cusname + "'\,\'" + cusid + "'\)\"; id=\"chkvender" + cusid + "\" value=" + cusid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + cusname + " </td></tr>";
+        jQuery('#tblcompanieslist > tbody').append(str);
+        var arr = $("#tblcompanieslist tr");
+        $.each(arr, function (i, item) {
+            var currIndex = $("#tblcompanieslist tr").eq(i);
+            var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+
+            $(this).nextAll().each(function (i, inItem) {
+
+                if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+                    $(this).remove();
+                }
+
+            });
+
+        });
+        if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+            $("#selectedcompanieslists> tbody > tr").each(function (index) {
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+                $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+            });
+        }
+        $("#txtCompanies").val('0')
+    }
+}
 $("#txtCompanies").keypress(function (e) {
     if (e.which == 13) {
         return false;
 
     }
 })
-jQuery("#txtCompanies").typeahead({
-    source: function (query, process) {
-        var data = customersForAutoComplete
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.customername] = username;
-            usernames.push(username.customername);
-        });
+//jQuery("#txtCompanies").typeahead({
+//    source: function (query, process) {
+//        var data = customersForAutoComplete
+//        usernames = [];
+//        map = {};
+//        var username = "";
+//        jQuery.each(data, function (i, username) {
+//            map[username.customername] = username;
+//            usernames.push(username.customername);
+//        });
 
-        process(usernames);
+//        process(usernames);
 
-    },
-    minLength: 0,
-    updater: function (item) {
-        if (map[item].customerid != "0") {
-            sessionStorage.setItem('hdnVendorID', map[item].customerid);
-            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
-            jQuery('#tblcompanieslist > tbody').append(str);
-            var arr = $("#tblcompanieslist tr");
-            $.each(arr, function (i, item) {
-                var currIndex = $("#tblcompanieslist tr").eq(i);
-                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
+//    },
+//    minLength: 0,
+//    updater: function (item) {
+//        if (map[item].customerid != "0") {
+//            sessionStorage.setItem('hdnVendorID', map[item].customerid);
+//            var str = "<tr id=trcomp" + map[item].customerid + "><td class='hide'>" + map[item].customerid + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked" + map[item].customerid + "\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + map[item].customername + "'\,\'" + map[item].customerid + "'\)\"; id=\"chkvender" + map[item].customerid + "\" value=" + map[item].customerid + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + map[item].customername + " </td></tr>";
+//            jQuery('#tblcompanieslist > tbody').append(str);
+//            var arr = $("#tblcompanieslist tr");
+//            $.each(arr, function (i, item) {
+//                var currIndex = $("#tblcompanieslist tr").eq(i);
+//                var matchText = currIndex.find("td:eq(0)").text().toLowerCase();
 
-                $(this).nextAll().each(function (i, inItem) {
+//                $(this).nextAll().each(function (i, inItem) {
 
-                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
-                        $(this).remove();
-                    }
+//                    if (matchText === $(this).find("td:eq(0)").text().toLowerCase()) {
+//                        $(this).remove();
+//                    }
 
-                });
+//                });
 
-            });
-            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
-                $("#selectedcompanieslists> tbody > tr").each(function (index) {
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
-                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
-                });
-            }
-        }
-        else {
+//            });
+//            if ($("#selectedcompanieslists > tbody > tr").length > 0) {
+//                $("#selectedcompanieslists> tbody > tr").each(function (index) {
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true)
+//                    $("#spanchecked" + $.trim($(this).find('td:eq(0)').html())).addClass("checked")
+//                });
+//            }
+//        }
+//        else {
 
-            gritternotification('Please select Vendor  properly!!!');
-        }
+//            gritternotification('Please select Vendor  properly!!!');
+//        }
 
-        return item;
-    }
+//        return item;
+//    }
 
-});
+//});
 
 function Check(event, custName, custID) {
 
@@ -1300,7 +1592,6 @@ $("#chkAll").click(function () {
 function sendToCompanies() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
     var custids = [];
     if ($("#selectedcompanieslists > tbody > tr").length > 0) {
         $("#selectedcompanieslists> tbody > tr").each(function (index) {
@@ -1316,7 +1607,7 @@ function sendToCompanies() {
         "tmpVendorID": parseInt(sessionStorage.getItem('VendorId')),
 
     }
-    //alert(JSON.stringify(datainfo));
+ 
     //console.log(JSON.stringify(datainfo));
     jQuery.ajax({
 
@@ -1363,19 +1654,36 @@ var businesspercent = 0;
 
 function CalContactDetailPercent() {
     //alert("contact");
+    
     var div = document.getElementById("tab1check");
-    var inputs = div.getElementsByTagName('input');
+    var inputs = div.querySelectorAll('input.form-control')
+    var selects = div.getElementsByTagName('select')
+
+    var totalSelect = selects.length;
     var totalInputs = inputs.length;
+    var totalFields = totalInputs + totalSelect
 
     var inputsWithValue = 0;
     for (var i = 0; i < totalInputs; i++) {
         if (inputs[i].value !== '' && inputs[i].value !== null && inputs[i].value !== undefined) {
             inputsWithValue = inputsWithValue + 1;
+            console.log(inputs[i]);
         }
     }
 
+    var selectsWithValue = 0;
+    for (var j = 0; j < totalSelect; j++) {
+        if (selects[j].options.selectedIndex == 0 || selects[j].options.selectedIndex == -1) {
+        } else {
+            selectsWithValue += 1;
+        }
+    }
+
+
+
     var filledPercentage = 0;
-    filledPercentage = (inputsWithValue / totalInputs) * 100;
+    var totalFilledValue = inputsWithValue + selectsWithValue;
+    filledPercentage = (totalFilledValue / totalFields) * 100;
     contactpercent = Math.round(filledPercentage);
 
     $('#totalcontactpercent').val(contactpercent);

@@ -1,4 +1,4 @@
-﻿
+
 
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
@@ -19,10 +19,11 @@ else {
     $('#div_status').removeClass('hide')
 
     if (Type == 'R') {
+
         $('#POStatus').css("color", "red")
         $('#POStatus').html("Reverted")
     }
-    if (Type == 'F') {
+    else if (Type == 'F') {
         $('#POStatus').css("color", "blue")
         $('#POStatus').html("Pending")
     }
@@ -103,7 +104,7 @@ function formvalidate() {
 }
 function fetchPODetails(flag) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    var _vendorid = 0;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -114,7 +115,8 @@ function fetchPODetails(flag) {
         dataType: "json",
         success: function (data, status, jqXHR) {
             var attach = "";
-
+            _vendorid = data[0].vendorID;
+            sessionStorage.setItem('VendorId',_vendorid);
             if (data.length > 0) {
                 if (flag == "Details") {
 
@@ -127,7 +129,7 @@ function fetchPODetails(flag) {
                 else {
                     jQuery("#tblAttachments").empty();
                     $('#spnsentbyname').html("<b>" + data[0].createdByName + "</b>")
-                    $('#PODate').html("<b>" + data[0].actionTakenOn + "</b>")
+                    $('#PODate').html("<b>" + fnConverToLocalTime(data[0].actionTakenOn) + "</b>")
                     $('#txtvendorremarks').html("<b>" + data[0].userRemarks + "</b>")
                     $('#headerotherrfqattach').removeClass('hide')
                     $('#div_POAttach').removeClass('hide')
@@ -150,7 +152,7 @@ function fetchPODetails(flag) {
                     jQuery('#tblAttachments').append("<tr><td>No Attachments!!</td></tr>")
                 }
             }
-          
+
         },
         error: function (xhr, status, error) {
 
@@ -181,7 +183,7 @@ function acceptRevertPO() {
         "UserID": sessionStorage.getItem('UserID'),
         "Attachment": attchname
     }
-   
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -193,25 +195,25 @@ function acceptRevertPO() {
         dataType: "json",
         success: function (data) {
             var msz = '';
-           
-           // if (data.length > 0) {
-                if ($('#ddlActionType').val() == "Accept") {
-                    msz = "Thanks for the PO Acceptance..";
-                }
-                else {
-                    msz = "This PO is now reverted to Admin.";
-                }
-                //** Upload Files on Azure PortalDocs folder first Time
-                fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID'));
-                
-                bootbox.alert(msz, function () {
-                    window.location = "VendorHome.html";
-                    jQuery.unblockUI();
-                    return false;
-                });
+
+            // if (data.length > 0) {
+            if ($('#ddlActionType').val() == "Accept") {
+                msz = "Thanks for the PO Acceptance..";
+            }
+            else {
+                msz = "This PO is now reverted to User.";
+            }
+            //** Upload Files on Azure PortalDocs folder first Time
+            fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID') +'/'+ sessionStorage.getItem('VendorId'));
+
+            bootbox.alert(msz, function () {
+                window.location = "VendorHome.html";
+                jQuery.unblockUI();
+                return false;
+            });
 
 
-           // }
+            // }
         },
         error: function (xhr, status, error) {
 
@@ -232,7 +234,7 @@ function FetchRecomendedVendor() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "PoUpload/POHistory/?POHeaderID=" + sessionStorage.getItem('hddnPOHID') + "&UserID=" + (sessionStorage.getItem("VendorId")) ,
+        url: sessionStorage.getItem("APIPath") + "PoUpload/POHistory/?POHeaderID=" + sessionStorage.getItem('hddnPOHID') + "&UserID=" + (sessionStorage.getItem("VendorId")),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -250,11 +252,11 @@ function FetchRecomendedVendor() {
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].attachment.replace(/\s/g, "%20");
                     if (data[i].vendorName != "") {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + data[i].receiptDt + '</td><td>' + data[i].receiptDt + '</td><td><a style="pointer:cursur;text-decoration:none;" id=POHistory' + i +' onclick="DownloadFile(this)" href="javascript:;" >' + data[i].attachment + '</a></td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td><td><a style="pointer:cursur;text-decoration:none;" id=POHistory' + i + ' onclick="DownloadFile(this)" href="javascript:;" >' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').removeClass('hide')
                     }
                     else {
-                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + data[i].receiptDt + '</td><td><a id=POHistory' + i +' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[i].attachment + '</a></td></tr>')
+                        $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td><td><a id=POHistory' + i + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + data[i].attachment + '</a></td></tr>')
                         $('#thforward').addClass('hide')
                     }
 
@@ -285,8 +287,7 @@ function FetchRecomendedVendor() {
 
 }
 function DownloadFile(aID) {
-   
-    fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
 }
 function DownloadFileVendor(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));

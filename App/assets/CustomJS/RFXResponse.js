@@ -1,4 +1,4 @@
-﻿var error = $('.alert-danger');
+var error = $('.alert-danger');
 
 var success = $('.alert-success');
 
@@ -87,7 +87,7 @@ function fetchRFIDetails() {
             
             jQuery('#lbl_configuredBy').html("RFI Configured By: " + BidData[0].rfxMaster[0].rfxConfiguredByName);
             jQuery('#txtrfiSubject').html(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#txtrfideadline').html(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#txtrfideadline').html(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#txtrfidescription').html(BidData[0].rfxMaster[0].rfxDescription)
            
             if (BidData[0].rfxAttachment.length > 0) {

@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -29,6 +30,20 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
+    
+    input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+  
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    
+    
+    
+    
         .panel-group .panel {
             margin-bottom: 0;
             border-radius: 4px;
@@ -286,7 +301,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <!--<div class="col-md-4 ">
                                             <div class="form-control">
                                                 <label class="col-md-6 control-label">
                                                     Bid Time:
@@ -294,7 +309,7 @@
                                                 <label class="col-md-6 control-label" id="lblbidtime">
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="col-md-4 ">
                                             <div class="form-control">
                                                 <label class="col-md-6 control-label">
@@ -303,8 +318,19 @@
                                                 <label class="col-md-6 control-label" id="lblbidtype">
                                                 </label>
                                             </div>
-                                        </div>
+                                        
                                     </div>
+                                    <div class="col-md-4 ">
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Time:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidclosingtype">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        </div>
                                     <div class="row">
                                         <div class="col-md-4 ">
                                             <div class="form-control">

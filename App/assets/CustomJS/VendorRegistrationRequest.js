@@ -1,4 +1,4 @@
-﻿
+
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
@@ -13,6 +13,8 @@ jQuery(document).ready(function () {
         'removeMaskOnSubmit': true
 
     });
+    $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+    $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
 
 function fetchCategorymaster1() {
@@ -32,7 +34,7 @@ function fetchCategorymaster1() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
                 }
-                $("#ddlTypeofProduct").trigger("change");
+                //$("#ddlTypeofProduct").trigger("change");
             }
             else {
                 $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
@@ -65,6 +67,7 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlCountry").empty();
@@ -78,6 +81,7 @@ function fetchCountry() {
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
             }
+
             // jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -106,6 +110,7 @@ function fetchState() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlState").empty();
@@ -148,6 +153,7 @@ function fetchCity() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
             $("#ddlCity").empty();
@@ -194,7 +200,7 @@ function fetchProduct() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlProduct").append("<option value=" + data[i].productID + ">" + data[i].productName + "</option>");
                 }
-                $("#ddlProduct").trigger("change");
+                //$("#ddlProduct").trigger("change");
             }
             else {
                 $("#ddlProduct").append('<tr><td>No products found..</td></tr>');
@@ -277,7 +283,7 @@ function fetchPaymentTerms() {
                     $("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
                 }
 
-                $("#ddPayTerms").trigger("change");
+                //$("#ddPayTerms").trigger("change");
             }
             else {
                 $("#ddPayTerms").append('<tr><td>No payment terms found..</td></tr>');
@@ -310,18 +316,39 @@ function getPan(pan) {
     }
 }
 
-function fetchMsme() {
+/*function fetchMsme() {
     var msmecheck = $("#ddlMSME option:selected").val();
     if (msmecheck == 'Y') {
         $('.hideInput').removeClass('hide');
     } else {
         $('.hideInput').addClass('hide');
     }
-}
+}*/
+function fetchMsme() {
 
+    if (jQuery("#ddlMSME option:selected").val() == 'Y') {
+        $('.hideInput').removeClass('hide');
+        $('#submit_form').validate();
+        $('input[name="txtUdyam"]').rules('add', {
+            required: true
+        });
+        $('input[name="filemsme"]').rules('add', {
+            required: true
+        });
+        $('#ddlMSMEClass').rules('add', {
+            required: true
+        });
+
+
+    } else {
+        $('.hideInput').addClass('hide');
+        $('input[name="filemsme"]').rules('remove');
+        $('input[name="txtUdyam"]').rules('remove');
+        $('input[name="ddlMSMEClass"]').rules('remove');
+    }
+}
 function SubmitVendorRegistration() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
     var selected = [];
     var selectedid = [];
     var selectedidss = '';
@@ -337,19 +364,19 @@ function SubmitVendorRegistration() {
         });
         straddedproduct = result.slice('#', -1);
 
-        var msmetype = $("#ddlMSMEClass option:selected").val().trim();
-        var gstclass = $("#ddlGSTclass option:selected").val().trim();
+        var msmetype = $("#ddlMSMEClass").val().trim();
+        var gstclass = $("#ddlGSTclass").val().trim();
         var tds = $("#ddlTds option:selected").val().trim();
-        var paymentterm = $("#ddPayTerms option:selected").val().trim();
+        var paymentterm = $("#ddPayTerms").val().trim();
         if (msmetype == 'Select') {
             var msmeselectvalue = "";
         } else {
-            var msmeselectvalue = $("#ddlMSMEClass option:selected").val().trim();
+            var msmeselectvalue = $("#ddlMSMEClass").val().trim();
         }
-        if (gstclass == 'Select') {
+        if (gstclass == '') {
             var gstclassvalue = "";
         } else {
-            var gstclassvalue = $("#ddlGSTclass option:selected").val().trim();
+            var gstclassvalue = $("#ddlGSTclass").val().trim();
         }
         if (tds == 0) {
             var tdsvalue = "";
@@ -425,8 +452,7 @@ function SubmitVendorRegistration() {
         }
     };
 
-    //console.log(JSON.stringify(VendorInfo));
-
+  
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -439,22 +465,22 @@ function SubmitVendorRegistration() {
             $('#hdntmpvendorid').val(data);
             if ($('#filegst').val() != '') {
 
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data);
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/Temp/' + data);
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + data);
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/Temp/' + data);
 
             }
 
@@ -486,7 +512,7 @@ function SubmitVendorRegistration() {
 }
 
 function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + sessionStorage.getItem('tmpVendorID'));
+    fnDownloadAttachments($("#" + aID.id).html(), 'tempVR/' + sessionStorage.getItem('tmpVendorID'));
 }
 
 function fetchCategorymaster() {
@@ -642,12 +668,13 @@ var errorVendor = $('.alert-danger', formvendor);
 function FormValidate() {
     formvendor.validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
+        //doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+        // errorElement: 'span', //default input error message container
+        //  errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
+        ignore: false,
         rules: {
-            
+
             ddlNatureEstaiblishment: {
                 required: true,
                 notEqualTo: 0
@@ -676,17 +703,21 @@ function FormValidate() {
             txtAdd1: {
                 required: true,
             },
-            ddlCountry: {
+            ddlGSTclass:{
                 required: true,
                 notEqualTo: 0
             },
+            /*ddlCountry: {
+                required: true,
+               notEqualTo: 0
+            },*/
             ddlState: {
                 required: true,
-
+                notEqualTo: 0
             },
             ddlCity: {
                 required: true,
-
+                notEqualTo: 0
             },
             txtPin: {
                 required: true,
@@ -695,14 +726,14 @@ function FormValidate() {
             tblAttachmentsElem: {
                 required: true,
             },
-            txtGst: {
+            /*txtGst: {
                 required: true,
                 maxlength: 15,
             },
             txtPan: {
                 required: true,
                 ValidPAN: true
-            },
+            },*/
             tblAttachmentsElem2: {
                 required: true,
             },
@@ -739,23 +770,41 @@ function FormValidate() {
                 required: true,
                 email: true
             },
-            ddlMSME: {
-                required: true,
-                notEqualTo: 0
+            /* ddlMSME: {
+                 required: true,
+                 notEqualTo: 0
+             },
+             ddlMSMEClass: {
+                 required: true,
+                 notEqualTo: 0
+             },
+             txtUdyam: {
+                 required: true,
+             },
+             filegst: {
+                 required: true
+             },*/
+            filecheck: {
+                required: true
             },
-            ddlMSMEClass: {
-                required: true,
-                notEqualTo: 0
-            },
-            txtUdyam: {
-                required: true,
-            }
+          /*  filepan: {
+                required: true
+            }*/
+
 
         },
 
         invalidHandler: function (event, validator) {
-            errorVendor.hide()
-            successVendor.hide();
+            $('#diverrorvendor').show()
+            $('#divsuccvendor').hide()
+            $('#spanerrorvendor').text("Please fill all mandatory Details..");
+
+            for (var i = 0; i < validator.errorList.length; i++) {
+                $(validator.errorList[i].element).parents('.panel-collapse.collapse').collapse('show');
+            }
+            $('#diverrorvendor').fadeOut(6000);
+
+
         },
 
         highlight: function (element) {
@@ -767,10 +816,15 @@ function FormValidate() {
             $(element).closest('.xyz').removeClass('has-error');
 
         },
-        errorPlacement: function (error, element) {
+        /*errorPlacement: function (error, element) {
 
-        },
+        },*/
         success: function (label) {
+            label.closest('.form-group').removeClass('has-error');
+            label.remove();
+        },
+        errorPlacement: function (error, element) {
+            // error.insertAfter(element); // for other inputs, just perform default behavior
         },
         submitHandler: function (form) {
 
@@ -785,10 +839,10 @@ function FormValidate() {
     });
     formEmailvalidate.validate({
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
         rules: {
             txtemailverify: {
                 required: true,
@@ -796,9 +850,19 @@ function FormValidate() {
             }
 
         },
+        messages: {
+            txtemailverify: {
+                required: "Please Enter Valid EmailID"
+            }
+
+        },
         invalidHandler: function (event, validator) {
-            errorVendor.hide()
-            successVendor.hide();
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#diverrorvendor').show()
+            $('#divsuccvendor').hide()
+            $('#spanerrorvendor').text("Please Enter Valid EmailID");
+            $('#diverrorvendor').fadeOut(6000);
         },
 
         highlight: function (element) {
@@ -824,7 +888,7 @@ function FormValidate() {
 
 function validateEmail() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    $('#modalLoaderparameter').removeClass('display-none')
+    $('#modalLoader').removeClass('display-none')
     var emailId = $("#txtemailverify").val().trim();
 
     jQuery.ajax({
@@ -847,12 +911,9 @@ function validateEmail() {
             else {
                 $('#diverrorvendor').show();
                 $('#spanerrorvendor').html("EmailId is already registered&nbsp;&nbsp;<b><a style=text-decoration:none href='https://www.procurengine.com/vendor/'>Please Login here</a></b>");
-                //$('#diverrorvendor').fadeOut(10000);
-                //$('#collapse2').addClass('collapse2').removeClass('collapse in')
-                //$('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
                 $('#txtemailverify,#txtEmail,#btnverifyemail').removeAttr('disabled');
             }
-            $('#modalLoaderparameter').addClass('display-none');
+            $('#modalLoader').addClass('display-none');
             jQuery.unblockUI();
 
         },
@@ -865,37 +926,44 @@ function validateEmail() {
             else {
                 fnErrorMessageText('spanerrorvendor', '');
             }
-            $('#modalLoaderparameter').addClass('display-none');
+            $('#modalLoader').addClass('display-none');
             $('#txtemailverify').val('')
             jQuery.unblockUI();
             return false;
         }
     });
 }
-$("#txtemailverify").keyup(function () {
-    $('#diverrorvendor').fadeOut(7000);
-});
+
 $('#registerParticipantModal').on("hidden.bs.modal", function () {
     //fnFormClear();
     $('#txtemailverify,#btnverifyemail').removeAttr('disabled');
     $('#btnverifysubmit').addClass('hide');
     $('#txtemailverify').val('');
     $('#txtEmail,#txtEmail2').val('');
-    $('#modalLoaderparameter').addClass('display-none');
+    $('#modalLoader').addClass('display-none');
     $('#collapse2').addClass('collapse2').removeClass('collapse in')
     $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
     window.location = window.location.href.split('#')[0];
 })
+function fnClearformfields(){
+    $('#diverrorvendor').fadeOut(7000);
+    $("#txtContName").val('')
+    $("#txtEmail").val('')
+    $("#txtMobile").val('')
+    $("#txtContName2").val('')
+    $("#txtMobile2").val('')
+    $("#txtEmail2").val('')
+}
 
 // make reset Function & call after Details submit ????
 function fnFormClear() {
-    $("#ddlNatureEstaiblishment").val('')
-    $("#ddlNatureEstaiblishment option:selected").text('')
-    $("#ddlVendorType").val('')
+    $("#ddlNatureEstaiblishment").val('0')
+    //$("#ddlNatureEstaiblishment option:selected").text('')
+    $("#ddlVendorType").val('0')
     $("#txtProduct").val('')
     $("#ddlCompanyName").val('')
     $("#txtAdd1").val('')
-    $("#ddlCountry").val('')
+    $("#ddlCountry").val('111').trigger("change");
     $("#ddlState").val(''),
         $("#ddlCity").val('')
     $("#txtPin").val('')
@@ -910,22 +978,57 @@ function fnFormClear() {
     $("#txtUdyam").val('')
     $("#txtLastFiscal").val('')
     $("#txt2LastFiscal").val('')
-    $("#txtLastFiscalyear").val('')
-    $("#txt2LastFiscalyear").val('')
+    // $("#txtLastFiscalyear").val('')
+    // $("#txt2LastFiscalyear").val('')
     $("#txtContName").val('')
     $("#txtEmail").val('')
     $("#txtMobile").val('')
     $("#txtContName2").val('')
     $("#txtMobile2").val('')
     $("#txtEmail2").val('')
-    $("#ddlMSMEClass option:selected").val('')
-    $("#ddlGSTclass option:selected").val('')
-    $("#ddlTds option:selected").val('')
-    $("#ddPayTerms option:selected").val('')
+    $("#ddlMSMEClass").val('')
+    $("#ddlGSTclass").val('')
+    $("#ddlTds").val('')
+    $("#ddPayTerms").val('')
     $('#filegst').val('')
     $('#filepan').val('')
     $('#filemsme').val('')
     $('#filecheck').val('')
     $("#currencyLastFiscal option:selected").val('')
     $("#currency2LastFiscal option:selected").val('')
+    $('#diverrorvendor').fadeOut(7000);
+}
+function fnChangeGSTClass() {
+  
+    if ($('#ddlGSTclass').val().toLowerCase() == "registered") {
+        $('#submit_form').validate();
+        $('#gstfilespn').html('*');
+        $('#GSTStartspn').html('*');
+        $('#spnpanno').html('*');
+        $('#spanpanfile').html('*');
+        $('#txtGst').rules('add', {
+            required: true,
+            maxlength: 15
+        });
+         $('#filegst').rules('add', {
+            required: true
+        });
+        $('#txtPan').rules('add', {
+            required: true,
+            ValidPAN: true
+        });
+        $('#filepan').rules('add', {
+            required: true
+        });
+    }
+    else {
+        $('#gstfilespn').html('');
+        $('#GSTStartspn').html('');
+        $('#spnpanno').html('');
+        $('#spanpanfile').html('');
+        $('#txtGst').rules('remove');
+        $('#filegst').rules('remove');
+        $('#txtPan').rules('remove');
+        $('#filepan').rules('remove');
+    }
 }

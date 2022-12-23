@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,7 +28,7 @@
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-   
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <!--page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-->
@@ -49,13 +49,13 @@
                                   class="username username-hide-on-mobile"></span><i class="fa fa-angle-down">
                             </i>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
-                        </ul>
+                        <!--<ul class="dropdown-menu">
+                            <li><a href="MyProfile.html" class="hide"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn" class="hide"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>-->
                     </li>
 
-                  
+
                 </ul>
             </div>
         </div>
@@ -136,7 +136,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <!--<div class="col-md-4 ">
                                             <div class="form-control">
                                                 <label class="col-md-6 control-label">
                                                     Bid Time:
@@ -144,7 +144,7 @@
                                                 <label class="col-md-6 control-label" id="lblbidtime">
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="col-md-4 ">
                                             <div class="form-control">
                                                 <label class="col-md-6 control-label">
@@ -226,11 +226,11 @@
 
                                     <div class="form-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered hide" id="tblParticipantsService" ></table>
+                                            <table class="table table-bordered hide" id="tblParticipantsService"></table>
                                             <table class="table table-bordered hide" id="tblParticipantsVender"></table>
                                         </div>
 
-                                       
+
                                     </div>
                                 </form>
                             </div>
@@ -240,7 +240,7 @@
                     </div>
                 </div>
 
-              
+
             </div>
         </div>
         <!-- BEGIN QUICK SIDEBAR -->
@@ -282,7 +282,7 @@
 
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -299,7 +299,7 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    
+
                     <div class="modal-body" style="height: 200px; overflow-y: scroll;">
                         <p class="ppolicy-text"><b></b></p>
                         <p class="ppolicy-text"><b></b></p>
@@ -393,7 +393,7 @@
             QuickSidebar.init();
             setCommonData();
             fetchBidHeaderDetails();
-            
+
         });
     </script>
     <!-- END JAVASCRIPTS -->

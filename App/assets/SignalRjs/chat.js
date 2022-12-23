@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:51739/bid?bidid=" + sessionStorage.getItem('BidID')).build();
 
@@ -14,7 +14,6 @@ connection.on("ReceiveMessage", function (user, message) {
 });
 
 connection.on("refreshColumnStatus", function () {
-    debugger;
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
     jQuery.ajax({
         type: "GET",

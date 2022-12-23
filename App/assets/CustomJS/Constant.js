@@ -1,4 +1,4 @@
-﻿//Purchase ORG.
+//Purchase ORG.
 function BindPurchaseOrg(ddlPurchaseorg) {
 
 
@@ -51,7 +51,6 @@ function bindPurchaseGroupDDL(ddlPurchaseGroup) {
 };
 
 function bindPurchaseGroupDDL(ddlPurchaseGroup, orgID) {
-    debugger;
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt(orgID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {

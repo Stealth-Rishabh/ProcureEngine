@@ -1,4 +1,4 @@
-﻿var error = $('.alert-danger');
+var error = $('.alert-danger');
 
 var success = $('.alert-success');
 var _noAttachment = false;
@@ -419,7 +419,7 @@ function fetchRFIDetails() {
             jQuery('#tblTempVendorslist').empty();
            
             jQuery('#txtrfiSubject').val(BidData[0].rfxMaster[0].rfxSubject)
-            jQuery('#txtrfideadline').val(BidData[0].rfxMaster[0].rfxDeadline)
+            jQuery('#txtrfideadline').val(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
             jQuery('#txtrfidescription').val(BidData[0].rfxMaster[0].rfxDescription)
 
            
