@@ -438,6 +438,7 @@ Bootstrap Time Picker
 /***
 Toastr Notifications
 ***/
+/*abheedev*/
 .toast {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
@@ -449,7 +450,7 @@ Toastr Notifications
 }
 
 .toast-success {
-  background-color: #51a351;
+    background-color: #FBF650 /*#51a351*/;
 }
 
 .toast-error {
@@ -457,7 +458,7 @@ Toastr Notifications
 }
 
 .toast-info {
-  background-color: #2f96b4;
+    background-color: #FBF650;
 }
 
 .toast-warning {
@@ -473,6 +474,7 @@ Toastr Notifications
   height: 16px;
   background-repeat: no-repeat !important;
   background-image: url("../img/portlet-remove-icon-white.png") !important;
+  color:black !important;
 }
 
 .toast-top-center {

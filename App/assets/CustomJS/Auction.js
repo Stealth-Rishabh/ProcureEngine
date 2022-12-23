@@ -547,7 +547,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
-   debugger
+  
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -596,7 +596,7 @@ function fetchBroadcastMsgs(userId, msgType) {
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
@@ -665,7 +665,7 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+           
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
@@ -738,7 +738,7 @@ function fetchUserChats(userId, msgType) {
     var url = "";
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
