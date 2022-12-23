@@ -451,7 +451,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-    //alert(JSON.stringify(Cancelbid))
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -524,27 +524,7 @@ function replaceQuoutesFromString(ele) {
     ele.value = str;
     //return val;
 }
-/*function replaceQuoutesFromStringFromExcel(ele) {
-    var str = '';
-    
-    if (ele != "" && ele != undefined) {
-    str = str.replace(/'/g, '');
-    str = str.replace(/"/g, '');
-    //@abheedev bug368 start
-    str = str.replace(/#/g, '');
-  //  str = str.replace(/&/g, '');
-    //@abheedev bug368 end
 
-    str = str.replace(/~/g, '');
-    str = str.replace(/`/g, '');
-    str = str.replace(/</g, '');
-    str = str.replace(/>/g, '');
-    str = str.replace(/_/g, '');
-     str = str.replace(/^/g, '');
-    }
-    //ele.value = str;
-    return str;
-}*/
 function replaceQuoutesFromStringFromExcel(ele) {
     var str = '';
 
@@ -567,7 +547,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
-    //updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
+   debugger
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -612,7 +592,7 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
-    debugger;
+    
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
@@ -707,7 +687,7 @@ function fetchvendor() {
 
                     }
                     else {
-                        //$(".pulsate-regular-li").hide();
+                       
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
@@ -825,8 +805,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-    //console.log(JSON.stringify(data))
-
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -882,7 +861,7 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-    debugger;
+    
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
@@ -907,41 +886,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
         }
     });
 }
-//function fnUploadFilesonBlob(FileName,foldername,flag) {
-//    var Tab1Data = {
 
-//        "filename": FileName,
-//        "foldername": foldername
-//    }
-//    // console.log(JSON.stringify(Tab1Data))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFilesonBlob/",
-//        cache: false,
-//        crossDomain: true,
-//        data: JSON.stringify(Tab1Data),
-//        dataType: "json",
-//        success: function (data) {
-//            //** Delete Files in Local Folder
-//            //if (flag == "Bid")
-//            //{
-//            //    fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + FileName)
-//            //}
-
-//            return;
-//        },
-//        error: function (xhr, status, error) {
-//            $(".alert-danger").find("span").html('').html(FileName+" Couldn't upload successfully on Azure")
-//            Metronic.scrollTo(error, -200);
-//            $(".alert-danger").show();
-//            $(".alert-danger").fadeOut(5000);
-//            jQuery.unblockUI();
-
-//        }
-//    });
-
-//}
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
@@ -1003,7 +948,7 @@ function fnConverToLocalTime(dttime) {
     else return '..'
 }
 function fnSetLocalFromTimeZone(dateTime) {
-    debugger;
+  
     var retDt = new Date();
     var userTz = sessionStorage.getItem('preferredtimezone');
     var systemDate = new Date();
@@ -1865,7 +1810,7 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-    debugger;
+   
     var returnStr = maliciousText;
     returnStr = returnStr.replaceAll('&lt;', '<');
     returnStr = returnStr.replaceAll('&gt;', '>');
@@ -1975,7 +1920,7 @@ function checkPasswordValidation(value) {
 }
 //common function
 function RegisterUser_fetchRegisterUser(docData) {
-    debugger;
+  
     var data = docData;
     var dataToReturn = "";
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
@@ -1990,7 +1935,7 @@ function RegisterUser_fetchRegisterUser(docData) {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger;
+           
             if (data.length > 0) {
                 dataToReturn = data;
                 
@@ -2001,7 +1946,7 @@ function RegisterUser_fetchRegisterUser(docData) {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+     
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
