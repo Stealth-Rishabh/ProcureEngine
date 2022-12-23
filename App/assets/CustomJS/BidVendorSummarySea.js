@@ -1,5 +1,6 @@
 var APIPath = sessionStorage.getItem("APIPath");
 var BidID = "";
+var VendorID = "";
 var BidTypeID = "";
 var BidForID = "";
 var PEfaBidForId = 0;
@@ -679,6 +680,7 @@ function fnTimeUpdate() {
     jQuery.unblockUI();
 }
 
+
 function fetchBidSummaryDetails(BidID, BidForID) {
   
     var BidTypeID = sessionStorage.getItem('hdnbidtypeid')
@@ -699,8 +701,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
             _bidarray = [];
             var wtavg = 0;
             if (data.length > 0) {
-                
-              
+          
                 if (parseInt(BidTypeID) == 6) {
 
                     $('#lnktotvalue').html('Detailed Report')
@@ -734,13 +735,12 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                     var c = 1;
 
                     for (var i = 0; i < data.length; i++) {
-                       
+                         VendorID = data[i].vendorId;
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
                         //TotalBidValue = TotalBidValue.toFixed(2);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-                        //abheedev removequote
-                        shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
+                       
                         if (TotalBidValue != 0) {
                             if (data[i].targetPrice != 0) {
                                 if (PEfaBidForId == 81 || PEfaBidForId == 83) {
@@ -820,7 +820,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
                             //abheedev removequote    
                             if (data[i].srNo != 'N/A') {
-                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].lQuote + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].psHeaderID + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
                             }
                             else {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo  + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
@@ -835,7 +835,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
                             if (data[i].srNo != 'N/A') {
-                                strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].lQuote + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].psHeaderID + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
+                                strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
                             }
                             else {
                                  strsumm += "<td>" + data[i].srNo + "</td><td class='showvendor' id=vname" + i + " >" + data[i].vendorName + "</td>";
@@ -3552,8 +3552,64 @@ var tableToExcel = (function () {
 
 //abhee remove quote changes
 
-function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAllocated) {
+
+
+function fetchparticationQuotes(BidID, VendorID) {
     debugger
+   
+    var url = '';
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+    if (sessionStorage.getItem("hdnbidtypeid") == 7) {
+        url = APIPath + "RemoveParticipatedQuotedPrices/fetchPSQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
+    }
+    else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
+        url = APIPath + "RemoveParticipatedQuotedPrices/fetchPEFAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
+    }
+    else if (sessionStorage.getItem("hdnbidtypeid") == 9) {
+        url = APIPath + "RemoveParticipatedQuotedPrices/fetchFAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
+    }
+    else {
+        url = APIPath + "RemoveParticipatedQuotedPrices/fetchCAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
+    }
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        url: url,
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+           debugger
+            var shortname;
+            if (data.length > 0) {
+                shortname = (data[0].shortName).replace(/(\r\n|\n|\r)/gm, "");
+                removeQuotationPS(shortname, data[0].quotedPrice, data[0].submissionTime, data[0].psid, data[0].psHeaderID);
+            }
+            jQuery.unblockUI();
+        },
+
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+
+}
+
+
+function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAllocated) {
+ debugger
     $('#deletepopup').modal('show')
     sessionStorage.setItem("shname", shname)
     sessionStorage.setItem("price", price)
@@ -3561,7 +3617,13 @@ function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAll
     sessionStorage.setItem("psid", psid)
     sessionStorage.setItem("psheaderid", psheaderid)
     sessionStorage.setItem("QuantityAllocated", QuantityAllocated)
+    
 }
+var error2 = $('#errormapdiv');
+var success2 = $('#successmapdiv');
+var success1 = $('.alert-success');
+error2.hide()
+success2.hide()
 
 $('#maphead').validate({
     doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -3609,7 +3671,7 @@ $('#maphead').validate({
 
     },
     submitHandler: function (form) {
-        debugger
+      
         error2.hide();
         if (sessionStorage.getItem("hdnbidtypeid") == 7) {
             deletePSquote();
@@ -3640,8 +3702,8 @@ function deletePSquote() {
     }
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
     var QuoteProduct = {
-        "VendorID": parseInt($('#ddlvendors').val()),
-        "BidID": parseInt($('#ddlbid').val()),
+        "VendorID": VendorID,
+        "BidID": parseInt(BidID),
         "ShortName": sessionStorage.getItem("shname"),
         "QuotedPrice": parseFloat(sessionStorage.getItem("price")),
         "SubmissionTime": sessionStorage.getItem("subtime"),
@@ -3679,8 +3741,9 @@ function deletePSquote() {
             success1.show();
             $('#spansuccess1').html("Quoted Price deleted Successfully..");
             success1.fadeOut(6000);
-            App.scrollTo(success1, -200);
-            fetchparticationQuotes()
+           // App.scrollTo(success1, -200);
+          
+            fetchparticationQuotes(BidID, VendorID);
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
@@ -3712,8 +3775,8 @@ function deleteCoalquote() {
     }
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
     var QuoteProduct = {
-        "VendorID": parseInt($('#ddlvendors').val()),
-        "BidID": parseInt($('#ddlbid').val()),
+        "VendorID": VendorID,
+        "BidID": parseInt(BidID),
         "ShortName": sessionStorage.getItem("shname"),
         "QuotedPrice": parseFloat(sessionStorage.getItem("price")),
         "SubmissionTime": sessionStorage.getItem("subtime"),
@@ -3751,8 +3814,8 @@ function deleteCoalquote() {
             success1.show();
             $('#spansuccess1').html("Quoted Price deleted Successfully..");
             success1.fadeOut(6000);
-            App.scrollTo(success1, -200);
-            fetchparticationQuotes()
+           // App.scrollTo(success1, -200);
+            fetchparticationQuotes(BidID, VendorID);
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
@@ -3772,6 +3835,7 @@ function deleteCoalquote() {
 }
 
 function deletePEFAquote() {
+    debugger
     var _cleanString1 = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -3779,9 +3843,11 @@ function deletePEFAquote() {
         AttachementFileName = jQuery('#fileToUpload').html();
     }
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
+   
+    
     var QuoteProduct = {
-        "VendorID": parseInt($('#ddlvendors').val()),
-        "BidID": parseInt($('#ddlbid').val()),
+        "VendorID": VendorID,
+        "BidID": parseInt(BidID),
         "ShortName": sessionStorage.getItem("shname"),
         "QuotedPrice": parseFloat(sessionStorage.getItem("price")),
         "SubmissionTime": sessionStorage.getItem("subtime"),
@@ -3795,6 +3861,7 @@ function deletePEFAquote() {
     }
 
     connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        debugger
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
         if (xhr.status == 401) {
@@ -3808,18 +3875,19 @@ function deletePEFAquote() {
 
     });
     connection.on("refreshPEFAQuotes", function (data) {
+        debugger
         var JsonMsz = JSON.parse(data[0]);
 
         if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
             if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
+                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/BidID' + BidID);
 
             }
             success1.show();
             $('#spansuccess1').html("Quoted Price deleted Successfully..");
             success1.fadeOut(6000);
-            App.scrollTo(success1, -200);
-            fetchparticationQuotes();
+          //  App.scrollTo(success1, -200);
+            fetchparticationQuotes(BidID,VendorID);
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
@@ -3851,8 +3919,8 @@ function deleteFAquote() {
 
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
     var QuoteProduct = {
-        "VendorID": parseInt($('#ddlvendors').val()),
-        "BidID": parseInt($('#ddlbid').val()),
+        "VendorID": VendorID,
+        "BidID": parseInt(BidID),
         "ShortName": sessionStorage.getItem("shname"),
         "QuotedPrice": parseFloat(sessionStorage.getItem("price")),
         "SubmissionTime": sessionStorage.getItem("subtime"),
@@ -3890,8 +3958,8 @@ function deleteFAquote() {
             success1.show();
             $('#spansuccess1').html("Quoted Price deleted Successfully..");
             success1.fadeOut(6000);
-            App.scrollTo(success1, -200);
-            fetchparticationQuotes()
+          //  App.scrollTo(success1, -
+            fetchparticationQuotes(BidID, VendorID);
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
@@ -3909,3 +3977,5 @@ function deleteFAquote() {
     })
     jQuery.unblockUI();
 }
+
+
