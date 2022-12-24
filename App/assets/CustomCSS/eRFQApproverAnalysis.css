@@ -1,0 +1,23 @@
+﻿
+/*abheedev backlog 333*/
+thead {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    border: 2px solid darkgrey;
+}
+
+
+.table-scrollable {
+    overflow-y: auto !important;
+    max-height: 500px;
+}
+
+
+
+/*tr, td {
+    border: 1px solid black;
+}*/
+
+

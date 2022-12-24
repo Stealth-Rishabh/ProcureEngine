@@ -1,15 +1,40 @@
 var selectedgroup = [];
 var selectedgroupid = [];
 var cc = 0;
-/* if ($("#ddlTypeofProduct").select2('data').length) {
-    $.each($("#ddlTypeofProduct").select2('data'), function (key, item) {
-        selectedid.push(item.id);
-        selected.push(item.text);
-        $("#ddlTypeofProduct").append($("#ddlTypeofProduct").text(item.id) + '#');
-        result += selectedidss.concat(item.id, "#");
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
 
+    fetchMenuItemsFromSession(9, 14);
+    setCommonData();
+    FormValidation.init();
+    fetchRoleMaster();
+
+    fetchRegisterUser();
+    BindPurchaseOrg();
+    $('#ddlPurchasegroup').select2({
+        placeholder: "Select Purchase Group",
+        allowClear: true
     });
-    straddedproduct = result.slice('#', -1);*/
+
+});
+//
 function fnaddPurchaseOrg() {
     selectedgroup = [];
     selectedgroupid = [];
@@ -57,10 +82,7 @@ function deleterow(trid, rowcount, gid) {
 
     $('#' + trid.id).remove()
     cc = cc - 1;
-    /* selectedgroupid = jQuery.grep(selectedgroupid, function(value) {
-         return value != gid;
-     });
-     $("#ddlPurchasegroup").val(selectedgroupid).trigger('change')*/
+    
     if (jQuery('#tblpurchaseOrg tr').length == 1) {
         $('#theadgroup').addClass('hide');
     }
@@ -150,7 +172,9 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
-   
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActive').is(':checked') == true) {
@@ -180,17 +204,19 @@ function RegisterUser() {
     var RegisterUser = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": parseInt(jQuery("#hdnUserID").val()),
-        "UserName": jQuery("#txtUsername").val(),
+        //"UserName": jQuery("#txtUsername").val(),
+        "UserName": _cleanString,
         "MobileNO": jQuery("#txtmobilno").val(),
         "EmailID": jQuery("#txtemail").val(),
         "RoleID": parseInt(jQuery('#ddlroleMaster').val()),
         "IsActive": status,
         "CreatedBy": sessionStorage.getItem('UserID'),
-        "Designation": jQuery('#txtdesignation').val(),
+        //"Designation": jQuery('#txtdesignation').val(),
+        "Designation": _cleanString2,
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "purOrg": purOrg
     };
-   console.log(RegisterUser);
+    //alert(JSON.stringify(RegisterUser))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterUser/RegisterUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -205,7 +231,13 @@ function RegisterUser() {
                 jQuery('#divalertsucess').slideDown(1000);
                 fetchRegisterUser();
             }
-           
+            //    else if (data.isSuccess == 'N') {
+
+            //        $('.alert-danger').show();
+            //        $('#spanerror1').html('Server Error.');
+            //        App.scrollTo($('.alert-danger'), -300)
+            //        $('.alert-danger').fadeOut(5000);
+            //}
             else {
                 jQuery('#divalertsucess').hide();
                 $("#spanerror1").html('User already exists.!');
@@ -233,14 +265,20 @@ function RegisterUser() {
 
 
 function fetchRegisterUser() {
-    
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID'))+"&Isactive=T",
+       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
+        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
             jQuery("#tblRegisterUsers > tbody").empty();
@@ -279,13 +317,13 @@ function fetchRegisterUser() {
 
 function EditUser(ctrl) {
 
-    jQuery("#txtUsername").val(jQuery(ctrl).closest('tr').find("td").eq(1).html());
+    jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
     jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td").eq(2).html());
     jQuery("#txtmobilno").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtemail").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
     jQuery("#txtemail").closest('.form-group').removeClass('has-error').find('span').hide()
-    jQuery("#txtdesignation").val(jQuery(ctrl).closest('tr').find("td").eq(4).html());
+    jQuery("#txtdesignation").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(4).html()));
     jQuery("#txtdesignation").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#ddlroleMaster").val(jQuery(ctrl).closest('tr').find("td").eq(7).html());
     jQuery("#ddlroleMaster").closest('.form-group').removeClass('has-error').find('span').hide()
@@ -542,13 +580,19 @@ jQuery("#txtSearch").keyup(function () {
 
 function fetchUserDetails(UserID) {
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var userReqObj = {
+        "UserID": UserID,
+        "UserType": "R"
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + UserID + "&UserType=R",
+        //url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + UserID + "&UserType=R",
+        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/fetchMyprofileDetails",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
             cc = 0;

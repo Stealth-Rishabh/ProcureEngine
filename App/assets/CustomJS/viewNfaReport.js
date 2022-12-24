@@ -1,7 +1,27 @@
 var idx = 0;
 
 $(document).ready(function () {
+    $('[data-toggle="popover"]').popover({})
+    Pageloaded()
 
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
     var path = window.location.pathname;
     page = path.split("/").pop();
     if (window.location.search) {
@@ -11,11 +31,10 @@ $(document).ready(function () {
         AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"]
         $('#lblNFAID').html('NFA ID :' + idx)
         $('#lblnfa').html(idx)
-       
+
     }
 
-    if (idx != null)
-    {
+    if (idx != null) {
         BindSaveparams();
         $('#divNFADetails').show();
         GetOverviewmasterbyId(idx);
@@ -317,10 +336,10 @@ function FetchRecomendedVendor() {
             if (data.length > 0) {
                 $('#divforapprovalprocess').show()
                 $('#tblNFaHistory').append('<tr><th>Action Taken By</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
-                  for (var i = 0; i < data.length; i++) {
-                        $('#tblNFaHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                    }
-                    $('#frmdivapprove').show()
+                for (var i = 0; i < data.length; i++) {
+                    $('#tblNFaHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                }
+                $('#frmdivapprove').show()
             }
             else {
                 $('#tblNFaHistory').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
@@ -354,9 +373,9 @@ function GetQuestions() {
             jQuery("#tblquestions").empty();
             var attach = 'No Attachment';
             if (data.length > 0) {
-              jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
+                jQuery('#tblquestions').append("<thead><tr><th class='bold' style='width:40%!important'>Questions</th><th class='bold' style='width:40%!important'>Answer</th><th class='bold' style='width:10%!important'>Attachment</th><th class='bold' style='width:5%!important'>CreatedBy</th><th style='width:5%!important'></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
-                   
+
                     attach = '';
                     if (data[i].attachment != '') {
                         attach = '<a style="pointer: cursor; text-decoration:none; "  id=eRFQVQueryFiles' + i + ' href="javascript: ; " onclick="DownloadFileVendor(this)" >' + data[i].attachment + '</a>';
@@ -371,7 +390,7 @@ function GetQuestions() {
                 }
 
             }
-            
+
         },
         error: function (xhr, status, error) {
 

@@ -8,22 +8,23 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
           type="text/css" />
-          
-       <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-		  <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
-    
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
@@ -31,9 +32,9 @@
           type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-    <style>
-    .date-picker{z-index:1151 !important;}
-    </style>
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -85,7 +86,7 @@
                             </i>
                         </li>
                         <li><a href="javascript:;">Reports</a> <i class="fa fa-angle-right"></i></li>
-                        <li><a href="javascript:;">VQ/RFI/RFQ Summary</a> </li>
+                        <li><a href="javascript:;">VQ/RFI Summary</a> </li>
                     </ul>
                  <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
@@ -203,15 +204,15 @@
                 <div class="portlet-body form">                    
                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
 						 <p class="ppolicy-text">
-                            The purpose of VQ/RFQ report is to see the details of VQ/RFQ responses received from vendors using our sourcing portal. 
+                            The purpose of VQ/RFI report is to see the details of VQ/RFI responses received from vendors using our sourcing portal. 
 							The report can be taken out using one or many filtration parameters. 
-							The filter parameters are Report for (VQ/RFQ), Vendor Name, Subject, from/to dates.
+							The filter parameters are Report for (VQ/RFI), Vendor Name, Subject, from/to dates.
                         </p>
                         <p class="ppolicy-text">
-                           Click on go button will display the result in grid having VQ/RFQ Reference No., Deadline Date, Vendor Name and Subject.
+                           Click on go button will display the result in grid having VQ/RFI Reference No., Deadline Date, Vendor Name and Subject.
  
                         </p>
-                        <p class="ppolicy-text">Clicking VQ/RFQ Reference No. will open a screen showing detailed information of VQ/RFQ.</p>
+                        <p class="ppolicy-text">Clicking VQ/RFI Reference No. will open a screen showing detailed information of VQ/RFI.</p>
                     </div>
                 </div>
             </div>

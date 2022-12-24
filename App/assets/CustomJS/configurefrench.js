@@ -1,5 +1,47 @@
+﻿jQuery(document).ready(function () {
+
+    Pageloaded()
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(1, 63);
+    FetchCurrency('0');
+
+    fetchRegisterUser('1');
+    fetchBidType();// for serach vendor
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+ 
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+
+    }, 2000);
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchVendorGroup('M', 0); // used to fetch product category
+});
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 $("#cancelBidBtn").hide();
 
+$('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
         alias: "decimal",
@@ -18,6 +60,30 @@ jQuery(document).ready(function () {
 
     });
 });
+
+var _BidID;
+var _savedDraft = '';
+sessionStorage.setItem('_savedDraft', 'N');
+if (window.location.search) {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0);
+        _BidID = 0;
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+       
+        fetchFrenchBidDetails();
+        sessionStorage.setItem('_savedDraft', 'Y')
+    }
+}
+
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
+
 function CheckminQuantity(id) {
     var biddidval = $('#' + id.id).val();
     if (parseFloat(removeThousandSeperator(biddidval)) > parseFloat(removeThousandSeperator($('#txtquantitiy').val())) || $('#txtquantitiy').val() == "") {
@@ -155,7 +221,7 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         maxidnum = 0;
         $("#tblpreBidapprovers tr:gt(0)").each(function () {
             var this_row = $(this);
-           num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
             if (parseInt(num) > parseInt(maxidnum)) {
                 maxidnum = num;
             }
@@ -385,11 +451,13 @@ function FetchCurrency(CurrencyID) {
 }
 var vCount = 0;
 function Check(event, vname, vendorID) {
+   
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
 
     }
     else {
+       
         vCount = vCount + 1;
         //var EvID = event.id;
         $(event).prop("disabled", true);
@@ -412,7 +480,7 @@ function Check(event, vname, vendorID) {
 }
 
 function removevendor(trid, trprevid, vid) {
-
+   
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
@@ -438,7 +506,7 @@ function removevendor(trid, trprevid, vid) {
 
 var status;
 function ValidateVendor() {
-
+  
     status = "false";
     var i = 0;
 
@@ -462,6 +530,7 @@ function ValidateVendor() {
 }
 
 $("#chkAll").click(function () {
+   
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -469,6 +538,7 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
+           
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + vCount).prop("disabled", true);
             var vendorid = $('#chkvender' + vCount).val()
@@ -482,6 +552,7 @@ $("#chkAll").click(function () {
     }
     else {
         $("#tblvendorlist> tbody > tr").each(function (index) {
+           
             $(this).find("span#spanchecked").removeClass("checked");
             vCount = 0;
             $('input[name="chkvender"]').prop('disabled', false);
@@ -505,38 +576,49 @@ $("#chkAll").click(function () {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID'))+"&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
             }
+
         },
         error: function (xhr, status, error) {
-
+    
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
 
         }
 
+
     });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 
@@ -641,7 +723,7 @@ var FormWizard = function () {
                     txtminquantitiy: {
                         required: true,
                         number: true,
-                       // notEqualTo: 0
+                        // notEqualTo: 0
                     },
                     txtmaxquantitiy: {
                         required: true,
@@ -840,6 +922,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
+                     
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -923,6 +1006,10 @@ var FormWizard = function () {
 }();
 
 function ConfigureBidInsfrenchTab1() {
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -962,14 +1049,18 @@ function ConfigureBidInsfrenchTab1() {
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
     }
+
+
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
         "BidTypeID": 9,
         "BidForID": parseInt($("#ddlAuctiontype option:selected").val()),
         "BidDuration": parseInt(bidDuration),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         "BidDate": StartDT,
         //"BidDate": jQuery("#txtbidDate").val(),
         //"BidTime": jQuery("#txtbidTime").val(),
@@ -1036,6 +1127,8 @@ function ConfigureBidInsfrenchTab1() {
 }
 
 function ConfigureBidInsfrenchTab2() {
+   
+  
     var targetPrice;
     var lastInvoiceprice = 0, i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1046,16 +1139,18 @@ function ConfigureBidInsfrenchTab2() {
 
         $("#tblServicesProduct tr:gt(0)").each(function () {
             var this_row = $(this);
-            i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            i = (this_row.closest('tr').attr('id')).substring(4);
             targetPrice = 0, tab2Data = '';
             if ($.trim($('#TP' + i).text()) != '') {
                 targetPrice = $.trim($('#TP' + i).text());
             }
 
+            var _cleanString3 = StringEncodingMechanism($.trim($('#itemname' + i).text()));
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim($('#itemcode' + i).text()),
-                "ItemName": $.trim($('#itemname' + i).text()),
+                //"ItemName": $.trim($('#itemname' + i).text()),
+                "ItemName": _cleanString3,
                 "Description": "",
                 "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                 "Quantity": parseFloat(removeThousandSeperator($.trim($('#quantity' + i).text()))),
@@ -1084,9 +1179,7 @@ function ConfigureBidInsfrenchTab2() {
 
     };
 
-
-    //alert(JSON.stringify(Tab2data))
-    console.log(JSON.stringify(Tab2data))
+  
     jQuery.ajax({
 
         type: "POST",
@@ -1098,6 +1191,7 @@ function ConfigureBidInsfrenchTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
+           
             if (parseInt(data) > 0) {
                 return true;
             }
@@ -1126,6 +1220,7 @@ function ConfigureBidInsfrenchTab2() {
     jQuery.unblockUI();
 }
 function ConfigureFrenchVendorsave() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
@@ -1327,6 +1422,7 @@ $('#addapprovers').on("hidden.bs.modal", function () {
     $('#frmapproverbody').addClass('hide')
     $('#txtpreApproverBid').val('')
     sessionStorage.setItem('hdnpreApproverid', '0');
+   
     fetchFrenchBidDetails();
 })
 function fnclosepopupApprovers() {
@@ -1361,8 +1457,8 @@ function InsUpdProductSevices() {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
                 var this_row = $(this);
-                i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
-               // if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#txtUOM").val() && $.trim($('#BSP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mininc' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val()) {
+                i = (this_row.closest('tr').attr('id')).substring(4);
+                // if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#txtUOM").val() && $.trim($('#BSP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mininc' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val()) {
                 if ($.trim($('#itemname' + i).html()) == $.trim($('#txtshortname').val())) {
                     st = "false"
                 }
@@ -1462,7 +1558,7 @@ function InsUpdProductSevices() {
         }
 
         else {
-            st = "true"; 
+            st = "true";
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
@@ -1501,9 +1597,9 @@ function InsUpdProductSevices() {
                 }
                 else {
                     $("#tblServicesProduct tr:gt(0)").each(function () {
-                        
+
                         var this_row = $(this);
-                        i = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+                        i = (this_row.closest('tr').attr('id')).substring(4);
                         if ($.trim($('#itemname' + i).html()) == $.trim($('#txtshortname').val())) {
                             st = "false"
                         }
@@ -1555,7 +1651,7 @@ function ParametersQuery() {
         $("#tblServicesProduct tr:gt(0)").each(function () {
             var this_row = $(this);
 
-           num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
             if (parseInt(num) > parseInt(maxinum)) {
                 maxinum = num;
             }
@@ -1780,24 +1876,26 @@ jQuery("#txtSearch").keyup(function () {
 });
 var _bidType;
 function fetchFrenchBidDetails() {
-
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + sessionStorage.getItem('CurrentBidID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
+            
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
 
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject))
 
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails))
             //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
             //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
             jQuery('#txtbidDate').val(dtst)
@@ -1906,8 +2004,9 @@ function fetchFrenchBidDetails() {
                 rowAppItemsrno = rowAppItemsrno + 1;
             }
             if (BidData[0].bidVendorDetails.length > 0) {
-
+              
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
+                  
                     vCount = vCount + 1;
                     jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
@@ -1918,14 +2017,7 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-           /* setTimeout(function () {
-                if (sessionStorage.getItem("BidPreApp") == "N" || sessionStorage.getItem("BidPreApp") == undefined || sessionStorage.getItem("BidPreApp") == null) {
-                    $('#btnsubmit').text("Submit")
-                }
-                else {
-                    $('#btnsubmit').text("Submit for PreApproval")
-                }
-            }, 800);*/
+           
 
         },
         error: function (xhr, status, error) {
@@ -2122,10 +2214,10 @@ function fetchPSBidDetailsForPreview() {
     var hidevendor = 'No';
     jQuery('#mapedapproverPrev').html('');
 
-    jQuery('#txtBidSubjectPrev').html($('#txtBidSubject').val())
+    jQuery('#txtBidSubjectPrev').html(StringEncodingMechanism($('#txtBidSubject').val()))
     jQuery('#txtBidDurationPrev').html($('#txtBidDuration').val())
     $("#ddlauctiontypePrev").html($("#ddlAuctiontype option:selected").html())
-    jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
+    jQuery('#txtbiddescriptionPrev').html(StringEncodingMechanism($('#txtbiddescription').val()))
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
     //jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
@@ -2283,7 +2375,7 @@ jQuery("#txtSearch").typeahead({
 
             var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
-
+           
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
@@ -2327,7 +2419,7 @@ function getCategoryWiseVendors(categoryID) {
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
-
+           
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 

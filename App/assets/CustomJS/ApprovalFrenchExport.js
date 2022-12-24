@@ -3,19 +3,63 @@ var ButtonType = '';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
-    
     BidID = getUrlVarsURL(decryptedstring)["BidID"]
-    
+    jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
+        if (getUrlVarsURL(decryptedstring)["App"] == 'N') {
+
+            tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+        }
+        else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Approver") {
+            tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+        }
+        else if (getUrlVarsURL(decryptedstring)["App"] == 'Y' && getUrlVarsURL(decryptedstring)["FwdTo"] == "Admin") {
+            tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+        }
+    });
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
+    QuickSidebar.init();
+    App.init();
+    setCommonData();
+    FormValidation.init();
     FetchVendors(BidID);
 	Fillhelp(getUrlVars()["App"]);
 });
+
+/*jQuery(document).ready(function () {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param)
+    
+    
+    
+    
+});*/
 
 $('#txtRemarks,#txtbidspecification,#txtRemarksAward,#txtRemarksApp').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
 function FetchVendors(BidID) {
-	
+	debugger;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

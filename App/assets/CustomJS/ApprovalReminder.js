@@ -1,3 +1,35 @@
+﻿jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    FetchAllCustomer();
+    fetchMenuItemsFromSession(9, 48);
+
+    setTimeout(function () {
+        FetchAllpendingWith();
+    }, 1000);
+    //setTimeout(function () {
+    //    FetchAllCloseBids();
+    //}, 2000);
+});
+
 var APIPath = sessionStorage.getItem("APIPath");
 function FetchAllCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -26,7 +58,6 @@ function FetchAllCustomer() {
                     $('#ddlCustomer').prop('disabled',true)
                    }
                 }
-                 FetchAllpendingWith();
         },
         error: function (xhr, status, error) {
               
@@ -49,13 +80,20 @@ function FetchAllCustomer() {
 }
 function FetchAllpendingWith() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var CustID = parseInt(jQuery("#ddlCustomer option:selected").val());
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingWith/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: APIPath + "BidVendorSummary/fetchAllPendingWith/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val(),
+        //url: APIPath + "BidVendorSummary/fetchAllPendingWith",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        //data: JSON.stringify(bidRequestObj),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -91,15 +129,22 @@ function FetchAllpendingWith() {
 }
 function FetchViewAllPendingBids() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   
+    var CustID = parseInt(jQuery("#ddlCustomer option:selected").val())
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=0",
+        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype option:selected").val() + "&PendingOn=0",
+        //url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: '',
         cache: false,
         crossDomain: true,
+        //data:JSON.stringify(bidRequestObj),
         dataType: "json",
         success: function (BidData) {
             jQuery("#tbldetails").empty();
@@ -113,7 +158,7 @@ function FetchViewAllPendingBids() {
 
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
-                    str += "<td>" + fnConverToLocalTime(BidData[i].pendingSince) + "</td>";
+                    str += "<td>" + BidData[i].pendingSince + "</td>";
                     str += "</tr>";
                     jQuery('#tbldetails').append(str);
 
@@ -203,12 +248,18 @@ function FetchViewAllPendingBids() {
 function FetchAllCloseBids() {
    // FetchAllpendingWith();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var bidRequestObj = {
+        "BidType": jQuery("#ddleventtype option:selected").val(),
+        "CustomerID": CustID,
+        "PendingOn": 0
+    }
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&PendingOn=" + $('#ddlPendingwith').val(),
+        url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&BidType=" + jQuery("#ddleventtype").val() + "&PendingOn=" + $('#ddlPendingwith').val(),
+        //url: APIPath + "BidVendorSummary/fetchAllPendingApprovalBids",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: '',
+        //data: JSON.stringify(bidRequestObj),
         cache: false,
         crossDomain: true,
         dataType: "json",
@@ -228,7 +279,7 @@ function FetchAllCloseBids() {
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
                     str += "<td class=hide id=pendingon"+i+">" + BidData[i].toUserId + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
-                    str += "<td>" + fnConverToLocalTime(BidData[i].pendingSince) + "</td>";
+                    str += "<td>" + BidData[i].pendingSince + "</td>";
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -35,15 +35,39 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
 
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/scripts/core/app.js"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -52,9 +76,11 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -67,7 +93,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -113,8 +139,8 @@
                             <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
-                        <li><a href="javascript:;" style="text-decoration:none">Manage </a><i class="fa fa-angle-right"></i></li>
-                        <li><a href="javascript:;" style="text-decoration:none">Reset Password | Invite Vendors | Remove Quotes From Bid</a></li>
+                        <li><a href="javascript:;" class="notextdeco">Manage </a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="javascript:;" class="notextdeco">Reset Password | Invite Vendors | Remove Quotes From Bid</a></li>
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -139,10 +165,10 @@
                             <div class="portlet-body">
                                 <!-- BEGIN FORM-->
 
-                                <div class="alert alert-success" style='display: none;'>
+                                <div class="alert alert-success">
                                     <span id="spansuccess1"> </span>
                                 </div>
-                                <div class="alert alert-danger" style='display: none; '>
+                                <div class="alert alert-danger">
                                     <span id="spandanger"> </span>
                                 </div>
                                 <!--<div class="form-body">-->
@@ -157,7 +183,7 @@
                                     </label>
                                     <div class="col-lg-8">
                                         <select class="form-control" id="ddlbid" name="ddlbid"></select>
-                                       
+
                                     </div>
 
                                 </div>
@@ -203,13 +229,13 @@
                                                                             </label>
                                                                             <div class="col-lg-10">
 
-                                                                                <input type="text" class="form-control" id="txtvendor" name="txtvendor"
-                                                                                       style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Vendors" />
+                                                                                <input type="text" class="form-control margin0auto" id="txtvendor" name="txtvendor"
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Vendors" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-actions fluid" style="padding:5px!important;">
+                                                                    <div class="form-actions fluid padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
                                                                             <button type="button" class="btn green" onclick="resetpasswordForBidVendor()">
                                                                                 Reset Password
@@ -245,12 +271,12 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
-                                                                                <table style="width:920px" align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                <table align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width920px">
                                                                                     <thead class="flip-content">
                                                                                         <tr>
                                                                                             <th width="20%">
                                                                                                 <div class="col-md-10 checkbox-list">
-                                                                                                    <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                    <label class="checkbox-inline checkboxinline1">
                                                                                                         <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />&nbsp;All
                                                                                                     </label>
                                                                                                 </div>
@@ -268,7 +294,7 @@
                                                                     </div>
                                                                 </form>
 
-                                                                <div class="form-actions fluid" style="padding:5px!important;">
+                                                                <div class="form-actions fluid padding5px">
                                                                     <div class="col-md-offset-4 col-md-6">
                                                                         <button type="button" onclick="invitevendors()" class="btn green">
                                                                             Invite Vendor
@@ -299,10 +325,10 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label class="col-lg-2  control-label"  id="tbllbl">
+                                                                            <label class="col-lg-2  control-label" id="tbllbl">
 
                                                                             </label>
-                                                                            <div class="col-lg-10" id="tbldiv" >
+                                                                            <div class="col-lg-10" id="tbldiv">
                                                                                 <div class="table-scrollable">
                                                                                     <table id="tblquotedprices" class="table table-bordered table-striped "></table>
                                                                                 </div>
@@ -320,193 +346,193 @@
 
 
                                                 </div>
-                                                 <div class="tab-pane" id="tab_3">
+                                                <div class="tab-pane" id="tab_3">
 
                                                     <div class="col-md-12">
                                                         <!-- BEGIN Portlet PORTLET-->
                                                         <div class="portlet light ">
 
                                                             <div class="portlet-body">
-                                                             <form class="form-horizontal" role="form">
-                                                <div class="form-body">
-                                                    
-                                                    <div id="BidPreviewDiv" class="display-none">
-                                                        <h3 class="form-section">Bid Details</h3>
+                                                                <form class="form-horizontal" role="form">
+                                                                    <div class="form-body">
 
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-2">Bid Subject:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="txtBidSubjectPrev">
+                                                                        <div id="BidPreviewDiv" class="display-none">
+                                                                            <h3 class="form-section">Bid Details</h3>
 
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-2">Bid Subject:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="txtBidSubjectPrev">
 
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-2">Bid Description:</label>
-                                                                    <div class="col-md-9">
-                                                                        <p class="form-control-static" id="txtbiddescriptionPrev">
-
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Bid Date:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="txtbidDatePrev">
-
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Time:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="txtbidTimePrev">
-
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Currency:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="dropCurrencyPrev">
-
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Conversion Rate:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="txtConversionRatePrev">
-
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Term & Condition:</label>
-                                                                    <div class="col-md-8">
-                                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;">
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Attachment (If Any):</label>
-                                                                    <div class="col-md-8">
-                                                                        <a class="form-control-static" id="filepthattachPrev" style="text-decoration: none;"></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row">
-                                                            <div class="col-md-6 staggered-item display-none">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Bid Closing Type</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="ddlbidclosetypePrev">
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Bid Duration (If Any):</label>
-                                                                    <div class="col-md-3">
-                                                                    <p class="form-control-static display-none" id="txtbidduration"></p>
-                                                                        <div id="spinner4" class="display-none">
-                                                                            <div class="input-group" style="width:120px;">
-                                                                                <div class="spinner-buttons input-group-btn">
-                                                                                    <button type="button" class="btn spinner-up blue">
-                                                                                        <i class="fa fa-plus"></i>
-                                                                                    </button>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <input type="text" class="spinner-input form-control" id="txtBidDurationPrev" maxlength="3" readonly/>
-                                                                                <div class="spinner-buttons input-group-btn">
-                                                                                    <button type="button" class="btn spinner-down red">
-                                                                                        <i class="fa fa-minus"></i>
-                                                                                    </button>
+                                                                                <!--/span-->
+
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-2">Bid Description:</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <p class="form-control-static" id="txtbiddescriptionPrev">
+
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Bid Date:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="txtbidDatePrev">
+
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Time:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="txtbidTimePrev">
+
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Currency:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="dropCurrencyPrev">
+
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Conversion Rate:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="txtConversionRatePrev">
+
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Term & Condition:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev">
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Attachment (If Any):</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <a class="form-control-static notextdeco" id="filepthattachPrev"></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row">
+                                                                                <div class="col-md-6 staggered-item display-none">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Bid Closing Type</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="ddlbidclosetypePrev">
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Bid Duration (If Any):</label>
+                                                                                        <div class="col-md-3">
+                                                                                            <p class="form-control-static display-none" id="txtbidduration"></p>
+                                                                                            <div id="spinner4" class="display-none">
+                                                                                                <div class="input-group width120px">
+                                                                                                    <div class="spinner-buttons input-group-btn">
+                                                                                                        <button type="button" class="btn spinner-up blue">
+                                                                                                            <i class="fa fa-plus"></i>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    <input type="text" class="spinner-input form-control" id="txtBidDurationPrev" maxlength="3" readonly />
+                                                                                                    <div class="spinner-buttons input-group-btn">
+                                                                                                        <button type="button" class="btn spinner-down red">
+                                                                                                            <i class="fa fa-minus"></i>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="col-md-1 display-none" id="btndiv">
+                                                                                            <button id="btnextendA" type="button" class="btn green" onclick="fnTimeUpdate()">
+                                                                                                Go
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <p class="form-control-static pstyle1" id="extendedDurationPara">Time&nbsp;Extended&nbsp;Successfully</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/span-->
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <div class="row staggered-item display-none">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="control-label col-md-4">Approvers:</label>
+                                                                                        <div class="col-md-8">
+                                                                                            <p class="form-control-static" id="mapedapproverPrev"></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <!--/row-->
+                                                                            <h3 class="form-section display-none" id="head-stagger">Bid parameter details</h3>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="table-scrollable display-none" id="wrap_scrollerPrev">
+                                                                                        <table class=" table table-striped table-bordered table-hover" id="tblServicesProductPrev"></table>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
+
                                                                         </div>
-                                                                        </div>
-                                                                    
-                                                                       <div class="col-md-1 display-none" id="btndiv">
-                                                                        <button id="btnextendA" type="button" class="btn green" onclick="fnTimeUpdate()">
-                                                                            Go
-                                                                        </button>
-                                                                       </div>
-                                                                       <div class="col-md-4">
-                                                                       <p class="form-control-static" id="extendedDurationPara" style="color:#3c763d; font-weight: 600; display: none;">Time&nbsp;Extended&nbsp;Successfully</p>
-                                                                       </div>
-                                                                </div>
-                                                            </div>
-                                                            <!--/span-->
-                                                        </div>
-                                                        <!--/row-->
-                                                        <div class="row staggered-item display-none">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-4">Approvers:</label>
-                                                                    <div class="col-md-8">
-                                                                        <p class="form-control-static" id="mapedapproverPrev"></p>
+                                                                        <input type="hidden" value="0" id="hdnClosingval" />
+
                                                                     </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <!--/row-->
-                                                        <h3 class="form-section display-none" id="head-stagger">Bid parameter details</h3>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="table-scrollable display-none" id="wrap_scrollerPrev">
-                                                                    <table class=" table table-striped table-bordered table-hover" id="tblServicesProductPrev"></table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <input type="hidden" value="0" id="hdnClosingval" />
-                                                   
-                                                </div>
-                                            </form>
+                                                                </form>
                                                             </div>
 
 
@@ -535,7 +561,7 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -554,17 +580,17 @@
                     </div>
                 </div>
                 <div class="portlet-body form">
-                    
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
-						 <p class="ppolicy-text">
-                           Using this screen user, can see the open bids in drop down list and by selecting a particular bid he can perform following actions:
+
+                    <div class="modal-body modalbody2">
+                        <p class="ppolicy-text">
+                            Using this screen user, can see the open bids in drop down list and by selecting a particular bid he can perform following actions:
                         </p>
-                        
-						<ul style="list-style: none !important;">
-						<li>1. Reset password: Password of selected vendor can be reset using this feature.</li>
-						<li>2. Invite other vendors: Left out vendors can be invited to participate in bid.</li>
-						<li>3. Remove quote: Submitted quotes of a vendor can be removed while bidding is in progress by specifying valid reasons.</li>
-						</ul>
+
+                        <ul class="liststylenone">
+                            <li>1. Reset password: Password of selected vendor can be reset using this feature.</li>
+                            <li>2. Invite other vendors: Left out vendors can be invited to participate in bid.</li>
+                            <li>3. Remove quote: Submitted quotes of a vendor can be removed while bidding is in progress by specifying valid reasons.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -588,10 +614,10 @@
 
                         <div class="portlet-body form">
                             <form action="#" id="maphead" class="form-horizontal" role="form">
-                                <div class="alert alert-block alert-danger" id="errormapdiv" style="display: none">
+                                <div class="alert alert-block alert-danger" id="errormapdiv">
                                     <span id="err"></span>
                                 </div>
-                                <div class="alert alert-success" id="successmapdiv" style="display: none">
+                                <div class="alert alert-success" id="successmapdiv">
                                     <span id="succ"></span>
                                 </div>
                                 <div class="form-body">
@@ -609,7 +635,7 @@
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-                                           
+
 
                                             <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" />
 
@@ -639,58 +665,12 @@
         </div>
         <!-- END CONTENT -->
     </div>
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-            <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/ResetInviteVendor.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-
-    <script src="assets/CustomJS/Auction.js"></script>
-    <script type="text/javascript">
+   
+   
+    <script type="text/javascript" nonce="pev3">
 
         jQuery(document).ready(function () {
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                 window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            App.init();
-            setCommonData();
-            fetchUserBids();
-            fetchMenuItemsFromSession(9, 18);
-            FormValidate()
-
+            callPagejs('Auction.js,ResetInviteVendor.js');
         });
     </script>
     <!-- END JAVASCRIPTS -->

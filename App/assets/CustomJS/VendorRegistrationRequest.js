@@ -16,6 +16,41 @@ jQuery(document).ready(function () {
     $('#txtLastFiscalyear').val(getCurrentFinancialYear())
     $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
+//function addMoreAttachment1() {
+
+//    _count = ($("#tblAttachmentsElem > li").length + 1);
+
+//    console.log("count ==> ", _count);
+
+//    $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
+
+//        '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
+
+//        '<div class="col-md-4">' +
+
+//        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
+
+//        '</div>' +
+
+//        '<div class="col-md-3">' +
+
+//        '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
+
+//        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
+
+//        '</div>' +
+
+//        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
+
+//        '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
+
+//        '</div>' +
+
+//        '</div></li>'
+
+//    );
+
+//}
 
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -348,6 +383,12 @@ function fetchMsme() {
     }
 }
 function SubmitVendorRegistration() {
+    var _cleanString = StringEncodingMechanism($("#ddlCompanyName").val().trim());
+    var _cleanString2 = StringEncodingMechanism($("#txtBank").val().trim());
+    var _cleanString3 = StringEncodingMechanism($("#txtAccountHolder").val().trim());
+    var _cleanString4 = StringEncodingMechanism($("#txtContName").val().trim());
+    var _cleanString5 = StringEncodingMechanism($("#txtContName2").val().trim());
+
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];
@@ -409,7 +450,8 @@ function SubmitVendorRegistration() {
             "vendorCatID": parseInt($("#ddlVendorType").val()),
             "vendorCatName": $("#ddlVendorType option:selected").text().trim(),
             "product": $("#txtProduct").val(),
-            "vendorName": $("#ddlCompanyName").val().trim(),
+            //"vendorName": $("#ddlCompanyName").val().trim(),
+            "vendorName": _cleanString,
             "vendorAdd": $("#txtAdd1").val().trim(),
             "countryID": parseInt($("#ddlCountry").val()),
             "countryName": $("#ddlCountry option:selected").text().trim(),
@@ -425,10 +467,12 @@ function SubmitVendorRegistration() {
             "gSTClass": gstclassvalue,
             "ServiceTaxNo": $("#txtGst").val().trim(),
             "payTermID": paymenttermvalue,
-            "bankName": $("#txtBank").val().trim(),
+            //"bankName": $("#txtBank").val().trim(),
+            "bankName": _cleanString2,
             "bankAccount": $("#txtAcNo").val().trim(),
             "iFSCCode": $("#txtIFSC").val().trim(),
-            "accountName": $("#txtAccountHolder").val().trim(),
+            //"accountName": $("#txtAccountHolder").val().trim(),
+            "accountName": _cleanString3,
             "mSMECheck": $("#ddlMSME option:selected").val(),
             "mSMEType": msmeselectvalue,
             "mSMENo": $("#txtUdyam").val().trim(),
@@ -436,10 +480,12 @@ function SubmitVendorRegistration() {
             "secondLastTurnover": $("#txt2LastFiscal").val().trim(),
             "previousTurnoverYear": $("#txtLastFiscalyear").val().trim(),
             "secondLastTurnoverYear": $("#txt2LastFiscalyear").val().trim(),
-            "contactName": $("#txtContName").val().trim(),
+            //"contactName": $("#txtContName").val().trim(),
+            "contactName": _cleanString4,
             "contactEmailID": $("#txtEmail").val().trim(),
             "mobile": $("#txtMobile").val().trim(),
-            "contactNameMD": $("#txtContName2").val().trim(),
+            //"contactNameMD": $("#txtContName2").val().trim(),
+            "contactNameMD": _cleanString5,
             "mobileMD": $("#txtMobile2").val().trim(),
             "AltEmailID": $("#txtEmail2").val().trim(),
             "gSTFile": gstfilename,
@@ -452,7 +498,8 @@ function SubmitVendorRegistration() {
         }
     };
 
-  
+    console.log(JSON.stringify(VendorInfo));
+    alert(JSON.stringify(VendorInfo))
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -703,7 +750,7 @@ function FormValidate() {
             txtAdd1: {
                 required: true,
             },
-            ddlGSTclass:{
+            ddlGSTclass: {
                 required: true,
                 notEqualTo: 0
             },
@@ -787,9 +834,9 @@ function FormValidate() {
             filecheck: {
                 required: true
             },
-          /*  filepan: {
-                required: true
-            }*/
+            /*  filepan: {
+                  required: true
+              }*/
 
 
         },
@@ -945,7 +992,7 @@ $('#registerParticipantModal').on("hidden.bs.modal", function () {
     $('#H4ContactDetails').removeClass('collapsed').addClass('collapsed')
     window.location = window.location.href.split('#')[0];
 })
-function fnClearformfields(){
+function fnClearformfields() {
     $('#diverrorvendor').fadeOut(7000);
     $("#txtContName").val('')
     $("#txtEmail").val('')
@@ -999,7 +1046,7 @@ function fnFormClear() {
     $('#diverrorvendor').fadeOut(7000);
 }
 function fnChangeGSTClass() {
-  
+
     if ($('#ddlGSTclass').val().toLowerCase() == "registered") {
         $('#submit_form').validate();
         $('#gstfilespn').html('*');
@@ -1010,7 +1057,7 @@ function fnChangeGSTClass() {
             required: true,
             maxlength: 15
         });
-         $('#filegst').rules('add', {
+        $('#filegst').rules('add', {
             required: true
         });
         $('#txtPan').rules('add', {

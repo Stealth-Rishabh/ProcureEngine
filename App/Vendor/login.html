@@ -1,334 +1,341 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en">
-    <!--<![endif]-->
-    <!-- BEGIN HEAD -->
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
 
-    <head>
-        <meta charset="utf-8" />
-        <title>Sourcing Portal</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        
-        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-		 <link href="../assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
-        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
-        <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="../assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL STYLES -->    
-        <link rel="shortcut icon" href="../favicon.ico" /> 
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="../assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->
+    <link rel="shortcut icon" href="../favicon.ico" />
     <style>
-        .user-login-5 .login-container>.login-content {
+        .user-login-5 .login-container > .login-content {
             margin-top: 20%;
         }
     </style>
-    </head>
-    <!-- END HEAD -->
+</head>
+<!-- END HEAD -->
 
-    <body class=" login">
-        <!-- BEGIN : LOGIN PAGE 5-1 -->
-        <div class="user-login-5">
-            <div class="row bs-reset">
-                <div class="col-md-6 bs-reset">
-                     <div class="login-bg" style="background-image:url(assets/bg1.jpg)">
-                        <!--<img class="login-logo" src="assets/img/mmlogo.png" />--></div>
-                </div>
-                <div class="col-md-6 login-container bs-reset">
-                    <div class="col-md-12">
-                    <img class="login-logo" src="../assets/images/logo.png" />
-                </div>
-		<div class="clearfix"></div><br /><br />
-                
-                    <div class="login-content white">
-                     <p style="text-align: justify;"> Procur[E]ngine is an advanced e-Negotiation platform, powered by AgileApt Solutions Pvt Ltd, enabling global customers and vendors to seamlessly exchange information in finalizing their B2B Contracts saving time, cost and money – in a transparent manner. </p>
-		     
-                        <form action="#" class="login-form" method="post">
-		     <div class="alert alert-danger display-none" id="alrt1">
-                                <button class="close" data-close="alert"></button>
-                                <span id="alertmessage1"> </span>
-                     </div>
-		     <div class="alert alert-success display-none" id="succs1">
-                                <button class="close" data-close="alert"></button>
-                                <span id="sucssmessage1"> </span>
-                     </div>
-                           <h1 class="font-green">User Login</h1>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <input class="form-control form-control-solid placeholder-no-fix form-group " type="text" autocomplete="off" placeholder="Username" id="username" name="username" />
-                                </div>
-                                <div class="col-xs-6">
-                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password" />
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <!--<div class="col-sm-4">
-                                    <div class="rem-password">
-                                        <p>
-                                            Remember Me
-                                            <input type="checkbox" class="rem-checkbox" />
-                                        </p>
-                                    </div>
-                                </div>-->
-                                <!--<a href="#registerParticipantModal" class="pull-left" style="color:#ff0000;text-decoration:none;" data-toggle="modal">Register as new vendor</a>-->
-                                <div class="col-sm-8 text-right pull-right">
-                                    <div class="forgot-password">
-                                        <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
-                                    </div>
-                                    <button class="btn blue" type="submit">Sign In</button>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- BEGIN FORGOT PASSWORD FORM -->
-                        <form class="forget-form display-none" action="javascript:;" method="post" style="margin-top: 80px !important;">
-                     	<div class="alert alert-danger display-none" id="alrt2">
-                                <button class="close" data-close="alert"></button>
-                                <span id="alertmessage2"> </span>
-                     	</div>
-		     	<div class="alert alert-success display-none" id="succs2">
-                                <button class="close" data-close="alert"></button>
-                                <span id="sucssmessage2"> </span>
-                     	</div>
-                            
-                            <h3 class="font-green">Forgot Password ?</h3>                      
-                            <div class="form-group">
-                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" id="txtemail" /> </div>
-                            <div class="form-actions">
-                                <button type="button" id="back-btn" class="btn grey btn-default">Back</button>
-                                <button type="submit" class="btn blue btn-success uppercase pull-right">Submit</button>
-                            </div>
-                        </form>
-                        <!-- END FORGOT PASSWORD FORM -->
-                    </div>   
-                    <div class="login-footer">
-                        <div class="row bs-reset">
-                            <!--<div class="col-xs-5 bs-reset">
-                                <ul class="login-social">
-                                    <li>
-                                        <a href="javascript:;">
-                                            <i class="icon-social-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <i class="icon-social-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <i class="icon-social-dribbble"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>-->
-                            <div class="col-xs-12  pull-right">
-                                <div class="login-copyright text-right">
-                                    <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                
+<body class=" login">
+    <!-- BEGIN : LOGIN PAGE 5-1 -->
+    <div class="user-login-5">
+        <div class="row bs-reset">
+            <div class="col-md-6 bs-reset">
+                <div class="login-bg" style="background-image:url(assets/pl4.jpg)">
+                    <!--<img class="login-logo" src="assets/img/mmlogo.png" />-->
                 </div>
             </div>
+            <div class="col-md-6 login-container bs-reset">
+                <div class="col-md-12">
+                    <img class="login-logo" src="assets/pllogo.png" style="height:90px; width:180px;" />
+                </div>
+                <div class="clearfix"></div><br /><br />
 
-            <div id="registerParticipantModal" class="modal  bs-modal-lg" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="portlet box green-haze">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="fa fa-reorder"></i>Register Participants
-                                    </div>
-                                    <div class="tools">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <!--<a id="showHide" href="javascript:;" class="collapse"></a>-->
-                                    </div>
-                                </div>
-                                <div class="portlet-body form">
-                                    <!-- BEGIN FORM-->
-                                    <form action="#" id="entryForm" class="form-horizontal">
-                                        <div id="divalertsucess" class="alert alert-success" style='display: none; text-align: center;'>
-                                            <span id="spansuccess1">Data saved sucessfully. </span>
-                                        </div>
-                                        <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
-                                            <span id="spanerterr">This email address is already registerd with another company. </span>
-                                        </div>
-                                        <div class="form-body">
-                                            <div class="col-md-7">
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        Company Name
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
-                                                               data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        Address
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
-                                                                  name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        City
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
-                                                               name="txtCity" onkeyup="replaceQuoutesFromString(this)" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        PAN No.
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
-                                                               name="txtPanNo" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        GST No.
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo"
-                                                               name="txtTINNo">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        Company Phone
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
-                                                               name="txtPhoneNo">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label" style="padding-left:0px;">
-                                                        Company Email
-                                                    </label>
-                                                    <div class="col-md-9">
-                                                        <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
-                                                               name="txtcompanyemail">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="portlet box blue-hoki">
-                                                    <div class="portlet-title">
-                                                        <div class="caption">
-                                                            <i class="fa fa-reorder"></i>Tag Items/Services
-                                                        </div>
-                                                        <div class="tools">
-                                                            <a href="javascript:;" class="collapse"></a>
-                                                            <!--<a href="javascript:;" class="reload" onclick="fetchPlacemaster();"></a>-->
-                                                        </div>
-                                                    </div>
-                                                    <div class="portlet-body">
-                                                        <div class="input-icon">
-                                                            <i class="fa fa-search"></i>
-                                                            <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
-                                                        </div>
+                <div class="login-content white">
+                    <p style="text-align: justify;">
+                        Pidilite is a consumer centric company committed to quality and innovation. For decades, we have been pioneering products for small to large applications, at home and industry, which have forged strong bonds with people from all walks of life.
 
-                                                        <div class="scroller" style="height: 250px;" data-always-visible="1" data-rail-visible1="1">
-                                                        <div class="table-scrollable">
-                                                            <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <input type="hidden" value="0" id="hdnParticipantID" />
-                                        <div class="clearfix"></div>
-                                        <div class="form-actions" style="padding:5px!important;">
-                                            <div class="col-md-offset-3 col-md-6" style="text-align: center">
-                                                <button type="button" id="" class="btn yellow reload" onclick="saveParticipant();">
-                                                    Submit
-                                                </button>
-                                                <button class="btn blue" type="button" data-dismiss="modal" aria-hidden="true">
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <!-- END FORM-->
+                        From adhesives, sealants, waterproofing solutions and construction chemicals to arts & crafts, industrial resins, polymers and more, our product portfolio is as diverse as it is ever-evolving. Today, our brands are trusted household and industrial names, and we are the market leader in adhesives.
+
+                    </p>
+
+                    <form action="#" class="login-form" method="post">
+                        <div class="alert alert-danger display-none" id="alrt1">
+                            <button class="close" data-close="alert"></button>
+                            <span id="alertmessage1"> </span>
+                        </div>
+                        <div class="alert alert-success display-none" id="succs1">
+                            <button class="close" data-close="alert"></button>
+                            <span id="sucssmessage1"> </span>
+                        </div>
+                        <h1 class="font-green">User Login</h1>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-solid placeholder-no-fix form-group " type="text" autocomplete="off" placeholder="Username" id="username" name="username" />
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password" />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <!--<div class="col-sm-4">
+                                <div class="rem-password">
+                                    <p>
+                                        Remember Me
+                                        <input type="checkbox" class="rem-checkbox" />
+                                    </p>
                                 </div>
+                            </div>-->
+                            <!--<a href="#registerParticipantModal" class="pull-left" style="color:#ff0000;text-decoration:none;" data-toggle="modal">Register as new vendor</a>-->
+                            <div class="col-sm-8 text-right pull-right">
+                                <div class="forgot-password">
+                                    <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+                                </div>
+                                <button class="btn blue" type="submit">Sign In</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- BEGIN FORGOT PASSWORD FORM -->
+                    <form class="forget-form display-none" action="javascript:;" method="post" style="margin-top: 80px !important;">
+                        <div class="alert alert-danger display-none" id="alrt2">
+                            <button class="close" data-close="alert"></button>
+                            <span id="alertmessage2"> </span>
+                        </div>
+                        <div class="alert alert-success display-none" id="succs2">
+                            <button class="close" data-close="alert"></button>
+                            <span id="sucssmessage2"> </span>
+                        </div>
+
+                        <h3 class="font-green">Forgot Password ?</h3>
+                        <div class="form-group">
+                            <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" id="txtemail" />
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="back-btn" class="btn grey btn-default">Back</button>
+                            <button type="submit" class="btn blue btn-success uppercase pull-right">Submit</button>
+                        </div>
+                    </form>
+                    <!-- END FORGOT PASSWORD FORM -->
+                </div>
+                <div class="login-footer">
+                    <div class="row bs-reset">
+                        <!--<div class="col-xs-5 bs-reset">
+                            <ul class="login-social">
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-social-dribbble"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>-->
+                        <div class="col-xs-12  pull-right">
+                            <div class="login-copyright text-right">
+                                <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END : LOGIN PAGE 5-1 -->
-      
-        <!-- BEGIN CORE PLUGINS -->
-        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-		<script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-        <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-		<script src="../assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
-        <script src="../assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <!--<script src="assets/global/scripts/app.min.js" type="text/javascript"></script>-->
-        <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-         <script src="../assets/CustomJS/Auction.js" type="text/javascript"></script>
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->        
-        <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>        
-        <script src="../assets/scripts/custom/login.js" type="text/javascript"></script>        
-        <!-- END PAGE LEVEL SCRIPTS -->        
+        <div id="registerParticipantModal" class="modal  bs-modal-lg" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box green-haze">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Register Participants
+                                </div>
+                                <div class="tools">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <!--<a id="showHide" href="javascript:;" class="collapse"></a>-->
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                <form action="#" id="entryForm" class="form-horizontal">
+                                    <div id="divalertsucess" class="alert alert-success" style='display: none; text-align: center;'>
+                                        <span id="spansuccess1">Data saved sucessfully. </span>
+                                    </div>
+                                    <div id="divalerterr" class="alert alert-danger" style='display: none; text-align: center;'>
+                                        <span id="spanerterr">This email address is already registerd with another company. </span>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="col-md-7">
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    Company Name
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
+                                                           data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    Address
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
+                                                              name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    City
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
+                                                           name="txtCity" onkeyup="replaceQuoutesFromString(this)" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    PAN No.
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
+                                                           name="txtPanNo" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    GST No.
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo"
+                                                           name="txtTINNo">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    Company Phone
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
+                                                           name="txtPhoneNo">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" style="padding-left:0px;">
+                                                    Company Email
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
+                                                           name="txtcompanyemail">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="portlet box blue-hoki">
+                                                <div class="portlet-title">
+                                                    <div class="caption">
+                                                        <i class="fa fa-reorder"></i>Tag Items/Services
+                                                    </div>
+                                                    <div class="tools">
+                                                        <a href="javascript:;" class="collapse"></a>
+                                                        <!--<a href="javascript:;" class="reload" onclick="fetchPlacemaster();"></a>-->
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div class="input-icon">
+                                                        <i class="fa fa-search"></i>
+                                                        <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
+                                                    </div>
 
-        <!-- END PAGE LEVEL SCRIPTS -->
-        <script type="text/javascript">
-            jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
-            jQuery(document).ready(function () {
-			Pageloaded()
+                                                    <div class="scroller" style="height: 250px;" data-always-visible="1" data-rail-visible1="1">
+                                                        <div class="table-scrollable">
+                                                            <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <input type="hidden" value="0" id="hdnParticipantID" />
+                                    <div class="clearfix"></div>
+                                    <div class="form-actions" style="padding:5px!important;">
+                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
+                                            <button type="button" id="" class="btn yellow reload" onclick="saveParticipant();">
+                                                Submit
+                                            </button>
+                                            <button class="btn blue" type="button" data-dismiss="modal" aria-hidden="true">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END : LOGIN PAGE 5-1 -->
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+    <script src="../assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+
+    <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="/assets/scripts/aes.js"></script>
+    <script src="../assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <script src="../assets/scripts/custom/login.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script type="text/javascript">
+        jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
+        jQuery(document).ready(function () {
+            Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
-                sessionStorage.clear();
-                App.init();                
-                Login.init();
-                jQuery.unblockUI()
-                $(".login-bg").backstretch([
-                "assets/bg1.jpg",
-                "assets/bg2.jpg",
-                "assets/bg3.jpg"
-                ], { fade: 1e3, duration: 8e3 })
-                
-              
-            });
+            sessionStorage.clear();
+            App.init();
+            Login.init();
+            jQuery.unblockUI()
+            $(".login-bg").backstretch([
+                "assets/pl4.jpg",
+                "assets/pl5.jpg",
+                "assets/pl6.jpg"
+            ], { fade: 1e3, duration: 8e3 })
 
-            fetchMapCategory('M', 0);
-        </script>
-        <!-- END JAVASCRIPTS -->
-    </body>
+
+        });
+
+        fetchMapCategory('M', 0);
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
 
 </html>

@@ -1,3 +1,41 @@
+jQuery(document).ready(function () {
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchVendorDetails();
+    handlevalidation();
+    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+        $('#LiISsurrogate').removeClass('hide')
+    }
+    else {
+        $('#LiISsurrogate').addClass('hide')
+    }
+    $(".pulsate-regular").css('animation', 'none');
+
+});
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -13,18 +51,32 @@ $(document).on("keyup", "#tblParticipantsVender .form-control", function () {
 
 });
 
-/////****** Chat Start*****************/////
-var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
-console.log("Not Started")
+console.log("Not Started");
+var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
-    console.log(err.toString())
-    bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
+    bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!", function () {
+        window.location = "VendorHome.html";
+        return false;
+    })
+
 });
 connection.onclose(error => {
-    alert('You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!')
+
+    bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!", function () {
+        window.location = "VendorHome.html";
+        return false;
+    });
+});
+connection.on("disconnectSR", function (connectionId) {
+    bootbox.alert("You are connect to bid with multiple devices...disconnecting.", function () {
+        connection.stop();
+        window.location = "VendorHome.html";
+        return false;
+    });
+
 });
 connection.on("refreshFAQuotes", function () {
     fetchBidSummaryVendorFrench();
@@ -187,35 +239,7 @@ connection.on("refreshBidDetailsManage", function (data) {
 });
 connection.on("refreshTimer", function () {
     fetchBidTime();
-    //url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidTimeLeft/?BidID=" + sessionStorage.getItem('BidID')
-    //jQuery.ajax({
-    //    type: "GET",
-    //    contentType: "application/json; charset=utf-8",
-    //    url: url,
-    //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-    //    cache: false,
-    //    crossDomain: true,
-    //    dataType: "json",
-    //    success: function (data, status, jqXHR) {
 
-    //        if (data.length > 0) {
-    //            jQuery("#lblbidduration").text(data[0].bidDuartion + ' mins');
-    //            display = document.querySelector('#lblTimeLeft');
-    //            startTimer(data[0].timeLeft, display);
-    //        }
-
-    //    },
-    //    error: function (xhr, status, error) {
-    //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-    //        if (xhr.status == 401) {
-    //            error401Messagebox(err.Message);
-    //        }
-    //        else {
-    //            fnErrorMessageText('error', '');
-    //        }
-    //        jQuery.unblockUI();
-    //    }
-    //});
 })
 connection.on("refreshTimeronClients", function () {
     fetchBidTime();
@@ -242,7 +266,6 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     // }
     // $(".pulsate-regular").css('animation', 'none');
 });
-
 connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
@@ -263,10 +286,11 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //  }
     //$(".pulsate-regular").css('animation', 'none');
 });
-function sendChatMsgs() {
 
+function sendChatMsgs() {
+    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
     var data = {
-        "ChatMsg": $("#txtChatMsg").val(),
+        "ChatMsg": _cleanString,
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
@@ -383,14 +407,15 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            var _cleanString = StringDecodingMechanism(data[0].bidSubject);
+            var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
             if (data.length == 1) {
                 $('#tblParticipantsVender').show();
 
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidsubject").text(_cleanString);
+                jQuery("#lblbidDetails").text(_cleanString2);
                 //jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
                 jQuery("#lblEventID").text(sessionStorage.getItem("BidID"));
                 //jQuery("#lblbidtime").text(data[0].bidDate + ' ' + data[0].bidTime);

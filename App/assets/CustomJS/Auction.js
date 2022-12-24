@@ -1,10 +1,32 @@
 function logoutFunction() {
     sessionStorage.clear();
-    sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapp.azurewebsites.net');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
+/*function handleDateTimepicker() {
+    if (jQuery().datepicker) {
+        $('.date-picker').datepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        $(".form_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        $(".form_advance_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+
+        $(".form_meridian_datetime").datetimepicker({
+            locale: 'zh-CN',
+            language: 'zh-CN'
+        });
+        //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
+    }
+}*/
 function error401Messagebox(error) {
-    
+
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
         window.location = sessionStorage.getItem('MainUrl');
         sessionStorage.clear();
@@ -22,16 +44,16 @@ function getCurrentFinancialYear() {
     var financial_year = "";
     var today = new Date();
     if ((today.getMonth() + 1) <= 3) {
-        financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear()-1)
+        financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear() - 1)
     } else {
-        financial_year = (today.getFullYear()-1) + "-" + (today.getFullYear())
+        financial_year = (today.getFullYear() - 1) + "-" + (today.getFullYear())
     }
     return financial_year;
 }
 function getlastFinancialYear() {
     var financial_year = "";
     var today = new Date();
-    financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear()-1)
+    financial_year = (today.getFullYear() - 2) + "-" + (today.getFullYear() - 1)
     return financial_year;
 }
 function fnErrorMessageText(spanid, formid) {
@@ -115,7 +137,7 @@ function calltoaster(msz, title, type) {
         "timeOut": "0",
         "hideDuration": "0",
         "showEasing": "swing"
-        
+
     }
     if (type == 'success') {
         toastr.success(decodeURIComponent(msz), title, options);
@@ -126,10 +148,10 @@ function calltoaster(msz, title, type) {
     } else {
         toastr.info(decodeURIComponent(msz), 'Information', options);
     }
-  
+
 }
 function setCommonData() {
-   
+
     jQuery('#spanUserName').html(sessionStorage.getItem('UserName'))
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
 }
@@ -224,7 +246,7 @@ function CheckOnlineStatus(msg) {
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-     
+
         toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
 
 
@@ -259,7 +281,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblVendorSummary tbody").find("tr"), function () {
-      
+
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -270,8 +292,9 @@ jQuery("#txtSearch").keyup(function () {
 $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
+//abheedev bug 605 16/12/2022
 function checkfilesize(fileid) {
-
+   
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -279,11 +302,12 @@ function checkfilesize(fileid) {
     var size = $('#' + fileid.id)[0].files[0].size;
 
     switch (ftype.toLowerCase()) {
-        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx':case 'jpg':case 'jpeg':case 'png':
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx': case 'jpg': case 'jpeg': case 'png':
             break;
         default:
             jQuery(".alert-success").hide();
             jQuery("#spandanger").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png");
+            jQuery("#err").html("Unsupported format <b>" + ftype.toUpperCase() + "</b>.<br> Please choose only xlsx|xls|pdf|doc|docx|jpg|jpeg|png"); //for remove quotes
             jQuery(".alert-danger").show();
             jQuery(".alert-danger").fadeOut(5000);
             Metronic.scrollTo($('.alert-danger'), -200);
@@ -302,7 +326,7 @@ function checkfilesize(fileid) {
         return false;
     }
     else if (size > 7340032) {
-      
+
         $('.alert-danger').html('Filesize must be less than or equal to 5 MB.!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
@@ -331,19 +355,19 @@ function thousands_Sep_Text(num) {
     return num_parts.join(".");
 }
 function thousands_separators(num) {
-    var res="";
-if(num!=null && num!=undefined){
+    var res = "";
+    if (num != null && num != undefined) {
         x = num.toString();
-       
+
         x = x.replace(/,/g, '');
-    
+
         var afterPoint = '';
         if (x.indexOf('.') > 0)
             afterPoint = x.substring(x.indexOf('.'), x.length);
         x = Math.floor(x);
         x = x.toString();
         var lastThree = x.substring(x.length - 3);
-         
+
         var otherNumbers = x.substring(0, x.length - 3);
         if (otherNumbers != '')
             lastThree = ',' + lastThree;
@@ -371,7 +395,7 @@ function thousands_separators_NonMadCol(ele) {
 }
 function thousands_separators_input(ele) {
     var valArr, val = ele.value;
-    val = val.replace(/[^0-9\.]/g, '');
+    val = val.replaceAll(/[^0-9\.]/g, '');
 
     if (val != "") {
         valArr = val.split('.');
@@ -419,8 +443,6 @@ function convertTo24Hour(time) {
 
     return time;
 }
-
-
 function CancelBidDuringConfig(_bidId, _for) {
     var Cancelbid = {
         "BidID": parseInt(_bidId),
@@ -429,99 +451,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        cache: false,
-        data: JSON.stringify(Cancelbid),
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            if (data == '1' && _for == 'BID') {
-                bootbox.alert("Bid Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-            else if (_for == 'eRFQ') {
-                bootbox.alert("RFQ Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-            else if (_for == 'NFA') {
-                bootbox.alert("NFA Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-            else if (data == '1' && _for == 'RFI') {
-                bootbox.alert("RFI Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-            else {
-                bootbox.alert("Event Cancelled successfully.", function () {
-                    window.location = "index.html";
-                    return false;
-                });
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            jQuery.unblockUI();
-        }
-    });
-}
-
-
-function CancelBidDuringConfigold() {
-    var _bidId;
-    var _for;
-
-    if (sessionStorage.getItem("CurrentBidID") != '0' && sessionStorage.getItem("CurrentBidID") != null) {
-        _for = 'BID';
-        _bidId = sessionStorage.getItem("CurrentBidID")
-    }
-
-    else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-        _for = 'eRFQ';
-        _bidId = sessionStorage.getItem("hddnRFQID");
-    }
-    //else if (sessionStorage.getItem("hddnRFQID") != '0' && sessionStorage.getItem("hddnRFQID") != null) {
-    //    _for = 'RFQ';
-    //    _bidId = sessionStorage.getItem("hddnRFQID");
-    // }
-    else if (sessionStorage.getItem("CurrentRFXID") != '0' && sessionStorage.getItem("CurrentRFXID") != null) {
-
-        _for = 'RFI';
-        _bidId = sessionStorage.getItem("CurrentRFXID");
-    }
-    else if (sessionStorage.getItem("hdnNFAID") != '0' && sessionStorage.getItem("hdnNFAID") != null) {
-
-        _for = 'NFA';
-        _bidId = sessionStorage.getItem("hdnNFAID");
-    }
-    else {
-        _for = 'VQ';
-        _bidId = sessionStorage.getItem("CurrentVQID");
-    }
-    var Cancelbid = {
-        "BidID": parseInt(_bidId),
-        "For": _for,
-        "Remarks": "Draft",
-        "SendMail": '',
-        "UserID": sessionStorage.getItem('UserID')
-    };
-  
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -582,7 +512,7 @@ function replaceQuoutesFromString(ele) {
     str = str.replace(/"/g, '');
     //@abheedev bug368 start
     str = str.replace(/#/g, '');
-  //  str = str.replace(/&/g, '');
+    //  str = str.replace(/&/g, '');
     //@abheedev bug368 end
 
     str = str.replace(/~/g, '');
@@ -594,30 +524,10 @@ function replaceQuoutesFromString(ele) {
     ele.value = str;
     //return val;
 }
-/*function replaceQuoutesFromStringFromExcel(ele) {
-    var str = '';
-    
-    if (ele != "" && ele != undefined) {
-    str = str.replace(/'/g, '');
-    str = str.replace(/"/g, '');
-    //@abheedev bug368 start
-    str = str.replace(/#/g, '');
-  //  str = str.replace(/&/g, '');
-    //@abheedev bug368 end
 
-    str = str.replace(/~/g, '');
-    str = str.replace(/`/g, '');
-    str = str.replace(/</g, '');
-    str = str.replace(/>/g, '');
-    str = str.replace(/_/g, '');
-     str = str.replace(/^/g, '');
-    }
-    //ele.value = str;
-    return str;
-}*/
 function replaceQuoutesFromStringFromExcel(ele) {
     var str = '';
-    
+
     if (ele != "" && ele != undefined) {
         str = ele.replace(/'/g, '');
         str = ele.replace(/"/g, '');
@@ -637,7 +547,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 
 ////******* Chat functions*********/////////////////////////////
 function openForm() {
-    //updateMsgReadFlag(sessionStorage.getItem("BidID"), sessionStorage.getItem('UserID'), 'V')
+   debugger
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -660,7 +570,7 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
         $('#txtChatMsg').removeClass('hide')
 
     }
- 
+
 }
 
 function closeChatsForAdmin() {
@@ -682,15 +592,23 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
-  
+    
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
+    var data = {
+        "UserID": userId,
+        "BidID": _bidId,
+        "UserType": sessionStorage.getItem("UserType"),
+        "msgType": msgType
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data, status, jqXHR) {
 
@@ -731,12 +649,19 @@ function fetchBroadcastMsgs(userId, msgType) {
 function fetchvendor() {
 
     toastr.clear();
-      jQuery.ajax({
-        type: "GET",
+    var _bidId = parseInt(getUrlVarsURL(decryptedstring)['BidID']);
+    var data = {
+        "UserID": sessionStorage.getItem("UserID"),
+        "BidID": _bidId,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+    }
+    jQuery.ajax({
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + getUrlVarsURL(decryptedstring)['BidID'] + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchVendorsForChatMsgs",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
+        data: JSON.stringify(data),
         cache: false,
         dataType: "json",
         success: function (data) {
@@ -762,7 +687,7 @@ function fetchvendor() {
 
                     }
                     else {
-                        //$(".pulsate-regular-li").hide();
+                       
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
@@ -778,16 +703,16 @@ function fetchvendor() {
                     if (data[i].connected == true) {
                         $('#sticon' + data[i].userID).removeClass('badge-danger').addClass('badge-success')
                         $('#v' + data[i].userID).removeAttr('disabled')
-                      
+
                     }
                     else {
                         $('#sticon' + data[i].userID).removeClass('badge-success').addClass('badge-danger')
                         $('#v' + data[i].userID).attr('disabled', 'disabled')
-                      
+
                     }
                     vName = data[i].vendorName
                 }
-              
+
             }
             QuickSidebar.init();
         },
@@ -811,14 +736,21 @@ function fetchUserChats(userId, msgType) {
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
-
+    var data = {
+        "UserID": userId,
+        "BidID": _bidId,
+        "UserType": sessionStorage.getItem("UserType"),
+        "msgType": msgType
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POSt",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        //url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats/?userId=" + encodeURIComponent(userId) + "&BidId=" + _bidId + "&userType=" + sessionStorage.getItem("UserType") + "&msgType=" + msgType,
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchUserChats",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data, status, jqXHR) {
             $("#chatList").empty();
@@ -873,8 +805,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-    //console.log(JSON.stringify(data))
-
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -882,7 +813,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-         
+
             return true;
 
         },
@@ -955,45 +886,11 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
         }
     });
 }
-//function fnUploadFilesonBlob(FileName,foldername,flag) {
-//    var Tab1Data = {
 
-//        "filename": FileName,
-//        "foldername": foldername
-//    }
-//    // console.log(JSON.stringify(Tab1Data))
-//    jQuery.ajax({
-//        type: "POST",
-//        contentType: "application/json; charset=utf-8",
-//        url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFilesonBlob/",
-//        cache: false,
-//        crossDomain: true,
-//        data: JSON.stringify(Tab1Data),
-//        dataType: "json",
-//        success: function (data) {
-//            //** Delete Files in Local Folder
-//            //if (flag == "Bid")
-//            //{
-//            //    fnFileDeleteLocalfolder('PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + "/" + FileName)
-//            //}
-
-//            return;
-//        },
-//        error: function (xhr, status, error) {
-//            $(".alert-danger").find("span").html('').html(FileName+" Couldn't upload successfully on Azure")
-//            Metronic.scrollTo(error, -200);
-//            $(".alert-danger").show();
-//            $(".alert-danger").fadeOut(5000);
-//            jQuery.unblockUI();
-
-//        }
-//    });
-
-//}
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-    
+
 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
@@ -1001,28 +898,27 @@ function fnDownloadAttachments(filename, foldername) {
         cache: false,
         crossDomain: true,
         success: function (data) {
-        //abheedev bug 353 start line 894 to 922.
-         if(data.indexOf('<?xml') != -1) //if file is xml then give error
-         {
-           
-            $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
-          //  Metronic.scrollTo(error, -200);
-            $(".alert-danger").show();
-            $(".alert-danger").fadeOut(5000);
-            jQuery.unblockUI(); 
-          }
-          else
-          {
-               var downloadwindow = window.open(data, "_blank");
-               downloadwindow.focus();
-          }
-        
+            //abheedev bug 353 start line 894 to 922.
+            if (data.indexOf('<?xml') != -1) //if file is xml then give error
+            {
+
+                $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
+                //  Metronic.scrollTo(error, -200);
+                $(".alert-danger").show();
+                $(".alert-danger").fadeOut(5000);
+                jQuery.unblockUI();
+            }
+            else {
+                var downloadwindow = window.open(data, "_blank");
+                downloadwindow.focus();
+            }
+
         },
-       
+
         error: function () {
-           
+
             $(".alert-danger").find("span").html('').html(" Couldn't download successfully from Azure");
-          //  Metronic.scrollTo(error, -200);
+            //  Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
             $(".alert-danger").fadeOut(5000);
             jQuery.unblockUI();
@@ -1034,53 +930,96 @@ function fnConverToLocalTime(dttime) {
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
-        
-        if (sessionStorage.getItem('preferredtimezone')!=null)
-        {
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
                 timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
-         })
+            })
         }
-        else
-        {
-           theStDate = theStDate.toLocaleString("en-GB", {
-           dateStyle: "long", hourCycle: "h24", timeStyle: "short"
-         })
-          
+        else {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+            })
+
         }
         theStDate = theStDate.replace('at', '-');
         return theStDate;
     }
     else return '..'
 }
+function fnSetLocalFromTimeZone(dateTime) {
+  
+    var retDt = new Date();
+    var userTz = sessionStorage.getItem('preferredtimezone');
+    var systemDate = new Date();
+    var systemOffset = systemDate.getTimezoneOffset();
+    var dt = dateTime;
+    //var dt = new Date(dateTime.toLocaleString("en-GB", { timeZone: userTz, }));
+    var newDt = new Intl.DateTimeFormat("en-GB", {
+        timeZone: userTz,
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZoneName: "short"
+    }).format(dt);
+    newDt = newDt.replace('at', '');
+    newDt = newDt.replace('-', '');
+    dt = new Date(newDt);
+    var userOffset = dt.getTimezoneOffset();
+    //var userOffset2 = newDt.getTimezoneOffset();
+    if (systemOffset == userOffset) {
+        retDt = dateTime;
+    }
+    else {
+        var timeDiff = userOffset - systemOffset;
+        retDt = new Date(dt.getTime + timeDiff * 60000);
+    }
+    return retDt;
+}
+function GetCurrentDateTime() {
+    var retDt = new Date();
+    var userTz = sessionStorage.getItem('preferredtimezone');
+    var currDt = new Date();
+    var dt = new Date(dateTime.toLocaleString("en-GB", { timeZone: userTz }));
+    var systemOffset = currDt.getTimezoneOffset();
+    var userOffset = dt.getTimezoneOffset();
+    if (systemOffset == userOffset) {
+        retDt = currDt;
+    }
+    else {
+        retDt = dt;
+    }
+    return retDt;
+}
 function formatDate(date) {
-  return [
-    padTo2Digits(date.getDate()),
-    padTo2Digits(date.getMonth() + 1),
-    date.getFullYear(),
-  ].join('/');
+    return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+    ].join('/');
 }
 
 function padTo2Digits(num) {
-  return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, '0');
 }
 function fnConverToLocalTimeWithSeconds(dttime) {
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
-        
-        if (sessionStorage.getItem('preferredtimezone')!=null)
-        {
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
                 timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
-         })
+            })
         }
-        else
-        {
-           theStDate = theStDate.toLocaleString("en-GB", {
-           dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
-         })
-          
+        else {
+            theStDate = theStDate.toLocaleString("en-GB", {
+                dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+            })
+
         }
         theStDate = theStDate.replace('at', '-');
         return theStDate;
@@ -1091,20 +1030,18 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
-    
+
         var theStDate = new Date(dttime)
         theStDate = theStDate.toDateString()
-    
+
         theStDate = new Date(theStDate + ' UTC');
-        if (sessionStorage.getItem('preferredtimezone')!=null)
-        {
-        theStDate = theStDate.toLocaleString("en-IN", {
-            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
-        })
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            theStDate = theStDate.toLocaleString("en-IN", {
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium"
+            })
         }
-        else
-        {
-            theStDate = theStDate.toLocaleString("en-IN", { dateStyle: "medium"})
+        else {
+            theStDate = theStDate.toLocaleString("en-IN", { dateStyle: "medium" })
         }
         theStDate = theStDate.replace('at', '-');
         return theStDate;
@@ -1122,13 +1059,13 @@ function fnConverToTime(dttime) {
         theStDate = theStDate.toLocaleString("en-IN", {
             timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "full", hourCycle: "h24", timeStyle: "short"
         })
-       
+
 
         theStDate = theStDate.replace('at', ' ');
 
         var currentDate = new Date(theStDate);
         var dtst = moment(currentDate).format('HH:mm:ss');
-      
+
         //return currentDate.getHours()+':' +currentDate.getMinutes()+':' +currentDate.getSeconds();
         return dtst;
     }
@@ -1138,18 +1075,18 @@ function fnConverToTime(dttime) {
 function fnReturnTimeFromDate(dttime) {
     var dtst = '';
     if (dttime != null) {
-      //  console.log
-        dttime = dttime.replace('-','');
-        dttime = dttime.replace('at','');
-        
+        //  console.log
+        dttime = dttime.replace('-', '');
+        dttime = dttime.replace('at', '');
+
         var theStDate = new Date(dttime);
-       
+
         theStDate = theStDate.toLocaleString('en-GB').trim();
- 
+
         var currentDate = new Date(theStDate);
-  
+
         dtst = moment(currentDate).format('HH:mm:ss');
-    
+
     }
     else {
         dtst = '..'
@@ -1170,8 +1107,8 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            if (deletionfor == 'VAttachment'  && srno != 0) {
-              
+            if (deletionfor == 'VAttachment' && srno != 0) {
+
                 fileDeletefromdb(srno, deletionfor)
             }
             $('#spansuccess1').html('File Deleted Successfully');
@@ -1856,6 +1793,174 @@ function checkExcelUpload(fileid) {
             Metronic.scrollTo($('.alert-danger'), -200);
             $('#' + fileid.id).val('')
             return false
-    }  
+    }
 }
 //abheedev bug 443 end
+//htmlencode
+function StringEncodingMechanism(maliciousText) {
+    var returnStr = maliciousText;
+    returnStr = returnStr.replaceAll('&', '&amp;');
+    returnStr = returnStr.replaceAll('<', '&lt;');
+    returnStr = returnStr.replaceAll('>', '&gt;');
+    returnStr = returnStr.replaceAll('"', '&quot;');
+    returnStr = returnStr.replaceAll("'", '&#x27;');
+    returnStr = returnStr.replaceAll('/', '&#x2F;');
+    // returnStr = returnStr.replaceAll('alert(', 'alert-');
+    return returnStr;
+}
+
+function StringDecodingMechanism(maliciousText) {
+   
+    var returnStr = maliciousText;
+    returnStr = returnStr.replaceAll('&lt;', '<');
+    returnStr = returnStr.replaceAll('&gt;', '>');
+    returnStr = returnStr.replaceAll('&quot;', '"');
+    returnStr = returnStr.replaceAll("&#x27;", "'");
+    returnStr = returnStr.replaceAll('&#x2F;', '/');
+    // returnStr = returnStr.replaceAll('alert-', 'alert(');
+    returnStr = returnStr.replaceAll('&amp;', '&');
+    return returnStr;
+}
+
+function toUTF8Array(str) {
+    var utf8 = [];
+    for (var i = 0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+            utf8.push(0xc0 | (charcode >> 6),
+                0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+            utf8.push(0xe0 | (charcode >> 12),
+                0x80 | ((charcode >> 6) & 0x3f),
+                0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+            i++;
+            // UTF-16 encodes 0x10000-0x10FFFF by
+            // subtracting 0x10000 and splitting the
+            // 20 bits of 0x0-0xFFFFF into two halves
+            charcode = 0x10000 + (((charcode & 0x3ff) << 10)
+                | (str.charCodeAt(i) & 0x3ff))
+            utf8.push(0xf0 | (charcode >> 18),
+                0x80 | ((charcode >> 12) & 0x3f),
+                0x80 | ((charcode >> 6) & 0x3f),
+                0x80 | (charcode & 0x3f));
+        }
+    }
+    return utf8;
+}
+
+function fromUTF8Array(data) { // array of bytes
+    var str = '',
+        i;
+
+    for (i = 0; i < data.length; i++) {
+        var value = data[i];
+
+        if (value < 0x80) {
+            str += String.fromCharCode(value);
+        } else if (value > 0xBF && value < 0xE0) {
+            str += String.fromCharCode((value & 0x1F) << 6 | data[i + 1] & 0x3F);
+            i += 1;
+        } else if (value > 0xDF && value < 0xF0) {
+            str += String.fromCharCode((value & 0x0F) << 12 | (data[i + 1] & 0x3F) << 6 | data[i + 2] & 0x3F);
+            i += 2;
+        } else {
+            // surrogate pair
+            var charCode = ((value & 0x07) << 18 | (data[i + 1] & 0x3F) << 12 | (data[i + 2] & 0x3F) << 6 | data[i + 3] & 0x3F) - 0x010000;
+
+            str += String.fromCharCode(charCode >> 10 | 0xD800, charCode & 0x03FF | 0xDC00);
+            i += 3;
+        }
+    }
+
+    return str;
+}
+
+function checkPasswordValidation(value) {
+    const isWhitespace = /^(?=.*\s)/;
+    if (isWhitespace.test(value)) {
+        return "Password must not contain Whitespaces.";
+    }
+
+
+    const isContainsUppercase = /^(?=.*[A-Z])/;
+    if (!isContainsUppercase.test(value)) {
+        return "Password must have at least one Uppercase Character.";
+    }
+
+
+    const isContainsLowercase = /^(?=.*[a-z])/;
+    if (!isContainsLowercase.test(value)) {
+        return "Password must have at least one Lowercase Character.";
+    }
+
+
+    const isContainsNumber = /^(?=.*[0-9])/;
+    if (!isContainsNumber.test(value)) {
+        return "Password must contain at least one Digit.";
+    }
+
+
+    const isContainsSymbol = /^(?=.*[~`!@#$%^*--+={}\[\]|\\:;"',.?/_])/;
+    if (!isContainsSymbol.test(value)) {
+        return "Password must contain at least one Special Symbol.";
+    }
+
+
+    const isValidLength = /^.{6,8}$/;
+    if (!isValidLength.test(value)) {
+        return "Password must be 6-8 Characters Long.";
+    }
+    return "SUCCESS";
+
+}
+//common function
+function RegisterUser_fetchRegisterUser(docData) {
+  
+    var data = docData;
+    var dataToReturn = "";
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
+    (async () => {jQuery.ajax({
+        //type: "GET",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+           
+            if (data.length > 0) {
+                dataToReturn = data;
+                
+            }
+            else {
+                dataToReturn = '';
+            }
+
+        },
+        error: function (xhr, status, error) {
+     
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+
+    });
+    })();
+    return dataToReturn;
+}

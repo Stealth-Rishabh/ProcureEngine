@@ -1,11 +1,38 @@
+jQuery(document).ready(function () {
+   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
 
+    App.init();
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    fetchMenuItemsFromSession(7, 26);
+    formvalidate();
+
+});
 
 var _bidTypeId = 0;
 function Pageloaded() {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param);
     _bidTypeId = getUrlVarsURL(decryptedstring)["bidTypeId"];
-
+  
     if (_bidTypeId == 6) {
         $("#ddlBidType").val(_bidTypeId)
         $(".ddlBidType").html('Forward Auction');
@@ -29,65 +56,65 @@ function Pageloaded() {
 
 
 var form = $('#RFIRFQREport');
-function formvalidate() {
+function formvalidate() { 
+    
+form.validate({
 
-    form.validate({
+    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
 
-        doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+    errorElement: 'span', //default input error message container
 
-        errorElement: 'span', //default input error message container
+    errorClass: 'help-block help-block-error', // default input error message class
 
-        errorClass: 'help-block help-block-error', // default input error message class
+    focusInvalid: false, // do not focus the last invalid input
 
-        focusInvalid: false, // do not focus the last invalid input
-
-        rules: {
-            txtSearchText: {
-                required: true
-            }
-
-
-        },
-
-        messages: {
-            txtSearchText: {
-                required: "Please Enter Search Text."
-            }
-        },
-
-
-
-        invalidHandler: function (event, validator) {
-
-        },
-
-        highlight: function (element) {
-
-            $(element).closest('.col-md-12').addClass('has-error');
-
-        },
-
-        unhighlight: function (element) {
-
-            $(element).closest('.col-md-12').removeClass('has-error');
-
-        },
-
-        success: function (label) {
-
-
-        },
-
-
-        submitHandler: function (form) {
-            fetchBidDetailsForCloning()
+    rules: {
+        txtSearchText: {
+            required: true
         }
+        
 
-    });
+    },
+
+    messages: {
+        txtSearchText: {
+            required: "Please Enter Search Text."
+        }
+    },
+
+    
+
+    invalidHandler: function (event, validator) {
+
+    },
+
+    highlight: function (element) {
+
+        $(element).closest('.col-md-12').addClass('has-error');
+
+    },
+
+    unhighlight: function (element) {
+
+        $(element).closest('.col-md-12').removeClass('has-error');
+
+    },
+
+    success: function (label) {  
+
+
+    },
+
+
+    submitHandler: function (form) {      
+        fetchBidDetailsForCloning()
+    }
+
+});
 
 }
 
-function fetchBidDetailsForCloning() {
+function fetchBidDetailsForCloning() {    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -102,12 +129,12 @@ function fetchBidDetailsForCloning() {
                 $('#displayTable').show();
                 for (var i = 0; i < data.length; i++) {
                     var details = (data[i].bidDetails).replace(/(\r\n|\n|\r)/gm, "");
-
+                   
                     $("<tr><td>" + data[i].eventNo + "</td><td>" + data[i].bidSubject + "</td><td>" + data[i].bidDetails + "</td><td>" + fnConverToLocalTime(data[i].bidDate) + "</td><td>" + data[i].status + "</td><td><button class=\"btn btn-sm btn-primary\" type=\"button\" Onclick=\"confirmCloningBid(\'" + data[i].bidId + "'\,\'" + data[i].bidSubject + "'\,\'" + details + "'\,\'" + fnConverToLocalTime(data[i].bidDate) + "'\,\'" + data[i].eventNo + "'\)\" >Clone</button></td></tr>").appendTo('#tblBidDetails');
                 }
 
             } else {
-                $('#displayTable').show();
+                $('#displayTable').show();                
                 $('<tr><td style="color:red !important; text-align: center;" colspan="7"> No results </td></tr>').appendTo('#tblBidDetails');
 
             }
@@ -130,13 +157,13 @@ function fetchBidDetailsForCloning() {
 
 }
 
-function confirmCloningBid(BidId, BidSubject, BidDetails, BidDate, SrNo) {
+function confirmCloningBid(BidId,BidSubject,BidDetails,BidDate,SrNo) {
     bootbox.dialog({
         message: "You are about to clone following bid with details: <br/><br/>" +
-            "<table class=\"table table-striped table-bordered table-hover\"><tr><td>Event No</td><td>" + SrNo +
-            "</td></tr><tr><td>Bid Subject</td><td>" + BidSubject +
-            "</td></tr><tr><td>Bid Description</td><td>" + BidDetails +
-            "</td></tr><tr><td>Biddate</td><td>" + BidDate + "</td></tr></table>",
+        "<table class=\"table table-striped table-bordered table-hover\"><tr><td>Event No</td><td>" + SrNo +
+        "</td></tr><tr><td>Bid Subject</td><td>" + BidSubject +
+        "</td></tr><tr><td>Bid Description</td><td>" + BidDetails +
+        "</td></tr><tr><td>Biddate</td><td>" + BidDate + "</td></tr></table>",
         buttons: {
             confirm: {
                 label: "Yes",
@@ -149,7 +176,7 @@ function confirmCloningBid(BidId, BidSubject, BidDetails, BidDate, SrNo) {
                 label: "No",
                 className: "btn-default",
                 callback: function () {
-
+                    
                 }
             }
         }
@@ -158,12 +185,12 @@ function confirmCloningBid(BidId, BidSubject, BidDetails, BidDate, SrNo) {
 
 function clone(BidId) {
 
-    var param = {
-        "BidId": parseInt(BidId),
-        "UserId": sessionStorage.getItem('UserID')
-
+   var param = {
+       "BidId": parseInt(BidId),
+       "UserId": sessionStorage.getItem('UserID')
+        
     };
-
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CloneExistingBid",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -175,9 +202,9 @@ function clone(BidId) {
             if (parseInt(data) > 0) {
                 jQuery('#divalerterror').hide();
                 msgForClonedBid(parseInt(data), +$("#ddlBidType").val());
-                // fileUploader(parseInt(data))
+               // fileUploader(parseInt(data))
                 fetchBidDetailsForCloning();
-            } else {
+            }  else {
                 jQuery('#divalertsucess').hide();
                 $("#error").html('Transaction Unsuccessfull.');
                 App.scrollTo($('#divalerterror'), -200);
@@ -197,7 +224,7 @@ function clone(BidId) {
             jQuery.unblockUI();
             return false;
         }
-
+        
     });
     //clearform();
 }
@@ -228,11 +255,11 @@ jQuery("#txtSearch").keyup(function () {
 
 
 function msgForClonedBid(bidId, bidTypeId) {
-    var encrypdata = fnencrypt("BidID=" + bidId)
+    var encrypdata = fnencrypt("BidID="+bidId)
     var urlLink = '';
     switch (bidTypeId) {
         case 1:
-            urlLink = 'configureBidOtheritem.html?param=' + encrypdata;
+            urlLink = 'configureBidOtheritem.html?param='+encrypdata;
             break;
         case 2:
             urlLink = 'configureBidAirImport.html?param=' + encrypdata;
@@ -251,41 +278,41 @@ function msgForClonedBid(bidId, bidTypeId) {
             break;
         case 7:
             urlLink = 'configureBidSeaExport.html?param=' + encrypdata;
-
+           
             break;
         case 8:
             urlLink = 'configureBidCoalExport.html?param=' + encrypdata;
-
+            
             break;
         case 9:
             urlLink = 'configurefrench.html?param=' + encrypdata;
-
+            
             break;
         case 10:
             urlLink = '';
 
-        default:
+        default:            
     }
 
-    bootbox.dialog({
-        message: "Bid clonned successfully. Do you want to modify bid details?",
-        buttons: {
-            confirm: {
-                label: "Yes",
-                className: "btn-success",
-                callback: function () {
-                    window.location = urlLink;
-                }
-            },
-            cancel: {
-                label: "No",
-                className: "btn-default",
-                callback: function () {
-                    window.location = sessionStorage.getItem("HomePage");
+        bootbox.dialog({
+            message: "Bid clonned successfully. Do you want to modify bid details?",
+            buttons: {
+                confirm: {
+                    label: "Yes",
+                    className: "btn-success",
+                    callback: function () {
+                        window.location = urlLink;
+                    }
+                },
+                cancel: {
+                    label: "No",
+                    className: "btn-default",
+                    callback: function () {
+                        window.location = sessionStorage.getItem("HomePage");
+                    }
                 }
             }
-        }
-    });
+        });
 }
 
 

@@ -1,3 +1,31 @@
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    fetchMenuItemsFromSession(45, 39);
+    FetchAllCustomer();
+    setTimeout(function () {
+        FetchAllOpenBids();
+    }, 1000);
+});
+
 var APIPath = sessionStorage.getItem("APIPath");
 function FetchAllCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -39,39 +67,26 @@ function FetchAllCustomer() {
 
 }
 function FetchAllOpenBids() {
-  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var Fromdate = new Date("2000-01-01 01:00:00");
-    var Todate = new Date();
-    var CustId = null;
+    var Fromdate = "1900-01-01";
+    var Todate = "1900-01-01";
     if (jQuery("#txtFromDate").val() != "" && jQuery("#txtFromDate").val()==null) {
-        Fromdate = new Date($("#txtFromDate").val().replace('-',''));
+        Fromdate = jQuery("#txtFromDate").val();
     }
     if (jQuery("#txtToDate").val() != "" && jQuery("#txtToDate").val() == null) {
-        Todate = new Date($("#txtToDate").val().replace('-', ''));
+        Todate = jQuery("#txtFromDate").val();
     }
-    if(jQuery("#ddlCustomer option:selected").val() !="" && jQuery("#ddlCustomer option:selected").val() !=null){
-        CustId = parseInt(jQuery("#ddlCustomer option:selected").val());
-    }
-    var TabData = {
-        "CustomerId": CustId,
-        "FromDate": Fromdate,
-        "ToDate": Todate
-    }
+   // alert(APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + jQuery("#txtFromDate").val() + "&ToDate=" + jQuery("#txtToDate").val())
     jQuery.ajax({
-        //type: "GET",
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
-        url: APIPath + "BidVendorSummary/fetchAllOpenBids/",
+        url: APIPath + "BidVendorSummary/fetchAllOpenBids/?CustomerID=" + jQuery("#ddlCustomer option:selected").val() + "&FromDate=" + Fromdate + "&ToDate=" + Todate,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //data: '',
-        data: JSON.stringify(TabData),
+        data: '',
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-        //success: function (data) {
            
             jQuery("#tblVendorSummary").empty();
             if (BidData.length > 0) {
@@ -84,9 +99,8 @@ function FetchAllOpenBids() {
                     str += "<td>" + BidData[i].configuredBy + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
 
-                    //var datearray = BidData[i].bidDate.split("/");
-                    //BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
-                    BidDate = fnConverToLocalTime(BidData[i].bidDate);
+                    var datearray = BidData[i].bidDate.split("/");
+                    BidDate = datearray[2] + '/' + datearray[1] + '/' + datearray[0];
                     str += "<td>" + BidDate + "</td>";
                     
                     str += "<td class=text-right>" + BidData[i].bidHour + ' : ' + BidData[i].bidMinute + '  ' + BidData[i].ampm + "</td>";

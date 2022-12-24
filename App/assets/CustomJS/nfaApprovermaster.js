@@ -1,4 +1,41 @@
+jQuery(document).ready(function () {
+  
+    $('[data-toggle="popover"]').popover({})
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    // ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 56);
+    FetchCurrency("0");
+    //BindApprovers();
+    // fetchBidTypeMapping();
+    // fetchRegisterUser();
+
+
+});
 var WBSeq = 0;
 var NBSeq = 0;
 var OBSeq = 0;
@@ -427,32 +464,49 @@ $('.panel-group').on('hidden.bs.collapse', toggleIcon);
 $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(UserID) + "&IsActive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
-        async: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
+            }
+            else {
+                allUsers = '';
             }
 
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
+            else {
+                fnErrorMessageText('error', '');
+            }
             jQuery.unblockUI();
+            return false;
+
         }
 
+
     });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 
@@ -1501,7 +1555,6 @@ var FormWizard = function () {
 
                         }
                         else if (parseFloat(removeThousandSeperator($("#txtAmountFrom").val())) > parseFloat(removeThousandSeperator($("#txtAmountTo").val()))) {
-                      
                             $("#txtAmountFrom").css("border-color", "#ebccd1");
                             $("#txtAmountTo").css("border-color", "#ebccd1");
                             $('.alert-danger').show();

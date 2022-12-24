@@ -1,10 +1,114 @@
+
+
+    jQuery(document).ready(function () {
+       
+    jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
+                if (getUrlVars()["App"] == 'N') {
+
+        tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+    }
+    else if (getUrlVars()["App"] == 'Y' && getUrlVars()["FwdTo"] == "Approver") {
+        tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksapprover'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+    }
+    else if (getUrlVars()["App"] == 'Y' && getUrlVars()["FwdTo"] == "Admin") {
+        tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
+    }
+            });
+    Pageloaded()
+    setInterval(function () {Pageloaded()}, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+            }
+    else {
+                if (sessionStorage.getItem("UserType") == "E") {
+        $('.page-container').show();
+                }
+    else {
+        bootbox.alert("You are not authorize to view this page", function () {
+            parent.history.back();
+            return false;
+        });
+                }
+            }
+    Metronic.init();
+    Layout.init();
+    QuickSidebar.init();
+    App.init();
+    setCommonData();
+    FormValidation.init();
+    });
+
+
+var tableToExcel = (function () {
+    var uri = 'data:application/vnd.ms-excel;base64,'
+        , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
+            + '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>'
+            + '<Styles>'
+            + '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>'
+            + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
+            + '</Styles>'
+            + '{worksheets}</Workbook>'
+        , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
+        , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
+        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+    return function (tables, wsnames, wbname, appname) {
+        var ctx = "";
+        var workbookXML = "";
+        var worksheetsXML = "";
+        var rowsXML = "";
+
+        for (var i = 0; i < tables.length; i++) {
+            if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
+            for (var j = 0; j < tables[i].rows.length; j++) {
+                rowsXML += '<Row>'
+                for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
+                    var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
+                    var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
+                    var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
+                    dataValue = (dataValue) ? dataValue : tables[i].rows[j].cells[k].innerHTML;
+                    var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
+                    dataFormula = (dataFormula) ? dataFormula : (appname == 'Calc' && dataType == 'DateTime') ? dataValue : null;
+                    ctx = {
+                        attributeStyleID: (dataStyle == 'Currency' || dataStyle == 'Date') ? ' ss:StyleID="' + dataStyle + '"' : ''
+                        , nameType: (dataType == 'Number' || dataType == 'DateTime' || dataType == 'Boolean' || dataType == 'Error') ? dataType : 'String'
+                        , data: (dataFormula) ? '' : dataValue
+                        , attributeFormula: (dataFormula) ? ' ss:Formula="' + dataFormula + '"' : ''
+                    };
+                    rowsXML += format(tmplCellXML, ctx);
+                }
+                rowsXML += '</Row>'
+            }
+            ctx = { rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i };
+            worksheetsXML += format(tmplWorksheetXML, ctx);
+            rowsXML = "";
+        }
+
+        ctx = { created: (new Date()).getTime(), worksheets: worksheetsXML };
+        workbookXML = format(tmplWorkbookXML, ctx);
+
+
+
+        var link = document.createElement("A");
+        link.href = uri + base64(workbookXML);
+        link.download = wbname || 'Workbook.xls';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+})();
+
 var BidID = "";
 var ButtonType = '';
 jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     BidID = getUrlVarsURL(decryptedstring)["BidID"]
-    
+
     FetchRecomendedVendor(BidID)
     validateAppsubmitData();
     setTimeout(function () {
@@ -16,16 +120,16 @@ jQuery(document).ready(function () {
     else {
         $('#divRemarksApp').show();
     }
-    
+
 });
 
 function fetchAzPPcFormDetails() {
-     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-       url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=" + BidID +"&nfaID=0",
-         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=" + BidID + "&nfaID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
@@ -116,53 +220,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtLDapplicable').text(data[0].azureDetails[0].whetherLDApplicable);
                 jQuery('#txtCPBGapplicable').text(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#txtPRdetails').text(data[0].azureDetails[0].prDetails);
-               
-                //if (data[0].biddingVendor.length > 0) {
-                //    $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
-                //    for (i = 0; i < data[0].biddingVendor.length; i++) {
-                //        $('#tblvendors').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + " class='radio-list'></td><td id=TDTechAccep" + i + "></td></tr>")
-                //        $('#TDquotation' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="Y"  id=OpQuotationY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpQuotation' + i + ' value="N" id=OpQuotationN' + i + ' />No</label></div>')
-                //        $('#TDTechAccep' + i).append('<div> <label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="Y" id=OpTechAccepY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=OpTechAccep' + i + ' value="N"  id=OpTechAccepN' + i + ' />No</label></div>')
-                //        $('#TDpolyticExp' + i).append('<div> <label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="Y" id=politicalyexpY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=politicalyexp' + i + ' value="N"  id=politicalyexpN' + i + ' />No</label></div>')
-                //        $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label></div>')
 
-
-                //        if (data[0].biddingVendor[i].quotationReceived == "Y") {
-                //            $("#OpQuotationY" + i).attr("checked", "checked");
-                //            $("#OpQuotationN" + i).removeAttr("checked");
-                //        }
-                //        else {
-                //            $("#OpQuotationY" + i).removeAttr("checked");
-                //            $("#OpQuotationN" + i).attr("checked", "checked");
-                //        }
-                //        if (data[0].biddingVendor[i].texhnicallyAcceptable == "Y") {
-                //            $("#OpTechAccepY" + i).attr("checked", "checked");
-                //            $("#OpTechAccepN" + i).removeAttr("checked");
-                //        }
-                //        else {
-                //            $("#OpTechAccepY" + i).removeAttr("checked");
-                //            $("#OpTechAccepN" + i).attr("checked", "checked");
-                //        }
-                //        if (data[0].biddingVendor[i].politicallyExposed == "Y") {
-                //            $("#politicalyexpY" + i).attr("checked", "checked");
-                //            $("#politicalyexpN" + i).removeAttr("checked");
-                //        }
-                //        else {
-                //            $("#politicalyexpY" + i).removeAttr("checked");
-                //            $("#politicalyexpN" + i).attr("checked", "checked");
-                //        }
-                //        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
-                //            $("#QuotedSCMY" + i).attr("checked", "checked");
-                //            $("#QuotedSCMN" + i).removeAttr("checked");
-                //        }
-                //        else {
-                //            $("#QuotedSCMY" + i).removeAttr("checked");
-                //            $("#QuotedSCMN" + i).attr("checked", "checked");
-                //        }
-
-                //    }
-
-                //}
                 var validatescm = "Yes";
                 if (data[0].biddingVendor.length > 0) {
                     $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th></tr></thead>");
@@ -194,7 +252,7 @@ function fetchAzPPcFormDetails() {
                 jQuery.unblockUI();
 
             }
-            
+
         },
         error: function (xhr, status, error) {
 
@@ -277,7 +335,7 @@ function validateAppsubmitData() {
 }
 function ApprovalRejectPPCApp() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var Approvers = {
         "ApproverType": "P",
         "BidID": parseInt(BidID),

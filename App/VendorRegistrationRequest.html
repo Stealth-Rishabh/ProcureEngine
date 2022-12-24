@@ -18,8 +18,8 @@
 
     <meta content="" name="author" />
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
 
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
@@ -37,8 +37,8 @@
 
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-     <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
-     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
 
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
@@ -61,16 +61,49 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
 
     <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <!--<script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+-->
+
+    <script src="assets/CustomJS/VQ.js" type="text/javascript"></script>
+
 
 
 </head>
 
-<style>
-    .select2-drop.select2-display-none.select2-with-searchbox.select2-drop-active ul.select2-results.nav.nav-pills {
-        display: flex;
-        flex-flow: column;
-    }
-</style>
+
 
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
 
@@ -80,9 +113,9 @@
 
             <div class="page-logo">
 
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                <a class="navbar-brand" href="index.html">
 
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
 
                 </a>
 
@@ -96,33 +129,6 @@
 
             <div class="top-menu">
 
-                <!--<ul class="nav navbar-nav pull-right">
-
-                    <li class="dropdown dropdown-user">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-
-                           data-hover="dropdown" data-close-others="true">
-
-                            <img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />
-
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-
-                            </span><i class="fa fa-angle-down"></i>
-
-                        </a>
-
-                        <ul class="dropdown-menu">
-
-                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
-
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
-
-                        </ul>
-
-                    </li>
-
-                </ul>-->
 
             </div>
 
@@ -134,7 +140,7 @@
 
     </div>
 
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
 
         <!-- BEGIN SIDEBAR -->
 
@@ -290,7 +296,7 @@
 
                                                         </h4>
 
-                                                    </div><div id="collapse0" class="panel-collapse collapse" seqno="1" style="height: 0px;">
+                                                    </div><div id="collapse0" class="panel-collapse collapse noheight" seqno="1">
 
                                                         <div class="panel-body">
 
@@ -302,7 +308,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Nature of Establishment<span class="required" aria-required="true"> *</span>
 
@@ -359,7 +365,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Type of Product<span class="required" aria-required="true"> *</span>
 
@@ -381,7 +387,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Product<span class="required" aria-required="true"> *</span>
 
@@ -389,7 +395,7 @@
 
                                                                         <div class="col-md-9">
 
-                                                                            <!--<select class="form-control" name="ddlProduct" id="ddlProduct" tabindex="4" multiple></select>-->
+
                                                                             <input type="text" class="form-control" placeholder="Product"
                                                                                    id="txtProduct" name="txtProduct" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
 
@@ -403,7 +409,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Title<span class="required" aria-required="true"> *</span>
 
@@ -452,7 +458,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Address <span class="required"> *</span>
 
@@ -477,7 +483,7 @@
 
                                                                         <div class="inputgroup">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 Country<span class="required" aria-required="true"> *</span>
 
@@ -521,7 +527,7 @@
 
 
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             City<span class="required" aria-required="true"> *</span>
 
@@ -578,7 +584,7 @@
 
                                                         </h4>
 
-                                                    </div><div id="collapse1" class="panel-collapse collapse" seqno="2" style="height: 0px;">
+                                                    </div><div id="collapse1" class="panel-collapse collapse noheight" seqno="2">
 
                                                         <div class="panel-body">
 
@@ -590,7 +596,7 @@
 
                                                                         <div class="inputgroup">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 GST Vendor Class
 
@@ -621,22 +627,22 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="control-label col-md-3" style="text-align:left">
+                                                                        <label class="control-label col-md-3 txtalignleft">
                                                                             Attach GST REG 06GST certificate<span class="required">*</span>
                                                                         </label>
 
                                                                         <div class="col-md-3">
 
-                                                                            <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem">
+                                                                            <ul class="liststylenone nopaddingleft" id="tblAttachmentsElem">
                                                                                 <li>
                                                                                     <div class="inputgroup">
 
 
                                                                                         <div class="att_input">
                                                                                             <input type="file" class="form-control" tabindex="5"
-                                                                                                   onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
-                                                                                            <span class="help-block"><a id="attach-file1" href="javascript:;" style="text-decoration: none !important;"></a></span>
-                                                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                                                   onchange="checkfilesizeMultiple(this)" />
+                                                                                            <span class="help-block"><a id="attach-file1" href="javascript:;" class="notextdeco"></a></span>
+                                                                                            <span class="display-none closebutton2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
                                                                                                 <i class='fa fa-times-circle-o' id='icon2'></i>
                                                                                             </span>
                                                                                         </div>
@@ -658,7 +664,7 @@
 
                                                                         <div class="inputgroup">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 GST No<span class="required" aria-required="true"> *</span>
 
@@ -680,13 +686,9 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <!--<ul style="list-style:none; padding-left:inherit;" id="tblAttachmentsElem">
-
-                            <li>-->
-
                                                                         <div class="inputgroup">
 
-                                                                            <label class="control-label col-md-3" style="text-align:left">
+                                                                            <label class="control-label col-md-3 txtalignleft">
 
                                                                                 PAN<span class="required">*</span>
 
@@ -700,7 +702,7 @@
 
                                                                             <div class="col-md-3">
 
-                                                                                <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem2">
+                                                                                <ul class="liststylenone nopadding" id="tblAttachmentsElem2">
                                                                                     <li>
                                                                                         <div class="inputgroup">
 
@@ -708,8 +710,8 @@
                                                                                             <div class="att_input">
                                                                                                 <input type="file" class="form-control" tabindex="5"
                                                                                                        onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
-                                                                                                <span class="help-block"><a id="attach-file2" href="javascript:;" style="text-decoration: none !important;"></a></span>
-                                                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                                                <span class="help-block"><a id="attach-file2" href="javascript:;" class="notextdeco"></a></span>
+                                                                                                <span class="display-none" class="closebutton2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
                                                                                                     <i class='fa fa-times-circle-o' id='icon2'></i>
                                                                                                 </span>
                                                                                             </div>
@@ -726,7 +728,7 @@
 
                                                                         <!--</li>
 
-                            </ul>-->
+                                                                        </ul>-->
 
 
 
@@ -736,7 +738,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Type of TDS
 
@@ -750,7 +752,7 @@
 
                                                                         <div class="inputgroup">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 TAN No
 
@@ -774,7 +776,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Payment Terms
 
@@ -794,7 +796,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Name of Bank<span class="required">*</span>
 
@@ -815,7 +817,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Bank A/c No<span class="required">*</span>
 
@@ -830,7 +832,7 @@
 
                                                                         <div class="inputgroup">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 IFSC Code<span class="required">*</span>
 
@@ -853,7 +855,7 @@
 
                                                                     <div class="col-lg-11">
 
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Account Holder Name<span class="required">*</span>
 
@@ -902,12 +904,12 @@
                                                                 <div class="col-lg-12">
                                                                     <div class="row">
                                                                         <div class="col-md-6">
-                                                                            <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Primary Contact Detail</h4>
+                                                                            <h4 class="text-capitalize text-center headstyle1">Primary Contact Detail</h4>
                                                                             <div class="form-group">
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Name<span class="required"> *</span>
 
@@ -928,7 +930,7 @@
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Mobile No<span class="required"> *</span>
 
@@ -949,7 +951,7 @@
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Email ID<span class="required"> *</span>
 
@@ -967,12 +969,12 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
-                                                                            <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Alternate Contact Detail</h4>
+                                                                            <h4 class="text-capitalize text-center headstyle1">Alternate Contact Detail</h4>
                                                                             <div class="form-group">
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Name
 
@@ -993,7 +995,7 @@
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Mobile No
 
@@ -1014,7 +1016,7 @@
 
                                                                                 <div class="col-lg-12">
 
-                                                                                    <label class="col-md-3 control-label" style="text-align:left">
+                                                                                    <label class="col-md-3 control-label txtalignleft">
 
                                                                                         Email ID
 
@@ -1033,8 +1035,8 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="d-none" style="display:none;">
-                                                                        <label class="col-md-3 control-label" style="text-align:left">
+                                                                    <div class="d-none nodisplay">
+                                                                        <label class="col-md-3 control-label txtalignleft">
 
                                                                             Contact Person
 
@@ -1062,7 +1064,7 @@
 
                                                                             <div class="col-lg-11">
 
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label txtalignleft">
 
                                                                                     Name<span class="required"> *</span>
 
@@ -1083,7 +1085,7 @@
 
                                                                             <div class="col-lg-11">
 
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label txtalignleft">
 
                                                                                     Mobile No<span class="required"> *</span>
 
@@ -1104,7 +1106,7 @@
 
                                                                             <div class="col-lg-11">
 
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label txtalignleft">
 
                                                                                     Email ID<span class="required"> *</span>
 
@@ -1145,7 +1147,7 @@
 
                                                             </h4>
 
-                                                        </div><div id="collapse3" class="panel-collapse collapse" seqno="4" style="height: 0px;">
+                                                        </div><div id="collapse3" class="panel-collapse collapse noheight" seqno="4">
 
                                                             <div class="panel-body">
 
@@ -1157,7 +1159,7 @@
 
                                                                             <div class="inputgroup">
 
-                                                                                <label class="col-md-3 control-label" style="text-align:left">
+                                                                                <label class="col-md-3 control-label txtalignleft">
 
                                                                                     MSME<span class="required" aria-required="true"> *</span>
 
@@ -1213,7 +1215,7 @@
 
                                                                         <div class="col-lg-11">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 MSME Udyam No.<span class="required">*</span>
 
@@ -1237,15 +1239,15 @@
                                                                                 </label>
 
                                                                                 <div class="col-md-3">
-                                                                                    <ul style="list-style:none; padding-left:0;" id="tblAttachmentsElem3">
+                                                                                    <ul class="liststylenone nopadding" id="tblAttachmentsElem3">
                                                                                         <li>
 
                                                                                             <input type="file" class="form-control" tabindex="5"
                                                                                                    onchange="checkfilesizeMultiple(this)" /><!-- id="file2" name="file2"-->
 
-                                                                                            <span class="help-block"><a id="attach-file3" href="javascript:;" style="text-decoration: none !important;"></a></span>
+                                                                                            <span class="help-block"><a id="attach-file3" href="javascript:;" class="notextdeco"></a></span>
 
-                                                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                                            <span class="display-none closebutton2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
 
                                                                                                 <i class='fa fa-times-circle-o' id='icon2'></i>
 
@@ -1266,7 +1268,7 @@
 
                                                                         <div class="col-lg-11">
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 Last FY Turn Over (INR)
 
@@ -1283,7 +1285,7 @@
 
 
 
-                                                                            <label class="col-md-3 control-label" style="text-align:left">
+                                                                            <label class="col-md-3 control-label txtalignleft">
 
                                                                                 2nd Last FY Turn Over (INR)
 
@@ -1301,57 +1303,7 @@
                                                                     </div>
 
                                                                 </div>
-
-                                                                <!--
-                        <div class="form-group">
-
-                        <div class="col-lg-11" id="tblAttachmentsElem">
-
-                            <div class="inputgroup">
-
-                                <label class="control-label col-md-3" style="text-align:left">
-
-                                    Attachment<span class="required">*</span>
-
-                                </label>
-
-                                <div class="col-md-4">
-
-                                    <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescriptionMulti" tabindex="5" name="txtattachdescriptionMulti" autocomplete="off" />
-
-                                </div>
-
-                                <div class="col-md-3">
-
-                                    <input type="file" class="form-control" tabindex="5"
-                                           onchange="checkfilesizeMultiple(this)" />
-
-                                                                <span class="help-block"><a id="attach-file1" href="javascript:;" style="text-decoration: none !important;"></a></span>
-
-                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
-
-                                                                    <i class='fa fa-times-circle-o' id='icon2'></i>
-
-                                                                </span>
-
                                                             </div>
-
-                                                            <div class="col-md-2" style=" padding-left:0px !important; ">
-
-                                                                <a href="javascript:void(0);" class="btn blue" onclick="addMoreAttachment1()"><i class="fa fa-plus"></i></a>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                                -->
-
-
-
-                                            </div>
 
 
 
@@ -1362,10 +1314,10 @@
                                                 </div>
 
                                             </div>
-                                            <div style="display:flex;  justify-content:center;">
-                                                <button onclick="SubmitVendorRegistration();" type="submit" style=" background-color: #ffb848; color:#fff;border:0;margin-bottom:10px; padding: 7px 14px;
-">
-                                                    Submit <i class="m-icon-swapright m-icon-white" style="margin-left5px"></i>
+                                            <div class="displayflexcentre">
+                                                <button onclick="SubmitVendorRegistration();" type="submit" class="buttonstyle1">
+                                                    ">
+                                                    Submit <i class="m-icon-swapright m-icon-white marginleft5px"></i>
                                                 </button>
                                             </div>
 
@@ -1382,40 +1334,11 @@
 
 
 
-                                        <!--</div>-->
+
 
                                     </div>
 
-                                    <!--
-                                         <div class="form-actions">
 
-                                         <div class="row">
-
-                                             <div class="col-md-offset-5 col-md-9">
-
-
-
-                                                 <a href="index.html" class="btn green button-submit">
-
-                                                     Save And Exit
-
-                                                 </a>
-
-                                                 <a href="javascript:;" class="btn blue" id="submit_vendors">
-
-                                                     Preview
-
-                                                 </a>
-
-
-
-                                             </div>
-
-                                         </div>
-
-                                     </div>
-                                    -->
-                                    <!--</div>-->
                                 </form>
 
                             </div>
@@ -1567,7 +1490,7 @@
 
                                                     <div class="col-md-10">
 
-                                                        <ul style="list-style:none; display:grid;padding-left:0px;" id="tblAttachmentsElemPrev"></ul>
+                                                        <ul class="liststyleone" id="tblAttachmentsElemPrev"></ul>
 
                                                     </div>
 
@@ -1736,7 +1659,7 @@
 
                     </div>
 
-                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
+                    <div class="modal-body modalbody1">
 
                         <p class="ppolicy-text">
 
@@ -1772,7 +1695,7 @@
 
                         <p class="ppolicy-text"><b>Step-2: "VQ Questions"–</b>In this step user needs to select relevant questions from following areas.</p>
 
-                        <ul style="list-style: none ;">
+                        <ul class="liststylenone">
 
                             <li><b>a. </b>Company Information</li>
 
@@ -1802,46 +1725,31 @@
 
     </div>
 
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+   
 
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script nonce="pev3">
 
 
-    <script src="assets/CustomJS/VQ.js" type="text/javascript"></script>
-
-    <script src="assets/CustomJS/VendorRegistrationRequest.js" type="text/javascript"></script>
-
-
-
-    <script>
 
         jQuery(document).ready(function () {
+            callPagejs('VendorRegistrationRequest.js,Auction.js');
+            $(".thousand").inputmask({
+                alias: "decimal",
+                rightAlign: false,
+                groupSeparator: ",",
+                radixPoint: ".",
+                autoGroup: true,
+                integerDigits: 40,
+                digitsOptional: true,
+                allowPlus: false,
+                allowMinus: false,
+                'removeMaskOnSubmit': true
+
+            });
+            $('#txtLastFiscalyear').val(getCurrentFinancialYear())
+            $('#txt2LastFiscalyear').val(getlastFinancialYear())
+            //FROM HTML
             sessionStorage.setItem('CustomerID', "1")
             Pageloaded()
 
@@ -1849,36 +1757,9 @@
 
             setInterval(function () { Pageloaded() }, 15000);
 
-            //if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
 
-            //     window.location = sessionStorage.getItem('MainUrl');
-
-            //}
-
-            //else {
-
-            // if (sessionStorage.getItem("UserType") == "E") {
 
             $('.page-container').show();
-
-            //}
-
-            //else {
-
-            //    bootbox.alert("You are not Authorize to view this page", function () {
-
-            //        parent.history.back();
-
-            //        return false;
-
-            //    });
-
-            //}
-
-            //  }
-
-
-
 
 
             $("#ddlCategoryMultiple").select2();
@@ -1901,16 +1782,6 @@
 
             Layout.init();
 
-
-
-            //$('#ddlCategoryMultiple').select2({
-
-            //        placeholder: "Select Category",
-
-            //        allowClear: true
-
-            //    });
-
             var _VQID;
 
             if (window.location.search) {
@@ -1929,89 +1800,17 @@
             fetchProduct();
             fetchTDS();
             fetchPaymentTerms();
-            // SubmitVendorRegistration();
-            //fetchState();
 
-            //        if (_VQID == null){
-
-            //           sessionStorage.setItem('CurrentVQID', 0)
-
-            //           fetchRFIQuestions('VQL');
-
-            //  }
-
-            //        else {
-
-
-
-            //            sessionStorage.setItem('CurrentVQID', _VQID)
-
-            //            setTimeout(function () {
-
-            //                fetchRFIDetails();
-
-            //            },2000)
-
-
-
-            //fetchRFIDetailsForTab2('VQL');
-
-            //        }
-
-            //  fetchVendorDetail();
 
             FormWizard.init();
             FormValidate();
 
             ComponentsPickers.init();
 
-            //  setCommonData();
 
-            //  fetchMenuItemsFromSession(1, 25);
 
             ComponentsDropdowns.init();
-
         });
-
-
-
-        function addMoreAttachment1() {
-
-            _count = ($("#tblAttachmentsElem > li").length + 1);
-
-            console.log("count ==> ", _count);
-
-            $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
-
-                '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
-
-                '<div class="col-md-4">' +
-
-                '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
-
-                '</div>' +
-
-                '<div class="col-md-3">' +
-
-                '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-
-                '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
-
-                '</div>' +
-
-                '<div class="col-md-2" style=" padding-left:0px !important; ">' +
-
-                '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
-
-                '</div>' +
-
-                '</div></li>'
-
-            );
-
-        }
-
-
 
     </script>
 

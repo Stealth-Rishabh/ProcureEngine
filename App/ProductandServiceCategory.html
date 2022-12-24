@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -35,14 +35,15 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -51,9 +52,11 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -66,7 +69,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -139,25 +142,15 @@
                             </div>
                             <div class="portlet-body form">
                                 <form action="#" id="RFIQuestionmaster" class="form-horizontal" role="form">
-                                    <div class="alert alert-block alert-danger" id="errordiv" style="display: none">
+                                    <div class="alert alert-block alert-danger" id="errordiv" >
                                         <span id="error"></span>
                                     </div>
-                                    <div class="alert alert-success" id="successdiv" style="display: none">
+                                    <div class="alert alert-success" id="successdiv" >
                                         <span id="success"></span>
                                     </div>
                                     <div class="form-body">
                                         <input type="hidden" id="hdnvehiclemaster" value="0">
-                                        <!--<div class="form-group">
-
-                                            <label class="col-lg-4 col-sm-2 control-label">
-                                                RFI Category <span class="required">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <select class="form-control input-circle" id="ddlrfiCategory" name="ddlrfiCategory"
-                                                        required></select>
-                                            </div>
-
-                                        </div>-->
+                                       
 
                                         <div class="form-group">
                                             <label class="col-lg-4 col-sm-2 control-label">
@@ -165,7 +158,7 @@
                                             </label>
                                             <div class="col-lg-8">
                                                 <!--<textarea id="txtQuestiondescription" name="txtQuestiondescription" class="form-control input-circle" rows="6" autocomplete="off"></textarea>-->
-                                                <input type="text" class="form-control input-circle" name="txtQuestiondescription" id="txtQuestiondescription" autocomplete="off" />
+                                                <input type="text" class="form-control input-circle" name="txtQuestiondescription" id="txtQuestiondescription" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
 
                                             </div>
                                         </div>
@@ -199,10 +192,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="portlet box blue-hoki">
-                            <div class="alert alert-block alert-danger" id="errordiv" style="display: none">
+                            <div class="alert alert-block alert-danger" id="errordiv" >
                                 <span id="error"></span>
                             </div>
-                            <div class="alert alert-success" id="successdiv" style="display: none">
+                            <div class="alert alert-success" id="successdiv" >
                                 <span id="success"></span>
                             </div>
                             <div class="portlet-title">
@@ -220,7 +213,7 @@
                                     <input type="text" id="search" placeholder="Search" class="form-control  input-circle" />
                                 </div>
                                 </br>
-                                <div class="scroller" style="height: 350px;" data-always-visible="1" data-rail-visible="0">
+                                <div class="scroller scroller350"  data-always-visible="1" data-rail-visible="0">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-bordered table-hover col-sm-4" id="tblFetchRFIQuestion"></table>
                                     </div>
@@ -236,7 +229,7 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff" >
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -263,7 +256,7 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                    <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
 
                     </div>
                 </div>
@@ -299,7 +292,7 @@
     <script src="assets/CustomJS/Auction.js"></script>
     <script src="assets/CustomJS/ProductandServiceCategory.js"></script>
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
 
         jQuery(document).ready(function () {
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -325,7 +318,7 @@
             //fetchRFICategory();
 
         });
-    </script>
+    </script>-->
     <!-- END JAVASCRIPTS -->
 </body>
 

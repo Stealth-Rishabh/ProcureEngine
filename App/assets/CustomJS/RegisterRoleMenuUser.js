@@ -1,7 +1,40 @@
-var APIPath = sessionStorage.getItem("APIPath");
+﻿var APIPath = sessionStorage.getItem("APIPath");
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(19, 38);
+
+    fetchRoleMaster();
+    fetchAllRoleMaster();
+    fetchRegisterUser();
+});
+//
 var FormWizard = function () {
 
     return {
@@ -511,39 +544,49 @@ function fnUpdateType(RoleID, RoleName, isactive) {
     }
 }
 function fetchRegisterUser() {
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID'))+"&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            
             if (data.length > 0) {
-                sessionStorage.setItem('hdnAllUsers', JSON.stringify(data))
+                allUsers = data;
+
             }
             else {
-                error.show();
-                $('#spandanger').html('No Users Found...');
-                Metronic.scrollTo(error, -200);
-                error.fadeOut(3000);
+                allUsers = '';
             }
+
         },
         error: function (xhr, status, error) {
-
+            debugger;
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form-wizard');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;
+
         }
-    })
+
+
+    });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 }
 jQuery("#txtusername").typeahead({
     source: function (query, process) {

@@ -1,12 +1,50 @@
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
 
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    Metronic.init();
+    Layout.init();
+    //multilingualLanguage();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchBidHeaderDetails();
+
+});
+//
 function fetchBidHeaderDetails() {
 
     var url = '';
-    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + BIDID + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": BIDID,
+        "VendorID": _vendorID
+    }
 
+    url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + BIDID + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -14,9 +52,10 @@ function fetchBidHeaderDetails() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             if (data.length == 1) {
                 sessionStorage.setItem('hdnbidtypeid', data[0].bidTypeID);
                 $('#tblParticipantsService').show();
@@ -44,10 +83,10 @@ function fetchBidHeaderDetails() {
                         fetchBidSummaryVendorproduct();
                     }
                     else {
-                        
+
                         fetchBidSummaryVendorSeaexportDutch();
                     }
-                    
+
                 }
                 else if (data[0].bidTypeID == 9) {
                     $('#tblParticipantsService').removeClass('hide');
@@ -138,7 +177,7 @@ function fetchBidSummaryVendorproduct() {
 
                         var IQuote = data[i].iqQuotedPrice == '0' ? 'Not Quoted' : thousands_separators(data[i].iqQuotedPrice);
                         var LqQuote = data[i].lqQuotedPrice == '0' ? 'Not Quoted' : thousands_separators(data[i].lqQuotedPrice);
-                       // var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
+                        // var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                         jQuery("#tblParticipantsService").append("<tr class=text-center><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + IQuote + "</td><td id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide>" + data[i].maskVendor + "</td></tr>");
 
                         if (data[i].maskL1Price == 'N') {
@@ -187,7 +226,7 @@ function fetchBidSummaryVendorSeaexportDutch() {
 
     var url = '';
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExportDutch/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + BidID + "&UserType=" + sessionStorage.getItem("UserType")
-    
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -197,25 +236,25 @@ function fetchBidSummaryVendorSeaexportDutch() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             jQuery("#tblParticipantsService").empty();
             if (data.length > 0) {
 
                 var _offeredPrice;
                 jQuery("#tblParticipantsService >tbody").empty();
-                 jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th>Offered Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
+                jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th>Offered Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
                 for (var i = 0; i < data.length; i++) {
-                   
-                if (data[i].loQuotedPrice == 'L1') {
-                     _offeredPrice = thousands_separators(data[i].lqQuotedPrice);
-                    
+
+                    if (data[i].loQuotedPrice == 'L1') {
+                        _offeredPrice = thousands_separators(data[i].lqQuotedPrice);
+
                     }
                     else {
                         _offeredPrice = data[i].lqQuotedPrice;
                     }
                     jQuery("#tblParticipantsService").append("<tr><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id='offeredprice" + i + "'>" + _offeredPrice + "</td></tr>");
                 }
-                
+
             }
         },
         error: function (xhr, status, error) {
@@ -322,7 +361,7 @@ function fetchBidSummaryVendorproductCoal() {
                         //var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                         jQuery("#tblParticipantsService").append("<tr><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].seid + ")' style='text-decoration:none;'>" + data[i].destinationPort + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=initialquote" + i + ">" + IQuote + "</td><td id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
 
-                       
+
                         if (data[i].maskVendor == 'Y') {
                             $("#targetprice" + i).html('Not Disclosed');
                         }
@@ -426,7 +465,7 @@ function fetchBidSummaryVendorScrap() {
                     //var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                     var MqQuote = data[i].mqQuotedPrice == '0' ? 'Not Quoted' : thousands_separators(data[i].mqQuotedPrice);
                     //var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                    jQuery("#tblParticipantsVender").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].psid + ")' style='text-decoration:none;'>" + data[i].shortName + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + ">" + MqQuote+ "</td></tr>");
+                    jQuery("#tblParticipantsVender").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=psid" + i + ">" + data[i].psid + "</td><td><a href='javascript:void(0);' onclick='fetchGraphData(" + data[i].psid + ")' style='text-decoration:none;'>" + data[i].shortName + "</a></td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + ">" + MqQuote + "</td></tr>");
 
 
 
@@ -480,7 +519,7 @@ function fetchBidSummaryVendorScrapDutch() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             jQuery("#tblParticipantsVender").empty();
             if (data.length > 0) {
 
@@ -527,7 +566,8 @@ function fetchGraphData(itemId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&chartFor=sample",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -538,10 +578,14 @@ function fetchGraphData(itemId) {
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
-                    _date = new Date(data[i].submissionTime);
+                    var _dtWithSec = fnConverToLocalTimeWithSeconds(data[i].submissionTime);
+                    _dtWithSec = _dtWithSec.replace('-', '');
+                    //_date = new Date(data[i].submissionTime);
+                    _date = new Date(_dtWithSec);
 
                     if (data[i].vendorID == sessionStorage.getItem("VendorId")) {
-                        $("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                        //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                        $("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(_date.getHours()) + ":" + minutes_with_leading_zeros(_date.getMinutes()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                     }
                 }
             }
@@ -580,33 +624,43 @@ function linegraphsforItems(itemId) {
     var _date;
     _bidTypeID = sessionStorage.getItem('hdnbidtypeid');
 
-
     graphtime = [];
     Vendorseries = "";
     dataQuotes = [];
     Seriesoption = [];
     FinalQuotes = [];
     var colorArray = ['#007ED2', '#f15c80', '#90ED7D', '#FF7F50', '#f15c80', '#FF5733', '#96FF33', '#33FFF0', '#F9FF33', '#581845', '#0B0C01', '#0C0109', '#DAF7A6', '#FFC300', '#08010C'];
+    var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
+    _bidTypeID = parseInt(_bidTypeID)
+    _bidId = parseInt(_bidId)
+    var graphDataReqObj = {
+        "SeId": itemId,
+        "BidId": _bidId,
+        "BidTypeId": _bidTypeID,
+        "UserVendorId": sessionStorage.getItem('VendorId')
+    }
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('VendorId'),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('VendorId'),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(graphDataReqObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
             maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
 
-            $('#lblbidstarttime').text(data[0].bidStartEndTime[0].bidStartTime);
-            $('#lblbidendtime').text(data[0].bidStartEndTime[0].bidEndTime);
+            $('#lblbidstarttime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidStartTime));
+            $('#lblbidendtime').text(fnConverToLocalTime(data[0].bidStartEndTime[0].bidEndTime));
 
 
             if (data[0].submissionTime.length > 0) {
 
                 for (var x = 0; x < data[0].submissionTime.length; x++) {
-                    graphtime.push(data[0].submissionTime[x].subTime);
+                    graphtime.push(fnConverToLocalTimeWithSeconds(data[0].submissionTime[x].subTime));
                 }
 
             }
@@ -623,13 +677,13 @@ function linegraphsforItems(itemId) {
 
                     for (var j = 0; j < data[0].quotesDetails.length; j++) {
                         if (data[0].vendorNames[i].vendorID == data[0].quotesDetails[j].vendorID) {
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + data[0].quotesDetails[j].quotedPrice + '],';
+                            Quotes = Quotes + '["' + fnConverToLocalTimeWithSeconds(data[0].quotesDetails[j].subTime) + '",' + data[0].quotesDetails[j].quotedPrice + '],';
 
                             values = data[0].quotesDetails[j].quotedPrice;
                         }
                         else {
 
-                            Quotes = Quotes + '["' + data[0].quotesDetails[j].subTime + '",' + values + '],';
+                            Quotes = Quotes + '["' + fnConverToLocalTimeWithSeconds(data[0].quotesDetails[j].subTime) + '",' + values + '],';
                         }
                     }
 
@@ -704,3 +758,62 @@ function linegraphsforItems(itemId) {
 
 }
 
+
+//abheedev
+function multilingualLanguage() {
+
+    var set_locale_to = function (locale) {
+        if (locale) {
+            $.i18n().locale = locale;
+        }
+
+        $('body').i18n();
+    };
+    jQuery(function () {
+        $.i18n().load({
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
+        }).done(function () {
+            set_locale_to(url('?locale'));
+
+            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
+
+            //   <option data-locale="en" value="en">English</option>
+
+            History.Adapter.bind(window, 'statechange', function () {
+                set_locale_to(url('?locale'));
+
+            });
+            $('.navbar-language').change(function (e) {
+
+                e.preventDefault();
+                $.i18n().locale = $('option:selected', this).data("locale");
+
+
+                History.pushState(null, null, "?locale=" + $.i18n().locale);
+
+
+
+            });
+
+            $('a').click(function (e) {
+
+                if (this.href.indexOf('?') != -1) {
+                    this.href = this.href;
+                }
+                else if (this.href.indexOf('#') != -1) {
+                    e.preventDefault()
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+                //else if (this.href.indexOf('javascript:') != -1) {
+
+                //  this.href = this.href + "?locale=" + $.i18n().locale;
+                //} 
+
+                else {
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+            });
+        });
+    });
+}

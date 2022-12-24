@@ -1,0 +1,143 @@
+﻿.dashboard-stat .visual i {
+    font-size: 40px !important;
+}
+
+.input-circle {
+    border-radius: 25px !important;
+    margin-top: 4px !important;
+}
+
+.portlet.box > .portlet-title {
+    padding: 10px 10px 3px 10px;
+}
+
+.tileDesign {
+    padding: 10px;
+    width: 90% !important;
+    text-align: left;
+}
+
+.feeds .col2 .date1 {
+    padding: 4px 0px 0px 7px !important;
+    /* text-align: right; */
+    font-style: italic;
+    /* color: #c1cbd0; */
+}
+
+.container {
+    height: 70px;
+    /*display: grid;*/
+    justify-content: center;
+    align-items: center;
+}
+
+.fontSize {
+    font-size: 15px;
+    width: 55% !important;
+    text-align: left;
+    padding-left: 5px;
+}
+.fontSizeCount {
+    font-size: 22px !important;
+    width: 15%;
+    text-align: right;
+}
+
+.tblwidth {
+    /*table-layout: fixed;*/
+    width: 75% !important;
+    padding-left: 5px;
+    margin-top: 10px !important;
+}
+
+.fontSize {
+    font-size: 15px;
+    width: 55% !important;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.fontSizeCount {
+    font-size: 22px !important;
+    width: 15%;
+    text-align: right;
+}
+
+.H-90PX {
+    height: 90px;
+    margin-bottom: 10px !important;
+}
+
+.iconcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.thFont {
+    font-size: 12px !important;
+}
+
+.tableFont {
+    font-size: 12px !important;
+}
+#pagelogoanchor {
+    padding: 4px !important;
+}
+#pagelogoimg {
+    height: 38px;
+    width: 180px;
+}
+
+#spanUserName {
+    color: white;
+}
+
+.page-container {
+    display: none
+}
+
+#breadcrumb {
+    padding-right: 0px !important;
+}
+
+#breadcrumblist {
+    margin-top: -8px !important;
+}
+
+
+.fetchBidDataDashboard {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.fetchRFxDataDashboard {
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer
+}
+
+.ttmore {
+    visibility: hidden !important
+}
+
+.scroller {
+    height: 300px;
+}
+#see_all_bids_btn {
+ text-decoration: none !important;
+}
+
+#errordivChangePassword {
+    display: none
+}
+
+
+#successdivChangePassword {
+    display: none
+}
+
+.modal-body {
+    overflow-y: scroll;
+}
+

@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-       <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
-  
+    <meta content="Cache-Control: no-cache, no-store, must-revalidate" />;
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -31,12 +31,7 @@
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
-    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
-    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
-    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
-    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
-    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />-->
+
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
@@ -44,20 +39,55 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
-   <style>
-        input#file-excelparameter {
-            position: fixed;
-            top: -120px;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+
+    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="assets/SignalRjs/signalr.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -69,8 +99,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -83,7 +115,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -129,8 +161,8 @@
                             <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
-                        <li><a href="javascript:;" style="text-decoration:none">Manage </a><i class="fa fa-angle-right"></i></li>
-                        <li><a href="javascript:;" style="text-decoration:none">Edit Events | Add Vendors | Time Extension | Reset Password |Remove Quotes From Bid</a></li>
+                        <li><a href="javascript:;" class="notextdeco">Manage </a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="javascript:;" class="notextdeco">Edit Events | Add Vendors | Time Extension | Reset Password |Remove Quotes From Bid</a></li>
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -155,10 +187,10 @@
                             <div class="portlet-body">
                                 <!-- BEGIN FORM-->
 
-                                <div class="alert alert-success" style='display: none;'>
+                                <div class="alert alert-success">
                                     <span id="spansuccess1"> </span>
                                 </div>
-                                <div class="alert alert-danger" style='display: none; '>
+                                <div class="alert alert-danger">
                                     <span id="spandanger"> </span>
                                 </div>
 
@@ -174,15 +206,15 @@
                                     <div class="col-lg-8">
 
                                         <input type="hidden" value="0" id="ddlbid" />
-                                        <input type="text" class="form-control" id="txtbid" name="txtbid"
-                                               style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Bid" />
+                                        <input type="text" class="form-control margin0auto" id="txtbid" name="txtbid"
+                                               data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Bid" />
 
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="tabbable tabbable-custom boxless tabbable-reversed" style="overflow:unset;">
+                                        <div class="tabbable tabbable-custom boxless tabbable-reversed overflowunset">
                                             <ul class="nav nav-tabs">
                                                 <li class="active" id="litab0">
                                                     <a href="#tab_0" data-toggle="tab">
@@ -332,9 +364,9 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Term & Condition:</label>
                                                                                     <div class="col-md-8">
-                                                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrevtab_0" style="text-decoration: none;" onclick="DownloadFile(this)">
+                                                                                        <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrevtab_0" onclick="DownloadFile(this)">
                                                                                         </a>
-                                                                                        <a class="isDisabledClass" id="ctrlFileTerms" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a class="isDisabledClass cursorpointer" id="ctrlFileTerms"><i class="fa fa-pencil"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -343,12 +375,12 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Attachment (If Any):</label>
                                                                                     <div class="col-md-8">
-                                                                                        <a class="form-control-static" id="filepthattachPrevtab_0" style="text-decoration: none;cursor:pointer" onclick="DownloadFile(this)"></a>
-                                                                                        <a class="isDisabledClass" id="ctrlFileAttachment" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a class="form-control-static txtpointernone" id="filepthattachPrevtab_0" onclick="DownloadFile(this)"></a>
+                                                                                        <a class="isDisabledClass cursorpointer" id="ctrlFileAttachment"><i class="fa fa-pencil"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <!--/span-->
+
                                                                         </div>
                                                                         <!--/row-->
                                                                         <div class="row">
@@ -380,7 +412,7 @@
                                                                                     <label class="control-label col-md-4">Approvers:</label>
                                                                                     <div class="col-md-8">
                                                                                         <p class="form-control-static" id="mapedapproverPrevtab_0"></p>&nbsp;
-                                                                                        <a class=isDisabledClass id="ctrladdapprovers" style="cursor:pointer"><i class="fa fa-pencil" data-toggle="modal" onclick="fnOpenPopupBidApprover()" href="#addapprovers"></i></a>
+                                                                                        <a class="isDisabledClass cursorpointer" id="ctrladdapprovers"><i class="fa fa-pencil" data-toggle="modal" onclick="fnOpenPopupBidApprover()" href="#addapprovers"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -390,7 +422,7 @@
                                                                                     <label class="control-label col-md-4">Display Vendors their Rank:</label>
                                                                                     <div class="col-md-8">
                                                                                         <p class="form-control-static" id="showL1l2"></p>
-                                                                                        <a id="ctrlShwL1" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a id="ctrlShwL1" class="cursorpointer"><i class="fa fa-pencil"></i></a>
 
                                                                                     </div>
                                                                                 </div>
@@ -403,7 +435,7 @@
                                                                                     <label class="control-label col-md-4">Maximum No. of Bid Extensions:</label>
                                                                                     <div class="col-md-8">
                                                                                         <p class="form-control-static" id="mapbidextensionPrevtab_0"></p>&nbsp;
-                                                                                        <a class=isDisabledClass id="ctrlnoofbidextension" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a class="isDisabledClass cursorpointer" id="ctrlnoofbidextension"><i class="fa fa-pencil"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -413,7 +445,7 @@
                                                                                     <label class="control-label col-md-4">Mask Participants during Bidding:</label>
                                                                                     <div class="col-md-8">
                                                                                         <p class="form-control-static" id="hidevendor"></p>
-                                                                                        <a class=isDisabledClass id="ctrlhidevendor" style="cursor:pointer"><i class="fa fa-pencil"></i></a>
+                                                                                        <a class="isDisabledClass cursorpointer" id="ctrlhidevendor"><i class="fa fa-pencil"></i></a>
 
                                                                                     </div>
                                                                                 </div>
@@ -502,13 +534,13 @@
                                                                             </label>
                                                                             <div class="col-lg-10">
 
-                                                                                <input type="text" class="form-control" id="txtvendor" name="txtvendor"
-                                                                                       style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
+                                                                                <input type="text" class="form-control margin0auto" id="txtvendor" name="txtvendor"
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
 
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-actions fluid" style="padding:5px!important;">
+                                                                    <div class="form-actions fluid padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
                                                                             <button type="button" class="btn green" onclick="resetpasswordForBidVendor()">
                                                                                 <!--Reset Password-->
@@ -546,16 +578,10 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
-                                                                                <table style="width:920px" align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                <table align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width920px">
                                                                                     <thead class="flip-content">
                                                                                         <tr>
-                                                                                            <!--<th width="20%">
-                                                                                                <div class="col-md-10 checkbox-list">
-                                                                                                    <label class="checkbox-inline" style="margin-left: -16px;">
-                                                                                                        &nbsp;
-                                                                                                    </label>
-                                                                                                </div>
-                                                                                            </th>-->
+
                                                                                             <th width="100%">
                                                                                                 Vendors
                                                                                             </th>
@@ -570,7 +596,7 @@
                                                                     </div>
                                                                 </form>
 
-                                                                <div class="form-actions fluid" style="padding:5px!important;">
+                                                                <div class="form-actions fluid padding5px">
                                                                     <div class="col-md-offset-4 col-md-6">
                                                                         <button type="button" onclick="invitevendors()" id="btninvitevendors" class="btn green hide">
                                                                             Invite Vendor
@@ -720,7 +746,7 @@
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-4">Term & Condition:</label>
                                                                                         <div class="col-md-8">
-                                                                                            <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;" onclick="DownloadFile(this)">
+                                                                                            <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev" onclick="DownloadFile(this)">
                                                                                             </a>
                                                                                         </div>
                                                                                     </div>
@@ -730,7 +756,7 @@
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-4">Attachment (If Any):</label>
                                                                                         <div class="col-md-8">
-                                                                                            <a class="form-control-static" id="filepthattachPrev" style="text-decoration: none;" onclick="DownloadFile(this)"></a>
+                                                                                            <a class="form-control-static notextdeco" id="filepthattachPrev" onclick="DownloadFile(this)"></a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -754,7 +780,7 @@
                                                                                         <div class="col-md-3">
                                                                                             <p class="form-control-static display-none" id="txtbidduration"></p>
                                                                                             <div id="spinnerBidclosingTab" class="display-none">
-                                                                                                <div class="input-group" style="width:130px;">
+                                                                                                <div class="input-group width130px">
                                                                                                     <div class="spinner-buttons input-group-btn">
                                                                                                         <button type="button" class="btn spinner-down red" id="minusbtn">
                                                                                                             <i class="fa fa-minus"></i>
@@ -777,7 +803,7 @@
                                                                                             </button>
                                                                                         </div>
                                                                                         <div class="col-md-4">
-                                                                                            <p class="form-control-static" id="extendedDurationPara" style="color:#3c763d; font-weight: 600; display: none;">Time&nbsp;Extended&nbsp;Successfully</p>
+                                                                                            <p class="form-control-static pstyle1" id="extendedDurationPara">Time&nbsp;Extended&nbsp;Successfully</p>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -828,15 +854,15 @@
                                                             <div class="portlet-body" id="eventUpdateStatusTab5">
                                                                 <form class="form-horizontal" role="form">
                                                                     <div class="form-body">
-                                                                        <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
+                                                                        <div class="alert alert-block alert-danger" id="errorOpenbid">
                                                                             <span id="erropenbid"></span>
                                                                         </div>
-                                                                        <div class="alert alert-success" id="successopenbid" style="display: none">
+                                                                        <div class="alert alert-success" id="successopenbid">
                                                                             <span id="succopenbid"></span>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h3 class="form-section">
-                                                                                Bid Details &nbsp;&nbsp;<label class="control-label bold" id="bid_status" style="font-size: 17px !important; font-weight: 900!important;color:darkblue;">
+                                                                                Bid Details &nbsp;&nbsp;<label class="control-label bold labelstyle5" id="bid_status">
                                                                                 </label>
                                                                             </h3>
                                                                             <div class="col-md-6">
@@ -854,12 +880,13 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                  
+
+
                                                                                     <div class="inputgroup">
                                                                                         <label class="col-md-3 control-label">
                                                                                             Bid Date/Time<span class="required"> *</span>
                                                                                         </label>
-                                                                                      <div class="col-md-5">
+                                                                                        <div class="col-md-6">
                                                                                             <div class="input-group date form_datetime form_datetime bs-datetime">
                                                                                                 <input type="text" class="form-control dttime" id="txtbidDate" name="txtbidDate" placeholder="Bid Date/Time" autocomplete="off" readonly>
                                                                                                 <span class="input-group-btn">
@@ -888,12 +915,11 @@
 
 
                                                                                     <div class="col-md-4">
-                                                                                        <p class="form-control-static" id="extendedDurationPara"
-                                                                                           style="color:#3c763d; font-weight: 600; display: none;">Time&nbsp;Extended&nbsp;Successfully</p>
+                                                                                        <p class="form-control-static pstyle1" id="extendedDurationPara">Time&nbsp;Extended&nbsp;Successfully</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-md-6" style="display:none;" id="divreopendttime">
+                                                                            <div class="col-md-6 nodisplay" id="divreopendttime">
                                                                                 <div class="form-group">
                                                                                     <div class="inputgroup">
                                                                                         <label class="col-md-3 control-label">
@@ -910,33 +936,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!--<div class="inputgroup">
-                                                                                        <label class="control-label col-md-4"> Bid ReOpen Date/Time:</label>
-
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                                                                 data-date-start-date="+0d">
-                                                                                                <input type="text" id="txtreopenDate" name="txtreopenDate" class="form-control afterrunning" readonly>
-                                                                                                <span class="input-group-btn">
-                                                                                                    <button class="btn default afterrunning" id="btncalreopen" type="button">
-                                                                                                        <i class="fa fa-calendar"></i>
-                                                                                                    </button>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-md-3">
-                                                                                            <div class="input-group">
-                                                                                                <input type="text" id="txreopenTime" name="txreopenTime" class="form-control timepicker timepicker-no-seconds afterrunning"
-                                                                                                       readonly>
-                                                                                                <span class="input-group-btn">
-                                                                                                    <button class="btn default" type="button">
-                                                                                                        <i class="fa fa-clock-o"></i>
-                                                                                                    </button>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                    </div>-->
+                                                                                    
                                                                                 </div>
 
                                                                             </div>
@@ -970,7 +970,7 @@
 
                                                                                         Update and Send Email
                                                                                     </button>
-                                                                                    <button id="btnreopendttime" type="button" class="btn btn-success" onclick="fnpauseaction()" style="display:none!important;">
+                                                                                    <button id="btnreopendttime" type="button" class="btn btn-success nodisplay" onclick="fnpauseaction()">
                                                                                         ReOpen and Send Email
                                                                                     </button>
                                                                                 </div>
@@ -997,10 +997,10 @@
                                                         <div class="portlet light ">
 
                                                             <div class="portlet-body" id="div_surrogate">
-                                                                <div class="alert alert-block alert-danger" id="errorsurro" style="display: none">
+                                                                <div class="alert alert-block alert-danger" id="errorsurro">
                                                                     <span id="spnerrorsurr"></span>
                                                                 </div>
-                                                                <div class="alert alert-success" id="successsurro" style="display: none">
+                                                                <div class="alert alert-success" id="successsurro">
                                                                     <span id="spnsuccsurr"></span>
                                                                 </div>
                                                                 <form action="#" class="form-horizontal">
@@ -1012,8 +1012,8 @@
                                                                             </label>
                                                                             <div class="col-lg-10">
 
-                                                                                <input type="text" class="form-control" id="txtvendorSurrogateBid" name="txtvendorSurrogateBid"
-                                                                                       style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
+                                                                                <input type="text" class="form-control margin0auto" id="txtvendorSurrogateBid" name="txtvendorSurrogateBid"
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
 
                                                                             </div>
                                                                         </div>
@@ -1046,7 +1046,7 @@
 
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-actions fluid surrogateFormElements" style="padding:5px!important;">
+                                                                    <div class="form-actions fluid surrogateFormElements padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
                                                                             <button type="button" class="btn green" onclick="saveBidSurrogate()">
                                                                                 Configure Surrogate Bidding
@@ -1063,10 +1063,10 @@
                                                 </div>
                                                 <div class="tab-pane" id="tab_7">
                                                     <div class="col-md-12">
-                                                        <div class="alert alert-block alert-danger" id="errorsendremainder" style="display: none">
+                                                        <div class="alert alert-block alert-danger" id="errorsendremainder">
                                                             <span id="errrem"></span>
                                                         </div>
-                                                        <div class="alert alert-success" id="successremainder" style="display: none">
+                                                        <div class="alert alert-success" id="successremainder">
                                                             <span id="succrem"></span>
                                                         </div>
                                                         <div class="portlet light">
@@ -1079,7 +1079,7 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
-                                                                                <table style="width:920px" align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content">
+                                                                                <table align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content width920px">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>
@@ -1100,7 +1100,7 @@
 
                                                                 </form>
 
-                                                                <div class="form-actions fluid" style="padding:5px!important;">
+                                                                <div class="form-actions fluid padding5px">
                                                                     <div class="col-md-offset-4 col-md-6">
                                                                         <button type="button" onclick="sendremainderstoparicipants()" class="btn green" id="btnsendreminder">
                                                                             Send
@@ -1114,10 +1114,10 @@
                                                 </div>
                                                 <div class="tab-pane" id="tab_8">
                                                     <div class="col-md-12">
-                                                        <div class="alert alert-block alert-danger" id="errorprebid" style="display: none">
+                                                        <div class="alert alert-block alert-danger" id="errorprebid">
                                                             <span id="errpre"></span>
                                                         </div>
-                                                        <div class="alert alert-success" id="successprebid" style="display: none">
+                                                        <div class="alert alert-success" id="successprebid">
                                                             <span id="succpreprice"></span>
                                                         </div>
                                                         <div class="portlet light">
@@ -1128,7 +1128,7 @@
                                                                     <div class="row">
 
                                                                         <div class="col-md-11">
-                                                                            <!--<div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">-->
+
                                                                             <div id="divprebid" class="portlet-body flip-scroll ">
                                                                                 <table align="left" id="tblprebidvendors" class="table table-bordered table-striped table-condensed flip-content">
 
@@ -1150,7 +1150,6 @@
                                                                             <!--</div>-->
                                                                         </div>
                                                                         <div class="col-md-1">
-
                                                                             <button type="button" onclick="submitprebidprice()" class="btn green " id="btnprebid">
                                                                                 Submit
                                                                             </button>
@@ -1161,13 +1160,7 @@
                                                                     </div>
                                                                 </form>
 
-                                                                <!--<div class="form-actions fluid" style="padding:5px!important;">
-                                                                    <div class="col-md-offset-4 col-md-6">
-                                                                        <button type="button" onclick="submitprebidprice()" class="btn green" id="btnsendreminder">
-                                                                            Submit
-                                                                        </button>
-                                                                    </div>
-                                                                </div>-->
+
                                                             </div>
                                                         </div>
                                                         <!-- END Portlet PORTLET-->
@@ -1192,19 +1185,20 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    
-    	    <div class="row hide">
-        <a id="A" style="display:none;"></a>
+    <div class="row hide">
+        <a id="A" class="nodisplay"></a>
         <table id="tblBiddetailsPreprice" class="table table-striped table-bordered table-hover hide">
             <thead>
                 <tr id="Trhead">
+
+
                     <th data-style="NonMandatory">VendorID</th>
                     <th data-style="Mandatory">Vendor</th>
                     <th data-style="Mandatory">ItemID</th>
@@ -1213,7 +1207,9 @@
                 </tr>
             </thead>
         </table>
+
         <table class="table table-bordered" id="tblUOM"></table>
+
     </div>
     <div id="PrePriciing" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1237,18 +1233,24 @@
                     </div>
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
+
                             <div class="progress-form display-none" id="modalLoaderparameter">
+
                                 <div class="col-md-offset-3 col-md-6">
                                     <p id="loader-msgparameter">
+
                                     </p>
                                     <div class="progress">
-                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
+
                             </div>
+
                             <div class="row">
+
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplate" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
@@ -1256,10 +1258,14 @@
                                         <button type="button" class="btn btn-primary" id="browseBtnExcelParameter">Browse</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter" style="text-decoration:none;">Instructions</a></span>
+
+                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameter" class="notextdeco">Instructions</a></span>
                                     </div>
+
                                 </div>
+
                             </div>
+
                             <div class="clearfix"></div><br />
                             <div class="row">
                                 <div class="col-md-12">
@@ -1279,12 +1285,19 @@
                                     </div>
                                     <div class="alert alert-success display-hide" id="instructionsDivParameter">
                                         <button class="close" data-close="alert"></button>
+
+
                                         1. Please ensure all <b>Prices</b> and <b>Quantity</b> are in Number format, and <b>Dates</b> in Date format.
                                     </div>
+
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
                                     <!--</div>-->
                                 </div>
                             </div>
+
+
+
+
                         </div>
                     </form>
                 </div>
@@ -1304,12 +1317,12 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                    <div class="modal-body modalbody2">
                         <p class="ppolicy-text">
                             Using this screen user, can see the open bids in drop down list and by selecting a particular bid he can perform following actions:
                         </p>
 
-                        <ul style="list-style: none !important;">
+                        <ul>
                             <li>1. Reset password: Password of selected vendor can be reset using this feature.</li>
                             <li>2. Invite other vendors: Left out vendors can be invited to participate in bid.</li>
                             <li>3. Remove quote: Submitted quotes of a vendor can be removed while bidding is in progress by specifying valid reasons.</li>
@@ -1333,32 +1346,17 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form" id="frmItemeditvalues">
                         <div class="form-body">
-                            <div class="alert alert-success" id="msgSuccessItemEvent" style='display:none;'>
+                            <div class="alert alert-success" id="msgSuccessItemEvent">
                                 <span id=""></span>
                             </div>
-                            <div class="alert alert-danger" id="msgErrorItemEvent" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorItemEvent">
                                 <span id=""> </span>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group" id="divbidDatePrevtab_0">
-                                        <!--<div class="inputgroup">
-                                            <label class="control-label col-md-4">
-                                                Bid Date<span class="required"> *</span>
-                                            </label>
-                                            <div class="col-md-7">
-                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                     data-date-start-date="+0d">
-                                                    <input type="text" id="txtinputBidDatePrevtab_0" name="txtinputBidDatePrevtab_0" class="form-control" readonly>
-                                                    <span class="input-group-btn">
-                                                        <button class="btn default" id="btncal" type="button">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>-->
-                                        <!---->
+
+
                                         <div class="inputgroup">
                                             <label class="col-md-3 control-label">
                                                 Bid Date/Time<span class="required"> *</span>
@@ -1377,26 +1375,7 @@
 
                                     </div>
                                 </div>
-                                <!--<div class="col-md-5">
-                                    <div class="form-group" id="divbidTimePrevtab_0">
-                                        <div class="inputgroup">
-                                            <label class="control-label col-md-5">
-                                                Bid Start Time<span class="required"> *</span>
-                                            </label>
-                                            <div class="col-md-7">
-                                                <div class="input-group">
-                                                    <input type="text" id="txtinputbidTimePrevtab_0" name="txtinputbidTimePrevtab_0" class="form-control timepicker timepicker-no-seconds"
-                                                           readonly>
-                                                    <span class="input-group-btn">
-                                                        <button class="btn default" type="button">
-                                                            <i class="fa fa-clock-o"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
+
                                 <div class="col-md-2">
 
                                     <button type="button" class="btn green" id="btn-submit-datetime" onclick="Dateandtimevalidate()"> Go</button>
@@ -1836,10 +1815,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorEditEvent" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorEditEvent">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessEditEvent" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessEditEvent">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -1891,10 +1870,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorEditEventBP" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorEditEventBP">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessEditEventBP" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessEditEventBP">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -1941,10 +1920,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorEditEventFA" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorEditEventFA">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessEditEventFA" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessEditEventFA">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -1996,10 +1975,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorL1" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorL1">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessL1" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessL1">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -2049,10 +2028,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorStart" style='display: none;'>
+                            <div class="alert alert-danger" id="msgErrorStart">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessStart" style='display: none;'>
+                            <div class="alert alert-success" id="msgSuccessStart">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group" id="">
@@ -2107,10 +2086,10 @@
 
                         <div class="portlet-body form">
                             <form action="#" id="maphead" class="form-horizontal" role="form">
-                                <div class="alert alert-block alert-danger" id="errormapdiv" style="display: none">
+                                <div class="alert alert-block alert-danger" id="errormapdiv">
                                     <span id="err"></span>
                                 </div>
-                                <div class="alert alert-success" id="successmapdiv" style="display: none">
+                                <div class="alert alert-success" id="successmapdiv">
                                     <span id="succ"></span>
                                 </div>
                                 <div class="form-body">
@@ -2129,7 +2108,7 @@
                                             Attachment
                                         </label>
                                         <div class="col-lg-8">
-                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" change="checkfilesize(this)" />
+                                            <input type="file" class="default form-control " id="fileToUpload" name="fileToUpload" onchange="checkfilesize(this)" />
                                         </div>
                                     </div>
 
@@ -2172,10 +2151,10 @@
                     </div>
 
                     <div class="portlet-body form">
-                        <div class="alert alert-success" id="successapp" style='display: none;'>
+                        <div class="alert alert-success" id="successapp">
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorapp" style='display: none; '>
+                        <div class="alert alert-danger" id="diverrorapp">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmApprover" class="form-horizontal" role="form">
@@ -2226,165 +2205,11 @@
             </div>
         </div>
     </div>
-    <!--<div id="reopenafterPause" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="row">
-                <div class="col-md-12"></div>
-                <div class="portlet box green-haze">
 
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-reorder"></i>ReOpen Auction
-                        </div>
-                        <div class="tools">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        </div>
-                    </div>
 
-                    <div class="portlet-body form">
-                        <div class="alert alert-success" id="successreopen" style='display: none;'>
-                            <span id="spansuccessreopen"> </span>
-                        </div>
-                        <div class="alert alert-danger" id="diverrorreopen" style='display: none; '>
-                            <span id="spandangeropen"> </span>
-                        </div>
-                        <form action="#" id="frmReopen" class="form-horizontal" role="form">
-                            <input type="hidden" id="hdnReopenSeid" value="0" />
-                            <input type="hidden" id="hdnReopenSlectedindex" value="0" />
-                            <div class="form-body">
-                                <div class="form-group" id="divTimeChange">
-                                    <div class="Input-group">
-                                        <label class="control-label col-md-2">
-                                            Bid Reopen Date<span class="required"> *</span>
-                                        </label>
-                                        <div class="col-md-3 xyz">
-                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                                 data-date-start-date="+0d">
-                                                <input type="text" id="txtreopenDate" autocomplete="off" name="txtreopenDate" class="form-control" readonly>
-                                                <span class="input-group-btn">
-                                                    <button class="btn default" id="btncal" type="button">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="inputgroup">
-                                        <label class="control-label col-md-2">
-                                            Bid Time<span class="required"> *</span>
-                                        </label>
-                                        <div class="col-md-3">
-                                            <div class="input-group xyz">
-                                                <input type="text" id="txreopenTime" name="txreopenTime" class="form-control timepicker timepicker-no-seconds"
-                                                       readonly>
-                                                <span class="input-group-btn">
-                                                    <button class="btn default" type="button">
-                                                        <i class="fa fa-clock-o"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-offset-4 col-md-9">
-                                                <button type="submit" class="btn green">Submit</button>
-                                                <button type="button" class="btn yellow-crusta" onclick="fnclosepopupReopen()">Close</button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6"> </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>-->
-    <!-- /.modal-content -->
-    <!--</div>
-            </div>
-        </div>
-    </div>-->
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-
-    <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-
-    <!-- END PAGE LEVEL PLUGINS -->
-    <script src="assets/SignalRjs/signalr.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js"></script>
-    <script src="assets/CustomJS/manageBidDetails.js?v-2" type="text/javascript"></script>
-    
-
-    <script type="text/javascript">
-
+    <script type="text/javascript" nonce="manbd">
         jQuery(document).ready(function () {
-            $('.thousandseparated').inputmask();
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-            App.init();
-            Metronic.init();
-            ComponentsPickers.init();
-            setCommonData();
-            fetchUserBids();
-            fetchMenuItemsFromSession(9, 18);
-            FormValidate();
-
-            FetchUOM(sessionStorage.getItem("CustomerID"));
-            BindNoExtensions('txtnoofextensiontab_0');
-                 document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
-                document.getElementById('file-excelparameter').click();
-            });
-            $('#file-excelparameter').change(handleFileparameter);
-
+            callPagejs('manageBidDetails.js');
 
         });
     </script>

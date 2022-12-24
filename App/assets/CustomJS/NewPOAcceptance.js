@@ -1,4 +1,50 @@
+jQuery(document).ready(function () {
+  
+    $('.maxlength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
 
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param);
+    var POID = getUrlVarsURL(decryptedstring)["POHID"];
+    if (POID == null)
+        sessionStorage.setItem('hddnPOHID', 0)
+    else {
+
+        sessionStorage.setItem('hddnPOHID', POID)
+        setTimeout(function () {
+            fetchPODetails('Attachment');
+            fetchPODetails('Details');
+            FetchRecomendedVendor();
+            $('#POID').html(POID)
+        }, 1000)
+    }
+    Metronic.init();
+    Layout.init();
+    formvalidate();
+
+    setCommonData();
+
+});
 
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
@@ -116,7 +162,7 @@ function fetchPODetails(flag) {
         success: function (data, status, jqXHR) {
             var attach = "";
             _vendorid = data[0].vendorID;
-            sessionStorage.setItem('VendorId',_vendorid);
+            sessionStorage.setItem('VendorId', _vendorid);
             if (data.length > 0) {
                 if (flag == "Details") {
 
@@ -169,6 +215,9 @@ function fetchPODetails(flag) {
     })
 }
 function acceptRevertPO() {
+
+    var _cleanString = StringEncodingMechanism($('#txtRemarks').val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var attchname = jQuery('#file1').val().substring(jQuery('#file1').val().lastIndexOf('\\') + 1)
@@ -176,7 +225,8 @@ function acceptRevertPO() {
     var Approvers = {
         "POHeaderID": parseInt(sessionStorage.getItem('hddnPOHID')),
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
-        "Remarks": $('#txtRemarks').val(),
+        //"Remarks": $('#txtRemarks').val(),
+        "Remarks": _cleanString,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActionType": "Vendor",
         "Action": $('#ddlActionType').val(),
@@ -204,7 +254,7 @@ function acceptRevertPO() {
                 msz = "This PO is now reverted to User.";
             }
             //** Upload Files on Azure PortalDocs folder first Time
-            fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID') +'/'+ sessionStorage.getItem('VendorId'));
+            fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
 
             bootbox.alert(msz, function () {
                 window.location = "VendorHome.html";
@@ -287,8 +337,69 @@ function FetchRecomendedVendor() {
 
 }
 function DownloadFile(aID) {
+    //fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID'));
     fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
 }
 function DownloadFileVendor(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
+}
+
+
+//abheedev
+function multilingualLanguage() {
+
+    var set_locale_to = function (locale) {
+        if (locale) {
+            $.i18n().locale = locale;
+        }
+
+        $('body').i18n();
+    };
+    jQuery(function () {
+        $.i18n().load({
+            'en': 'assets/plugins/jquery.i18n/language/en/translation.json', // Messages for english
+            'fr': 'assets/plugins/jquery.i18n/language/fr/translation.json' // message for french
+        }).done(function () {
+            set_locale_to(url('?locale'));
+
+            $(".navbar-language").find(`option[value=${$.i18n().locale}]`).attr("selected", "selected")
+
+            //   <option data-locale="en" value="en">English</option>
+
+            History.Adapter.bind(window, 'statechange', function () {
+                set_locale_to(url('?locale'));
+
+            });
+            $('.navbar-language').change(function (e) {
+
+                e.preventDefault();
+                $.i18n().locale = $('option:selected', this).data("locale");
+
+
+                History.pushState(null, null, "?locale=" + $.i18n().locale);
+
+
+
+            });
+
+            $('a').click(function (e) {
+
+                if (this.href.indexOf('?') != -1) {
+                    this.href = this.href;
+                }
+                else if (this.href.indexOf('#') != -1) {
+                    e.preventDefault()
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+                //else if (this.href.indexOf('javascript:') != -1) {
+
+                //  this.href = this.href + "?locale=" + $.i18n().locale;
+                //} 
+
+                else {
+                    this.href = this.href + "?locale=" + $.i18n().locale;
+                }
+            });
+        });
+    });
 }

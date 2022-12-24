@@ -1,3 +1,64 @@
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+
+    $("#ddlCategoryMultiple").select2({
+        placeholder: "Select Category",
+        allowClear: true
+    });
+
+    Metronic.init();
+    Layout.init();
+
+    $('#dropbidType').select2({
+        placeholder: "Select Bid Type",
+        allowClear: true
+    });
+    var _RFXID;
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        _RFXID = getUrlVarsURL(decryptedstring)["RFXID"];
+    }
+    fetchCategorymaster()
+    if (_RFXID == null) {
+        sessionStorage.setItem('CurrentRFXID', 0)
+        fetchRFXQuestions('RFI');
+    }
+    else {
+        sessionStorage.setItem('CurrentRFXID', _RFXID)
+
+    }
+
+
+    FormWizard.init();
+    FormValidate();
+    ComponentsPickers.init();
+    setCommonData();
+    fetchMenuItemsFromSession(1, 25);
+
+});
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
 
 $("#cancelBidBtn").hide();
 var error = $('.alert-danger');
@@ -391,9 +452,9 @@ function fetchRFXDetails() {
         
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
-            jQuery('#txtRFXSubject').val(BidData[0].rfxMaster[0].rfxSubject)
+            jQuery('#txtRFXSubject').val(StringDecodingMechanism(BidData[0].rfxMaster[0].rfxSubject))
             jQuery('#txtRFXdeadline').val(fnConverToShortDT(BidData[0].rfxMaster[0].rfxDeadline))
-            jQuery('#txtRFXdescription').val(BidData[0].rfxMaster[0].rfxDescription)
+            jQuery('#txtRFXdescription').val(StringDecodingMechanism(BidData[0].rfxMaster[0].rfxDescription))
             jQuery('#txtattachdescription').val(BidData[0].rfxMaster[0].rfxAttachmentDescription)
             jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
             $("#cancelBidBtn").show();
@@ -573,6 +634,9 @@ function fetchRFXDetailsForTab2(applicableFor) {
 }
 
 function RFXConfigureTab1() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtrfqSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtRFXdescription").val());
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var AttachementFileName = '',queryAttachment="", queryCategories="";
     if (($('#attach-file').html() != '') && ($('#file2').val() == '')) {
@@ -609,9 +673,11 @@ function RFXConfigureTab1() {
     var Tab1Data = {
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "RFXSubject": jQuery("#txtRFXSubject").val(),
+        //"RFXSubject": jQuery("#txtRFXSubject").val(),
+        "RFXSubject": _cleanString,
         "RFXDeadline": jQuery('#txtRFXdeadline').val(),
-        "RFXDescription": jQuery("#txtRFXdescription").val(),
+        //"RFXDescription": jQuery("#txtRFXdescription").val(),
+        "RFXDescription": _cleanString2,
         "RFXAttachmentDescription": 'NA',  
         "RFXAttachment": 'NA',
         "UserId": sessionStorage.getItem('UserID'),
@@ -1184,6 +1250,7 @@ jQuery("#txtsubCategory").typeahead({
 });
 
 function InsUpdQuestionSubcategory() {
+    var _cleanString3 = StringEncodingMechanism($('#txtqSubcategory').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -1198,7 +1265,8 @@ function InsUpdQuestionSubcategory() {
     var data = {
         "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
         "QuestionSubCategoryID": parseInt($('#hdnsubCatID').val()),
-        "QuestionSubCategory": $('#txtqSubcategory').val(),
+        //"QuestionSubCategory": $('#txtqSubcategory').val(),
+        "QuestionSubCategory": _cleanString3,
         "isActive": status,
         "customerId": parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -1307,6 +1375,7 @@ if (window.location.search) {
     var decryptedstring = fndecrypt(param)
 }
 function insupdRFXQuestionMaster() {
+    var _cleanString4 = StringEncodingMechanism($('#txtQuestiondescription').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -1320,7 +1389,8 @@ function insupdRFXQuestionMaster() {
     var data = {
         "QuestionCategoryID": parseInt($('#hdnquestCatID').val()),
         "QuestionSubCategoryID": parseInt(sessionStorage.getItem("hdnSubCategoryID")),
-        "QuestionDescription": $('#txtQuestiondescription').val(),
+        //"QuestionDescription": $('#txtQuestiondescription').val(),
+        "QuestionDescription": _cleanString4,
         "Mandatory": mandatory,
         "Attachement": status,
         "QuestionID": 0,
@@ -2017,15 +2087,19 @@ function RFXSubmitTempVendors() {
 }
 
 function RFXInsUpdConfigurationSubmit() {
+    var _cleanString5 = StringEncodingMechanism($("#txtRFXSubject").val());
+    var _cleanString6 = StringEncodingMechanism($('#txtRFXdescription').val());
   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
         
         var TempCompany = {
             'RFXID': parseInt(sessionStorage.getItem('CurrentRFXID')),
-            'SubjectRFX': $("#txtRFXSubject").val(),
+            //'SubjectRFX': $("#txtRFXSubject").val(),
+            'SubjectRFX': _cleanString5,
             'CustomerId': parseInt(sessionStorage.getItem('CustomerID')),
-            'RFXDescription': $('#txtRFXdescription').val(),
+            //'RFXDescription': $('#txtRFXdescription').val(),
+            'RFXDescription': _cleanString6,
             'RFXDeadline': $('#txtRFXdeadline').val(),
             'UserId': sessionStorage.getItem('UserID')
             

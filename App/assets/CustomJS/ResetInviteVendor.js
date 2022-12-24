@@ -1,6 +1,31 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
+//FROM HTML
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
+    setCommonData();
+    fetchUserBids();
+    fetchMenuItemsFromSession(9, 18);
+    FormValidate()
 
+});
+//
 
 var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
@@ -375,6 +400,8 @@ function removeQuotationSea(price, Exwork, subtym) {
 
 }
 function deletePSquote() {
+
+    var _cleanString = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -389,7 +416,8 @@ function deletePSquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "PSID": sessionStorage.getItem("psid"),
         "PSHeaderID": sessionStorage.getItem("psheaderid"),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString,
         "Attachment": AttachementFileName,
         "DeletedBy": sessionStorage.getItem("UserID")
       
@@ -439,6 +467,7 @@ function deletePSquote() {
     })
 }
 function deleteDomesticQuote() {
+    var _cleanString2 = StringEncodingMechanism($('#txtremarks').val());
   
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -455,7 +484,8 @@ function deleteDomesticQuote() {
         "SubmissionTime": sessionStorage.getItem("SubmissionTymD"),
         "VDomesticHeaderID": sessionStorage.getItem("VHeaderID"),
         "QuotedPrice": sessionStorage.getItem("QPriceD"),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString2,
         "Attachment": AttachementFileName,
         "DeletedBy": sessionStorage.getItem("UserID")
 
@@ -505,6 +535,7 @@ function deleteDomesticQuote() {
     })
 }
 function deletewarehouseQuote() {
+    var _cleanString3 = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -520,7 +551,8 @@ function deletewarehouseQuote() {
         "UtilitiesCost": sessionStorage.getItem("utility"),
         "FixedManagementFee": sessionStorage.getItem("fixedManagement"),
         "SubmissionTime": sessionStorage.getItem("SubmissionTymW"),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString3,
         "Attachment": AttachementFileName,
         "EnteredBy": sessionStorage.getItem("UserID")
 
@@ -570,6 +602,8 @@ function deletewarehouseQuote() {
     })
 }
 function deleteseaQuote() {
+    var _cleanString4 = StringEncodingMechanism($('#txtremarks').val());
+
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -582,7 +616,8 @@ function deleteseaQuote() {
         "Price": sessionStorage.getItem("PriceSea"),
         "ExWorks": sessionStorage.getItem("ExworkSea"),
         "SubmissionTime": sessionStorage.getItem("SubmissionTymSea"),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString4,
         "Attachment": AttachementFileName,
         "EnteredBy": sessionStorage.getItem("UserID")
 
@@ -632,6 +667,8 @@ function deleteseaQuote() {
     })
 }
 function deleteAirQuote() {
+    var _cleanString5 = StringEncodingMechanism($('#txtremarks').val());
+
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#filepthattach').html != '') {
@@ -656,7 +693,8 @@ function deleteAirQuote() {
         "ExWorksPlus1000": sessionStorage.getItem("ex1000"),
        
         "SubmissionTime": sessionStorage.getItem("subtym"),
-        "Remarks": $('#txtremarks').val(),
+        //"Remarks": $('#txtremarks').val(),
+        "Remarks": _cleanString5,
         "Attachment": AttachementFileName,
         "EnteredBy": sessionStorage.getItem("UserID")
 
@@ -1048,7 +1086,8 @@ function fetchallexportdetails() {
     var replaced2 = '';
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid option:selected').val() + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid option:selected').val() + "&AuthenticationToken=" + sessionStorage.getItem('AuthenticationToken'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?BidID=" + jQuery('#ddlbid option:selected').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,

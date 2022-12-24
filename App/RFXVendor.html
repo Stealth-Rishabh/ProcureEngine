@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -18,7 +18,7 @@
           type="text/css" />
     <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
           type="text/css" />
-		    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
@@ -174,7 +174,7 @@
                                                                 RFI Subject
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="text" class="form-control" placeholder="Enter RFI Subject" id="txtrfiSubject" name="txtrfiSubject" autocomplete="off" readonly />
+                                                                <input type="text" class="form-control" placeholder="Enter RFI Subject" id="txtrfiSubject" name="txtrfiSubject" onkeyup="replaceQuoutesFromString(this)" autocomplete="off" readonly />
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -196,7 +196,7 @@
                                                                 RFI Description
                                                             </label>
                                                             <div class="col-md-9">
-                                                                <textarea id="txtrfidescription" name="txtrfidescription" placeholder="Enter RFI Description" class="form-control" rows="6" readonly></textarea>
+                                                                <textarea id="txtrfidescription" name="txtrfidescription" placeholder="Enter RFI Description" onkeyup="replaceQuoutesFromString(this)" class="form-control" rows="6" readonly ></textarea>
                                                             </div>
                                                         </div>
 
@@ -220,7 +220,7 @@
                                                                 Attachment
                                                             </label>
                                                             <div class="col-md-4">
-                                                                <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" name="txtattachdescription" autocomplete="off" readonly />
+                                                                <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" name="txtattachdescription" onkeyup="replaceQuoutesFromString(this)" autocomplete="off" readonly />
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <span class="help-block"><a id="attach-file" href="javascript:;" style="text-decoration: none !important;"></a></span>
@@ -235,7 +235,7 @@
                                                             Company Name<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtCompanyName" name="txtCompanyName" />
+                                                            <input type="text" class="form-control" id="txtCompanyName" name="txtCompanyName" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             Phone Number<span class="required"> *</span>
@@ -249,13 +249,13 @@
                                                             Office Address<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <textarea id="txtofficeAddress" name="txtofficeAddress" class="form-control" rows="3"></textarea>
+                                                            <textarea id="txtofficeAddress" name="txtofficeAddress" class="form-control" rows="3" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             Factory Address
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <textarea id="txtfactoryAddress" name="txtfactoryAddress" class="form-control" rows="3"></textarea>
+                                                            <textarea id="txtfactoryAddress" name="txtfactoryAddress" class="form-control" rows="3" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                         </div>
 
                                                     </div>
@@ -264,13 +264,13 @@
                                                             Email Address<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtemailID" name="txtemailID" />
+                                                            <input type="text" class="form-control" id="txtemailID" name="txtemailID" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             Parent Company (if any)
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtParentcompName" name="txtParentcompName" />
+                                                            <input type="text" class="form-control" id="txtParentcompName" name="txtParentcompName" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -278,7 +278,7 @@
                                                             City<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtCity" name="txtCity" />
+                                                            <input type="text" class="form-control" id="txtCity" name="txtCity" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             PAN No.<span class="required"> *</span>
@@ -352,7 +352,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" class="form-control" id="txtContactName" name="txtContactName" />
+                                                            <input type="text" class="form-control" id="txtContactName" name="txtContactName" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             Key Contact Phone<span class="required"> *</span>
@@ -366,13 +366,13 @@
                                                             Key Contact Email<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtcontactEmail" name="txtcontactEmail" />
+                                                            <input type="text" class="form-control" id="txtcontactEmail" name="txtcontactEmail" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                         <label class="col-md-2 control-label">
                                                             Contact Alternate Email<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtcontactAltEmail" name="txtcontactAltEmail" />
+                                                            <input type="text" class="form-control" id="txtcontactAltEmail" name="txtcontactAltEmail" onkeyup="replaceQuoutesFromString(this)"/>
                                                         </div>
                                                     </div>
 

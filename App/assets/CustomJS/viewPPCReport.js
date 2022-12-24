@@ -1,4 +1,4 @@
-﻿var idx = 0;
+var idx = 0;
 var allUsers = [];
 $(document).ready(function () {
 
@@ -136,11 +136,7 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHide").show();
                 }
 
-                //if (res.result[0].eventID == 0) {
-                //    $(".clsHideEvent").hide();
-                //}
-                //else
-                //    $(".clsHideEvent").show();
+            
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
                 $("#lblDetailsdesc").html("<b>Descrition:</b>");
@@ -151,8 +147,8 @@ function GetOverviewmasterbyId(idx) {
                 $('#logoimg').attr("src", res.result[0].logoImage);
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
-                // $("#lblProjectName").text(res.result[0].projectName);
-                $("#lblProjectName").text(res.result[0].project);
+               
+                $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
 
                 $("#lblPurOrg").text(res.result[0].orgName);

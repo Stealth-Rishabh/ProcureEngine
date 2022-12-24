@@ -1,9 +1,79 @@
 jQuery(document).ready(function () {
+    //FROM HTML
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    App.init();
+    setCommonData();
+    fetchMenuItemsFromSession(9, 10);
+    FormValidation.init();
+
+    fetchParticipantsVenderTable();
+    fetchMapCategory('M', 0);
+
+    fetchBidType();// for serach vendor
+    clearform();
+    fetchCountry();
+    //abheedev 25/11/2022
+    $('#ddlCountry').select2({
+        searchInputPlaceholder: "Search Country",
+    })
+    $('#ddlCountryCd').select2({
+        searchInputPlaceholder: "Dialing Code",
+        //allowClear: true
+    });
+
+    $('#ddlCountryCdPhone').select2({
+        searchInputPlaceholder: "Dialing Code",
+        // allowClear: true
+    });
+
+    $('#ddlState').select2({
+        searchInputPlaceholder: "Search State",
+        allowClear: true
+    }).on('change', function () { $(this).valid(); });
+    $('#ddlCity').select2({
+        searchInputPlaceholder: "Search City",
+        allowClear: true
+    }).on('change', function () { $(this).valid(); });
+    $('#ddlpreferredTime').select2().on('change', function () { $(this).valid(); });
+    //***********
+
+
     jQuery("#btnsumbit").click(function () {
 
         dynamiccontrolvalidation();
     });
 });
+//FROM HTML
+
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "-" + month + "-" + year + "/ " + hour + ":" + mins;
+
+    tableToExcel('tblParticipantsExport', 'Participant Details', 'Participant Details - ' + postfix + '.xls');
+
+});
+//
+
 
 $('#txtUI,txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",
@@ -222,7 +292,8 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
-
+    var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtAddress").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -253,8 +324,10 @@ function RegisterParticipants() {
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-        "ParticipantName": jQuery("#ParticipantName").val(),
-        "Address": jQuery("#txtAddress").val(),
+        //"ParticipantName": jQuery("#ParticipantName").val(),
+        "ParticipantName": _cleanString,
+        //"Address": jQuery("#txtAddress").val(),
+        "Address": _cleanString2,
         "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
         "CountryName": jQuery("#ddlCountry option:selected").text(),
         "StateID": parseInt(jQuery("#ddlState option:selected").val()),
@@ -753,10 +826,10 @@ $('#txtcompanyemail').on('keyup', function () {
 
 function EditProduct(ctrl) {
     clearform()
-    jQuery("#ParticipantName").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
-    jQuery("#ContactName").val(jQuery(ctrl).closest('tr').find("td").eq(4).html());
+    jQuery("#ParticipantName").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(3).html()));
+    jQuery("#ContactName").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(4).html()));
     jQuery("#ParticipantName").closest('.form-group').removeClass('has-error')//.find('span').hide()
-    jQuery("#txtAddress").val(jQuery(ctrl).closest('tr').find("td").eq(5).text());
+    jQuery("#txtAddress").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(5).text()));
     jQuery("#txtAddress").closest('.form-group').removeClass('has-error')//.find('span').hide()
     jQuery("#txtCity").val(jQuery(ctrl).closest('tr').find("td").eq(6).html());
     jQuery("#txtCity").closest('.form-group').removeClass('has-error')//.find('span').hide()
@@ -1073,9 +1146,13 @@ jQuery("#ParticipantName").typeahead({
     }
 
 });
-
+//abheedev bug 590
 function validatePanNumber(pan) {
+   
     clearform();
+    $("#ddlpreferredTime").select2("val", "");
+    $("#ddlState").select2("val", "0")
+    $("#ddlCity").select2("val", "0")
 
     // fnValidateGST();
     fnfetchfoundVendors();
@@ -1246,7 +1323,7 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     jQuery("#txtAlternateeMailID").val(alternateemailid);
     jQuery("#txtZipCd").val(zipcode)
    
-    $('#ddlpreferredTime').val(prefferredTZ).trigger('change')
+    $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
 
     //@abheedev
 
@@ -1458,9 +1535,9 @@ function ExtendParticipants() {
 
 
 }
-
+//abheedev bug 590
 function clearform() {
-
+    
     jQuery("#ParticipantName").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
@@ -1472,12 +1549,9 @@ function clearform() {
     jQuery("#txtMobileNo").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtcompanyemail").val('');
+    jQuery("#txtAlternateeMailID").val('');
     jQuery('#hdnParticipantID').val('0');
     $("#ddlCountry").val('111');
-    
-    $("#ddlState").val('0');
-    $("#ddlCity").val('0');
-
 
     $('.childchkbox').each(function () {
         jQuery(this).closest('span#spancheckedvendorgroup').removeAttr('class');

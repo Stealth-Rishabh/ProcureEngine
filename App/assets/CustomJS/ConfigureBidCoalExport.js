@@ -1,4 +1,72 @@
+var _BidID;
+jQuery(document).ready(function () {
+
+    $('[data-toggle="popover"]').popover({})
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 52);
+    FetchCurrency('0');
+
+    fetchRegisterUser();
+    fetchBidType();
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+    }, 2000);
+
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchVendorGroup('M', 0); // used to fetch product category
+    showhideItemBidDuration();
+   
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+
+    if (_BidID == null)
+        sessionStorage.setItem('CurrentBidID', 0)
+
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        fetchCoalDetails();
+    }
+
+});
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
 $("#cancelBidBtn").hide();
+
 $('#file-excelparameter').change(handleFileparameter);
 
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
@@ -9,6 +77,7 @@ jQuery("#txtApprover").keyup(function () {
     sessionStorage.setItem('hdnApproverid', '0');
 });
 sessionStorage.setItem('hdnApproverid', 0);
+
 
 
 function cancelbid() {
@@ -536,19 +605,26 @@ function ValidateVendor() {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
@@ -556,17 +632,22 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
+            return false;
+
         }
 
+
     });
+    allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 
@@ -992,12 +1073,19 @@ function ConfigureBidForCoalTab1() {
         })
     }
     var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
+
+
     //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        "BidSubject": _cleanString,
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        "BidDescription": _cleanString2,
         //"BidDate": jQuery("#txtbidDate").val(),
         "BidDate": StartDT,
         //"BidTime": jQuery("#txtbidTime").val(),
@@ -1171,6 +1259,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 
 var totalitemdurationstagger = 0;
 function ConfigureBidForCoalTab2() {
+
     var targetPrice;
     var unitrate = 0
     var BidDuration = 0;
@@ -1201,8 +1290,8 @@ function ConfigureBidForCoalTab2() {
             if ($.trim(this_row.find('td:eq(23)').html()) != '') {
                 povalue = removeThousandSeperator($.trim(this_row.find('td:eq(23)').html()));
             }
-            var remark = $.trim(this_row.find('td:eq(5)').html()).replace(/'/g, "");
-            var description = $.trim(this_row.find('td:eq(4)').html()).replace(/'/g, "");
+            var remark = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').html()).replace(/'/g, ""));
+            var description = StringEncodingMechanism($.trim(this_row.find('td:eq(4)').html()).replace(/'/g, ""));
             if ($('#ddlbidclosetype').val() == "A") {
                 itmduartion = 0;
                 BidDuration = BidDuration + 0;
@@ -1214,6 +1303,7 @@ function ConfigureBidForCoalTab2() {
                 totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt($.trim(this_row.find('td:eq(16)').html()))
 
             }
+            var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(21)').html()));
 
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1237,7 +1327,8 @@ function ConfigureBidForCoalTab2() {
                 "ShowStartPrice": $.trim(this_row.find('td:eq(18)').html()),
                 "PoUnitRate": parseFloat(unitrate),
                 "PoNo": $.trim(this_row.find('td:eq(20)').html()),
-                "PoVendorName": $.trim(this_row.find('td:eq(21)').html()),
+                //"PoVendorName": $.trim(this_row.find('td:eq(21)').html()),
+                "PoVendorName": _cleanString3,
                 "PoDate": $.trim(this_row.find('td:eq(22)').html()),
                 "PoValue": parseFloat(povalue)
             }
@@ -1721,7 +1812,7 @@ function editvalues(icount) {
     //$('#rowidPrev').val(rowidPrev.id)
 
     // var Descriptiontxt = $("#desc" + icount).html().replace(/<br>/g, '\n')
-    var Remark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Remark = StringDecodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'))
 
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txtdestinationPort').val($("#destinationport" + icount).text())
@@ -1858,7 +1949,8 @@ function fetchCoalDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchCoalExportConfigurationData/?BidID=" + sessionStorage.getItem('CurrentBidID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1868,9 +1960,9 @@ function fetchCoalDetails() {
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate));
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject))
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails))
             //jQuery('#txtbidDate').val(BidData[0].bidDetails[0].bidDate)
             jQuery('#txtbidDate').val(dtst)
             //jQuery('#txtbidTime').val(BidData[0].bidDetails[0].bidTime)
@@ -2122,7 +2214,7 @@ function fetchPSBidDetailsForPreview() {
     var hidevendor = 'No';
     jQuery('#mapedapproverPrev').html('');
 
-    jQuery('#txtBidSubjectPrev').html($('#txtBidSubject').val())
+    jQuery('#txtBidSubjectPrev').html(StringEncodingMechanism($('#txtBidSubject').val()))
 
     if ($('#ddlbidclosetype').val() == "S") {
         jQuery('#txtBidDurationPrev').html(sessionStorage.getItem('TotalBidDuration'))
@@ -2130,7 +2222,7 @@ function fetchPSBidDetailsForPreview() {
     else {
         jQuery('#txtBidDurationPrev').html($('#txtBidDuration').val())
     }
-    jQuery('#txtbiddescriptionPrev').html($('#txtbiddescription').val())
+    jQuery('#txtbiddescriptionPrev').html(StringEncodingMechanism($('#txtbiddescription').val()))
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
     jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())

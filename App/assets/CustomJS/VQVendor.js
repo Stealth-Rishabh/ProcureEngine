@@ -1,5 +1,78 @@
 ﻿var error = $('.alert-danger');
+jQuery(document).ready(function () {
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if ((sessionStorage.getItem("UserType") == "V") || (sessionStorage.getItem("UserType") == "P")) {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init();
+    Layout.init();
 
+    $('#dropbidType').select2({
+        placeholder: "Select Bid Type",
+        allowClear: true
+    });
+    var param = getUrlVars()["param"];
+    var decryptedstring = fndecrypt(param);
+    var _VQID = getUrlVarsURL(decryptedstring)["VQID"];
+
+    if (_VQID == null) {
+        sessionStorage.setItem('CurrentVQID', 0)
+
+    }
+
+    else {
+        sessionStorage.setItem('CurrentVQID', _VQID)
+        fetchRFIDetails();
+        RFIFetchCompanyHeader('CompanyInfo')
+        RFIFetchFinanceHeader();
+        fetchQuestionsForVendors('CompanyInfo')
+        fetchQuestionsForVendors('FinancialInfo');
+        fetchQuestionsForVendors('CompanyCapabilities');
+        fetchQuestionsForVendors('TechnicalInfo');
+
+    }
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    Filltblfinancedetails();
+
+
+    $("#ddlCategoryMultiple").select2();
+});
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
+
+//get file path from client system
+function getNameFromPath(strFilepath) {
+    // alert(strFilepath);
+    var objRE = new RegExp(/([^\/\\]+)$/);
+    var strName = objRE.exec(strFilepath);
+
+    if (strName == null) {
+        return null;
+    }
+    else {
+        return strName[0];
+    }
+
+}
 var success = $('.alert-success');
 var _noAttachment = false;
 $(".preview_div").hide();
@@ -966,6 +1039,11 @@ function Filltblfinancedetails() {
 }
 
 function InsUpdTab1Data(locText) {
+    var _cleanString = StringEncodingMechanism($('#txtCompanyName').val());
+    var _cleanString2 = StringEncodingMechanism($('#txtofficeAddress').val());
+    var _cleanString3 = StringEncodingMechanism($('#txtfactoryAddress').val());
+    var _cleanString4 = StringEncodingMechanism($('#txtParentcompName').val());
+    var _cleanString5 = StringEncodingMechanism($('#txtContactName').val());
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vals = 0;
@@ -994,19 +1072,24 @@ function InsUpdTab1Data(locText) {
     var Tab1Data = {
         "VQID":parseInt(sessionStorage.getItem('CurrentVQID')),
         "VendorId": parseInt(sessionStorage.getItem('VendorId')),
-        "CompanyName": $('#txtCompanyName').val(),
+        //"CompanyName": $('#txtCompanyName').val(),
+        "CompanyName": _cleanString,
         "CompanyPhone": $('#txtPhoneNo').val(),
-        "OfficedAddress": $('#txtofficeAddress').val(),
+        //"OfficedAddress": $('#txtofficeAddress').val(),
+        "OfficedAddress": _cleanString2,
         "CompanyEmail": $('#txtemailID').val(),
-        "FactoryAdress": $('#txtfactoryAddress').val(),
-        "ParentCompany": $('#txtParentcompName').val(),
+        //"FactoryAdress": $('#txtfactoryAddress').val(),
+        "FactoryAdress": _cleanString3,
+        //"ParentCompany": $('#txtParentcompName').val(),
+        "ParentCompany": _cleanString4,
         "FaxNumber": parseInt(faxno),
         "CompanyWebsite": $('#txtWebsite').val(),
         "Ownership": $('#ddlOwnership option:selected').text(),
         "EmployeeCount": parseInt($('#txtemployeeNum').val()),
         "KeyProjects": $('#txtbriefDesc').val(),
         "Title": $('#ddlTitle option:selected').text(),
-        "KeyPersonName": $('#txtContactName').val(),
+        //"KeyPersonName": $('#txtContactName').val(),
+        "KeyPersonName": _cleanString5,
         "KeyPersonNo": $('#txtcontactNo').val(),
         "KeyPersonEmail": '',
         "InsertQuery": InsertQuery,

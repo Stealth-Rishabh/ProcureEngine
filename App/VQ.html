@@ -9,8 +9,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -19,12 +19,12 @@
           type="text/css" />
     <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
           type="text/css" />
-		   <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-   
+
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
-    
+
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
@@ -37,16 +37,20 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-    <link rel="shortcut icon" href="../favicon.ico" />
+   
+    <!-- Page Specific CSS-->
+
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <link rel="stylesheet" href="assets/CustomCSS/vq.css">
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" id="logoimage" alt="logo" class="img-responsive" />
                 </a>
-               
+
             </div>
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             </a>
@@ -55,9 +59,9 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                          
+                           <b><span id="spanUserName"  class="username username-hide-on-mobile">
+                            </span></b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -70,7 +74,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay" >
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -78,7 +82,8 @@
                     <li class="sidebar-toggler-wrapper">
                         <div class="sidebar-toggler hidden-phone">
                         </div>
-                    </li><br />
+                    </li>
+                    <br />
                 </ul>
             </div>
         </div>
@@ -117,7 +122,7 @@
                         <li><a href="#">Configuration</a> <i class="fa fa-angle-right"></i></li>
                         <li><a href="#">Vendor Qualification</a> </li>
                     </ul>
-					<div class="page-toolbar">
+                    <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
@@ -158,17 +163,17 @@
                                                         <span class="desc"><i class="fa fa-check"></i>Invite Participants</span>
                                                     </a>
                                                 </li>
-                                               
+
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
                                                 <div class="progress-bar progress-bar-success">
                                                 </div>
                                             </div>
                                             <div class="tab-content">
-                                                <div class="alert alert-success" style='display: none;'>
+                                                <div class="alert alert-success" >
                                                     <span id="spansuccess1"> </span>
                                                 </div>
-                                                <div class="alert alert-danger" style='display: none; '>
+                                                <div class="alert alert-danger" >
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane" id="tab1">
@@ -182,7 +187,7 @@
                                                                 <input type="text" class="form-control" placeholder="Enter VQ Subject"
                                                                        id="txtrfiSubject" name="txtrfiSubject" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
-                                                        </div>  
+                                                        </div>
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 VQ Deadline<span class="required"> *</span>
@@ -190,18 +195,18 @@
                                                             <div class="col-md-3">
                                                                 <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                      data-date-start-date="+0d">
-																	 <span class="input-group-btn">
+                                                                    <span class="input-group-btn">
                                                                         <button class="btn default" id="btncal" type="button" tabindex=0>
                                                                             <i class="fa fa-calendar"></i>
                                                                         </button>
                                                                     </span>
                                                                     <input type="text" id="txtrfideadline" name="txtrfideadline" class="form-control" readonly tabindex="2">
-                                                                    
+
                                                                 </div>
                                                             </div>
 
-                                                        </div>                        
-                                                      
+                                                        </div>
+
                                                     </div>
                                                     <div class="form-group ">
                                                         <div class="inputgroup">
@@ -213,119 +218,120 @@
                                                                           class="form-control" tabindex="3" rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="control-label col-md-3">Item/Service Category<span class="required">*</span></label>
                                                         <div class="col-md-9">
-                                                           
+
                                                             <select class="form-control" name="ddlCategoryMultiple" id="ddlCategoryMultiple" tabindex="4" multiple></select>
                                                         </div>
                                                     </div>
-                                                   
-                                                   <div class="form-group">
-                                                           <ul style="list-style:none; padding-left:inherit;" id="tblAttachmentsElem">
-                                                               <li>
-                                                               <div class="inputgroup">
-                                                                   <label class="control-label col-md-3">
-                                                                       Attachment<span class="required">*</span>
-                                                                   </label>
-                                                                   <div class="col-md-4">
-                                                                       <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />
-                                                                   </div>
-                                                                   <div class="col-md-3">
-                                                                       <input type="file" class="form-control" tabindex="5" id="file1"
-                                                                              onchange="checkfilesize(this)" />
-                                                                              
-                                                                       <span class="help-block"><a id="attach-file1" href="javascript:;" style="text-decoration: none !important;"></a></span>
-                                                                       <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" onclick="ajaxFileDelete('icon2', 'file1','filepthattach','Otherattachment')">
-                                                                           <i class='fa fa-times-circle-o' id='icon2'></i>
-                                                                       </span>
-                                                                   </div>
-                                                                   <div class="col-md-2" style=" padding-left:0px !important; ">
-                                                                       <a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>
-                                                                   </div>
-                                                               </div>
-                                                           </li>
-                                                       </ul>
-                                                            
+
+                                                    <div class="form-group">
+                                                        <ul  id="tblAttachmentsElem">
+                                                            <li>
+                                                                <div class="inputgroup">
+                                                                    <label class="control-label col-md-3">
+                                                                        Attachment<span class="required">*</span>
+                                                                    </label>
+                                                                    <div class="col-md-4">
+                                                                        <input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <input type="file" class="form-control" tabindex="5" id="file1"
+                                                                               onchange="checkfilesize(this)" />
+
+                                                                        <span class="help-block"><a id="attach-file1" href="javascript:;" ></a></span>
+                                                                        <span class="display-none"  onclick="ajaxFileDelete('icon2', 'file1','filepthattach','Otherattachment')">
+                                                                            <i class='fa fa-times-circle-o' id='icon2'></i>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="col-md-2 nopaddingleft"  >
+                                                                        <a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+
                                                     </div>
-                                                    
-												</div>
-                                                <div class="tab-pane active" id="tab2">                                                    
+
+                                                </div>
+                                                <div class="tab-pane active" id="tab2">
                                                     <div class="panel-group accordion" id="accordion1">
-                                                               
-                                                    </div>                                                
+
+                                                    </div>
                                                 </div>
                                                 <div class="tab-pane" id="tab3">
                                                     <div class="form-group">
-															<input type="hidden" id="updateField" value="0" />
-                                                                <div class="inputgroup">
-                                                                    <label class="col-md-3 control-label">
-                                                                        Company Name <span class="required"> *</span>
-                                                                    </label>
-                                                                    <div class="col-md-7">                                                                
-                                                                        <input type="text" class="form-control" id="txtcompany" name="txtcompany" autocomplete="off"
-                                                                               onkeyup="replaceQuoutesFromString(this)" />                                                                        
-                                                                    </div>
-                                                                </div>
+                                                        <input type="hidden" id="updateField" value="0" />
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Company Name <span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="txtcompany" name="txtcompany" autocomplete="off"
+                                                                       onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-													<div class="form-group">
-                                                                <div class="inputgroup">
-                                                                    <label class="col-md-3 control-label">
-                                                                        Email Id <span class="required"> *</span>
-                                                                    </label>
-                                                                    <div class="col-md-7">                                                                
-                                                                        <input type="text" class="form-control" id="txtemailId" name="txtemailId" autocomplete="off"
-                                                                               onkeyup="replaceQuoutesFromString(this)" />                                                                        
-                                                                    </div>
-                                                                </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Email Id <span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="txtemailId" name="txtemailId" autocomplete="off"
+                                                                       onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-													<div class="form-group">
-                                                                <div class="inputgroup">
-                                                                    <label class="col-md-3 control-label">
-                                                                        Mobile No <span class="required"> *</span>
-                                                                    </label>
-                                                                    <div class="col-md-7">                                                                
-																	<input type="text" class="form-control" id="txtmobileNo" name="txtmobileNo" autocomplete="off" />                                                                        
-                                                                    </div>
-                                                                </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Mobile No <span class="required"> *</span>
+                                                            </label>
+                                                            <!--bug 584 abheedev-->
+                                                            <div class="col-md-7 reqcls">
+                                                                <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtmobileNo" name="txtMobileNo" minlength="10" maxlength="10">
+                                                            </div>
+                                                        </div>
                                                     </div>
-													<div class="form-group">
-                                                                <div class="inputgroup">
-                                                                    <label class="col-md-3 control-label">
-                                                                        Contact Person <span class="required"> *</span>
-                                                                    </label>
-                                                                    <div class="col-md-7">                                                                
-                                                                        <input type="text" class="form-control" id="txtcontactPerson" name="txtcontactPerson" autocomplete="off"
-                                                                               onkeyup="replaceQuoutesFromString(this)" />                                                                        
-                                                                    </div>
-                                                                </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Contact Person <span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="txtcontactPerson" name="txtcontactPerson" autocomplete="off"
+                                                                       onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-															<!--Buttons-->
-															
-													<div class="form-actions" style="border:none !important; background: none !important;">
+                                                    <!--Buttons-->
+
+                                                    <div class="form-actions" id="noborderbackground"  >
                                                         <div class="row">
                                                             <div class="col-md-offset-9 col-md-6">
                                                                 <input type="hidden" id="rowid" />
                                                                 <button type="button" class="btn btn-primary" id="add_comp" onclick="checkForDuplicateVendor()">Add</button>
-                                                               
+
                                                             </div>
                                                         </div>
 
                                                     </div>
-													<!--Buttons END-->
-													<!--Temp Vendors List-->
-													<div class="table-scrollable">
+                                                    <!--Buttons END-->
+                                                    <!--Temp Vendors List-->
+                                                    <div class="table-scrollable">
 
-                                                            <table class="table table-striped table-bordered table-hover" id="tblTempVendorslist">
-                                                             </table>
-                                                        </div>
-													
-                                                        </div>
+                                                        <table class="table table-striped table-bordered table-hover" id="tblTempVendorslist">
+                                                        </table>
                                                     </div>
+
                                                 </div>
+                                            </div>
+                                        </div>
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-offset-5 col-md-9">
@@ -336,13 +342,13 @@
                                                         Save And Continue <i class="m-icon-swapright m-icon-white">
                                                         </i>
                                                     </a>
-													<a href="index.html" class="btn green button-submit">
-                                                        Save And Exit 
-													</a>
-													<a href="javascript:;" class="btn blue" id="submit_vendors">
-                                                        Preview                                                       
+                                                    <a href="index.html" class="btn green button-submit">
+                                                        Save And Exit
                                                     </a>
-													
+                                                    <a href="javascript:;" class="btn blue" id="submit_vendors">
+                                                        Preview
+                                                    </a>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -350,126 +356,126 @@
                                 </form>
                             </div>
                         </div>
-                        
+
                         <!-- Preview div -->
                         <div class="portlet box blue-hoki display-none" id="BidPreviewDiv">
                             <div class="portlet-title">
                                 <div class="caption">
-                                   VQ Preview
+                                    VQ Preview
                                 </div>
-                               
+
                             </div>
                             <div class="portlet-body form">
-                                
-                                    <!--Begin Form -->
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-body">
-                                            <h3 class="form-section">VQ Details</h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                       <label class="col-md-4 control-label">
-                                                                VQ Subject:
-                                                            </label>
-                                                            <div class="col-md-8">
-                                                                <p class="form-control-static" id="txtrfiSubjectPrev"></p>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="col-md-4 control-label">VQ Deadline:</label>
-                                                        <div class="col-md-8">
-                                                            <p class="form-control-static" id="txtrfideadlinePrev">
 
-                                                            </p>
-                                                        </div>
+                                <!--Begin Form -->
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-body">
+                                        <h3 class="form-section">VQ Details</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">
+                                                        VQ Subject:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtrfiSubjectPrev"></p>
                                                     </div>
                                                 </div>
-                                                <!--/span-->
                                             </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">VQ Description:</label>
-                                                        <div class="col-md-10">
-                                                            <p class="form-control-static" id="txtrfidescriptionPrev">
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">VQ Deadline:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="txtrfideadlinePrev">
 
-                                                            </p>
-                                                        </div>
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                <!--/span-->
-                                                
-                                            </div>                                            
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">Item/Service Category:</label>
-                                                        <div class="col-md-8">
-                                                            <p class="form-control-static" id="productCatPrev"></p>                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
                                             </div>
-                                            <!--/row-->
-                                            <!--/row-->
-                                            <div class="row">
-                                                 <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">Attachment:</label>
-                                                        <div class="col-md-10">
-                                                            <ul style="list-style:none; display:grid;padding-left:0px;" id="tblAttachmentsElemPrev"></ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->                                         
-                                            <h3 class="form-section">VQ Questions</h3>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="wrap_scrollerPrev">
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>                                     
-                                          
-											
-											<h3 class="form-section">Participants details</h3>
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                  <div class="table-scrollable">
-                                                           <table id="tblTempVendorslistPrev" class="table table-bordered">                                                               
-                                                           </table>
-                                                       </div>
-                                                </div>
-                                            </div>                                           
+                                            <!--/span-->
                                         </div>
-                                        <div class="form-actions">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="row">
-                                                        <div class="col-md-offset-11 col-md-9">
-                                                            <button type="button" class="btn default" id="back_prev_btn">Back</button>
-															<button type="button" class="btn green" onclick="RFISubmitTempVendors()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
-                                                            
-                                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">VQ Description:</label>
+                                                    <div class="col-md-10">
+                                                        <p class="form-control-static" id="txtrfidescriptionPrev">
+
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                            </div>
+                                            <!--/span-->
+
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Item/Service Category:</label>
+                                                    <div class="col-md-8">
+                                                        <p class="form-control-static" id="productCatPrev"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Attachment:</label>
+                                                    <div class="col-md-10">
+                                                        <ul  id="tblAttachmentsElemPrev"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <h3 class="form-section">VQ Questions</h3>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div id="wrap_scrollerPrev">
+
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                    <!-- End Forms -->
-                                
-                                  
-                                </div>
+
+
+                                        <h3 class="form-section">Participants details</h3>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="table-scrollable">
+                                                    <table id="tblTempVendorslistPrev" class="table table-bordered">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-offset-11 col-md-9">
+                                                        <button type="button" class="btn default" id="back_prev_btn">Back</button>
+                                                        <button type="button" class="btn green" onclick="RFISubmitTempVendors()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End Forms -->
+
+
+                            </div>
                         </div>
                         <!--End Preview div -->
                     </div>
@@ -481,7 +487,7 @@
     <div class="page-footer">
         <div class="page-footer-inner">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
-           
+
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
@@ -516,8 +522,8 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" id="ddlquestCategory" name="ddlquestCategory" value="" disabled="disabled"/>
-                                   <input type="hidden" id="hdnquestCatID" value="0" />
+                                    <input class="form-control" id="ddlquestCategory" name="ddlquestCategory" value="" disabled="disabled" />
+                                    <input type="hidden" id="hdnquestCatID" value="0" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -528,12 +534,12 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-7">
-                                   <input type="text" class="form-control" id="txtsubCategory" name="txtsubCategory" style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Sub Category" />
-								</div>
-								<div class="col-lg-1" style=" padding-left:0px !important; ">
-                                    <a href="javascript:;" class="btn blue" onclick="addnewSubCategory()"><i class="fa fa-plus"></i></a>                                                
+                                    <input type="text" class="form-control" id="txtsubCategory" name="txtsubCategory"  data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Sub Category" />
                                 </div>
-							</div>
+                                <div class="col-lg-1 nopaddingleft">
+                                    <a href="javascript:;" class="btn blue" onclick="addnewSubCategory()"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-lg-4">
                                     Question Description  <span class="required">
@@ -542,43 +548,44 @@
                                 </label>
                                 <div class="col-lg-8">
                                     <textarea id="txtQuestiondescription" name="txtQuestiondescription" class="form-control" rows="6" autocomplete="off" placeholder="Description"></textarea>
-								</div>
                                 </div>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-lg-4">
-                                    Validation<!--<span class="required">
+                                    Validation
+                                    <!--<span class="required">
                                         *
                                     </span>-->
                                 </label>
                                 <div class="col-lg-8">
                                     <select class="form-control" id="ddlmandatory" name="ddlmandatory" onchange="mandatoryChange()">
                                         <option value="">Select</option>
-										<option value="Y">Mandatory</option>
-										<option value="N">Non-mandatory</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-                                <label class="col-lg-2 control-label">                        
-								</label>
+                                        <option value="Y">Mandatory</option>
+                                        <option value="N">Non-mandatory</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">
+                                </label>
                                 <label class="col-lg-5 control-label">
                                     <input type="checkbox" name="chkattachment" id="chkattachment" class="form-control">
-                                        Check if attachment is required
+                                    Check if attachment is required
                                 </label>
                             </div>
                             <div class="form-actions fluid">
                                 <div class="col-md-offset-5">
                                     <button type="submit" id="submitbtnmaster" class="btn btn-warning">
-										Submit
+                                        Submit
                                     </button>
                                     <button type="button" id="btnclear" class="btn btn-success" onclick="resetRFIQuestionmaster()">
                                         Clear
                                     </button>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                     </form>
-					<form action="#" id="NewSubcategory" class="form-horizontal display-none" role="form">
+                    <form action="#" id="NewSubcategory" class="form-horizontal display-none" role="form">
                         <div class="form-body">
                             <div class="form-group">
                                 <label class="control-label col-lg-4">
@@ -587,7 +594,7 @@
                                     </span>
                                 </label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="txtQuestCategory" name="txtQuestCategory" value="" autocomplete="off" disabled="disabled"/>
+                                    <input type="text" class="form-control" id="txtQuestCategory" name="txtQuestCategory" value="" autocomplete="off" disabled="disabled" />
                                     <input type="hidden" id="hdnsubCatID" value="0" />
                                 </div>
                             </div>
@@ -601,15 +608,15 @@
                                     <textarea class="form-control" rows="3" autocomplete="off" maxlength="64" placeholder="Sub Category" id="txtqSubcategory" name="txtqSubcategory"></textarea>
 
                                 </div>
-								</div> 
-								 <div class="form-group">
-                               <label class="col-md-4  control-label" style="padding-top: 0px !important;">IsActive</label>
-									<div class="col-md-8">
-										<input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
-                                     </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4  control-label nopaddingtop">IsActive</label>
+                                <div class="col-md-8">
+                                    <input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
+                                </div>
 
 
-                            </div>                           
+                            </div>
                             <div class="form-actions fluid">
                                 <div class="col-md-offset-5">
                                     <button type="submit" id="btn-subcat" class="btn blue-hoki">
@@ -619,30 +626,30 @@
                                     <button type="button" id="btnclear" class="btn green" onclick="resetSubcategory()">
                                         Clear
                                     </button>
-									 <button type="button" id="btn-backtoquest" class="btn btn-danger" onclick="backtoQuestion()">
+                                    <button type="button" id="btn-backtoquest" class="btn btn-danger" onclick="backtoQuestion()">
                                         <i class="fa fa-reply"></i> Back to Questions
                                     </button>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-							<br/>
-							<div class="input-icon display-none" id="searchsubcat">
-                                    <i class="fa fa-search"></i>
-                                    <input type="text" id="searchPop-up" placeholder="Search" class="form-control" />
-                                </div><br/>
-                            <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
-                                    <div class="table-responsive">
-                                        <table class="table table-fixed table-striped table-bordered table-hover" id="tblsubcategory"></table>
-                                    </div>
-                            </div>                                
-                           
+                            <br />
+                            <div class="input-icon display-none" id="searchsubcat">
+                                <i class="fa fa-search"></i>
+                                <input type="text" id="searchPop-up" placeholder="Search" class="form-control" />
+                            </div><br />
+                            <div class="scroller"  data-always-visible="1" data-rail-visible="0">
+                                <div class="table-responsive">
+                                    <table class="table table-fixed table-striped table-bordered table-hover" id="tblsubcategory"></table>
+                                </div>
+                            </div>
+
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-		<div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
                 <div class="portlet-title">
@@ -662,35 +669,35 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">                      
-                     <p class="ppolicy-text">                           
-	Using this page user can define VQ details and invite vendors to respond before specified deadline.<br/>
-	There are three steps to complete this process. All the mandatory information is marked with * sign.
-	</p>
-	<p class="ppolicy-text">Details required at every step are given below: </p>
+                    <div class="modal-body" >
+                        <p class="ppolicy-text">
+                            Using this page user can define VQ details and invite vendors to respond before specified deadline.<br />
+                            There are three steps to complete this process. All the mandatory information is marked with * sign.
+                        </p>
+                        <p class="ppolicy-text">Details required at every step are given below: </p>
                         <p class="ppolicy-text"><b>Step -1: "VQ Details"–</b>In this step user needs to fill all generic information related to VQ.  Individual columns with their relevance are given below</p>
                         <ul>
-						<li><b>VQ Subject: </b>Meaningful short subject for the VQ. This is used as a subject for all related email notifications & reports.</li>
-						<li><b>VQ Deadline: </b>Date before which response should reach to company representative.</li>
-						<li><b>VQ description: </b>Detailed information about the VQ.</li>
-						<li><b>Attachment: </b>You can give attachment description and upload related supporting document.</li>
-						
-						</ul><br />
-		
-						<p class="ppolicy-text">Once all mandatory details are filled click on Continue to move to next step.</p><br />
-						
-						<p class="ppolicy-text"><b>Step-2: "VQ Questions"–</b>In this step user needs to select relevant questions from following areas.</p>
-						<ul style="list-style: none ;">
-						<li><b>a. </b>Company Information</li>
-						<li><b>b. </b>Financial Information</li>
-						<li><b>c. </b>Company Capabilities</li>
-						<li><b>d. </b>Technical Information</li>
-						
-						</ul><br/>
-						<p class="ppolicy-text">In every category user can select predefined questions or if required create a new question which can be grouped by using question subcategory. User can also mark questions as mandatory and can specify if supporting document is required.</p>
-						<p class="ppolicy-text"><b>Step-3: "Invite Vendor"–</b>You can define company name,email,mobile no, contact person and then click on add button to add more vendors. Click on submit button once all vendors are added.</p>
-						<p class="ppolicy-text">When clicked on “Submit” system will send email alert having login id, password and VQ specific details to selected vendors at their company’s email id.</p>
-					</div>
+                            <li><b>VQ Subject: </b>Meaningful short subject for the VQ. This is used as a subject for all related email notifications & reports.</li>
+                            <li><b>VQ Deadline: </b>Date before which response should reach to company representative.</li>
+                            <li><b>VQ description: </b>Detailed information about the VQ.</li>
+                            <li><b>Attachment: </b>You can give attachment description and upload related supporting document.</li>
+
+                        </ul><br />
+
+                        <p class="ppolicy-text">Once all mandatory details are filled click on Continue to move to next step.</p><br />
+
+                        <p class="ppolicy-text"><b>Step-2: "VQ Questions"–</b>In this step user needs to select relevant questions from following areas.</p>
+                        <ul id="cfct" >
+                            <li><b>a. </b>Company Information</li>
+                            <li><b>b. </b>Financial Information</li>
+                            <li><b>c. </b>Company Capabilities</li>
+                            <li><b>d. </b>Technical Information</li>
+
+                        </ul><br />
+                        <p class="ppolicy-text">In every category user can select predefined questions or if required create a new question which can be grouped by using question subcategory. User can also mark questions as mandatory and can specify if supporting document is required.</p>
+                        <p class="ppolicy-text"><b>Step-3: "Invite Vendor"–</b>You can define company name,email,mobile no, contact person and then click on add button to add more vendors. Click on submit button once all vendors are added.</p>
+                        <p class="ppolicy-text">When clicked on “Submit” system will send email alert having login id, password and VQ specific details to selected vendors at their company’s email id.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -708,88 +715,26 @@
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-	<script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    
-<script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
     <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    
+
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script> <!--bug 584 abheedev-->
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
     <script src="assets/scripts/aes.js"></script>
-	<script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    
+
     <script src="assets/CustomJS/VQ.js" type="text/javascript"></script>
-    <script>
-        jQuery(document).ready(function () {
-		 Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                 window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-
-            $("#ddlCategoryMultiple").select2();
-            
-            Metronic.init();
-            Layout.init();
-           
-            //$('#ddlCategoryMultiple').select2({
-            //        placeholder: "Select Category",
-            //        allowClear: true
-            //    });
-                var _VQID;
-                if (window.location.search) {
-                    var param = getUrlVars()["param"]
-                    var decryptedstring = fndecrypt(param)
-                   _VQID = getUrlVarsURL(decryptedstring)["VQID"];
-                 }
-           
-            if (_VQID == null || _VQID == undefined)
-            {
-               sessionStorage.setItem('CurrentVQID', 0)
-               fetchRFIQuestions('VQL');
-			}
-            else {
-                
-                sessionStorage.setItem('CurrentVQID', _VQID)
-                //setTimeout(function () {
-                //    fetchRFIDetails();
-                //},4000)
-				
-				fetchRFIDetailsForTab2('VQL');
-            }
-            //setTimeout(function () {
-                fetchCategorymaster();
-              //   }, 4000)
-            fetchVendorDetail();
-            FormWizard.init();
-			FormValidate();
-            ComponentsPickers.init();
-            setCommonData();      
-            fetchMenuItemsFromSession(1, 25);
-            //ComponentsDropdowns.init();
-        });
-       
-
-    </script>
+   
 </body>
 
 </html>

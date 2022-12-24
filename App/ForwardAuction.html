@@ -9,8 +9,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -43,23 +43,21 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
                 </a>
-                <!--<a href="index.html">
-                    <img src="assets/img/logo.png" alt="logo" class="logo-default" />
-                </a>
-                <div class="menu-toggler sidebar-toggler hide">
-                </div>-->
+              
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                           
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -182,7 +180,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" maxlength="200"
-                                                                       name="txtBidSubject">
+                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)">
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -205,7 +203,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                          rows="6"></textarea>
+                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -319,7 +317,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" />
+                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -369,7 +367,7 @@
                                                         </label>
                                                         <div class="col-md-10">
                                                             <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
-                                                                      rows="6"></textarea>
+                                                                      rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                         </div>
 
 

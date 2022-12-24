@@ -5,28 +5,25 @@ var rqid = getUrlVarsURL(decryptedstring)["RQID"];
 
 
 var rqtype;
-if (rqid.substring(0, 3) != 'RFQ' && rqid.substring(0, 3) != 'RFX') {
+if (rqid.substring(0, 3) != 'RFX') {
     rqtype = rqid.substring(0, 2);
 }
 else {
    rqtype = rqid.substring(0, 3);
 }
 
-var rfqRfiID;
-if (rqtype != 'RFQ' && rqtype != 'RFX') {
-    rfqRfiID = rqid.substring(3, 6);
+var vqRfiID;
+if (rqtype != 'RFX') {
+    vqRfiID = rqid.substring(3, 6);
    
 }
 else {
-    rfqRfiID = rqid.substring(4, 10);
+    vqRfiID = rqid.substring(4, 10);
     
 }
 
 function dynamicChanges() {
-    if (rqtype == 'RFQ') {
-        $('#portlet_caption').html('<i class="fa fa-reorder"></i> RFQ Invited Vendors');
-        $('#btn_cancl_rfirfq').html('Cancel RFQ');
-    } else if (rqtype == 'VQ') {
+     if (rqtype == 'VQ') {
         $('#portlet_caption').html('<i class="fa fa-reorder"></i> VQ Invited Vendors');
         $('#btn_cancl_rfirfq').html('Cancel VQ');
     } else if (rqtype == 'RFX') {
@@ -49,14 +46,12 @@ function FetchInvitedVendorsForRFIRFQ() {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayTable').show();
                
-                if (rqtype == 'RFQ') {
-                    jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
-                } else if (rqtype == 'VQ') {
+                 if (rqtype == 'VQ') {
                     jQuery('#lbl_configuredBy').html("VQ Configured By: " + data[0].configuredByName);
                 } else if (rqtype == 'RFX') {
                     jQuery('#lbl_configuredBy').html("RFI Configured By: " + data[0].configuredByName);
                 }
-            
+                alert(data[0].rQSubject )
                 $('#rq_subject').html('<b>' + data[0].rQSubject + '</b>');
                 $('#rq_deadline').html(data[0].deadline);
                 $('#rq_description').html(data[0].rQDescription);
@@ -81,14 +76,18 @@ function FetchInvitedVendorsForRFIRFQ() {
 
 
 function CancelRFIRFQ(MailPermit) {
+    var _cleanString = StringEncodingMechanism($('#rq_subject').html());
+    var _cleanString2 = StringEncodingMechanism($('#rq_description').html().replace(/'/g, " "));
     var Data = {
 
         "RFIRFQID": $('#hddn_RQID_txt').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "MailParam": MailPermit,
-        "RQSubj": $('#rq_subject').html(),
-        "RQDescription": $('#rq_description').html().replace(/'/g, " "),
+        //"RQSubj": $('#rq_subject').html(),
+        "RQSubj": _cleanString,
+        //"RQDescription": $('#rq_description').html().replace(/'/g, " "),
+        "RQDescription": _cleanString2,
         "RQDeadLin": $('#rq_deadline').html()
 
     };
@@ -243,9 +242,9 @@ function ExtendDuration() {
     if (rqtype == 'RFQ') {
         BidData = {
 
-            "RFQID": parseInt(rfqRfiID),
+            "RFQID": parseInt(vqRfiID),
             "RFIID": 0,
-            "RFQRFIID": $("#hddn_RQID_txt").val(),
+            "vqRfiID": $("#hddn_RQID_txt").val(),
             "ExtendedDate": $("#txtextendDate").val(),
             "ExtendedBy": sessionStorage.getItem('UserID')
 
@@ -254,8 +253,8 @@ function ExtendDuration() {
         BidData = {
 
             "RFQID": 0,
-            "RFIID": parseInt(rfqRfiID),
-            "RFQRFIID": $("#hddn_RQID_txt").val(),
+            "RFIID": parseInt(vqRfiID),
+            "vqRfiID": $("#hddn_RQID_txt").val(),
             "ExtendedDate": $("#txtextendDate").val(),
             "ExtendedBy": sessionStorage.getItem('UserID')
 

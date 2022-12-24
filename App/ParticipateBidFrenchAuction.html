@@ -3,14 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -32,58 +31,72 @@
 
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-    <style>
-        .page-quick-sidebar-wrapper {
-            right: -310px;
-            width: 310px;
-        }
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
-                margin-left: 0px;
-            }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/SignalRjs/signalr.js"></script>
+    <script src="assets/scripts/core/app.js"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
 
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-item {
-                width: 310px !important;
-            }
-
-            .page-quick-sidebar-wrapper .page-quick-sidebar .page-quick-sidebar-chat .page-quick-sidebar-chat-user .page-quick-sidebar-chat-user-form {
-                padding: 20px 10px 15px 10px;
-            }
-    </style>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
 
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="#" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="#" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
-                <!--<a href="index.html">
-                    <img src="assets/admin/layout/img/logo.png" alt="logo" class="logo-default" />
-                </a>
-                <div class="menu-toggler sidebar-toggler hide">
-                </div>-->
+               
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <span id="spanUserName" style="font-weight: bold"
-                                  class="username username-hide-on-mobile"></span>
-                            <!--<i class="fa fa-angle-down">
-                            </i>-->
+                            <b>
+                                <span id="spanUserName"
+                                      class="username username-hide-on-mobile"></span>
+                            </b>
+                           
                         </a>
-                        <!--<ul class="dropdown-menu">
-                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
-                        </ul>-->
+                        
                     </li>
                     <li class="dropdown dropdown-quick-sidebar-toggler">
-                        <div class="pulsate-regular" style="padding:12px;">
+                        <div class="pulsate-regular padding12px" >
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat" onclick="openForm()">
-                                <i class="fa fa-wechat" style="color:#ffb848;"></i>
+                                <i class="fa fa-wechat wechatcolor" ></i>
                             </a>
                         </div>
                     </li>
@@ -147,18 +160,18 @@
                                         <input type="hidden" id="hddnadminConnection" value="0" />
                                     </p>&nbsp;
 
-                                    <label class="control-label bold hide" id="pleft5mins" style="font-size: 17px !important; font-weight: 900!important;color:red;">
+                                    <label class="control-label bold hide labelstyle4" id="pleft5mins" >
                                         Only 5 mins Left!!
                                     </label>
 
                                     &nbsp;&nbsp;
-                                    <label class="control-label bold" style="font-size: 17px !important; font-weight: 900!important">
+                                    <label class="control-label bold labelstyle9" >
                                         Time left (HH:MM:SS):
                                     </label>
 
                                     <p class="form-control-static no-space">
                                         <b>
-                                            <label id="lblTimeLeft" class="bold" style="font-size:17px!important;font-weight:900!important">
+                                            <label id="lblTimeLeft" class="bold labelstyle9">
 
                                             </label>
                                         </b>
@@ -174,7 +187,7 @@
                             </div>
 
                             <div class="portlet-body form" id="content">
-                                <div class="alert alert-block alert-danger" id="errorOpenbid" style="display: none">
+                                <div class="alert alert-block alert-danger" id="errorOpenbid">
                                     <span id="error"></span>
                                 </div>
                                 <div class="form-body">
@@ -184,7 +197,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-11 control-label">
+                                                <label id="lblbidsubject"  class="col-md-11 control-label txtleftbold">
                                                 </label>
                                             </div>
                                         </div>
@@ -195,10 +208,10 @@
                                                 <label class=" col-md-1 control-label">
                                                     Bid Details:
                                                 </label>
-                                                <!-- <div class="col-md-10"> -->
-                                                <label id="lblbidDetails" style="text-align:justify" class=" col-md-11 control-label">
+                                             
+                                                <label id="lblbidDetails"  class=" col-md-11 control-label txtalignjustify">
                                                 </label>
-                                                <!-- </div> -->
+                                             
                                             </div>
                                         </div>
                                     </div>
@@ -305,7 +318,7 @@
                             <div id="entryForm" class="portlet-body form">
                                 <!-- BEGIN FORM-->
                                 <form action="#" id="FormparticipateAir" class="form-horizontal">
-                                    <div id="divalertsucess" class="alert alert-success" style='display: none; text-align: center;'>
+                                    <div id="divalertsucess" class="alert alert-success divalertstyle">
                                         <span id="spansuccess1">Data saved sucessfully. </span>
                                     </div>
                                     <div class="form-body">
@@ -334,43 +347,31 @@
                     <li class="active">
                         <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab">
                             Messages
-                            <!--<span class="badge badge-danger">2</span>-->
+                            
                         </a>
                     </li>
-                    <!--<li>
-                        <a href="javascript:;" data-target="#quick_sidebar_tab_2" data-toggle="tab" onclick="openBroadcastMessage()">
-                            Broadcast Message
-                        </a>
-                    </li>-->
+                    
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
                         <div class="page-quick-sidebar-item2">
                             <div class="page-quick-sidebar-chat-user">
-                                <!--<div class="page-quick-sidebar-nav">
-                                    <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list" onclick="fetchvendor()">
-                                        <i class="icon-arrow-left"></i>Back
-                                    </a>
-                                </div>-->
+                              
 
-                                <div class="scroller" style="height: 490px;">
+                                <div class="scroller scroller490" >
                                     <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                     </div>
                                 </div>
-                                <div class="page-quick-sidebar-chat-user-form" style="position:absolute;bottom:1px; background:#393939; width:100%;">
-                                    <!--<div class="input-group">-->
-                                    <!--<input class="form-control" type="text"
-                                           placeholder="Type a message here..."
-                                           id="txtChatMsg" name="txtChatMsg" />-->
+                                <div class="page-quick-sidebar-chat-user-form divchatstyle">
+                                  
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
-                                              id="txtChatMsg" name="txtChatMsg"></textarea>
-                                    <!--<div class="input-group-btn">-->
+                                              id="txtChatMsg" name="txtChatMsg" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                  
                                     <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
                                         <i class="fa fa-check icon-white"></i> Send
                                     </button>
-                                    <!--</div>
-                                    </div>-->
+                                   
                                 </div>
                             </div>
                         </div>
@@ -400,7 +401,7 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2">
                         <p>
                             In this page Vendor should fill the amount for the bid in "Quote" field and click submit.<br />
 
@@ -426,84 +427,13 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/SignalRjs/signalr.js"></script>
-    <script src="assets/scripts/core/app.js"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/ParticipateBidFrenchAuction.js" type="text/javascript"></script>
-    <script>
+    <script nonce="pE90">
         $(window).focus(function (e) {
             fetchVendorDetails()
-            // e.preventDefault();
+            
         });
         jQuery(document).ready(function () {
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                    window.location = sessionStorage.getItem('MainUrl');
-                    return false;
-                });
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-            Metronic.init();
-            Layout.init();
-            App.init();
-            QuickSidebar.init();
-            setCommonData();
-            fetchVendorDetails();
-            handlevalidation();
-            if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
-                $('#LiISsurrogate').removeClass('hide')
-            }
-            else {
-                $('#LiISsurrogate').addClass('hide')
-            }
-            $(".pulsate-regular").css('animation', 'none');
-            // fetchMenuItemsFromSession(1, 3);
-            //$("#txtChatMsg").keyup(function (event) {
-            //    if (event.keyCode === 13) {
-            //        $("#chatbtn").click();
-            //    }
-            //});
+            callPagejs('ParticipateBidFrenchAuction.js');           
         });
     </script>
     <!-- END JAVASCRIPTS -->

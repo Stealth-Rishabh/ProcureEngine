@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -35,19 +35,58 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-    <style>
-        .has-success {
-            border-color: #27a4b0 !important;
-        }
-    </style>
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+
+
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/core/app.js"></script>
+
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <!--<img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />-->
+                <a class="navbar-brand" href="index.html" >
+                    
                 </a>
+
+            </div>
+            <!--@abheedev-->
+            <div class="changeLanguage">
+                <select class="navbar-language" href="index.html">
+                    <option data-locale="en" value="en">English</option>
+                    <option data-locale="fr" value="fr">French</option>
+
+                </select>
 
             </div>
             <div class="top-menu">
@@ -55,9 +94,11 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -70,7 +111,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -133,7 +174,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="alert alert-block alert-danger" id="errordiv" style="display: none">
+                                <div class="alert alert-block alert-danger" id="errordiv">
                                     <span id="error"></span>
                                 </div>
                                 <!--Begin Form -->
@@ -147,7 +188,7 @@
                                                 PO ID:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="POID" class="control-label" style="text-align:left;font-weight:600;">
+                                                <label id="POID" class="control-label labelstyle6" >
                                                 </label>
 
                                             </div>
@@ -158,7 +199,7 @@
                                                 PO Status:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="POStatus" class="control-label" style="text-align:left;font-weight:600;">
+                                                <label id="POStatus" class="control-label labelstyle6">
                                                 </label>
 
                                             </div>
@@ -169,7 +210,7 @@
                                                 Date:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="PODate" class="control-label" style="text-align:left">
+                                                <label id="PODate" class="control-label txtalignleft">
                                                 </label>
 
 
@@ -201,22 +242,22 @@
                                                 Remarks:
                                             </label>
                                             <div class="col-md-8">
-                                                <label id="txtvendorremarks" class="control-label" style="text-align:left"></label>
+                                                <label id="txtvendorremarks" class="control-label txtalignleft"  onkeyup="replaceQuoutesFromString(this)"></label>
 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <h3 class="form-section hide" id="HDHistory">History</h3>
-                                            <div class="col-md-12 hide" id="frmdivforward" style="height: 150px; overflow-y:scroll;">
+                                            <div class="col-md-12 hide modalbody4" id="frmdivforward">
                                                 <form action="#" id="form1" class="form-horizontal">
                                                     <div class="form-body">
-                                                        <div class="table-scrollable" style="overflow: auto">
+                                                        <div class="table-scrollable overflowauto">
                                                             <table class="table table-bordered" id="tblremarksforward">
                                                                 <thead>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td colspan="15" style="text-align: center; color: Red">
+                                                                        <td colspan="15" class="norecord">
                                                                             No record's found
                                                                         </td>
                                                                     </tr>
@@ -252,7 +293,7 @@
                                                     <div class="col-md-3 xyz">
 
                                                         <label class="control-label">Remarks</label>
-                                                        <textarea id="txtRemarks" name="txtRemarks" rows="4" class="form-control" maxlength="1000"></textarea>
+                                                        <textarea id="txtRemarks" name="txtRemarks" rows="4" class="form-control" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                     </div>
                                                     <!--/span-->
                                                     <div class="col-md-4 xyz">
@@ -262,7 +303,7 @@
                                                         <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
 
                                                     </div>
-                                                    <div class="col-md-2" style="margin-top:22px!important">
+                                                    <div class="col-md-2 margintop22px" >
                                                         <button type="submit" class="btn btn-success" id="btnacceptrejectPO">Submit</button>
                                                     </div>
 
@@ -275,7 +316,7 @@
                                 </div>
 
                             </div>
-                                    </div>
+                        </div>
                     </div>
                 </div>
 
@@ -317,7 +358,7 @@
                                     <div class="col-md-10">
                                         <textarea id="txtremarks" name="txtremarks" class="maxlength wysihtml5 form-control"
                                                   maxlength="1000" rows="2" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Remarks"></textarea>
-                                        
+
                                     </div>
                                 </div>
 
@@ -350,7 +391,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2">
                         <h4 class="ppolicy-head4">RFQ Details</h4>
                         <p class="ppolicy-text">
 
@@ -385,87 +426,10 @@
             </div>
         </div>
     </div>
-
-
-    
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-
-
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js"></script>
-   
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/NewPOAcceptance.js"></script>
-    <script>
+    <script nonce="npacc">
         jQuery(document).ready(function () {
-            $('.maxlength').maxlength({
-                limitReachedClass: "label label-danger",
-                alwaysShow: true
-            });
-
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "P" || sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-
-           
-            var param = getUrlVars()["param"]
-            var decryptedstring = fndecrypt(param);
-            var POID = getUrlVarsURL(decryptedstring)["POHID"];
-            if (POID == null)
-                sessionStorage.setItem('hddnPOHID', 0)
-            else {
-
-                sessionStorage.setItem('hddnPOHID', POID)
-             setTimeout(function(){
-                fetchPODetails('Attachment');
-                fetchPODetails('Details');
-                FetchRecomendedVendor();
-                $('#POID').html(POID)
-              },1000)
-            }
-            Metronic.init();
-            Layout.init();
-            formvalidate();
-            
-            setCommonData();
-
+            callPagejs('NewPOAcceptance.js');
+          
         });
 
 

@@ -223,6 +223,7 @@ function SaveUpdate() {
         }
         jQuery.unblockUI();
     });
+    //$("#submitbtnmaster").text("save");
 };
 
 $("#search").keyup(function () {

@@ -1,4 +1,90 @@
+jQuery(document).ready(function () {
 
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl')//"login.html";
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+
+    param = getUrlVars()["param"]
+    decryptedstring = fndecrypt(param)
+    var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
+    var _VendorId = getUrlVarsURL(decryptedstring)["VendorId"];
+    var _RFQVersionId = getUrlVarsURL(decryptedstring)["RFQVersionId"];
+    var _rfqVersionText = getUrlVarsURL(decryptedstring)["RFQVersionTxt"];
+
+    if (_RFQid == null) {
+        sessionStorage.setItem('hddnRFQID', 0)
+        sessionStorage.setItem('hddnVendorId', 0)
+        sessionStorage.setItem('RFQVersionId', 0)
+        $("#spnFinalStatus").hide();
+    }
+    else {
+
+        sessionStorage.setItem('hddnRFQID', _RFQid)
+        sessionStorage.setItem('hddnVendorId', _VendorId)
+        sessionStorage.setItem('RFQVersionId', _RFQVersionId)
+        fetchReguestforQuotationDetails();
+        RFQFetchQuotedPriceReport()
+        GetQuestions();
+        $("#spnFinalStatus").show().html("Version : " + _rfqVersionText.replace('%20', ' '));
+    }
+
+    setCommonData();
+    fetchMenuItemsFromSession(0, 0);
+});
+
+jQuery('#btnpush').click(function (e) {
+    jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+});
+jQuery('#btnpull').click(function (e) {
+    jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+});
+
+$("#btnprint").click(function (e) {
+    $('#div4').addClass('hide');
+    $('#tbldetails').removeClass('hide');
+    setTimeout(function () {
+        window.print(); $('#div4').removeClass('hide');
+        $('#tbldetails').addClass('hide');
+    }, 800)
+
+})
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    //Export To Excel
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('table_wrapper');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+    var a = document.createElement('a');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'RFQDetails -' + postfix + '.xls';
+
+    a.click();
+
+
+
+});
 var max = getUrlVarsURL(decryptedstring)["max"];
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
@@ -8,7 +94,8 @@ function fetchReguestforQuotationDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -255,12 +342,14 @@ function RFQFetchQuotedPriceReport() {
                         version = sessionStorage.getItem('RFQVersionId');
                     }
 
+                    debugger;
                     if (data[0].attachments[i].rfqVersionId != null || data[0].attachments[i].rfqVersionId != '' || data[0].attachments[i].rfqVersionId != 'undefined') {
                         version = data[0].attachments[i].rfqVersionId
 
                     }
                     verArray[i] = version;
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
+                    //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
                     jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
                 }
             }
@@ -289,6 +378,7 @@ function RFQFetchQuotedPriceReport() {
 
 }
 function DownloadFileVendor(aID, versionId) {
+    debugger;
     var arrelement = aID.id.replace('attchvendor', '')
     arrelement = parseInt(arrelement);
     if (sessionStorage.getItem('RFQVersionId') == 99) {
@@ -297,6 +387,7 @@ function DownloadFileVendor(aID, versionId) {
     else {
         version = sessionStorage.getItem('RFQVersionId');
     }
+    //version = verArray.at(arrelement);
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem("hddnRFQID") + '/' + sessionStorage.getItem('hddnVendorId') + '/' + version);
 }
 function GetQuestions() {
@@ -304,7 +395,8 @@ function GetQuestions() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('hddnVendorId') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('hddnVendorId') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('hddnVendorId'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

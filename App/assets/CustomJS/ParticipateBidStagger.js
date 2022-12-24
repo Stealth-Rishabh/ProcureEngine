@@ -1,3 +1,43 @@
+jQuery(document).ready(function () {
+
+    Pageloaded()
+    $('ul#chatList').slimScroll({
+        height: '250px'
+    });
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+        $('#LiISsurrogate').removeClass('hide')
+    }
+    else {
+        $('#LiISsurrogate').addClass('hide')
+    }
+    Metronic.init();
+    Layout.init();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchVendorDetails();
+
+    $(".pulsate-regular").css('animation', 'none');
+
+});
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -8,6 +48,8 @@ var error1 = $('.alert-danger');
 var success1 = $('.alert-success');
 var displayForS = "";
 var openlefttime = 0;
+
+
 $(document).on("keyup", "#tblParticipantsService .form-control", function () {
     var txt = this.id
 
@@ -122,7 +164,7 @@ function fetchBidSummaryVendorproduct() {
                         }
                         else {
                             $('#txtquote' + i).val('')
-                            //$('#itembtn' + i).removeAttr('disabled', 'disabled')
+                            $('#itembtn' + i).removeAttr('disabled', 'disabled')
                         }
                         if (data[i].itemNoOfExtension > 0) {
                             jQuery('#itemleft' + i).css({
@@ -187,7 +229,7 @@ function fetchVendorDetails() {
         success: function (data, status, jqXHR) {
 
             if (data.length == 1 && data[0].status.toLowerCase() != 'pause') {
-
+                sessionStorage.setItem('CustomerID', data[0].customerID)
                 $('#tblParticipantsService').show();
                 jQuery("#tblParticipantsServiceBeforeStartBid").hide();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -265,19 +307,13 @@ function fetchVendorDetails() {
 
 }
 
-/////****** Chat Start*****************/////
 var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
-
 console.log("Not Started")
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
-});
-
-connection.onclose(error => {
-    alert('You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!')
 });
 connection.on("refreshRAQuotes", function (data) {
     fetchBidSummaryVendorproduct();
@@ -347,7 +383,7 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                                 displayForS = document.querySelector('#itemleftTime' + i);
-                                console.log(data[0].itemLeft)
+                                //console.log(data[0].itemLeft)
                                 startTimerForStaggerItem((parseInt(data[0].itemLeft)), displayForS);
                                 openlefttime = data[0].itemLeft;
 
@@ -391,11 +427,13 @@ connection.on("refreshColumnStatus", function (data) {
                         console.log($('#groupno' + i).text())
                         if (data[0].groupNo == $('#groupno' + i).text()) {
                             $("#itemleft" + i).html(data[0].itemTimeLeft)
+
                         }
                         else {
                             $("#itemleft" + i).html('')
+
                         }
-                        $("#itemleftTime" + i).html('')
+
                     });
                 }
 
@@ -522,7 +560,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
     //toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-     calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -543,7 +581,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-     calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") == chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -609,9 +647,9 @@ function fetchBidTime() {
     });
 }
 function sendChatMsgs() {
-
+    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
     var data = {
-        "ChatMsg": $("#txtChatMsg").val(),
+        "ChatMsg": _cleanString,
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
@@ -793,9 +831,11 @@ function startTimer(duration, display) {
             $('.toast-info').hide();
             coutercall = 0;
         }
-        if (timer < 0) {
+        if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
-
+        }
+        else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
+            $('.clsdisable').removeAttr('disabled')
         }
         //setTimeout(function () {
         if (--timer < -3) {
@@ -832,7 +872,7 @@ function startTimerForStaggerItem(duration, displayS) {
         if (--timer <= 0) {//button disabled at 2 sec or <=0 if at 1 sec
             timer = 0;
             if (timer == 0) {
-                $('.clsdisable').attr('disabled', 'disabled')
+                //$('.clsdisable').attr('disabled', 'disabled')
                 fetchBidSummaryVendorproduct();
 
             }

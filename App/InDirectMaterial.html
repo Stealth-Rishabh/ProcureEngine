@@ -8,8 +8,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -21,7 +21,7 @@
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-    <!--<link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />-->
+   
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
@@ -181,7 +181,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" maxlength="200"
-                                                                       name="txtBidSubject">
+                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)">
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -204,7 +204,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                          rows="6"></textarea>
+                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -318,7 +318,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" />
+                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -368,7 +368,7 @@
                                                         </label>
                                                         <div class="col-md-10">
                                                             <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
-                                                                      rows="6"></textarea>
+                                                                      rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
                                                         </div>
 
 
@@ -477,7 +477,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch"></br>
+                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)"></br>
 
                                                                 <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
                                                                     <!--#a1b2bd-->

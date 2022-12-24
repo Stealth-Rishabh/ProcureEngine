@@ -10,6 +10,7 @@ $('.MaxLength').maxlength({
     alwaysShow: true
 });
 
+
 $(".thousandsep").inputmask(
     {
         alias: "decimal",
@@ -36,7 +37,7 @@ $(".thousandsep").inputmask(
 
         supportsInputType: ["text", "tel", "password"],
 
-        removeMaskOnSubmit:true,
+        removeMaskOnSubmit: true,
 
         //autoUnmask: true
 
@@ -104,7 +105,7 @@ callajaxReturnSuccess = function (url, type, data) {
     });
 };
 
-function SearchInGridview(tableName,value) {
+function SearchInGridview(tableName, value) {
     $("#" + tableName + " tr:has(td)").hide(); // Hide all the rows.
 
     var iCounter = 0;
@@ -132,8 +133,8 @@ function SearchInGridview(tableName,value) {
 }
 
 //abheedev bug 385
-
-function localecommaseperator(ele) {  
+//bug 569 abheedev 01/12/2022
+function localecommaseperator(ele) {
     var regex = /[^\d,]+/g
     var str = ele.value;
     if ((regex.test(str))) {
@@ -150,26 +151,26 @@ function localecommaseperator(ele) {
 
 //abheedev bug 385
 function bindApproverMaster(edit) {
-  
+
     var url = "NFA/FetchApproverMaster?CustomerId=" + parseInt(CurrentCustomer) + "&UserID=" + encodeURIComponent(UserID);
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-           
+
         if (res.result.length != null) {
             $('#tblAllmatrix').empty();
             if (res.result.length > 0) {
                 Approvermasterdata = res.result;
-              if (edit=='Y')
-                $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
-               else
-                 $('#tblAllmatrix').append("<thead><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
+                if (edit == 'Y')
+                    $('#tblAllmatrix').append("<thead><th></th><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
+                else
+                    $('#tblAllmatrix').append("<thead><th>Purchase Org</th><th>Purchase Group</th><th>Amount From</th><th>Amount To</th><th>Approval type</th><th>Condition</th><th>Deviation %</th></thead>")
 
                 for (var i = 0; i < res.result.length; i++) {
-                  if (edit=='Y')
-                    $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success " href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil" ></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
-                 else 
-                  $('#tblAllmatrix').append('<tr><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
+                    if (edit == 'Y')
+                        $('#tblAllmatrix').append('<tr><td><button class="btn btn-xs btn-success " href="javascript:;" onClick="GetApprovermasterbyId(' + res.result[i].idx + ')"><i class="fa fa-pencil" ></i></button></td><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
+                    else
+                        $('#tblAllmatrix').append('<tr><td>' + res.result[i].orgName + '</td><td>' + res.result[i].groupName + '</td><td>' + thousands_separators(res.result[i].amountFrom) + '</td><td>' + thousands_separators(res.result[i].amountTo) + '</td><td>' + res.result[i].approvalType + '</td> <td>' + res.result[i].conditionName + '</td>  <td>' + res.result[i].deviation + '</td></tr>');
 
                 }
             }
@@ -192,17 +193,72 @@ function onlyNumberKey(evt) {
         return false;
     return true;
 }
-
-
 function callPagejs(pagejs) {
     
-    var js = ["assets/CustomJS/Auction.js?v=" + Math.random()];
+    var locale = sessionStorage.getItem("localcode")
+    var js = [];
+    /*if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')
+    {
+      js = ["assets/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker."+locale+".js?v=" + Math.random(),"assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker."+locale+".js?v=" + Math.random()];
+    }*/
+
+    js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')
     for (var i = 0; i < Pages.length; i++) {
-        js.push("assets/CustomJS/"+ Pages[i]+"?v=" + Math.random());
+        js.push("assets/CustomJS/" + Pages[i] + "?v=" + Math.random());
     }
     var $head = $("head");
+   
     for (var i = 0; i < js.length; i++) {
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
+    }
+
+    /* if(pagejs == 'ConfigureBidSeaExport.js' || pagejs == 'configurefrench.js' || pagejs == 'PeFa.js' || pagejs == 'ConfigureBidCoalExport.js')  
+        {
+          handleDateTimepicker(locale);
+        }*/
+}
+function handleDateTimepicker(locale) {
+
+    //var tz = moment().tz('Asia/Baghdad').format();
+    //alert(GetCurrentDateTime())
+
+    //var theStDate = new Date()
+    // var newYork    = moment.tz(theStDate, "Asia/Baghdad");
+    // theStDate   =newYork.format()          
+    // theStDate = new Date(newYork.format() + ' UTC');
+
+    /*  if (sessionStorage.getItem('preferredtimezone') != null) {
+          theStDate = theStDate.toLocaleString("ar", {
+              timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+          })
+          
+      }
+      else {
+          theStDate = theStDate.toLocaleString("en-GB", {
+              dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+          })
+
+      }*/
+
+
+    if (jQuery().datepicker) {
+        $('.date-picker').datepicker({
+            locale: locale,
+            language: locale,
+            //startDate: theStDate
+        });
+        $(".form_datetime").datetimepicker({
+            locale: locale,
+            language: locale,
+            // startDate: theStDate
+        });
+
+        $(".form_meridian_datetime").datetimepicker({
+            locale: locale,
+            language: locale,
+            //startDate: theStDate
+        });
+        //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
     }
 }

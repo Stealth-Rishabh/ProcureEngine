@@ -1,4 +1,51 @@
+jQuery(document).ready(function () {
+   
+    Pageloaded();
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    validateAppsubmitData();
+   
 
+});
+$("#btnExport").click(function (e) {
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+
+    //Export To Excel
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('table_wrapper');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+    var a = document.createElement('a');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'RFQDetails -' + postfix + '.xls';
+
+    a.click();
+
+});
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -51,7 +98,8 @@ function fetchApproverRemarks() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + AppType,
+        //url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + AppType,
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + AppType,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -119,18 +167,21 @@ function getSummary(vendorid, version) {
 
 }
 
-
+var ShowPrice = "Y";
 var bidopeningdate = new Date();
 var RFQBidType = '';
 var RFQEndDate = new Date();
-var ShowPrice = "Y";
 function fetchrfqcomprative() {
     var url = '';
+    //ShowPrice = "N";
+    //alert('1-'+ ShowPrice);
     if (VID != undefined && VID != '' && VID != null && VID.toLowerCase() != 'nfa') {
-        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
+        //url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99&VendorID=" + VID
+        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails_vendor/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=99&VendorID=" + VID
     }
     else {
-        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99"
+        //url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99"
+        url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=99"
     }
 
     jQuery.ajax({
@@ -167,41 +218,44 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
+
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
-         
+
             if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
-               
+
                     ShowPrice = data[0].showPrice[0].showQuotedPrice;
-                    if (ShowPrice != 'N'){
+                    if (ShowPrice != 'N') {
                         ShowPrice = 'Y';
                     }
-             
+
                 }
-              
+
 
                 //if (AppType == "C" && (new Date(bidopeningdate) <= new Date()) && AppType != "T") {
                 if (AppType == "C" && AppType != "T") {
                     ShowPrice = 'Y';
-               
+
                 }
                 //ShowPrice = 'Y';
-             
+
             }
             else {
                 if (bidopeningdate == null || bidopeningdate == '') {
                     ShowPrice = 'N';
-                 
+
                 }
                 else {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
                         ShowPrice = 'Y';
-                                           }
+
+
+                    }
                     else {
                         ShowPrice = 'N';
-                      
+
                     }
                 }
             }
@@ -220,7 +274,7 @@ function fetchrfqcomprative() {
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
-                    //** Get Query/Response for Technical Approval if any?
+
                     GetQuestions(data[0].vendorNames[i].vendorID)
 
                     if (data[0].vendorNames[i].seqNo != 0) {
@@ -288,11 +342,11 @@ function fetchrfqcomprative() {
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
 
-                            if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
+                            if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {
                                 x = x + 1;
 
                                 if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                   
+
 
                                     if (ShowPrice == "N") {
                                         str += "<td>Quoted</td>";
@@ -312,7 +366,7 @@ function fetchrfqcomprative() {
                                         else {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
-                                    }                                    
+                                    }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
                                             str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
@@ -328,7 +382,7 @@ function fetchrfqcomprative() {
                                         else {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
-                                    }                          
+                                    }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
@@ -337,7 +391,7 @@ function fetchrfqcomprative() {
                                             str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         }
                                     }
-                                     //abheedev bug 436 end
+                                    //abheedev bug 436 end
                                     else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
                                         str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
 
@@ -391,7 +445,7 @@ function fetchrfqcomprative() {
                 }
                 //abheedev bug 436 
                 if (ShowPrice == 'Y') {
-                    str += "<td class=text-right>" + thousands_separators( totallowestValue )+ "</td><td colspan=6>&nbsp;</td></tr>";
+                    str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=6>&nbsp;</td></tr>";
                 }
                 //abheedev bug 436 end
                 else {
@@ -399,7 +453,7 @@ function fetchrfqcomprative() {
                 }
 
 
-                //For Loading Factor
+
                 str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -426,7 +480,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
-                //For Loading Factor reason Row
+
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -451,7 +505,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                //For Commercial Rank
+
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
@@ -478,8 +532,8 @@ function fetchrfqcomprative() {
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
-                //For L1 Package
-                str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+
+                str += "<tr><td colspan=5 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -502,7 +556,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                //For Blank Row
+
                 str += "<tr>";
 
                 var t = 0;
@@ -513,8 +567,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
 
 
-                //For Commercial Header Row
-                // ***************** Start  Commercial Row
+
                 if (data[0].commercialTerms.length > 0) {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
@@ -539,9 +592,9 @@ function fetchrfqcomprative() {
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
 
 
-                    $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
+                    $('#tblRFQComprativetest > tbody').empty();
 
-                    //For  Commercial table 
+
                     for (var p = 0; p < data[0].noOfTermsForRFQ[0].noOfTermsSelectedForRFQ; p++) {
 
                         var flag1 = 'T';
@@ -561,9 +614,9 @@ function fetchrfqcomprative() {
 
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
 
-                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {// true that means reflect on next vendor
+                                if ((data[0].commercialTerms[p].rfqtcid) == (data[0].commercialTerms[s].rfqtcid)) {
 
-                                    //  q = q + 1;
+
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
                                         if (data[0].commercialTerms[s].vendorID == data[0].vendorNames[q].vendorID) {
 
@@ -597,11 +650,7 @@ function fetchrfqcomprative() {
                     }
                 }
 
-                // ***************** End  Commercial Row
 
-
-
-                ////For Vendor Comments
 
                 str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
 
@@ -622,11 +671,10 @@ function fetchrfqcomprative() {
                 str += " </tr>";
 
 
-                //For Qusetion table
-                // ***************** Start  Answer Question Row
+
                 if (data[0].questions.length > 0) {
 
-                    $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                    $('#tblRFQComprativetestQ > tbody').empty();
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
                         var flag2 = 'T';
@@ -696,10 +744,7 @@ function fetchrfqcomprative() {
                     strQ += "</tr>";
 
                 }
-                //// ***************** END  Answer Question Row
 
-
-                // Technical Approver Row
                 strQ += "<tr><td><b>Technical Approval</b></td>";
                 if (AppType == 'T') {
 
@@ -713,7 +758,7 @@ function fetchrfqcomprative() {
                         strQ += "<td>Not Required</td>"
                     }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-                        //strQ += "<td style='text-align:center;'><input style='width:16px!important;height:16px!important;'  type='radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppYes" + data[0].vendorNames[k].vendorID + " class='md-radio' value='Y'  /> &nbsp;<span for=AppYes" + data[0].vendorNames[k].vendorID + ">Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=AppRequired" + data[0].vendorNames[k].vendorID + " id=AppNo" + data[0].vendorNames[k].vendorID + "    value='N'   /> &nbsp;<span for=AppNo" + data[0].vendorNames[k].vendorID + ">No</span></td>"
+
                         strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
 
                     }
@@ -747,7 +792,6 @@ function fetchrfqcomprative() {
                 }
 
 
-                //For Blank Row after question table 
                 strQ += "<tr>";
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
@@ -757,10 +801,6 @@ function fetchrfqcomprative() {
 
                 strQ += "</tr>";
 
-                //// ***************** END  Define Technical  Row **********************
-                //// ***************** Start  Technical Approver Row**********************
-
-                // Technical Approver Status
                 if (data[0].approverStatus.length > 0) {
                     $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
@@ -815,10 +855,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
-                //  }
-                //// ***************** END  Technical Approver Row
 
-                //For Blank Row after question table 
                 strQ += "<tr>";
 
                 t = 0;
@@ -846,7 +883,7 @@ function fetchrfqcomprative() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;// eval("(" + + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -874,7 +911,7 @@ function check(vendorid) {
 function fnRaiseQuery(vendorid) {
     $('#hdnvendorid').val(vendorid)
     GetQuestions(vendorid);
-    //sessionStorage.setItem('hdnqueryselectedvID', vendorid)
+
 }
 var queslength = 0;
 var PendingOn = 'A';
@@ -884,7 +921,8 @@ function GetQuestions(vendorid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + $('#hdnRfqID').val() + "&VendorID=" + vendorid + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + $('#hdnRfqID').val() + "&VendorID=" + vendorid + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GeteRFQvendorQuery/?RFQID=" + $('#hdnRfqID').val() + "&VendorID=" + vendorid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -926,7 +964,7 @@ function GetQuestions(vendorid) {
                         $('#btn_raisequery' + vendorid).text('Reponse Recieved')
                         $('#btn_raisequery' + vendorid).removeClass('yellow').addClass('green')
                         $('#querycount' + vendorid).hide();
-                        //$('#btnmsz').removeClass('hide')
+
                     }
                     if (data[0].pendingOn.toLowerCase() == "x") {
                         $('#btn_raisequery' + vendorid).text('Withdraw')
@@ -946,12 +984,12 @@ function GetQuestions(vendorid) {
             }
             else {
                 $('#btnwithdraw').hide()
-                //jQuery('#tblquestions').append("<tr><td>No Questions !!</td></tr>")
+
             }
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -997,11 +1035,11 @@ function addquestions() {
 
         if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
             $('#btnTechquery').attr('disabled', 'disabled')
-            // $('#btnwithdraw').hide()
+
         }
         else {
             $('#btnTechquery').removeAttr('disabled')
-            //$('#btnwithdraw').show()
+
         }
     }
 }
@@ -1014,7 +1052,7 @@ function deletequesrow(rowid) {
 
     }
     else {
-      
+
     }
 }
 function submitTechnicalQuery() {
@@ -1027,7 +1065,7 @@ function submitTechnicalQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
+
                 if ($.trim(this_row.find('td:eq(0)').html()) == "0") {
                     quesquery = quesquery + $.trim(this_row.find('td:eq(1)').html()) + '#';
                 }
@@ -1054,23 +1092,24 @@ function submitTechnicalQuery() {
                 dataType: "json",
                 success: function (data) {
 
-                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .", function () {
-                        setTimeout(function () {
-                            $('#btnTechquery').attr('disabled', 'disabled')
-                            $('#btnSubmitApp').attr('disabled', 'disabled')
-                            $('#btnSubmitApp').removeClass('green').addClass('default')
-                            $('#btnwithdraw').show()
-                            //$('#btnmsz').removeClass('hide')
-                            $("#RaiseQuery").modal('hide');
+                    bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .").on("shown.bs.modal", function (e) {
+                        //setTimeout(function () {
+                        $('#btnTechquery').attr('disabled', 'disabled')
+                        $('#btnSubmitApp').attr('disabled', 'disabled')
+                        $('#btnSubmitApp').removeClass('green').addClass('default')
+                        $('#btnwithdraw').show()
+                        //$('#btnmsz').removeClass('hide')
+                        $("#RaiseQuery").modal('hide');
 
-                            jQuery.unblockUI();
-                        }, 1000);
+                        jQuery.unblockUI();
+                        return true;
+                        //}, 1000);
                     });
-                    return;
+
                 },
                 error: function (xhr, status, error) {
 
-                    var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+                    var err = xhr.responseText;
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
                     }
@@ -1106,7 +1145,7 @@ function submitTechnicalQuery() {
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from vendor, Click Yes for  Continue ",
-        // title: "Custom title",
+
         buttons: {
             confirm: {
                 label: "Yes",
@@ -1162,7 +1201,7 @@ function withdrawquery() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//xhr.responseText//eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1218,7 +1257,7 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" +  + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1255,7 +1294,7 @@ function RFQFetchL1Package(VendorID, Counter) {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;//eval("(" +  + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1287,7 +1326,7 @@ function FetchRFQVersion() {
 
         }, error: function (xhr, status, error) {
 
-            var err = xhr.responseText;// eval("(" + + ")");
+            var err = xhr.responseText;
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1310,7 +1349,8 @@ function fetchAttachments() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -1369,7 +1409,8 @@ function fetchReguestforQuotationDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1381,7 +1422,7 @@ function fetchReguestforQuotationDetails() {
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
-           
+
                 jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -1406,7 +1447,7 @@ function fetchReguestforQuotationDetails() {
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1423,6 +1464,7 @@ function fetchReguestforQuotationDetails() {
 }
 
 function validateAppsubmitData() {
+
     var form1 = $('#frmsubmitapp');
     var formC = $('#frmsubmitappComm');
     var formAward = $('#formAwardedsubmit');
@@ -1456,25 +1498,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             success1.hide();
             error1.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1509,25 +1551,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             success2.hide();
             error2.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1561,21 +1603,21 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             successawd.hide();
             errorawd.show();
             $('#diverrordiv2').hide();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group,.xyz').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group,.xyz').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group,.xyz').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group,.xyz').removeClass('has-error');
         },
 
         success: function (label) {
@@ -1585,7 +1627,7 @@ function validateAppsubmitData() {
 
         submitHandler: function (form) {
 
-            //AwardCommeRFQ();
+
 
         }
     });
@@ -1608,25 +1650,25 @@ function validateAppsubmitData() {
             }
         },
 
-        invalidHandler: function (event, validator) { //display error alert on form submit              
+        invalidHandler: function (event, validator) {
             successFWD.hide();
             errorFWD.show();
 
         },
 
-        highlight: function (element) { // hightlight error inputs
+        highlight: function (element) {
             $(element)
-                .closest('.Input-group').addClass('has-error'); // set error class to the control group
+                .closest('.Input-group').addClass('has-error');
         },
 
-        unhighlight: function (element) { // revert the change done by hightlight
+        unhighlight: function (element) {
             $(element)
-                .closest('.Input-group').removeClass('has-error'); // set error class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         success: function (label) {
             label
-                .closest('.Input-group').removeClass('has-error'); // set success class to the control group
+                .closest('.Input-group').removeClass('has-error');
         },
 
         submitHandler: function (form) {
@@ -1637,6 +1679,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalCommercialApp() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalbyapp = {
         "ApproverType": "C",
@@ -1661,15 +1704,21 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            bootbox.alert("Transaction Successful..", function () {
+            /* bootbox.alert("Transaction Successful..", function () {
+                 return true;
+                 window.location = "index.html";
+                
+             });*/
+            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
                 window.location = "index.html";
                 return false;
-            });
-
+            }, 2000)
+            );
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1811,10 +1860,15 @@ function AwardCommeRFQ() {
                 crossDomain: true,
                 dataType: "json",
                 success: function () {
-                    bootbox.alert("Transaction Successful..", function () {
+                    /* bootbox.alert("Transaction Successful..", function () {
+                         window.location = "index.html";
+                         return false;
+                     });*/
+                    bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
                         window.location = "index.html";
                         return false;
-                    });
+                    }, 2000)
+                    );
 
                 },
                 error: function (xhr, status, error) {
@@ -1841,6 +1895,7 @@ function AwardCommeRFQ() {
     }
 }
 function fnFWDeRFQ() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
         "ApproverType": "C",
@@ -1864,18 +1919,24 @@ function fnFWDeRFQ() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            //if (data.length > 0) {
-            bootbox.alert("Transaction Successful..", function () {
+
+          /*  bootbox.alert("Transaction Successful..", function () {
                 window.location = "index.html";
                 return false;
-            });
+            });*/
+            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
+
+                window.location = "index.html";
+                return false;
+            }, 2000)
+            );
 
 
-            //}
+
         },
         error: function (xhr, status, error) {
 
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -1890,6 +1951,7 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalApp() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     var chkstatus = 'T';
@@ -1921,12 +1983,12 @@ function ApprovalApp() {
             "Remarks": jQuery("#txtRemarksApp").val(),
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
             "ApprovalStatus": approvalstatus,
-            "VendorID": parseInt(VID),
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+            "VendorID": parseInt(VID)
+           
 
         };
-
-
+        
+      //  console.log(JSON.stringify(approvalbyapp));
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
@@ -1938,15 +2000,20 @@ function ApprovalApp() {
             dataType: "json",
             success: function (data) {
 
-                bootbox.alert("Transaction Successful..", function () {
+                /* bootbox.alert("Transaction Successful..", function () {
+                     window.location = "index.html";
+                     return false;
+                 });*/
+                bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
                     window.location = "index.html";
                     return false;
-                });
+                }, 2000)
+                );
 
             },
             error: function (xhr, status, error) {
 
-                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                var err = xhr.responseText
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }

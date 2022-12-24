@@ -1,10 +1,86 @@
+var _BidID;
+jQuery(document).ready(function () {
+   
+    $('[data-toggle="popover"]').popover({})
+
+
+
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    Metronic.init();
+    Layout.init();
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+
+    fetchMenuItemsFromSession(1, 30);
+    // fetchBidTypeMapping();
+    FetchCurrency('0');
+
+    fetchRegisterUser();
+    fetchBidType();//for search vendor
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    BindNoExtensions('txtBidExtension');
+    setTimeout(function () {
+        $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+        $('#txtConversionRate').val(1);
+        fnfillInstructionExcel();
+    }, 2000);
+
+    fetchParticipantsVender();// fetch all vendors for advance search
+    fetchRFIRFQSubjectforReport('RFQ')
+    fetchVendorGroup('M', 0); // used to fetch product category
+
+   
+    if (window.location.search) {
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param);
+        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    }
+
+    if (_BidID == null) {
+        sessionStorage.setItem('CurrentBidID', 0)
+        sessionStorage.setItem('_savedDraft', 'N')
+        showhideItemBidDuration();
+    }
+    else {
+        sessionStorage.setItem('CurrentBidID', _BidID)
+        sessionStorage.setItem('_savedDraft', 'Y')
+        fetchSeaExportDetails();
+    }
+    // showhideItemBidDuration();
+});
+
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
+
 
 $("#cancelBidBtn").hide();
-
 $('#file-excelparameter').change(handleFileparameter);
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 //abheedev bug 507
- //var _BidID;
+
+
 jQuery(document).ready(function () {
     $("#txtWeightageval").inputmask({ 
        
@@ -23,15 +99,11 @@ jQuery(document).ready(function () {
          autoUnmask: true
 
     });
-         
-});
 
-function cancelbid()
-{
-   
-      CancelBidDuringConfig(sessionStorage.getItem('CurrentBidID'),'BID');
-}      
-//$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${sessionStorage.getItem('CurrentBidID')}, "BID")`);
+});
+function cancelbid() {
+    CancelBidDuringConfig(_BidID, 'BID');
+}
 $('#txtdestinationPort,#txtItemCode,#txtdescription,#txtbiddescriptionP,#txtBidSubject,#txtbiddescription,#txtConversionRate,#txtBidDuration,.maxlength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -657,19 +729,26 @@ function ValidateVendor() {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    } 
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
@@ -677,18 +756,22 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            var err = xhr.responseText 
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
+            return false;
+
         }
 
-    });
 
+    });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 }
 
 
@@ -805,13 +888,12 @@ var FormWizard = function () {
                         notEqualTo: 0
                     },
                     txttargetprice: {
-                        maxlength: 50
+                        maxlength: 50                                              
                     },
                     txtCeilingPrice: {
                         required: true,
                         notEqualTo: 0,
                         maxlength: 50,
-
                     },
                     txtminimumdecreament: {
                         required: true
@@ -1200,7 +1282,8 @@ var FormWizard = function () {
 
 sessionStorage.setItem('CurrentBidID', 0)
 function ConfigureBidForSeaExportTab1() {
-
+    var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var TermsConditionFileName = '';
     var AttachementFileName = '';
@@ -1253,11 +1336,16 @@ function ConfigureBidForSeaExportTab1() {
         StartDT = new Date($('#txtbidDate').val().replace('-', ''));
         //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
     }
+    
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
-        "BidSubject": jQuery("#txtBidSubject").val(),
-        "BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": jQuery("#txtBidSubject").val(),
+        //"BidDescription": jQuery("#txtbiddescription").val(),
+        //"BidSubject": _bidSubject,
+        "BidSubject": _cleanString,
+        //"BidDescription": _bidDesc,
+        "BidDescription": _cleanString2,
         "BidDate": StartDT,
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
@@ -1475,8 +1563,8 @@ function ConfigureBidForSeaExportTab2() {
                 if ($.trim(this_row.find('td:eq(22)').html()) != '') {
                     povalue = removeThousandSeperator($.trim(this_row.find('td:eq(22)').html()));
                 }
-                var remark = $.trim(this_row.find('td:eq(5)').html()).replace(/'/g, "");
-                var description = $.trim(this_row.find('td:eq(4)').html()).replace(/'/g, "");
+                var remark = StringEncodingMechanism($.trim(this_row.find('td:eq(5)').html()).replace(/'/g, ""));
+                var description = StringEncodingMechanism($.trim(this_row.find('td:eq(4)').html()).replace(/'/g, ""));
                 if ($('#ddlbidclosetype').val() == "A") {
                     itmduartion = 0;
                     BidDuration = BidDuration + 0;
@@ -1488,6 +1576,7 @@ function ConfigureBidForSeaExportTab2() {
                     totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt($.trim(this_row.find('td:eq(15)').html()))
 
                 }
+                var _cleanString = StringEncodingMechanism($.trim(this_row.find('td:eq(20)').html()));
 
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1510,7 +1599,8 @@ function ConfigureBidForSeaExportTab2() {
                     "ShowStartPrice": $.trim(this_row.find('td:eq(17)').html()),
                     "PoUnitRate": parseFloat(unitrate),
                     "PoNo": $.trim(this_row.find('td:eq(19)').html()),
-                    "PoVendorName": $.trim(this_row.find('td:eq(20)').html()),
+                    //"PoVendorName": $.trim(this_row.find('td:eq(20)').html()),
+                    "PoVendorName": _cleanString,
                     "PoDate": $.trim(this_row.find('td:eq(21)').html()),
                     "PoValue": parseFloat(povalue),
                     "PullRFQID": parseInt($.trim(this_row.find('td:eq(23)').html())),
@@ -1547,7 +1637,8 @@ function ConfigureBidForSeaExportTab2() {
                 if ($("#povalue" + index).text() != '') {
                     povalue = removeThousandSeperator($("#povalue" + index).text());
                 }
-                var remark = $("#remarks" + index).text().replace(/'/g, "");
+                var remark = StringEncodingMechanism($("#remarks" + index).text().replace(/'/g, ""));
+                var _cleanString = StringEncodingMechanism($("#povendorname" + index).text());
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     "ItemCode": $("#itemcode" + index).text(),
@@ -1569,7 +1660,8 @@ function ConfigureBidForSeaExportTab2() {
                     "ShowStartPrice": "N",
                     "PoUnitRate": parseFloat(unitrate),
                     "PoNo": $("#pono" + index).text(),
-                    "PoVendorName": $("#povendorname" + index).text(),
+                    //"PoVendorName": $("#povendorname" + index).text(),
+                    "PoVendorName": _cleanString,
                     "PoDate": $("#podate" + index).text(),
                     "PoValue": parseFloat(povalue),
                     "PullRFQID": 0,
@@ -2321,7 +2413,7 @@ function editvalues(icount) {
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
     
-    var Remark = $("#remarks" + icount).html().replace(/<br>/g, '\n')
+    var Remark = StringEncodingMechanism($("#remarks" + icount).html().replace(/<br>/g, '\n'));
 
     $('#txtItemCode').val($("#itemcode" + icount).text())
     $('#txtdestinationPort').val($("#destinationport" + icount).text())
@@ -2345,7 +2437,7 @@ function editvalues(icount) {
 
     $('#txtunitrate').val(thousands_Sep_Text(removeThousandSeperator($("#unitrate" + icount).text())))
     $('#txtPono').val($("#pono" + icount).text())
-    $('#txtvendorname').val($("#povendorname" + icount).text())
+    $('#txtvendorname').val(StringDecodingMechanism($("#povendorname" + icount).text()))
     $('#txtPODate').val($("#podate" + icount).text())
     $('#txtpovalue').val(thousands_Sep_Text(removeThousandSeperator($("#povalue" + icount).text())))
     $('#txtfloorPrice').val(removeThousandSeperator($("#floorprice" + icount).text()))
@@ -2501,7 +2593,7 @@ function fetchSeaExportDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchSeaExportConfigurationData/?BidID=" + sessionStorage.getItem('CurrentBidID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -2510,13 +2602,17 @@ function fetchSeaExportDetails() {
         success: function (BidData) {
             var str = '';
             var strp = '';
+            var _bidSubject = StringDecodingMechanism(BidData[0].bidDetails[0].bidSubject);
+            var _bidDesc = StringDecodingMechanism(BidData[0].bidDetails[0].bidDetails);
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
             sessionStorage.getItem("BidPreApp", BidData[0].bidDetails[0].bidpreapproval)
-            jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            //jQuery('#txtBidSubject').val(BidData[0].bidDetails[0].bidSubject)
+            jQuery('#txtBidSubject').val(_bidSubject)
             jQuery('#txtBidDuration').val(BidData[0].bidDetails[0].bidDuration)
 
             jQuery('#txtStaggerNo').val(BidData[0].bidDetails[0].noOfStaggerItems)
-            jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            //jQuery('#txtbiddescription').val(BidData[0].bidDetails[0].bidDetails)
+            jQuery('#txtbiddescription').val(_bidDesc)
            
             jQuery('#txtbidDate').val(dtst)
             jQuery('#drpshowL1L2').val(BidData[0].bidDetails[0].showRankToVendor)
@@ -3536,14 +3632,14 @@ function printdataSeaBid(result) {
         Rowcount = 0;
 
         // check for UOM
-       // console.log(allUOM);
+        console.log(allUOM);
         $("#temptableForExcelDataparameter tr:gt(0)").each(function () {
             var this_row = $(this);
             excelCorrectUOM = 'N';
             Rowcount = Rowcount + 1;
             for (var i = 0; i < allUOM.length; i++) {
-                //console.log(allUOM[i].uom.trim());
-                //console.log($.trim(this_row.find('td:eq(7)').html()));
+                console.log(allUOM[i].uom.trim());
+                console.log($.trim(this_row.find('td:eq(7)').html()));
                 if ($.trim(this_row.find('td:eq(7)').html()).toLowerCase() == allUOM[i].uom.trim().toLowerCase()) {//allUOM[i].UOMID
                     excelCorrectUOM = 'Y';
                 }
@@ -3758,7 +3854,8 @@ function fnSeteRFQparameterTable() {
 function fetchRFIRFQSubjectforReport(subjectFor) {
 
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
@@ -4178,6 +4275,7 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>")
 }
 function CheckMask() {
+    debugger;
     if ($('#drphideVendor').val() == "Y") {
         alert("You have chosen to Mask Participants. This will hide all vendor names");
     }
@@ -4187,4 +4285,3 @@ function ShowHidePrice() {
         alert("You have chosen to Hide Prices. This will be treated as an open auction");
     }
 }
-

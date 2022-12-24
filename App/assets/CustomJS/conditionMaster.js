@@ -1,4 +1,29 @@
+﻿jQuery(document).ready(function () {
+   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
 
+    App.init();
+    setCommonData();
+    fetchMenuItemsFromSession(19, 58);
+    FormValidate();
+    fetchConditionmaster();
+
+});
 
 var error = $('#errordiv');
 var success = $('#successdiv');
@@ -135,7 +160,7 @@ function insupdconditionmaster() {
     });
 
     jQuery.unblockUI();
-    
+
 
 }
 
@@ -188,7 +213,7 @@ function fetchConditionmaster() {
 }
 
 function updateType(rname, status, id, srno) {
-    
+
     $('#hddnConditionID').val(id);
     $('#conditionName').val(rname);
     $('#conditionSr').val(srno);

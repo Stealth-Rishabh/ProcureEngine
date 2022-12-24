@@ -1,3 +1,34 @@
+jQuery(document).ready(function () {   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    App.init();
+    Metronic.init(); Layout.init(); setCommonData();
+    formvalidate();
+    fetchReguestforQuotationDetails();
+    setTimeout(function () {
+        fetchAzPPcFormDetails();
+    }, 1000);
+
+});
+
+
 var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
@@ -12,7 +43,8 @@ function fetchReguestforQuotationDetails() {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -126,7 +158,7 @@ function frmAzurePPCForm() {
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
     var Data = {
-        "PPCID": parseInt($('#hdnPPCID').val()),
+        "nfaID": parseInt($('#hdnPPCID').val()),
         "RFQID": parseInt(RFQID),
         "BidID": 0,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
@@ -173,7 +205,7 @@ function frmAzurePPCForm() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 
-            if (parseInt(data) > 1 && parseInt(data) !=2) {
+            if (parseInt(data) > 1 && parseInt(data) != 2) {
                 $('#spansuccess1').html("PPC Form Saved Successfully...");
                 success.show();
                 success.fadeOut(5000);
@@ -280,7 +312,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtrationalrfqvendor').val(data[0].azureDetails[0].issuingRFQtoVendor);
                 jQuery('#txtenquirynotsent').val(data[0].azureDetails[0].enquirynotsentvendors);
 
-                jQuery('#RFQConfigueron').val(data[0].azureDetails[0].enquiryIssuedOn);
+                jQuery('#RFQConfigueron').val(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
 
                 // alert(data[0].AzureDetails[0].EnquiryIssuedthrogh)
                 if (data[0].azureDetails[0].recomOrderLowPriceOffer == "Y") {

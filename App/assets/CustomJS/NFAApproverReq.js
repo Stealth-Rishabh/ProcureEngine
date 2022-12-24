@@ -17,7 +17,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+        if (sessionStorage.getItem('CustomerID') == 32) {
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -160,19 +160,21 @@ function fetchRegisterUser() {
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
     }
-
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
@@ -180,17 +182,22 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            var err = xhr.responseText 
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
+            return false;
+
         }
 
+
     });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 //abheedev bug 385
@@ -205,26 +212,26 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-              
-                if (sessionStorage.getItem('CustomerID') == 32) {
-                     if (res.result[0].nfaCategory == "2"){
+                debugger;
+                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+                    if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
-                     }
-                    else{
+                    }
+                    else {
                         $(".clsHide").show();
                     }
-                    
+
                 }
-                else{
-                     if (res.result[0].nfaCategory == "1"){
+                else {
+                    if (res.result[0].nfaCategory == "1") {
                         $(".clsHide").hide();
-                     }
-                    else{
+                    }
+                    else {
                         $(".clsHide").show();
                     }
-                
+
                 }
-               
+
                 $("#lblProjectName").text(res.result[0].projectName);
                 //if (res.result[0].eventID == 0) {
                 //    $(".clsHideEvent").hide();
@@ -241,7 +248,7 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
-               
+
                 $("#lblbudget").text(res.result[0].budgetStatustext);
 
                 $("#lblPurOrg").text(res.result[0].orgName);
@@ -370,7 +377,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-  
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
@@ -394,7 +401,7 @@ function fetchApproverStatus() {
                 var counterColor = 0;
                 var prevseq = '1';
                 for (var i = 0; i < data.length; i++) {
-                     debugger;
+
                     jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
@@ -736,13 +743,14 @@ function validateAppsubmitData() {
 
 }
 function ApprovalApp() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
         "ActivityDescription": jQuery("#lbltitle").text(),
-        "Remarks": jQuery("#txtRemarksApp").val(),
+        "Remarks": _cleanString,
         "Action": jQuery("#ddlActionType option:selected").val(),
         "ForwardedBy": "Approver",
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
@@ -784,6 +792,7 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     $('#txtdelegate').val()
 });
 function DelegateUser() {
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtdelegate").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#hdndelegateuserid').val() == 0 || $('#hdndelegateuserid').val() == null) {
@@ -798,7 +807,7 @@ function DelegateUser() {
             "NFAID": parseInt(idx),
             "FromUserId": sessionStorage.getItem("UserID"),
             "ActivityDescription": jQuery("#lbltitle").text(),
-            "Remarks": jQuery("#txtdelegate").val(),
+            "Remarks": _cleanString2,
             "Action": "Delegate",
             "DelgateTo": parseInt($('#hdndelegateuserid').val()),
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
@@ -1207,8 +1216,6 @@ function submitQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
-
                 index = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
                 if ($.trim($('#quesid' + index).text()) == "0") {
                     quesquery = quesquery + $.trim($('#ques' + index).text()) + '#';
@@ -1291,6 +1298,7 @@ function fnquerywithdaw() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true);
                     withdrawquery();
                 }
             },
@@ -1298,6 +1306,7 @@ function fnquerywithdaw() {
                 label: "No",
                 className: "btn-warning",
                 callback: function () {
+                    $('.modal-footer .btn-warning').prop('disabled', true);
                     return true;
 
                 }
@@ -1384,6 +1393,7 @@ function fnRecall() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true);
                     DisableActivityRecall();
                 }
             },
@@ -1391,6 +1401,7 @@ function fnRecall() {
                 label: "No",
                 className: "btn-warning",
                 callback: function () {
+                    $('.modal-footer .btn-warning').prop('disabled', true);
                     return true;
 
                 }
@@ -1399,13 +1410,14 @@ function fnRecall() {
     });
 }
 function DisableActivityRecall() {
+    var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
     var data = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem('UserID'),
         "Action": 'Recalled',
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ActivityDescription": jQuery("#lbltitle").text(),
-        "Remarks": jQuery("#txtRemarksrecall").val()
+        "Remarks": _cleanString
     }
 
     jQuery.ajax({
@@ -1463,6 +1475,7 @@ function fnDownloadZip() {
 
         })
 }
+
 
 function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")

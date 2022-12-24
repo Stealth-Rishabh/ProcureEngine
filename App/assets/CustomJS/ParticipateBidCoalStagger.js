@@ -1,3 +1,44 @@
+jQuery(document).ready(function () {
+   
+    Pageloaded()
+    $('ul#chatList').slimScroll({
+        height: '250px'
+    });
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "V" || sessionStorage.getItem("UserType") == "P") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
+        $('#LiISsurrogate').removeClass('hide')
+    }
+    else {
+        $('#LiISsurrogate').addClass('hide')
+    }
+    Metronic.init();
+    Layout.init();
+    App.init();
+    QuickSidebar.init();
+    setCommonData();
+    fetchVendorDetails();
+
+    $(".pulsate-regular").css('animation', 'none');
+
+});
+
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -16,7 +57,7 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
 }).catch(function (err) {
     console.log(err.toString())
     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
-});
+}); 
 connection.on("refreshColumnStatusCoal", function (data) {
     if (data == "-1") {
         $('#spanmszA' + $('#hdnselectedindex').val()).removeClass('hide')
@@ -150,9 +191,10 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
 
-    //toastr.clear();
+    toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-   calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+    toastr.success('You have a new message.', 'New Message')
+
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -192,8 +234,11 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 });
 function sendChatMsgs() {
 
+    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
+
     var data = {
-        "ChatMsg": $("#txtChatMsg").val(),
+        //"ChatMsg": $("#txtChatMsg").val(),
+        "ChatMsg": _cleanString,
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
@@ -541,7 +586,7 @@ function startTimer(duration, display) {
         else {
             display.textContent = minutes + ":" + seconds;
         }
-        if (timer < 0) {
+        if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
 
         }
@@ -794,8 +839,13 @@ function fetchBidHeaderDetails(bidId) {
     var tncAttachment = '';
     var anyotherAttachment = '';
     var url = '';
-
+    var _vendorID = parseInt(sessionStorage.getItem("VendorId"));
+    var bidDetailsVendorObj = {
+        "BidID": bidId,
+        "VendorID": _vendorID
+    }
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + bidId + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
+    //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor"
 
     jQuery.ajax({
         type: "GET",
@@ -804,6 +854,7 @@ function fetchBidHeaderDetails(bidId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        //data: JSON.stringify(bidDetailsVendorObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
 

@@ -1,3 +1,40 @@
+﻿jQuery(document).ready(function () {
+   
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+            window.location = sessionStorage.getItem('MainUrl');
+            return false;
+        });
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
+    fetchMenuItemsFromSession(49, 50);
+
+    fetchParticipantsVender();
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+    fetchRegisterUser();
+    setTimeout(function () {
+        fnfillInstructionExcel();
+    }, 1000)
+});
+document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+    document.getElementById('file-excelparameter').click();
+});
+
+$('#file-excelparameter').change(handleFileparameter);
+
 $(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
@@ -193,7 +230,7 @@ function ParametersQuery() {
 
     }
     resetfun()
-
+   
 }
 
 function editvalues(icount) {
@@ -223,6 +260,8 @@ function deleterow(icount) {
 
 var PriceDetails = [];
 function insPoDetails() {
+
+    var _cleanString = StringEncodingMechanism($('#txtvendorremarks').val());
     var items = '', PriceDetails = [];
     var ObserverDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
@@ -236,7 +275,7 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
-
+        
         if (rowCount >= 0) {
             $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
@@ -258,19 +297,20 @@ function insPoDetails() {
                 PriceDetails.push(items)
             })
         }
-
+        
         //481
-        debugger
+       debugger
         rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
-
-
+       
+      
         if (rowCount >= 0) {
             $("#tblapprovers tr:gt(0)").each(function (index) {
-
+              
                 var this_row = $(this);
-
+               
                 index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
+                
                 ccEmails = ccEmails + $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
@@ -280,6 +320,9 @@ function insPoDetails() {
                 ObserverDetails.push(items)
             })
         }
+        debugger;
+        
+
         var Tab2data = {
             "PriceDetails": PriceDetails,
             "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
@@ -287,13 +330,14 @@ function insPoDetails() {
             "UserID": sessionStorage.getItem('UserID'),
             "Flag": 'SendToVendor',
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "UserRemarks": $('#txtvendorremarks').val(),
+            //"UserRemarks": $('#txtvendorremarks').val(),
+            "UserRemarks": _cleanString,
             "ObserverDetails": ObserverDetails,
             "ObserverEmail": ccEmails
         };
 
 
-
+        
         jQuery.ajax({
 
             type: "POST",
@@ -431,6 +475,9 @@ jQuery("#txtVendor").typeahead({
 
 });
 function addAttachments() {
+    var _cleanString2 = StringEncodingMechanism($('#AttachDescription1').val());
+
+
     if (jQuery('#file1').val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Attach File Properly');
@@ -462,7 +509,8 @@ function addAttachments() {
             "POAttachment": attchname,
             "UserID": sessionStorage.getItem('UserID'),
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "POAttachmentDescription": $('#AttachDescription1').val()
+           // "POAttachmentDescription": $('#AttachDescription1').val()
+            "POAttachmentDescription": _cleanString2
         }
         // alert(JSON.stringify(Attachments))
         // console.log(JSON.stringify(Attachments))
@@ -546,7 +594,7 @@ function fetchAttachments() {
                 $('#add_or').removeAttr('disabled')
                 sessionStorage.setItem('hdnVendorID', data[0].vendorID);
                 $('#txtVendor').val(data[0].vendorName)
-                $('#txtvendorremarks').val(data[0].userRemarks)
+                $('#txtvendorremarks').val(StringDecodingMechanism(data[0].userRemarks))
                 jQuery('#tblAttachments').append("<thead><tr><th class='bold'>Description</th><th class='bold'>Attachment</th><th></th></tr></thead>");
                 for (var i = 0; i < data.length; i++) {
                     attach = data[i].poAttachment.replace(/\s/g, "%20");
@@ -895,6 +943,8 @@ function printdataSeaBid(result) {
 }
 
 function InsupdProductfromExcel() {
+
+    var _cleanString3 = StringEncodingMechanism($('#txtvendorremarks').val());
     $("#success-excelparameter").hide();
     $("#error-excelparameter").hide();
     $('#loader-msgparameter').html('Processing. Please Wait...!');
@@ -928,7 +978,8 @@ function InsupdProductfromExcel() {
             "UserID": sessionStorage.getItem('UserID'),
             "Flag": 'Insert',
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            "UserRemarks": $('#txtvendorremarks').val()
+            //"UserRemarks": $('#txtvendorremarks').val()
+            "UserRemarks": _cleanString3
         };
 
         jQuery.ajax({
@@ -1278,19 +1329,26 @@ function getCategoryWiseVendors(categoryID) {
 
 var allUsers = '';
 function fetchRegisterUser() {
-
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "Isactive": "N"
+    }
+    var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        type: "GET",
+        //type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
             if (data.length > 0) {
                 allUsers = data;
+
             }
             else {
                 allUsers = '';
@@ -1298,59 +1356,24 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+            debugger;
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
+            return false;
+
         }
 
-    });
-
-}
-
-
-
-var allUsers = '';
-function fetchRegisterUser() {
-
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=N",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            console.log(data)
-            if (data.length > 0) {
-                allUsers = data;
-            }
-            else {
-                allUsers = '';
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', 'form_wizard_1');
-            }
-            jQuery.unblockUI();
-        }
 
     });
+    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
-
-
 
 jQuery("#txtApprover").keyup(function () {
     sessionStorage.setItem('hdnApproverid', '0');
@@ -1358,7 +1381,7 @@ jQuery("#txtApprover").keyup(function () {
 });
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
-
+       
         var data = allUsers;
         usernames = [];
         map = {};
@@ -1451,20 +1474,10 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         }
 
 
-
+        
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
-
-        //if (rowcount >= 1) {
-        //    $("#tblapprovers tr:gt(0)").each(function (index) {
-        //        var this_row = $(this);
-        //        $.trim(this_row.find('td:eq(3)').html(index + 1));
-        //    });
-        //    $("#tblapproversPrev tr:gt(0)").each(function (index) {
-        //        var this_row = $(this);
-        //        $.trim(this_row.find('td:eq(3)').html(index + 1));
-        //    });
-        //}
-
+        
+        
     }
 }
 function deleteApprow(IDcount) {
@@ -1490,5 +1503,5 @@ function deleteApprow(IDcount) {
         });
     }
 
-
+    
 }

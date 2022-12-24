@@ -1,4 +1,31 @@
-﻿var form = $('#frm_submittion');
+$(document).ready(function () {  
+    Pageloaded()
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+    }
+    else {
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    
+
+    fetchMenuItemsFromSession(45, 36);
+    setCommonData();
+    FormValidation()
+    setTimeout(function () {
+        fnfetchMenus()
+    }, 500)
+
+})
+var form = $('#frm_submittion');
 var error = $('#diverror');
 var success = $('.alert-success', form);
 var MenuID = 0;

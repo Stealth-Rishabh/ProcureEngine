@@ -1,3 +1,4 @@
+$("#cancelNFABtn").hide();
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
@@ -26,8 +27,10 @@ if (window.location.search) {
     GetOverviewmasterbyId(idx);
 }
 
-$("#cancelNFABtn").hide();
-$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
+function cancelbid() {
+    CancelBidDuringConfig(idx, 'NFA');
+}
+//$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
 jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
@@ -43,9 +46,9 @@ jQuery(document).ready(function () {
 
     });
     $('.MaxLength').maxlength({
-    limitReachedClass: "label label-danger",
-    alwaysShow: true
-});
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
 
 });
 
@@ -136,6 +139,10 @@ var FormWizard = function () {
                     ddlCategory: {
                         required: true
 
+                    },
+                    ddlCondition:
+                    {
+                        required: true
                     },
                     dropCurrency: {
                         required: true
@@ -296,7 +303,6 @@ var FormWizard = function () {
                     var flag = "T";
 
 
-
                     if (index == 1) {
 
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
@@ -333,7 +339,7 @@ var FormWizard = function () {
                             $('#form_wizard_1').find('.button-previous').hide();
                             return false;
                         }
-                       else if ((sessionStorage.getItem("hdnEventrefId") == '0' || $('#txtEventref').val()== "" ) && $('#ddlEventType').val() != 0) {
+                        else if ((sessionStorage.getItem("hdnEventrefId") == '0' || $('#txtEventref').val() == "") && $('#ddlEventType').val() != 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Select Event Details Properly');
                             Metronic.scrollTo($(".alert-danger"), -500);
@@ -390,7 +396,7 @@ var FormWizard = function () {
                             Bindtab3Data();
                         }
                     }
-                   
+
                     handleTitle(tab, navigation, index);
                     if (ApproverCtr === 0)
                         $('.button-submit').hide();
@@ -434,7 +440,8 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             $('#form_wizard_1 .button-submit').click(function () {
-
+             //bug588 abheedev
+                $('#form_wizard_1 .button-submit').prop('disabled', true);
                 ConfirmSaveApprovers();
 
             }).hide();
@@ -540,7 +547,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#txtTitle").val(res.result[0].nfaSubject);
                 $("#txtNFADetail").val(res.result[0].nfaDescription);
                 $("#ddlEventType").val(res.result[0].eventID);
-                 setTimeout(function () {
+                setTimeout(function () {
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -548,14 +555,14 @@ function GetOverviewmasterbyId(idx) {
                 }, 900);
                 $("#cancelNFABtn").show();
                 sessionStorage.setItem('hdnNFAID', idx);
-                
+
                 //abheedev bug385 start
                 $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
                 $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
-                
+
 
                 if (res.result[0].nfaCategory == 1) {
 
@@ -597,7 +604,7 @@ $("#ddlEventType").on("change", function () {
 function GetEventRefData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var EventTypeId = $("#ddlEventType option:selected").val();
-   
+
     var url = "NFA/FetchNFAEventRef?CustomerId=" + parseInt(CurrentCustomer) + "&EventTypeid=" + parseInt(EventTypeId);
 
     var getData = callajaxReturnSuccess(url, "Get", {})
@@ -1012,6 +1019,7 @@ $("#txtProjectName").on("keyup", function () {
 
 //abheedev backlog 286
 function Savedata() {
+
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1292,13 +1300,19 @@ function ConfirmSaveApprovers() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    debugger
+                    $('.modal-footer .btn-success').prop('disabled', true);
+                  
                     SaveApproversConfirmation();
+
+                   
                 }
             },
             cancel: {
                 label: "No",
                 className: "btn-default",
                 callback: function () {
+                    $('.modal-footer btn-default').prop('disabled', true);
                     return true;
 
                 }
@@ -1645,6 +1659,7 @@ function bindConditionDDL() {
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
         $("#ddlCondition").empty();
+        $("#ddlCondition").append(jQuery("<option></option>").val("").html("Select"));
         $("#ddlCondition").append(jQuery("<option></option>").val("0").html("No exception"));
         if (res.result != null) {
             if (res.result.length > 0) {

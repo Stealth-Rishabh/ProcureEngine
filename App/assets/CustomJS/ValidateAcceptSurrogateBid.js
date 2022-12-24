@@ -5,9 +5,20 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 var BIDTypeID = '';
 var BidClosingType = '';
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//FROM HTML
+jQuery(document).ready(function () {
 
+    $('.page-container').show();
+    Metronic.init();
+    Layout.init();
+    App.init();
+
+    fetchBidHeaderDetails();
+    formvalidate();
+
+});
 function fetchBidHeaderDetails() {
 
     var url = '';
@@ -29,57 +40,38 @@ function fetchBidHeaderDetails() {
                 var _bidDateExpiry = new Date(BidExpiryDatetime.replace('-', ''));
 
                 var currentTime = new Date();
-               
+                console.log(currentTime);
+                console.log(_bidDateStart);
+                console.log(_bidDateExpiry);
+
                 if (_bidDateExpiry > currentTime) {
-                  
+                    //if (_bidDateStart < currentTime) {
                     $('#btnpassword').removeAttr('disabled');
                     $('#txtpassword').removeAttr('disabled');
                     jQuery('#lblEventID').html(BIDID);
                     jQuery('#bid_EventID').html("Event ID : " + BIDID);
+
                     jQuery("#lblbidsubject").text(data[0].bidSubject);
                     jQuery("#lblbidDetails").text(data[0].bidDetails);
-                      jQuery("#lblbiddate").text(BidStartDatetime);
-                     jQuery("#lblbidtype").text(data[0].bidTypeName);
-                    jQuery("#lblbidfor").text(data[0].bidFor);
-                    jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
-                    jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
-                    jQuery("#lblbiddateTT").text(BidStartDatetime);
-                     jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
-                    jQuery("#lblbidforTT").text(data[0].bidFor);
-                    BIDTypeID = data[0].bidTypeID;
-                    BidClosingType = data[0].bidClosingType;
-                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
-                    jQuery("#lblbidduration").text(data[0].bidDuration);
-                    jQuery("#lblcurrency").text(data[0].currencyName);
-                    jQuery("#lblbiddurationTT").text(data[0].bidDuration);
-                    jQuery("#lblcurrencyTT").text(data[0].currencyName);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                    jQuery("#lblstatus").text(data[0].conversionRate);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                    jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
-                 }
-                else {
-                    bootbox.alert("This bid has already expired !!!", function () {
-                        //@abheedev bug 360 surrogate start
-                    $('#btnpassword').removeAttr('disabled');
-                    $('#txtpassword').removeAttr('disabled');
-                    jQuery('#lblEventID').html(BIDID);
-                    jQuery('#bid_EventID').html("Event ID : " + BIDID);
-                    jQuery("#lblbidsubject").text(data[0].bidSubject);
-                    jQuery("#lblbidDetails").text(data[0].bidDetails);
+                    //jQuery("#lblbiddate").text(data[0].bidDate);
                     jQuery("#lblbiddate").text(BidStartDatetime);
+                    //jQuery("#lblbidtime").text(data[0].bidTime);
                     jQuery("#lblbidtype").text(data[0].bidTypeName);
                     jQuery("#lblbidfor").text(data[0].bidFor);
                     jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
                     jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
-                      jQuery("#lblbiddateTT").text(BidStartDatetime);
-                     jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                    //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                    jQuery("#lblbiddateTT").text(BidStartDatetime);
+                    //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                    jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
                     jQuery("#lblbidforTT").text(data[0].bidFor);
                     BIDTypeID = data[0].bidTypeID;
                     BidClosingType = data[0].bidClosingType;
+
                     jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
                     jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+
+
                     jQuery("#lblbidduration").text(data[0].bidDuration);
                     jQuery("#lblcurrency").text(data[0].currencyName);
                     jQuery("#lblbiddurationTT").text(data[0].bidDuration);
@@ -87,7 +79,61 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblConvRate").text(data[0].conversionRate);
                     jQuery("#lblstatus").text(data[0].conversionRate);
                     jQuery("#lblConvRate").text(data[0].conversionRate);
-                      //@abheedev bug 360 surrogate end
+                    jQuery('#TermandCondition').attr("name", data[0].termsConditions)
+                    jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
+                    /*}
+                    else {
+                        bootbox.alert("This bid has not yet started !!!", function () {
+
+                            $('#btnpassword').attr('disabled', 'disabled')
+                            $('#txtpassword').attr('disabled', 'disabled')
+
+                        });
+
+                    }*/
+                }
+                else {
+                    bootbox.alert("This bid has already expired !!!", function () {
+
+
+                        //@abheedev bug 360 surrogate start
+                        $('#btnpassword').removeAttr('disabled');
+                        $('#txtpassword').removeAttr('disabled');
+                        jQuery('#lblEventID').html(BIDID);
+                        jQuery('#bid_EventID').html("Event ID : " + BIDID);
+
+                        jQuery("#lblbidsubject").text(data[0].bidSubject);
+                        jQuery("#lblbidDetails").text(data[0].bidDetails);
+                        //jQuery("#lblbiddate").text(data[0].bidDate);
+                        jQuery("#lblbiddate").text(BidStartDatetime);
+                        //jQuery("#lblbidtime").text(data[0].bidTime);
+                        jQuery("#lblbidtype").text(data[0].bidTypeName);
+                        jQuery("#lblbidfor").text(data[0].bidFor);
+                        jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
+                        jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
+                        //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                        jQuery("#lblbiddateTT").text(BidStartDatetime);
+                        //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                        jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                        jQuery("#lblbidforTT").text(data[0].bidFor);
+                        BIDTypeID = data[0].bidTypeID;
+                        BidClosingType = data[0].bidClosingType;
+
+                        jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                        jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+
+
+                        jQuery("#lblbidduration").text(data[0].bidDuration);
+                        jQuery("#lblcurrency").text(data[0].currencyName);
+                        jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                        jQuery("#lblcurrencyTT").text(data[0].currencyName);
+                        jQuery("#lblConvRate").text(data[0].conversionRate);
+                        jQuery("#lblstatus").text(data[0].conversionRate);
+                        jQuery("#lblConvRate").text(data[0].conversionRate);
+                        //@abheedev bug 360 surrogate end
+
+
+
                         $('#btnpassword').attr('disabled', 'disabled')
                         $('#txtpassword').attr('disabled', 'disabled')
 
@@ -128,7 +174,9 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+
     if (jQuery("#txtpassword").val() == "") {
 
         erroropenbid.show();
@@ -186,7 +234,11 @@ function fnGtrTokenValidatePassword() {
                 sessionStorage.setItem("UserName", data[0].vendorName)
                 sessionStorage.setItem("BidID", BIDID)
                 sessionStorage.setItem("ISFromSurrogate", "Y")
-                 sessionStorage.setItem("HomePage", 'https://pev3proapi.azurewebsites.net/');
+                // sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
+                //sessionStorage.setItem("HomePage", "https://pev3proapp.azurewebsites.net/")
+                sessionStorage.setItem("HomePage", 'https://pev3qaapi.azurewebsites.net/');
+
+
                 if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                     setTimeout(function () {
                         $('#termscondition').modal('show');

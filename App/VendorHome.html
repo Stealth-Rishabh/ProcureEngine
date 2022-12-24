@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="cache-control" content="private,no-cache">
     <title>Sourcing Portal</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all"
-          rel="stylesheet" type="text/css" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -27,102 +28,107 @@
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
-    <!--<link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />-->
+
     <link href="assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
 
     <link rel="shortcut icon" href="../favicon.ico" />
-    <style>
-    
-       body {
-            overflow-x: hidden;
-            overflow-wrap: break-word;
-            
-        }
-   
-   
-       .form-horizontal .form-control-static {
-          padding-top: 7px;
-          width: 100%;
-        }
-   
-         .tileDesign {
-            padding: 10px;
-            width: 90% !important;
-            text-align: left;
-        }
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/VendorHome.css">
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+    <script src="assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
 
-        .container {
-            height: 70px;
-            /*display: grid;*/
-            justify-content: center;
-            align-items: center;
-        }
-        .tblwidth {
-            /*table-layout: fixed;*/
-            width: 100% !important;
-            padding-left: 5px;
-        }
+    <script src="assets/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="assets/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
+    <script src="assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
 
-        .fontSize {
-            font-size: 17px;
-            width: 90% !important;
-            text-align: left;
-            padding-left: 5px;
-        }
+    <script src="assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/core/app.js" type="text/javascript"></script>
 
-        .fontSizeCount {
-            font-size: 25px;
-            width: 10%;
-            text-align: right;
-        }
-         .H-90PX {
-            height: 90px;
-            margin-bottom: 10px !important;
-        }
+    <script src="assets/scripts/custom/tasks.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/CustomJS/Auction.js"></script>
 
-        .iconcenter {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
-        .thFont {
-            font-size: 12px !important;
-        }
 
-        .tableFont {
-            font-size: 12px !important;
-        }
-    </style>
+    <!--translating file for i18n plugin - abhi@dev-->
+
+    <script type="module" src="assets/plugins/jquery.i18n/CLDRPluralRuleParser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.messagestore.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.fallbacks.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.language.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.parser.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/jquery.i18n.emitter.bidi.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/history.js"></script>
+    <script type="module" src="assets/plugins/jquery.i18n/url.js"></script>
+
+
+
 </head>
 <body class="page-header-fixed page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                <a class="navbar-brand" href="index.html" >
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
+            <!--@abheedev-->
+            <div class="changeLanguage">
+                <select class="navbar-language" href="index.html">
+                    <option data-locale="en" value="en">English</option>
+                    <option data-locale="fr" value="fr">French</option>
+
+
+                </select>
+
+            </div>
+
+
+
             <div class="top-menu">
+
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
-                            </span><i class="fa fa-angle-down"></i>
+                           
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="MyProfile_vendor.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="MyProfile_vendor.html"><i class="icon-user"></i><span data-i18n="myprofile">My Profile</span> </a></li>
                             <li>
-                                <a href="#ChangePassword" data-toggle="modal">
+                                <a href="#ChangePassword" data-toggle="modal" data-i18n="changepassword">
                                     <i class="fa fa-lock"></i> Change Password
                                 </a>
                             </li>
-                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                            <li><a href="javascript:;" id="logOut_btn" data-i18n="logout"><i class="fa fa-key"></i>Log Out </a></li>
                         </ul>
+
                     </li>
                 </ul>
             </div>
@@ -130,7 +136,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container" style="display:none">
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -139,14 +145,14 @@
                         <div class="sidebar-toggler hidden-phone">
                         </div>
                     </li>
-                    <br />
                 </ul>
+                <br/>
             </div>
         </div>
         <div class="page-content-wrapper">
             <div class="page-content">
                 <h3 class="page-title">
-                    Sourcing Portal <small>Bringing Global Suppliers under one umbrella...</small>
+                    <h data-i18n="page-title"> Sourcing Portal</h> <small data-i18n="page-title-span">Bringing Global Suppliers under one umbrella...</small>
                 </h3>
                 <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                      aria-hidden="true">
@@ -175,15 +181,15 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i><a href="VendorHome.html" style="text-decoration:none;">Home</a> <i class="fa fa-angle-right">
+                            <i class="fa fa-home"></i><a href="VendorHome.html" data-i18n="home" class="notextdeco" >Home</a> <i class="fa fa-angle-right">
                             </i>
                         </li>
 
-                        <li><a href="#">Dashboard</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="#" data-i18n="dashboard" class="notextdeco">Dashboard</a> <i class="fa fa-angle-right"></i></li>
                         <li>
-                            <a href="javascript:;" style="text-decoration:none;" onclick="fetchPendingBid()">Open Events</a>
-                            </i>
+                            <a href="javascript:;" data-i18n="openevents"  onclick="fetchPendingBid()">Open Events</a>
                         </li>
+
                     </ul>
                     <div class="page-toolbar">
 
@@ -191,9 +197,9 @@
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <div class="btn-group">
                                 <select id="ULCustomers" class="select2-container form-control" onchange="GetDataForCust()"></select>
-                               
+
                             </div>
-                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
+                            <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-i18n="help" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
                     </div>
                 </div>
@@ -206,17 +212,17 @@
                                 <i class="fa fa-paperclip"></i>
                             </div>
                             <div class="details tileDesign container">
-                               
+
                                 <div class="desc">
                                     <table class="tblwidth">
 
 
-                                        <tr style="text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('OpenBids')">
-                                            <td class="fontSize">Open eAuctions </td>
+                                        <tr class="txtpointernone"  onclick="fetchBidDataDashboard('OpenBids')">
+                                            <td class="fontSize" data-i18n="openeauctions">Open eAuctions </td>
                                             <td class="fontSizeCount" id="lblOpenCount">0</td>
                                         </tr>
-                                        <tr style="text-align:left;text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('CloseBids')">
-                                            <td class="fontSize">Closed eAuctions </td>
+                                        <tr class="txtpointerleftnone" onclick="fetchBidDataDashboard('CloseBids')">
+                                            <td class="fontSize" data-i18n="closedeauctions">Closed eAuctions </td>
                                             <td class="fontSizeCount" id="lblClosedCount">0</td>
                                         </tr>
                                     </table>
@@ -224,10 +230,10 @@
                                 </div>
                             </div>
                             <a class="more" href="javascript:;">
-                                <span style="visibility:hidden!important">TT</span>
-                                
+                                <span class="visibility novishid">TT</span>
+
                             </a>
-                            
+
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
@@ -235,19 +241,19 @@
                             <div class="visual">
                                 <i class="fa fa-unlink"></i>
                             </div>
-                           
+
                             <div class="details tileDesign container">
 
                                 <div class="desc">
                                     <table class="tblwidth">
 
 
-                                        <tr style="text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('OpenRFX')">
-                                            <td class="fontSize">Open RFx </td>
+                                        <tr class="txtpointernone" onclick="fetchBidDataDashboard('OpenRFX')">
+                                            <td class="fontSize" data-i18n="openrfx">Open RFx </td>
                                             <td class="fontSizeCount" id="lblopenRFXCount">0</td>
                                         </tr>
-                                        <tr style="text-align:left;text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('CloseRFX')">
-                                            <td class="fontSize">Submitted RFx </td>
+                                        <tr class="txtpointerleftnone"  onclick="fetchBidDataDashboard('CloseRFX')">
+                                            <td class="fontSize" data-i18n="submittedrfx">Submitted RFx </td>
                                             <td class="fontSizeCount" id="lblClosedRFXCount">0</td>
                                         </tr>
                                     </table>
@@ -255,7 +261,7 @@
                                 </div>
                             </div>
                             <a class="more" href="javascript:;">
-                                <span style="visibility:hidden!important">TT</span>
+                                <span class="novishid">TT</span>
 
                             </a>
                         </div>
@@ -266,17 +272,17 @@
                                 <i class="fa fa-check-square-o"></i>
                             </div>
                             <div class="details tileDesign container">
-                                
+
                                 <div class="desc">
                                     <table class="tblwidth">
 
 
-                                        <tr style="text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('PendingPO')">
-                                            <td class="fontSize">Pending PO's </td>
+                                        <tr  class="txtpointernone" onclick="fetchBidDataDashboard('PendingPO')">
+                                            <td class="fontSize" data-i18n="pendingpos">Pending PO's </td>
                                             <td class="fontSizeCount" id="lblpendingPO">0</td>
                                         </tr>
-                                        <tr style="text-align:left;text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('AcceptedPO')">
-                                            <td class="fontSize">Accepted/Reverted PO's </td>
+                                        <tr class="txtpointerleftnone" onclick="fetchBidDataDashboard('AcceptedPO')">
+                                            <td class="fontSize" data-i18n="acceptedpos">Accepted/Reverted PO's </td>
                                             <td class="fontSizeCount" id="lblAcceptedPO">0</td>
                                         </tr>
                                     </table>
@@ -284,10 +290,10 @@
                                 </div>
                             </div>
                             <a class="more" href="javascript:;">
-                                <span style="visibility:hidden!important">TT</span>
+                                <span class="novishid">TT</span>
 
                             </a>
-                           
+
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -296,18 +302,18 @@
                                 <i class="fa fa-trophy"></i>
                             </div>
                             <div class="details tileDesign container">
-                               
+
                                 <div class="desc">
-                                    
+
                                     <table class="tblwidth">
 
 
-                                        <tr style="text-decoration:none;cursor:pointer">
-                                            <td class="fontSize">Bill Tracker </td>
+                                        <tr class="txtpointernone">
+                                            <td class="fontSize" data-i18n="billtracker">Bill Tracker </td>
                                             <td class="fontSizeCount" id="lblpendingPO">0</td>
                                         </tr>
-                                        <tr style="text-align:left;text-decoration:none;cursor:pointer" onclick="fetchBidDataDashboard('OpenQuery')">
-                                            <td class="fontSize">Open Query </td>
+                                        <tr class="txtpointerleftnone" onclick="fetchBidDataDashboard('OpenQuery')">
+                                            <td class="fontSize" data-i18n="openquery">Open Query </td>
                                             <td class="fontSizeCount" id="lblOpnquery">0</td>
                                         </tr>
 
@@ -315,11 +321,11 @@
                                 </div>
                             </div>
                             <a class="more" href="javascript:;">
-                                <span style="visibility:hidden!important">TT</span>
+                                <span class="novishid" >TT</span>
 
                             </a>
                         </div>
-                       
+
                     </div>
                 </div>
                 <!-- END DASHBOARD STATS -->
@@ -331,19 +337,19 @@
                         <div class="portlet box green-turquoise" id="div_portlet">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-check" id="iconclass"></i><span id="spanPanelCaption">Open Events</span>&nbsp;<span id="totalrecord"></span>
+                                    <i class="fa fa-check" id="iconclass"></i><span id="spanPanelCaption" data-i18n="openevents">Open Events</span>&nbsp;<span id="totalrecord"></span>
                                 </div>
                                 <div class="actions">
                                     <div class="btn-group">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
-                                            <input type="text" id="searchPendingActivities" placeholder="Search" class="form-control  input-circle" style="width:300px!important;">
+                                            <input type="text" id="searchPendingActivities" placeholder="Search" class="form-control  input-circle width300px">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0">
+                                <div class="scroller scroller300" data-always-visible="1" data-rail-visible="0">
                                     <ul id="UlPendingActivity" class="feeds"></ul>
                                 </div>
                                 <div class="scroller-footer">
@@ -366,7 +372,7 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer" style="color: #FFF !important;">
+        <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -377,7 +383,7 @@
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
                 <div class="portlet-title">
-                    <div class="caption">
+                    <div class="caption" data-i18n="help">
                         <i class="fa fa-reorder"></i>Help
                     </div>
                     <div class="tools">
@@ -386,7 +392,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" style="height: 200px; overflow-y: scroll;">
+                    <div class="modal-body modalbody2" >
                         <p class="ppolicy-text"> This is the main landing page of our sourcing portal for vendors, which has direct access to frequently used functionalities as mentioned below</p>
                         <p class="ppolicy-text"><b>Pending bid: </b>This block shows all the bids along with date pending for participation. The vendor representative can click on individual bid and enter password received for the selected bid in email to participate. </p>
                         <p class="ppolicy-text"> <b>Pending RFI/RFQ: </b>This block shows all the RFI/RFQ pending at company end. This also shows the deadline date of RFI/RFQ before which vendor should provide their responses. The vendor representative can click on individual RFI/RFQ to provide their responses. </p>
@@ -416,7 +422,7 @@
                         <div class="portlet-body form">
                             <form action="#" id="AccprtGNc" class="form-horizontal" role="form">
 
-                                <div class="form-body" >
+                                <div class="form-body">
                                     <div class="hide" id="div_euctions">
                                         <div class="row">
                                             <div class="col-md-12 ">
@@ -424,7 +430,7 @@
                                                     <label class="col-md-2 control-label">
                                                         Bid Subject:
                                                     </label>
-                                                    <label id="lblbidsubject" style="text-align:left;font-weight:bold" class="col-md-10 control-label">
+                                                    <label id="lblbidsubject" class="col-md-10 control-label txtleftbold">
                                                     </label>
                                                 </div>
                                             </div>
@@ -435,164 +441,156 @@
                                                     <label class=" col-md-2 control-label">
                                                         Bid Details:
                                                     </label>
-                                                    <!-- <div class="col-md-10"> -->
-                                                    <label id="lblbidDetails" style="text-align:left" class=" col-md-10 control-label">
+                                                   
+                                                    <label id="lblbidDetails"  class=" col-md-10 control-label txtalignleft">
                                                     </label>
-                                                    <!-- </div> -->
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                                
+                                                <label class="col-md-6 control-label txtalignleft">
                                                     Bid Date:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbiddate" style="text-align:left">
+                                                <label class="col-md-6 control-label txtalignleft" id="lblbiddate" >
                                                 </label>
-                                                <!--</div>-->
+                                              
                                             </div>
-                                            <!--<div class="col-md-4 ">-->
-                                                <!--<div class="form-control">-->
-                                                <!--<label class="col-md-6 control-label" style="text-align:left">
-                                                    Bid Time:
-                                                </label>
-                                                <label class="col-md-6 control-label" id="lblbidtime" style="text-align:left">
-                                                </label>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
+                                          
                                             <div class="col-md-4 ">
-                                                <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                              
+                                                <label class="col-md-6 control-label txtalignleft">
                                                     Bid Type:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidtype" style="text-align:left">
+                                                <label class="col-md-6 control-label txtalignleft" id="lblbidtype" >
                                                 </label>
-                                                <!--</div>-->
+                                                
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 ">
-                                                <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                               
+                                                <label class="col-md-6 control-label txtalignleft">
                                                     Bid For:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidfor" style="text-align:left">
+                                                <label class="col-md-6 control-label txtalignleft" id="lblbidfor" >
                                                 </label>
-                                                <!--</div>-->
+                                                
                                             </div>
                                             <div class="col-md-4 ">
-                                                <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                               
+                                                <label class="col-md-6 control-label txtalignleft" >
                                                     Bid Duration:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblbidduration" style="text-align:left">
+                                                <label class="col-md-6 control-label txtalignleft" id="lblbidduration">
                                                 </label>
                                                 <!--</div>-->
                                             </div>
                                             <div class="col-md-4 ">
-                                                <!--<div class="form-control">-->
-                                                <label class="col-md-6 control-label" style="text-align:left">
+                                               
+                                                <label class="col-md-6 control-label txtalignleft">
                                                     Currency:
                                                 </label>
-                                                <label class="col-md-6 control-label" id="lblcurrency" style="text-align:left">
+                                                <label class="col-md-6 control-label txtalignleft" id="lblcurrency" >
                                                 </label>
-                                                <!--</div>-->
+                                              
                                             </div>
                                         </div>
 
 
-                                        </div>
+                                    </div>
                                     <div class="hide" id="div_bothRFQ">
-                                            <!--form-body-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">
-                                                            RFQ Subject:
+                                        <!--form-body-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Subject:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="RFQSubject" class="control-label txtalignleft">
                                                         </label>
-                                                        <div class="col-md-8">
-                                                            <label id="RFQSubject" class="control-label" style="text-align:left">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">
-                                                            Currency:
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <label id="Currency" class="control-label" style="text-align:left">
-                                                            </label>
-                                                            <input type="hidden" id="texttblid" value="" />
-                                                            <input type="hidden" id="texttblidTax" value="" />
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">
-                                                            RFQ Description:
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Currency:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="Currency" class="control-label txtalignleft">
                                                         </label>
-                                                        <div class="col-md-10">
-                                                            <label id="RFQDescription" style="text-align:left" class="control-label">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row" id="div_RFQ">
-                                               
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">
-                                                            RFQ Deadline:
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <label id="RFQDeadline" class="control-label" style="text-align:left">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row hide" id="div_eRFQ">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">
-                                                            RFQ StartDate:
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <label id="rfqstartdate" class="control-label" style="text-align:left">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">
-                                                            RFQ End Date:
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <label id="rfqenddate" class="control-label" style="text-align:left">
-                                                            </label>
-                                                        </div>
+                                                        <input type="hidden" id="texttblid" value="" />
+                                                        <input type="hidden" id="texttblidTax" value="" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">
+                                                        RFQ Description:
+                                                    </label>
+                                                    <div class="col-md-10">
+                                                        <label id="RFQDescription"  class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="div_RFQ">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Deadline:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="RFQDeadline" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row hide" id="div_eRFQ">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ StartDate:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="rfqstartdate" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ End Date:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="rfqenddate" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="hide" id="div_RFX">
                                         <!--form-body-->
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
-                                                         Subject:
+                                                        Subject:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFISubject" class="control-label" style="text-align:left">
+                                                        <label id="RFISubject" class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -600,10 +598,10 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">
-                                                         Deadline:
+                                                        Deadline:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFIDeadline" class="control-label" style="text-align:left">
+                                                        <label id="RFIDeadline" class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -613,44 +611,47 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-2">
-                                                         Description:
+                                                        Description:
                                                     </label>
                                                     <div class="col-md-10">
-                                                        <label id="RFIDescription" style="text-align:left" class="control-label">
+                                                        <label id="RFIDescription"  class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-11 control-label rfqtc nodisplay">
+                                        I hereby accept the
+                                        <a id="rfqTermandCondition" href="javascript:;" onclick="DownloadFile(this)">Terms and Conditions </a>
+                                        of this RFQ and agree to participate as per above RFQ details.  &nbsp; <input type="checkbox" id="chkIsAccepted" name="rfqchkIsAccepted">
+                                    </label>
+
+
+                                    <label class="col-md-11 control-label bidtc nodisplay">
+                                        I hereby accept the
+                                        <a id="bidTermandCondition" href="javascript:;" onclick="DownloadbidFile(this)">Terms and Conditions </a>
+                                        of this bid  and agree to participate as per above bid details.  &nbsp; <input type="checkbox" id="bidchkIsAccepted" name="bidchkIsAccepted">
+                                    </label>
+
                                     
-                                    
-                                    </div>
-                                  
-                                    </div>
-                                      <div class="form-group">
-                                        <label class="col-md-11 control-label rfqtc" style="display:none;">I hereby accept the 
-                                         <a  id="rfqTermandCondition" href="javascript:;" onclick="DownloadFile(this)">Terms and Conditions </a>
-                                        of this RFQ and agree to participate as per above RFQ details.  &nbsp; <input type="checkbox" id="chkIsAccepted" name="rfqchkIsAccepted"></label>
-                                      
-                                      
-                                       <label class="col-md-11 control-label bidtc" style="display:none;">I hereby accept the 
-                                         <a  id="bidTermandCondition" href="javascript:;" onclick="DownloadbidFile(this)">Terms and Conditions </a>
-                                        of this bid  and agree to participate as per above bid details.  &nbsp; <input type="checkbox" id="bidchkIsAccepted" name="bidchkIsAccepted"></label>
-                                      
-                                    
-                                    </div>
-                                   
+                                </div>
 
-                                    <div class="form-actions fluid">
-                                        <div class="col-md-offset-3 col-md-6" style="text-align: center">
-                                            <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled" >
-                                                Continue
-                                            </button>
+                                <div class="form-actions fluid">
+                                    <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                        <button id="btnContinue" type="submit" class="btn yellow" disabled="disabled">
+                                            Continue
+                                        </button>
 
 
 
-                                        </div>
                                     </div>
+                                </div>
                             </form>
 
                         </div>
@@ -680,13 +681,13 @@
 
                         <div class="portlet-body form">
                             <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                                <div class="alert alert-danger" id="errordivChangePassword" style="display:none">
+                                <div class="alert alert-danger" id="errordivChangePassword" >
                                     <button class="close" data-close="alert"></button>
                                     <span id="errorpassword">
 
                                     </span>
                                 </div>
-                                <div class="alert  alert-success" id="successdivChangePassword" style="display:none">
+                                <div class="alert  alert-success" id="successdivChangePassword">
                                     <button class="close" data-close="alert"></button>
                                     <span id="sucessPassword">
 
@@ -815,66 +816,15 @@
         </div>
         <!-- END CONTENT -->
     </div>
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-    <script src="assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    
 
-    <script src="assets/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
-    <script src="assets/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
-    <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
-    <script src="assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
-
-    <script src="assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/scripts/core/app.js" type="text/javascript"></script>
-
-    <script src="assets/scripts/custom/tasks.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL SCRIPTS -->
-    <script src="assets/CustomJS/Auction.js"></script>
-    <script src="assets/CustomJS/VendorHome.js" type="text/javascript"></script>
-    <script>
+    <script nonce="pev3">
 
         jQuery(document).ready(function () {
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "V") {
-                    $('.page-container').show();
-                }
-                else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
-                }
-            }
-            setCommonData();
-            App.init();
-            Tasks.initDashboardWidget();
-            fetchMappedCustomers();
-            setTimeout(function () {
-                fetchDashboardData();
-            }, 1000)
-
-            // fetchPendingRFQ();
-
-            fetchMenuItemsFromSession(0, 0)
-        });
+            callPagejs('VendorHome.js');
+                  });
     </script>
+
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

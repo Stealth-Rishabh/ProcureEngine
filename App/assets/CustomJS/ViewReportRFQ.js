@@ -5,13 +5,46 @@ function getCurrenttime() {
     $('#printed_on').html(postfix);
 }
 
+$(document).ready(function () {
+
+    getCurrenttime();
+    param = getUrlVars()["param"];
+    decryptedstring = fndecrypt(param);
+    RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+    var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
+    var BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    var Version = getUrlVarsURL(decryptedstring)["Version"];
+    $('#hdnRfqID').val(RFQID)
+    $('#hdnversion').val(Version)
+    fetchReguestforQuotationDetails(RFQID)
+    if (FromPage == "RASumm") {
+        fetchrfqcomprativeRA(RFQID, BidID)
+    }
+    else {
+        fetchrfqcomprative(RFQID)
+    }
+    fetchAttachments();
+    fetchApproverRemarks(RFQID);
+    setTimeout(function () {
+        jQuery.unblockUI();
+    }, 1500);
+    setTimeout(function () {
+
+        saveAspdf()
+
+
+    }, 2000)
+
+});
+
 var RFqsub = "";
 var Bidno;
 function fetchReguestforQuotationDetails(RFQID) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1285,7 +1318,7 @@ function fetchApproverRemarks(RFQID) {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + RFQID + "&ApprovalType=C",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + RFQID + "&ApprovalType=C",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,

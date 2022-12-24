@@ -3,7 +3,23 @@ var BidTypeID = "";
 var BidForID = "";
 
 var postfix = ''
+//FROM HTML
+$(document).ready(function () {
+    
+    getCurrenttime();
+    param = getUrlVars()["param"];
+    decryptedstring = fndecrypt(param);
+    BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    BidTypeID = getUrlVarsURL(decryptedstring)["BidTypeID"];
+    BidForID = getUrlVarsURL(decryptedstring)["BidForID"];
+    ReportBind(BidID, BidTypeID, BidForID)
+    fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
+    FetchRecomendedVendor(BidID)
+    fnfetchvendortotalSummary(BidID, BidTypeID)
 
+
+});
+//*******
 $('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
 
@@ -128,13 +144,14 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 }
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
-
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -628,7 +645,8 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -662,7 +680,8 @@ function FetchRecomendedVendor(bidid) {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?BidID=" + bidid + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        //url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?BidID=" + bidid + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
+        url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?BidID=" + bidid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -678,11 +697,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
                         $('#thvendor').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
                         $('#thvendor').hide();
                     }
                 }
@@ -734,7 +753,8 @@ function fetchGraphData(itemId, counter) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + sessionStorage.getItem('UserID') + "&chartFor=sample",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryTrendGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&chartFor=sample",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
@@ -812,17 +832,27 @@ function linegraphsforItems(itemId, counter) {
     Vendorseries = "";
 
     Seriesoption = [];
-
+    var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
+    _bidTypeID = parseInt(_bidTypeID)
+    _bidId = parseInt(_bidId)
+    var graphDataReqObj = {
+        "SeId": itemId,
+        "BidId": _bidId,
+        "BidTypeId": _bidTypeID,
+        "UserVendorId": "X-X"
+    }
 
     setTimeout(function () {
 
         jQuery.ajax({
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=X-X",//+ sessionStorage.getItem('UserID'),
+            //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph/?SeId=" + itemId + "&BidId=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeId=" + _bidTypeID + "&CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=X-X",//+ sessionStorage.getItem('UserID'),
+            url: sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchDataForBidSummaryGraph",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             cache: false,
             crossDomain: true,
+            data: JSON.stringify(graphDataReqObj),
             dataType: "json",
             success: function (data, status, jqXHR) {
                 minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
@@ -834,7 +864,7 @@ function linegraphsforItems(itemId, counter) {
                 if (data[0].submissionTime.length > 0) {
 
                     for (var x = 0; x < data[0].submissionTime.length; x++) {
-
+                        
                         graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
                     }
 
