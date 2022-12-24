@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
    
     var $table = $('#tblRFQComprative');
     $table.floatThead({
@@ -178,8 +178,17 @@ function fetchrfqcomprative() {
                 $('#displayTable').show();
                 $('#btnExport').show()
                 $("#btnDownloadFile").show()
+                var _curentRFQStatus = sessionStorage.getItem('CurrentRFQStatus')
                 if ($('#hdnUserID').val() == sessionStorage.getItem('UserID')) {
-                    $('#cancl_btn').show();
+                    //$('#cancl_btn').show();
+                    if(_curentRFQStatus.toLowerCase() != 'cancel')
+                    {
+                        $('#cancl_btn').show();
+                    }
+                    else
+                    {
+                        $('#cancl_btn').hide();
+                    }
 
                 }
                 else {
@@ -306,7 +315,7 @@ function fetchrfqcomprative() {
 
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
-                        //abheedev bug349 start CODE HERE
+                        //abheedev bug349 start
                         strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].rfq + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
@@ -447,7 +456,7 @@ function fetchrfqcomprative() {
                 }
 
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td>";
-                strExcel += "<tr><td colspan=><b>Total</b></td>";
+                strExcel += "<tr><td colspan=7><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
@@ -908,7 +917,6 @@ function fetchrfqcomprative() {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-                    //Check Here
                     strExcel += "<td colspan='8'>&nbsp;</td>";
                     strExcel += " </tr>";
                 }

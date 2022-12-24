@@ -19,6 +19,7 @@ var ComponentsPickers = function () {
                 rtl: Metronic.isRTL(),
                 orientation: "left",
                 autoclose: true
+               
             });
             //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
         }
@@ -73,7 +74,8 @@ var ComponentsPickers = function () {
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
                 minDate: '01/01/2012',
-                maxDate: '12/31/2014',
+                maxDate: '12/31/2014'
+                
             },
             function (start, end) {
                 $('#defaultrange input').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -87,7 +89,7 @@ var ComponentsPickers = function () {
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
                 minDate: '01/01/2012',
-                maxDate: '12/31/2014',
+                maxDate: '12/31/2014'
             },
             function (start, end) {
                 $('#defaultrange_modal input').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -148,12 +150,14 @@ var ComponentsPickers = function () {
     }
 
     var handleDatetimePicker = function () {
-
+        
         $(".form_datetime").datetimepicker({
             autoclose: true,
             isRTL: Metronic.isRTL(),
             format: "dd MM yyyy - hh:ii",
+            todayBtn: true,
             pickerPosition: (Metronic.isRTL() ? "bottom-right" : "bottom-left")
+           
         });
 
         $(".form_advance_datetime").datetimepicker({
@@ -164,6 +168,7 @@ var ComponentsPickers = function () {
             startDate: "2013-02-14 10:00",
             pickerPosition: (Metronic.isRTL() ? "bottom-right" : "bottom-left"),
             minuteStep: 10
+           
         });
 
         $(".form_meridian_datetime").datetimepicker({
@@ -173,6 +178,7 @@ var ComponentsPickers = function () {
             autoclose: true,
             pickerPosition: (Metronic.isRTL() ? "bottom-right" : "bottom-left"),
             todayBtn: true
+           
         });
 
         $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal

@@ -1,4 +1,4 @@
-﻿var idx = 0;
+var idx = 0;
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover({})
@@ -424,7 +424,7 @@ function saveAspdf() {
     };
     pdf.addHTML(document.body, options, function () {
         pdf.save('nfareport.pdf');
-         window.close();
+        window.close();
 
     });
 }

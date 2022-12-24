@@ -125,14 +125,12 @@ $(document).ready(function () {
         sessionStorage.setItem('hdnbidtypeid', BidTypeID)
         sessionStorage.setItem('BidID', BidID)
         fetchBidSummaryDetails(BidID, BidForID)
-        /*fetchparticationQuotes(BidID, BidForID)*/
         fetchBidTime()
 
     }
 
 });
 function fetchBidTime() {
-    
     var display = document.querySelector('#lblTimeLeft');
 
     jQuery.ajax({
@@ -262,6 +260,3 @@ $("#txtChatMsg").keypress(function (e) {
 
     }
 })
-
-
-

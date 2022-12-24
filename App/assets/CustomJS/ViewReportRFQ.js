@@ -1,4 +1,4 @@
-﻿$('#printed_by').html(sessionStorage.getItem('UserName'));
+$('#printed_by').html(sessionStorage.getItem('UserName'));
 function getCurrenttime() {
     postfix = new Date()
 

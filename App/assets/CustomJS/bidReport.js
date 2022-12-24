@@ -1,4 +1,3 @@
-
 function fillBidTypedropdown(bidtypeid) {
     var CustId = parseInt(sessionStorage.getItem("CustomerID"));
     var bidTypeRequestObj = {

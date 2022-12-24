@@ -1,5 +1,3 @@
-
-
 var BidID = "";
 var BidTypeID = "";
 var BidForID = "";

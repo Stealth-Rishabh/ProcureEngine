@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
     }
     Metronic.init();
     Layout.init();
-  //  multilingualLanguage();
+    //multilingualLanguage();
     setCommonData();
 
 });

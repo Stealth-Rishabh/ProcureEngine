@@ -1,4 +1,4 @@
-﻿$(".thousandseparated").inputmask({
+$(".thousandseparated").inputmask({
     alias: "decimal",
     rightAlign: false,
     groupSeparator: ",",
@@ -389,7 +389,7 @@ function fetchReguestforQuotationDetails() {
             if (RFQData.length > 0) {
                 _rfqBidType = RFQData[0].general[0].rfqBidType;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
-                sessionStorage.setItem('RFQBidType', _rfqBidType)
+                sessionStorage.setItem('RFQBidType', _rfqBidType);
                 _curentRFQStatus = RFQData[0].general[0].rfqStatus;
                 sessionStorage.setItem('CurrentRFQStatus', _curentRFQStatus)
                 if (_rfqBidType == 'Closed') {
@@ -405,15 +405,14 @@ function fetchReguestforQuotationDetails() {
                 else {
                     $('#div_bidopendate').hide()
                 }
-                //CODE HERE
-                if (_curentRFQStatus.toLowerCase() != 'cancel') {
-                    $('#cancl_btn').show();
-
-                }
-                else {
+                if (_curentRFQStatus.toLowerCase() == 'cancel') {
                     $('#cancl_btn').hide();
 
                 }
+                /*else {
+                    $('#cancl_btn').hide();
+
+                }*/
                 jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -852,7 +851,6 @@ jQuery("#txtApprover").keyup(function () {
 
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
-        
         var data = allUsers;
         usernames = [];
         map = {};

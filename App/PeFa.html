@@ -90,9 +90,9 @@
         <div class="page-header-inner">
             <div class="page-logo">
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive"  />
+                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive" />
                 </a>
-                
+
             </div>
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             </a>
@@ -101,8 +101,10 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                           <b><span id="spanUserName" class="username username-hide-on-mobile">
-                            </span></b><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -248,7 +250,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        
+
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
                                                                 Event Date/Time<span class="required"> *</span>
@@ -273,7 +275,7 @@
                                                             <div class="col-md-3">
 
                                                                 <select class="form-control" id="ddlAuctiontype" name="ddlAuctiontype" onchange="hideshowDuration()">
-                                                                   
+
                                                                     <option value="81">English</option>
                                                                     <option value="83">Japanese</option>
                                                                     <option value="82">Dutch(RA)</option>
@@ -320,8 +322,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthterms"  onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none"  id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
+                                                                <a href="javascript:;" id="filepthterms" onclick="DownloadFile(this)"></a> &nbsp;
+                                                                <span class="display-none" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -333,8 +335,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="file" class="form-control" id="file2" name="file" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthattach"  onclick="DownloadFile(this)"></a>
-                                                                <span class="display-none"  id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                <a href="javascript:;" id="filepthattach" onclick="DownloadFile(this)"></a>
+                                                                <span class="display-none" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
                                                                     <i class='fa fa-times-circle-o' id='icon2'></i>
                                                                 </span>
 
@@ -349,7 +351,7 @@
                                                                 Maximum No. of Bid Extensions
                                                             </label>
                                                             <div class="col-md-3">
-                                                                
+
                                                                 <select class="form-control" id="txtBidExtension">
                                                                 </select>
                                                             </div>
@@ -395,7 +397,7 @@
 
                                                                 </label>
 
-                                                                <span class="hovertext col-md-1" id="enterapprover"  data-hover="Enter approver name on select approver input then click enter">
+                                                                <span class="hovertext col-md-1" id="enterapprover" data-hover="Enter approver name on select approver input then click enter">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
                                                                 </span>
 
@@ -404,7 +406,7 @@
 
 
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -447,7 +449,7 @@
                                                                    autocomplete="off" onkeyup="thousands_separators_input(this)" />
 
                                                         </div>
-                                                        <label class="control-label col-md-1 currencyparam" id="currencyparamstyle" ></label>
+                                                        <label class="control-label col-md-1 currencyparam" id="currencyparamstyle"></label>
                                                         <div class="col-md-1">
 
                                                             <select class="form-control no-space" id="checkmaskvendor" name="checkmaskvendor">
@@ -465,7 +467,7 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control text-right" id="txtquantitiy" name="txtquantitiy" autocomplete="off" onkeyup='thousands_separators_input(this)' />
-                                                            
+
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -501,7 +503,7 @@
                                                                    name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" />
 
                                                         </div>
-                                                        <label class="control-label col-md-1 lblUOM lblUOMstyle" >
+                                                        <label class="control-label col-md-1 lblUOM lblUOMstyle">
                                                         </label>
                                                     </div>
                                                     <div class="form-group for-englishbid">
@@ -521,7 +523,7 @@
 
                                                         <div class="col-md-4">
                                                             <select class="form-control for-englishbid" id="drpdecreamenton" name="drpdecreamenton">
-                                                               
+
                                                                 <option value="A">Amount</option>
                                                                 <option value="P">Percentage</option>
 
@@ -537,8 +539,8 @@
                                                         </label>
                                                         <div class="col-md-4 hide">
                                                             <input type="file" class="form-control " id="fileattachment" name="fileattachment" onchange="checkfilesize(this)" />
-                                                            <a href="javascript:;" id="fileattachmentforitems" ></a> &nbsp;
-                                                            <span class="display-none"  id="closebtnitms" onclick="ajaxFileDelete('icon3', 'fileattachment','fileattachmentforitems', 'ParameterFilesedit')">
+                                                            <a href="javascript:;" id="fileattachmentforitems"></a> &nbsp;
+                                                            <span class="display-none" id="closebtnitms" onclick="ajaxFileDelete('icon3', 'fileattachment','fileattachmentforitems', 'ParameterFilesedit')">
                                                                 <i class='fa fa-times-circle-o' id='icon3'></i>
                                                             </span>
                                                         </div>
@@ -612,7 +614,7 @@
                                                                 <option value="N">Hide</option>
 
                                                             </select>
-                                                           
+
                                                         </div>
                                                         <div class="col-md-offset-10">
                                                             <input type="hidden" id="rowid" />
@@ -656,10 +658,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="scroller" id="scroller1"  data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                                                <div class="scroller" id="scroller1" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                                        <table  id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
+                                                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
                                                                             <thead class="flip-content">
                                                                                 <tr>
                                                                                     <th width="20%">
@@ -868,7 +870,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">Term & Condition:</label>
                                                     <div class="col-md-8">
-                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrev"  onclick="DownloadFile(this)">
+                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" onclick="DownloadFile(this)">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -878,7 +880,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">Attachment (If Any):</label>
                                                     <div class="col-md-8">
-                                                        <a class="form-control-static" id="filepthattachPrev"  onclick="DownloadFile(this)"></a>
+                                                        <a class="form-control-static" id="filepthattachPrev" onclick="DownloadFile(this)"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -957,7 +959,7 @@
         </div>
     </div>
     <div class="row hide">
-        <a id="A" ></a>
+        <a id="A"></a>
         <table id="tblBiddetails" class="table table-striped table-bordered table-hover hide">
             <thead>
                 <tr id="Trhead">
@@ -997,7 +999,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body" id="modalbody1" >
+                    <div class="modal-body" id="modalbody1">
 
                         <p class="ppolicy-text">
                             Using this page user can configure bids related to Scrap Sale  area and invite vendors to participate on specified date and time.<br />
@@ -1058,10 +1060,10 @@
 
                     <div class="portlet-body form">
                         <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                            <div id="divalertSerach" class="alert alert-success" >
+                            <div id="divalertSerach" class="alert alert-success">
                                 <span id="spansuccess1serach"></span>
                             </div>
-                            <div id="divalerterrsearch" class="alert alert-danger" >
+                            <div id="divalerterrsearch" class="alert alert-danger">
                                 <span id="spanerterrserach"></span>
                             </div>
                             <div class="form-body">
@@ -1084,7 +1086,7 @@
                                     </div>
 
 
-                                    <div class="col-lg-1 col-lg-offset-2 margintop4px" >
+                                    <div class="col-lg-1 col-lg-offset-2 margintop4px">
                                         <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
                                     </div>
                                 </div>
@@ -1098,7 +1100,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller" id="scroller2"  data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                        <div class="scroller" id="scroller2" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1135,7 +1137,7 @@
                         <div class="alert alert-success" id="successapp">
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorapp" >
+                        <div class="alert alert-danger" id="diverrorapp">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmApprover" class="form-horizontal" role="form">
@@ -1232,7 +1234,7 @@
                 </div>
                 <div class="portlet-body form">
                     <!--abheedev bug 443-->
-                    
+
                     <form action="#" id="uploadexcelrfq" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -1243,7 +1245,7 @@
 
                                     </p>
                                     <div class="progress">
-                                        <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100" >
+                                        <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                         </div>
                                     </div>
                                 </div>
@@ -1322,7 +1324,7 @@
                                                             <li>ShowStartPrice</li>
 
                                                         </ul>
-                                                        
+
 
                                                         <br />
                                                     </div>
@@ -1391,7 +1393,7 @@
                                     </div>
 
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
-                                    
+
                                 </div>
                             </div>
 

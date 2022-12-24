@@ -17,7 +17,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
+        if (sessionStorage.getItem('CustomerID') == 32) {
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -597,7 +597,7 @@ var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
 function validateAppsubmitData() {
-    
+
 
     form1.validate({
         errorElement: 'span',
@@ -1038,7 +1038,7 @@ function GetQuestionsforCreator(pendingon) {
     })
 }
 function DownloadFileVendor(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'NFA/' + idx + '/NFAQuery');
+    fnDownloadAttachments($("#" + aID.id).html(), 'NFAOverview/' + idx + '/NFAQuery');
 }
 function Check(event, Bidid) {
 
@@ -1090,7 +1090,7 @@ function fnsubmitQueryByCreator() {
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
             if (attchname != "" && attchname != null && attchname != undefined) {
                 attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
-                fnUploadFilesonAzure('fileToUpload' + i, attchname, 'NFA/' + idx + '/NFAQuery');
+                fnUploadFilesonAzure('fileToUpload' + i, attchname, 'NFAOverview/' + idx + '/NFAQuery');
             }
             else {
                 if ($('#eRFQVQueryFiles' + i).text() != '' && $('#eRFQVQueryFiles' + i).text() != null && $('#eRFQVQueryFiles' + i).text() != 'undefined') {
@@ -1216,8 +1216,6 @@ function submitQuery() {
             $('#querycount' + $('#hdnvendorid').val()).text('Response Pending (' + $("#tblquestions> tbody > tr").length + ')')
             $("#tblquestions> tbody > tr").each(function (index) {
                 var this_row = $(this);
-                //quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html())+ '#';
-
                 index = (this_row.closest('tr').attr('id')).substring(8, (this_row.closest('tr').attr('id')).length)
                 if ($.trim($('#quesid' + index).text()) == "0") {
                     quesquery = quesquery + $.trim($('#ques' + index).text()) + '#';
@@ -1292,7 +1290,6 @@ function submitQuery() {
     }
 
 }
-//abheedev bug 588
 function fnquerywithdaw() {
     bootbox.dialog({
         message: "Do you want to withdraw query from Approver, Click Yes for  Continue ",
@@ -1388,7 +1385,6 @@ function withdrawquery() {
 
 
 }
-//abheedev bug 588
 function fnRecall() {
     bootbox.dialog({
         message: "Do you want to Recall NFA, Click Yes for  Continue ",
@@ -1456,6 +1452,28 @@ function DisableActivityRecall() {
         }
 
     });
+}
+
+function fnDownloadZip() {
+ 
+    var prefix = 'NFAOverview/' + parseInt(getUrlVarsURL(decryptedstring)["nfaIdx"])
+    fetch(sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix)
+        .then(resp => resp.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'DownloadNFA.zip';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          fngeneratePDF()
+            bootbox.alert("File downloaded Successfully.", function () {
+                return true;
+            });
+
+        })
 }
 
 

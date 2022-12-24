@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
   
     $('.maxlength').maxlength({
         limitReachedClass: "label label-danger",
