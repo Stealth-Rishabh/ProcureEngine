@@ -3,6 +3,7 @@ var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 //FROM HTML
+
 jQuery(document).ready(function () {
 
     setInterval(function () { Pageloaded() }, 15000);
