@@ -542,8 +542,8 @@ function fetchBidHeaderDetails(bidId) {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
-
-
+            let _cleanString = StringDecodingMechanism(data[0].bidSubject);
+            let _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
 
             if (data.length == 1) {
 
@@ -557,9 +557,10 @@ function fetchBidHeaderDetails(bidId) {
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
 
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
+                jQuery("#lblbidsubject").text(_cleanString);
 
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+              
+                jQuery("#lblbidDetails").text(_cleanString2);
 
                 jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
                 if ($.trim(data[0].bidClosingType) == "A") {

@@ -217,7 +217,9 @@ function callPagejs(pagejs) {
         {
           handleDateTimepicker(locale);
         }*/
-}
+} 
+
+
 function handleDateTimepicker(locale) {
 
     //var tz = moment().tz('Asia/Baghdad').format();

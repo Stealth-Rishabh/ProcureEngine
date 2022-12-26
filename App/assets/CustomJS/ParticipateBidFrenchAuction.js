@@ -407,12 +407,11 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            var _cleanString = StringDecodingMechanism(data[0].bidSubject);
-            var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
+         
             if (data.length == 1) {
+                var _cleanString = StringDecodingMechanism(data[0].bidSubject);
+                var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsVender').show();
-
-
                 jQuery("label#lblitem1").text(data[0].bidFor);
                 jQuery("#lblbidsubject").text(_cleanString);
                 jQuery("#lblbidDetails").text(_cleanString2);

@@ -29,7 +29,7 @@
 }
 
 .display-none {
-    float: left;
+   /* float: left;*/
     margin-top: -5px;
     cursor: pointer;
     margin-left: 3px;
@@ -56,6 +56,6 @@
 }
 
 .modal-body {
-    height: 450px;
+   // height: 450px;
     overflow-y: scroll;
 }

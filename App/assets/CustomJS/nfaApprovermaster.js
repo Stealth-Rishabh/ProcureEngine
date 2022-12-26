@@ -28,7 +28,7 @@ jQuery(document).ready(function () {
     // ComponentsPickers.init();
     setCommonData();
 
-    fetchMenuItemsFromSession(1, 56);
+   // fetchMenuItemsFromSession(1, 56);
     FetchCurrency("0");
     //BindApprovers();
     // fetchBidTypeMapping();

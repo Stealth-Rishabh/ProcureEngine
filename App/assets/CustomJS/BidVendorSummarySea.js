@@ -588,12 +588,16 @@ function fetchBidSummary(BidID) {
                 }
 
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
+                let _cleanString = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
+
+
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
-                jQuery("#lblbidSubject").html('<b>' + data[0].bidSubject + '</b>');
-                jQuery("#lblenquirysubject").html('<b>' + data[0].bidSubject + '</b>');
-                jQuery("#lblbiddetails").text(data[0].bidDetails);
+                jQuery("#lblbidSubject").html('<b>' + _cleanString + '</b>');
+                jQuery("#lblenquirysubject").html('<b>' + _cleanString + '</b>');
+                jQuery("#lblbiddetails").text(_cleanString2);
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
 

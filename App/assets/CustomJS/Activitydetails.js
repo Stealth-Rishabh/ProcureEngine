@@ -68,7 +68,7 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
+   
     var isSubmit = true;
     var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
@@ -367,6 +367,7 @@ function fetchDashboardData() {
             jQuery("#ulList").empty();
 
             if (BidData[0].todayBidStatus.length > 0) {
+               
                 $('#spanPanelCaptioncount').text("(" + BidData[0].todayBidStatus.length + ")")
                 for (var i = 0; i < BidData[0].todayBidStatus.length; i++) {
                     var _bidStatus = BidData[0].todayBidStatus[i].bidStatus
@@ -460,7 +461,7 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");
@@ -484,11 +485,12 @@ function fetchBidDataDashboard(requesttype) {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
     var custId = parseInt(sessionStorage.getItem('CustomerID'))
-    var userData = {
+   /* var userData = {
         "UserID": sessionStorage.getItem('UserID'),
         "CustomerID": custId,
         "RequestType": requesttype
-    }
+    }*/
+    console.log(sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + custId)
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
@@ -501,7 +503,7 @@ function fetchBidDataDashboard(requesttype) {
         //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-
+            debugger
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData.length + ")")
             if (BidData.length > 0) {
