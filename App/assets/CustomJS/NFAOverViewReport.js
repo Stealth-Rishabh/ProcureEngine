@@ -244,7 +244,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
         success: function (data) {
 
             jQuery("#tblNFASummary").empty();
-            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>NFA ID</th><th class='bold'>NFA Subject</th><th class='bold'>Configured By</th><th class='bold'>NFA Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>NFA Status</th></tr></thead>");
+            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Status</th></tr></thead>");
             if (data.length > 0) {
 
                 for (var i = 0; i < data.length; i++) {

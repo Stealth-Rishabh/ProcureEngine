@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    
+
     $('.thousandseparated').inputmask();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -39,6 +39,8 @@ var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 var biddatetime = getCurrentDateddmmyyyy();
 var currentdate = new Date();
+var hdnAllBids = [];
+var hdnAllBidsVendor = [];
 $('#txreopenTime').val('')
 function thouandseparator() {
     $(".thousandseparated").inputmask({
@@ -308,14 +310,16 @@ function fetchUserBids() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=0&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?BidID=0&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
         success: function (data) {
+
             if (data.length > 0) {
-                sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
+                //sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
+                hdnAllBids = JSON.stringify(data);
             }
             else {
                 error1.show();
@@ -349,7 +353,8 @@ function fetchUserBids() {
 var connection;
 jQuery("#txtbid").typeahead({
     source: function (query, process) {
-        var data = sessionStorage.getItem('hdnAllBids');
+        //var data = sessionStorage.getItem('hdnAllBids');
+        var data = hdnAllBids;
         usernames = [];
         map = {};
         var username = "";
@@ -483,7 +488,7 @@ function fetchvendors(bidid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?BidID=" + bidid + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -491,7 +496,8 @@ function fetchvendors(bidid) {
         success: function (data) {
             jQuery('#ddlvendors').empty()
             if (data.length > 0) {
-                sessionStorage.setItem('hdnAllBidsVendor', JSON.stringify(data));
+                //sessionStorage.setItem('hdnAllBidsVendor', JSON.stringify(data));
+                hdnAllBidsVendor = JSON.stringify(data);
                 jQuery('#ddlvendors').append(jQuery("<option ></option>").val("0").html("Select Vendor"));
                 for (var i = 0; i < data.length; i++) {
                     jQuery('#ddlvendors').append(jQuery("<option ></option>").val(data[i].vendorID).html(data[i].vendorName));
@@ -521,7 +527,7 @@ function fetchvendors(bidid) {
     });
 }
 function fetchparticationQuotes() {
- debugger
+
     var url = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -926,7 +932,8 @@ jQuery("#txtvendor, #txtvendorSurrogateBid").keyup(function () {
 
 jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     source: function (query, process) {
-        var data = sessionStorage.getItem('hdnAllBidsVendor');
+        //var data = sessionStorage.getItem('hdnAllBidsVendor');
+        var data = hdnAllBidsVendor;
         usernames = [];
         map = {};
         var username = "";
@@ -962,11 +969,13 @@ function FetchVenderNotInvited(bidid) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=x&BidID=" + bidid + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        //url: APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=X&BidID=" + bidid + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: APIPath + "ResetInviteVendor/fetchBidsAuto/?BidID=" + bidid + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
         success: function (data) {
+
             jQuery("#tblvendorlist > tbody").empty();
             jQuery("#txtSearch").val('');
             $('#btninvitevendors').addClass('hide')

@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 clearsession()
 //FROM HTML
 jQuery(document).ready(function () {

@@ -26,13 +26,6 @@ jQuery(document).ready(function () {
 
 
     }
-   
-
-});
-
-var APIPath = sessionStorage.getItem("APIPath");
-
-jQuery(document).ready(function () {
     $(".thousand").inputmask({
         alias: "decimal",
         rightAlign: false,
@@ -46,7 +39,13 @@ jQuery(document).ready(function () {
         'removeMaskOnSubmit': true
 
     });
+   
+
 });
+
+var APIPath = sessionStorage.getItem("APIPath");
+
+
 
 function fetchCountry() {
 

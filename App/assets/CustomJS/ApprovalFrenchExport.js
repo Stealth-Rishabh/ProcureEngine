@@ -1,7 +1,9 @@
-﻿jQuery(document).ready(function () {
-    
+var BidID = "";
+var ButtonType = '';
+jQuery(document).ready(function () {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
+    BidID = getUrlVarsURL(decryptedstring)["BidID"]
     jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {
         if (getUrlVarsURL(decryptedstring)["App"] == 'N') {
 
@@ -39,25 +41,25 @@
     App.init();
     setCommonData();
     FormValidation.init();
-});
-var BidID = "";
-var ButtonType = '';
-jQuery(document).ready(function () {
-    var param = getUrlVars()["param"]
-    var decryptedstring = fndecrypt(param)
-    
-    BidID = getUrlVarsURL(decryptedstring)["BidID"]
-    
     FetchVendors(BidID);
 	Fillhelp(getUrlVars()["App"]);
 });
+
+/*jQuery(document).ready(function () {
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param)
+    
+    
+    
+    
+});*/
 
 $('#txtRemarks,#txtbidspecification,#txtRemarksAward,#txtRemarksApp').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
 function FetchVendors(BidID) {
-	
+	debugger;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

@@ -154,7 +154,6 @@ function clearResetForm() {
     $('#oPassword').val('');
 }
 function fnOpenLink(linkurl, isobserver) {
-  
     sessionStorage.setItem('IsObserver', isobserver);
     window.location = linkurl;
 }

@@ -1,4 +1,4 @@
-﻿var allurlsec = sessionStorage.getItem("allurlsec");
+var allurlsec = sessionStorage.getItem("allurlsec");
 var Vehicleerror = $('#errordiv');
 var Vehiclesuccess = $('#successdiv');
 var Vehicleerror1 = $('#errordiv1');

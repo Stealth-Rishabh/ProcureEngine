@@ -26,7 +26,7 @@ jQuery(document).ready(function () {
 
     Metronic.init();
     Layout.init();
-   // multilingualLanguage();
+    //multilingualLanguage();
     App.init();
     QuickSidebar.init();
     setCommonData();

@@ -1,4 +1,5 @@
-﻿jQuery(document).ready(function () { 
+jQuery(document).ready(function () {
+  
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     jQuery('#btnExportToExcel,#btnExportToExcel1').click(function () {

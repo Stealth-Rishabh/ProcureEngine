@@ -182,7 +182,6 @@ function fetchrfqcomprative() {
     else {
         //url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=99"
         url = sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=99"
-
     }
 
     jQuery.ajax({
@@ -1465,6 +1464,7 @@ function fetchReguestforQuotationDetails() {
 }
 
 function validateAppsubmitData() {
+
     var form1 = $('#frmsubmitapp');
     var formC = $('#frmsubmitappComm');
     var formAward = $('#formAwardedsubmit');
@@ -1679,6 +1679,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalCommercialApp() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalbyapp = {
         "ApproverType": "C",
@@ -1894,6 +1895,7 @@ function AwardCommeRFQ() {
     }
 }
 function fnFWDeRFQ() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var Approvers = {
         "ApproverType": "C",
@@ -1918,7 +1920,7 @@ function fnFWDeRFQ() {
         dataType: "json",
         success: function (data) {
 
-            /*bootbox.alert("Transaction Successful..", function () {
+          /*  bootbox.alert("Transaction Successful..", function () {
                 window.location = "index.html";
                 return false;
             });*/
@@ -1949,6 +1951,7 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalApp() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     var chkstatus = 'T';
@@ -1980,12 +1983,12 @@ function ApprovalApp() {
             "Remarks": jQuery("#txtRemarksApp").val(),
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
             "ApprovalStatus": approvalstatus,
-            "VendorID": parseInt(VID),
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+            "VendorID": parseInt(VID)
+           
 
         };
-
-
+        
+      //  console.log(JSON.stringify(approvalbyapp));
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",
@@ -2002,7 +2005,6 @@ function ApprovalApp() {
                      return false;
                  });*/
                 bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
-
                     window.location = "index.html";
                     return false;
                 }, 2000)

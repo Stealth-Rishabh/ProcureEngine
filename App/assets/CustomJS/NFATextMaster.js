@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     BindPurchaseOrg();
     BindData();
 });
@@ -25,12 +25,11 @@ function BindPurchaseOrg() {
 
 
 };
-function onSave() { 
+function onSave() {
     var str = $('#txtParamText').val();
-   /*var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/
+    /*var pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/
     //@abheedev bug 385 start
-    if (pattern.test(str) == false) 
-    {
+    if (pattern.test(str) == false) {
         $('.alert-danger').show();
         $('#error').text('Special characters not allowed.');
         Metronic.scrollTo($(".alert-danger"), -200);
@@ -42,7 +41,7 @@ function onSave() {
     }
     SaveUpdate();
 };
- //@abheedev bug368 end
+//@abheedev bug368 end
 
 function onClear() {
     $("#txtParamText").val('');
@@ -67,7 +66,7 @@ $(document).on('change', '.form-control', function () {
 function Validate() {
     var nfaText = false;
 
-    
+
     if ($("#txtParamText").val() == "") {
         $("#txtParamText").css("border-color", "red");
         $("#error").text("Question is required");
@@ -112,7 +111,7 @@ function BindData() {
                     isdefault = "<span>Yes</span>";
                 else
                     isdefault = "<span>No</span>";
-                
+
                 if (value.purchaseOrgName == '')
                     porg = 'ALL';
                 else
@@ -173,7 +172,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";
@@ -194,11 +193,11 @@ function SaveUpdate() {
         createdUser: UserID,
         updatedUser: UserID
     };
-   
+
     var SaveParam = callajaxReturnSuccess(url, "Post", JSON.stringify(Data));
-    
+
     SaveParam.success(function (res) {
-        
+
         if (res == '1') {
             $('.alert-success').show();
             $('#success').text('Qusetion saved Successfully.');
@@ -224,7 +223,7 @@ function SaveUpdate() {
         }
         jQuery.unblockUI();
     });
-    $("#submitbtnmaster").text("save");
+    //$("#submitbtnmaster").text("save");
 };
 
 $("#search").keyup(function () {

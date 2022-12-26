@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
-
+    <link rel="shortcut icon" href="../favicon.ico" />
     <link rel="stylesheet" href="assets/CustomCSS/myprofilevendor.css">
     <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -203,7 +203,7 @@
                                                             </h4>
 
                                                         </div>
-                                                        <div id="collapse2" class="panel-collapse collapse " seqno="3" >
+                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3" >
                                                             <div class="panel-body">
                                                                 <div class="row" id="tab1check">
                                                                     <div class="col-lg-12">
@@ -217,7 +217,7 @@
                                                                                         </label>
                                                                                         <div class="col-md-9 xyz">
                                                                                             <input type="text" class="form-control"
-                                                                                                   id="personname" name="personname" autocomplete="off" tabindex="1"  />
+                                                                                                   id="personname" name="personname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -260,7 +260,7 @@
                                                                                         </label>
                                                                                         <div class="col-md-9">
                                                                                             <input type="text" class="form-control"
-                                                                                                   id="personnamealt" name="personnamealt" autocomplete="off" tabindex="1" />
+                                                                                                   id="personnamealt" name="personnamealt" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -936,15 +936,13 @@
         jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
             callPagejs('progress.js,MyProfile.js');
-            /*Pageloaded()*/
+            Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             App.init();
             setCommonData();
             fetchCountry();
             fetchPaymentTerms();
-            $("#personnamealt").attr("onkeyup", "replaceQuoutesFromString(this)");
-            $("#personname").attr("onkeyup", "replaceQuoutesFromString(this)");
-            $("#vendormobileno").attr("onkeyup", "replaceQuoutesFromString(this)");
+
 
             function numberonly() {
                 $(".numberonly").keyup(function () {

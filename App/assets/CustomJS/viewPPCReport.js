@@ -1,4 +1,4 @@
-﻿var idx = 0;
+var idx = 0;
 var allUsers = [];
 $(document).ready(function () {
 

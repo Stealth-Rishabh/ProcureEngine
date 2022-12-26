@@ -1,4 +1,4 @@
-﻿
+
 var vendorid = 0;
 var PPCID = 0;
 $(document).ready(function () {
