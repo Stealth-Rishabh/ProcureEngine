@@ -507,7 +507,7 @@ function fetchBidSummary(BidID) {
 
 
                 if (data[0].bidClosingType != null) _bidClosingType = data[0].bidClosingType;
-
+               
                 if (sessionStorage.getItem("UserID") == data[0].decryptedConfiguredBy) {
 
                     if (data[0].itemStatus == "RunningBid") {
@@ -588,12 +588,13 @@ function fetchBidSummary(BidID) {
                 }
 
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
-
+                let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
-                jQuery("#lblbidSubject").html('<b>' + data[0].bidSubject + '</b>');
-                jQuery("#lblenquirysubject").html('<b>' + data[0].bidSubject + '</b>');
-                jQuery("#lblbiddetails").text(data[0].bidDetails);
+                jQuery("#lblbidSubject").html('<b>' + _cleanStringSub + '</b>');
+                jQuery("#lblenquirysubject").html('<b>' + _cleanStringSub + '</b>');
+                jQuery("#lblbiddetails").text(_cleanStringDet);
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
 
@@ -819,13 +820,13 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
                             //abheedev removequote    
-                            if (data[i].srNo != 'N/A') {
-                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
-                            }
-                            else {
+                         //   if (data[i].srNo != 'N/A') {
+                         //       strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                         //   }
+                           // else {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo  + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
 
-                            }
+                          //  }
 
                             strsumm += "<td class=text-right id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td class=text-right id=bidvalue" + i + " >" + thousands_separators(TotalBidValue) + "</td>";
                         }
@@ -834,13 +835,13 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-                            if (data[i].srNo != 'N/A') {
-                                strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
-                            }
-                            else {
+                           // if (data[i].srNo != 'N/A') {
+                             //   strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
+                            //}
+                            //else {
                                  strsumm += "<td>" + data[i].srNo + "</td><td class='showvendor' id=vname" + i + " >" + data[i].vendorName + "</td>";
 
-                            }
+                            //}
                             strsumm += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td><td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                         }
@@ -2779,7 +2780,7 @@ function FetchRecomendedVendor(bidid) {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
 
-            if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
+           /* if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
                 $('#btnPPCF').show()
                 $('#btnPPCA').show()
                 if (isLastApprover == 'Y') {
@@ -2791,7 +2792,7 @@ function FetchRecomendedVendor(bidid) {
             }
             else {
                 $('#btnPPCF').hide()
-                $('#btnPPCA').hide()
+               $('#btnPPCA').hide()
                 $('#btn_mapaaprover').hide()
             }
             if (isMappedPPCApp == 'Y') {
@@ -2801,7 +2802,7 @@ function FetchRecomendedVendor(bidid) {
             else {
                 $('#btn_mapaaprover').removeAttr('disabled')
                 $('#btnPPCA').removeAttr('disabled')
-            }
+            }*/
 
         },
         error: function (xhr, status, error) {

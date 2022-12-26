@@ -396,7 +396,7 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
 }
 function fetchVendorDetails() {
-
+   
 
     jQuery.ajax({
         type: "GET",
@@ -407,6 +407,7 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+           
             var _cleanString = StringDecodingMechanism(data[0].bidSubject);
             var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
             if (data.length == 1) {
@@ -820,11 +821,13 @@ function fetchBidHeaderDetails(_bidId) {
         success: function (data, status, jqXHR) {
             //alert(JSON.stringify(data));
             if (data.length == 1) {
+                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsVender').show();
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidsubject").text(_cleanStringSub);
+                jQuery("#lblbidDetails").text(_cleanStringSub);
                 //jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
                 jQuery("#lblEventID").text(_bidId);
                 //jQuery("#lblbidtime").text(data[0].bidDate + ' ' + data[0].bidTime);

@@ -577,7 +577,6 @@ function FetchCurrency(CurrencyID) {
 
 }
 
-
 function bindNFAOverViewMaster() {
 
     var url = "NFA/GetNFAOverViews?CustomerID=" + parseInt(CurrentCustomer) + "&userid=" + UserID;
@@ -635,17 +634,18 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".isProject").show();
                 }
+                //$("#txtProjectName").find(`option[text=res.result[0].projectName]`).attr("selected", "selected")
+                //$("#txtProjectName").find(`option[text=${res.result[0].projectName}]`).attr("selected", "selected")
                 $("#txtProjectName option:selected").text(res.result[0].projectName);
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
                 $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
+                
                 setTimeout(function () {
-                    bindPurchaseGroupDDL()
-                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
+                   $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
                 }, 900)
 
                 $("#ddlCondition").val(res.result[0].conditionID);
-
 
             }
         }
@@ -785,7 +785,7 @@ $("#txtEventref").typeahead({
             sessionStorage.setItem('hdnEventForID', map[item].bidForID);
 
             BidDate = map[item].bidDate;
-
+           
             jQuery('#RFQConfigueron').html(fnConverToLocalTime(BidDate))
 
             $('#txtTitle').val("NFA -" + map[item].bidSubject)
@@ -990,7 +990,6 @@ function BindPurchaseOrg() {
 };
 function bindPurchaseGroupDDL() {
     var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
-
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
 
@@ -1181,6 +1180,7 @@ function ConfirmSaveApprovers() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true);
                     SaveApproversConfirmation();
                 }
             },
@@ -1197,6 +1197,7 @@ function ConfirmSaveApprovers() {
 }
 function SaveApproversConfirmation() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+   
     var approversData = [];
     var _data = {};
 
@@ -1241,7 +1242,7 @@ function SaveApproversConfirmation() {
     SubmitData.success(function (res) {
         SaveActivityDetails(lstActivityData);
         if (res.status == "S") {
-            bootbox.alert("NFA Request Submitted Successfully.", function () {
+            bootbox.alert("PPC Request Submitted Successfully.", function () {
                 window.location.href = "index.html";
                 return false;
             });
@@ -1367,13 +1368,13 @@ function SaveActivityDetails(data) {
         return details.apprSeq == ApprSeqval.min();
     });
     var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
-
+   // console.log(JSON.stringify(aquaticCreatures))
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
     SaveActivityDetails.success(function (res) {
         lstActivityData = [];
     });
     SaveActivityDetails.error(function (error) {
-
+        
     })
 }
 
@@ -1533,7 +1534,7 @@ function fetchReguestforQuotationDetails() {
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID,
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hdnEventrefId'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -1544,6 +1545,7 @@ function fetchReguestforQuotationDetails() {
             $('#tblvendors').empty();
 
             if (RFQData.length > 0) {
+                
                 jQuery('#RFQConfigueron').html(fnConverToLocalTime(RFQData[0].general[0].rfqConfigureDate))
                 if (RFQData[0].vendors.length > 0) {
                     $('#tblvendors').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th style='width:20%!important;'>TPI</th></tr></thead>");
@@ -1591,7 +1593,7 @@ function FetchBidVendors() {
 
             var bidate = new Date();
             $('#tblvendors').empty();
-
+           
             if (data[0].bidDate != null) {
                 bidate = data[0].bidDate;
                 jQuery('#RFQConfigueron').html(fnConverToLocalTime(bidate));
@@ -1782,7 +1784,7 @@ function fetchAzPPcFormDetails() {
                 jQuery('#txtgemeralremarks').val(data[0].azureDetails[0].generalRemarks);
                 jQuery('#txtrationalrfqvendor').val(data[0].azureDetails[0].issuingRFQtoVendor);
                 jQuery('#txtenquirynotsent').val(data[0].azureDetails[0].enquirynotsentvendors);
-
+                
                 jQuery('#RFQConfigueron').text(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
                 jQuery('#txtenquiryissuedon').val(fnConverToLocalTime(data[0].azureDetails[0].enquiryIssuedOn));
 

@@ -1,6 +1,6 @@
 function logoutFunction() {
     sessionStorage.clear();
-    sessionStorage.setItem("APIPath", 'https://pev3qaapp.azurewebsites.net');
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 /*function handleDateTimepicker() {
@@ -546,8 +546,9 @@ function replaceQuoutesFromStringFromExcel(ele) {
 }
 
 ////******* Chat functions*********/////////////////////////////
+
 function openForm() {
-   debugger
+    
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -570,7 +571,6 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
         $('#txtChatMsg').removeClass('hide')
 
     }
-
 }
 
 function closeChatsForAdmin() {
@@ -596,7 +596,7 @@ function fetchBroadcastMsgs(userId, msgType) {
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
@@ -615,12 +615,13 @@ function fetchBroadcastMsgs(userId, msgType) {
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
+                   
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
                             + '<div class="message">'
                             + '<span class="arrow"></span>'
                             + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
                             + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
                             + '</div>'
                             + '</div>');
@@ -652,7 +653,7 @@ function fetchvendor() {
     var _bidId = parseInt(getUrlVarsURL(decryptedstring)['BidID']);
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     jQuery.ajax({
@@ -731,7 +732,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-
+   
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -763,7 +764,7 @@ function fetchUserChats(userId, msgType) {
                             + '<div class="message">'
                             + '<span class="arrow"></span>'
                             + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
                             + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
                             + '</div>'
                             + '</div>');
@@ -773,12 +774,13 @@ function fetchUserChats(userId, msgType) {
                             + '<div class="message">'
                             + '<span class="arrow"></span>'
                             + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + data[i].msgTime + '</span>'
+                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
                             + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
                             + '</div>'
                             + '</div>');
                     }
                 }
+                
                 if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
                     openForm();
                 }

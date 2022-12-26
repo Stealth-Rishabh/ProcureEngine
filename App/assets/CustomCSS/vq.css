@@ -1,4 +1,4 @@
-﻿#logoimage {
+#logoimage {
   height:38px; 
   width:180px;
 }
@@ -29,7 +29,6 @@
 }
 
 .display-none {
-    float: left;
     margin-top: -5px;
     cursor: pointer;
     margin-left: 3px;
@@ -55,7 +54,4 @@
     height: 200px;
 }
 
-.modal-body {
-    height: 450px;
-    overflow-y: scroll;
-}
+

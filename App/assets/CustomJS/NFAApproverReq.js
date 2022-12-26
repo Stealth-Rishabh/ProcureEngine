@@ -17,7 +17,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32) {
+        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -182,7 +182,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+           
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -212,7 +212,7 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-                debugger;
+               
                 if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
                     if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
@@ -1055,8 +1055,9 @@ function Check(event, Bidid) {
 
 }
 $(document).on('keyup', '.form-control', function () {
-    if ($.trim($('.form-control').val()).length) {
-        $(this).addClass('has-success');
+    if ($.trim( $(this).val()).length) {
+       $(this).css("border-color", "");
+      
     }
 });
 function fnsubmitQueryByCreator() {
@@ -1064,17 +1065,14 @@ function fnsubmitQueryByCreator() {
     var flag = "T";
     var rowCount = jQuery('#tblqueryresponse >tbody>tr').length;
     for (i = 0; i < rowCount; i++) {
-        if ($("#answer" + i).val() == "" || $("#answer" + i).val() == "0") {
+        
+        if ( $.trim($("#answer" + i).val()).length < 1  || $("#answer" + i).val() == "0") {
             $('#answer' + i).removeClass('has-success')
             $('#answer' + i).css("border", "1px solid red")
             flag = "F";
 
         }
-        else {
-            flag = "T"
-        }
-
-    }
+     }
     if (flag == "T") {
 
         var quesquery = "";
@@ -1111,7 +1109,7 @@ function fnsubmitQueryByCreator() {
             "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
             "PendingOn": "A"
         }
-
+        
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1210,6 +1208,7 @@ function deletequesrow(rowid) {
 function submitQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+    $('#btnTechquery').prop('disabled',true)
     var quesquery = "";
     if ($("#tblquestions> tbody > tr").length > 0) {
         if ($('#txtquestions').val() == "") {
@@ -1244,6 +1243,7 @@ function submitQuery() {
 
                     bootbox.alert("Approval can now be enabled after Approver response or query withdrawal .", function () {
                         setTimeout(function () {
+                            
                             $('#btnTechquery').attr('disabled', 'disabled')
                             $('#btnSubmitApp').attr('disabled', 'disabled')
                             $('#btnSubmitApp').removeClass('green').addClass('default')

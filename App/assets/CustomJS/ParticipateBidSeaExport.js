@@ -375,7 +375,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>' //timeNow()
+        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString()+ '</span>' //timeNow()
 
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
 
@@ -543,10 +543,11 @@ function fetchBidHeaderDetails(bidId) {
 
         success: function (data, status, jqXHR) {
 
-
+               
 
             if (data.length == 1) {
-
+                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsService').show();
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
@@ -557,9 +558,9 @@ function fetchBidHeaderDetails(bidId) {
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
 
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
+                jQuery("#lblbidsubject").text(_cleanStringSub);
 
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidDetails").text(_cleanStringDet);
 
                 jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
                 if ($.trim(data[0].bidClosingType) == "A") {

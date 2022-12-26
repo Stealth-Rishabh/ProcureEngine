@@ -28,13 +28,8 @@ jQuery(document).ready(function () {
     // ComponentsPickers.init();
     setCommonData();
 
-    fetchMenuItemsFromSession(1, 56);
     FetchCurrency("0");
-    //BindApprovers();
-    // fetchBidTypeMapping();
-    // fetchRegisterUser();
-
-
+  
 });
 var WBSeq = 0;
 var NBSeq = 0;

@@ -2,9 +2,7 @@ var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
-
-//sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -89,7 +87,7 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -157,7 +155,7 @@ function validatepassword() {
                     sessionStorage.setItem("RFQID", RFQID)
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")
                     //sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
-                    sessionStorage.setItem("HomePage", "https://pev3qaapi.azurewebsites.net/")
+                    sessionStorage.setItem("HomePage", "https://pev3proapi.azurewebsites.net/")
 
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {

@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -248,11 +248,11 @@ function FetchViewAllPendingBids() {
 function FetchAllCloseBids() {
    // FetchAllpendingWith();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var bidRequestObj = {
+    /*var bidRequestObj = {
         "BidType": jQuery("#ddleventtype option:selected").val(),
         "CustomerID": CustID,
         "PendingOn": 0
-    }
+    }*/
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

@@ -1300,19 +1300,15 @@ function ConfirmSaveApprovers() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    debugger
-                    $('.modal-footer .btn-success').prop('disabled', true);
-                  
-                    SaveApproversConfirmation();
-
                    
-                }
+                    $('.modal-footer .btn-success').prop('disabled', true);
+                    SaveApproversConfirmation();
+                 }
             },
             cancel: {
                 label: "No",
                 className: "btn-default",
                 callback: function () {
-                    $('.modal-footer btn-default').prop('disabled', true);
                     return true;
 
                 }

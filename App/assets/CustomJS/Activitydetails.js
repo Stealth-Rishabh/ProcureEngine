@@ -215,15 +215,9 @@ function fnArchive(RFQID) {
 function fetchDashboardData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
-    var userData = {
-        "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": custId
-    }
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?CustomerID=" + custId,
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
@@ -231,7 +225,7 @@ function fetchDashboardData() {
         //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-
+            
             if (BidData[0].bidcnt != "") {
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
@@ -459,7 +453,7 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");
@@ -482,25 +476,18 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
-    var custId = parseInt(sessionStorage.getItem('CustomerID'))
-    var userData = {
-        "UserID": sessionStorage.getItem('UserID'),
-        "CustomerID": custId,
-        "RequestType": requesttype
-    }
+  
+  
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + custId,
-        //url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails",
+        url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
-        //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-
+        
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData.length + ")")
             if (BidData.length > 0) {
@@ -603,7 +590,6 @@ function fetchBidDataDashboard(requesttype) {
             }
         },
         error: function (xhr, status, error) {
-
 
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {

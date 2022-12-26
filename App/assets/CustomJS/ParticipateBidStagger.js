@@ -77,7 +77,8 @@ function fetchBidSummaryVendorproduct() {
             if (data.length > 0) {
                 if (_isBidStarted == false) {
 
-                    jQuery("#tblParticipantsServiceBeforeStartBid").empty()
+                    jQuery("#tblParticipantsServiceBeforeStartBid").show();
+                    jQuery("#tblParticipantsServiceBeforeStartBid").empty();
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/<br>Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
 
                     for (var i = 0; i < data.length; i++) {
@@ -85,6 +86,7 @@ function fetchBidSummaryVendorproduct() {
                     }
                 }
                 else {
+                    jQuery("#tblParticipantsServiceBeforeStartBid").hide();
                     jQuery("#tblParticipantsService").empty()
                     jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/<br>Service</th><th>Quantity</th><th>UOM</th><th id=bidStartPrice>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Price</th><th> Status </th><th>Closing Time</th><th>Time Left</th><th>Enter_Quote*</th><th>Action</th></thead>");
 
@@ -214,7 +216,6 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
 }
 function fetchVendorDetails() {
-
     var url = '';
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/FetchBidDetails/?BidID=" + sessionStorage.getItem("BidID") + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"));
 
@@ -227,7 +228,6 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
             if (data.length == 1 && data[0].status.toLowerCase() != 'pause') {
                 sessionStorage.setItem('CustomerID', data[0].customerID)
                 $('#tblParticipantsService').show();
@@ -269,20 +269,22 @@ function fetchVendorDetails() {
             }
             else if (data.length == 1 && data[0].status.toLowerCase() == 'pause') {
 
+                fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is paused.</b>').css('color', 'red');
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 $('#btnsubmit').hide()
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
+                
                 $('#tblParticipantsService').empty();
                 $('#tblParticipantsService').hide();
             }
             else {//if (data.length == 0 || data.length > 1 ) {
 
+                fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is not started.</b>').css('color', 'red');
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 _isBidStarted = false;
                 $('#btnsubmit').hide()
-                fetchBidHeaderDetails(sessionStorage.getItem("BidID"))
+                
                 $('#tblParticipantsService').empty();
                 $('#tblParticipantsService').hide();
 
@@ -962,8 +964,6 @@ function fetchBidHeaderDetails(bidId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            console.log("dataa > ", data)
-
             if (data.length == 1) {
                 $('#tblParticipantsService').show();
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");

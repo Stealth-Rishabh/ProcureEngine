@@ -1,20 +1,12 @@
-﻿sessionStorage.clear();
+sessionStorage.clear();
 
-//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
-var clientIP = "";
-
-$.getJSON("https://api.ipify.org?format=json", function (data) {
-
-    // Setting text of element P with id gfg
-    clientIP = data.ip;
-
-});
 
 
 var Login = function () {
@@ -147,11 +139,9 @@ var Login = function () {
     }
 
     function validateUser() {
-
-       //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-       //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-
+        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+       sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
@@ -381,6 +371,7 @@ var Login = function () {
         });
     }
     function fetchMenuItemsForSession(urlLast) {
+       
         jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
         jQuery.ajax({
             type: "GET",
@@ -391,7 +382,7 @@ var Login = function () {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-
+               
                 sessionStorage.setItem("Data", JSON.stringify(data));
                 setTimeout(function () {
                     if (sessionStorage.getItem("Data") != "" || sessionStorage.getItem("Data") != null) {
@@ -492,7 +483,6 @@ function Changeforgotpasswordfn() {
     var path = window.location.pathname;
     var url = '';
     var lastPart = (path.substr(path.length - 7)).slice(0, -1);
-    //lastPart = 'vendor'
     var LinkUrl = window.location.href;
 
     if (lastPart.toLocaleLowerCase() == "vendor") {
@@ -522,7 +512,6 @@ function Changeforgotpasswordfn() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-            debugger;
             switch (data.successCount) {
                 case 1:
                 case 2:
@@ -573,7 +562,6 @@ function resetfileds() {
 }
 
 function fetchMapCategory(categoryFor, vendorId) {
-
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -611,7 +599,7 @@ function fetchMapCategory(categoryFor, vendorId) {
     });
 }
 //get the IP addresses associated with an account
-function getIPs(callback) {
+/*function getIPs(callback) {
 
     var ip_dups = {};
     //compatibility for firefox and chrome
@@ -679,7 +667,7 @@ getIPs(function (ip) {
         sessionStorage.setItem('MachineIP', ip)
     }
 
-});
+});*/
 
 function saveParticipant() {
     bootbox.alert("Thank you for sharing your inputs. Our Vendor Qualification team will get in touch with you shortly.", function () {
