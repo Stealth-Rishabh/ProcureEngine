@@ -383,6 +383,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             var _curentRFQStatus = '';
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
@@ -413,8 +414,11 @@ function fetchReguestforQuotationDetails() {
                     $('#cancl_btn').hide();
 
                 }*/
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                //abheedev 26/12/2022
+                let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+                let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
+                jQuery('#RFQSubject').text(_cleanStringSub)
+                jQuery('#RFQDescription').html(_cleanStringDesc)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
                 jQuery('#refno').html(RFQData[0].general[0].rfqReference)

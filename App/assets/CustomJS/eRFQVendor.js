@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-  
+
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -25,7 +25,7 @@ jQuery(document).ready(function () {
         sessionStorage.setItem('hddnRFQID', 0)
     else {
         var version = 0;
-        
+
         if (sessionStorage.getItem('RFQVersionId') > 0) {
             version = parseInt(sessionStorage.getItem('RFQVersionId'))// - 1;
 
@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
         fetchReguestforQuotationDetails();
         fetchAttachments();
 
-        
+
         if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
             $('#LiISsurrogate').removeClass('hide')
             $('#LIVendor').addClass('hide')
@@ -91,10 +91,10 @@ function formValidation() {
                 required: true,
                 dollarsscents: true
             }
-           
+
         },
         messages: {
-          
+
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
 
@@ -302,7 +302,7 @@ var FormWizard = function () {
                 },
 
                 onNext: function (tab, navigation, index) {
-                   
+
                     if (index == 1) {
 
                     }
@@ -312,7 +312,7 @@ var FormWizard = function () {
                         var rowCount = jQuery('#tblRFQLevelTCForQuot >tbody>tr').length;
 
                         var count = 1;
-                      //  abheedev production issue 09/12/2022
+                        //  abheedev production issue 09/12/2022
                         for (i = 0; i < rowCount; i++) {
                             if ($("#commremarks" + i).val().trim() == "" || $("#commremarks" + i).val() == "0") {
                                 $('#commremarks' + i).removeClass('has-success')
@@ -375,7 +375,7 @@ var FormWizard = function () {
                     if ($("#answers" + i).val() == "") {
                         $('#answers' + i).removeClass('has-success')
                         $('#answers' + i).css("border", "1px solid red")
-                        flagQ = "F";                       
+                        flagQ = "F";
                         $('.alert-danger').show();
                         $('#spandanger').html('Please fill RFQ Answer.');
                         Metronic.scrollTo($(".alert-danger"), -200);
@@ -868,7 +868,7 @@ function fetchRFQResponse(Flag, version) {
                         str += '<td style="width:5%!important"><button type=button class="btn btn-xs btn-danger" id=Removebtnattach' + i + '  onclick="deleteattachrow(trAttachid' + rowAttach + ',trAttachidprev' + rowAttach + ',\'' + data[i].attachment + '\',\'VAttachment\',\'' + data[i].id + '\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td></tr>';
                         jQuery('#tblAttachmentsresponse').append(str);
 
-                       
+
                     }
                     PreviousVersion = data[0].version;
                 }
@@ -955,7 +955,7 @@ function fnsaveAttachmentsquestions() {
             "Version": parseInt(sessionStorage.getItem('RFQVersionId'))
         }
 
-       
+
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1019,7 +1019,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
             "UserEmail": sessionStorage.getItem('EmailID'),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-       
+
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1095,12 +1095,14 @@ function fetchReguestforQuotationDetails() {
 
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
+                let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+                let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
                 sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+                jQuery('#RFQSubject').text(_cleanStringSub)
                 sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
                 _RFQBidType = RFQData[0].general[0].rfqBidType
 
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                jQuery('#RFQDescription').html(_cleanStringDesc)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
@@ -1428,8 +1430,8 @@ function DownloadFileVendor(aID, version) {
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-   
-    
+
+
     $('#txtbasicPrice').val((basicprice))
 
     $("#hddnBoqParamQuantity").val(quantity);
@@ -1455,7 +1457,7 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
-   
+
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
@@ -1488,11 +1490,11 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
     }
 
     //abheedev production issue 09/12/2022
-    
-    if ($('#mkswithtax10').val() == '' ) {
-      
-        $('#mkswithtax10').val('0') 
-      
+
+    if ($('#mkswithtax10').val() == '') {
+
+        $('#mkswithtax10').val('0')
+
     }
     if ($('#mkswithtax11').val() == '') {
 
@@ -1510,7 +1512,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
     }
     if (validateSubmit) {
-        
+
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();
         PriceDetails = [];
@@ -1522,7 +1524,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                     PricewithoutGST = PricewithoutGST + (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
                 }
                 if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "gst") {
-                    
+
                     PriceGSTOnly = (parseFloat(removeThousandSeperator(this_row.find('td:eq(4) input[type="text"]').val())) / 100);
                 }
                 if ($.trim(this_row.find('td:eq(3)').html()).toLowerCase() == "discount") {

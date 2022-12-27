@@ -3,6 +3,7 @@ var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 //FROM HTML
+
 jQuery(document).ready(function () {
 
     setInterval(function () { Pageloaded() }, 15000);
@@ -22,7 +23,7 @@ jQuery(document).ready(function () {
     }
     setCommonData();
     App.init();
-  //  multilingualLanguage()
+    //  multilingualLanguage()
     Tasks.initDashboardWidget();
     fetchMappedCustomers();
     setTimeout(function () {
@@ -364,11 +365,11 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if (linkurl.indexOf('?') != -1) {
-        linkurl = linkurl ;
+        linkurl = linkurl;
     }
     else if (linkurl.indexOf('#') != -1) {
         e.preventDefault()
-        linkurl = linkurl ;
+        linkurl = linkurl;
     }
 
     /*//else if (this.href.indexOf('javascript:') != -1) {
@@ -541,7 +542,8 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+            let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('.rfqtc').show();
@@ -552,10 +554,10 @@ function fetchReguestforQuotationDetailseRFQ() {
             $('#btnContinue').attr("disabled", true);
 
 
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+            jQuery('#RFQSubject').text(_cleanStringSub)
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
-            jQuery('#RFQDescription').text(RFQData[0].general[0].rfqDescription)
+            jQuery('#RFQDescription').text(_cleanStringDesc)
 
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
@@ -1080,7 +1082,7 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-         
+
             if (data.length == 1) {
                 var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
@@ -1322,19 +1324,19 @@ jQuery('#bidchkIsAccepted').click(function () {
 
                 *//*//else if (this.href.indexOf('javascript:') != -1) {
 
-                //  this.href = this.href + "?locale=" + $.i18n().locale;
-                //} *//*
+//  this.href = this.href + "?locale=" + $.i18n().locale;
+//} *//*
 
-                else {
-                    this.href = this.href + "?locale=" + $.i18n().locale;
-                }
-            });
-
-
+else {
+    this.href = this.href + "?locale=" + $.i18n().locale;
+}
+});
 
 
-        });
-    });
+
+
+});
+});
 
 
 
