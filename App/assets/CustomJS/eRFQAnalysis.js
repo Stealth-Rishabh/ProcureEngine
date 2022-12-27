@@ -316,7 +316,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].rfq + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -842,38 +842,60 @@ function fetchrfqcomprative() {
                         });
                         //abheedev bug 472
                         if (flag3 == 'T') {
-
+                            
+                           
                             strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
                             strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td colspan='5'>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
-
+                           
+                            debugger
+                           
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
-
+                                
+                                
                                 if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
-
+                                    
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
+                                       
+                                      
+                                        
                                         if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
+                                            strQ += "<td>";                                                
+                                                                                                 
+                                                if (data[0].approverStatus[s].status == 'Approved') {
+                                                    //   strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>" ;
+                                                    strQ += "<span style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "<span/>";
 
-                                            if (data[0].approverStatus[s].status == 'Approved') {
-                                                strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
-                                                strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].status + "</td>";//abheedev479
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
-                                                strExcelQ += "<td colspan='4'>Not Approved</td>";
+                                                    strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].status + "</td>";//abheedev479
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Pending') {
-                                                strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
-                                                strExcelQ += "<td colspan='4'>Pending</td>";
+                                                }
 
-                                            }
+                                                else if (data[0].approverStatus[s].status == 'Rejected') {
+                                                    strQ += "<span style='color: red!important; text-align: center;'>Not Approved</span>";
 
+
+                                                    strExcelQ += "<td colspan='4'>Not Approved</td>";
+
+                                                }
+                                                else if (data[0].approverStatus[s].status == 'Pending') {
+                                                    strQ += "<span style='color: blue!important; text-align: center;'>Pending</span>";
+                                                    strExcelQ += "<td colspan='4'>Pending</td>";
+                                                }
+                                                
+                                                
+                                            strQ += "</td>";         
+                                          
+                                                
                                         }
+                                       
+                                      
+                                       
                                     }
+                                   
                                 }
+                                
                             }
-
+                           
 
                             strQ += " </tr>";
                             strExcelQ += "<td colspan='6'>&nbsp;</td> </tr>";
@@ -885,7 +907,7 @@ function fetchrfqcomprative() {
 
                 }
                
-                strQ += "<tr>";
+               
                 strExcelQ += " <tr><td>&nbsp;</td>";
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
