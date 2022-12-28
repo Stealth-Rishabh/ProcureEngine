@@ -138,7 +138,7 @@ function fetchRegisterUser(Type) {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
             "UserID": "0",
             "Isactive": "N"
-        } 
+        }
         //url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=0&Isactive=N"
     }
     else {
@@ -171,7 +171,7 @@ function fetchRegisterUser(Type) {
 
         },
         error: function (xhr, status, error) {
-           
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -186,7 +186,7 @@ function fetchRegisterUser(Type) {
 
 
     });
-    
+
 }
 
 jQuery("#txtApprover").keyup(function () {
@@ -368,6 +368,7 @@ function MapBidapprover() {
                         label: "OK",
                         className: "btn-success",
                         callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                             setTimeout(function () {
                                 fetchApproverStatus();
                                 $('#addapprovers').modal('hide')
@@ -507,7 +508,7 @@ function fetchBidSummary(BidID) {
 
 
                 if (data[0].bidClosingType != null) _bidClosingType = data[0].bidClosingType;
-               
+
                 if (sessionStorage.getItem("UserID") == data[0].decryptedConfiguredBy) {
 
                     if (data[0].itemStatus == "RunningBid") {
@@ -588,13 +589,12 @@ function fetchBidSummary(BidID) {
                 }
 
                 var _bidDate = fnConverToLocalTime(data[0].bidDate);
-                let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
-                let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
+
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
-                jQuery("#lblbidSubject").html('<b>' + _cleanStringSub + '</b>');
-                jQuery("#lblenquirysubject").html('<b>' + _cleanStringSub + '</b>');
-                jQuery("#lblbiddetails").text(_cleanStringDet);
+                jQuery("#lblbidSubject").html('<b>' + data[0].bidSubject + '</b>');
+                jQuery("#lblenquirysubject").html('<b>' + data[0].bidSubject + '</b>');
+                jQuery("#lblbiddetails").text(data[0].bidDetails);
                 jQuery('#RFQConfigueron').html('<b>' + _bidDate + '</b>')
                 jQuery("#lblbiddate").text(_bidDate);
 
@@ -683,7 +683,7 @@ function fnTimeUpdate() {
 
 
 function fetchBidSummaryDetails(BidID, BidForID) {
-  
+
     var BidTypeID = sessionStorage.getItem('hdnbidtypeid')
     jQuery.ajax({
         type: "GET",
@@ -702,7 +702,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
             _bidarray = [];
             var wtavg = 0;
             if (data.length > 0) {
-          
+
                 if (parseInt(BidTypeID) == 6) {
 
                     $('#lnktotvalue').html('Detailed Report')
@@ -736,12 +736,12 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                     var c = 1;
 
                     for (var i = 0; i < data.length; i++) {
-                         VendorID = data[i].vendorId;
+                        VendorID = data[i].vendorId;
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
                         //TotalBidValue = TotalBidValue.toFixed(2);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-                       
+
                         if (TotalBidValue != 0) {
                             if (data[i].targetPrice != 0) {
                                 if (PEfaBidForId == 81 || PEfaBidForId == 83) {
@@ -791,14 +791,14 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             sname = data[i].shortName
 
                             if (PEfaBidForId == 81 || PEfaBidForId == 83) {
-                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
-                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
+                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].psid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
+                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].psid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
 
                             }
                             else {
 
-                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style=:text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right"  >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
-                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].psid + ')" style=text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right" class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + '>' + (minimuminc) + '</td>';
+                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].psid + ')" style=:text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right"  >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimuminc) + '</td>';
+                                var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].psid + ')" style=text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right" class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + '>' + (minimuminc) + '</td>';
                             }
                             c = c + 1;
 
@@ -814,34 +814,35 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             }
 
                         }
-
+                        var shortname = 'aa';
                         if (PEfaBidForId == 81 || PEfaBidForId == 83) {
+
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
                             //abheedev removequote    
-                         //   if (data[i].srNo != 'N/A') {
-                         //       strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
-                         //   }
-                           // else {
-                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo  + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                            if (data[i].srNo != 'N/A') {
+                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].lQuote + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].scrapHeaderId + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                            }
+                            else {
+                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
 
-                          //  }
+                            }
 
                             strsumm += "<td class=text-right id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td class=text-right id=bidvalue" + i + " >" + thousands_separators(TotalBidValue) + "</td>";
                         }
                         else {
-                            
+
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-                           // if (data[i].srNo != 'N/A') {
-                             //   strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
-                            //}
-                            //else {
-                                 strsumm += "<td>" + data[i].srNo + "</td><td class='showvendor' id=vname" + i + " >" + data[i].vendorName + "</td>";
+                            if (data[i].srNo != 'N/A') {
+                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="removeQuotationPS(\'' + shortname + '\',\'' + data[i].lQuote + '\',\'' + data[i].submissionTime + '\',\'' + data[i].psid + '\',\'' + data[i].scrapHeaderId + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                            }
+                            else {
+                                strsumm += "<td>" + data[i].srNo + "</td><td class='showvendor' id=vname" + i + " >" + data[i].vendorName + "</td>";
 
-                            //}
+                            }
                             strsumm += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td><td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                         }
@@ -963,8 +964,8 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
                             cc = cc + 1;
-                            var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].frid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td  class="text-right ss' + cc + '" ></td><td class="text-right">' + (minimuminc) + '</td>';
-                            var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].frid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
+                            var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].frid + ')"  style="text-decoration:none;">' + data[i].shortName + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td  class="text-right ss' + cc + '" ></td><td class="text-right">' + (minimuminc) + '</td>';
+                            var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].frid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
                             c = c + 1;
                             totquoteallocatedquan = 0; totallocatedquan = 0; wtavg = 0;
                         }
@@ -1110,35 +1111,35 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                                 if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
 
                                     if (data[i].itemStatus == "Open") {
-                                        var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
-                                        var str = '<tr id=lowa' + i + '  style="background-color: #32C5D2!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                                        var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
+                                        var str = '<tr id=lowa' + i + '  style="background-color: #32C5D2!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                                     }
                                     else if (data[i].itemStatus == "Pause") {
 
-                                        var strsumm = '<tr id=low_str' + i + ' style="background-color: #ffa07a!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
+                                        var strsumm = '<tr id=low_str' + i + ' style="background-color: #ffa07a!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
                                         if (countpausecolor == 0) {
-                                            var str = '<tr id=lowa' + i + '  style="background-color: #ffa07a!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                                            var str = '<tr id=lowa' + i + '  style="background-color: #ffa07a!important; color: #000000!important;"   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                                         }
                                         else {
-                                            var str = '<tr id=lowa' + i + ' class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                                            var str = '<tr id=lowa' + i + ' class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                                         }
                                         countpausecolor = countpausecolor + 1;
                                     }
                                     else {
-                                        var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
-                                        var str = '<tr id=lowa' + i + '   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                                        var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td><td class=itemtimeleft id=itemleftTime' + i + ' class=bold></td>';
+                                        var str = '<tr id=lowa' + i + '   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                                     }
 
                                 }
                                 else {
-                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;"  onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';// btn - icon - only
-                                    var str = '<tr id=lowa' + i + '   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + ' onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;" class="fetchGraph"  onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';// btn - icon - only
+                                    var str = '<tr id=lowa' + i + '   class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                                 }
                             }
 
                             else {
-                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=:text-decoration:none;">' + desitinationport + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
-                                var strsumm = '<tr id=low_str' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].seId + ')" style=text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
+                                var str = '<tr id=lowa' + i + ' class=header><td  onclick="fnClickHeader(\'lowa' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style=:text-decoration:none;">' + desitinationport + '</a></td><td class="text-right">' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right">' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
+                                var strsumm = '<tr id=low_str' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].seId + ')" style=text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right">' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right">' + thousands_separators(data[i].startingPrice) + '</td><td class="text-right bold  font-red Offeredcls">' + thousands_separators(_offeredPrice) + '</td><td class="text-right">' + thousands_separators(data[i].quantity) + '</td><td>' + data[i].uom + '</td><td class="text-right">' + (minimumdec) + '</td>';
                             }
                             c = c + 1;
                         }
@@ -1332,9 +1333,9 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                     jQuery('#tblBidSumm > thead').append(strHead);
                     jQuery('#tblbidsummarypercentagewise > thead').append(strHeadsummary);
                     var c = 1;
-                  
+
                     for (var i = 0; i < data.length; i++) {
-                       
+
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                         minimumdec = thousands_separators(data[i].minimumDecreament)// + ' ' + data[i].selectedCurrency
@@ -1342,18 +1343,18 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         if (sname != desitinationport) {
                             sname = desitinationport
-                            var str = '<tr id=lowa' + i + '  class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
+                            var str = '<tr id=lowa' + i + '  class=header><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=SnameD' + i + '><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" >' + thousands_separators(data[i].targetPrice) + '</td><td  class="text-right" >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" >' + thousands_separators(data[i].quantity) + '</td><td class=text-right>' + data[i].uom + '</td><td  class="text-right" id=CPD' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class=text-right id=MindecD' + i + '>' + minimumdec + '</td>';
                             if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
 
                                 if (data[i].itemStatus == "Open") {
-                                    var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"  class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"   data-placement="left"></a></td><td id=Sname' + i + ' ><a href="javascript:;" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
+                                    var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"  class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' data-toggle="popover" data-trigger="hover" data-content="Collapse/Expand"   data-placement="left"></a></td><td id=Sname' + i + ' ><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
                                 }
                                 else {
-                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
+                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
                                 }
                             }
                             else {
-                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;"  onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';
+                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;" class="fetchGraph"  onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';
                             }
                             c = c + 1;
 
@@ -1434,6 +1435,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                 }
                 if (data[0].hideVendor == "Y") {
                     $('.showvendor').addClass('hide');
+                    $("a").removeAttr("onclick"); //abheedev
                 }
                 else {
                     $('.showvendor').removeClass('hide');
@@ -2167,7 +2169,7 @@ connection.on("refreshColumnStatusFF", function (data1) {
                 }
                 if (sname != data[i].shortName) {
                     sname = data[i].shortName
-                    var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" onclick="fetchGraphData(' + data[i].frid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
+                    var strsumm = '<tr id=low' + i + ' class=header><td  onclick="fnClickHeader(\'low' + i + '\',\'i_expandcollapse' + i + '\',\'forAll\')">' + c + '</td><td><a href="javascript:void(0);" class="fetchGraph" onclick="fetchGraphData(' + data[i].frid + ')" style="text-decoration:none;" >' + data[i].shortName + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].bidStartPrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right" id=minquantity' + i + ' >' + thousands_separators(data[i].minOfferedQuantity) + '</td><td class="text-right" id=maxquantity' + i + ' >' + thousands_separators(data[i].maxOfferedQuantity) + '</td><td class="text-right">' + thousands_separators(data[i].unallocatedQuantity) + '</td><td>' + data[i].uom + '</td><td class="text-right" id=Mindec' + i + ' >' + (minimuminc) + '</td>';
                     c = c + 1;
                 }
                 else {
@@ -2225,145 +2227,145 @@ connection.on("refreshColumnStatusCoal", function (data1) {
     }
     //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&BidForID=" + BidForID;
-        jQuery.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: url,
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            cache: false,
-            crossDomain: true,
-            dataType: "json",
-            success: function (data, status, jqXHR) {
-               
-                if (data.length > 0) {
-                    //jQuery("#tblBidSummary > thead").empty();
-                    // jQuery("#tblBidSummary > tbody").empty();
-                    jQuery("#tblbidsummarypercentagewise > thead").empty();
-                    jQuery("#tblbidsummarypercentagewise > tbody").empty();
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
 
-                    if ($('#lnktotvalue').html() == "Detailed Report") {
-                        jQuery("#tblBidSumm").hide()
-                        jQuery("#tblbidsummarypercentagewise").show()
-                        $('#divfordetailreport').show()
-                        $('#divforBidsummary').hide()
-                    }
-                    $('#lnktotvalue').hide();
+            if (data.length > 0) {
+                //jQuery("#tblBidSummary > thead").empty();
+                // jQuery("#tblBidSummary > tbody").empty();
+                jQuery("#tblbidsummarypercentagewise > thead").empty();
+                jQuery("#tblbidsummarypercentagewise > tbody").empty();
 
-                    var TotalBidValue = '';
-                    $('#divTarget').hide();
-                    var sname = '';
-                    var minimumdec = '';
-                    strHeadsummary = '';
-
-                    var strHeadsummary = ""; //"<tr><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid start price</th><th>Quantity</th><th>UOM</th><th style=display:none; id=theadbidclosingType></th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Bid start price)</th></tr>";
-                    if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-
-                        strHeadsummary = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th class=showvendor>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Item Closing Time</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
-                    }
-                    else {
-                        strHeadsummary = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th class=showvendor>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
-                    }
-                    jQuery('#tblbidsummarypercentagewise > thead').append(strHeadsummary);
-                    var c = 1;
-                 
-                    for (var i = 0; i < data.length; i++) {
-
-
-                        TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
-                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
-                        minimumdec = thousands_separators(data[i].minimumDecreament)// + ' ' + data[i].selectedCurrency
-                        var desitinationport = data[i].destinationPort.replace(/<br\s*\/?>/gi, ' ');
-
-                        if (sname != desitinationport) {
-                            sname = desitinationport
-
-                            if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-
-                                if (data[i].itemStatus == "Open") {
-
-                                    var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"  class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
-                                }
-                                else {
-                                    var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
-                                }
-
-                            }
-                            else {
-                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;"  onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';
-                            }
-                            c = c + 1;
-
-                        }
-                        else {
-                            if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                                var strsumm = "<tr id=low_str" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                            }
-                            else {
-                                var strsumm = "<tr id=low_str" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                            }
-                        }
-
-
-
-                        strsumm += "<td id=vname" + i + " class=showvendor>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td><td id=level" + i + " id=level" + i + " >" + data[i].srNo + "</td><td class='text-right' id=initialQuote" + i + ">" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
-                        strsumm += "<td class='text-right' id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td id=bidvalue" + i + " class=hide>" + thousands_separators(TotalBidValue) + "</td><td>" + (data[i].offeredQuan == '0' ? '' : thousands_separators(data[i].offeredQuan)) + "</td>";
-                        strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td></tr>";
-
-
-                        jQuery('#tblbidsummarypercentagewise').append(strsumm);
-
-
-                        if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                            if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
-                                $('#low_str' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
-                                $('#low' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
-                            }
-                        }
-                        else {
-                            if (data[i].srNo == 'L1') {
-                                $('#low_str' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
-                                $('#low' + i).css({
-                                    'background-color': '#dff0d8',
-                                    'font-weight': 'bold',
-                                    'color': '#3c763d'
-                                })
-
-                            }
-                        }
-
-                    }
-                    if (data[0].hideVendor == "Y") {
-                        $('.showvendor').addClass('hide');
-                    }
-                    else {
-                        $('.showvendor').removeClass('hide');
-                    }
+                if ($('#lnktotvalue').html() == "Detailed Report") {
+                    jQuery("#tblBidSumm").hide()
+                    jQuery("#tblbidsummarypercentagewise").show()
+                    $('#divfordetailreport').show()
+                    $('#divforBidsummary').hide()
                 }
-                //** Refresh Time if extension 
-            },
-            error: function (xhr, status, error) {
-                var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
+                $('#lnktotvalue').hide();
+
+                var TotalBidValue = '';
+                $('#divTarget').hide();
+                var sname = '';
+                var minimumdec = '';
+                strHeadsummary = '';
+
+                var strHeadsummary = ""; //"<tr><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid start price</th><th>Quantity</th><th>UOM</th><th style=display:none; id=theadbidclosingType></th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Bid start price)</th></tr>";
+                if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+
+                    strHeadsummary = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th class=showvendor>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Item Closing Time</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
                 }
                 else {
-                    fnErrorMessageText('error', '');
+                    strHeadsummary = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th class=showvendor>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
                 }
-                jQuery.unblockUI();
+                jQuery('#tblbidsummarypercentagewise > thead').append(strHeadsummary);
+                var c = 1;
+
+                for (var i = 0; i < data.length; i++) {
+
+
+                    TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
+                    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                    minimumdec = thousands_separators(data[i].minimumDecreament)// + ' ' + data[i].selectedCurrency
+                    var desitinationport = data[i].destinationPort.replace(/<br\s*\/?>/gi, ' ');
+
+                    if (sname != desitinationport) {
+                        sname = desitinationport
+
+                        if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+
+                            if (data[i].itemStatus == "Open") {
+
+                                var strsumm = '<tr id=low_str' + i + ' style="background-color: #32C5D2!important; color: #000000!important;"  class=header><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')" >' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + ' ></a></td><td id=Sname' + i + ' ><a href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right " id=TP' + i + '  >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
+                            }
+                            else {
+                                var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '  onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td class=hide><a class="btn btn-circle btn-success fa fa-arrow-down" id=i_expandcollapse' + i + '  ></a></td><td id=Sname' + i + ' ><a  href="javascript:;" class="fetchGraph" onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;" >' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right"  id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class="text-right" id=quantity' + i + '  >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class="text-right" id=CP' + i + ' >' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td><td id=ClosingTime' + i + '>' + data[i].closingTime + '</td>';
+                            }
+
+                        }
+                        else {
+                            var strsumm = '<tr id=low_str' + i + ' class="header" ><td id=i_expandcollapse' + i + '   onclick="fnClickHeader(\'low_str' + i + '\',\'i_expandcollapse' + i + '\')">' + c + '</td><td id=Sname' + i + '><a href="javascript:;" class="fetchGraph"  onclick="fetchGraphData(' + data[i].coalID + ')" style="text-decoration:none;">' + desitinationport + '</a></td><td class="text-right" id=TP1' + i + ' >' + thousands_separators(data[i].targetPrice) + '</td><td class="text-right" id=lastinvoice1' + i + ' >' + thousands_separators(data[i].lastInvoicePrice) + '</td><td class=text-right id=quantity' + i + ' >' + thousands_separators(data[i].quantity) + '</td><td class="text-right">' + data[i].uom + '</td><td class=text-right id=CP' + i + '>' + thousands_separators(data[i].ceilingPrice) + '</td><td class="text-right" id=Mindec' + i + ' >' + minimumdec + '</td>';
+                        }
+                        c = c + 1;
+
+                    }
+                    else {
+                        if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+                            var strsumm = "<tr id=low_str" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                        }
+                        else {
+                            var strsumm = "<tr id=low_str" + i + "><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                        }
+                    }
+
+
+
+                    strsumm += "<td id=vname" + i + " class=showvendor>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td><td id=level" + i + " id=level" + i + " >" + data[i].srNo + "</td><td class='text-right' id=initialQuote" + i + ">" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
+                    strsumm += "<td class='text-right' id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td id=bidvalue" + i + " class=hide>" + thousands_separators(TotalBidValue) + "</td><td>" + (data[i].offeredQuan == '0' ? '' : thousands_separators(data[i].offeredQuan)) + "</td>";
+                    strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td></tr>";
+
+
+                    jQuery('#tblbidsummarypercentagewise').append(strsumm);
+
+
+                    if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
+                        if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
+                            $('#low_str' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+                            $('#low' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+                        }
+                    }
+                    else {
+                        if (data[i].srNo == 'L1') {
+                            $('#low_str' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+                            $('#low' + i).css({
+                                'background-color': '#dff0d8',
+                                'font-weight': 'bold',
+                                'color': '#3c763d'
+                            })
+
+                        }
+                    }
+
+                }
+                if (data[0].hideVendor == "Y") {
+                    $('.showvendor').addClass('hide');
+                }
+                else {
+                    $('.showvendor').removeClass('hide');
+                }
             }
-        });
+            //** Refresh Time if extension 
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+        }
+    });
 
 });
 connection.on("refreshTimer", function (data) {
@@ -2682,7 +2684,7 @@ function AwardBid() {
 }
 
 function FetchRecomendedVendor(bidid) {
- 
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
@@ -2780,7 +2782,7 @@ function FetchRecomendedVendor(bidid) {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
 
-           /* if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
+            if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
                 $('#btnPPCF').show()
                 $('#btnPPCA').show()
                 if (isLastApprover == 'Y') {
@@ -2792,7 +2794,7 @@ function FetchRecomendedVendor(bidid) {
             }
             else {
                 $('#btnPPCF').hide()
-               $('#btnPPCA').hide()
+                $('#btnPPCA').hide()
                 $('#btn_mapaaprover').hide()
             }
             if (isMappedPPCApp == 'Y') {
@@ -2802,7 +2804,7 @@ function FetchRecomendedVendor(bidid) {
             else {
                 $('#btn_mapaaprover').removeAttr('disabled')
                 $('#btnPPCA').removeAttr('disabled')
-            }*/
+            }
 
         },
         error: function (xhr, status, error) {
@@ -3173,6 +3175,7 @@ function cancelBtnclick() {
                                 label: "Yes",
                                 className: "btn-success",
                                 callback: function () {
+                                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                     CancelBid(BidID, 'SendMail')
                                 }
                             },
@@ -3555,62 +3558,11 @@ var tableToExcel = (function () {
 
 
 
-function fetchparticationQuotes(BidID, VendorID) {
-    debugger
-   
-    var url = '';
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    if (sessionStorage.getItem("hdnbidtypeid") == 7) {
-        url = APIPath + "RemoveParticipatedQuotedPrices/fetchPSQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
-    }
-    else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
-        url = APIPath + "RemoveParticipatedQuotedPrices/fetchPEFAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
-    }
-    else if (sessionStorage.getItem("hdnbidtypeid") == 9) {
-        url = APIPath + "RemoveParticipatedQuotedPrices/fetchFAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
-    }
-    else {
-        url = APIPath + "RemoveParticipatedQuotedPrices/fetchCAQuotedPrices/?BidID=" + BidID + "&VendorID=" + VendorID;
-    }
-
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        url: url,
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-           debugger
-            var shortname;
-            if (data.length > 0) {
-                shortname = (data[0].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                removeQuotationPS(shortname, data[0].quotedPrice, data[0].submissionTime, data[0].psid, data[0].psHeaderID);
-            }
-            jQuery.unblockUI();
-        },
-
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    });
-
-}
 
 
 function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAllocated) {
- debugger
+
     $('#deletepopup').modal('show')
     sessionStorage.setItem("shname", shname)
     sessionStorage.setItem("price", price)
@@ -3618,7 +3570,7 @@ function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAll
     sessionStorage.setItem("psid", psid)
     sessionStorage.setItem("psheaderid", psheaderid)
     sessionStorage.setItem("QuantityAllocated", QuantityAllocated)
-    
+
 }
 var error2 = $('#errormapdiv');
 var success2 = $('#successmapdiv');
@@ -3672,7 +3624,7 @@ $('#maphead').validate({
 
     },
     submitHandler: function (form) {
-      
+
         error2.hide();
         if (sessionStorage.getItem("hdnbidtypeid") == 7) {
             deletePSquote();
@@ -3710,7 +3662,6 @@ function deletePSquote() {
         "SubmissionTime": sessionStorage.getItem("subtime"),
         "PSID": parseInt(sessionStorage.getItem("psid")),
         "PSHeaderID": parseInt(sessionStorage.getItem("psheaderid")),
-        //"Remarks": $('#txtremarks').val(),
         "Remarks": _cleanString2,
         "Attachment": AttachementFileName,
         "UserID": sessionStorage.getItem("UserID")
@@ -3731,35 +3682,10 @@ function deletePSquote() {
         return false;
 
     });
-    connection.on("refreshRAQuotes", function (data) {
+    connection.on("refreshPEFAQuotes", function (data) {
 
-        var JsonMsz = JSON.parse(data[0]);
-        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-            }
-            success1.show();
-            $('#spansuccess1').html("Quoted Price deleted Successfully..");
-            success1.fadeOut(6000);
-           // App.scrollTo(success1, -200);
-          
-            fetchparticationQuotes(BidID, VendorID);
-            $('#deletepopup').modal('hide')
-            $('#txtremarks').val('')
-            $('#fileToUpload').val('')
-        }
-        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
-            $('#deletepopup').modal('hide')
-            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-        }
-        else {
-            error2.show();
-            $('#err').html('You have some error.Please try agian.');
-            error2.fadeOut(3000);
-            App.scrollTo(error2, -200);
-        }
-    })
+        fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+    });
     jQuery.unblockUI();
 }
 
@@ -3805,38 +3731,14 @@ function deleteCoalquote() {
 
     });
     connection.on("refreshCAQuotes", function (data) {
-        var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-            }
-            success1.show();
-            $('#spansuccess1').html("Quoted Price deleted Successfully..");
-            success1.fadeOut(6000);
-           // App.scrollTo(success1, -200);
-            fetchparticationQuotes(BidID, VendorID);
-            $('#deletepopup').modal('hide')
-            $('#txtremarks').val('')
-            $('#fileToUpload').val('')
-        }
-        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
-            $('#deletepopup').modal('hide')
-            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-        }
-        else {
-            error2.show();
-            $('#err').html('You have some error.Please try agian.');
-            error2.fadeOut(3000);
-            App.scrollTo(error2, -200);
-        }
-    })
+        fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+    });
     jQuery.unblockUI();
 }
 
 function deletePEFAquote() {
-    debugger
+
     var _cleanString1 = StringEncodingMechanism($('#txtremarks').val());
     var AttachementFileName = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -3844,8 +3746,8 @@ function deletePEFAquote() {
         AttachementFileName = jQuery('#fileToUpload').html();
     }
     AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); //Replace special Characters
-   
-    
+    debugger
+
     var QuoteProduct = {
         "VendorID": VendorID,
         "BidID": parseInt(BidID),
@@ -3862,7 +3764,7 @@ function deletePEFAquote() {
     }
 
     connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        debugger
+        debugger;
         //return console.error(err.toString());
         var err = xhr.responseText//eval("(" + xhr.responseText + ")");
         if (xhr.status == 401) {
@@ -3876,34 +3778,9 @@ function deletePEFAquote() {
 
     });
     connection.on("refreshPEFAQuotes", function (data) {
-        debugger
-        var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/BidID' + BidID);
-
-            }
-            success1.show();
-            $('#spansuccess1').html("Quoted Price deleted Successfully..");
-            success1.fadeOut(6000);
-          //  App.scrollTo(success1, -200);
-            fetchparticationQuotes(BidID,VendorID);
-            $('#deletepopup').modal('hide')
-            $('#txtremarks').val('')
-            $('#fileToUpload').val('')
-        }
-        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
-            $('#deletepopup').modal('hide')
-            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-        }
-        else {
-            error2.show();
-            $('#err').html('You have some error.Please try agian.');
-            error2.fadeOut(3000);
-            App.scrollTo(error2, -200);
-        }
-    })
+        fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+    });
     jQuery.unblockUI();
 }
 
@@ -3949,33 +3826,9 @@ function deleteFAquote() {
 
     });
     connection.on("refreshFAQuotes", function (data) {
-        var JsonMsz = JSON.parse(data[0]);
 
-        if (JsonMsz[0] == "1" && data[1] == sessionStorage.getItem('UserID')) {
-            if ($('#fileToUpload').val() != '') {
-                fnUploadFilesonAzure('fileToUpload', AttachementFileName, 'MangeBid/' + $('#ddlbid').val());
-
-            }
-            success1.show();
-            $('#spansuccess1').html("Quoted Price deleted Successfully..");
-            success1.fadeOut(6000);
-          //  App.scrollTo(success1, -
-            fetchparticationQuotes(BidID, VendorID);
-            $('#deletepopup').modal('hide')
-            $('#txtremarks').val('')
-            $('#fileToUpload').val('')
-        }
-        else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
-            $('#deletepopup').modal('hide')
-            bootbox.alert("You cant't delete entries more than 2 times for a vendor in a particular Bid.")
-        }
-        else {
-            error2.show();
-            $('#err').html('You have some error.Please try agian.');
-            error2.fadeOut(3000);
-            App.scrollTo(error2, -200);
-        }
-    })
+        fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
+    });
     jQuery.unblockUI();
 }
 
