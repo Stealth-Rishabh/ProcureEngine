@@ -2179,6 +2179,7 @@ function MapBidapprover() {
                         label: "OK",
                         className: "btn-success",
                         callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                             setTimeout(function () {
                                 fetchallexportdetails();
                                 $('#addapprovers').modal('hide')
@@ -3814,6 +3815,7 @@ function closeOrSubmitAfterEditEvents() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     confirmEditEventAction('submit')
                 }
             },

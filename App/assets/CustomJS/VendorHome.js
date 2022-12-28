@@ -197,6 +197,7 @@ function fnischeckSysGeneratedPass() {
                     label: "Yes",
                     className: "btn-success",
                     callback: function () {
+                        $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                         $('#ChangePassword').modal('show');
                     }
                 },

@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+  
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -194,7 +194,7 @@ function fetchRFIRFQSubjectforReport() {
         dataType: "json",
         success: function (data) {
             jQuery('#ddlbid').empty();
-
+            
             if (data.length > 0) {
 
                 sessionStorage.setItem('hdnAllRFQ', JSON.stringify(data));
@@ -230,6 +230,7 @@ function fetchRFIRFQSubjectforReport() {
 
 jQuery("#txtRFQ").typeahead({
     source: function (query, process) {
+    
         var data1 = sessionStorage.getItem('hdnAllRFQ');
         usernames = [];
         map = {};
@@ -244,7 +245,10 @@ jQuery("#txtRFQ").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+            
+            
         if (map[item].rfqid != "0") {
+                      
             FetchUOM(sessionStorage.getItem("CustomerID"));
             sessionStorage.setItem('hdnrfqid', map[item].rfqid);
             jQuery("#divresetpassword").show();
@@ -266,10 +270,10 @@ jQuery("#txtRFQ").typeahead({
             gritternotification('Please select RFQ  properly!!!');
             sessionStorage.setItem('hdnrfq', '0');
             $('#inviteVendorBody').hide();
-            $('#ddlrfq').val(0)
+            $('#ddlrfq').val(0);
         }
 
-        return item;
+        return StringDecodingMechanism(item); // abheedev 28/12/2022
     }
 
 });
@@ -483,7 +487,7 @@ function InsUpdRFQDEtailTab1() {
 }
 var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
-    
+   
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -503,6 +507,8 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $('#ctrladdapprovers').removeClass('hide')
             }
             var RFQopenDate = "Not Set";
+            var _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+            var _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
 
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType
@@ -510,8 +516,8 @@ function fetchReguestforQuotationDetails(RFQID) {
             $("#ctrlRFQOpenDates").attr('onclick', "editRow('divRFQOpenAfterClosedRFQ_0', '','')");
             jQuery('#mapedapproverPrevtab_0').html('');
 
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-            jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+            jQuery('#RFQSubject').text(_cleanStringSub);
+            jQuery('#RFQDescription').html(_cleanStringDesc);
 
             $('#currencyid').val(RFQData[0].general[0].rfqCurrencyId)
             $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -909,6 +915,7 @@ function closeOrSubmitAfterEditEvents() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     confirmEditEventAction('submit')
                 }
             },

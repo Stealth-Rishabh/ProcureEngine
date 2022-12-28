@@ -90,6 +90,7 @@ function fnForwardforAllvendorTechnical() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     MapApprover();
                 }
             },
@@ -300,6 +301,7 @@ function cancelBtnclick() {
                                 label: "Yes",
                                 className: "btn-success",
                                 callback: function () {
+                                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                     cancelRFQ('SendMail')
                                 }
                             },
@@ -307,6 +309,7 @@ function cancelBtnclick() {
                                 label: "No",
                                 className: "btn-default",
                                 callback: function () {
+                                    $('.modal-footer .btn-default').prop('disabled', true); //abheedev button duplicate
                                     cancelRFQ('NoMail')
                                 }
                             }
@@ -1038,6 +1041,7 @@ function MapRFQapprover(Type) {
                         label: "OK",
                         className: "btn-success",
                         callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                             setTimeout(function () {
 
                                 $('#addapprovers').modal('hide')

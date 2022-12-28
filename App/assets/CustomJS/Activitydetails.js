@@ -166,6 +166,7 @@ function fnConfirmArchive(RFQID) {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     fnArchive(RFQID)
                 }
             },
