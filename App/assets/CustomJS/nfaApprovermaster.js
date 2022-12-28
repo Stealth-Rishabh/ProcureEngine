@@ -1898,6 +1898,7 @@ function CompleteProcess() {
                 className: "btn-success",
                 callback: function () {
                     //window.location.reload();
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     bootbox.alert("NFA Approver Matrix Configured Successfully.", function () {
                         window.location.reload();
                         return false;

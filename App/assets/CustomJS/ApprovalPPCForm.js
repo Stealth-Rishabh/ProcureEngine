@@ -623,6 +623,7 @@ function frmApprovalPPCForm(nfagroupid) {
                                 label: "Yes",
                                 className: "btn-success",
                                 callback: function () {
+                                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                     window.location = "index.html";
                                     //if ($('#hdnPPCID').val() == "0") {
 

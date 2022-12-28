@@ -1148,6 +1148,7 @@ function fnConfirmRegretted() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     fnRegreteRFQ()
                 }
             },
@@ -1707,6 +1708,7 @@ function shwconfirmationtoreplicate() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     fnReplicateToAllItems()
                 }
             },

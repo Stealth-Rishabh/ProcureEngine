@@ -2558,7 +2558,7 @@ function Dateandtimevalidate(indexNo) {
                                     label: "Yes",
                                     className: "btn-success",
                                     callback: function () {
-
+                                        $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                         deleteBidParameter('P');
                                     }
                                 },

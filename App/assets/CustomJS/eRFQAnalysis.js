@@ -847,7 +847,7 @@ function fetchrfqcomprative() {
                             strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
                             strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td colspan='5'>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
                            
-                            debugger
+                         
                            
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
                                 
