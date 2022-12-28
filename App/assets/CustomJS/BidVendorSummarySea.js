@@ -819,14 +819,15 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-                            //abheedev removequote    
-                         //   if (data[i].srNo != 'N/A') {
-                         //       strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
-                         //   }
-                           // else {
+                            //abheedev removequote   
+                            debugger
+                           if (data[i].srNo != 'N/A') {
+                               strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
+                           }
+                            else {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo  + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td><td class="text-right" id="initialQuote' + i + '">' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
 
-                          //  }
+                            }
 
                             strsumm += "<td class=text-right id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td class=text-right id=bidvalue" + i + " >" + thousands_separators(TotalBidValue) + "</td>";
                         }
@@ -835,13 +836,13 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-                           // if (data[i].srNo != 'N/A') {
-                             //   strsumm += '<td   width="5%" >' + data[i].srNo + '<a href="#" title="remove last quote" onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
-                            //}
-                            //else {
+                            if (data[i].srNo != 'N/A') {
+                               strsumm += '<td   width=5% >' + data[i].srNo + '<a href=# title=remove last quote onclick="fetchparticationQuotes(\'' + data[i].bidid + '\',\'' + data[i].vendorId +'\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td><td class="showvendor" id=vname' + i + '>' + data[i].vendorName + '</td>';
+                            }
+                            else {
                                  strsumm += "<td>" + data[i].srNo + "</td><td class='showvendor' id=vname" + i + " >" + data[i].vendorName + "</td>";
 
-                            //}
+                            }
                             strsumm += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td><td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                         }
@@ -3556,7 +3557,7 @@ var tableToExcel = (function () {
 
 
 function fetchparticationQuotes(BidID, VendorID) {
-    debugger
+   
    
     var url = '';
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -3610,7 +3611,7 @@ function fetchparticationQuotes(BidID, VendorID) {
 
 
 function removeQuotationPS(shname, price, subtime, psid, psheaderid, QuantityAllocated) {
- debugger
+ 
     $('#deletepopup').modal('show')
     sessionStorage.setItem("shname", shname)
     sessionStorage.setItem("price", price)
