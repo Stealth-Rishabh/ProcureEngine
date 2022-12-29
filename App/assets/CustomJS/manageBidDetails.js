@@ -2019,7 +2019,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+        
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -3158,8 +3158,7 @@ function addrowfield() {
     var _Totalbiddurationfordutch = 0; var mininc = 0; var startingprice = 0; var incon = ''; var pricereducfeq = 0;
     var pricereductionamount = 0;
     var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
-    //alert(jQuery("#txtbidDatePrevtab_0").html());
-    //debugger;
+    
 
     if ($('#txttargetprice').val() != '') {
         targetprice = $('#txttargetprice').val();
