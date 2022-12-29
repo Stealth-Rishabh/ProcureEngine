@@ -1,6 +1,7 @@
 function logoutFunction() {
     sessionStorage.clear();
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
+    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 /*function handleDateTimepicker() {
@@ -302,7 +303,7 @@ function checkfilesize(fileid) {
     var size = $('#' + fileid.id)[0].files[0].size;
 
     switch (ftype.toLowerCase()) {
-        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx': case 'jpg': case 'jpeg': case 'png':
+        case 'xlsx': case 'xls': case 'pdf': case 'doc': case 'docx': case 'jpg': case 'jpeg': case 'png': case 'eml': case 'msg': case 'zip': case 'rar':
             break;
         default:
             jQuery(".alert-success").hide();
