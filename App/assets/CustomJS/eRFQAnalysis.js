@@ -775,7 +775,7 @@ function fetchrfqcomprative() {
                             }
                             //abheedev bug 410 end
 
-                            strQ += " </tr>";
+                            strQ += "<td colspan='3'>&nbsp;</td></tr>";
                             strExcelQ += " </tr>";
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
