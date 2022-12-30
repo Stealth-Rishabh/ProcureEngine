@@ -1060,7 +1060,6 @@ function deletequesrow(rowid) {
 function submitTechnicalQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    debugger
     $('#btnTechquery').attr('disabled', 'disabled')
     $('#btnSubmitApp').attr('disabled', 'disabled')
     var quesquery = "";
@@ -1154,7 +1153,6 @@ function fnquerywithdaw() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    debugger
                     $('.btn-success').prop('disabled', true); //abheedev button duplicate
                     withdrawquery();
                 }

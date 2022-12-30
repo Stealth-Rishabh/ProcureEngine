@@ -3371,7 +3371,6 @@ function fetchGraphData(itemId) {
             jQuery.unblockUI();
         }
     }).done(function () {
-        debugger
         $("#graphModalLine").modal('show');
        
         linegraphsforItems(itemId)
