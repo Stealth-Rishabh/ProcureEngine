@@ -3327,9 +3327,9 @@ function fetchGraphData(itemId) {
             jQuery.unblockUI();
         }
     }).done(function () {
-
+        debugger
         $("#graphModalLine").modal('show');
-
+       
         linegraphsforItems(itemId)
     });
 }
@@ -3483,7 +3483,9 @@ function linegraphsforItems(itemId) {
 
             credits: {
                 enabled: false
-            }
+            },
+            
+            
 
         });
 
