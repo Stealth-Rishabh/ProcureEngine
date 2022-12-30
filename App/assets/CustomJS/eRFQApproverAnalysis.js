@@ -1033,14 +1033,15 @@ function addquestions() {
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
 
-        if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
-            $('#btnTechquery').attr('disabled', 'disabled')
+        //if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
+        //    $('#btnTechquery').attr('disabled', 'disabled')
 
-        }
-        else {
-            $('#btnTechquery').removeAttr('disabled')
+        //}
+        //else {
+        //    $('#btnTechquery').removeAttr('disabled')
 
-        }
+        //}
+        $('#btnTechquery').removeAttr('disabled')
     }
 }
 function deletequesrow(rowid) {
@@ -1048,10 +1049,11 @@ function deletequesrow(rowid) {
     $('#' + rowid.id).remove();
 
     if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
-        $('#btnTechquery').attr('disabled', 'disabled')
-
+        $('#btnTechquery').attr('disabled', 'disabled');
+        
     }
     else {
+        //$('#btnTechquery').removeAttr('disabled')
 
     }
 }
@@ -1083,7 +1085,6 @@ function submitTechnicalQuery() {
                 "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
                 "PendingOn": "V"
             }
-            console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
