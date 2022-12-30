@@ -1058,6 +1058,9 @@ function deletequesrow(rowid) {
 function submitTechnicalQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+    debugger
+    $('#btnTechquery').attr('disabled', 'disabled')
+    $('#btnSubmitApp').attr('disabled', 'disabled')
     var quesquery = "";
 
     if ($("#tblquestions> tbody > tr").length > 0) {
@@ -1094,13 +1097,12 @@ function submitTechnicalQuery() {
 
                     bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .").on("shown.bs.modal", function (e) {
                         //setTimeout(function () {
-                        $('#btnTechquery').attr('disabled', 'disabled')
-                        $('#btnSubmitApp').attr('disabled', 'disabled')
+                       
                         $('#btnSubmitApp').removeClass('green').addClass('default')
                         $('#btnwithdraw').show()
                         //$('#btnmsz').removeClass('hide')
                         $("#RaiseQuery").modal('hide');
-
+                      
                         jQuery.unblockUI();
                         return true;
                         //}, 1000);
@@ -1151,7 +1153,8 @@ function fnquerywithdaw() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
+                    debugger
+                    $('.btn-success').prop('disabled', true); //abheedev button duplicate
                     withdrawquery();
                 }
             },
@@ -2038,3 +2041,4 @@ function ApprovalApp() {
 
     }
 }
+
