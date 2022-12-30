@@ -90,6 +90,7 @@ function fnForwardforAllvendorTechnical() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     MapApprover();
                 }
             },
@@ -300,6 +301,7 @@ function cancelBtnclick() {
                                 label: "Yes",
                                 className: "btn-success",
                                 callback: function () {
+                                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                     cancelRFQ('SendMail')
                                 }
                             },
@@ -307,6 +309,7 @@ function cancelBtnclick() {
                                 label: "No",
                                 className: "btn-default",
                                 callback: function () {
+                                    $('.modal-footer .btn-default').prop('disabled', true); //abheedev button duplicate
                                     cancelRFQ('NoMail')
                                 }
                             }
@@ -383,6 +386,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             var _curentRFQStatus = '';
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
@@ -413,8 +417,11 @@ function fetchReguestforQuotationDetails() {
                     $('#cancl_btn').hide();
 
                 }*/
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                //abheedev 26/12/2022
+                let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+                let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
+                jQuery('#RFQSubject').text(_cleanStringSub)
+                jQuery('#RFQDescription').html(_cleanStringDesc)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
                 jQuery('#refno').html(RFQData[0].general[0].rfqReference)
@@ -427,7 +434,7 @@ function fetchReguestforQuotationDetails() {
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
                 //abheedev bug 274
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='23'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
+                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
             }
         },
         error: function (xhr, status, error) {
@@ -1034,6 +1041,7 @@ function MapRFQapprover(Type) {
                         label: "OK",
                         className: "btn-success",
                         callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                             setTimeout(function () {
 
                                 $('#addapprovers').modal('hide')

@@ -268,7 +268,7 @@ function fetchRegisterUser() {
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
-        "Isactive": "N"
+        "Isactive": "T"
     } 
     jQuery.ajax({
         type: "POST",

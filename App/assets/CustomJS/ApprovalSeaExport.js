@@ -687,6 +687,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 $('#PPCForm').modal('hide')
                             }
                         }
@@ -706,6 +707,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 $('#PPCForm').modal('hide')
                             }
                         }
@@ -1216,6 +1218,7 @@ function MapApprover() {
                         label: "Yes",
                         className: "btn-success",
                         callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                             window.location = "index.html";
 
                         }

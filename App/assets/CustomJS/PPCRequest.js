@@ -674,7 +674,7 @@ function fncheckvendorOnEvent() {
                     label: "Yes",
                     className: "btn-success",
                     callback: function () {
-
+                        $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                         if ($('#ddlEventType').val() == 1) {
                             $('#divbiddingdetailsonEvent').show();
                             $('#divoutsideppc').hide()

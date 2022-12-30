@@ -90,6 +90,10 @@ function GetQuestions() {
                         limitReachedClass: "label label-danger",
                         alwaysShow: true
                     });
+                    if (data[i].answer != "") {
+                        $('#answer' + i).attr('disabled', 'disabled');
+                        $('#fileToUpload' + i).attr('disabled', 'disabled');
+                    }
 
                 }
             }
@@ -182,15 +186,15 @@ function fnsubmitQuery() {
     var flag = "T";
     var rowCount = jQuery('#tblRFQtechqueryPrev tr').length;
     for (i = 0; i < rowCount - 1; i++) {
-        if ($("#answer" + i).val() == "" || $("#answer" + i).val() == "0") {
+        if ($.trim($("#answer" + i).val()) == "" || $("#answer" + i).val() == "0") {
             $('#answer' + i).removeClass('has-success')
             $('#answer' + i).css("border", "1px solid red")
             flag = "F";
 
         }
-        else {
+        /*else {
             flag = "T"
-        }
+        }*/
 
     }
     if (flag == "T") {

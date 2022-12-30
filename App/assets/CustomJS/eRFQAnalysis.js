@@ -203,7 +203,7 @@ function fetchrfqcomprative() {
                 //abheedev bug 349 end
                 //abheedev bug 349 part2  start
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
-                strHeadExcelQ = "<tr><th colspan=5>Question</th><th colspan=2>Our Requirement</th>"
+                strHeadExcelQ = "<tr><th colspan=4>Question</th><th colspan=2>Our Requirement</th>"
                 //abheedev bug 349 part2  end
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
@@ -227,17 +227,17 @@ function fetchrfqcomprative() {
                     }
                 }
                 strHead += "<th>Line-wise Lowest Quote</th><th colspan='5' style='text-align:center;'>Last PO Details</th><th>Delivery Location</th>";
-                strHeadExcel += "<th>Line-wise Lowest Quote</th><th colspan='5'>Last PO Details</th><th>Delivery Location</th>";
+                strHeadExcel += "<th>Line-wise Lowest Quote</th><th colspan='5'>Last PO Details</th><th colspan=2>Delivery Location</th>";
 
                 strHead += "</tr>"
                 strHeadExcel += "</tr>"
 
                 strHeadQ += "</tr>"
-                strHeadExcelQ += "<td colspan='7'>&nbsp;</td></tr>"
+                strHeadExcelQ += "<td colspan='9'>&nbsp;</td></tr>"
 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 start
-                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 end
                 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
@@ -256,7 +256,7 @@ function fetchrfqcomprative() {
                     }
                     else {
                         strHead += "<th colspan='4' style='text-align:center;'>Not Started</th>";
-                        strHeadExcel += "<th colspan='4'>Not Started</th>";
+                        strHeadExcel += "<th colspan='5'>Not Started</th>";
                     }
                 }
                 strHead += "<th colspan=7>&nbsp;</th>";
@@ -267,7 +267,7 @@ function fetchrfqcomprative() {
 
                 strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 start
-                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
                 //abheedev bug349 end
 
                 var taxHRTextinc = stringDivider(" Unit Price (With GST)", 18, "<br/>\n");
@@ -281,7 +281,7 @@ function fetchrfqcomprative() {
 
                 }
                 strHead += "<th>" + taxHRTextEx + "</th><th>Po No</th><th>PO Date</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Value</th><th>&nbsp;</th>";
-                strHeadExcel += "<th>" + taxHRTextEx + "</th><th>Po No</th><th>PO Date</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Value</th><th>&nbsp;</th>";
+                strHeadExcel += "<th>" + taxHRTextEx + "</th><th>Po No</th><th>PO Date</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Value</th><th colspan=2>&nbsp;</th>";
 
                 strHead += "</tr>";
                 strHeadExcel += "</tr>";
@@ -316,7 +316,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].rfq + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -437,13 +437,13 @@ function fetchrfqcomprative() {
                         if (ShowPrice == 'Y' || totallowestValue == 0) {
 
                             str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                            strExcel += "<td class=text-right>" + data[0].quotesDetails[i].lowestPriceValue + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                            strExcel += "<td class=text-right>" + data[0].quotesDetails[i].lowestPriceValue + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         }
                         else {
                             if (totallowestValue != 0) {
                                 totallowestValue = "Quoted";
                                 str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                                strExcel += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                                strExcel += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                             }
                         }
                         str += "</tr>"
@@ -614,7 +614,7 @@ function fetchrfqcomprative() {
                 }
             
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
-                strExcel += "<td colspan=" + (t + 2 + (6*t)) + ">&nbsp;</td></tr>";
+                strExcel += "<td colspan=" + (t + 3 + (6*t)) + ">&nbsp;</td></tr>";
 
                
                 if (data[0].commercialTerms.length > 0) {
@@ -622,7 +622,7 @@ function fetchrfqcomprative() {
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
                     strExcel += " <tr>";
                     str += "<td><b>SrNo</b></td><td colspan=5><b>Other Commercial Terms</b></td>";
-                    strExcel += "<td>SrNo</td><td colspan=5><b>Other Commercial Terms</b></td>";
+                    strExcel += "<td><b>SrNo</b></td><td colspan=5><b>Other Commercial Terms</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                         if (data[0].vendorNames[k].seqNo != '0') {
@@ -639,7 +639,7 @@ function fetchrfqcomprative() {
 
                     }
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
-                    strExcel += "<td colspan=8><b>Our Requirement</b></td></tr>";
+                    strExcel += "<td colspan=9><b>Our Requirement</b></td></tr>";
 
                     $('#tblRFQComprativetest > tbody').empty(); // clear again for comparision of Commercial
 
@@ -689,7 +689,7 @@ function fetchrfqcomprative() {
                                 }
                             }
                             str += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
-                            strExcel += "<td colspan=8>" + data[0].commercialTerms[p].requirement + "</td>";
+                            strExcel += "<td colspan=9>" + data[0].commercialTerms[p].requirement + "</td>";
 
                             str += " </tr>";
                             strExcel += " </tr>";
@@ -701,7 +701,7 @@ function fetchrfqcomprative() {
                
 
                 str += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
-                strExcel += "<tr><td colspan=7><b>Vendor Remarks :</b></td>";
+                strExcel += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                     if (data[0].vendorNames[k].vendorRemarks != "") {
@@ -715,7 +715,7 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<td colspan=7>&nbsp;</td>";
-                strExcel += "<td colspan=8>&nbsp;</td>";
+                strExcel += "<td colspan=9>&nbsp;</td>";
                 str += " </tr>";
                 strExcel += " </tr>";
 
@@ -741,7 +741,7 @@ function fetchrfqcomprative() {
 
                             strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  start
-                            strExcelQ += "<tr><td colspan=5>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
+                            strExcelQ += "<tr><td colspan=4>" + data[0].questions[p].question + "</td><td colspan=2>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  end
                             for (var s = 0; s < data[0].questions.length; s++) {
 
@@ -775,8 +775,8 @@ function fetchrfqcomprative() {
                             }
                             //abheedev bug 410 end
 
-                            strQ += " </tr>";
-                            strExcelQ += " </tr>";
+                            strQ += "<td colspan='3'>&nbsp;</td></tr>";
+                            strExcelQ += "<td colspan='9'></tr>";
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
                         }
@@ -842,38 +842,60 @@ function fetchrfqcomprative() {
                         });
                         //abheedev bug 472
                         if (flag3 == 'T') {
-
+                            
+                           
                             strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
                             strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td colspan='5'>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
-
+                           
+                         
+                           
                             for (var s = 0; s < data[0].approverStatus.length; s++) {
-
+                                
+                                
                                 if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
-
+                                    
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
+                                       
+                                      
+                                        
                                         if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
+                                            strQ += "<td>";                                                
+                                                                                                 
+                                                if (data[0].approverStatus[s].status == 'Approved') {
+                                                    //   strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>" ;
+                                                    strQ += "<span style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "<span/>";
 
-                                            if (data[0].approverStatus[s].status == 'Approved') {
-                                                strQ += "<td style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
-                                                strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].status + "</td>";//abheedev479
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                strQ += "<td style='color: red!important; text-align: center;'>Not Approved</td>";
-                                                strExcelQ += "<td colspan='4'>Not Approved</td>";
+                                                    strExcelQ += "<td colspan='4'>" + data[0].approverStatus[s].status + "</td>";//abheedev479
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Pending') {
-                                                strQ += "<td style='color: blue!important; text-align: center;'>Pending</td>";
-                                                strExcelQ += "<td colspan='4'>Pending</td>";
+                                                }
 
-                                            }
+                                                else if (data[0].approverStatus[s].status == 'Rejected') {
+                                                    strQ += "<span style='color: red!important; text-align: center;'>Not Approved</span>";
 
+
+                                                    strExcelQ += "<td colspan='4'>Not Approved</td>";
+
+                                                }
+                                                else if (data[0].approverStatus[s].status == 'Pending') {
+                                                    strQ += "<span style='color: blue!important; text-align: center;'>Pending</span>";
+                                                    strExcelQ += "<td colspan='4'>Pending</td>";
+                                                }
+                                                
+                                                
+                                            strQ += "</td>";         
+                                          
+                                                
                                         }
+                                       
+                                      
+                                       
                                     }
+                                   
                                 }
+                                
                             }
-
+                           
 
                             strQ += " </tr>";
                             strExcelQ += "<td colspan='6'>&nbsp;</td> </tr>";
@@ -885,7 +907,7 @@ function fetchrfqcomprative() {
 
                 }
                
-                strQ += "<tr>";
+               
                 strExcelQ += " <tr><td>&nbsp;</td>";
                 t = 0;
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
@@ -902,7 +924,7 @@ function fetchrfqcomprative() {
                
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
                     str += "<tr id='reinvitationTRRem'><td colspan=6><b>Re-Invitation Remarks</b></td>";
-                    strExcel += "<tr><td colspan=7><b>Re-Invitation Remarks</b></td>";
+                    strExcel += "<tr><td colspan=6><b>Re-Invitation Remarks</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
@@ -917,7 +939,7 @@ function fetchrfqcomprative() {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-                    strExcel += "<td colspan='8'>&nbsp;</td>";
+                    strExcel += "<td colspan='9'>&nbsp;</td>";
                     strExcel += " </tr>";
                 }
 

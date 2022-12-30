@@ -217,7 +217,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
-
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 if ($('#hdnPPCID').val() == "0") {
                                     // fnSendActivitytoCommercialForPPCApp();
                                     var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + RFQSubject)
@@ -248,7 +248,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
-
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 window.close();
 
                             }

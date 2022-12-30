@@ -1033,14 +1033,15 @@ function addquestions() {
         jQuery('#tblquestions').append(str);
         jQuery("#txtquestions").val('')
 
-        if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
-            $('#btnTechquery').attr('disabled', 'disabled')
+        //if ((jQuery('#txtquestions> tbody > tr').length == 0 || queslength > 0) && PendingOn != 'A' && PendingOn != 'X') {
+        //    $('#btnTechquery').attr('disabled', 'disabled')
 
-        }
-        else {
-            $('#btnTechquery').removeAttr('disabled')
+        //}
+        //else {
+        //    $('#btnTechquery').removeAttr('disabled')
 
-        }
+        //}
+        $('#btnTechquery').removeAttr('disabled')
     }
 }
 function deletequesrow(rowid) {
@@ -1048,16 +1049,19 @@ function deletequesrow(rowid) {
     $('#' + rowid.id).remove();
 
     if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
-        $('#btnTechquery').attr('disabled', 'disabled')
-
+        $('#btnTechquery').attr('disabled', 'disabled');
+        
     }
     else {
+        //$('#btnTechquery').removeAttr('disabled')
 
     }
 }
 function submitTechnicalQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+    $('#btnTechquery').attr('disabled', 'disabled')
+    $('#btnSubmitApp').attr('disabled', 'disabled')
     var quesquery = "";
 
     if ($("#tblquestions> tbody > tr").length > 0) {
@@ -1080,7 +1084,6 @@ function submitTechnicalQuery() {
                 "Headerid": parseInt(sessionStorage.getItem('HeaderID')),
                 "PendingOn": "V"
             }
-            console.log(JSON.stringify(data))
             jQuery.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1094,13 +1097,12 @@ function submitTechnicalQuery() {
 
                     bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .").on("shown.bs.modal", function (e) {
                         //setTimeout(function () {
-                        $('#btnTechquery').attr('disabled', 'disabled')
-                        $('#btnSubmitApp').attr('disabled', 'disabled')
+                       
                         $('#btnSubmitApp').removeClass('green').addClass('default')
                         $('#btnwithdraw').show()
                         //$('#btnmsz').removeClass('hide')
                         $("#RaiseQuery").modal('hide');
-
+                      
                         jQuery.unblockUI();
                         return true;
                         //}, 1000);
@@ -1151,6 +1153,7 @@ function fnquerywithdaw() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.btn-success').prop('disabled', true); //abheedev button duplicate
                     withdrawquery();
                 }
             },
@@ -2037,3 +2040,4 @@ function ApprovalApp() {
 
     }
 }
+
