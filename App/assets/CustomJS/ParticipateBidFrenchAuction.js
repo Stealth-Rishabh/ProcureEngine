@@ -396,7 +396,7 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('BidID'));
 }
 function fetchVendorDetails() {
-   
+
 
     jQuery.ajax({
         type: "GET",
@@ -407,7 +407,6 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
             var _cleanString = StringDecodingMechanism(data[0].bidSubject);
             var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
             if (data.length == 1) {
@@ -821,7 +820,7 @@ function fetchBidHeaderDetails(_bidId) {
         success: function (data, status, jqXHR) {
             //alert(JSON.stringify(data));
             if (data.length == 1) {
-                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
                 let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsVender').show();
 
@@ -958,4 +957,10 @@ function fetchBidTime() {
         }
     });
 }
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
 
+    }
+})
