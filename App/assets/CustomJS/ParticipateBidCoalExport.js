@@ -992,3 +992,10 @@ function startTimerBeforeBidStart(duration, display) {
     }, 1000);
 
 }
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
+
+    }
+})
