@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     var date = new Date();
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
@@ -212,7 +212,7 @@ var FormWizard = function () {
                         // required: true,
                         maxlength: 50
                     },
-                    
+
                     txtPono: {
                         maxlength: 20,
                         /* required: true*/
@@ -661,7 +661,7 @@ function InsUpdRFQDEtailTab1() {
     var RFQBidType = "Closed";
     var TechnicalAppr = "Not Required";
 
-    
+
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -726,7 +726,7 @@ function InsUpdRFQDEtailTab1() {
     jQuery.unblockUI();
 }
 function InsUpdRFQDEtailTab2() {
-    var _cleanString9 = StringEncodingMechanism($.trim(this_row.find('td:eq(12)').html()));
+
 
     var tab2Items = '', ItemDetails = [];
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -759,7 +759,7 @@ function InsUpdRFQDEtailTab2() {
             var description = StringEncodingMechanism($.trim(this_row.find('td:eq(7)').html()).replace(/'/g, ""));
 
             var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(3)').html()));
-
+            var _cleanString9 = StringEncodingMechanism($.trim(this_row.find('td:eq(12)').html()));
 
             tab2Items = {
                 "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1337,7 +1337,7 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
-    } 
+    }
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -2464,6 +2464,7 @@ function ValidateVendor() {
 }
 
 function fetchReguestforQuotationDetails() {
+    debugger;
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
@@ -2473,7 +2474,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            debugger
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
@@ -2498,7 +2499,8 @@ function fetchReguestforQuotationDetails() {
 
             var dtst = (fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             var dtend = (fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
-            if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != '') {
+            //if (RFQData[0].general[0].bidopeningdate != null || RFQData[0].general[0].bidopeningdate != '' || RFQData[0].general[0].bidopeningdate != 'undefined') {
+            if (RFQData[0].general[0].bidopeningdate != null) {
                 var bidOpenDate = (fnConverToLocalTime(RFQData[0].general[0].bidopeningdate))
                 jQuery('#txtbidopendatetime').val(bidOpenDate);
             }
