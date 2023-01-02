@@ -375,7 +375,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString()+ '</span>' //timeNow()
+        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>' //timeNow()
 
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
 
@@ -543,15 +543,14 @@ function fetchBidHeaderDetails(bidId) {
 
         success: function (data, status, jqXHR) {
 
-               
+
 
             if (data.length == 1) {
-                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
                 let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsService').show();
 
                 tncAttachment = data[0].termsConditions.replace(/\s/g, "%20");
-
                 anyotherAttachment = data[0].attachment.replace(/\s/g, "%20");
 
                 $("#hdnAdvFactor").val(data[0].advFactor);
@@ -800,17 +799,9 @@ function fetchVendorDetails() {
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
 
                 jQuery("#lblbidfor").text('Price (' + data[0].bidFor + ')');
-
-
-
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
 
-
-
                 jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-
-
-
                 if (data[0].attachment != '') {
 
                     jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
@@ -1958,26 +1949,19 @@ function startTimerDutch(duration, display) {
 
         }
 
-        // console.log(timer)
-
-        // console.log(Timer1-totalfrequency)
-
+        
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
 
-            //if (timer == (Timer1 - totalfrequency)) {
-
-            // Timer1 = timer;
-
+            
             fetchBidSummaryVendorSeaExportDutch();
 
-            //fetchBidTime()
+            
 
         }
 
 
 
-        //console.log(timer)
-
+        
         if (--timer <= 0) {
 
             closeBidAir();
@@ -1987,3 +1971,10 @@ function startTimerDutch(duration, display) {
     }, 1000);
 
 }
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
+
+    }
+})

@@ -96,7 +96,7 @@ function fetchBidSummaryVendorproduct() {
                         var LqQuote = thousands_separators(data[i].lqQuotedPrice) == '0' ? '' : thousands_separators(data[i].lqQuotedPrice);
                         var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                         var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
-                        jQuery("#tblParticipantsService").append("<tr class=text-center><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + ">" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + " >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td id=itemleft" + i + "></td><td id=itemleftTime" + i + " class=bold></td><td> <input type=text class='form-control txtquote' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=itembtn" + i + " class='btn btn-warning clsdisable' onclick=fninsupdQuotesS(" + i + ")>Submit</button><br/><span class='help-block ' style=color:#a94442 id=spanclosedmsz" + i + ">Bid Item Closed.</span><br/><span id=spanmsz" + i + "   style=color:#a94442></span></td><td class=hide>" + data[i].maskVendor + "</td><td class=hide id=groupno" + i + ">" + data[i].groupNo + "</td></tr>");
+                        jQuery("#tblParticipantsService").append("<tr class=text-center><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + ">" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + " >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td id=itemleft" + i + "></td><td id=itemleftTime" + i + " class='bold itemleftTimemer' ></td><td> <input type=text class='form-control txtquote' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=itembtn" + i + " class='btn btn-warning clsdisable' onclick=fninsupdQuotesS(" + i + ")>Submit</button><br/><span class='help-block ' style=color:#a94442 id=spanclosedmsz" + i + ">Bid Item Closed.</span><br/><span id=spanmsz" + i + "   style=color:#a94442></span></td><td class=hide>" + data[i].maskVendor + "</td><td class=hide id=groupno" + i + ">" + data[i].groupNo + "</td></tr>");
 
                         if (data[i].itemStatus == "Close" || data[i].itemStatus == "Inactive" || data[i].itemStatus == "Pause") {
 
@@ -111,6 +111,7 @@ function fetchBidSummaryVendorproduct() {
                             jQuery("#txtquote" + i).attr("disabled", false)
                             jQuery("#itembtn" + i).attr("disabled", false)
                             jQuery("#spanclosedmsz" + i).addClass("hide")
+                            $('.itemleftTimemer').html('')
                             displayForS = document.querySelector('#itemleftTime' + i);
                             startTimerForStaggerItem((parseInt(data[i].itemLeft)), displayForS);
                             openlefttime = data[i].itemLeft;
@@ -273,7 +274,7 @@ function fetchVendorDetails() {
                 $('#lblTimeLeftBeforeBid').html('<b>Bid is paused.</b>').css('color', 'red');
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 $('#btnsubmit').hide()
-                
+
                 $('#tblParticipantsService').empty();
                 $('#tblParticipantsService').hide();
             }
@@ -284,7 +285,7 @@ function fetchVendorDetails() {
                 jQuery("#tblParticipantsServiceBeforeStartBid").show();
                 _isBidStarted = false;
                 $('#btnsubmit').hide()
-                
+
                 $('#tblParticipantsService').empty();
                 $('#tblParticipantsService').hide();
 
@@ -367,7 +368,8 @@ connection.on("refreshColumnStatus", function (data) {
 
                                 $("#itemleft" + i).html('')
                                 jQuery("#txtquote" + i).val('');
-                                $("#itemleftTime" + i).html('')
+                                // $("#itemleftTime" + i).html('')
+                                $('.itemleftTimemer').html('');
                                 jQuery("#txtquote" + i).attr("disabled", true)
                                 jQuery("#itembtn" + i).attr("disabled", true)
 
@@ -383,7 +385,7 @@ connection.on("refreshColumnStatus", function (data) {
 
                                 jQuery("#txtquote" + i).attr("disabled", false)
 
-
+                                $('.itemleftTimemer').html('');
                                 displayForS = document.querySelector('#itemleftTime' + i);
                                 //console.log(data[0].itemLeft)
                                 startTimerForStaggerItem((parseInt(data[0].itemLeft)), displayForS);
@@ -425,8 +427,8 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                         }
-                        console.log(data[0].groupNo)
-                        console.log($('#groupno' + i).text())
+                        // console.log(data[0].groupNo)
+                        // console.log($('#groupno' + i).text())
                         if (data[0].groupNo == $('#groupno' + i).text()) {
                             $("#itemleft" + i).html(data[0].itemTimeLeft)
 
@@ -799,6 +801,7 @@ var mytime = 0;
 var mytimeforSatus = 0;
 var coutercall = 0;
 function startTimer(duration, display) {
+
     clearInterval(mytime)
 
     var timer = duration, hours, minutes, seconds;
@@ -854,6 +857,7 @@ function startTimer(duration, display) {
 }
 function startTimerForStaggerItem(duration, displayS) {
     clearInterval(mytimeforSatus)
+    clearInterval(mytime)
     var timer = duration, hours, minutes, seconds;
     mytimeforSatus = setInterval(function () {
         hours = parseInt(timer / 3600, 10)
@@ -985,7 +989,12 @@ function fetchBidHeaderDetails(bidId) {
                 jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
                 jQuery("#lblcurrency").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);
-
+                if ($.trim(data[0].bidClosingType) == "A") {
+                    jQuery("#lblbidclosingtype").text("All items in one go");
+                }
+                else {
+                    jQuery("#lblbidclosingtype").text("Stagger at item level");
+                }
                 if (data[0].status.toLowerCase() != 'pause') {
                     $('#divtimer').show();
                     if (data[0].timeLeft < 0) {
@@ -1058,3 +1067,10 @@ function startTimerBeforeBidStart(duration, display) {
     }, 1000);
 
 }
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
+
+    }
+})

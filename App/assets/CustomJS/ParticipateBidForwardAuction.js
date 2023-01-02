@@ -1360,7 +1360,13 @@ function InsUpdQuoteScrapDutch(rowID) {
 
 
 } // Dutch PArticipation function ends here
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
 
+    }
+})
 
 
 

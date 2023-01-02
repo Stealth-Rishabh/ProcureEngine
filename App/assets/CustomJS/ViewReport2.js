@@ -5,7 +5,7 @@ var BidForID = "";
 var postfix = ''
 //FROM HTML
 $(document).ready(function () {
-    
+
     getCurrenttime();
     param = getUrlVars()["param"];
     decryptedstring = fndecrypt(param);
@@ -16,6 +16,7 @@ $(document).ready(function () {
     fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
     FetchRecomendedVendor(BidID)
     fnfetchvendortotalSummary(BidID, BidTypeID)
+    fngetConnHistory(BidID);
 
 
 });
@@ -30,7 +31,6 @@ function getCurrenttime() {
     var hour = dt.getHours();
     var mins = dt.getMinutes();
     postfix = day + "/" + month + "/" + year;
-
     $('#printed_on').html(postfix);
 }
 
@@ -144,7 +144,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 }
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
-    debugger;
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -645,7 +645,6 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")),
         url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidVendortotalSummary/?BidID=" + BidID + "&BidTypeID=" + BidTypeID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -654,9 +653,8 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
         success: function (data, status, jqXHR) {
             if (data.length > 0) {
                 $('#tblbidvendortotalsummary').show();
-
                 $('#HRTotsumm').removeClass('hide')
-                jQuery("#tblbidvendortotalsummary").append("<thead><tr style='background: gray; color: #FFF'><th>Supplier</th><th style='width:15%!important;'>Total</th><th style='width:20%!important;' class=loadingfactor >Loading Factor - &lambda; (in %)</th></thead>");
+                jQuery("#tblbidvendortotalsummary").append("<thead><tr style='background: #44b6ae;'><th colspan=3 style='font-size:19px; text-align:left;color: #FFF;'>Supplier Wise Summary</th></tr><tr><th>Supplier</th><th style='width:15%!important;'>Total</th><th style='width:20%!important;' class=loadingfactor >Loading Factor - &lambda; (in %)</th></thead>");
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#tblbidvendortotalsummary").append("<tr><td>" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].totalamount) + "</td><td class='text-right loadingfactor'>" + data[i].advFactor + "</td></tr>");
                 }
@@ -697,11 +695,11 @@ function FetchRecomendedVendor(bidid) {
 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].vendorName != "") {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].vendorName + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thvendor').show();
                     }
                     else {
-                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + data[i].receiptDt + '</td></tr>')
+                        $('#tblapprovalprocess').append('<tr><td width="20%">' + data[i].actionTakenBy + '</td><td width="20%">' + data[i].remarks + '</td><td width="20%">' + data[i].finalStatus + '</td><td width="20%">' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
                         $('#thvendor').hide();
                     }
                 }
@@ -727,6 +725,35 @@ function FetchRecomendedVendor(bidid) {
         }
     });
 
+}
+function fngetConnHistory(bidid) {
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidvendorConnectionlog/?BidID=" + bidid + "&VendorID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+
+            var JSonData = JSON.parse(data[0].jsondata);
+            jQuery("#tblIPHistory").empty();
+            if (JSonData != null && JSonData.length > 0) {
+                $('#tblIPHistory').show();
+                jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th>IP</th><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
+                for (var i = 0; i < JSonData.length; i++) {
+                    jQuery("#tblIPHistory").append("<tr><td>" + JSonData[i].machineIP + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
+                }
+            }
+            else {
+
+                jQuery("#tblIPHistory").append("<thead><tr colspan=4 style='text-align: center; color: Red'><th>No record's found</th></tr></thead>");
+            }
+
+        }
+    });
 }
 var graphData = [];
 function fnPaintGraph(shortname, counter, itemId) {
@@ -864,7 +891,7 @@ function linegraphsforItems(itemId, counter) {
                 if (data[0].submissionTime.length > 0) {
 
                     for (var x = 0; x < data[0].submissionTime.length; x++) {
-                        
+
                         graphtime.push(fnConverToLocalTime(data[0].submissionTime[x].subTime));
                     }
 
