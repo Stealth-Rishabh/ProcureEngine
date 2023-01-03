@@ -1,3 +1,4 @@
+let _RFQid;
 jQuery(document).ready(function () {
 
     var date = new Date();
@@ -23,7 +24,6 @@ jQuery(document).ready(function () {
     }
     Metronic.init();
     Layout.init();
-    var _RFQid;
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
@@ -3328,5 +3328,8 @@ function fnfillInstructionExcel() {
     }
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
+}
+function cancelbid() {
+    CancelBidDuringConfig(_RFQid, 'eRFQ');
 }
 
