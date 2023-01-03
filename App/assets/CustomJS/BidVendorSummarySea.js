@@ -2824,29 +2824,7 @@ function FetchRecomendedVendor(bidid) {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
 
-            /* if (sessionStorage.getItem("CustomerID") == 29 || sessionStorage.getItem("CustomerID") == 32) {
-                 $('#btnPPCF').show()
-                 $('#btnPPCA').show()
-                 if (isLastApprover == 'Y') {
-                     $('#btn_mapaaprover').show()
-                 }
-                 else {
-                     $('#btn_mapaaprover').hide()
-                 }
-             }
-             else {
-                 $('#btnPPCF').hide()
-                 $('#btnPPCA').hide()
-                 $('#btn_mapaaprover').hide()
-             }
-             if (isMappedPPCApp == 'Y') {
-                 $('#btn_mapaaprover').attr('disabled', 'disabled')
-                 $('#btnPPCA').attr('disabled', 'disabled')
-             }
-             else {
-                 $('#btn_mapaaprover').removeAttr('disabled')
-                 $('#btnPPCA').removeAttr('disabled')
-             }*/
+           
 
         },
         error: function (xhr, status, error) {
