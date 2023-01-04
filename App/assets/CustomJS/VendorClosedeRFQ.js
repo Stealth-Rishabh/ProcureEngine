@@ -60,7 +60,7 @@ jQuery(document).ready(function () {
 //
 
 function GetQuestions() {
-
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -71,6 +71,7 @@ function GetQuestions() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+      
             jQuery("#tblRFQtechqueryPrev").empty();
 
             if (data.length > 0) {
@@ -84,7 +85,13 @@ function GetQuestions() {
 
                     str = '<tr id=trquesid' + (i + 1) + '><td class=hide id=ques' + i + '>' + data[i].id + '</td><td>' + data[i].question + '</td><td>' + data[i].createdBy + '</td>';
                     str += '<td><textarea onkeyup="replaceQuoutesFromString(this)" name=answer rows=2 class="form-control" maxlength=1000  autocomplete=off id=answer' + i + ' >' + data[i].answer + '</textarea></td>';
-                    str += "<td><span style='width:380px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' /></span></td>";
+                    if (data[i].answer != "") {
+                      //  str += "<td><a type='file' id='fileToUpload" + i + "' style='pointer:cursor;text-decoration:none;' href='javascript:;' name='fileToUpload" + i + "'  onclick='DownloadFile(this)' />" + data[i].attachment + "</a></td>";
+                        str += '<td><a id=fileToUpload' + i + ' style = "pointer:curs0r;text-decoration:none;color:grey"  href = "javascript:;"  >' + data[i].attachment +'</td> '
+                    }
+                    else {
+                        str += "<td><span style='width:380px!important' class='btn blue'><input type='file' id='fileToUpload" + i + "' name='fileToUpload" + i + "' onchange='checkfilesize(this);' />" + data[i].attachment + "</span></td>";
+                    }
                     jQuery('#tblRFQtechqueryPrev').append(str);
                     $('#answer' + i).maxlength({
                         limitReachedClass: "label label-danger",
@@ -182,6 +189,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsubmitQuery() {
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var flag = "T";
     var rowCount = jQuery('#tblRFQtechqueryPrev tr').length;
@@ -198,17 +206,61 @@ function fnsubmitQuery() {
 
     }
     if (flag == "T") {
-        var i = 0;
+      //  var i = 0;
         var quesquery = "";
         var attchname = "";
-        var ext = "";
-        $("#tblRFQtechqueryPrev> tbody > tr").each(function (index) {
+        
+      
+        for (i = 0; i < rowCount - 1; i++) {
+                    
+           attchname = ''; ext = '';
+           if ($('#answer' + i).text() != "") {
+                attchname = jQuery('#fileToUpload' + i).text().substring(jQuery('#fileToUpload' + i).text().lastIndexOf('\\') + 1)
+                ext = $('#fileToUpload' + i).text().substring($('#fileToUpload' + i).text().lastIndexOf('.') + 1);
+                attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+                attchname = attchname.replace('.', '@')
+            
+              
+               quesquery = quesquery + $.trim($('#ques' + i).html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
+               
+              
+                
+           }
+          else {
+                attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
+                ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
+                attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+                attchname = attchname.replace('.', '@')
+              
+               quesquery = quesquery + $.trim($('#ques' + i).html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
+
+                //Upload Files on aZURE bLOB
+            if (attchname != "" && attchname != null && attchname != undefined) {
+                
+                    fnUploadFilesonAzure('fileToUpload' + i,$('#fileToUpload' + i).val(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/TechQuery');
+                }
+             }
+         
+        
+       }
+
+
+       /* $("#tblRFQtechqueryPrev> tbody > tr").each(function (index) {
             var this_row = $(this);
+                
             attchname = ''; ext = '';
-            attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
+            if ($('#answer' + i).text() != "") {
+                attchname = jQuery('#fileToUpload' + i).text().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
+            }
+            else {
+                attchname = jQuery('#fileToUpload' + i).val().substring(jQuery('#fileToUpload' + i).val().lastIndexOf('\\') + 1)
+            }
+          
             ext = $('#fileToUpload' + i).val().substring($('#fileToUpload' + i).val().lastIndexOf('.') + 1);
             attchname = attchname.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
             attchname = attchname.replace('.', '@')
+            
+          
             quesquery = quesquery + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim($('#answer' + i).val()) + '~' + attchname + '#';
 
             //Upload Files on aZURE bLOB
@@ -216,7 +268,7 @@ function fnsubmitQuery() {
                 fnUploadFilesonAzure('fileToUpload' + i, $('#fileToUpload' + i).val(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID') + '/' + sessionStorage.getItem('VendorId') + '/TechQuery');
             }
             i++;
-        });
+        });*/
         var data = {
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
             "QuesString": quesquery,
@@ -227,7 +279,7 @@ function fnsubmitQuery() {
             "PendingOn": "A"
         }
 
-        console.log(JSON.stringify(data))
+      
         jQuery.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -238,6 +290,7 @@ function fnsubmitQuery() {
             data: JSON.stringify(data),
             dataType: "json",
             success: function (data) {
+               
                 bootbox.alert("Query's Response Submitted Successfully.", function () {
                     window.location = 'VendorHome.html';
                     jQuery.unblockUI();
@@ -587,7 +640,7 @@ function fetchRFIParameteronload(ver) {
             var description = "";
             var totalammwithoutGST = 0;
             var totalammwithGST = 0;
-            // alert(data.length)
+           
             if (data.length > 0) {
 
                 jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Service</th><th>Delivery Location</th><th>UOM</th><th>Qty</th><th class=hide>TAT</th><th class=hide>Currency</th><th class=hide>Delivery Location</th><th>Landed Unit Price<br/>(Without GST)</th><th>Landed Unit Price<br/>(With GST)</th><th>Amount<br/>(Without GST)</th><th>Amount<br/>(With GST)</th><th class='hidden'>Description</th></tr></thead>");
