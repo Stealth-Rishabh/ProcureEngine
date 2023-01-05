@@ -673,7 +673,7 @@ function fetchCountry() {
         data: "{}",
         cache: false,
         async: false,
-        async: false,
+      
         dataType: "json",
         success: function (data) {
             $("#ddlCountry").empty();
