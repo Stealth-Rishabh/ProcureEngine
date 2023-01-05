@@ -60,7 +60,7 @@ jQuery("#txtrfirfqsubject").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-
+        
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
@@ -78,7 +78,7 @@ jQuery("#txtrfirfqsubject").typeahead({
 
         }
 
-        return item;
+        return StringDecodingMechanism(item);
     }
 
 });
@@ -872,6 +872,7 @@ jQuery("#txtApprover").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+        
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             $('#hdnApproverID').val(map[item].userID)
