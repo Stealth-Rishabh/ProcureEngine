@@ -316,7 +316,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -335,7 +335,7 @@ function fetchrfqcomprative() {
                                         str += "<td class='VInitialwithoutGST text-right'>Quoted</td>";
                                     }
                                     else {
-                                        strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td>";
                                         str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td>";
                                     }
                                     if (ShowPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
@@ -344,7 +344,7 @@ function fetchrfqcomprative() {
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         //abheedev backlog 335
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
@@ -361,7 +361,7 @@ function fetchrfqcomprative() {
                                         //abheedev backlog 335 end
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + data[0].quotesDetails[j].unitRate + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
                                         
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
@@ -374,7 +374,7 @@ function fetchrfqcomprative() {
                                         //abheedev backlog 335 end part 2
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         //abheedev backlog 335
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
@@ -394,7 +394,7 @@ function fetchrfqcomprative() {
 
 
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithGST + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
                                         //abheedev backlog 333
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
 
@@ -437,13 +437,13 @@ function fetchrfqcomprative() {
                         if (ShowPrice == 'Y' || totallowestValue == 0) {
 
                             str += "<td class=text-right>" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                            strExcel += "<td class=text-right>" + data[0].quotesDetails[i].lowestPriceValue + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                            strExcel += "<td >" + thousands_separators(data[0].quotesDetails[i].lowestPriceValue) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         }
                         else {
                             if (totallowestValue != 0) {
                                 totallowestValue = "Quoted";
                                 str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                                strExcel += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + (data[0].quotesDetails[i].poUnitRate) + "</td><td>" + (data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                                strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators(data[0].quotesDetails[i].poUnitRate) + "</td><td>" + thousands_separators(data[0].quotesDetails[i].poValue) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                             }
                         }
                         str += "</tr>"
@@ -462,11 +462,11 @@ function fetchrfqcomprative() {
                         if (ShowPrice == 'Y') {
                             RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                             str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
-                            strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
+                            strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " ></td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
                         }
                         else {
                             str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td>";
-                            strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td>";
+                            strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " >Quoted</td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td>";
                         }
                     }
                     else {
@@ -477,7 +477,7 @@ function fetchrfqcomprative() {
                 }
                 if (ShowPrice == "Y" || totallowestValue == 0) {
                     str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=6>&nbsp;</td></tr>";
-                    strExcel += "<td>" + totallowestValue + "</td><td colspan='7'>&nbsp;</td></tr>";
+                    strExcel += "<td>" + thousands_separators(totallowestValue) + "</td><td colspan='7'>&nbsp;</td></tr>";
                 }
                 else {
                     if (totallowestValue != 0) {
@@ -499,11 +499,11 @@ function fetchrfqcomprative() {
                             if (p != 0) {
                                 if (ShowPrice == 'Y') {
                                     str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>" + p + "</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                    strExcel += "<td id=LFactorexcel" + data[0].vendorNames[k].vendorID + ">" + data[0].loadedFactor[k].loadedFactor + "</td><td id=LoadingFexcel" + data[0].vendorNames[k].vendorID + ">" + p + "</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    strExcel += "<td id=LFactorexcel" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td id=LoadingFexcel" + data[0].vendorNames[k].vendorID + ">" + p + "</td><td>&nbsp;</td><td>&nbsp;</td>";
                                 }
                                 else {
                                     str += "<td style='text-align:right;' id=LFactor" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td  id=LoadingF" + data[0].vendorNames[k].vendorID + " style='text-align:right;'>Quoted</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                    strExcel += "<td id=LFactorexcel" + data[0].vendorNames[k].vendorID + ">" + data[0].loadedFactor[k].loadedFactor + "</td><td id=LoadingFexcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    strExcel += "<td id=LFactorexcel" + data[0].vendorNames[k].vendorID + ">" + thousands_separators(data[0].loadedFactor[k].loadedFactor) + "</td><td id=LoadingFexcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td>&nbsp;</td><td>&nbsp;</td>";
                                 }
                             }
                             else {
@@ -741,7 +741,7 @@ function fetchrfqcomprative() {
 
                             strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  start
-                            strExcelQ += "<tr><td colspan=4>" + data[0].questions[p].question + "</td><td colspan=2>" + data[0].questions[p].requirement + "</td>";
+                            strExcelQ += "<tr><td colspan=4>" + data[0].questions[p].question + "</td><td colspan=3>" + data[0].questions[p].requirement + "</td>";
                             //abheedev bug 349 part2  end
                             for (var s = 0; s < data[0].questions.length; s++) {
 

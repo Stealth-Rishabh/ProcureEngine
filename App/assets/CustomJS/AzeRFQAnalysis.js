@@ -24,7 +24,7 @@ jQuery(document).ready(function () {
     fetchRFIRFQSubjectforReport('RFQ')
 
     formvalidate();
-    fetchMenuItemsFromSession(7, 47);
+   
     fetchRegisterUser();
 });
 if (window.location.search) {
@@ -62,7 +62,7 @@ function getSummary(vendorid, version) {
 }
 var Vendor;
 function fetchrfqcomprative() {
-
+   
 
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -76,7 +76,7 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+           
             var str = '';
             var strHead = '';
             var strHeadExcel = '';
@@ -105,10 +105,12 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             // ShowPrice = data[0].ShowPrice[0].ShowQuotedPrice;
-            var ShowPrice = 'N'
+           // var ShowPrice = 'N'
             var _CurrentDate = new Date();
+            ShowPrice = 'Y';
+            $('#btnPDF').show()
 
-            var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
+           /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
 
             if (_rfqBidType != 'Open') {
                 if (bidopeningdate != null || bidopeningdate != '') {
@@ -127,7 +129,7 @@ function fetchrfqcomprative() {
                 $('#btnPDF').show()
 
             }
-            // sessionStorage.setItem('ShowPrice', '');
+*/            // sessionStorage.setItem('ShowPrice', '');
             sessionStorage.setItem('ShowPrice', ShowPrice);
 
             if (data[0].vendorNames.length > 0) {

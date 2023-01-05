@@ -16,41 +16,7 @@ jQuery(document).ready(function () {
     $('#txtLastFiscalyear').val(getCurrentFinancialYear())
     $('#txt2LastFiscalyear').val(getlastFinancialYear())
 });
-//function addMoreAttachment1() {
 
-//    _count = ($("#tblAttachmentsElem > li").length + 1);
-
-//    console.log("count ==> ", _count);
-
-//    $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
-
-//        '<label class="control-label col-md-3"  style="text-align:left">Attachment</label>' +
-
-//        '<div class="col-md-4">' +
-
-//        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
-
-//        '</div>' +
-
-//        '<div class="col-md-3">' +
-
-//        '<input type="file" id=file' + _count + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-
-//        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
-
-//        '</div>' +
-
-//        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
-
-//        '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
-
-//        '</div>' +
-
-//        '</div></li>'
-
-//    );
-
-//}
 
 function fetchCategorymaster1() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -351,14 +317,6 @@ function getPan(pan) {
     }
 }
 
-/*function fetchMsme() {
-    var msmecheck = $("#ddlMSME option:selected").val();
-    if (msmecheck == 'Y') {
-        $('.hideInput').removeClass('hide');
-    } else {
-        $('.hideInput').addClass('hide');
-    }
-}*/
 function fetchMsme() {
 
     if (jQuery("#ddlMSME option:selected").val() == 'Y') {
@@ -568,7 +526,7 @@ function fetchCategorymaster() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
