@@ -635,6 +635,11 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+
+$.validator.addMethod("numberWithComma", function (value, element) {
+    
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 var FormWizard = function () {
 
     return {
@@ -672,7 +677,7 @@ var FormWizard = function () {
                         required: true,
                         minlength: 1,
                         maxlength: 3,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -690,7 +695,7 @@ var FormWizard = function () {
 
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -714,7 +719,7 @@ var FormWizard = function () {
                     },
                     txtBidExtension: {
                         //required: true,
-                        number: true
+                        numberWithComma: true,
                     },
 
                     //Second Tab
@@ -723,7 +728,7 @@ var FormWizard = function () {
                     },
                     txtquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtUOM: {
@@ -732,39 +737,39 @@ var FormWizard = function () {
 
                     txtCeilingPrice: {
                         required: true,
-                        number: true,
+                        numberWithComma:true,
                         notEqualTo: 0
                     },
 
                     txtminimumdecreament: {
                         required: true,
-                        number: true
+                        numberWithComma: true
                     },
                     drpdecreamenton: {
                         required: true
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     },
                     txtlastinvoiceprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     },
                     txtStartingPrice: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
 
                     },
                     txtPriceReductionAmount: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtPriceReductionFrequency: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -2270,7 +2275,7 @@ function fetchScrapSalesBidDetails() {
                     required: true,
                     minlength: 1,
                     maxlength: 3,
-                    number: true
+                    numberWithComma: true,
                 });
                 $('#showhlprice').attr('disabled', false).val("N");
                 $('#btnexcel').show()
@@ -2281,7 +2286,7 @@ function fetchScrapSalesBidDetails() {
                     required: true,
                     minlength: 1,
                     maxlength: 3,
-                    number: true
+                    numberWithComma: true,
                 });
                 $('#showhlprice').attr('disabled', true).val("Y");
             }
