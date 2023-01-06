@@ -575,6 +575,7 @@ function fetchRFQLevelTC(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
+           
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblRFQLevelTCForQuot").empty();
             jQuery("#tbltermsconditionprev").empty();
@@ -1092,7 +1093,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+           
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
                 let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
@@ -1313,6 +1314,7 @@ function fetchRFIParameteronload(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
+          
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty();
@@ -1335,6 +1337,7 @@ function fetchRFIParameteronload(ver) {
                 }
 
                 $('#txtvendorremarks').val(data[0].vendorRemarks);
+                $('#lblvendorremark').text(data[0].vendorRemarks);
                 for (var i = 0; i < data.length; i++) {
 
                     description = stringDivider(data[i].rfqDescription, 40, "<br/>\n");
