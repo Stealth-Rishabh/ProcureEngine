@@ -4,10 +4,15 @@
 <head>
 
     <title></title>
-   
+
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
     <link rel="stylesheet" href="assets/CustomCSS/viewreport.css">
+    
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/jspdf.debug.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
 </head>
 <body>
 
@@ -24,7 +29,7 @@
                             <label>BidSummary </label><label id="bid_status" class="viewreportstyle2"></label>
                         </div>
 
-                        <table  border="1" id="tbldetails">
+                        <table border="1" id="tbldetails">
                             <thead>
                                 <tr>
                                     <th>Bid Subject</th>
@@ -98,14 +103,10 @@
 
 
 
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/jspdf.debug.js"></script>
-    <script src="assets/CustomJS/html2canvas.js"></script>
-    <script src="assets/CustomJS/ViewReport.js" type="text/javascript"></script>
-
+    
     <script type="text/javascript" nonce="pev3">
         $(document).ready(function () {
+            callPagejs('ViewReport.js,html2canvas.js');
             getCurrenttime();
             BidID = getUrlVars()["BidID"];
             BidTypeID = getUrlVars()["BidTypeID"];

@@ -200,6 +200,7 @@
         .vendorlist {
             padding: 12px 10px 11px 10px;
         }
+
     </style>
 
 </head>
@@ -682,9 +683,10 @@
         </div>
     </div>
 
-    <div id="graphModalLine" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="portlet box blue">
+    
+    <div id="graphModalLine" class="modal fade bs-modal-lg resizeable" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog modal-lg ">
+            <div class="portlet box blue" >
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-reorder"></i>Bidding Trend
@@ -700,7 +702,7 @@
                             <table class="table table-striped table-bordered table-hover" id="tblForTrendGraphs"></table>
                         </div>
                         <div class="col-md-6">
-                            <div id="linechart_material"></div>
+                            <div id="linechart_material" ></div>
                         </div>
                     </div>
                 </div>
@@ -820,6 +822,7 @@
         </div>
         <!-- END CONTENT -->
     </div>
+
 
 
     <script>
