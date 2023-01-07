@@ -99,15 +99,20 @@ connection.on("refreshPEFAQuotes", function (data) {
 
 });
 connection.on("refreshColumnStatusFA", function (data) {
-
+   
     var JsonMsz = JSON.parse(data[0]);
     if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
+       
+        let quantity = parseFloat(removeThousandSeperator($('#quantity').text()));
+        let lastquote = parseFloat(removeThousandSeperator($('#lastQuote0').text()));
+        let totalbidvalue0 = lastquote * quantity;
+        $('#totalbidvalue0').text(totalbidvalue0);
         $('#spanamount' + $('#hdnselectedindex').val()).removeClass('hide')
         $('#spanamount' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
         return false;
     }
     else {
-
+       
         clearInterval(mytime)
         url = sessionStorage.getItem("APIPath") + "VendorParticipation/BidSummaryPefa/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType")
         jQuery.ajax({
@@ -119,7 +124,7 @@ connection.on("refreshColumnStatusFA", function (data) {
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-
+               
                 if (data.length > 0) {
 
                     for (var i = 0; i < data.length; i++) {
@@ -704,7 +709,7 @@ function startTimer(duration, display) {
 }
 
 function InsUpdQuoteScrap(rowID) {
-    var TotalBidValue = '';
+    var TotalBidValue
     TotalBidValue = removeThousandSeperator(parseFloat($("#quantity").text())) * parseFloat(removeThousandSeperator($("#txtquote0").val()));
     TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue; 
     var vendorID = 0;
@@ -810,6 +815,7 @@ function InsUpdQuoteScrap(rowID) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')
+        
         //alert(JSON.stringify(QuoteProduct))
         //jQuery.ajax({
         //    url: sessionStorage.getItem("APIPath") + "VendorParticipation/ParticipationScrapSaleSingleItem/",
