@@ -1008,7 +1008,8 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-            ReInviteVendorsForRFQ();
+            Dateandtimevalidate();
+            //ReInviteVendorsForRFQ();
         }
 
     });

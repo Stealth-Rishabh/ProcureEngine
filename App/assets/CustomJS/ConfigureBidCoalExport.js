@@ -46,7 +46,7 @@ jQuery(document).ready(function () {
     fetchParticipantsVender();// fetch all vendors for advance search
     fetchVendorGroup('M', 0); // used to fetch product category
     showhideItemBidDuration();
-   
+
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param);
@@ -1072,7 +1072,20 @@ function ConfigureBidForCoalTab1() {
 
         })
     }
-    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    var StartDT = new Date();
+    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+        // StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
+        StartDT = $('#txtbidDate').val().replace('-', '');
+    }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
     var _cleanString = StringEncodingMechanism(jQuery("#txtBidSubject").val());
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtbiddescription").val());
@@ -1086,9 +1099,8 @@ function ConfigureBidForCoalTab1() {
         "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
         "BidDescription": _cleanString2,
-        //"BidDate": jQuery("#txtbidDate").val(),
-        "BidDate": StartDT,
-        //"BidTime": jQuery("#txtbidTime").val(),
+        "BidDateSt": ST,
+        //"BidDate": StartDT,
         "BidDuration": parseInt(BidDuration),
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "BidTypeID": 8,
@@ -2143,13 +2155,25 @@ function DownloadFile(aID) {
 
 
 function Dateandtimevalidate(indexNo) {
+
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
 
     }
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
-        "BidDate": StartDT
+        "BidDate": ST
     }
     //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({

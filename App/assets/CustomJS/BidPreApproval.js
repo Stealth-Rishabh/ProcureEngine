@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     Pageloaded()
 
     setInterval(function () { Pageloaded() }, 15000);
@@ -441,8 +441,26 @@ var FormValidation = function () {
 
             submitHandler: function (form) {
 
-                var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
-                Dateandtimevalidate(BidDate);
+                //var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+                var BidDate = new Date();
+
+                if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+                    //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+                    BidDate = $('#txtbidDate').val().replace('-', '');
+
+                }
+
+                let StTime =
+                    new Date(BidDate.toLocaleString("en", {
+                        timeZone: sessionStorage.getItem('preferredtimezone')
+                    }));
+
+                ST = new String(StTime);
+                ST = ST.substring(0, ST.indexOf("GMT"));
+                ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+
+                Dateandtimevalidate(ST);
                 //if (isLastPreApprover == "Y") {
                 //if (BidDate < new Date()) {
                 //    bootbox.alert("Date and Time should not be less than current date and time.");

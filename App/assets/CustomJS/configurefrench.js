@@ -29,7 +29,7 @@
     fetchBidType();// for serach vendor
     FetchUOM(sessionStorage.getItem("CustomerID"));
     BindNoExtensions('txtBidExtension');
- 
+
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
@@ -74,7 +74,7 @@ if (window.location.search) {
     }
     else {
         sessionStorage.setItem('CurrentBidID', _BidID)
-       
+
         fetchFrenchBidDetails();
         sessionStorage.setItem('_savedDraft', 'Y')
     }
@@ -451,13 +451,13 @@ function FetchCurrency(CurrencyID) {
 }
 var vCount = 0;
 function Check(event, vname, vendorID) {
-   
+
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
 
     }
     else {
-       
+
         vCount = vCount + 1;
         //var EvID = event.id;
         $(event).prop("disabled", true);
@@ -480,7 +480,7 @@ function Check(event, vname, vendorID) {
 }
 
 function removevendor(trid, trprevid, vid) {
-   
+
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
@@ -506,7 +506,7 @@ function removevendor(trid, trprevid, vid) {
 
 var status;
 function ValidateVendor() {
-  
+
     status = "false";
     var i = 0;
 
@@ -530,7 +530,7 @@ function ValidateVendor() {
 }
 
 $("#chkAll").click(function () {
-   
+
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -538,7 +538,7 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + vCount).prop("disabled", true);
             var vendorid = $('#chkvender' + vCount).val()
@@ -552,7 +552,7 @@ $("#chkAll").click(function () {
     }
     else {
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").removeClass("checked");
             vCount = 0;
             $('input[name="chkvender"]').prop('disabled', false);
@@ -603,7 +603,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-    
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -922,7 +922,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
-                     
+
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -1047,8 +1047,16 @@ function ConfigureBidInsfrenchTab1() {
     }
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
     }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
 
     var Tab1Data = {
@@ -1057,13 +1065,11 @@ function ConfigureBidInsfrenchTab1() {
         "BidTypeID": 9,
         "BidForID": parseInt($("#ddlAuctiontype option:selected").val()),
         "BidDuration": parseInt(bidDuration),
-        //"BidSubject": jQuery("#txtBidSubject").val(),
         "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
         "BidDescription": _cleanString2,
-        "BidDate": StartDT,
-        //"BidDate": jQuery("#txtbidDate").val(),
-        //"BidTime": jQuery("#txtbidTime").val(),
+        //"BidDate": StartDT,
+        "BidDateSt": ST,
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "ConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "TermsConditions": TermsConditionFileName,
@@ -1127,8 +1133,8 @@ function ConfigureBidInsfrenchTab1() {
 }
 
 function ConfigureBidInsfrenchTab2() {
-   
-  
+
+
     var targetPrice;
     var lastInvoiceprice = 0, i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1179,7 +1185,7 @@ function ConfigureBidInsfrenchTab2() {
 
     };
 
-  
+
     jQuery.ajax({
 
         type: "POST",
@@ -1191,7 +1197,7 @@ function ConfigureBidInsfrenchTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-           
+
             if (parseInt(data) > 0) {
                 return true;
             }
@@ -1220,7 +1226,7 @@ function ConfigureBidInsfrenchTab2() {
     jQuery.unblockUI();
 }
 function ConfigureFrenchVendorsave() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
@@ -1422,7 +1428,7 @@ $('#addapprovers').on("hidden.bs.modal", function () {
     $('#frmapproverbody').addClass('hide')
     $('#txtpreApproverBid').val('')
     sessionStorage.setItem('hdnpreApproverid', '0');
-   
+
     fetchFrenchBidDetails();
 })
 function fnclosepopupApprovers() {
@@ -1876,7 +1882,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 var _bidType;
 function fetchFrenchBidDetails() {
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
@@ -1887,7 +1893,7 @@ function fetchFrenchBidDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
@@ -2004,9 +2010,9 @@ function fetchFrenchBidDetails() {
                 rowAppItemsrno = rowAppItemsrno + 1;
             }
             if (BidData[0].bidVendorDetails.length > 0) {
-              
+
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
-                  
+
                     vCount = vCount + 1;
                     jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
@@ -2017,7 +2023,7 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-           
+
 
         },
         error: function (xhr, status, error) {
@@ -2129,12 +2135,24 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 }
 function Dateandtimevalidate(indexNo) {
     var StartDT = new Date();
+
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
 
     }
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
-        "BidDate": StartDT
+        "BidDate": ST
     }
     //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
@@ -2375,7 +2393,7 @@ jQuery("#txtSearch").typeahead({
 
             var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
@@ -2419,7 +2437,7 @@ function getCategoryWiseVendors(categoryID) {
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 

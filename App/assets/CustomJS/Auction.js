@@ -227,49 +227,7 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     });
 
 }
-function CheckOnlineStatus(msg) {
 
-
-    var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
-    if (condition == "OFFLINE") {
-
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "positionClass": "toast-bottom-full-width",
-            "onclick": null,
-            "showDuration": "1000",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-
-        toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
-
-
-    }
-    else {
-
-    }
-
-}
-function Pageloaded() {
-
-    CheckOnlineStatus("load");
-    document.body.addEventListener("offline", function () {
-
-        CheckOnlineStatus("offline")
-    }, false);
-    document.body.addEventListener("online", function () {
-
-        CheckOnlineStatus("online")
-
-    }, false);
-}
 function BindNoExtensions(divid) {
 
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
@@ -295,7 +253,7 @@ $('#logOut_btn').click(function () {
 });
 //abheedev bug 605 16/12/2022
 function checkfilesize(fileid) {
-   
+
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -452,7 +410,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -549,7 +507,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 ////******* Chat functions*********/////////////////////////////
 
 function openForm() {
-    
+
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -593,7 +551,7 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
-    
+
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
@@ -616,7 +574,7 @@ function fetchBroadcastMsgs(userId, msgType) {
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                   
+
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
                             + '<div class="message">'
@@ -667,7 +625,6 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
@@ -689,7 +646,7 @@ function fetchvendor() {
 
                     }
                     else {
-                       
+
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
@@ -733,7 +690,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-   
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -781,7 +738,7 @@ function fetchUserChats(userId, msgType) {
                             + '</div>');
                     }
                 }
-                
+
                 if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
                     openForm();
                 }
@@ -808,7 +765,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -864,7 +821,7 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-    
+
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
@@ -951,7 +908,7 @@ function fnConverToLocalTime(dttime) {
     else return '..'
 }
 function fnSetLocalFromTimeZone(dateTime) {
-  
+
     var retDt = new Date();
     var userTz = sessionStorage.getItem('preferredtimezone');
     var systemDate = new Date();
@@ -1392,96 +1349,7 @@ function getUrlVarsURL(URLString) {
 }
 
 
-var code = {
 
-    encryptMessage: function (messageToencrypt, secretkey) {
-        var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
-        return encryptedMessage.toString();
-    },
-    decryptMessage: function (encryptedMessage, secretkey) {
-        var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
-        var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
-
-        return decryptedMessage;
-    }
-}
-//var key = 'MAKV2SPBNI99212';
-function fnEnryptURL(URL) {
-
-    var hashes = URL.slice(URL.indexOf('?') + 1)//.split('&')
-    var encryptedstring = encrypt(hashes)
-    var url = URL.split("?")[0] + "?param=" + encryptedstring
-    return url;
-}
-function encrypt(message) {
-    var message = CryptoJS.AES.encrypt(message, key);
-    return message.toString();
-}
-function decrypt(message) {
-    var code = CryptoJS.AES.decrypt(message, key);
-    var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
-    return decryptedMessage;
-}
-var key = CryptoJS.enc.Utf8.parse('8080808080808080');
-var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
-function fnencrypt(message) {
-    var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
-        {
-            keySize: 128 / 8,
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-    return (encryptedtext)
-}
-function fndecrypt(message) {
-
-    var key = CryptoJS.enc.Utf8.parse('8080808080808080');
-    var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
-
-    var dncryptedpassword = CryptoJS.AES.decrypt(message, key,
-        {
-            keySize: 128 / 8,
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        })
-
-    return (dncryptedpassword.toString(CryptoJS.enc.Utf8))
-
-}
-var Base64 = {
-
-    _keyStr: "MAKV2SPBNI99212",
-    encode: function (e) {
-        var t = ""; var n, r, i, s, o, u, a; var f = 0;
-        e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) }
-        return t
-    },
-    decode: function (e) {
-        var t = ""; var n, r, i; var s, o, u, a; var f = 0;
-        e = e.replace(/[^A-Za-z0-9+/=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t
-    },
-    _utf8_encode: function (e) {
-        e = e.toString().replace(/rn/g, "n");
-        var t = ""; for (var n = 0; n < e.length; n++) {
-            var r = e.charCodeAt(n);
-            if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) }
-        } return t
-    },
-    _utf8_decode: function (e) {
-        var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t
-    }
-}
-function _base64ToArrayBuffer(base64) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
 var tableToExcelMultipleSheetwithoutColor = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
@@ -1813,7 +1681,7 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-   
+
     var returnStr = maliciousText;
     returnStr = returnStr.replaceAll('&lt;', '<');
     returnStr = returnStr.replaceAll('&gt;', '>');
@@ -1923,47 +1791,48 @@ function checkPasswordValidation(value) {
 }
 //common function
 function RegisterUser_fetchRegisterUser(docData) {
-  
+
     var data = docData;
     var dataToReturn = "";
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
-    (async () => {jQuery.ajax({
-        //type: "GET",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-           
-            if (data.length > 0) {
-                dataToReturn = data;
-                
-            }
-            else {
-                dataToReturn = '';
+    (async () => {
+        jQuery.ajax({
+            //type: "GET",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (data) {
+
+                if (data.length > 0) {
+                    dataToReturn = data;
+
+                }
+                else {
+                    dataToReturn = '';
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+                return false;
+
             }
 
-        },
-        error: function (xhr, status, error) {
-     
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
 
-        }
-
-
-    });
+        });
     })();
     return dataToReturn;
 }

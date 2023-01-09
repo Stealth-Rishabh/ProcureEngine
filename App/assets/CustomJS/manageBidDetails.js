@@ -2354,8 +2354,23 @@ function DateandtimevalidateForBidOpen(ismailsend) {
     }
     else {
         if ($('#ddlBidStatus option:selected').text().toLowerCase() != "close") {
-            var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
-            Dateandtimevalidate(BidDate, ismailsend, '');
+            //var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+            var BidDate = new Date();
+            if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+                BidDate = $('#txtbidDate').val().replace('-', '');
+
+            }
+
+            let StTime =
+                new Date(BidDate.toLocaleString("en", {
+                    timeZone: sessionStorage.getItem('preferredtimezone')
+                }));
+
+            ST = new String(StTime);
+            ST = ST.substring(0, ST.indexOf("GMT"));
+            ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+            // Dateandtimevalidate(BidDate, ismailsend, '');
+            Dateandtimevalidate(ST, ismailsend, '');
         }
         else {
             erroropenbid.show();
@@ -2427,18 +2442,45 @@ function fnpauseaction() {
 
     else {
 
-        var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
-        Dateandtimevalidate(reopendtst, '', 'reopen');
+        //var reopendtst = new Date($('#txtreopenDate').val().replace('-', ''));
+        var reopendtst = new Date();
+        if ($('#txtreopenDate').val() != null && $('#txtreopenDate').val() != "") {
+            reopendtst = $('#txtreopenDate').val().replace('-', '');
+
+        }
+
+        let StTime =
+            new Date(reopendtst.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
+
+        ST = new String(StTime);
+        ST = ST.substring(0, ST.indexOf("GMT"));
+        ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+        Dateandtimevalidate(ST, '', 'reopen');
     }
     jQuery.unblockUI();
 }
 function fnupdateStaggerReopendatetime() {
-    var dtst = new Date($('#txtreopenDate').val().replace('-', ''));
+    //var dtst = new Date($('#txtreopenDate').val().replace('-', ''));
+    var dtst = new Date();
+    if ($('#txtreopenDate').val() != null && $('#txtreopenDate').val() != "") {
+        dtst = $('#txtreopenDate').val().replace('-', '');
+    }
+    let StTime =
+        new Date(dtst.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
     var Data = {
         "BidID": parseInt(jQuery('#ddlbid').val()),
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": 0,
-        "BidDate": dtst,
+        //"BidDate": dtst,
+        "BidDateSt": ST,
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }
@@ -2555,9 +2597,25 @@ function fnTimeUpdate() {
 }
 
 function fnTimeUpdateClosedBid(isMailSend) {
-    var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+    // var StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var finalStatus = "";
+
+    var StartDT = new Date();
+    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+        StartDT = $('#txtbidDate').val().replace('-', '');
+    }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     if ($('#ddlBidfinalStatus').val() != null && $('#ddlBidfinalStatus').val() != "") {
         finalStatus = $('#ddlBidfinalStatus').val();
     }
@@ -2565,7 +2623,8 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "BidStatus": parseInt($('#ddlBidStatus option:selected').val()),
         "BidID": parseInt(jQuery('#ddlbid').val()),
         "BidDuration": parseInt(jQuery('#txtBidDurationForBidOpen').val()),
-        "BidDate": StartDT,
+        // "BidDate": StartDT,
+        "BidDateSt": ST,
         "IsMailSend": isMailSend,
         "FinalStatus": finalStatus,
         "UserID": sessionStorage.getItem('UserID'),
