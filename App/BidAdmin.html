@@ -200,7 +200,14 @@
         .vendorlist {
             padding: 12px 10px 11px 10px;
         }
-
+        .graphwidth {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            background-color: white;
+        }
     </style>
 
 </head>
@@ -686,7 +693,7 @@
     
     <div id="graphModalLine" class="modal fade bs-modal-lg resizeable" tabindex="-1"  aria-hidden="true">
         <div class="modal-dialog modal-lg ">
-            <div class="portlet box blue" >
+            <div class="portlet box blue graphwidth" >
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-reorder"></i>Bidding Trend
@@ -698,11 +705,14 @@
                 </div>
                 <div class="portlet-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-striped table-bordered table-hover" id="tblForTrendGraphs"></table>
-                        </div>
-                        <div class="col-md-6">
+                        
+                        <div class="col-md-12">
                             <div id="linechart_material" ></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered table-hover" id="tblForTrendGraphs"></table>
                         </div>
                     </div>
                 </div>
