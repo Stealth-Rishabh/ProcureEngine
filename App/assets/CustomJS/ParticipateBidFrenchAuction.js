@@ -407,8 +407,9 @@ function fetchVendorDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-          
+
             if (data.length == 1) {
+
                 var _cleanString = StringDecodingMechanism(data[0].bidSubject);
                 var _cleanString2 = StringDecodingMechanism(data[0].bidDetails);
                 $('#tblParticipantsVender').show();
