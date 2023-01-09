@@ -679,7 +679,7 @@ jQuery("#searchPendingActivities").keyup(function () {
 });
 
 
-jQuery("#searchPendingBids").keyup(function () {
+jQuery("#searchPendingBids").keyup(function (){
     jQuery("#ulList li:has(div)").hide(); // Hide all the rows.
 
     var iCounter = 0;

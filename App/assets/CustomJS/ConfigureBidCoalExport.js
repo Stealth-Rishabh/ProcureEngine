@@ -3042,7 +3042,6 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append('<tr><td  colspan=2>Y for Show start price to all vendors – vendors can not quote higher than this price</td></tr>');
     $('#tblUOM').append('<tr><td  colspan=2>N for Hide</td></tr>');
     $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
-
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure all Prices and Quantity are in Number format, and Dates in Date format.</th></tr>')
 
     $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")

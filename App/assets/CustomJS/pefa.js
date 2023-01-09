@@ -3471,7 +3471,6 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure all Prices and Quantity are in Number format, and Dates in Date format.</th></tr>')
 
     $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
-
     $('#tblUOM').append('<tr><th   colspan=2 data-style="Header" colspan=2>Please enter UOM as given below:</th></tr>')
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
     for (var i = 0; i < parseInt(quorem); i++) {

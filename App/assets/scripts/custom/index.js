@@ -1,6 +1,6 @@
 
 
-var Index = function () {
+var Index = function ()  {
     return {
 
         //main function

@@ -1074,7 +1074,6 @@ function deleteRFQApprow(rowid) {
         jQuery('#btnrfqapproversubmit').attr("disabled", "disabled");
     }
 }
-
 function MapRFQapprover(Type) {
     var RFQID = 0;
     if (Type == "Report") {

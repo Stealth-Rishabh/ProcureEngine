@@ -1550,7 +1550,6 @@ function multilingualLanguage() {
                 History.pushState(null, null, "?locale=" + $.i18n().locale);
 
             });
-
             $('a').click(function (e) {
 
                 if (this.href.indexOf('?') != -1) {

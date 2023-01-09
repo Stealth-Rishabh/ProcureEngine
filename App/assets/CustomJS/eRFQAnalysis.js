@@ -806,8 +806,7 @@ function fetchrfqcomprative() {
                     t = k;
 
                 }
-
-                if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+            if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                     strQ += "<td>After All RFQ Responses</td>"
                     //abheedev bug 349 part2  start
                     strQ += '<td colspan=' + (t + 4) + '><a href="javascript:;" class="btn btn-xs yellow" id=btn_techmapaaprover onclick="fnForwardforAllvendorTechnical()"> Technical Approval</a></td>';

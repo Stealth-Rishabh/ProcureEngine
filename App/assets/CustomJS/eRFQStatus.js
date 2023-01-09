@@ -386,7 +386,6 @@ function ExtendDuration() {
         });
     }
 
-
 function Dateandtimevalidate() {
 
     var EndDT = new Date();

@@ -2484,7 +2484,6 @@ function fnupdateStaggerReopendatetime() {
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }
-
     //console.log(JSON.stringify(Data))
     connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
         return console.error(err.toString());

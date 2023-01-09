@@ -1042,7 +1042,6 @@ function ConfigureBidInsfrenchTab1() {
 
             var this_row = $(this);
             approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
-
         })
     }
     var StartDT = new Date();

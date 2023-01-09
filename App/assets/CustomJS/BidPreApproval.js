@@ -671,8 +671,7 @@ function FetchRecomendedVendor(bidid) {
                 $("#lblLastcomments").text(data[0].remarks);
 
             }
-
-            else {
+        else {
                 $('#divRemarksApp').removeClass('col-md-6');
                 $('#divRemarksApp').addClass('col-md-12');
             }

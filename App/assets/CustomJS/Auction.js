@@ -1818,7 +1818,6 @@ function RegisterUser_fetchRegisterUser(docData) {
 
             },
             error: function (xhr, status, error) {
-
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);

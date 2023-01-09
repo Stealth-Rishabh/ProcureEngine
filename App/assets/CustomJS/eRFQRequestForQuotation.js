@@ -3545,7 +3545,6 @@ function addMoreTermsCondition() {
     });
 
     i = parseInt(maxinum) + 1;
-
     var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
     str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
     str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
