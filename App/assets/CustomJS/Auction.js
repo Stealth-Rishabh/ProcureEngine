@@ -233,7 +233,6 @@ function CheckOnlineStatus(msg) {
 
     var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
     if (condition == "OFFLINE") {
-
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -850,6 +849,7 @@ function getUrlVars() {
 }
 
 if (window.location.search) {
+  
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
     BidID = getUrlVarsURL(decryptedstring)['BidID'];
@@ -1010,8 +1010,10 @@ function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
 }
 function fnConverToLocalTimeWithSeconds(dttime) {
+ 
     if (dttime != null) {
         var theStDate = new Date(dttime)
+       
         theStDate = new Date(theStDate + ' UTC');
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
@@ -1029,6 +1031,13 @@ function fnConverToLocalTimeWithSeconds(dttime) {
         return theStDate;
     }
     else return '..'
+}
+
+function keepTimeOnly(date) {
+
+    let timeOnly = new Date(date);
+    timeOnly = timeOnly.toTimeString().slice(0, 9)         
+    return timeOnly ;
 }
 
 function fnConverToShortDT(dttime) {

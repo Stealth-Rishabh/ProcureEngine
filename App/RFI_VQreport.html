@@ -33,14 +33,47 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/scripts/aes.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+
+    <script src="assets/CustomJS/Common.js"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
                 <a class="navbar-brand" href="index.html" style="padding:4px !important;">
-                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;"/>
-            </a>
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
+                </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
             </div>
@@ -73,7 +106,8 @@
                     <li class="sidebar-toggler-wrapper">
                         <div class="sidebar-toggler">
                         </div>
-                    </li><br />
+                    </li>
+                    <br />
                 </ul>
             </div>
         </div>
@@ -88,8 +122,8 @@
                         <li><a href="javascript:;">Reports</a> <i class="fa fa-angle-right"></i></li>
                         <li><a href="javascript:;">VQ/RFI Report</a> </li>
                     </ul>
-                 <div class="page-toolbar">
-                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height" >
+                    <div class="page-toolbar">
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
                     </div>
@@ -123,41 +157,41 @@
                                                 </label>
                                                 <div class="col-md-9">
                                                     <select class="form-control" id="ddlrfirfq" name="ddlrfirfq" disabled onChange="fetchRFIRFQSubjectforReport(this.value)">
-													<option value=''>Select</option>
-													<option value='RFI'>VQ</option>
-													<option value='RFQ'>RFQ</option>
-													</select>
+                                                        <option value=''>Select</option>
+                                                        <option value='RFI'>VQ</option>
+                                                        <option value='RFQ'>RFQ</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            </div>
-                                           
+                                        </div>
+
                                         <div class="form-group">
                                             <div class="Controlgroup col-md-12">
                                                 <label class="col-md-3 control-label" id="lblsbjct">
                                                     Select VQ/RFI
                                                 </label>
-                                                <div class="col-md-9" >
-												<input type="hidden" id="hdnRfiRfqID" value='0' />
+                                                <div class="col-md-9">
+                                                    <input type="hidden" id="hdnRfiRfqID" value='0' />
                                                     <!-- <select class="form-control" id="ddlsector" name="ddlsector"></select> -->
                                                     <input type="text" class="form-control" id="txtrfirfqsubject" name="txtrfirfqsubject"
                                                            style="margin: 0 auto;" data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Subject" onkeyup="replaceQuoutesFromString(this)" />
                                                 </div>
-                                           </div>
-                                            
+                                            </div>
+
                                         </div>
-                                          <div class="form-group">
-                                        <div class="Controlgroup col-md-12">
+                                        <div class="form-group">
+                                            <div class="Controlgroup col-md-12">
                                                 <label class="col-md-3 control-label">
                                                     Vendor Name
                                                 </label>
                                                 <div class="col-md-9">
                                                     <select class="form-control" id="ddlrfirfqvendors" name="ddlrfirfqvendors">
-													<option value=''>Select</option>
-													</select>
+                                                        <option value=''>Select</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                      
+
                                         <div class="form-group">
                                             <div class="Controlgroup col-md-6">
                                                 <label class="control-label col-md-6">
@@ -181,13 +215,13 @@
                                                 <div class="col-md-3">
                                                     <div class="input-group input-medium date date-picker" data-date-format="dd/mm/yyyy"
                                                          data-date-start-date="+0d">
-														 <span class="input-group-btn">
+                                                        <span class="input-group-btn">
                                                             <button class="btn default" id="Button1" type="button">
                                                                 <i class="fa fa-calendar"></i>
                                                             </button>
                                                         </span>
                                                         <input type="text" id="txtToDate" name="txtToDate" class="form-control" readonly>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -231,7 +265,7 @@
             </div>
         </div>
     </div>
-	<div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
                 <div class="portlet-title">
@@ -242,16 +276,16 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     </div>
                 </div>
-                <div class="portlet-body form">                    
-                   <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
-						 <p class="ppolicy-text">
-                            The purpose of VQ/RFI report is to see the details of VQ/RFI responses received from vendors using our sourcing portal. 
-							The report can be taken out using one or many filtration parameters. 
-							The filter parameters are Report for (VQ/RFI), Vendor Name, Subject, from/to dates.
+                <div class="portlet-body form">
+                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
+                        <p class="ppolicy-text">
+                            The purpose of VQ/RFI report is to see the details of VQ/RFI responses received from vendors using our sourcing portal.
+                            The report can be taken out using one or many filtration parameters.
+                            The filter parameters are Report for (VQ/RFI), Vendor Name, Subject, from/to dates.
                         </p>
                         <p class="ppolicy-text">
-                           Click on go button will display the result in grid having VQ/RFI Reference No., Deadline Date, Vendor Name and Subject.
- 
+                            Click on go button will display the result in grid having VQ/RFI Reference No., Deadline Date, Vendor Name and Subject.
+
                         </p>
                         <p class="ppolicy-text">Clicking VQ/RFI Reference No. will open a screen showing detailed information of VQ/RFI.</p>
                     </div>
@@ -267,46 +301,15 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-	<script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-	<script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-    <script src="assets/CustomJS/RFI_VQreport.js" type="text/javascript"></script>
+    
     <script>
         jQuery(document).ready(function () {
-		Pageloaded()
+            callPagejs('RFI_VQreport.js');
+            Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
-                     window.location = sessionStorage.getItem('MainUrl');
+                    window.location = sessionStorage.getItem('MainUrl');
                     return false;
                 });
             }
