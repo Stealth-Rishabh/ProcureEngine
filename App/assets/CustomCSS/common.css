@@ -1080,3 +1080,12 @@ tr.header {
 .colorwhite{
     color:white !important;
 }
+
+.graphwidth {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    background-color: white;
+}
