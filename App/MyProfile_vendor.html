@@ -49,6 +49,7 @@
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <!-- END CORE PLUGINS -->
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -60,16 +61,17 @@
 
     <script src="assets/scripts/core/app.js"></script>
     <script src="assets/scripts/custom/components-pickers.js"></script>
+
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-    
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand padding4px" href="index.html" >
+                <a class="navbar-brand padding4px" href="index.html">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
             </div>
@@ -83,8 +85,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                          <b>  <span id="spanUserName"  class="username username-hide-on-mobile">
-                            </span></b><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile_vendor.html"><i class="icon-user"></i><span data-i18n="myprofile">My Profile</span> </a></li>
@@ -167,11 +171,11 @@
                                 </div>
                             </div>
                             <div class="portlet-body form acordion_tabs">
-                                <div class="page-container mt-0 nodisplay" >
-                                    <div class="alert alert-block alert-danger" id="errordiv" >
+                                <div class="page-container mt-0 nodisplay">
+                                    <div class="alert alert-block alert-danger" id="errordiv">
                                         <span id="error"></span>
                                     </div>
-                                    <div class="alert alert-success" id="successdiv" >
+                                    <div class="alert alert-success" id="successdiv">
                                         <span id="success"></span>
                                     </div>
                                     <form class="form-horizontal" role="form" id="frmprofilevendornew">
@@ -184,7 +188,7 @@
                                         </div>
                                         <div class="form-body">
                                             <div class="progress">
-                                                <div class="progress-bar progress-bar-striped active width100" id="progresstotal" role="progressbar" aria-valuemin="0" aria-valuemax="100" >
+                                                <div class="progress-bar progress-bar-striped active width100" id="progresstotal" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                                     <span id="totalpercent"></span>
                                                 </div>
                                             </div>
@@ -196,20 +200,20 @@
                                                                 <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
                                                                     <span data-i18n="contactdetails"> Contact details </span>
                                                                     <div class="outer_wrap">
-                                                                        <span class="progress-value" id="contactspan" name="contactspan"></span><span>%</span>
+                                                                        <span class="progress-value" id="contactspan" name="contactspan"></span>
                                                                         <div class="cs_chart" id="contact_chart" data-percent=""></div>
                                                                     </div>
                                                                 </a>
                                                             </h4>
 
                                                         </div>
-                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3" >
+                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3">
                                                             <div class="panel-body">
                                                                 <div class="row" id="tab1check">
                                                                     <div class="col-lg-12">
                                                                         <div class="row">
                                                                             <div class="col-md-6">
-                                                                                <h4 class="text-capitalize text-center headstyle1" data-i18n="primarycontactdetail" >Primary Contact Detail</h4>
+                                                                                <h4 class="text-capitalize text-center headstyle1" data-i18n="primarycontactdetail">Primary Contact Detail</h4>
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="name">
@@ -255,7 +259,7 @@
                                                                                 <h4 class="text-capitalize text-center headstyle1" data-i18n="alternatecontactdetail">Alternate Contact Detail</h4>
                                                                                 <div class="form-group">
                                                                                     <div class="col-lg-12">
-                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="name"> 
+                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="name">
                                                                                             Name
                                                                                         </label>
                                                                                         <div class="col-md-9">
@@ -318,7 +322,7 @@
                                                                 <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
                                                                     <span data-i18n="companydetails">Company Details</span>
                                                                     <div class="outer_wrap">
-                                                                        <span class="progress-value" id="companyspan" name="companyspan"></span><span>%</span>
+                                                                        <span class="progress-value" id="companyspan" name="companyspan"></span>
                                                                         <div class="cs_chart" id="company_chart" data-percent=""></div>
                                                                     </div>
                                                                 </a>
@@ -370,7 +374,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label txtalignleft"  data-i18n="companyname">
+                                                                            <label class="col-md-3 control-label txtalignleft" data-i18n="companyname">
                                                                                 Company Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -438,7 +442,7 @@
                                                                         <div class="col-md-9">
                                                                             <input type="text" class="form-control"
                                                                                    id="vendorComp" name="vendorComp" autocomplete="off" readonly />
-                                                                           
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -456,13 +460,13 @@
                                                                 <a class="accordion-toggle collapsed total-tab" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
                                                                     Accounting Details
                                                                     <div class="outer_wrap">
-                                                                        <span class="progress-value" id="accountspan" name="accountspan"></span><span>%</span>
+                                                                        <span class="progress-value" id="accountspan" name="accountspan"></span>
                                                                         <div class="cs_chart" id="account_chart" data-percent=""></div>
                                                                     </div>
                                                                 </a>
                                                             </h4>
 
-                                                        </div><div id="collapse1" class="panel-collapse collapse  " seqno="2" >
+                                                        </div><div id="collapse1" class="panel-collapse collapse  " seqno="2">
                                                             <div class="panel-body">
                                                                 <div class="row">
                                                                     <div class="form-group">
@@ -503,7 +507,7 @@
                                                                                                 <input type="file" class="form-control" tabindex="5" id="filegst"
                                                                                                        onchange="checkfilesize(this)" />
                                                                                                 <span class="help-block uploadedfile">
-                                                                                                   
+
                                                                                                     <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" class="txtleftnone"></a>
                                                                                                 </span>
                                                                                             </div>
@@ -624,7 +628,7 @@
 
                                                                     <div class="form-group">
                                                                         <div class="col-lg-11">
-                                                                            <label class="col-md-3 control-label txtalignleft" >
+                                                                            <label class="col-md-3 control-label txtalignleft">
                                                                                 Account Holder Name
                                                                             </label>
                                                                             <div class="col-md-9 ">
@@ -650,13 +654,13 @@
                                                                 <a class="accordion-toggle total-tab collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">
                                                                     Business Detail
                                                                     <div class="outer_wrap">
-                                                                        <span class="progress-value" id="businessspan" name="businessspan"></span><span>%</span>
+                                                                        <span class="progress-value" id="businessspan" name="businessspan"></span>
                                                                         <div class="cs_chart" id="business_chart" data-percent=""></div>
                                                                     </div>
                                                                 </a>
                                                             </h4>
                                                         </div>
-                                                        <div id="collapse3" class="panel-collapse collapse" seqno="4" >
+                                                        <div id="collapse3" class="panel-collapse collapse" seqno="4">
                                                             <div class="panel-body">
                                                                 <div class="row">
                                                                     <div class="form-group">
@@ -814,9 +818,9 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="page-container mt-0" >
+                                <div class="page-container mt-0">
 
-                                    <div class="alert alert-block alert-danger" id="companieserrordiv" >
+                                    <div class="alert alert-block alert-danger" id="companieserrordiv">
                                         <span id="sendcompanieserror"></span>
                                     </div>
                                     <div class="alert alert-success" id="companiessuccessdiv">
@@ -825,23 +829,23 @@
                                     <form class="form-horizontal" role="form" id="frmprofilevendornewcompany">
                                         <div class="form-body">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                c                   <div class="col-md-12">
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                               
+
                                                                 <select class="form-control" id="txtCompanies" name="txtCompanies" onchange="fnAddCustomers()"></select>
                                                             </div>
                                                         </div>
-                                                        <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                                                        <div class="scroller scroller300" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                             <div id="divcompanieslist" class="portlet-body flip-scroll table-scrollable">
-                                                                <table  id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content width100">
+                                                                <table id="tblcompanieslist" class="table table-bordered table-striped table-condensed flip-content width100">
                                                                     <thead class="flip-content">
                                                                         <tr>
                                                                             <th width="20%">
                                                                                 <div class="col-md-10 checkbox-list">
                                                                                     <label class="checkbox-inline checkboxinline1">
-                                                                                       
+
                                                                                     </label>
                                                                                 </div>
                                                                             </th>
@@ -878,7 +882,7 @@
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="button" class="btn btn-success" onclick="sendToCompanies()">
-                                                        Send <i class="m-icon-swapright m-icon-white marginleft5px" ></i>
+                                                        Send <i class="m-icon-swapright m-icon-white marginleft5px"></i>
                                                     </button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -896,7 +900,6 @@
             </div>
         </div>
     </div>
-
     <div class="page-footer">
         <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
@@ -925,78 +928,17 @@
                         <button class="close" data-close="alert"></button>
                         <span id="successmsg"></span>
                     </div>
-                    <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
+                    <div class="scroller scroller300" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" nonce="pev3">
-
         jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
-            callPagejs('progress.js,MyProfile.js');
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            App.init();
-            setCommonData();
-            fetchCountry();
-            fetchPaymentTerms();
-
-
-            function numberonly() {
-                $(".numberonly").keyup(function () {
-                    $(".numberonly").val(this.value.match(/[0-9]*/));
-                });
-
-            }
-            numberonly();
-
-            $('#ddlTypeofProduct').select2({
-                placeholder: "Type of Product",
-                allowClear: true
-            });
-
-            $('#ddlCountry').select2({
-                searchInputPlaceholder: "Search Country",
-                // placeholder: 'Select Country'
-            });
-            $('#ddlCountryCd').select2();
-            $('#ddlCountryAltCd').select2();
-            $('#ddlpreferredTime').select2();
-
-            $('#ddlState').select2({
-                searchInputPlaceholder: "Search State",
-                //placeholder: "Select State",
-                allowClear: true
-            });
-            $('#ddlCity').select2({
-                searchInputPlaceholder: "Search City",
-                // placeholder: "Select City",
-                allowClear: true
-            });
-
-            $("#ddlTds").select2({
-                searchInputPlaceholder: "Search",
-                // placeholder: "Select City",
-                allowClear: true
-            });
-            $("#ddPayTerms").select2({
-                //placeholder: "Type of TDS",
-                searchInputPlaceholder: "Search",
-                allowClear: true
-            });
-
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                $('.page-container').show();
-                formvalidate();
-                fetchMyProfileVendor();
-
-            }
-
+           callPagejs('progress.js,MyProfile.js');
+           onloadcalls();
         });
     </script>
 
