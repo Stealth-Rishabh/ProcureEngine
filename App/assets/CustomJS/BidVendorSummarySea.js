@@ -3314,6 +3314,7 @@ function fetchGraphData(itemId) {
     graphData = [];
 
     var _date;
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -3329,9 +3330,10 @@ function fetchGraphData(itemId) {
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
+                
                     _date = new Date(data[i].submissionTime);
                     _date = fnConverToLocalTimeWithSeconds(_date);
-
+                   
                     //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                     $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                 }
@@ -3409,11 +3411,11 @@ function linegraphsforItems(itemId) {
             if (data[0].submissionTime.length > 0) {
 
                 for (var x = 0; x < data[0].submissionTime.length; x++) {
+                    
 
-
-                    //graphtime.push(data[0].submissionTime[x].subTime);
-                    graphtime.push(fnConverToLocalTimeWithSeconds(data[0].submissionTime[x].subTime));
-
+                  
+                    graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
+                   
                 }
 
             }
@@ -3478,16 +3480,15 @@ function linegraphsforItems(itemId) {
                     fontSize: '15px',
 
                 },
-
-            },
-
+            
+            },            
             xAxis: {
 
                 title: {
                     text: 'Time'
                 },
 
-                categories: graphtime//,'12:42','15:14','15:14','15:14','15:57']//graphtime
+                categories:graphtime//,'12:42','15:14','15:14','15:14','15:57']//graphtime
 
 
             },
