@@ -368,10 +368,10 @@ function cancelRFQ(mailparam) {
 }
 
 var TechnicalApproval = "";
-var bidopeningdate = new Date();
+var bidopeningdate = null;
 var _rfqBidType = '';
 var CurrentDateTime = new Date();
-
+var _openQuotes = '';
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -386,19 +386,20 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
             var _curentRFQStatus = '';
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
                 _rfqBidType = RFQData[0].general[0].rfqBidType;
+                _openQuotes = RFQData[0].general[0].openQuotes;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem('RFQBidType', _rfqBidType);
+                sessionStorage.setItem('OpenQuotes', _openQuotes);
                 _curentRFQStatus = RFQData[0].general[0].rfqStatus;
                 sessionStorage.setItem('CurrentRFQStatus', _curentRFQStatus)
                 if (_rfqBidType == 'Closed') {
                     $('#div_bidopendate').show()
-                    if (bidopeningdate != null || bidopeningdate != '') {
+                    if (bidopeningdate != null) {
                         bidopeningdate = fnConverToLocalTime(bidopeningdate);
                         jQuery('#lblrfqopendate').html(bidopeningdate)
                     }

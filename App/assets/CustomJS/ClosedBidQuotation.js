@@ -660,7 +660,7 @@ function InsUpdRFQDEtailTab1() {
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
     var RFQBidType = "Closed";
     var TechnicalAppr = "Not Required";
-
+    var _openQuotes = "N";
 
     var Tab1Data = {
 
@@ -681,7 +681,8 @@ function InsUpdRFQDEtailTab1() {
         "bidopeningdate": BidOpenDate,
         "RFQBidType": RFQBidType,
         "RFQApprovers": approvers,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
         //"TechnicalApproval": TechnicalAppr
 
     };
@@ -3124,7 +3125,8 @@ function fetchVendorGroup(categoryFor, vendorId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        //url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&VendorID=" + vendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,

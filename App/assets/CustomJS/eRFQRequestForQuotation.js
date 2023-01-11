@@ -664,7 +664,7 @@ function InsUpdRFQDEtailTab1() {
 
     var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
     var _RFQBidType = 'Open';
-
+    var _openQuotes = 'Y';
 
 
     var Tab1Data = {
@@ -684,7 +684,8 @@ function InsUpdRFQDEtailTab1() {
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
         "RFQBidType": _RFQBidType,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
 

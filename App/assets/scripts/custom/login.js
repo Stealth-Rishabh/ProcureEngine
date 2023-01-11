@@ -7,7 +7,7 @@ sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
-
+fetchMapCategory('M', 0);
 
 var Login = function () {
 
