@@ -866,7 +866,6 @@ function fetchrfqcomprative() {
             }
         },
         error: function (xhr, status, error) {
-
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1008,7 +1007,8 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-            ReInviteVendorsForRFQ();
+            Dateandtimevalidate();
+            //ReInviteVendorsForRFQ();
         }
 
     });

@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
-  
-    Pageloaded()
 
+    Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -29,22 +28,22 @@ jQuery(document).ready(function () {
     fetchBidType();// for serach vendor
     FetchUOM(sessionStorage.getItem("CustomerID"));
     BindNoExtensions('txtBidExtension');
-   /* var _BidID;
-    if (window.location.search) {
-        var param = getUrlVars()["param"]
-        var decryptedstring = fndecrypt(param);
-        _BidID = getUrlVarsURL(decryptedstring)["BidID"];
-    }
-    var _savedDraft = '';
-    if (_BidID == null) {
-        sessionStorage.setItem('CurrentBidID', 0);
-        sessionStorage.setItem('_savedDraft', 'N')
-    }
-    else {
-        sessionStorage.setItem('CurrentBidID', _BidID)
-        fetchScrapSalesBidDetails();
-        sessionStorage.setItem('_savedDraft', 'Y')
-    }*/
+    /* var _BidID;
+     if (window.location.search) {
+         var param = getUrlVars()["param"]
+         var decryptedstring = fndecrypt(param);
+         _BidID = getUrlVarsURL(decryptedstring)["BidID"];
+     }
+     var _savedDraft = '';
+     if (_BidID == null) {
+         sessionStorage.setItem('CurrentBidID', 0);
+         sessionStorage.setItem('_savedDraft', 'N')
+     }
+     else {
+         sessionStorage.setItem('CurrentBidID', _BidID)
+         fetchScrapSalesBidDetails();
+         sessionStorage.setItem('_savedDraft', 'Y')
+     }*/
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
@@ -490,7 +489,7 @@ function ValidateVendor() {
 
     $('#divvendorlist').find('span#spandynamic').hide();
     if ($("#ddlAuctiontype option:selected").val() == 81 || $("#ddlAuctiontype option:selected").val() == 83) {
-        
+
         if ($("#selectedvendorlists> tbody > tr").length < 2) {
             status == "false";
         }
@@ -499,7 +498,7 @@ function ValidateVendor() {
         }
     }
     else {
-        
+
         if ($("#selectedvendorlists> tbody > tr").length < 1) {
             status == "false";
         }
@@ -637,7 +636,7 @@ jQuery.validator.addMethod(
 );
 
 $.validator.addMethod("numberWithComma", function (value, element) {
-    
+
     return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
 }, "Please enter a valid number with a comma separator");
 var FormWizard = function () {
@@ -737,7 +736,7 @@ var FormWizard = function () {
 
                     txtCeilingPrice: {
                         required: true,
-                        numberWithComma:true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -1170,10 +1169,20 @@ function ConfigureBidInsPefaTab1() {
     }
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        // StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = moment(StartDT).format('DD/MM/YYYY h:mm:ss a');
+        StartDT = $('#txtbidDate').val().replace('-', '');
     }
-   
-   
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+
     var Tab1Data = {
 
         "BidId": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1186,7 +1195,8 @@ function ConfigureBidInsPefaTab1() {
         "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
         "BidDescription": _cleanString2,
-        "BidDate": StartDT,
+        //"BidDate": StartDT,
+        "BidDateSt": ST,
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "ConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "TermsConditions": TermsConditionFileName,
@@ -1219,7 +1229,7 @@ function ConfigureBidInsPefaTab1() {
                 var decryptedstring = fndecrypt(param)
                 sessionStorage.setItem('CurrentBidID', getUrlVarsURL(decryptedstring)["BidID"]);
                 if ($("#ddlAuctiontype option:selected").val() == '81' || $("#ddlAuctiontype option:selected").val() == '83') {
-                   
+
                     $(".for-englishbid").show();
                     $(".for-dutch-bid").hide();
                     $("#lblCeilingPrice").html('').html('Bid Unit Price <span class="required"> *</span>');
@@ -1300,8 +1310,8 @@ function ConfigureBidInsPefaTab1() {
 
 function ConfigureBidInsPefaTab2() {
 
-    
-    
+
+
     var targetPrice;
     var lastInvoiceprice = 0;
     var mininc = 0; i = 0;
@@ -2532,12 +2542,24 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 }
 function Dateandtimevalidate(indexNo) {
     var StartDT = new Date();
+
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
 
     }
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
-        "BidDate": StartDT
+        "BidDate": ST
     }
     //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
@@ -3449,7 +3471,6 @@ function fnfillInstructionExcel() {
     $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure all Prices and Quantity are in Number format, and Dates in Date format.</th></tr>')
 
     $('#tblUOM').append("<tr><td  colspan=2>&nbsp;</td></tr><tr><td  colspan=2>&nbsp;</td></tr>")
-
     $('#tblUOM').append('<tr><th   colspan=2 data-style="Header" colspan=2>Please enter UOM as given below:</th></tr>')
     var quorem = (allUOM.length / 2) + (allUOM.length % 2);
     for (var i = 0; i < parseInt(quorem); i++) {
