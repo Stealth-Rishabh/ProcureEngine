@@ -221,14 +221,94 @@ function checkForSelectedVendors() {
     }
 
 }
+
+
+
+function Dateandtimevalidate() {
+
+    var EndDT = new Date();
+    if ($('#txtextendDate').val() != null && $('#txtextendDate').val() != "") {
+        EndDT = $('#txtextendDate').val().replace('-', '');
+    }
+
+    let EtTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(EtTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+    //console.log(JSON.stringify(Tab1Data))
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+            if (data == "1") {
+                ReInviteVendorsForRFQ();
+            }
+            else {
+                $('#error_deaddate').show();
+                $("#txtextendDate").closest('.col-md-6').addClass('has-error');
+                $("#txtextendDate").val('');
+                $('#errorinviteversion').text('End Date Time must greater than Current Date Time.');
+                Metronic.scrollTo($("#error_deaddate"), -200);
+                $('#error_deaddate').fadeOut(7000);
+                return false;
+            }
+        },
+        error: function () {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
 function ReInviteVendorsForRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     str = str.substring(0, str.length - 1);
     $('#SaveExsist').attr('disabled', 'disabled')
+
+    var EndDT = new Date();
+    if ($('#txtextendDate').val() != null && $('#txtextendDate').val() != "") {
+        EndDT = $('#txtextendDate').val().replace('-', '');
+    }
+
+    let EtTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(EtTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var data = {
         "RFQID": parseInt($("#hdnRfqID").val()),
         "VendorIDs": str,
-        "ExtendedDate": new Date($("#txtextendDate").val().replace('-', '')),
+        //"ExtendedDate": new Date($("#txtextendDate").val().replace('-', '')),
+        "ExtendedDateST": ST,
         "RFQSubject": $("#RFQSubject").html(),
         "UserID": sessionStorage.getItem("UserID"),
         "ReInviteRemarks": $("#txtReInviteRemarks").val(),
@@ -995,7 +1075,6 @@ function deleteRFQApprow(rowid) {
         jQuery('#btnrfqapproversubmit').attr("disabled", "disabled");
     }
 }
-
 function MapRFQapprover(Type) {
     var RFQID = 0;
     if (Type == "Report") {
