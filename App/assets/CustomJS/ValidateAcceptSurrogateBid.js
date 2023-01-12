@@ -5,8 +5,8 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 var BIDTypeID = '';
 var BidClosingType = '';
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -175,7 +175,8 @@ var successopenbid = $('#successopenbid');
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
   
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     if (jQuery("#txtpassword").val() == "") {
 

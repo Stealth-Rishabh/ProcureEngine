@@ -642,35 +642,83 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
-
-
-
-
+    //______________________________________
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
-        StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+        StartDT = $('#txtstartdatettime').val().replace('-', '');
     }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var BidOpenDate = null;
+    let BT = null;
     if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != "") {
         BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+        let BOT =
+            new Date(BidOpenDate.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
+
+        BT = new String(BOT);
+        BT = BT.substring(0, BT.indexOf("GMT"));
+        BT = BT + 'GMT' + sessionStorage.getItem('utcoffset');
     }
 
+    //**  Get End  date    
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
 
-    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-    var RFQBidType = "Closed";
-    var TechnicalAppr = "Not Required";
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    
+    
 
 
+    let _RFQBidType = "Closed";
+    //var TechnicalAppr = "Not Required";
+    var _openQuotes = "N";
+    debugger;
+    //var Tab1Data = {
+
+    //    "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+    //    //"RFQSubject": jQuery("#txtrfqSubject").val(),
+    //    "RFQSubject": _cleanString,
+    //    // "RFQStartDate": dt,
+    //    "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
+    //    "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
+    //    //"RFQDescription": jQuery("#txtrfqdescription").val(),
+    //    "RFQDescription": _cleanString2,
+    //    "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
+    //    "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
+    //    "RFQTermandCondition": TermsConditionFileName,
+    //    "UserId": sessionStorage.getItem('UserID'),
+    //    "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+    //    "RFQReference": $("#txtRFQReference").val(),
+    //    "bidopeningdate": BidOpenDate,
+    //    "RFQBidType": RFQBidType,
+    //    "RFQApprovers": approvers,
+    //    "TechnicalApproval": $("#drp_TechnicalApp").val(),
+    //    "OpenQuotes": _openQuotes
+    //    //"TechnicalApproval": TechnicalAppr
+
+    //};
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        //"RFQSubject": jQuery("#txtrfqSubject").val(),
         "RFQSubject": _cleanString,
-        // "RFQStartDate": dt,
-        "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
-        "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQStartDateSt": ST, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
+        "RFQEndDateSt": ET,//jQuery("#txtenddatettime").val(),
         "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
@@ -678,14 +726,13 @@ function InsUpdRFQDEtailTab1() {
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
-        "bidopeningdate": BidOpenDate,
-        "RFQBidType": RFQBidType,
+        "bidopeningdateSt": BT,
         "RFQApprovers": approvers,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
-        //"TechnicalApproval": TechnicalAppr
+        "RFQBidType": _RFQBidType,
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
-
 
     jQuery.ajax({
         type: "POST",
@@ -2226,7 +2273,15 @@ function RFQInviteVendorTab3() {
     });
 
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
 
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
     var Tab3data = {
         "BidVendors": InsertQuery,
@@ -2234,7 +2289,8 @@ function RFQInviteVendorTab3() {
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
         "subject": _cleanString4,
-        "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        //"Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        "DeadlineSt": ET,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     };
@@ -3124,7 +3180,8 @@ function fetchVendorGroup(categoryFor, vendorId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        //url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&VendorID=" + vendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,

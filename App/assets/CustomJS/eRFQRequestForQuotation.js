@@ -573,7 +573,7 @@ var FormWizard = function () {
 
 function Dateandtimevalidate(dttime, forDT) {
 
-
+    debugger;
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
 
@@ -765,7 +765,7 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
+    debugger;
     //**  Get Start date
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
@@ -791,7 +791,7 @@ function InsUpdRFQDEtailTab1() {
     ET = new String(EndTime);
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
-
+    var _openQuotes = "Y";
     var _RFQBidType = 'Open';
     var Tab1Data = {
 
@@ -808,7 +808,8 @@ function InsUpdRFQDEtailTab1() {
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
         "RFQBidType": _RFQBidType,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
     //console.log(JSON.stringify(Tab1Data))
@@ -2439,13 +2440,25 @@ function RFQInviteVendorTab3() {
 
     var _cleanString3 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
 
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
+
+
+
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
         "subject": _cleanString3,
-        "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        "DeadlineSt": ET,//new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     };

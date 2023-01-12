@@ -27,6 +27,10 @@ jQuery(document).ready(function () {
    
     fetchRegisterUser();
 });
+
+//var _rfqBidType = sessionStorage.getItem("RFQBIDType");
+//var _openQuotes = sessionStorage.getItem("OpenQuotes");
+
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
