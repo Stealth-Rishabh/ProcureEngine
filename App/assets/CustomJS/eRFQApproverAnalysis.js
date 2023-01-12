@@ -220,6 +220,7 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
+            var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
             if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
@@ -249,7 +250,12 @@ function fetchrfqcomprative() {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
-                        ShowPrice = 'Y';
+                        if (_openQuotes == 'Y') {
+                            ShowPrice = 'Y';
+                        }
+                        else {
+                            ShowPrice = 'N';
+                        }
 
 
                     }
@@ -1425,6 +1431,7 @@ function fetchReguestforQuotationDetails() {
             if (RFQData.length > 0) {
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
+                sessionStorage.setItem("OpenQuotes", RFQData[0].general[0].openQuotes)
 
                 jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
                 jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
