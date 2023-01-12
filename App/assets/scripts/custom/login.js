@@ -140,7 +140,7 @@ var Login = function () {
 
     function validateUser() {
         sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -162,10 +162,10 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
-                    
+                    debugger;
                     var successMsg = "";
                     var isSuccess = true;
-                    switch (data.token) {
+                    switch (data.tokenString.accessToken) {
                         case "You are accessing an Invalid URL.":
                             successMsg = "You are accessing an Invalid URL."
                             isSuccess = false;
@@ -194,8 +194,10 @@ var Login = function () {
                             successMsg = "SUCCESS"
                             isSuccess = true;
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                            sessionStorage.setItem("Token", data.token)
-                            fnGetUserBasicDetails(lastPart)
+                            sessionStorage.setItem("Token", data.tokenString.accessToken)
+                            //fnGetUserBasicDetails(lastPart)
+                            sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                            SetSessionItems(lastPart, data.userDetails[0]);
                             break;
 
                     }
@@ -624,7 +626,7 @@ function fetchMenuItemsForSession(urlLast) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "User/getMenuItems/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&UserType=" + sessionStorage.getItem("UserType"),
+        url: APIPath + "User/getMenuItems/?UserID=" + sessionStorage.getItem('UserID') + "&CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
