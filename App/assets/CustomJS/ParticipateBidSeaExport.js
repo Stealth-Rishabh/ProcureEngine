@@ -138,6 +138,10 @@ connection.on("refreshColumnStatus", function (data) {
             success: function (data, status, jqXHR) {
                 if (data.length > 0) {
                     jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
+                      
+                        let TotalBidValue = '';
+                        TotalBidValue = removeThousandSeperator(parseFloat($("#quantity" + i).text())) * parseFloat(removeThousandSeperator(data[0].lowestQuotedPrice));
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
                         if (data[0].seid == $('#seid' + i).text()) {
                             if (data[0].noOfExtension >= 1) {
                                 jQuery('#lblTimeLeft').css('color', 'red');
@@ -169,6 +173,8 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                             $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
+                            $("#totalbidvalue"+i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue.toFixed(2)) : thousands_separators(TotalBidValue))
+
 
                             $("#lblstatus" + i).html(data[0].vendorRank)
 
@@ -982,7 +988,7 @@ function fetchBidSummaryVendorproduct() {
 
                             var L1Quote = data[i].l1Quote == '0' ? '' : thousands_separators(data[i].l1Quote)
 
-                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td id=quantity>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td id=totalbidvalue" + i + ">" + thousands_separators(TotalBidValue) + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                            jQuery("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td id=quantity" + i + ">" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td><span id=ceilingprice" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mindec" + i + ">" + thousands_separators(data[i].minimumDecreament) + "</span> " + decreamentOn + "</td><td id=initialquote" + i + "></td><td id=lastQuote" + i + "></td><td><span id=L1Price" + i + " >" + L1Quote + "</span><span id=L1Pricenotdisclosed" + i + "  >Not Disclosed</span></td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td id=totalbidvalue" + i + ">" + thousands_separators(TotalBidValue) + "</td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button type='button' id=AllItembtn" + i + " class='btn btn-warning clsdisable' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
 
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(LqQuote))
 
@@ -1118,10 +1124,7 @@ function fetchBidSummaryVendorproduct() {
 }
 function InsUpdQuoteSeaExport(index) {
     
-    var TotalBidValue = '';
    
-    TotalBidValue = removeThousandSeperator(parseFloat($("#quantity").text())) * parseFloat(removeThousandSeperator($("#txtquote0").val()));
-    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
   
    
     var vendorID = 0;
@@ -1313,7 +1316,7 @@ function InsUpdQuoteSeaExport(index) {
         $('#hdnselectedindex').val(index);
 
        
-        $("#totalbidvalue0").html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue.toFixed(2)) : thousands_separators(TotalBidValue))
+        
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
 
             return console.error(err.toString());

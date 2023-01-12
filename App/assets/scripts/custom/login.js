@@ -329,7 +329,8 @@ var Login = function () {
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
                     //abheedev bug 385
                     sessionStorage.setItem("culturecode", value.cultureCode);
-                    sessionStorage.setItem("localcode", value.localecode);
+                  //  sessionStorage.setItem("localcode", value.localecode);
+                    sessionStorage.setItem("utcoffset", value.utcoffset);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
