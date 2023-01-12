@@ -1230,7 +1230,7 @@ function UpdateRFQOPenDateAfterClose() {
                         $('#responsive').modal('hide');
                     }, 2000)
 
-                    return false;
+                    return true;
                 }
                 else {
                     var msg = "";
@@ -2198,4 +2198,59 @@ function clearSurrogateForm() {
     sessionStorage.setItem('hdnselectedEmail', '');
     jQuery("#txtvendorSurrogateBid").val('')
 
+}
+function OpenQuotes() {
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQOpenQuotes",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(Data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            if (data == 1) {
+                fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
+                $('.alert-success').show();
+                $('.alert-success').html('Quotes have now been opened');
+                Metronic.scrollTo($(".alert-success"), -200);
+                $('.alert-success').fadeOut(7000);
+                setTimeout(function () {
+                    $('#responsive').modal('hide');
+                }, 2000)
+
+                return true;
+            }
+            else {
+                var msg = "";
+                switch (data) {
+                    case 2:
+                        msg = "RFQ does not Exists";
+                        break;
+                    case 3:
+                        msg = "RFQ Quotes cannot be opened currently.";
+                        break;
+                    case 4:
+                        msg = "The quotes have already been opened";
+                        break;
+                    default:
+                        msg = "Some error occurred. Please contact administrator"
+                        break;
+                }
+                $('.alert-danger').show();
+                $('.alert-danger').html(msg);
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                return false;
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
 }
