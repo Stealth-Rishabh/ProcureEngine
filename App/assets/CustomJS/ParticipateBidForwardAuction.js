@@ -56,7 +56,6 @@ $(document).on("keyup", "#tblParticipantsVender .form-control", function () {
 
 var connection = new signalR.HubConnectionBuilder().withUrl(sessionStorage.getItem("APIPath") + "bid?bidid=" + sessionStorage.getItem('BidID') + "&userType=" + sessionStorage.getItem("UserType") + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'))).withAutomaticReconnect().build();
 
-
 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
     console.log("connection started")
 }).catch(function (err) {
@@ -102,11 +101,7 @@ connection.on("refreshColumnStatusFA", function (data) {
    
     var JsonMsz = JSON.parse(data[0]);
     if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
-       
-        let quantity = parseFloat(removeThousandSeperator($('#quantity').text()));
-        let lastquote = parseFloat(removeThousandSeperator($('#lastQuote0').text()));
-        let totalbidvalue0 = lastquote * quantity;
-        $('#totalbidvalue0').text(totalbidvalue0);
+           
         $('#spanamount' + $('#hdnselectedindex').val()).removeClass('hide')
         $('#spanamount' + $('#hdnselectedindex').val()).text('already Quoted by someone.');
         return false;
@@ -124,11 +119,15 @@ connection.on("refreshColumnStatusFA", function (data) {
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-               
+             
                 if (data.length > 0) {
+                    
+                    
 
                     for (var i = 0; i < data.length; i++) {
-
+                        let TotalBidValue
+                        TotalBidValue = removeThousandSeperator(parseFloat(data[i].mqQuotedPrice)) * parseFloat(removeThousandSeperator(data[i].quantity));
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue; 
                         if (data[i].noOfExtension >= 1) {
                             jQuery('#lblTimeLeft').css('color', 'red');
                             jQuery('#lblTimeLeftTxt').removeClass('display-none');
@@ -144,6 +143,7 @@ connection.on("refreshColumnStatusFA", function (data) {
 
                         $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(data[i].mqQuotedPrice))
+                        $("#totalbidvalue" + i).html(TotalBidValue == '0' ? '' : thousands_separators(TotalBidValue))
                         $("#lblstatus" + i).html(data[i].moQuotedPrice)
                         var H1Quote = data[i].h1Price == '0' ? '' : thousands_separators(data[i].h1Price)
                         $("#H1Price" + i).html(H1Quote)
@@ -709,9 +709,7 @@ function startTimer(duration, display) {
 }
 
 function InsUpdQuoteScrap(rowID) {
-    var TotalBidValue
-    TotalBidValue = removeThousandSeperator(parseFloat($("#quantity").text())) * parseFloat(removeThousandSeperator($("#txtquote0").val()));
-    TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue; 
+ 
     var vendorID = 0;
     var i = rowID;
 
@@ -798,7 +796,7 @@ function InsUpdQuoteScrap(rowID) {
         var vendorID = 0;
         vendorID = sessionStorage.getItem('VendorId');
 
-        // if ($('#hdnval').val() >= 60) {
+        
 
         var QuoteProduct = {
             "VendorID": vendorID,
@@ -810,120 +808,13 @@ function InsUpdQuoteScrap(rowID) {
             "isPrePricing": 'N'
         };
         $('#hdnselectedindex').val(i);
-        $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue.toFixed(2)) : thousands_separators(TotalBidValue))
+
+     
         connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')
         
-        //alert(JSON.stringify(QuoteProduct))
-        //jQuery.ajax({
-        //    url: sessionStorage.getItem("APIPath") + "VendorParticipation/ParticipationScrapSaleSingleItem/",
-        //    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //    type: "POST",
-        //    data: JSON.stringify(QuoteProduct),
-        //    contentType: "application/json; charset=utf-8",
-        //    success: function (data, status, jqXHR) {
-
-        //        if (data == "1") {
-        //            $('#txtquote' + i).val('')
-        //            fetchVendorDetails();
-        //        }
-        //        else if (data == "-1") {
-        //            $('#spanamount' + i).removeClass("hide");
-        //            $('#spanamount' + i).text("Someone already quoted this price. Please Quote another price.")
-        //        }
-
-        //    },
-
-        //    error: function (xhr, status, error) {
-
-        //        var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-        //        if (xhr.status == 401) {
-        //            error401Messagebox(err.Message);
-        //        }
-        //        else {
-        //            fnErrorMessageText('error', '');
-        //        }
-        //        jQuery.unblockUI();
-
-        //    }
-        //});
-        //}
-        //else {
-
-        //    var QuoteProduct = {
-        //        "VendorID": vendorID,
-        //        "BidID": parseInt(sessionStorage.getItem("BidID")),
-        //        "QuotedPrice": parseFloat(removeThousandSeperator($('#txtquote' + i).val())),
-        //        "PSID": parseInt($('#psid' + i).html()),
-        //        "EnteredBy": vendorID
-
-        //    }
-        //    //alert(JSON.stringify(QuoteProduct))
-        //    jQuery.ajax({
-        //        url: sessionStorage.getItem("APIPath") + "VendorParticipation/ParticipationScrapSaleSingleItem/",
-        //        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //        type: "POST",
-        //        data: JSON.stringify(QuoteProduct),
-        //        contentType: "application/json; charset=utf-8",
-        //        success: function (data, status, jqXHR) {
-
-        //            if (data == "1") {
-        //                var data = {
-        //                    "BidID": sessionStorage.getItem("BidID")
-
-        //                }
-
-        //                jQuery.ajax({
-        //                    url: sessionStorage.getItem("APIPath") + "VendorParticipation/ExtendDuration/",
-        //                    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        //                    type: "POST",
-        //                    data: JSON.stringify(data),
-        //                    contentType: "application/json; charset=utf-8",
-        //                    success: function (data, status, jqXHR) {
-        //                        $('#txtquote' + i).val('')
-        //                        refreshColumnsStaus();
-
-        //                        return true
-        //                    },
-
-        //                    error: function (xhr, status, error) {
-
-        //                        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        //                        if (xhr.status === 401) {
-        //                            error401Messagebox(err.Message);
-        //                        }
-        //                        jQuery.unblockUI();
-
-        //                    }
-        //                });
-        //                fetchVendorDetails();
-
-        //            }
-        //            else if (data == "-1") {
-        //                $('#spanamount' + i).removeClass("hide");
-        //                $('#spanamount' + i).text("Someone already quoted this price. Please Quote another price.")
-        //            }
-
-        //        },
-        //        error: function (xhr, status, error) {
-
-        //            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        //            if (xhr.status == 401) {
-        //                error401Messagebox(err.Message);
-        //            }
-        //            else {
-        //                fnErrorMessageText('error', '');
-        //            }
-        //            jQuery.unblockUI();
-
-
-        //        }
-        //    });
-
-        //}
-
 
     }
 
