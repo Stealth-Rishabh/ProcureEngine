@@ -1,4 +1,7 @@
 let _RFQid;
+let isvalidStartDt;
+let isvalidEndDt;
+let isvalidbidopenDt;
 jQuery(document).ready(function () {
 
     var date = new Date();
@@ -424,16 +427,28 @@ var FormWizard = function () {
                     error.hide();
                     if (index == 1) {
 
-                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
-                        var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-                        var CurDateonly = new Date(currentdate.toDateString())
-                        var StartDTdateonly = new Date(StartDT.toDateString())
-                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+                        //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        // var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+                        // var CurDateonly = new Date(currentdate.toDateString())
+                        // var StartDTdateonly = new Date(StartDT.toDateString())
+                        // var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
                         if (form.valid() == false) {
                             return false;
 
                         }
-                        else if ($('#txtenddatettime').val() == '') {
+                        else (form.valid() == true)
+                        {
+
+                            if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
+                                Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
+                            }
+                            else {
+                                Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
+                            }
+
+
+                        }
+                        /*else if ($('#txtenddatettime').val() == '') {
                             $('.alert-danger').show();
                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Please Enter RFQ END Date');
@@ -498,7 +513,7 @@ var FormWizard = function () {
                         else {
                             InsUpdRFQDEtailTab1()
 
-                        }
+                        }*/
 
                     } else if (index == 2) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
@@ -515,6 +530,18 @@ var FormWizard = function () {
 
                     }
                     else if (index == 3) {
+
+                        var isOtherTerms = "Y";
+                        $("#tblTermsCondition> tbody > tr").each(function (index) {
+                            index = index + 1;
+                            var this_row = $(this);
+                            if ($(this).find('span').attr('class') == 'checked') {
+                                if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                                    isOtherTerms = "N";
+                                    $('#terms' + index).css("border", "1px solid red")
+                                }
+                            }
+                        });
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
@@ -540,6 +567,7 @@ var FormWizard = function () {
                 },
 
                 onPrevious: function (tab, navigation, index) {
+
                     success.hide();
                     error.hide();
                     handleTitle(tab, navigation, index);
@@ -588,7 +616,171 @@ var FormWizard = function () {
     };
 
 }();
+function Dateandtimevalidate(dttime, forDT) {
 
+
+    var DTTime = new Date();
+    DTTime = dttime.replace('-', '');
+
+
+    let StTime =
+        new Date(DTTime.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+
+    // console.log(JSON.stringify(Tab1Data))
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+
+            if (forDT == "startdt") {
+                isvalidStartDt = data;
+                if (data == "1") {
+                    //** Start Date is Valid
+                    Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
+                }
+
+            }
+            else if (forDT == "bidopendt") {
+                isvalidbidopenDt = data;
+            }
+            else {
+                isvalidEndDt = data;
+                //** End Date is Valid
+                if (data == "1") {
+                    Dateandtimevalidate($('#txtenddatettime').val(), 'bidopendt');
+                }
+            }
+
+            if (isvalidEndDt != undefined || isvalidStartDt != undefined || isvalidbidopenDt != undefined) {
+                let enddate, Startdate,bidopendate;
+                if ($('#txtstartdatettime').val() != '') {
+                    var EndDT = new Date();
+                    EndDT = $('#txtenddatettime').val().replace('-', '');
+                    enddate =
+                        new Date(EndDT.toLocaleString("en", {
+                            timeZone: sessionStorage.getItem('preferredtimezone')
+                        }));
+
+                    var StartDT = new Date();
+                    StartDT = $('#txtstartdatettime').val().replace('-', '');
+
+                    Startdate =
+                        new Date(StartDT.toLocaleString("en", {
+                            timeZone: sessionStorage.getItem('preferredtimezone')
+                        }));
+                }
+                if ($('#txtbidopendatetime').val() != '') {
+                    var BidOpenDate = new Date();
+                    BidOpenDate = $('#txtstartdatettime').val().replace('-', '');
+
+                    bidopendate =
+                        new Date(BidOpenDate.toLocaleString("en", {
+                            timeZone: sessionStorage.getItem('preferredtimezone')
+                        }));
+                }
+                if ($('#txtstartdatettime').val() != '' && isvalidStartDt != "1" && isvalidStartDt != undefined) {//&& StartDTdateonly < CurDateonly
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtstartdatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('Start Date Time must greater than Current Date Time.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    $('#txtstartdatettime').val();
+
+                    return false;
+                }
+                else if ($('#txtstartdatettime').val() != '' && enddate < Startdate) {
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('End Date Time must greater than Start Date Time ');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    // $('#txtenddatettime').val('')
+
+                    return false;
+                }
+                else if (isvalidEndDt != "1" && isvalidEndDt != undefined) {//EndDT < currentdate
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('End Date Time must greater than Current Date Time.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    //$('#txtenddatettime').val('')
+
+                    return false;
+                }
+                else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
+
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Please  Map Commercial Approver.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(5000);
+
+                    return false;
+
+                }
+                else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Please Map Approver.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(5000);
+                    return false;
+
+                }
+                else if ($('#txtbidopendatetime').val() != '' && bidopendate < enddate && isvalidEndDt != undefined && isvalidbidopenDt != undefined) {
+                    $('.alert-danger').show();
+                    $('#txtbidopendatetime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('Bid Cannot be opened before Submission Date ');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    $('#txtbidopendatetime').val('')
+                    return false;
+                }
+                else {
+                    InsUpdRFQDEtailTab1()
+                }
+            }
+
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    })
+
+}
 var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
@@ -642,35 +834,60 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
-
-
-
-
+    //______________________________________
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
-        StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+        StartDT = $('#txtstartdatettime').val().replace('-', '');
     }
+    else {
+        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
+    }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var BidOpenDate = null;
+    let BT = null;
     if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != "") {
         BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+        let BOT =
+            new Date(BidOpenDate.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
+
+        BT = new String(BOT);
+        BT = BT.substring(0, BT.indexOf("GMT"));
+        BT = BT + 'GMT' + sessionStorage.getItem('utcoffset');
     }
 
+    //**  Get End  date    
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
 
-    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-    var RFQBidType = "Closed";
-    var TechnicalAppr = "Not Required";
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
 
-    var Tab1Data = {
+
+
+
+    let _RFQBidType = "Closed";
+    var _openQuotes = "N";
+    let Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        //"RFQSubject": jQuery("#txtrfqSubject").val(),
         "RFQSubject": _cleanString,
-        // "RFQStartDate": dt,
-        "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
-        "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQStartDateSt": ST, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
+        "RFQEndDateSt": ET,//jQuery("#txtenddatettime").val(),
         "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
@@ -678,14 +895,13 @@ function InsUpdRFQDEtailTab1() {
         "UserId": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "RFQReference": $("#txtRFQReference").val(),
-        "bidopeningdate": BidOpenDate,
-        "RFQBidType": RFQBidType,
+        "bidopeningdateSt": BT,
         "RFQApprovers": approvers,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
-        //"TechnicalApproval": TechnicalAppr
+        "RFQBidType": _RFQBidType,
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
-
 
     jQuery.ajax({
         type: "POST",
@@ -835,7 +1051,7 @@ function InsUpdRFQDEtailTab2() {
 
 
 
-function fnGetTermsCondition() {
+/*function fnGetTermsCondition() {
 
     jQuery.ajax({
         type: "GET",
@@ -846,6 +1062,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+            debugger
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -854,7 +1071,10 @@ function fnGetTermsCondition() {
                 for (var i = 0; i < data.length; i++) {
 
                     var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
-                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                   
+                 
+                    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" /></span></div></td>";
+                  
                     str += "<td>" + data[i].name + "</td>";
 
 
@@ -869,6 +1089,108 @@ function fnGetTermsCondition() {
 
                     }
                     $('#rem' + i).maxlength({
+                        limitReachedClass: "label label-danger",
+                        alwaysShow: true
+                    });
+                    if (data[i].level == "R") {
+                        strPrev += "<td>RFQ</td></tr>";
+                        $("#levelR" + i).attr("checked", "checked");
+                        $("#levelI" + i).removeAttr("checked");
+                        $("#rem" + i).removeAttr("disabled");
+                    }
+                    else {
+                        strPrev += "<td>Item</td></tr>";
+                        $("#levelR" + i).removeAttr("checked");
+                        $("#levelI" + i).prop("checked", true);
+                        $("#rem" + i).prop("disabled");
+                    }
+
+                    if (data[i].isChecked == "Y") {
+                      //  $("#spancheckedTerms" + data[i].id).addClass("checked");
+                        jQuery('#tbltermsconditionprev').append(strPrev);
+                    }
+                    *//*else {
+    $("#spancheckedTerms" + data[i].id).removeClass("checked");
+}*//*
+if (data[i].isDefault == "Y") {
+
+    $("#spancheckedTerms" + data[i].id).addClass("checked");
+    $("#chkTerms" + data[i].id).attr("disabled", "disabled");
+}
+
+}
+}
+else {
+jQuery('#tblTermsCondition').append('<tr><td>No Terms & Condition</td></tr>')
+
+$('#btnS').attr('disabled', 'disabled')
+}
+},
+error: function (xhr, status, error) {
+
+var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
+if (xhr.status == 401) {
+error401Messagebox(err.Message);
+}
+else {
+fnErrorMessageText('spandanger', 'form_wizard_1');
+}
+jQuery.unblockUI();
+return false;
+
+}
+
+
+})
+}
+*/
+
+function fnGetTermsCondition() {
+    debugger
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Closed",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+            debugger
+            jQuery("#tblTermsCondition").empty();
+            jQuery("#tbltermsconditionprev").empty();
+            if (data.length > 0) {
+                $('#btnS').removeAttr('disabled')
+                jQuery('#tbltermsconditionprev').append("<thead><tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr></thead>");
+                for (var i = 0; i < data.length; i++) {
+
+                    var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
+                    if (data[i].id != 0) {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
+                    }
+                    else {
+                        str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick = 'deleteterms(" + i + ")' > <i class='glyphicon glyphicon-remove-circle'></i></button ></td>";
+                    }
+
+                    if (data[i].id != 0) {
+                        str += "<td>" + data[i].name + "</td>";
+                    }
+                    else {
+                        str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=50 value='" + data[i].name + "'   autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+                    }
+
+
+                    var strPrev = "<tr id=trTermsprev" + i + "><td>" + data[i].name + "</td>";
+
+                    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
+                    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100 value='" + data[i].requirement + "' disabled  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+
+
+                    if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
+                        jQuery('#tblTermsCondition').append(str);
+
+                    }
+                    $('.maxlength').maxlength({
                         limitReachedClass: "label label-danger",
                         alwaysShow: true
                     });
@@ -960,9 +1282,10 @@ function CheckTerms(event, ID) {
     }
 
 }
-function fnsavetermscondition(isbuttonclick) {
+/*function fnsavetermscondition(isbuttonclick) {
+    debugger
     var checkedValue = '2~I~#';
-    var checkedOtherTerms = '';
+    var checkedOtherTerms = ''; isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
         var this_row = $(this);
         if ($(this).find('span').attr('class') == 'checked') {
@@ -994,6 +1317,91 @@ function fnsavetermscondition(isbuttonclick) {
             dataType: "json",
             success: function (data) {
 
+               
+                fnGetTermsCondition();
+                if (isbuttonclick == 'Y') {
+                    $('.alert-success').show();
+                    $('#spansuccess1').html('Terms & Condition saved successfully!');
+                    Metronic.scrollTo($(".alert-success"), -200);
+                    $('.alert-success').fadeOut(7000)
+                }
+
+
+
+            },
+            error: function (xhr, status, error) {
+                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spandanger', 'form_wizard_1');
+                }
+                jQuery.unblockUI();
+                return false;
+
+            }
+
+        });
+    }
+    else {
+        $('.alert-danger').show();
+        $('#spandanger').html('Please Check Terms & Condition properly!');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000)
+    }
+}*/
+
+function fnsavetermscondition(isbuttonclick) {
+    debugger
+    var checkedValue = '2~I~#';
+    var checkedOtherTerms = '', isOtherTerms = "Y";
+    $("#tblTermsCondition> tbody > tr").each(function (index) {
+        index = index + 1;
+        var this_row = $(this);
+        if ($(this).find('span').attr('class') == 'checked') {
+            if ($.trim(this_row.find('td:eq(0)').text()) != '2' && $.trim(this_row.find('td:eq(0)').text()) != '0') {
+
+                checkedValue = checkedValue + $.trim(this_row.find('td:eq(0)').html()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            if ($.trim(this_row.find('td:eq(0)').text()) == '0' && $('#terms' + index).val() != "" && $('#terms' + index).val() != null) {
+                checkedOtherTerms = checkedOtherTerms + $.trim(this_row.find('td:eq(3) input[type="text"]').val()) + '~' + $.trim(this_row.find('td:eq(1)').html()) + '~' + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + '#'
+            }
+            else if ($.trim(this_row.find('td:eq(0)').text()) == '0' && ($('#terms' + index).val() == "" || $('#terms' + index).val() == null)) {
+                isOtherTerms = "N";
+                $('#terms' + index).css("border", "1px solid red")
+            }
+            //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
+        }
+    });
+
+    if (isOtherTerms == "N" && isbuttonclick == "Y") {
+        $('.alert-danger').show();
+        $('#spandanger').html('').html('Please fill Other Terms & Condition properly!');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000)
+        return false;
+    }
+    else if (checkedValue != '' && isOtherTerms == "Y") {
+        var Attachments = {
+            "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
+            "QueryString": checkedValue,
+            "ConditionType": jQuery("#ddlConditiontype").val(),
+            "OtherTermsCondition": checkedOtherTerms
+
+        }
+
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eInsTermsCondition",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(Attachments),
+            dataType: "json",
+            success: function (data) {
+                debugger
 
                 fnGetTermsCondition();
                 if (isbuttonclick == 'Y') {
@@ -1026,6 +1434,7 @@ function fnsavetermscondition(isbuttonclick) {
         $('#spandanger').html('Please Check Terms & Condition properly!');
         Metronic.scrollTo($(".alert-danger"), -200);
         $('.alert-danger').fadeOut(7000)
+        return false;
     }
 }
 function fnsaveAttachmentsquestions() {
@@ -1532,7 +1941,7 @@ function fnApproversQuery() {
             jQuery("#tblapproverstech").removeClass('hide')
             jQuery("#tblapproversPrevtech").removeClass('hide')
             if (!jQuery("#tblapproverstech thead").length) {
-                jQuery("#tblapproverstech").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+                jQuery("#tblapproverstech").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:55%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:25%!important'>Show Price</th></tr></thead>");
                 jQuery("#tblapproverstech").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp + ',trAppidPrevtech' + TechApp + ',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + TechAppsrno + '</td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
             }
             else {
@@ -1634,8 +2043,8 @@ function fnGetApprovers() {
                 jQuery('#tblapprovers').append("<thead><tr><th colspan=4  style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
                 jQuery('#tblapproversPrev').append("<thead><tr><th colspan=2 style='text-align:center;' class='bold' >Commercial Approver(s)</th></tr><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
 
-                jQuery('#tblapproverstech').append("<thead><th colspan=5 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
-                jQuery('#tblapproversPrevtech').append("<thead><th colspan=3 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+                jQuery('#tblapproverstech').append("<thead><th colspan=5 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th style='width:5%!important'></th><th class='bold' style='width:55%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:25%!important'>Show Price</th></tr></thead>");
+                jQuery('#tblapproversPrevtech').append("<thead><th colspan=3 style='text-align:center;' class='bold' >Technical Approver(s)</th><tr><th class='bold' style='width:55%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:25%!important'>Show Price</th></tr></thead>");
 
                 for (var i = 0; i < data[0].approvers.length; i++) {
 
@@ -2226,7 +2635,15 @@ function RFQInviteVendorTab3() {
     });
 
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
 
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
     var Tab3data = {
         "BidVendors": InsertQuery,
@@ -2234,7 +2651,8 @@ function RFQInviteVendorTab3() {
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
         "subject": _cleanString4,
-        "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        //"Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        "DeadlineSt": ET,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     };
@@ -2464,7 +2882,7 @@ function ValidateVendor() {
 }
 
 function fetchReguestforQuotationDetails() {
-    debugger;
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
@@ -2474,7 +2892,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            debugger
+
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
@@ -3124,7 +3542,8 @@ function fetchVendorGroup(categoryFor, vendorId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        //url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&VendorID=" + vendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -3333,3 +3752,34 @@ function cancelbid() {
     CancelBidDuringConfig(_RFQid, 'eRFQ');
 }
 
+function addMoreTermsCondition() {
+
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblTermsCondition tr:gt(0)").each(function () {
+        var this_row = $(this);
+
+        num = (this_row.closest('tr').attr('id')).substring(2, (this_row.closest('tr').attr('id')).length)
+
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
+
+    i = parseInt(maxinum) + 1;
+    var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
+    str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
+    str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
+    str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled checked/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
+    str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
+    jQuery('#tblTermsCondition').append(str);
+    $('.maxlength').maxlength({
+        limitReachedClass: "label label-danger",
+        alwaysShow: true
+    });
+
+}
+function deleteterms(icount) {
+    $('#tr' + icount).remove();
+    $('#trTermsprev' + icount).remove();
+}

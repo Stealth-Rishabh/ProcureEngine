@@ -228,6 +228,48 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
 
 }
 
+function CheckOnlineStatus(msg) {
+
+
+    var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
+    if (condition == "OFFLINE") {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-bottom-full-width",
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
+
+
+    }
+    else {
+
+    }
+
+}
+function Pageloaded() {
+
+    CheckOnlineStatus("load");
+    document.body.addEventListener("offline", function () {
+
+        CheckOnlineStatus("offline")
+    }, false);
+    document.body.addEventListener("online", function () {
+
+        CheckOnlineStatus("online")
+
+    }, false);
+}
 function BindNoExtensions(divid) {
 
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
@@ -806,6 +848,7 @@ function getUrlVars() {
 }
 
 if (window.location.search) {
+    debugger
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
     BidID = getUrlVarsURL(decryptedstring)['BidID'];
@@ -884,6 +927,26 @@ function fnDownloadAttachments(filename, foldername) {
             jQuery.unblockUI();
         }
     })
+}
+///*** get Cuurenct datetime 
+function fnGetCurrentPrefferedProfileDTTime() {
+
+    var theStDate = new Date();
+    if (sessionStorage.getItem('preferredtimezone') != null) {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+        });
+
+    }
+    else {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        });
+
+    }
+    theStDate = theStDate.replace('at', '-');
+    return theStDate;
+
 }
 //abheedev bug 353 end
 function fnConverToLocalTime(dttime) {
@@ -986,7 +1049,12 @@ function fnConverToLocalTimeWithSeconds(dttime) {
     }
     else return '..'
 }
+function keepTimeOnly(date) {
 
+    let timeOnly = new Date(date);
+    timeOnly = timeOnly.toTimeString().slice(0, 9)
+    return timeOnly;
+}
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
@@ -1818,6 +1886,7 @@ function RegisterUser_fetchRegisterUser(docData) {
 
             },
             error: function (xhr, status, error) {
+
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);

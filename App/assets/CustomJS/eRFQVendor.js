@@ -575,6 +575,7 @@ function fetchRFQLevelTC(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
+
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblRFQLevelTCForQuot").empty();
             jQuery("#tbltermsconditionprev").empty();
@@ -1132,8 +1133,13 @@ function fetchReguestforQuotationDetails() {
 
                 jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
-                var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
-                if (currentdate < StartDT) {
+                //var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
+                //alert(RFQData[0].general[0].rfqStartDate)
+                //alert(StartDT)
+                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate));
+
+
+                /*if (currentdate < StartDT) {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#regretrfq').hide();
                     $('#lblRFQMessage').show();
@@ -1142,7 +1148,7 @@ function fetchReguestforQuotationDetails() {
                     $('#regretrfq').show();
                     $('#form_wizard_1').find('.button-next').show();
                     $('#lblRFQMessage').hide();
-                }
+                }*/
             }
             if (RFQData[0].vendors.length) {
                 for (var i = 0; i < RFQData[0].vendors.length; i++) {
@@ -1177,6 +1183,64 @@ function fetchReguestforQuotationDetails() {
         }
     });
     jQuery.unblockUI();
+}
+
+function Dateandtimevalidate(StartDT) {
+
+    var StartDT = StartDT.replace('-', '');
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+    console.log(JSON.stringify(Tab1Data))
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+            if (data == "1") {
+                $('#form_wizard_1').find('.button-next').hide();
+                $('#regretrfq').hide();
+                $('#lblRFQMessage').show();
+            }
+            else {
+                $('#regretrfq').show();
+                $('#form_wizard_1').find('.button-next').show();
+                $('#lblRFQMessage').hide();
+                return false;
+            }
+        },
+        error: function () {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
 }
 jQuery("#regretrfq").click(function () {
     $('#modalRegretremarks').modal('show');
@@ -1313,6 +1377,7 @@ function fetchRFIParameteronload(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
+
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty();
@@ -1335,6 +1400,7 @@ function fetchRFIParameteronload(ver) {
                 }
 
                 $('#txtvendorremarks').val(data[0].vendorRemarks);
+                $('#lblvendorremark').text(data[0].vendorRemarks);
                 for (var i = 0; i < data.length; i++) {
 
                     description = stringDivider(data[i].rfqDescription, 40, "<br/>\n");
