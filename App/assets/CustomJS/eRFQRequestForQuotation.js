@@ -573,7 +573,7 @@ var FormWizard = function () {
 
 function Dateandtimevalidate(dttime, forDT) {
 
-
+    debugger;
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
 
@@ -765,7 +765,7 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
+    debugger;
     //**  Get Start date
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
@@ -791,7 +791,7 @@ function InsUpdRFQDEtailTab1() {
     ET = new String(EndTime);
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
-
+    var _openQuotes = "Y";
     var _RFQBidType = 'Open';
     var Tab1Data = {
 
@@ -808,7 +808,8 @@ function InsUpdRFQDEtailTab1() {
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
         "RFQBidType": _RFQBidType,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
     //console.log(JSON.stringify(Tab1Data))
