@@ -201,7 +201,6 @@ function callPagejs(pagejs) {
 
 
     var js = [];
-
     js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')
     for (var i = 0; i < Pages.length; i++) {
@@ -262,8 +261,92 @@ function setCommonData() {
     jQuery('#liHome').html('<i class="fa fa-home"></i><a href=' + sessionStorage.getItem('HomePage') + '>Home</a><i class="fa fa-angle-right"></i>')
 }
 
+function fetchCountry() {
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $("#ddlCountry").empty();
+            $("#ddlCountryCd").empty();
+            $("#ddlCountryCdPhone").empty();
+            var vlal = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
+                    $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
+                }
+
+                $("#ddlCountry").val('111').trigger("change");
+
+                $("#ddlCountryCd").val('111');
+                $("#ddlCountryCdPhone").val('111');
+
+
+
+            }
+            else {
+                $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+}
 
 function fetchState() {
+
     var countryid = $('#ddlCountry option:selected').val();
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -283,7 +366,7 @@ function fetchState() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
                 }
-                $("#ddlState").trigger("change");
+                //   $("#ddlState").trigger("change");
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');
@@ -307,6 +390,7 @@ function fetchState() {
 }
 
 function fetchCity() {
+
     var stateid = $('#ddlState').val();
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -325,7 +409,7 @@ function fetchCity() {
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
-                $("#ddlCity").val('0').trigger("change");
+                //   $("#ddlCity").val('0').trigger("change");
             }
             else {
                 $("#ddlCity").append('<tr><td>No city found..</td></tr>');
@@ -493,29 +577,44 @@ function fetchMasters() {
     });
 }
 
-function fetchMsme() {
 
-    if (jQuery("#ddlMSME option:selected").val() == 'Y') {
-        $('.hideInput').removeClass('hide');
-        $('#submit_form').validate();
-        $('input[name="txtUdyam"]').rules('add', {
-            required: true
-        });
-        $('input[name="filemsme"]').rules('add', {
-            required: true
-        });
-        $('#ddlMSMEClass').rules('add', {
-            required: true
-        });
+function prefferedTimezone() {
 
 
-    } else {
-        $('.hideInput').addClass('hide');
-        $('input[name="filemsme"]').rules('remove');
-        $('input[name="txtUdyam"]').rules('remove');
-        $('input[name="ddlMSMEClass"]').rules('remove');
-    }
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            let lstTZ = JSON.parse(data[0].jsondata);
+
+            jQuery("#ddlpreferredTime").empty();
+            jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerror1', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
 }
+
+
 
 function CheckOnlineStatus(msg) {
 
@@ -547,6 +646,7 @@ function CheckOnlineStatus(msg) {
     }
 
 }
+
 function Pageloaded() {
 
     CheckOnlineStatus("load");
@@ -658,3 +758,5 @@ function _base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 }
+
+
