@@ -1977,3 +1977,23 @@ function RegisterUser_fetchRegisterUser(docData) {
     })();
     return dataToReturn;
 }
+
+function fnGetCurrentPrefferedProfileDTTime() {
+
+    var theStDate = new Date();
+    if (sessionStorage.getItem('preferredtimezone') != null) {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+        });
+
+    }
+    else {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        });
+
+    }
+    theStDate = theStDate.replace('at', '-');
+    return theStDate;
+
+}
