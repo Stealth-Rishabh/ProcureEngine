@@ -635,7 +635,10 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+$.validator.addMethod("numberWithComma", function (value, element) {
 
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 var FormWizard = function () {
 
     return {
@@ -664,7 +667,7 @@ var FormWizard = function () {
                         required: true,
                         minlength: 1,
                         maxlength: 3,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -682,7 +685,7 @@ var FormWizard = function () {
 
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -710,7 +713,7 @@ var FormWizard = function () {
                         required: true
                     },
                     txtquantitiy: {
-                        number: true,
+                        numberWithComma: true,
                         required: true,
                         notEqualTo: 0
                     },
@@ -722,35 +725,35 @@ var FormWizard = function () {
                     },
                     txtminquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         // notEqualTo: 0
                     },
                     txtmaxquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtCeilingPrice: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtedelivery: {
 
                     },
                     txtminimumdecreament: {
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     drpdecreamenton: {
 
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     },
                     txtlastinvoiceprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     }
                 },
@@ -922,7 +925,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
-
+                      
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -1454,6 +1457,7 @@ $("#txtbidDate").change(function () {
 
 
 function InsUpdProductSevices() {
+    
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (form.valid() == true) {
         var st = "true"
@@ -1616,7 +1620,7 @@ function InsUpdProductSevices() {
                         Metronic.scrollTo(error, -200);
                         error.fadeOut(3000);
                         jQuery.unblockUI();
-                        // resetfun();
+                       
                         return false;
                     }
                     else {
@@ -1642,15 +1646,6 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
-    if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
-        $('#spandanger').html('You can not add more than one item for French Auction.');
-        //$(".alert-danger").find("span").html('').html('You can not add more than one item for Dutch Auction.')
-        Metronic.scrollTo(error, -200);
-        $(".alert-danger").show();
-        $(".alert-danger").fadeOut(5000);
-        resetfun();
-        return false;
-    } else {
         var num = 0, i = 0;
         var maxinum = -1;
         $("#tblServicesProduct tr:gt(0)").each(function () {
@@ -1689,16 +1684,58 @@ function ParametersQuery() {
         }
         else {
             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
+         }
+      
         $('#wrap_scrollerPrev').show();
         rowAppItems = rowAppItems + 1;
         rowAppItemsrno = rowAppItemsrno + 1;
         resetfun()
+        disableiteminput()        
+        $('#spansuccess1').html('Item successfully added and you cannot add more than one item for French Auction.');              
+        $(".alert-success").show();
+        $(".alert-success").fadeOut(5000);
+      
 
-    }
+    
     jQuery.unblockUI();
 }
-
+function disableiteminput() {
+   
+    $("#txtshortname").prop("disabled", true);
+    $("#txtItemCode").prop("disabled", true);
+    $("#txttargetprice").prop("disabled", true);
+    $("#txtquantitiy").prop("disabled", true);
+    $("#txtlastinvoiceprice").prop("disabled", true);
+    $("#txtminquantitiy").prop("disabled", true);
+    $("#txtmaxquantitiy").prop("disabled", true);
+    $("#txtUOM").prop("disabled", true);
+    $("#txtCeilingPrice").prop("disabled", true);
+    $("#txtminimumdecreament").prop("disabled", true);
+    $("#drpdecreamenton").prop("disabled", true);
+    $("#showhlprice").prop("disabled", true);   
+    $("#showstartprice").prop("disabled", true);
+    $("#add_or").prop("disabled", true);
+    $("#delete_or").prop("disabled", true);
+    
+}
+function enableiteminput() {
+  
+    $("#txtshortname").prop("disabled", false);
+    $("#txtItemCode").prop("disabled", false);
+    $("#txttargetprice").prop("disabled", false);
+    $("#txtquantitiy").prop("disabled", false);
+    $("#txtlastinvoiceprice").prop("disabled", false);
+    $("#txtminquantitiy").prop("disabled", false);
+    $("#txtmaxquantitiy").prop("disabled", false);
+    $("#txtUOM").prop("disabled", false);
+    $("#txtCeilingPrice").prop("disabled", false);
+    $("#txtminimumdecreament").prop("disabled", false);
+    $("#drpdecreamenton").prop("disabled", false);
+    $("#showhlprice").prop("disabled", false);  
+    $("#showstartprice").prop("disabled", false);
+    $("#add_or").prop("disabled", false);
+    $("#delete_or").prop("disabled", false);
+}
 function editvalues(icount) {
     //sessionStorage.setItem('ClickedEditID', icount.id)
     Metronic.scrollTo($("body"), 200);
@@ -1728,6 +1765,8 @@ function editvalues(icount) {
 
 }
 function deleterow(rowid, rowidPrev) {
+   
+    enableiteminput()
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
     rowAppItems = rowAppItems - 1;
@@ -1745,6 +1784,8 @@ function deleterow(rowid, rowidPrev) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
+        
+        
     }
 }
 function resetfun() {
@@ -1918,7 +1959,7 @@ function fetchFrenchBidDetails() {
                 required: true,
                 minlength: 1,
                 maxlength: 3,
-                number: true
+                numberWithComma: true
             });
             if (BidData[0].bidDetails[0].bidForID == 81) {
                 $('#showhlprice').attr('disabled', false).val("N");
@@ -2021,6 +2062,10 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlists').show()
                 jQuery('#selectedvendorlistsPrev').show()
 
+            }
+            if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {              
+                resetfun();
+                disableiteminput();
             }
 
 
