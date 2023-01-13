@@ -2480,7 +2480,7 @@ function fnupdateStaggerReopendatetime() {
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": 0,
         //"BidDate": dtst,
-        "BidDateSt": ST,
+        "BidDateST": ST,
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }

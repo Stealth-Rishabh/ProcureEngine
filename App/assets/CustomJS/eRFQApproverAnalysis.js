@@ -168,9 +168,10 @@ function getSummary(vendorid, version) {
 }
 
 var ShowPrice = "Y";
-var bidopeningdate = new Date();
+var bidopeningdate = null;
 var RFQBidType = '';
 var RFQEndDate = new Date();
+var _openQuotes = '';
 function fetchrfqcomprative() {
     var url = '';
     //ShowPrice = "N";
@@ -242,7 +243,7 @@ function fetchrfqcomprative() {
 
             }
             else {
-                if (bidopeningdate == null || bidopeningdate == '') {
+                if (bidopeningdate == null) {
                     ShowPrice = 'N';
 
                 }

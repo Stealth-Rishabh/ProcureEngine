@@ -425,6 +425,7 @@ var FormWizard = function () {
                 onNext: function (tab, navigation, index) {
                     success.hide();
                     error.hide();
+                  
                     if (index == 1) {
 
 
@@ -474,6 +475,7 @@ var FormWizard = function () {
 
                     }
                     else if (index == 3) {
+                        
                         var isOtherTerms = "Y";
                         $("#tblTermsCondition> tbody > tr").each(function (index) {
                             index = index + 1;
@@ -573,7 +575,7 @@ var FormWizard = function () {
 
 function Dateandtimevalidate(dttime, forDT) {
 
-    debugger;
+   
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
 
@@ -785,7 +787,7 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-    debugger;
+ 
     //**  Get Start date
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         var StartDT = $('#txtstartdatettime').val().replace('-', '');
@@ -980,13 +982,13 @@ function fnGetTermsCondition() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID'),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            debugger
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1118,7 +1120,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-
+    debugger
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
