@@ -1,3 +1,4 @@
+$("#openquote").hide();
 jQuery(document).ready(function () {
   
     Pageloaded()
@@ -488,7 +489,7 @@ function InsUpdRFQDEtailTab1() {
 var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
    
-
+ 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -500,6 +501,7 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+            debugger
             if (sessionStorage.getItem('CustomerID') == "32") {
                 $('#ctrladdapprovers').addClass('hide')
             }
@@ -533,13 +535,21 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery('#lbltechnicalApproval').html("Not Required")
             }
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
-                $("#divRFQOpenDate").show();
-                $("#litab2").hide();
+                debugger
+                let CurDT = new Date();              
+                let BidDT = new Date(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate).replace('-', ''));
+                $("#divRFQOpenDate").show();                               
+                $("#litab2").hide();             
                 $("#litab2").attr("disabled", "disabled");
+
                 if (RFQData[0].general[0].bidopeningdate != null) {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
                     jQuery('#lblRFQOpenDate').show();
+                    if (CurDT < BidDT) {
+                        $("#openquote").show();
+                    }
+                    
                     $("#ctrlRFQOpenDates").show();
                 }
                 else {
@@ -552,6 +562,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $("#divRFQOpenDate").hide();
                 $("#litab2").show();
                 $("#litab2").removeAttr("disabled");
+              
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -2200,6 +2211,10 @@ function clearSurrogateForm() {
 
 }
 function OpenQuotes() {
+    debugger
+    let Data = {
+        "RFQID": parseInt(sessionStorage.getItem('hdnrfqid'))
+        }
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQOpenQuotes",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2207,6 +2222,7 @@ function OpenQuotes() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
+            debugger
             if (data == 1) {
                 fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                 $('.alert-success').show();
