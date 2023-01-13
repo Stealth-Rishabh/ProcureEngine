@@ -546,7 +546,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
                     jQuery('#lblRFQOpenDate').show();
-                    if (CurDT < BidDT) {
+                    if (CurDT > BidDT) {
                         $("#openquote").show();
                     }
                     
