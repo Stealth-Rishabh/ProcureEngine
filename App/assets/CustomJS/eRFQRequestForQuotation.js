@@ -1,4 +1,6 @@
 let _RFQid;
+let isvalidStartDt;
+let isvalidEndDt;
 jQuery(document).ready(function () {
 
     var date = new Date();
@@ -100,6 +102,11 @@ $('#txtshortname,#txtItemCode,#txtbiddescriptionP,#txtItemRemarks,#txtConversion
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
+
+$('.btncalandar').click(function () {
+    $('.inputgroup').removeClass('has-error')
+})
 
 function cancelbid() {
     CancelBidDuringConfig(_RFQid, 'eRFQ');
@@ -418,74 +425,41 @@ var FormWizard = function () {
                 onNext: function (tab, navigation, index) {
                     success.hide();
                     error.hide();
+                  
                     if (index == 1) {
 
-                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
-                        var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-                        var CurDateonly = new Date(currentdate.toDateString())
-                        var StartDTdateonly = new Date(StartDT.toDateString())
+
+                        //var CurDateonly = new Date(currentdate.toDateString())
+                        //var StartDTdateonly = new Date(StartDT.toDateString());
+
+
                         if (form.valid() == false) {
                             return false;
 
                         }
-                        else if ($('#txtenddatettime').val() == '') {
-                            $('.alert-danger').show();
-                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('Please Enter RFQ END Date');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(7000);
-                            return false;
+                        else (form.valid() == true)
+                        {
+
+                            if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
+                                Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
+                            }
+                            else {
+                                Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
+                            }
+
 
                         }
-                        else if ($('#txtstartdatettime').val() != '' && StartDTdateonly < CurDateonly) {
-                            $('.alert-danger').show();
-                            $('#txtstartdatettime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('Start Date Time must greater than Current Date Time.');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(7000);
-                            $('#txtstartdatettime').val();
-                            return false;
-                        }
-                        else if ($('#txtstartdatettime').val() != '' && EndDT < StartDT) {
-                            $('.alert-danger').show();
-                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('End Date Time must greater than Start Date Time ');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(7000);
-                            $('#txtenddatettime').val('')
-                            return false;
-                        }
-                        else if (EndDT < currentdate) {
-                            $('.alert-danger').show();
-                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                            $('#spandanger').html('End Date Time must greater than Current Date Time.');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(7000);
-                            $('#txtenddatettime').val('')
-                            return false;
-                        }
-                        else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
-                            $('.alert-danger').show();
-                            $('#spandanger').html('Please  Map Commercial Approver.');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(5000);
-                            return false;
-
-                        }
-                        else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
-                            $('.alert-danger').show();
-                            $('#spandanger').html('Please Map Approver.');
-                            Metronic.scrollTo($(".alert-danger"), -200);
-                            $('.alert-danger').fadeOut(5000);
-                            return false;
-
-                        }
-                        else {
-                            InsUpdRFQDEtailTab1()
-
-                        }
-
-                    } else if (index == 2) {
+                        /* else if ($('#txtenddatettime').val() == '') {
+                             $('.alert-danger').show();
+                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                             $('#spandanger').html('Please Enter RFQ END Date');
+                             Metronic.scrollTo($(".alert-danger"), -200);
+                             $('.alert-danger').fadeOut(7000);
+                             return false;
+ 
+                         }*/
+                    }
+                    else if (index == 2) {
 
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('.alert-danger').show();
@@ -501,6 +475,7 @@ var FormWizard = function () {
 
                     }
                     else if (index == 3) {
+                        
                         var isOtherTerms = "Y";
                         $("#tblTermsCondition> tbody > tr").each(function (index) {
                             index = index + 1;
@@ -597,6 +572,147 @@ var FormWizard = function () {
 
 }();
 
+
+function Dateandtimevalidate(dttime, forDT) {
+
+   
+    var DTTime = new Date();
+    DTTime = dttime.replace('-', '');
+
+
+    let StTime =
+        new Date(DTTime.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+
+    //console.log(JSON.stringify(Tab1Data))
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+
+            if (forDT == "startdt") {
+                isvalidStartDt = data;
+                if (data == "1") {
+                    //** Start Date is Valid
+                    Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
+                }
+
+            }
+            else {
+                isvalidEndDt = data;
+            }
+
+            if (isvalidEndDt != undefined || isvalidStartDt != undefined) {
+                let enddate, Startdate;
+                if ($('#txtstartdatettime').val() != '') {
+                    var EndDT = new Date();
+                    EndDT = $('#txtenddatettime').val().replace('-', '');
+
+                    enddate =
+                        new Date(EndDT.toLocaleString("en", {
+                            timeZone: sessionStorage.getItem('preferredtimezone')
+                        }));
+
+                    var StartDT = new Date();
+                    StartDT = $('#txtstartdatettime').val().replace('-', '');
+
+                    Startdate =
+                        new Date(StartDT.toLocaleString("en", {
+                            timeZone: sessionStorage.getItem('preferredtimezone')
+                        }));
+                }
+                if ($('#txtstartdatettime').val() != '' && isvalidStartDt != "1" && isvalidStartDt != undefined) {//&& StartDTdateonly < CurDateonly
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtstartdatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('Start Date Time must greater than Current Date Time.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    $('#txtstartdatettime').val();
+
+                    return false;
+                }
+                else if ($('#txtstartdatettime').val() != '' && enddate < Startdate) {
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('End Date Time must greater than Start Date Time ');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    // $('#txtenddatettime').val('')
+
+                    return false;
+                }
+                else if (isvalidEndDt != "1" && isvalidEndDt != undefined) {//EndDT < currentdate
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                    $('#spandanger').html('End Date Time must greater than Current Date Time.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    //$('#txtenddatettime').val('')
+
+                    return false;
+                }
+                else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
+
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Please  Map Commercial Approver.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(5000);
+
+                    return false;
+
+                }
+                else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
+                    $('#form_wizard_1').bootstrapWizard('previous');
+                    $('.alert-danger').show();
+                    $('#spandanger').html('Please Map Approver.');
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(5000);
+                    return false;
+
+                }
+                else {
+                    InsUpdRFQDEtailTab1()
+                }
+            }
+
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    })
+
+}
 var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
 
@@ -651,30 +767,40 @@ function InsUpdRFQDEtailTab1() {
             approvers.push(app)
         })
     }
-
-
-
-
-
+ 
+    //**  Get Start date
     var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
-        StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+        StartDT = $('#txtstartdatettime').val().replace('-', '');
     }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
 
-    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+    //**  Get End  date    
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
+    var _openQuotes = "Y";
     var _RFQBidType = 'Open';
-
-
-
     var Tab1Data = {
 
         "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
-        //"RFQSubject": jQuery("#txtrfqSubject").val(),
         "RFQSubject": _cleanString,
-        "RFQStartDate": StartDT, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
-        "RFQEndDate": EndDT,//jQuery("#txtenddatettime").val(),
-        //"RFQDescription": jQuery("#txtrfqdescription").val(),
+        "RFQStartDateSt": ST, //jQuery("#txtstartdatettime").val() == '' ? 'x' : jQuery("#txtstartdatettime").val(),
+        "RFQEndDateSt": ET,//jQuery("#txtenddatettime").val(),
         "RFQDescription": _cleanString2,
         "RFQCurrencyId": parseInt(jQuery("#dropCurrency").val()),
         "RFQConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
@@ -684,10 +810,11 @@ function InsUpdRFQDEtailTab1() {
         "RFQReference": $("#txtRFQReference").val(),
         "RFQApprovers": approvers,
         "RFQBidType": _RFQBidType,
-        "TechnicalApproval": $("#drp_TechnicalApp").val()
+        "TechnicalApproval": $("#drp_TechnicalApp").val(),
+        "OpenQuotes": _openQuotes
 
     };
-
+    //console.log(JSON.stringify(Tab1Data))
 
     jQuery.ajax({
         type: "POST",
@@ -834,13 +961,13 @@ function fnGetTermsCondition() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID'),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            debugger
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -972,7 +1099,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-
+    debugger
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -2315,13 +2442,25 @@ function RFQInviteVendorTab3() {
 
     var _cleanString3 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
 
+    var EndDT = $('#txtenddatettime').val().replace('-', '');
+    let EndTime =
+        new Date(EndDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
+
+
+
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
         "subject": _cleanString3,
-        "Deadline": new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
+        "DeadlineSt": ET,//new Date($('#txtenddatettime').val().replace('-', '')), //jQuery('#txtenddatettime').val(),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
 
     };
@@ -2663,7 +2802,7 @@ function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srn
                 }
             }
             $('#spansuccess1').html('File Deleted Successfully');
-            success.show();
+            success.show(); d
             Metronic.scrollTo(success, -200);
             success.fadeOut(5000);
 
@@ -3421,7 +3560,6 @@ function addMoreTermsCondition() {
     });
 
     i = parseInt(maxinum) + 1;
-
     var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
     str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
     str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
