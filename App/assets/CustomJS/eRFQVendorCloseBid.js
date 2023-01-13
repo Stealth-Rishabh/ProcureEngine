@@ -1749,7 +1749,6 @@ function fnReplicateToAllItems() {
    // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
    
-   
     if (validateSubmit) {
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();
