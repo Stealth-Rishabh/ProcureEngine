@@ -669,7 +669,7 @@ function Dateandtimevalidate(dttime, forDT) {
             }
 
             if (isvalidEndDt != undefined || isvalidStartDt != undefined || isvalidbidopenDt != undefined) {
-                let enddate, Startdate,bidopendate;
+                let enddate, Startdate, bidopendate;
                 if ($('#txtstartdatettime').val() != '') {
                     var EndDT = new Date();
                     EndDT = $('#txtenddatettime').val().replace('-', '');
@@ -839,6 +839,9 @@ function InsUpdRFQDEtailTab1() {
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         StartDT = $('#txtstartdatettime').val().replace('-', '');
     }
+    else {
+        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
+    }
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
@@ -869,17 +872,11 @@ function InsUpdRFQDEtailTab1() {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
 
-    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-    var RFQBidType = "Closed";
-    var TechnicalAppr = "Not Required";
+    ET = new String(EndTime);
+    ET = ET.substring(0, ET.indexOf("GMT"));
+    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
-    let _RFQBidType = "Closed";
-    //var TechnicalAppr = "Not Required";
-    var _openQuotes = "N";
-    debugger;
-    //var Tab1Data = {
 
-    var Tab1Data = {
 
 
 
@@ -1113,7 +1110,7 @@ function InsUpdRFQDEtailTab2() {
                         jQuery('#tbltermsconditionprev').append(strPrev);
                     }
                     *//*else {
-    $("#spancheckedTerms" + data[i].id).removeClass("checked");
+$("#spancheckedTerms" + data[i].id).removeClass("checked");
 }*//*
 if (data[i].isDefault == "Y") {
 

@@ -1,3 +1,4 @@
+$("#openquote").hide();
 jQuery(document).ready(function () {
   
     Pageloaded()
@@ -488,7 +489,7 @@ function InsUpdRFQDEtailTab1() {
 var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
    
-
+ 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -533,13 +534,23 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery('#lbltechnicalApproval').html("Not Required")
             }
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
-                $("#divRFQOpenDate").show();
-                $("#litab2").hide();
+                let CurDT = new Date();              
+                let BidDT = new Date(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate).replace('-', ''));
+                $("#divRFQOpenDate").show();                               
+                $("#litab2").hide();             
                 $("#litab2").attr("disabled", "disabled");
+
                 if (RFQData[0].general[0].bidopeningdate != null) {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
                     jQuery('#lblRFQOpenDate').show();
+                    if (CurDT > BidDT) {
+                        $("#openquote").show();
+                    }
+                    else {
+                        $("#openquote").hide();
+                    }
+                    
                     $("#ctrlRFQOpenDates").show();
                 }
                 else {
@@ -552,6 +563,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $("#divRFQOpenDate").hide();
                 $("#litab2").show();
                 $("#litab2").removeAttr("disabled");
+              
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -1203,9 +1215,18 @@ function UpdateRFQOPenDateAfterClose() {
         return false;
     }
     else {
+        let BOT =
+            new Date(BidOpenDate.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
+
+        BT = new String(BOT);
+        BT = BT.substring(0, BT.indexOf("GMT"));
+        BT = BT + 'GMT' + sessionStorage.getItem('utcoffset');
         var DateData = {
             "RFQID": parseInt(sessionStorage.getItem('hdnrfqid')),
-            "RFQOpenDate": BidOpenDate
+            "RFQOpenDate": BidOpenDate,
+            "RFQOpenDateSt": BT
         }
         // alert(JSON.stringify(DateData))
         jQuery.ajax({
@@ -1218,8 +1239,7 @@ function UpdateRFQOPenDateAfterClose() {
             data: JSON.stringify(DateData),
             dataType: "json",
             success: function (data) {
-                debugger;
-                if (data == 1) {
+                if (data == '1') {
                     fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                     $('.alert-success').show();
                     $('.alert-success').html('RFQ Open Date updated successfully');
@@ -1230,18 +1250,18 @@ function UpdateRFQOPenDateAfterClose() {
                         $('#responsive').modal('hide');
                     }, 2000)
 
-                    return false;
+                    return true;
                 }
                 else {
                     var msg = "";
                     switch (data){
-                        case 2:
+                        case '2':
                             msg = "RFQ does not Exists";
                             break;
-                        case 3:
+                        case '3':
                             msg = "RFQ Open Date Cannot be set before the Deadline.";
                             break;
-                        case 4:
+                        case '4':
                             msg = "The quotes have already been opened. Open Date Cannot altered anyfurther.";
                             break;
                         default:
@@ -1999,7 +2019,6 @@ function ExtendDuration() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidData = '';
     var _ExtendedDate = new Date($('#txtextendDate').val().replace('-', ''))
-    debugger;
     BidData = {
         "RFQID": parseInt(sessionStorage.getItem("hdnrfqid")),
         "ExtendedDate": new Date($('#txtextendDate').val().replace('-', '')),
@@ -2016,7 +2035,6 @@ function ExtendDuration() {
         data: JSON.stringify(BidData),
         dataType: "json",
         success: function (data) {
-            debugger;
             if (data == 1) {
                 $('#deadlineModal').text($("#txtextendDate").val())
 
@@ -2198,4 +2216,62 @@ function clearSurrogateForm() {
     sessionStorage.setItem('hdnselectedEmail', '');
     jQuery("#txtvendorSurrogateBid").val('')
 
+}
+function OpenQuotes() {
+    let Data = {
+        "RFQID": parseInt(sessionStorage.getItem('hdnrfqid'))
+        }
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQOpenQuotes",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(Data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            if (data == '1') {
+                fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
+                $('.alert-success').show();
+                $('.alert-success').html('Quotes have now been opened');
+                Metronic.scrollTo($(".alert-success"), -200);
+                $('.alert-success').fadeOut(7000);
+                setTimeout(function () {
+                    $('#responsive').modal('hide');
+                }, 2000)
+
+                return true;
+            }
+            else {
+                var msg = "";
+                switch (data) {
+                    case '2':
+                        msg = "RFQ does not Exists";
+                        break;
+                    case '3':
+                        msg = "RFQ Quotes cannot be opened currently.";
+                        break;
+                    case '4':
+                        msg = "The quotes have already been opened";
+                        break;
+                    default:
+                        msg = "Some error occurred. Please contact administrator"
+                        break;
+                }
+                $('.alert-danger').show();
+                $('.alert-danger').html(msg);
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                return false;
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" +  + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
 }
