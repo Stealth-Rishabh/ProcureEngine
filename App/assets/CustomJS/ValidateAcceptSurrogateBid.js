@@ -17,8 +17,11 @@ jQuery(document).ready(function () {
 
     fetchBidHeaderDetails();
     formvalidate();
+    $('#btnpassword').attr('disabled', 'disabled')
+    $('#txtpassword').attr('disabled', 'disabled')
 
 });
+let isvalidate = "1";
 function fetchBidHeaderDetails() {
 
     var url = '';
@@ -34,20 +37,19 @@ function fetchBidHeaderDetails() {
         dataType: "json",
         success: function (data, status, jqXHR) {
             if (data.length == 1) {
-                var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
-                var BidExpiryDatetime = fnConverToLocalTime(data[0].bidExpiryDate);
-                var _bidDateStart = new Date(BidStartDatetime.replace('-', ''));
-                var _bidDateExpiry = new Date(BidExpiryDatetime.replace('-', ''));
+                //var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
+                // var BidExpiryDatetime = fnConverToLocalTime(data[0].bidExpiryDate);
+                // var _bidDateStart = new Date(BidStartDatetime.replace('-', ''));
+                // var _bidDateExpiry = new Date(BidExpiryDatetime.replace('-', ''));
 
-                var currentTime = new Date();
-                console.log(currentTime);
-                console.log(_bidDateStart);
-                console.log(_bidDateExpiry);
-
-                if (_bidDateExpiry > currentTime) {
+                // var currentTime = new Date();
+               
+                //** check Expiry Date in valid or not
+                Dateandtimevalidate(fnConverToLocalTime(data[0].bidExpiryDate));
+               
+                //if (_bidDateExpiry > currentTime) {
                     //if (_bidDateStart < currentTime) {
-                    $('#btnpassword').removeAttr('disabled');
-                    $('#txtpassword').removeAttr('disabled');
+                  
                     jQuery('#lblEventID').html(BIDID);
                     jQuery('#bid_EventID').html("Event ID : " + BIDID);
 
@@ -91,14 +93,9 @@ function fetchBidHeaderDetails() {
                         });
 
                     }*/
-                }
+               /* }
                 else {
-                    bootbox.alert("This bid has already expired !!!", function () {
-
-
-                        //@abheedev bug 360 surrogate start
-                        $('#btnpassword').removeAttr('disabled');
-                        $('#txtpassword').removeAttr('disabled');
+                  
                         jQuery('#lblEventID').html(BIDID);
                         jQuery('#bid_EventID').html("Event ID : " + BIDID);
 
@@ -130,16 +127,8 @@ function fetchBidHeaderDetails() {
                         jQuery("#lblConvRate").text(data[0].conversionRate);
                         jQuery("#lblstatus").text(data[0].conversionRate);
                         jQuery("#lblConvRate").text(data[0].conversionRate);
-                        //@abheedev bug 360 surrogate end
-
-
-
-                        $('#btnpassword').attr('disabled', 'disabled')
-                        $('#txtpassword').attr('disabled', 'disabled')
-
-                    });
-
-                }
+                       
+                }*/
 
             }
         },
@@ -156,6 +145,64 @@ function fetchBidHeaderDetails() {
     });
 
 }
+
+function Dateandtimevalidate(StartDT) {
+
+    var StartDT = StartDT.replace('-', '');
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+    //console.log(JSON.stringify(Tab1Data))
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+            if (data == "1") {
+                $('#btnpassword').removeAttr('disabled');
+                $('#txtpassword').removeAttr('disabled');
+            }
+            else {
+                bootbox.alert("This bid has already expired !!!", function () {
+                    $('#btnpassword').attr('disabled', 'disabled')
+                    $('#txtpassword').attr('disabled', 'disabled')
+                    return true;
+                });
+            }
+        },
+        error: function () {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BIDID);
 }
@@ -163,9 +210,7 @@ function DownloadFile(aID) {
 
 //abheedev bug 381 start
 function DownloadbidFile(aID) {
-
-
-    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + BIDID);
+   fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + BIDID);
 }
 //abheedev bug 381 end
 
@@ -174,7 +219,7 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-  
+
     sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
     if (jQuery("#txtpassword").val() == "") {
@@ -234,9 +279,9 @@ function fnGtrTokenValidatePassword() {
                 sessionStorage.setItem("UserName", data[0].vendorName)
                 sessionStorage.setItem("BidID", BIDID)
                 sessionStorage.setItem("ISFromSurrogate", "Y")
-              
+
                 sessionStorage.setItem("HomePage", "https://pev3proapp.azurewebsites.net/")
-              //  sessionStorage.setItem("HomePage", 'https://pev3qaapi.azurewebsites.net/');
+                //  sessionStorage.setItem("HomePage", 'https://pev3qaapi.azurewebsites.net/');
 
 
                 if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {

@@ -756,7 +756,7 @@ function ApprovalApp() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
 
-
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/ApproveRejectNFA",

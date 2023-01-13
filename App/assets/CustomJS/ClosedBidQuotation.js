@@ -839,9 +839,6 @@ function InsUpdRFQDEtailTab1() {
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         StartDT = $('#txtstartdatettime').val().replace('-', '');
     }
-    else {
-        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
-    }
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
@@ -872,11 +869,17 @@ function InsUpdRFQDEtailTab1() {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
 
-    ET = new String(EndTime);
-    ET = ET.substring(0, ET.indexOf("GMT"));
-    ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
+    var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+    var RFQBidType = "Closed";
+    var TechnicalAppr = "Not Required";
 
+    let _RFQBidType = "Closed";
+    //var TechnicalAppr = "Not Required";
+    var _openQuotes = "N";
+    debugger;
+    //var Tab1Data = {
 
+    var Tab1Data = {
 
 
 

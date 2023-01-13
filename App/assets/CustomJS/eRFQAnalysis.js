@@ -35,6 +35,9 @@ jQuery(document).ready(function () {
 
 });
 
+var _rfqBidType = sessionStorage.getItem("RFQBIDType");
+var _openQuotes = sessionStorage.getItem("OpenQuotes");
+
 if (window.location.search) {
 
     var param = getUrlVars()["param"];
@@ -140,13 +143,14 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
-
             if (_rfqBidType == 'Closed') {
-                if (bidopeningdate != null || bidopeningdate != '') {
+                if (bidopeningdate != null) {
                     var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
                     if (_RFQOpenDate <= _CurrentDate) {
-                        ShowPrice = 'Y';
-                        $('#btnPDF').show()
+                        if (_openQuotes == 'Y') {
+                            ShowPrice = 'Y';
+                            $('#btnPDF').show()
+                        }
                     }
                 }
                 else {
