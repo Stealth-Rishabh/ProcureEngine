@@ -593,7 +593,8 @@ function Dateandtimevalidate(dttime, forDT) {
         "BidDate": ST
     }
 
-    //console.log(JSON.stringify(Tab1Data))
+    // console.log(JSON.stringify(Tab1Data))
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -715,6 +716,25 @@ function Dateandtimevalidate(dttime, forDT) {
 }
 var ItemDetails = [];
 sessionStorage.setItem('hddnRFQID', 0)
+function fnGetCurrentPrefferedProfileDTTime() {
+
+    var theStDate = new Date();
+    if (sessionStorage.getItem('preferredtimezone') != null) {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+        });
+
+    }
+    else {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        });
+
+    }
+    theStDate = theStDate.replace('at', '-');
+    return theStDate;
+
+}
 
 function InsUpdRFQDEtailTab1() {
 
@@ -769,15 +789,16 @@ function InsUpdRFQDEtailTab1() {
     }
  
     //**  Get Start date
-    var StartDT = new Date();
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
-        StartDT = $('#txtstartdatettime').val().replace('-', '');
+        var StartDT = $('#txtstartdatettime').val().replace('-', '');
+    }
+    else {
+        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
     }
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
-
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
@@ -2451,9 +2472,6 @@ function RFQInviteVendorTab3() {
     ET = new String(EndTime);
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
-
-
-
     var Tab3data = {
         "BidVendors": InsertQuery,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
@@ -3560,6 +3578,7 @@ function addMoreTermsCondition() {
     });
 
     i = parseInt(maxinum) + 1;
+
     var str = "<tr id=tr" + i + "><td class=hide>0</td><td class=hide>R</td>";
     str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + i + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + i + "'\)\"; id=\"chkTerms" + i + "\" value=" + i + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked  disabled /></span></div> &nbsp; <button type=button class='btn btn-xs btn-danger' id=Removebtnattach" + rowAttach + " onclick='deleteterms(" + i + ")' ><i class='glyphicon glyphicon-remove-circle'></i></button></td>";
     str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
