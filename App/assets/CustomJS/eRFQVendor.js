@@ -119,6 +119,7 @@ function formValidation() {
         },
         submitHandler: function (form) {
             RFQinsertItemsTC('Y');
+            alertforsubmit();
         }
     });
     //Form Validation for Cancel Reason
@@ -304,7 +305,7 @@ var FormWizard = function () {
                 onNext: function (tab, navigation, index) {
 
                     if (index == 1) {
-
+                        alertforsubmit()
                     }
                     else if (index == 2) {
 
@@ -1898,4 +1899,17 @@ function fnRedirectToHome() {
     else {
         window.location = "VendorHome.html"
     }
+}
+
+
+function alertforsubmit() {
+
+    bootbox.alert({
+        message: "If he wants to leave without submitting the quotes",
+        size: 'large',
+        callback: function () {
+            console.log("Alert closed");
+        }
+    });
+
 }
