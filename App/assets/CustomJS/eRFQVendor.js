@@ -119,6 +119,7 @@ function formValidation() {
         },
         submitHandler: function (form) {
             RFQinsertItemsTC('Y');
+            alertforsubmit();
         }
     });
     //Form Validation for Cancel Reason
@@ -304,7 +305,7 @@ var FormWizard = function () {
                 onNext: function (tab, navigation, index) {
 
                     if (index == 1) {
-
+                        alertforsubmit()
                     }
                     else if (index == 2) {
 
@@ -426,7 +427,7 @@ $(document).on('keyup', '.form-control', function () {
 
 
 function fncheckItemWiseTC(ver, BoqPID) {
-
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -435,7 +436,7 @@ function fncheckItemWiseTC(ver, BoqPID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             if (data.length > 0) {
                 fetchRFQParameterComponent(ver, BoqPID);
             }
@@ -518,9 +519,8 @@ $(document).on("input", ".numeric", function () {
     //this.value = this.value.replace(/\D/g, '');
     this.value = this.value.replace(/[^0-9\.]/g, '');
 });
-function fetchRFQParameterComponent(version, BoqPID) {
-
-
+function fetchRFQParameterComponent(version, BoqPID) {  
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -530,7 +530,7 @@ function fetchRFQParameterComponent(version, BoqPID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+           
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblRFQParameterComponet").empty();
             $('#scrolr').show();
@@ -1104,6 +1104,7 @@ function fetchReguestforQuotationDetails() {
                 _RFQBidType = RFQData[0].general[0].rfqBidType
 
                 jQuery('#RFQDescription').html(_cleanStringDesc)
+                jQuery('#RFQID').html(RFQData[0].general[0].rfqId)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
@@ -1377,7 +1378,7 @@ function fetchRFIParameteronload(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty();
@@ -1501,7 +1502,6 @@ function DownloadFileVendor(aID, version) {
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
 
-
     $('#txtbasicPrice').val((basicprice))
 
     $("#hddnBoqParamQuantity").val(quantity);
@@ -1514,6 +1514,8 @@ function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, 
 
 }
 $('#responsive').on("hidden.bs.modal", function () {
+  
+   
     jQuery('input:checkbox[name=chkreplicateprice]').prop('checked', false);
     jQuery('#chkreplicateprice').parents('span').removeClass('checked');
     Price = 0;
@@ -1694,6 +1696,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 }
 
 function saveQuotation() {
+
     var PriceDetails = [];
     var commercialterms = [];
     var attchquery = '';
@@ -1807,7 +1810,7 @@ function saveQuotation() {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-
+               
                 setTimeout(function () {
                     if (parseInt(data) != 0) {
                         fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
@@ -1955,4 +1958,18 @@ function fnRedirectToHome() {
     else {
         window.location = "VendorHome.html"
     }
+}
+
+
+
+function alertforsubmit() {
+
+    bootbox.alert({
+        message: "If he wants to leave without submitting the quotes",
+        size: 'large',
+        callback: function () {
+            console.log("Alert closed");
+        }
+    });
+
 }
