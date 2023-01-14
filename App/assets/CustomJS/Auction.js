@@ -1374,7 +1374,96 @@ function getUrlVarsURL(URLString) {
     }
     return vars;
 }
+var code = {
 
+    encryptMessage: function (messageToencrypt, secretkey) {
+        var encryptedMessage = CryptoJS.AES.encrypt(messageToencrypt, secretkey);
+        return encryptedMessage.toString();
+    },
+    decryptMessage: function (encryptedMessage, secretkey) {
+        var decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretkey);
+        var decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+        return decryptedMessage;
+    }
+}
+//var key = 'MAKV2SPBNI99212';
+function fnEnryptURL(URL) {
+
+    var hashes = URL.slice(URL.indexOf('?') + 1)//.split('&')
+    var encryptedstring = encrypt(hashes)
+    var url = URL.split("?")[0] + "?param=" + encryptedstring
+    return url;
+}
+function encrypt(message) {
+    var message = CryptoJS.AES.encrypt(message, key);
+    return message.toString();
+}
+function decrypt(message) {
+    var code = CryptoJS.AES.decrypt(message, key);
+    var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
+    return decryptedMessage;
+}
+var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+function fnencrypt(message) {
+    var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
+        {
+            keySize: 128 / 8,
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+    return (encryptedtext)
+}
+function fndecrypt(message) {
+
+    var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+    var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+
+    var dncryptedpassword = CryptoJS.AES.decrypt(message, key,
+        {
+            keySize: 128 / 8,
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        })
+
+    return (dncryptedpassword.toString(CryptoJS.enc.Utf8))
+
+}
+var Base64 = {
+
+    _keyStr: "MAKV2SPBNI99212",
+    encode: function (e) {
+        var t = ""; var n, r, i, s, o, u, a; var f = 0;
+        e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) }
+        return t
+    },
+    decode: function (e) {
+        var t = ""; var n, r, i; var s, o, u, a; var f = 0;
+        e = e.replace(/[^A-Za-z0-9+/=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t
+    },
+    _utf8_encode: function (e) {
+        e = e.toString().replace(/rn/g, "n");
+        var t = ""; for (var n = 0; n < e.length; n++) {
+            var r = e.charCodeAt(n);
+            if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) }
+        } return t
+    },
+    _utf8_decode: function (e) {
+        var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t
+    }
+}
+function _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
 
 
 var tableToExcelMultipleSheetwithoutColor = (function () {
