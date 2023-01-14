@@ -1,16 +1,17 @@
-
-
 function onloadcalls() {
+
     Pageloaded();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();
     numberonly();
+    formvalidate();
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
     }
     else {
+
         if (sessionStorage.getItem("UserType") == "E") {
             $('.page-container').show();
             $('#frmprofile').show()
@@ -18,11 +19,11 @@ function onloadcalls() {
             prefferedTimezone();
             fetchUserDetails();
             fetchMenuItemsFromSession(0, 0);
-            formvalidate();
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
             fetchMasters();
+            prefferedTimezone();
             fetchMyProfileVendor();
 
             $('#ddlCountryCd').select2();
@@ -45,6 +46,8 @@ function onloadcalls() {
     });
 
 }
+
+
 
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
@@ -193,83 +196,9 @@ function fetchVendorDetails() {
 
 }
 
-function fetchUserCountryCode() {
 
 
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            jQuery("#ddlCountry").empty();
-            if (data.length > 0) {
 
-                for (var i = 0; i < data.length; i++) {
-
-                    jQuery("#ddlCountryCd").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
-
-
-                }
-
-
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spanerror1', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    });
-}
-
-function prefferedTimezone() {
-
-
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-
-            let lstTZ = JSON.parse(data[0].jsondata);
-
-            jQuery("#ddlpreferredTime").empty();
-            jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val("").html("Select"));
-            for (var i = 0; i < lstTZ.length; i++) {
-
-                jQuery("#ddlpreferredTime").append(jQuery("<option></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spanerror1', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    });
-}
 
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
@@ -294,8 +223,6 @@ function fetchMyProfileVendor() {
         success: function (data) {
 
             var vendordetails = JSON.parse(data[0].jsondata);
-
-
             var vendorComps = JSON.parse(data[1].jsondata);
             var CompPer = JSON.parse(data[2].jsondata);
 
@@ -483,8 +410,10 @@ function fetchMyProfileVendor() {
 
 
             if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
-                $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
 
+                setTimeout(function () {
+                    $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
+                }, 900)
             }
             ///@abhhedev
 
@@ -703,8 +632,9 @@ function formvalidate() {
                 required: true,
             },
             vendormobileno: {
-                required: true,
+                required: true
             },
+
             /* txtUdyam: {
                  required: true,
              },
@@ -749,92 +679,14 @@ function formvalidate() {
         //},
 
         submitHandler: function (form) {
+
             updateVendor();
         }
     });
 }
 
 //vendor profile.html vendor form
-function formvalidatevendor() {
-    $('#frmprofilevendor').validate({
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
 
-        rules: {
-            vendormobileno: {
-                required: true
-            },
-            vendoraddress: {
-                required: true
-            },
-            vendorphone: {
-                required: true
-            },
-            vendorCity: {
-                required: true
-            },
-            vendoralternateemail: {
-                email: true
-            },
-            personname: {
-                required: true
-            }
-
-        },
-        messages: {
-
-            vendormobileno: {
-                required: "Mobile No is required."
-            },
-            vendoraddress: {
-                required: "Address is required."
-            },
-            vendorphone: {
-                required: "Company Phone No is required."
-            },
-            vendorCity: {
-                required: "City is required."
-            },
-            vendoralternateemail: {
-                required: "Alternate Email is required."
-            }
-
-
-        },
-        invalidHandler: function (event, validator) { //display error alert on form submit   
-            profilesuccess.hide();
-            jQuery("#error").text("You have some form errors. Please check below.");
-            profileerror.show();
-            profileerror.fadeOut(5000);
-            App.scrollTo(profileerror, -200);
-        },
-
-        highlight: function (element) { // hightlight error inputs
-            $(element)
-                .closest('.form-group').addClass('has-error'); // set error class to the control group
-        },
-        unhighlight: function (element) { // revert the change done by hightlight
-            $(element)
-                .closest('.form-group').removeClass('has-error'); // set error class to the control group
-        },
-
-        success: function (label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
-        },
-
-        errorPlacement: function (error, element) {
-            profileerror.insertAfter(element.closest('.xyz'));
-        },
-
-        submitHandler: function (form) {
-            //profileerror.hide();
-            updVnedorMobileNo();
-        }
-    });
-
-}
 function updMobileNo() {
 
 
@@ -853,7 +705,7 @@ function updMobileNo() {
         "ContactPerson": "",
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
     }
-
+    sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -895,66 +747,7 @@ function updMobileNo() {
     })
 
 }
-function updVnedorMobileNo() {
 
-
-    var _cleanString2 = StringEncodingMechanism($('#vendoraddress').val());
-    var _cleanString3 = StringEncodingMechanism($('#vendorCity').val());
-    var _cleanString4 = StringEncodingMechanism($('#personname').val());
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var data = {
-        "UserID": sessionStorage.getItem("VendorId"),
-        "UserType": sessionStorage.getItem('UserType'),
-        "MobileNo": $('#vendormobileno').val(),
-        "Address1": _cleanString2,
-        "Address2": _cleanString3,
-        "CompanyPhoneNo": $('#vendorphone').val(),
-        "AlternateEmailID": $('#vendoralternateemail').val(),
-        "Designation": "",
-        "ContactPerson": _cleanString4,
-        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val())
-    }
-
-    jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "ChangeForgotPassword/updateMobileNo",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-            if (data == "1") {
-                profileerror.hide();
-                jQuery("#success").text("Your data is updated successfully..");
-                profilesuccess.show();
-                profilesuccess.fadeOut(5000);
-                fetchVendorDetails();
-                App.scrollTo(profilesuccess, -200);
-
-            }
-            else {
-                jQuery("#error").html("Please try again with correct ..");
-                profileerror.show();
-                profileerror.fadeOut(5000);
-                App.scrollTo(profileerror, -200);
-                jQuery.unblockUI();
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-    })
-}
 
 function updateVendor() {
 
@@ -1055,7 +848,6 @@ function updateVendor() {
         msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
 
-    debugger
 
     var data = {
         "ParticipantID": parseInt(sessionStorage.getItem('VendorId')),
@@ -1109,6 +901,7 @@ function updateVendor() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val())
 
     }
+
     sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorProfileUpdate",
@@ -1550,6 +1343,7 @@ function multilingualLanguage() {
                 History.pushState(null, null, "?locale=" + $.i18n().locale);
 
             });
+
             $('a').click(function (e) {
 
                 if (this.href.indexOf('?') != -1) {

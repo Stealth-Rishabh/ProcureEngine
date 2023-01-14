@@ -897,30 +897,15 @@ function fetchRFQResponse(Flag, version) {
     })
 }
 function fnsaveAttachmentsquestions() {
-
+    validateSubmit = false;
     var attchquery = '';
     var quesquery = '';
     var i = 1;
-    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
-    var CurDt = new Date();
-    var validateSubmit = true;
-    if (EndDT < CurDt) {
-        validateSubmit = false;
-        bootbox.alert("RFQ submission time has ended.", function () {
-
-            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                window.location = sessionStorage.getItem('HomePage');
-                sessionStorage.clear();
-
-            }
-            else {
-                window.location = 'VendorHome.html';
-                jQuery.unblockUI();
-            }
-            return false;
-        });
-
-    }
+    //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
+   
+   
+    
     if (validateSubmit) {
 
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
@@ -989,26 +974,11 @@ function fnsaveAttachmentsquestions() {
 }
 
 function fnSubmiteRFQSendmail(ismailsent) {
-    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
-    var CurDt = new Date();
-    var validateSubmit = true;
-    if (EndDT < CurDt) {
-        validateSubmit = false;
-        bootbox.alert("RFQ submission time has ended.", function () {
-
-            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                window.location = sessionStorage.getItem('HomePage');
-                sessionStorage.clear();
-
-            }
-            else {
-                window.location = 'VendorHome.html';
-                jQuery.unblockUI();
-            }
-            return false;
-        });
-
-    }
+    validateSubmit = false;
+    //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
+   
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (validateSubmit) {
         var Tab2data = {
@@ -1082,7 +1052,7 @@ function fetchReguestforQuotationDetails() {
 
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced1 = '';
-    var currentdate = new Date();
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1093,7 +1063,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+           
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
                 let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
@@ -1136,7 +1106,7 @@ function fetchReguestforQuotationDetails() {
                 //var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
                 //alert(RFQData[0].general[0].rfqStartDate)
                 //alert(StartDT)
-                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate));
+                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate),'startdt');
 
 
                 /*if (currentdate < StartDT) {
@@ -1185,7 +1155,7 @@ function fetchReguestforQuotationDetails() {
     jQuery.unblockUI();
 }
 
-function Dateandtimevalidate(StartDT) {
+function Dateandtimevalidate(StartDT,tocheckdt) {
 
     var StartDT = StartDT.replace('-', '');
 
@@ -1213,16 +1183,41 @@ function Dateandtimevalidate(StartDT) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            if (data == "1") {
-                $('#form_wizard_1').find('.button-next').hide();
-                $('#regretrfq').hide();
-                $('#lblRFQMessage').show();
+            if (tocheckdt == "startdt") {
+                if (data == "1") {
+                    $('#regretrfq').show();
+                    $('#form_wizard_1').find('.button-next').show();
+                    $('#lblRFQMessage').hide();
+                }
+                else {
+                    $('#form_wizard_1').find('.button-next').hide();
+                    $('#regretrfq').hide();
+                    $('#lblRFQMessage').show();
+                    return false;
+                }
             }
-            else {
-                $('#regretrfq').show();
-                $('#form_wizard_1').find('.button-next').show();
-                $('#lblRFQMessage').hide();
-                return false;
+            else if (tocheckdt == "enddate") {
+                if (data == 1) {
+                    validateSubmit = true;
+                }
+                else {
+                    validateSubmit = false;
+                    bootbox.alert("RFQ submission time has ended.", function () {
+
+                        if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
+                            window.location = sessionStorage.getItem('HomePage');
+                            sessionStorage.clear();
+
+                        }
+                        else {
+                            window.location = 'VendorHome.html';
+                            jQuery.unblockUI();
+                        }
+                        return false;
+                    });
+
+                }
+            
             }
         },
         error: function () {
@@ -1377,7 +1372,6 @@ function fetchRFIParameteronload(ver) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty();
@@ -1524,10 +1518,11 @@ $('#responsive').on("hidden.bs.modal", function () {
 var Price = 0;
 var PricewithoutGST = 0;
 var basicprice = 0; var PricewithoutGSTDiscount = 0;
+var validateSubmit = true;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
     //CHECK HERE 
-
+    validateSubmit = false;
     Price = 0.0;
     PricewithoutGST = 0.0;
     PriceGSTOnly = 0.0;
@@ -1536,28 +1531,8 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
-
-
-    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
-    var CurDt = new Date();
-    var validateSubmit = true;
-    if (EndDT < CurDt) {
-        validateSubmit = false;
-        bootbox.alert("RFQ submission time has ended.", function () {
-
-            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                window.location = sessionStorage.getItem('HomePage');
-                sessionStorage.clear();
-
-            }
-            else {
-                window.location = 'VendorHome.html';
-                jQuery.unblockUI();
-            }
-            return false;
-        });
-
-    }
+   // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
 
     //abheedev production issue 09/12/2022
 
@@ -1694,32 +1669,17 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 }
 
 function saveQuotation() {
+    validateSubmit = false;
     var PriceDetails = [];
     var commercialterms = [];
     var attchquery = '';
     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
     var vendorRemarks = "";
 
-    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
-    var CurDt = new Date();
-    var validateSubmit = true;
-    if (EndDT < CurDt) {
-        validateSubmit = false;
-        bootbox.alert("RFQ submission time has ended.", function () {
+    //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
 
-            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                window.location = sessionStorage.getItem('HomePage');
-                sessionStorage.clear();
-
-            }
-            else {
-                window.location = 'VendorHome.html';
-                jQuery.unblockUI();
-            }
-            return false;
-        });
-
-    }
+   
     if (validateSubmit) {
         $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
@@ -1871,31 +1831,14 @@ function shwconfirmationtoreplicate() {
 
 }
 function fnReplicateToAllItems() {
-
+    validateSubmit = false;
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
-    var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
-    var CurDt = new Date();
-    var validateSubmit = true;
-    if (EndDT < CurDt) {
-        validateSubmit = false;
-        bootbox.alert("RFQ submission time has ended.", function () {
-
-            if (sessionStorage.getItem("ISFromSurrogateRFQ") == "Y") {
-                window.location = sessionStorage.getItem('HomePage');
-                sessionStorage.clear();
-
-            }
-            else {
-                window.location = 'VendorHome.html';
-                jQuery.unblockUI();
-            }
-            return false;
-        });
-
-    }
-    if (validateSubmit) {
+   // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
+   
+   if (validateSubmit) {
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();
 

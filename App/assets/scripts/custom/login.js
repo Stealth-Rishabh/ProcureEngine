@@ -141,7 +141,7 @@ var Login = function () {
     function validateUser() {
         sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-       //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
@@ -208,7 +208,7 @@ var Login = function () {
                         App.scrollTo($('#alrt1'), -200);
                         $('#alrt1').fadeOut(5000);
                     }
-                    
+
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')
@@ -329,7 +329,7 @@ var Login = function () {
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
                     //abheedev bug 385
                     sessionStorage.setItem("culturecode", value.cultureCode);
-                  //  sessionStorage.setItem("localcode", value.localecode);
+                    //  sessionStorage.setItem("localcode", value.localecode);
                     sessionStorage.setItem("utcoffset", value.utcoffset);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
@@ -374,7 +374,7 @@ var Login = function () {
             }
         });
     }
-    
+
 
 
 
@@ -617,7 +617,7 @@ function SetSessionItems(lastPart, value) {
     //jQuery.each(data1, function (key, value) {
 
     //    // if (MemberID != '0') {
-        
+
 
     //});
 }
