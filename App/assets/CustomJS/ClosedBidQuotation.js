@@ -836,20 +836,22 @@ function InsUpdRFQDEtailTab1() {
     }
     //______________________________________
     var StartDT = new Date();
+    let ST = null;
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         StartDT = $('#txtstartdatettime').val().replace('-', '');
-    }
-    else {
-        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
-    }
-    let StTime =
-        new Date(StartDT.toLocaleString("en", {
-            timeZone: sessionStorage.getItem('preferredtimezone')
-        }));
+        let StTime =
+            new Date(StartDT.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
 
-    ST = new String(StTime);
-    ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+        ST = new String(StTime);
+        ST = ST.substring(0, ST.indexOf("GMT"));
+        ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+    }
+    //else {
+    //    var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
+    //}
+    
 
     var BidOpenDate = null;
     let BT = null;
