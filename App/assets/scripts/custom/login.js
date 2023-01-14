@@ -1,13 +1,13 @@
 sessionStorage.clear();
 
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
-
+fetchMapCategory('M', 0);
 
 var Login = function () {
 
@@ -139,15 +139,14 @@ var Login = function () {
     }
 
     function validateUser() {
-        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-       //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-       sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - 7)).slice(0, -1);
         //lastPart = 'vendor'
         var LinkUrl = window.location.href;
-
         if (lastPart.toLocaleLowerCase() == "vendor") {
             var pwd = fnencrypt(jQuery("#password").val().trim());
             var encryptedString = pwd.toString();
@@ -163,9 +162,10 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
+                    debugger;
                     var successMsg = "";
                     var isSuccess = true;
-                    switch (data.token) {
+                    switch (data.tokenString.accessToken) {
                         case "You are accessing an Invalid URL.":
                             successMsg = "You are accessing an Invalid URL."
                             isSuccess = false;
@@ -194,8 +194,10 @@ var Login = function () {
                             successMsg = "SUCCESS"
                             isSuccess = true;
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                            sessionStorage.setItem("Token", data.token)
-                            fnGetUserBasicDetails(lastPart)
+                            sessionStorage.setItem("Token", data.tokenString.accessToken)
+                            //fnGetUserBasicDetails(lastPart)
+                            sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                            SetSessionItems(lastPart, data.userDetails[0]);
                             break;
 
                     }
@@ -206,7 +208,7 @@ var Login = function () {
                         App.scrollTo($('#alrt1'), -200);
                         $('#alrt1').fadeOut(5000);
                     }
-                    
+
                 },
                 error: function (xhr, status, error) {
                     sessionStorage.setItem("Token", '')
@@ -240,7 +242,7 @@ var Login = function () {
                 success: function (data) {
                     var successMsg = "";
                     var isSuccess = true;
-                    switch (data.token) {
+                    switch (data.tokenString.accessToken) {
                         case "You are accessing an Invalid URL.":
                             isSuccess = false;
                             successMsg = "You are accessing an Invalid URL.";
@@ -267,8 +269,9 @@ var Login = function () {
                             break;
                         default:
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
-                            sessionStorage.setItem("Token", data.token)
-                            fnGetUserBasicDetails(lastPart)
+                            sessionStorage.setItem("Token", data.tokenString.accessToken);
+                            sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                            SetSessionItems(lastPart, data.userDetails[0]);
                             break;
 
                     }
@@ -326,7 +329,8 @@ var Login = function () {
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
                     //abheedev bug 385
                     sessionStorage.setItem("culturecode", value.cultureCode);
-                    sessionStorage.setItem("localcode", value.localecode);
+                    //  sessionStorage.setItem("localcode", value.localecode);
+                    sessionStorage.setItem("utcoffset", value.utcoffset);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -334,9 +338,9 @@ var Login = function () {
                                 IsAcceptedBidTermsRFIRFQ(sessionStorage.getItem("UserType"));
                             }
                         }
-                        else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
-                            fnGetUserBasicDetails(lastPart)
-                        }
+                        //else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
+                        //    fnGetUserBasicDetails(lastPart)
+                        //}
 
                         else {
                             fetchMenuItemsForSession(lastPart);
@@ -370,86 +374,7 @@ var Login = function () {
             }
         });
     }
-    function fetchMenuItemsForSession(urlLast) {
-       
-        jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-        jQuery.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: APIPath + "User/getMenuItems/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&UserType=" + sessionStorage.getItem("UserType"),
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            cache: false,
-            crossDomain: true,
-            dataType: "json",
-            success: function (data) {
-               
-                sessionStorage.setItem("Data", JSON.stringify(data));
-                setTimeout(function () {
-                    if (sessionStorage.getItem("Data") != "" || sessionStorage.getItem("Data") != null) {
-                        //alert(sessionStorage.getItem("UserType"))
-                        if (sessionStorage.getItem("UserType") == 'E') {
-                            if (urlLast.toLowerCase() != "vendor") {
-                                sessionStorage.setItem("HomePage", "../App/index.html");
-                                window.location = sessionStorage.getItem("HomePage");
-                            }
-                            else {
-                                jQuery.unblockUI();
-                                $('#alrt1').show();
-                                $('#alertmessage1').html('Enter a valid user name/ password.')
-                                App.scrollTo($('#alrt1'), -200);
-                                $('#alrt1').fadeOut(5000);
-                            }
-                        }
-                        else if (sessionStorage.getItem("UserType") == 'V') {
-                            if (urlLast.toLowerCase() == "vendor") {
-                                sessionStorage.setItem("HomePage", "../App/VendorHome.html");
-                                window.location = sessionStorage.getItem("HomePage");
-                            }
-                            else {
-                                jQuery.unblockUI();
-                                $('#alrt1').show();
-                                $('#alertmessage1').html('Enter a valid user name/ password.')
-                                App.scrollTo($('#alrt1'), -200);
-                                $('#alrt1').fadeOut(5000);
-                            }
 
-                            return
-                        }
-
-                    }
-                    else {
-
-                        fetchMenuItemsForSession(urlLast);
-
-                        return
-                    }
-                }, 1200);
-            },
-            error: function (jqXHR, exception) {
-
-                var msg = '';
-                if (jqXHR.status === 0) {
-                    msg = 'Not connect.\n Verify Network.';
-                } else if (jqXHR.status == 404) {
-                    msg = 'Requested page not found. [404]';
-                } else if (jqXHR.status == 500) {
-                    msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
-                    msg = 'Error connecting server. Please retry.';
-                } else if (exception === 'timeout') {
-                    msg = 'Time out error.';
-                } else if (exception === 'abort') {
-                    msg = 'Ajax request aborted.';
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-                jQuery.unblockUI();
-                sessionStorage.clear();
-                bootbox.alert(msg);
-            }
-
-        });
-    }
 
 
 
@@ -599,75 +524,7 @@ function fetchMapCategory(categoryFor, vendorId) {
     });
 }
 //get the IP addresses associated with an account
-/*function getIPs(callback) {
 
-    var ip_dups = {};
-    //compatibility for firefox and chrome
-    var RTCPeerConnection = window.RTCPeerConnection
-        || window.mozRTCPeerConnection
-        || window.webkitRTCPeerConnection;
-    var useWebKit = !!window.webkitRTCPeerConnection;
-    //bypass naive webrtc blocking using an iframe
-    if (!RTCPeerConnection) {
-        //NOTE: you need to have an iframe in the page right above the script tag
-        //
-        //<iframe id="iframe" sandbox="allow-same-origin" style="display: none"></iframe>
-        //<script>...getIPs called in here...
-        //
-        var win = iframe.contentWindow;
-        RTCPeerConnection = win.RTCPeerConnection
-            || win.mozRTCPeerConnection
-            || win.webkitRTCPeerConnection;
-        useWebKit = !!win.webkitRTCPeerConnection;
-    }
-    //minimal requirements for data connection
-    var mediaConstraints = {
-        optional: [{ RtpDataChannels: true }]
-    };
-    var servers = { iceServers: [{ urls: "stun:stun.services.mozilla.com" }] };
-    //construct a new RTCPeerConnection
-    var pc = new RTCPeerConnection(servers, mediaConstraints);
-    function handleCandidate(candidate) {
-        //match just the IP address
-        var ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/
-        var ip_addr = ip_regex.exec(candidate)[1];
-        //remove duplicates
-        if (ip_dups[ip_addr] === undefined)
-            callback(ip_addr);
-        ip_dups[ip_addr] = true;
-    }
-    //listen for candidate events
-    pc.onicecandidate = function (ice) {
-        //skip non-candidate events
-        if (ice.candidate)
-            handleCandidate(ice.candidate.candidate);
-    };
-    //create a bogus data channel
-    pc.createDataChannel("");
-    //create an offer sdp
-    pc.createOffer(function (result) {
-        //trigger the stun server request
-        pc.setLocalDescription(result, function () { }, function () { });
-    }, function () { });
-    //wait for a while to let everything done
-    setTimeout(function () {
-        //read candidate info from local description
-        //var lines = '';
-        var lines = pc.localDescription.sdp.split('\n');
-        lines.forEach(function (line) {
-            if (line.indexOf('a=candidate:') === 0)
-                handleCandidate(line);
-        });
-    }, 1000);
-}
-//insert IP addresses into the page
-getIPs(function (ip) {
-    if (ip.match(/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/)) {
-
-        sessionStorage.setItem('MachineIP', ip)
-    }
-
-});*/
 
 function saveParticipant() {
     bootbox.alert("Thank you for sharing your inputs. Our Vendor Qualification team will get in touch with you shortly.", function () {
@@ -722,4 +579,125 @@ function IsAcceptedBidTermsRFIRFQ(Usertype) {
         }
     });
 
+}
+
+function SetSessionItems(lastPart, value) {
+    sessionStorage.setItem("CustomerID", value.customerID);
+    sessionStorage.setItem("UserID", value.userID);
+    sessionStorage.setItem("UserName", value.userName);
+    //sessionStorage.setItem("EmailID", value.emailID);
+    //sessionStorage.setItem("MobileNo", value.mobileNo);
+    sessionStorage.setItem("RoleID", value.roleID);
+    //sessionStorage.setItem("ContactEmailID", value.contactEmailID);
+    sessionStorage.setItem("DefaultCurrency", value.defaultCurrency);
+    sessionStorage.setItem("UserType", value.userType);
+    sessionStorage.setItem("VendorId", value.vendorID);
+    sessionStorage.setItem("BidPreApp", value.bidpreapproval);
+    sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
+    sessionStorage.setItem("timezoneid", value.timeZoneID);
+    //abheedev bug 385
+    sessionStorage.setItem("culturecode", value.cultureCode);
+    //sessionStorage.setItem("localcode", value.localecode);
+    sessionStorage.setItem("utcoffset", value.utcoffset);
+    setTimeout(function () {
+        // alert(sessionStorage.getItem("UserType"))
+        if (sessionStorage.getItem("UserType") == "P") {
+            if ((value.VendorID != '0')) {
+                IsAcceptedBidTermsRFIRFQ(sessionStorage.getItem("UserType"));
+            }
+        }
+        //else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
+        //    fnGetUserBasicDetails(lastPart)
+        //}
+
+        else {
+            fetchMenuItemsForSession(lastPart);
+        }
+    }, 800);
+    //jQuery.each(data1, function (key, value) {
+
+    //    // if (MemberID != '0') {
+
+
+    //});
+}
+
+function fetchMenuItemsForSession(urlLast) {
+    jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: APIPath + "User/getMenuItems/?UserID=" + sessionStorage.getItem('UserID') + "&CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+
+            sessionStorage.setItem("Data", JSON.stringify(data));
+            setTimeout(function () {
+                if (sessionStorage.getItem("Data") != "" || sessionStorage.getItem("Data") != null) {
+                    //alert(sessionStorage.getItem("UserType"))
+                    if (sessionStorage.getItem("UserType") == 'E') {
+                        if (urlLast.toLowerCase() != "vendor") {
+                            sessionStorage.setItem("HomePage", "../App/index.html");
+                            window.location = sessionStorage.getItem("HomePage");
+                        }
+                        else {
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Enter a valid user name/ password.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                        }
+                    }
+                    else if (sessionStorage.getItem("UserType") == 'V') {
+                        if (urlLast.toLowerCase() == "vendor") {
+                            sessionStorage.setItem("HomePage", "../App/VendorHome.html");
+                            window.location = sessionStorage.getItem("HomePage");
+                        }
+                        else {
+                            jQuery.unblockUI();
+                            $('#alrt1').show();
+                            $('#alertmessage1').html('Enter a valid user name/ password.')
+                            App.scrollTo($('#alrt1'), -200);
+                            $('#alrt1').fadeOut(5000);
+                        }
+
+                        return
+                    }
+
+                }
+                else {
+
+                    fetchMenuItemsForSession(urlLast);
+
+                    return
+                }
+            }, 1200);
+        },
+        error: function (jqXHR, exception) {
+
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'Not connect.\n Verify Network.';
+            } else if (jqXHR.status == 404) {
+                msg = 'Requested page not found. [404]';
+            } else if (jqXHR.status == 500) {
+                msg = 'Internal Server Error [500].';
+            } else if (exception === 'parsererror') {
+                msg = 'Error connecting server. Please retry.';
+            } else if (exception === 'timeout') {
+                msg = 'Time out error.';
+            } else if (exception === 'abort') {
+                msg = 'Ajax request aborted.';
+            } else {
+                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            }
+            jQuery.unblockUI();
+            sessionStorage.clear();
+            bootbox.alert(msg);
+        }
+
+    });
 }
