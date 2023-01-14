@@ -144,19 +144,15 @@ function fetchrfqcomprative() {
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
-                if (bidopeningdate != null) {
-                    var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-                    if (_RFQOpenDate <= _CurrentDate) {
-                        if (_openQuotes == 'Y') {
-                            ShowPrice = 'Y';
-                            $('#btnPDF').show()
-                        }
-                    }
+                if (_openQuotes == 'Y') {
+                    ShowPrice = 'Y';
+                    $('#btnPDF').show()
                 }
                 else {
                     ShowPrice = 'N';
                     $('#btnPDF').hide()
                 }
+                
             }
             else {
                 ShowPrice = 'Y';
