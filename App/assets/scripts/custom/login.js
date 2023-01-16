@@ -7,7 +7,7 @@ sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
-fetchMapCategory('M', 0);
+//fetchMapCategory('M', 0);
 
 var Login = function () {
 
@@ -144,7 +144,7 @@ var Login = function () {
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
-        var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+        var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
         //lastPart = 'vendor'
         var LinkUrl = window.location.href;
         if (lastPart.toLocaleLowerCase() == "vendor") {
@@ -627,7 +627,7 @@ function fetchMenuItemsForSession(urlLast) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "User/getMenuItems/?UserID=" + sessionStorage.getItem('UserID') + "&CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
+        url: APIPath + "User/getMenuItems/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,

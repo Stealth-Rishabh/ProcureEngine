@@ -6,11 +6,8 @@ jQuery(document).ready(function () {
 
     Pageloaded()
     sessionStorage.setItem('CurrentBidID', 0);
-
     sessionStorage.setItem('hddnRFQID', 0);
-
     sessionStorage.setItem('CurrentRFIID', 0);
-
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -31,13 +28,12 @@ jQuery(document).ready(function () {
     setCommonData();
     App.init();
     Tasks.initDashboardWidget();
-    if (sessionStorage.getItem('UserType') == 'E') {
-        fetchMenuItemsFromSession(0, 0);
 
-    }
-    else {
+    /* if (sessionStorage.getItem('UserType') == 'E') {
+         fetchMenuItemsFromSession(0, 0);
+ 
+     }*/
 
-    }
     fetchDashboardData();
     handleChangePasword();
 });
@@ -679,7 +675,7 @@ jQuery("#searchPendingActivities").keyup(function () {
 });
 
 
-jQuery("#searchPendingBids").keyup(function (){
+jQuery("#searchPendingBids").keyup(function () {
     jQuery("#ulList li:has(div)").hide(); // Hide all the rows.
 
     var iCounter = 0;
