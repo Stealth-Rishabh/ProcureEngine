@@ -239,9 +239,7 @@ function fetchMyProfileVendor() {
             } else {
                 sessionStorage.setItem('tmpVendorID', 0);
             }
-
             sessionStorage.setItem('vendorCode', vendordetails[0].VendorCode);
-
             if (vendordetails[0].MSMECheck == 'Y') {
                 $('.hideInput').removeClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
@@ -259,7 +257,6 @@ function fetchMyProfileVendor() {
                 $('.hideInput').addClass('hide');
                 $('#ddlMSME').val(vendordetails[0].MSMECheck)
             }
-
             if (vendordetails[0].EstTypeID != "" && vendordetails[0].EstTypeID != undefined) {
                 $('#ddlNatureEstaiblishment').attr("disabled", 'disabled');
                 $('#ddlNatureEstaiblishment').val(vendordetails[0].EstTypeID);
@@ -267,7 +264,6 @@ function fetchMyProfileVendor() {
             } else {
                 $('#ddlNatureEstaiblishment').val(0);
             }
-
             if (vendordetails[0].VendorCatID != "" && vendordetails[0].VendorCatID != undefined) {
                 $('#ddlVendorType').val(vendordetails[0].VendorCatID);
                 $('#ddlVendorType').attr("disabled", 'disabled');
@@ -275,8 +271,6 @@ function fetchMyProfileVendor() {
 
                 $('#ddlVendorType').val(0);
             }
-
-
             if (vendordetails[0].GSTClass != "" && vendordetails[0].GSTClass != undefined && vendordetails[0].GSTClass != 0) {
                 $('#ddlGSTclass').val(vendordetails[0].GSTClass);
                 $('#ddlGSTclass').attr("disabled", 'disabled');
@@ -284,7 +278,6 @@ function fetchMyProfileVendor() {
 
                 $('#ddlGSTclass').val(0);
             }
-
             if (vendordetails[0].BankName != "" && vendordetails[0].BankName != undefined) {
                 $('#bankname').val(vendordetails[0].BankName);
                 $('#bankname').attr("disabled", 'disabled');
@@ -292,7 +285,6 @@ function fetchMyProfileVendor() {
 
                 $('#bankname').val();
             }
-
             if (vendordetails[0].BankAccount != "" && vendordetails[0].BankAccount != undefined) {
                 $('#bankaccount').val(vendordetails[0].BankAccount);
                 $('#bankaccount').attr("disabled", 'disabled');
@@ -300,7 +292,6 @@ function fetchMyProfileVendor() {
 
                 $('#bankaccount').val();
             }
-
             if (vendordetails[0].IFSCCode != "" && vendordetails[0].IFSCCode != undefined) {
                 $('#ifsccode').val(vendordetails[0].IFSCCode);
                 $('#ifsccode').attr("disabled", 'disabled');
@@ -308,7 +299,6 @@ function fetchMyProfileVendor() {
 
                 $('#ifsccode').val();
             }
-
             if (vendordetails[0].AccountName != "" && vendordetails[0].AccountName != undefined) {
                 $('#accountholder').val(vendordetails[0].AccountName);
                 $('#accountholder').attr("disabled", 'disabled');
@@ -316,7 +306,6 @@ function fetchMyProfileVendor() {
 
                 $('#accountholder').val();
             }
-
             if (vendordetails[0].TAN != "" && vendordetails[0].TAN != undefined) {
                 $('#tan').val(vendordetails[0].TAN);
                 $('#tan').attr("disabled", 'disabled');
@@ -324,8 +313,6 @@ function fetchMyProfileVendor() {
 
                 $('#tan').val(vendordetails[0].TAN);
             }
-
-
             if (vendordetails[0].GSTFile != "" && vendordetails[0].GSTFile != null && vendordetails[0].GSTFile != undefined) {
                 $('#filegst').hide();
                 $('#gstattach').show();
@@ -336,7 +323,6 @@ function fetchMyProfileVendor() {
                 $('#filegst').removeAttr("disabled");
                 $('#gstattach').hide();
             }
-
             if (vendordetails[0].PANFile != "" && vendordetails[0].PANFile != null && vendordetails[0].PANFile != undefined) {
                 $('#filepan').hide();
                 $('#panattach').show();
@@ -347,8 +333,6 @@ function fetchMyProfileVendor() {
                 $('#filepan').removeAttr("disabled");
                 $('#panattach').hide();
             }
-
-
             if (vendordetails[0].MSMEFile != "" && vendordetails[0].MSMEFile != null && vendordetails[0].MSMEFile != undefined) {
                 $('#filemsme').hide();
                 $('#msmeattach').show();
@@ -360,7 +344,6 @@ function fetchMyProfileVendor() {
                 $('#filemsme').removeAttr("disabled");
                 $('#msmeattach').hide();
             }
-
             if (vendordetails[0].cancelledCheck != "" && vendordetails[0].cancelledCheck != null && vendordetails[0].cancelledCheck != undefined) {
                 $('#filecheck').hide();
                 $('#checkattach').show();
@@ -371,7 +354,6 @@ function fetchMyProfileVendor() {
                 $('#filecheck').removeAttr("disabled");
                 $('#checkattach').hide();
             }
-
             if (vendordetails[0].currencyLastFY !== "" && vendordetails[0].currencyLastFY != null && vendordetails[0].currencyLastFY != undefined) {
                 $('#currencyLastFiscal').val(vendordetails[0].currencyLastFY);
             }
@@ -385,8 +367,6 @@ function fetchMyProfileVendor() {
 
                 }
             }, 800)
-
-
             if (vendordetails[0].CountryID !== "" && vendordetails[0].CountryID != null && vendordetails[0].CountryID != undefined) {
                 $('#ddlCountry').val(vendordetails[0].CountryID)
                 setTimeout(function () {
@@ -399,16 +379,20 @@ function fetchMyProfileVendor() {
 
             }
             if (vendordetails[0].DialingCodeMobile != "" && vendordetails[0].DialingCodeMobile != undefined && vendordetails[0].DialingCodeMobile != null) {
-                $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
+                setTimeout(function () {
+                    $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
+
+                }, 1500)
 
             }
 
             if (vendordetails[0].DialingCodePhone != "" && vendordetails[0].DialingCodePhone != undefined && vendordetails[0].DialingCodePhone != null) {
-                $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
 
+                setTimeout(function () {
+                    $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
+
+                }, 1500)
             }
-
-
             if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
 
                 setTimeout(function () {
@@ -416,8 +400,6 @@ function fetchMyProfileVendor() {
                 }, 900)
             }
             ///@abhhedev
-
-
             if (vendordetails[0].PreviousTurnover != "" && vendordetails[0].AccountName != undefined) {
                 $('#txtLastFiscal').val(vendordetails[0].PreviousTurnover);
                 $('#txtLastFiscal').attr("disabled", 'disabled');
@@ -425,8 +407,6 @@ function fetchMyProfileVendor() {
 
                 $('#txtLastFiscal').val();
             }
-
-
             if (vendordetails[0].SecondLastTurnover != "" && vendordetails[0].SecondLastTurnover != undefined) {
                 $('#txt2LastFiscal').val(vendordetails[0].SecondLastTurnover);
                 $('#txt2LastFiscal').attr("disabled", 'disabled');
@@ -434,8 +414,6 @@ function fetchMyProfileVendor() {
 
                 $('#txt2LastFiscal').val();
             }
-
-
             if (vendordetails[0].currencyLastFY != "" && vendordetails[0].currencyLastFY != undefined) {
                 $('#currencyLastFiscalupdate').val(vendordetails[0].currencyLastFY);
                 $('#currencyLastFiscalupdate').attr("disabled", 'disabled');
@@ -443,7 +421,6 @@ function fetchMyProfileVendor() {
 
                 $('#currencyLastFiscalupdate').val();
             }
-
             if (vendordetails[0].currencyLast2FY != "" && vendordetails[0].currencyLast2FY != undefined) {
                 $('#currency2LastFiscalupdate').val(vendordetails[0].currencyLast2FY);
                 $('#currency2LastFiscalupdate').attr("disabled", 'disabled');
@@ -466,30 +443,6 @@ function fetchMyProfileVendor() {
                 $('#txt2LastFiscalyear').val();
             }
 
-            //abheedev
-
-            if (vendordetails[0].DialingCodeMobile != "" && vendordetails[0].DialingCodeMobile != undefined && vendordetails[0].DialingCodeMobile != null) {
-                $('#ddlCountryCd').val(vendordetails[0].DialingCodeMobile).trigger('change')
-
-            } else {
-
-                $('#ddlCountryCd').val();
-            }
-
-            if (vendordetails[0].DialingCodePhone != "" && vendordetails[0].DialingCodePhone != undefined && vendordetails[0].DialingCodePhone != null) {
-                $('#ddlCountryAltCd').val(vendordetails[0].DialingCodePhone).trigger('change')
-
-            } else {
-
-                $('#ddlCountryAltCd').val();
-            }
-            if (sessionStorage.getItem("timezoneid") != "" && sessionStorage.getItem("timezoneid") != undefined && sessionStorage.getItem("timezoneid") != null) {
-                $('#ddlpreferredTime').val(sessionStorage.getItem("timezoneid")).trigger('change')
-
-            } else {
-
-                $('#ddlpreferredTime').val();
-            }
             $('#personname').val(vendordetails[0].ContactPerson)
             $('#personnamealt').val(vendordetails[0].ContactNameAlt)
             $('#vendorname').html(vendordetails[0].VendorName)
@@ -896,8 +849,8 @@ function updateVendor() {
         "pANFile": panfilename,
         "mSMEFile": msmefilename,
         "cancelledCheck": checkfilename,
-        "DialingCodeMobile": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-        "DialingCodePhone": parseInt(jQuery("#ddlCountryAltCd option:selected").val()),
+        "DialingCodeMobile": parseInt(dialingCd),
+        "DialingCodePhone": parseInt(dialingCdAlt),
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val())
 
     }

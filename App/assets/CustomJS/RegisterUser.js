@@ -82,7 +82,7 @@ function deleterow(trid, rowcount, gid) {
 
     $('#' + trid.id).remove()
     cc = cc - 1;
-    
+
     if (jQuery('#tblpurchaseOrg tr').length == 1) {
         $('#theadgroup').addClass('hide');
     }
@@ -269,11 +269,11 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "T"
-    } 
+    }
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
+        // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -394,7 +394,7 @@ function fetchRoleMaster() {
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-            console.log(lstTZ);
+
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {

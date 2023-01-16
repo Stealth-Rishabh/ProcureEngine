@@ -903,9 +903,9 @@ function fnsaveAttachmentsquestions() {
     var i = 1;
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
-   
-    
+
+
+
     if (validateSubmit) {
 
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
@@ -977,8 +977,8 @@ function fnSubmiteRFQSendmail(ismailsent) {
     validateSubmit = false;
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
-   
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (validateSubmit) {
         var Tab2data = {
@@ -1052,7 +1052,7 @@ function fetchReguestforQuotationDetails() {
 
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var replaced1 = '';
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1063,7 +1063,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-           
+
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
                 let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
@@ -1104,9 +1104,8 @@ function fetchReguestforQuotationDetails() {
                 jQuery("#txtRFQReferencePrev").html(RFQData[0].general[0].rfqReference);
 
                 //var StartDT = new Date(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate).replace('-', ''));
-                //alert(RFQData[0].general[0].rfqStartDate)
-                //alert(StartDT)
-                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate),'startdt');
+
+                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate), 'startdt');
 
 
                 /*if (currentdate < StartDT) {
@@ -1155,10 +1154,13 @@ function fetchReguestforQuotationDetails() {
     jQuery.unblockUI();
 }
 
-function Dateandtimevalidate(StartDT,tocheckdt) {
+function Dateandtimevalidate(StartDT, tocheckdt) {
 
     var StartDT = StartDT.replace('-', '');
-
+    var utc = sessionStorage.getItem('utcoffset');
+    if (sessionStorage.getItem('utcoffset') == null || sessionStorage.getItem('utcoffset') == undefined) {
+        utc = getTimezoneOffset();
+    }
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
@@ -1166,12 +1168,12 @@ function Dateandtimevalidate(StartDT,tocheckdt) {
 
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+    ST = ST + 'GMT' + utc
 
     var Tab1Data = {
         "BidDate": ST
     }
-    console.log(JSON.stringify(Tab1Data))
+    //console.log(JSON.stringify(Tab1Data))
 
     jQuery.ajax({
         type: "POST",
@@ -1179,20 +1181,23 @@ function Dateandtimevalidate(StartDT,tocheckdt) {
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
+
             if (tocheckdt == "startdt") {
                 if (data == "1") {
-                    $('#regretrfq').show();
-                    $('#form_wizard_1').find('.button-next').show();
-                    $('#lblRFQMessage').hide();
-                }
-                else {
                     $('#form_wizard_1').find('.button-next').hide();
                     $('#regretrfq').hide();
                     $('#lblRFQMessage').show();
+                }
+                else {
+                    $('#regretrfq').show();
+                    $('#form_wizard_1').find('.button-next').show();
+                    $('#lblRFQMessage').hide();
+
                     return false;
                 }
             }
@@ -1217,7 +1222,7 @@ function Dateandtimevalidate(StartDT,tocheckdt) {
                     });
 
                 }
-            
+
             }
         },
         error: function () {
@@ -1531,7 +1536,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
 
     basicprice = removeThousandSeperator($('#txtbasicPrice').val());
-   // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
 
     //abheedev production issue 09/12/2022
@@ -1679,7 +1684,7 @@ function saveQuotation() {
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
 
-   
+
     if (validateSubmit) {
         $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
@@ -1835,10 +1840,11 @@ function fnReplicateToAllItems() {
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
-   // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
-   if (validateSubmit) {
+
+
+    if (validateSubmit) {
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();
 

@@ -617,8 +617,6 @@ var FormWizard = function () {
 
 }();
 function Dateandtimevalidate(dttime, forDT) {
-
-
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
 
@@ -648,7 +646,6 @@ function Dateandtimevalidate(dttime, forDT) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
             if (forDT == "startdt") {
                 isvalidStartDt = data;
                 if (data == "1") {
@@ -664,7 +661,9 @@ function Dateandtimevalidate(dttime, forDT) {
                 isvalidEndDt = data;
                 //** End Date is Valid
                 if (data == "1") {
-                    Dateandtimevalidate($('#txtbidopendatetime').val(), 'bidopendt');
+                    if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != '') {
+                        Dateandtimevalidate($('#txtbidopendatetime').val(), 'bidopendt');
+                    }
                 }
             }
 
@@ -851,7 +850,7 @@ function InsUpdRFQDEtailTab1() {
     //else {
     //    var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
     //}
-    
+
 
     var BidOpenDate = null;
     let BT = null;

@@ -168,11 +168,11 @@ function fetchregisterusers() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "N"
-    } 
+    }
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
+        // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -244,7 +244,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
         success: function (data) {
 
             jQuery("#tblNFASummary").empty();
-            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Status</th></tr></thead>");
+            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Status</th></tr></thead>");
             if (data.length > 0) {
 
                 for (var i = 0; i < data.length; i++) {
@@ -254,12 +254,13 @@ function fetNFAReport(dtfrom, dtto, subject) {
                     str += "<td>" + data[i].nfaSubject + "</td>";
                     str += "<td>" + data[i].createdBy + "</td>";
                     BidDate = fnConverToLocalTime(data[i].updatedOn);
-                    
+
                     str += "<td>" + BidDate + "</td>";
                     str += "<td>" + data[i].aging + "</td>";
                     str += "<td>" + data[i].nfaCurrency + "</td>";
                     str += "<td>" + data[i].orgName + "</td>";
                     str += "<td>" + data[i].groupName + "</td>";
+                    str += "<td>" + data[i].nfaAmount + "</td>";
                     str += "<td>" + data[i].finalStatus + "</td>";
 
                     str += "</tr>";
