@@ -676,20 +676,21 @@ function deletePEFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
+    setTimeout(function () {
+        connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
-
-    });
+        });
+    }, 1000);
     connection.on("refreshPEFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -753,20 +754,21 @@ function deleteFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
+    setTimeout(function () {
+        connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
-
-    });
+        });
+    }, 1000);
     connection.on("refreshFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -828,19 +830,21 @@ function deleteRAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
+    setTimeout(function () {
+        connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    });
+        });
+    }, 1000);
     connection.on("refreshRAQuotes", function (data) {
 
         var JsonMsz = JSON.parse(data[0]);
@@ -902,19 +906,21 @@ function deleteCoalquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
+    setTimeout(function () {
+        connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    });
+        });
+    }, 1000);
     connection.on("refreshCAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -1175,8 +1181,7 @@ function sendremainderstoparicipants() {
             }
 
         });
-
-
+        
         var data = {
             "QueryString": checkedValue,
             "BidId": parseInt(sessionStorage.getItem("hdnbid")),
@@ -1184,7 +1189,6 @@ function sendremainderstoparicipants() {
             "UserID": sessionStorage.getItem("UserID"),
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
         }
-
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/SendRemainderToParticipant",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2318,10 +2322,12 @@ function fnTimeUpdateS(index, seaid) {
         "UserID": sessionStorage.getItem('UserID'),
         "GroupNo": $('#groupno' + index).text()
     }
-    connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
+    setTimeout(function () {
+        connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
 
-    });
+        });
+    }, 1000);
     connection.on("refreshTimer", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -2484,11 +2490,14 @@ function fnupdateStaggerReopendatetime() {
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }
-    //console.log(JSON.stringify(Data))
-    connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
 
-    });
+    //console.log(JSON.stringify(Data))
+    setTimeout(function () {
+        connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+    }, 1000);
     connection.on("refreshBidStatusAfterPause", function (data) {
 
         erroropenbid.hide();
@@ -2629,11 +2638,12 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "UserID": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     }
+    setTimeout(function () {
+        connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
 
-    connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
-
-    });
+        });
+    }, 1000);
     connection.on("refreshTimeronClients", function (data) {
 
         if (data == sessionStorage.getItem('UserID')) {
@@ -3209,10 +3219,12 @@ function formSubmitEditEvent() {
         }
 
         if (Data != '') {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
 
-            });
+                });
+            }, 1000);
             connection.on("refreshBidDetailsManage", function (data) {
                 var JsonMsz = JSON.parse(data[0]);
                 if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {
@@ -4117,17 +4129,20 @@ function updMinDecreament() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') == 7) {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
 
-            });
+                });
+            }, 1000);
         }
         else {
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
 
-            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-
-            });
+                });
+            }, 1000);
         }
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
@@ -4190,11 +4205,12 @@ function updMinIncreament() {
     }
 
     if (Data != '' || Data != null) {
+        setTimeout(function () {
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
 
-        connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-            return console.error(err.toString());
-
-        });
+            });
+        }, 1000);
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {
@@ -4272,15 +4288,18 @@ function UpdShowL1Price() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-            });
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }, 1000);
         }
         else {
-
-            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-            });
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }, 1000);
         }
         connection.on("refreshBidDetailsManage", function (data) {
 
@@ -4361,14 +4380,18 @@ function UpdShowStartPrice() {
 
     if (Data != '' || Data != null) {
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-            });
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }, 1000);
         }
         else {
-            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-            });
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }, 1000);
         }
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
@@ -4461,16 +4484,19 @@ function updBidStartPrice() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
-
-            });
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }, 1000);
         }
         else {
-            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
+            setTimeout(function () {
+                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                    return console.error(err.toString());
 
-            });
+                });
+            }, 1000);
         }
 
         connection.on("refreshBidDetailsManage", function (data) {

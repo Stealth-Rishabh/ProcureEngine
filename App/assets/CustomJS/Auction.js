@@ -1,8 +1,8 @@
 function logoutFunction() {
     sessionStorage.clear();
     //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
-    //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
-    sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
+    //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 
@@ -250,6 +250,13 @@ function Pageloaded() {
 
     }, false);
 }
+function getTimezoneOffset() {
+    function z(n) { return (n < 10 ? '0' : '') + n }
+    var offset = new Date().getTimezoneOffset();
+    var sign = offset < 0 ? '+' : '-';
+    offset = Math.abs(offset);
+    return sign + z(offset / 60 | 0) + z(offset % 60);
+}
 function BindNoExtensions(divid) {
 
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
@@ -382,6 +389,15 @@ function thousands_separators_input(ele) {
         valArr = val.split('.');
         valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
         val = valArr.join('.');
+    }
+    ele.value = val;
+}
+function removeZero(ele) {
+
+    var val = ele.value;
+    if (val == "0") {
+        val = "";
+
     }
     ele.value = val;
 }
@@ -719,10 +735,11 @@ function fetchUserChats(userId, msgType) {
     var url = "";
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
+
     jQuery.ajax({
         type: "POSt",
         contentType: "application/json; charset=utf-8",

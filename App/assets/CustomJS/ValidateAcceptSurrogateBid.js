@@ -36,99 +36,55 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+
             if (data.length == 1) {
-                //var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
+                var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
                 // var BidExpiryDatetime = fnConverToLocalTime(data[0].bidExpiryDate);
                 // var _bidDateStart = new Date(BidStartDatetime.replace('-', ''));
                 // var _bidDateExpiry = new Date(BidExpiryDatetime.replace('-', ''));
 
                 // var currentTime = new Date();
-               
+
                 //** check Expiry Date in valid or not
                 Dateandtimevalidate(fnConverToLocalTime(data[0].bidExpiryDate));
-               
+
                 //if (_bidDateExpiry > currentTime) {
-                    //if (_bidDateStart < currentTime) {
-                  
-                    jQuery('#lblEventID').html(BIDID);
-                    jQuery('#bid_EventID').html("Event ID : " + BIDID);
+                //if (_bidDateStart < currentTime) {
 
-                    jQuery("#lblbidsubject").text(data[0].bidSubject);
-                    jQuery("#lblbidDetails").text(data[0].bidDetails);
-                    //jQuery("#lblbiddate").text(data[0].bidDate);
-                    jQuery("#lblbiddate").text(BidStartDatetime);
-                    //jQuery("#lblbidtime").text(data[0].bidTime);
-                    jQuery("#lblbidtype").text(data[0].bidTypeName);
-                    jQuery("#lblbidfor").text(data[0].bidFor);
-                    jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
-                    jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
-                    //jQuery("#lblbiddateTT").text(data[0].bidDate);
-                    jQuery("#lblbiddateTT").text(BidStartDatetime);
-                    //jQuery("#lblbidtimeTT").text(data[0].bidTime);
-                    jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
-                    jQuery("#lblbidforTT").text(data[0].bidFor);
-                    BIDTypeID = data[0].bidTypeID;
-                    BidClosingType = data[0].bidClosingType;
+                jQuery('#lblEventID').html(BIDID);
+                jQuery('#bid_EventID').html("Event ID : " + BIDID);
 
-                    jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-                    jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                jQuery("#lblbidsubject").text(data[0].bidSubject);
+                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                //jQuery("#lblbiddate").text(data[0].bidDate);
+                jQuery("#lblbiddate").text(BidStartDatetime);
+                //jQuery("#lblbidtime").text(data[0].bidTime);
+                jQuery("#lblbidtype").text(data[0].bidTypeName);
+                jQuery("#lblbidfor").text(data[0].bidFor);
+                jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
+                jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
+                //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                jQuery("#lblbiddateTT").text(BidStartDatetime);
+                //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                jQuery("#lblbidforTT").text(data[0].bidFor);
+                BIDTypeID = data[0].bidTypeID;
+                BidClosingType = data[0].bidClosingType;
 
-
-                    jQuery("#lblbidduration").text(data[0].bidDuration);
-                    jQuery("#lblcurrency").text(data[0].currencyName);
-                    jQuery("#lblbiddurationTT").text(data[0].bidDuration);
-                    jQuery("#lblcurrencyTT").text(data[0].currencyName);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                    jQuery("#lblstatus").text(data[0].conversionRate);
-                    jQuery("#lblConvRate").text(data[0].conversionRate);
-                    jQuery('#TermandCondition').attr("name", data[0].termsConditions)
-                    jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
-                    /*}
-                    else {
-                        bootbox.alert("This bid has not yet started !!!", function () {
-
-                            $('#btnpassword').attr('disabled', 'disabled')
-                            $('#txtpassword').attr('disabled', 'disabled')
-
-                        });
-
-                    }*/
-               /* }
-                else {
-                  
-                        jQuery('#lblEventID').html(BIDID);
-                        jQuery('#bid_EventID').html("Event ID : " + BIDID);
-
-                        jQuery("#lblbidsubject").text(data[0].bidSubject);
-                        jQuery("#lblbidDetails").text(data[0].bidDetails);
-                        //jQuery("#lblbiddate").text(data[0].bidDate);
-                        jQuery("#lblbiddate").text(BidStartDatetime);
-                        //jQuery("#lblbidtime").text(data[0].bidTime);
-                        jQuery("#lblbidtype").text(data[0].bidTypeName);
-                        jQuery("#lblbidfor").text(data[0].bidFor);
-                        jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
-                        jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
-                        //jQuery("#lblbiddateTT").text(data[0].bidDate);
-                        jQuery("#lblbiddateTT").text(BidStartDatetime);
-                        //jQuery("#lblbidtimeTT").text(data[0].bidTime);
-                        jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
-                        jQuery("#lblbidforTT").text(data[0].bidFor);
-                        BIDTypeID = data[0].bidTypeID;
-                        BidClosingType = data[0].bidClosingType;
-
-                        jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
-                        jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+                jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
 
 
-                        jQuery("#lblbidduration").text(data[0].bidDuration);
-                        jQuery("#lblcurrency").text(data[0].currencyName);
-                        jQuery("#lblbiddurationTT").text(data[0].bidDuration);
-                        jQuery("#lblcurrencyTT").text(data[0].currencyName);
-                        jQuery("#lblConvRate").text(data[0].conversionRate);
-                        jQuery("#lblstatus").text(data[0].conversionRate);
-                        jQuery("#lblConvRate").text(data[0].conversionRate);
-                       
-                }*/
+                jQuery("#lblbidduration").text(data[0].bidDuration);
+                jQuery("#lblcurrency").text(data[0].currencyName);
+                jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                jQuery("#lblcurrencyTT").text(data[0].currencyName);
+                jQuery("#lblConvRate").text(data[0].conversionRate);
+                jQuery("#lblstatus").text(data[0].conversionRate);
+                jQuery("#lblConvRate").text(data[0].conversionRate);
+                jQuery('#TermandCondition').attr("name", data[0].termsConditions)
+                jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
+                
 
             }
         },
@@ -149,7 +105,6 @@ function fetchBidHeaderDetails() {
 function Dateandtimevalidate(StartDT) {
 
     var StartDT = StartDT.replace('-', '');
-
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
@@ -157,12 +112,12 @@ function Dateandtimevalidate(StartDT) {
 
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+    ST = ST + 'GMT' + getTimezoneOffset()//sessionStorage.getItem('utcoffset');
 
     var Tab1Data = {
         "BidDate": ST
     }
-    //console.log(JSON.stringify(Tab1Data))
+
 
     jQuery.ajax({
         type: "POST",
@@ -170,10 +125,12 @@ function Dateandtimevalidate(StartDT) {
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
+
             if (data == "1") {
                 $('#btnpassword').removeAttr('disabled');
                 $('#txtpassword').removeAttr('disabled');
@@ -210,7 +167,7 @@ function DownloadFile(aID) {
 
 //abheedev bug 381 start
 function DownloadbidFile(aID) {
-   fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + BIDID);
+    fnDownloadAttachments($("#" + aID.id).attr("name"), 'Bid/' + BIDID);
 }
 //abheedev bug 381 end
 
