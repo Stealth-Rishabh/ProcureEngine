@@ -664,7 +664,7 @@ function Dateandtimevalidate(dttime, forDT) {
                 isvalidEndDt = data;
                 //** End Date is Valid
                 if (data == "1") {
-                    Dateandtimevalidate($('#txtenddatettime').val(), 'bidopendt');
+                    Dateandtimevalidate($('#txtbidopendatetime').val(), 'bidopendt');
                 }
             }
 
@@ -688,7 +688,7 @@ function Dateandtimevalidate(dttime, forDT) {
                 }
                 if ($('#txtbidopendatetime').val() != '') {
                     var BidOpenDate = new Date();
-                    BidOpenDate = $('#txtstartdatettime').val().replace('-', '');
+                    BidOpenDate = $('#txtbidopendatetime').val().replace('-', '');
 
                     bidopendate =
                         new Date(BidOpenDate.toLocaleString("en", {
