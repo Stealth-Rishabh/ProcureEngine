@@ -1,6 +1,48 @@
 
 
-var Index = function ()  {
+jQuery(document).ready(function () {
+
+    Pageloaded()
+    sessionStorage.setItem('CurrentBidID', 0);
+
+    sessionStorage.setItem('hddnRFQID', 0);
+
+    sessionStorage.setItem('CurrentRFIID', 0);
+
+    setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+
+    }
+    else {
+
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    setCommonData();
+    App.init();
+    Tasks.initDashboardWidget();
+    if (sessionStorage.getItem('UserType') == 'E') {
+        fetchMenuItemsFromSession(0, 0);
+
+    }
+    else {
+
+    }
+    fetchDashboardData();
+    handleChangePasword();
+});
+
+var Index = function () {
+
+
     return {
 
         //main function
