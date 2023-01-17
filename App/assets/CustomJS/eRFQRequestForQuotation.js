@@ -120,6 +120,10 @@ jQuery.validator.addMethod(
 
     "This field is required."
 );
+$.validator.addMethod("numberWithComma", function (value, element) {
+
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 jQuery.validator.addMethod("dollarsscents", function (value, element) {
     return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(removeThousandSeperator(value));
 }, "You must include three decimal places");
@@ -172,7 +176,7 @@ var FormWizard = function () {
                     },
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -198,7 +202,7 @@ var FormWizard = function () {
                         required: true
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     txtquantitiy: {
@@ -225,7 +229,7 @@ var FormWizard = function () {
                     },
                     txtunitrate: {
                         // required: true,
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     txtvendorname: {
@@ -236,7 +240,7 @@ var FormWizard = function () {
                     },
                     txtpovalue: {
                         // required: true,
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     //Third Tab
@@ -594,7 +598,7 @@ function Dateandtimevalidate(dttime, forDT) {
         "BidDate": ST
     }
 
-    //console.log(JSON.stringify(Tab1Data))
+   
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -815,7 +819,7 @@ function InsUpdRFQDEtailTab1() {
         "OpenQuotes": _openQuotes
 
     };
-    //console.log(JSON.stringify(Tab1Data))
+   
 
     jQuery.ajax({
         type: "POST",
