@@ -247,7 +247,7 @@ var FormWizard = function () {
                 },
 
                 messages: {
-
+                   
                 },
 
                 errorPlacement: function (error, element) {
@@ -428,12 +428,21 @@ var FormWizard = function () {
 
                     if (index == 1) {
 
-
+                      
                         //var CurDateonly = new Date(currentdate.toDateString())
                         //var StartDTdateonly = new Date(StartDT.toDateString());
 
 
                         if (form.valid() == false) {
+                            return false;
+
+                        }
+                        else if ($('#txtenddatettime').val() == '') {
+                            $('.alert-danger').show();
+                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                            $('#spandanger').html('Please Enter RFQ END Date');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
                             return false;
 
                         }
@@ -449,15 +458,7 @@ var FormWizard = function () {
 
 
                         }
-                        /* else if ($('#txtenddatettime').val() == '') {
-                             $('.alert-danger').show();
-                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                             $('#spandanger').html('Please Enter RFQ END Date');
-                             Metronic.scrollTo($(".alert-danger"), -200);
-                             $('.alert-danger').fadeOut(7000);
-                             return false;
- 
-                         }*/
+                        
                     }
                     else if (index == 2) {
 
@@ -574,7 +575,7 @@ var FormWizard = function () {
 
 
 function Dateandtimevalidate(dttime, forDT) {
-
+   
 
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
@@ -604,7 +605,7 @@ function Dateandtimevalidate(dttime, forDT) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
+         
             if (forDT == "startdt") {
                 isvalidStartDt = data;
                 if (data == "1") {
@@ -967,7 +968,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+        
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1099,7 +1100,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-    debugger
+
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -2094,7 +2095,10 @@ function InsUpdProductSevices() {
 
     }
     else {
-
+        $('.alert-danger').show();
+        $('#spandanger').html('Please fill required field properly to proceed');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(3000);
         form.validate()
         jQuery.unblockUI();
         return false;

@@ -75,7 +75,6 @@ jQuery("#txtrfirfqsubject").typeahead({
             FetchRFQVersion();
             fetchAttachments();
             fetchApproverRemarks('C');
-
         }
 
         return StringDecodingMechanism(item);
