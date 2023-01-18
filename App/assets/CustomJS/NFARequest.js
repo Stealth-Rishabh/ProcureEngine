@@ -578,13 +578,13 @@ function GetOverviewmasterbyId(idx) {
                 setTimeout(function () {
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
-                }, 900)
+                },900)
            
                   
                 setTimeout(function () {
                     bindConditionDDL()
                     $("#ddlCondition").val(res.result[0].conditionID);
-                }, 900)
+                },700)
             }
         }
     });
