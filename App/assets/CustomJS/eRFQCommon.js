@@ -9,7 +9,6 @@ $(".thousandseparated").inputmask({
     allowPlus: false,
     allowMinus: false,
     'removeMaskOnSubmit': true
-
 });
 $('#txtloadingfactorreason').maxlength({
     limitReachedClass: "label label-danger",

@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
