@@ -337,7 +337,7 @@ var FormWizard = function () {
                             saveQuotation();
                             fetchRFQResponse('Attachment', sessionStorage.getItem('RFQVersionId'))
                         }
-                        $("#LIVendor").find("a").attr("onclick", "fnRedirectToHome()")
+                        
                     }
                     else if (index == 3) {
                     }
@@ -351,7 +351,10 @@ var FormWizard = function () {
                     success.hide();
                     error.hide();
                     handleTitle(tab, navigation, index);
-
+                   
+                    if (index == 0) {
+                        $("#LIVendor").find("a").attr("onclick", "fnRedirectToHome()")
+                    }
                 },
 
                 onTabShow: function (tab, navigation, index) {
@@ -1914,19 +1917,6 @@ function fnRedirectToHome() {
     else {
         window.location = "VendorHome.html"
     }
-}
-
-
-function alertforsubmit() {
-
-    bootbox.alert({
-        message: "If he wants to leave without submitting the quotes",
-        size: 'large',
-        callback: function () {
-            console.log("Alert closed");
-        }
-    });
-
 }
 
 
