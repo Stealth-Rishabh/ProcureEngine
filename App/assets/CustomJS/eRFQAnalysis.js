@@ -39,7 +39,7 @@ var _rfqBidType = sessionStorage.getItem("RFQBIDType");
 var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
 if (window.location.search) {
-
+    
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
 
@@ -48,11 +48,11 @@ if (window.location.search) {
 
     $('#hdnRfqID').val(RFQID);
 
-    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
+    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ').replace(/%2F/g, '/');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
-
+    
     jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
     fetchReguestforQuotationDetails()
     fetchRFQApproverStatus(RFQID);
@@ -359,7 +359,7 @@ function fetchrfqcomprative() {
                                         //abheedev backlog 335 end
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
