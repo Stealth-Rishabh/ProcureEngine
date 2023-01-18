@@ -642,10 +642,13 @@ function GetOverviewmasterbyId(idx) {
                 $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
                 
                 setTimeout(function () {
-                   $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
+                    bindPurchaseGroupDDL()
+                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
                 }, 900)
-
-                $("#ddlCondition").val(res.result[0].conditionID);
+                setTimeout(function () {
+                    bindConditionDDL()
+                    $("#ddlCondition").val(res.result[0].conditionID);
+                }, 900)
 
             }
         }
