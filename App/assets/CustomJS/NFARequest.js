@@ -541,7 +541,7 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            
             if (res.result.length > 0) {
                 $("#txtEventref").val(res.result[0].eventReftext);
                 $("#txtTitle").val(res.result[0].nfaSubject);
@@ -579,10 +579,12 @@ function GetOverviewmasterbyId(idx) {
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
                 }, 900)
-
-                $("#ddlCondition").val(res.result[0].conditionID);
-
-
+           
+                  
+                setTimeout(function () {
+                    bindConditionDDL()
+                    $("#ddlCondition").val(res.result[0].conditionID);
+                }, 900)
             }
         }
     });
@@ -1019,7 +1021,6 @@ $("#txtProjectName").on("keyup", function () {
 
 //abheedev backlog 286
 function Savedata() {
-
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1116,7 +1117,7 @@ function Savetab2Data() {
 
 };
 function GetNfaOverviewParams() {
-
+   
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
@@ -1252,6 +1253,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function FetchMatrixApprovers() {
+    
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
     var groupId = $('#ddlPurchasegroup option:selected').val()//sessionStorage.getItem("hdnPurchaseGroupID");
@@ -1649,7 +1651,7 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-
+    
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
