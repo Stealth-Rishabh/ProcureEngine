@@ -555,7 +555,6 @@ function fetchReguestforQuotationDetailseRFQ() {
             $('#uniform-chkIsAccepted').find("span").removeClass('checked');
             $('#btnContinue').attr("disabled", true);
 
-
             jQuery('#RFQSubject').text(_cleanStringSub)
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
@@ -564,6 +563,7 @@ function fetchReguestforQuotationDetailseRFQ() {
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition)
+
 
             //abheedev
         },

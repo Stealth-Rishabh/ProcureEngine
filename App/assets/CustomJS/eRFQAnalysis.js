@@ -4,7 +4,6 @@ jQuery(document).ready(function () {
     $table.floatThead({
         position: 'fixed'
     });
-
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
 
