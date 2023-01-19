@@ -485,7 +485,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-2 xyz">
-                                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy"  autocomplete="off" />
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off" onkeyup="localecommaseperator(this)" />
 
 
                                                         </div>
@@ -505,7 +505,7 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control text-right" id="txttargetprice" 
-                                                                   name="txttargetprice" autocomplete="off" onkeyup="thousands_separators_input(this)" />
+                                                                   name="txttargetprice" autocomplete="off" onkeyup="localecommaseperator(this)" />
 
                                                         </div>
                                                         <label class="control-label  col-md-2">

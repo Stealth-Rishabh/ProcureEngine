@@ -403,6 +403,7 @@ function removeZero(ele) {
 }
 
 function removeThousandSeperator(val) {
+    
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -1986,5 +1987,20 @@ function fnGetCurrentPrefferedProfileDTTime() {
     }
     theStDate = theStDate.replace('at', '-');
     return theStDate;
+
+}
+
+function localecommaseperator(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
 }

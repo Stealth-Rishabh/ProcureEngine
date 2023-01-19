@@ -2023,9 +2023,9 @@ function InsUpdProductSevices() {
                 $("#sname" + this_row).text($('#txtshortname').val())
                 $("#desc" + this_row).text(Description)
 
-                $("#TP" + this_row).text($('#txttargetprice').val())
+                $("#TP" + this_row).text($('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode")))
 
-                $("#quan" + this_row).text($('#txtquantitiy').val())
+                $("#quan" + this_row).text($('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode")))
                 $("#uom" + this_row).text($('#dropuom').val())
                 $("#remarks" + this_row).text($('#txtItemRemarks').val())
                 $("#tat" + this_row).text($('#txttat').val())
@@ -2041,8 +2041,8 @@ function InsUpdProductSevices() {
                 $("#itemcodeprev" + this_row).text($('#txtItemCode').val())
                 $("#snameprev" + this_row).text($('#txtshortname').val())
                 $("#descprev" + this_row).text(Description)
-                $("#TPPrev" + this_row).text($('#txttargetprice').val())
-                $("#quanprev" + this_row).text($('#txtquantitiy').val())
+                $("#TPPrev" + this_row).text($('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode")))
+                $("#quanprev" + this_row).text($('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode")))
                 $("#uomprev" + this_row).text($('#dropuom').val())
                 $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
                 $("#tatprev" + this_row).text($('#txttat').val())
@@ -2123,14 +2123,16 @@ function ParametersQuery() {
     }
     if ($("#txttargetprice").val() != null || $("#txttargetprice").val() != '') {
         //TP = thousands_separators(parseFloat(removeThousandSeperator($('#txttargetprice').val())).round(3)); 
-        TP = thousands_separators($('#txttargetprice').val());
+        //TP = thousands_separators($('#txttargetprice').val());
+        TP = $('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode"));
     }
     if ($("#txtpovalue").val() != null || $("#txtpovalue").val() != '') {
         //Povalue = thousands_separators(parseFloat(removeThousandSeperator($('#txtpovalue').val())).round(3));
         Povalue = thousands_separators($('#txtpovalue').val())
     }
     //quan=thousands_separators(parseFloat(removeThousandSeperator($('#txtquantitiy').val())).round(3))
-    quan = thousands_separators($('#txtquantitiy').val())
+    //quan = thousands_separators($('#txtquantitiy').val())
+    quan = $('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode"))
 
     var num = 0, i = 0;
     var maxinum = -1;
