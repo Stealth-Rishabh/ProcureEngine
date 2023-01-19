@@ -952,7 +952,7 @@ function fnConverToLocalTime(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "short"
             })
         }
         else {
@@ -1031,7 +1031,7 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "medium"
             })
         }
         else {
