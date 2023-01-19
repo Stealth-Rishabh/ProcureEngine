@@ -2,7 +2,6 @@ let _RFQid;
 let isvalidStartDt;
 let isvalidEndDt;
 jQuery(document).ready(function () {
-
     var date = new Date();
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
@@ -120,6 +119,10 @@ jQuery.validator.addMethod(
 
     "This field is required."
 );
+$.validator.addMethod("numberWithComma", function (value, element) {
+
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 jQuery.validator.addMethod("dollarsscents", function (value, element) {
     return this.optional(element) || /^\d{0,18}(\.\d{0,3})?$/i.test(removeThousandSeperator(value));
 }, "You must include three decimal places");
@@ -172,7 +175,7 @@ var FormWizard = function () {
                     },
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -198,7 +201,7 @@ var FormWizard = function () {
                         required: true
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     txtquantitiy: {
@@ -225,7 +228,7 @@ var FormWizard = function () {
                     },
                     txtunitrate: {
                         // required: true,
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     txtvendorname: {
@@ -236,7 +239,7 @@ var FormWizard = function () {
                     },
                     txtpovalue: {
                         // required: true,
-                        number: true,
+                        numberWithComma: true,
                         dollarsscents: true
                     },
                     //Third Tab
@@ -247,7 +250,7 @@ var FormWizard = function () {
                 },
 
                 messages: {
-
+                   
                 },
 
                 errorPlacement: function (error, element) {
@@ -428,12 +431,21 @@ var FormWizard = function () {
 
                     if (index == 1) {
 
-
+                      
                         //var CurDateonly = new Date(currentdate.toDateString())
                         //var StartDTdateonly = new Date(StartDT.toDateString());
 
 
                         if (form.valid() == false) {
+                            return false;
+
+                        }
+                        else if ($('#txtenddatettime').val() == '') {
+                            $('.alert-danger').show();
+                            $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+                            $('#spandanger').html('Please Enter RFQ END Date');
+                            Metronic.scrollTo($(".alert-danger"), -200);
+                            $('.alert-danger').fadeOut(7000);
                             return false;
 
                         }
@@ -449,15 +461,7 @@ var FormWizard = function () {
 
 
                         }
-                        /* else if ($('#txtenddatettime').val() == '') {
-                             $('.alert-danger').show();
-                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
-                             $('#spandanger').html('Please Enter RFQ END Date');
-                             Metronic.scrollTo($(".alert-danger"), -200);
-                             $('.alert-danger').fadeOut(7000);
-                             return false;
- 
-                         }*/
+                        
                     }
                     else if (index == 2) {
 
@@ -574,7 +578,7 @@ var FormWizard = function () {
 
 
 function Dateandtimevalidate(dttime, forDT) {
-
+   
 
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
@@ -593,7 +597,7 @@ function Dateandtimevalidate(dttime, forDT) {
         "BidDate": ST
     }
 
-    //console.log(JSON.stringify(Tab1Data))
+   
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -604,7 +608,7 @@ function Dateandtimevalidate(dttime, forDT) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
+         
             if (forDT == "startdt") {
                 isvalidStartDt = data;
                 if (data == "1") {
@@ -814,7 +818,7 @@ function InsUpdRFQDEtailTab1() {
         "OpenQuotes": _openQuotes
 
     };
-    //console.log(JSON.stringify(Tab1Data))
+   
 
     jQuery.ajax({
         type: "POST",
@@ -967,7 +971,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+        
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1099,7 +1103,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-    debugger
+
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -2019,9 +2023,9 @@ function InsUpdProductSevices() {
                 $("#sname" + this_row).text($('#txtshortname').val())
                 $("#desc" + this_row).text(Description)
 
-                $("#TP" + this_row).text($('#txttargetprice').val())
+                $("#TP" + this_row).text($('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode")))
 
-                $("#quan" + this_row).text($('#txtquantitiy').val())
+                $("#quan" + this_row).text($('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode")))
                 $("#uom" + this_row).text($('#dropuom').val())
                 $("#remarks" + this_row).text($('#txtItemRemarks').val())
                 $("#tat" + this_row).text($('#txttat').val())
@@ -2037,8 +2041,8 @@ function InsUpdProductSevices() {
                 $("#itemcodeprev" + this_row).text($('#txtItemCode').val())
                 $("#snameprev" + this_row).text($('#txtshortname').val())
                 $("#descprev" + this_row).text(Description)
-                $("#TPPrev" + this_row).text($('#txttargetprice').val())
-                $("#quanprev" + this_row).text($('#txtquantitiy').val())
+                $("#TPPrev" + this_row).text($('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode")))
+                $("#quanprev" + this_row).text($('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode")))
                 $("#uomprev" + this_row).text($('#dropuom').val())
                 $("#remarksprev" + this_row).text($('#txtItemRemarks').val())
                 $("#tatprev" + this_row).text($('#txttat').val())
@@ -2094,7 +2098,10 @@ function InsUpdProductSevices() {
 
     }
     else {
-
+        $('.alert-danger').show();
+        $('#spandanger').html('Please fill required field properly to proceed');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(3000);
         form.validate()
         jQuery.unblockUI();
         return false;
@@ -2116,14 +2123,16 @@ function ParametersQuery() {
     }
     if ($("#txttargetprice").val() != null || $("#txttargetprice").val() != '') {
         //TP = thousands_separators(parseFloat(removeThousandSeperator($('#txttargetprice').val())).round(3)); 
-        TP = thousands_separators($('#txttargetprice').val());
+        //TP = thousands_separators($('#txttargetprice').val());
+        TP = $('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode"));
     }
     if ($("#txtpovalue").val() != null || $("#txtpovalue").val() != '') {
         //Povalue = thousands_separators(parseFloat(removeThousandSeperator($('#txtpovalue').val())).round(3));
         Povalue = thousands_separators($('#txtpovalue').val())
     }
     //quan=thousands_separators(parseFloat(removeThousandSeperator($('#txtquantitiy').val())).round(3))
-    quan = thousands_separators($('#txtquantitiy').val())
+    //quan = thousands_separators($('#txtquantitiy').val())
+    quan = $('#txtquantitiy').val().toLocaleString(sessionStorage.getItem("culturecode"))
 
     var num = 0, i = 0;
     var maxinum = -1;

@@ -4,7 +4,6 @@ jQuery(document).ready(function () {
     $table.floatThead({
         position: 'fixed'
     });
-
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
 
@@ -39,7 +38,7 @@ var _rfqBidType = sessionStorage.getItem("RFQBIDType");
 var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
 if (window.location.search) {
-
+    
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
 
@@ -48,11 +47,11 @@ if (window.location.search) {
 
     $('#hdnRfqID').val(RFQID);
 
-    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
+    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ').replace(/%2F/g, '/');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
-
+    
     jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
     fetchReguestforQuotationDetails()
     fetchRFQApproverStatus(RFQID);
@@ -314,7 +313,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -359,14 +358,14 @@ function fetchrfqcomprative() {
                                         //abheedev backlog 335 end
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
                                         }
                                         else {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         }
                                         //abheedev backlog 335 end part 2

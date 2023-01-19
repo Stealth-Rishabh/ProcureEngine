@@ -403,6 +403,7 @@ function removeZero(ele) {
 }
 
 function removeThousandSeperator(val) {
+    
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -951,7 +952,7 @@ function fnConverToLocalTime(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "short"
             })
         }
         else {
@@ -1030,7 +1031,7 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "medium"
             })
         }
         else {
@@ -1986,5 +1987,20 @@ function fnGetCurrentPrefferedProfileDTTime() {
     }
     theStDate = theStDate.replace('at', '-');
     return theStDate;
+
+}
+
+function localecommaseperator(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
 }

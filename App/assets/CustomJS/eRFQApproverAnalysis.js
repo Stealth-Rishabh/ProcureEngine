@@ -24,6 +24,7 @@ jQuery(document).ready(function () {
 
 
 });
+
 $("#btnExport").click(function (e) {
 
     var dt = new Date();
@@ -219,7 +220,7 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
-            debugger;
+           
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
             var _openQuotes = sessionStorage.getItem("OpenQuotes");
 

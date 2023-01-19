@@ -1,5 +1,6 @@
+let projectnamestatus = false;
 jQuery(document).ready(function () {
-
+    
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -335,7 +336,7 @@ var FormWizard = function () {
                     success.hide();
                     error.hide();
                     if (index == 1) {
-
+                    
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
@@ -353,7 +354,11 @@ var FormWizard = function () {
                                 required: true
                             });
                         }
-
+                        if (projectnamestatus == true) {
+                            $('#txtProjectName').rules('add', {
+                                required: false
+                            });
+                        }
                         if (form.valid() == false) {
                             form.validate();
                             $('.alert-danger').show();
@@ -606,7 +611,7 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
-
+              
                 $("#txtEventref").val(res.result[0].eventReftext);
                 $("#txtTitle").val(res.result[0].nfaSubject);
                 $("#txtNFADetail").val(res.result[0].nfaDescription);
@@ -634,18 +639,26 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".isProject").show();
                 }
-                //$("#txtProjectName").find(`option[text=res.result[0].projectName]`).attr("selected", "selected")
-                //$("#txtProjectName").find(`option[text=${res.result[0].projectName}]`).attr("selected", "selected")
+                
+            
+             
                 $("#txtProjectName option:selected").text(res.result[0].projectName);
+                if (res.result[0].projectName != null || res.result[0].projectName != "") {
+                    projectnamestatus = true;
+                }
+              
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
                 $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
                 
                 setTimeout(function () {
-                   $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
+                    bindPurchaseGroupDDL()
+                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
                 }, 900)
-
-                $("#ddlCondition").val(res.result[0].conditionID);
+                setTimeout(function () {
+                    bindConditionDDL()
+                    $("#ddlCondition").val(res.result[0].conditionID);
+                }, 900)
 
             }
         }

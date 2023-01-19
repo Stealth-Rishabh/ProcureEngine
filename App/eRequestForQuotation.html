@@ -38,6 +38,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
+
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
     <link rel="stylesheet" href="assets/CustomCSS/erfq.css">
@@ -484,7 +485,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-2 xyz">
-                                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" />
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy"  autocomplete="off" onkeyup="localecommaseperator(this)" />
 
 
                                                         </div>
@@ -503,8 +504,8 @@
                                                             Target Price
                                                         </label>
                                                         <div class="col-md-4 xyz">
-                                                            <input type="tel" class="form-control text-right" id="txttargetprice"
-                                                                   name="txttargetprice" autocomplete="off" onkeyup="thousands_separators_input(this)" />
+                                                            <input type="tel" class="form-control text-right" id="txttargetprice" 
+                                                                   name="txttargetprice" autocomplete="off" onkeyup="localecommaseperator(this)" />
 
                                                         </div>
                                                         <label class="control-label  col-md-2">

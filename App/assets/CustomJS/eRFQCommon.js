@@ -9,7 +9,6 @@ $(".thousandseparated").inputmask({
     allowPlus: false,
     allowMinus: false,
     'removeMaskOnSubmit': true
-
 });
 $('#txtloadingfactorreason').maxlength({
     limitReachedClass: "label label-danger",
@@ -75,7 +74,6 @@ jQuery("#txtrfirfqsubject").typeahead({
             FetchRFQVersion();
             fetchAttachments();
             fetchApproverRemarks('C');
-
         }
 
         return StringDecodingMechanism(item);
