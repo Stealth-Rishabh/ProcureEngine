@@ -51,7 +51,7 @@ body {
 }
 
 .date-picker {
-    z-index: 1151 !important;
+    z-index: 2 !important;
 }
 
 #divalertSerach {
@@ -189,7 +189,7 @@ input[type=number] {
         padding: 5px 5px;
         transition: opacity 1s ease-in-out;
         position: absolute;
-        z-index: 2;
+        z-index: 3 !important;
         right: 100%;
         bottom: 110%;
     }
