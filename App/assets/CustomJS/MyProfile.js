@@ -1,5 +1,5 @@
-function onloadcalls() {
 
+function onloadcalls() {
     Pageloaded();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
@@ -20,13 +20,13 @@ function onloadcalls() {
             prefferedTimezone();
             fetchUserDetails();
             fetchMenuItemsFromSession(0, 0);
+            $('#ddlCountryCd').select2();
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
             fetchMasters();
             prefferedTimezone();
             fetchMyProfileVendor();
-
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
@@ -49,12 +49,9 @@ function onloadcalls() {
 }
 
 
-
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
-function fetchUserDetails() {
-
-  
+function fetchUserDetails() { 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('UserID'),
@@ -86,7 +83,14 @@ function fetchUserDetails() {
                     //abheedev
                     $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
+                if (userdetails[0].DialingCodeMobile != "" && userdetails[0].DialingCodeMobile != undefined && userdetails[0].DialingCodeMobile != null) {
+                  
+                    setTimeout(function () {
+                        $('#ddlCountryCd').val(userdetails[0].DialingCodeMobile).trigger('change')
 
+                    }, 500)
+
+                }
                 let userOrg = JSON.parse(data[1].jsondata);
                 if (userOrg != null) {
                     if (userOrg.length > 0) {
@@ -104,6 +108,7 @@ function fetchUserDetails() {
                         else {
                             $('#theadgroup').addClass('hide');
                         }
+                        
                     }
                     else {
                         $('#userOrg').addClass('hide')
