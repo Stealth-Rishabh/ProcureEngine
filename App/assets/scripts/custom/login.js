@@ -7,7 +7,7 @@ sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
-//fetchMapCategory('M', 0);
+fetchMapCategory('M', 0);
 
 var Login = function () {
 
@@ -139,13 +139,13 @@ var Login = function () {
     }
 
     function validateUser() {
-       // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
-      //  lastPart = 'vendor'
+        //lastPart = 'vendor'
         var LinkUrl = window.location.href;
         if (lastPart.toLocaleLowerCase() == "vendor") {
             var pwd = fnencrypt(jQuery("#password").val().trim());
@@ -165,32 +165,8 @@ var Login = function () {
                     debugger;
                     var successMsg = "";
                     var isSuccess = true;
-                    switch (data.tokenString.accessToken) {
-                        case "You are accessing an Invalid URL.":
-                            successMsg = "You are accessing an Invalid URL."
-                            isSuccess = false;
-                            break;
-                        case "Your account has been Locked. Please contact administrator.":
-                            successMsg = "Your account has been Locked. Please contact administrator."
-                            isSuccess = false;
-                            break;
-                        case "You have entered an incorrect Password.":
-                            successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect'
-                            isSuccess = false;
-                            break;
-                        case "Something went wrong!!! Please contact administrator.":
-                            successMsg = "Something went wrong!!! Please contact administrator."
-                            isSuccess = false;
-                            break;
-                        case "Your account has been Locked due to multiple failed Login attempts.":
-                            successMsg = "Your account has been Locked due to multiple failed Login attempts."
-                            isSuccess = false;
-                            break;
-                        case "User Name does not exists.":
-                            successMsg = "User Name does not exists."
-                            isSuccess = false;
-                            break;
-                        default:
+                    switch (data.responseResult.status) {
+                        case 1:
                             successMsg = "SUCCESS"
                             isSuccess = true;
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
@@ -198,6 +174,30 @@ var Login = function () {
                             //fnGetUserBasicDetails(lastPart)
                             sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
                             SetSessionItems(lastPart, data.userDetails[0]);
+                            break;
+                        //case "Your account has been Locked. Please contact administrator.":
+                        //    successMsg = "Your account has been Locked. Please contact administrator."
+                        //    isSuccess = false;
+                        //    break;
+                        //case "You have entered an incorrect Password.":
+                        //    successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect'
+                        //    isSuccess = false;
+                        //    break;
+                        //case "Something went wrong!!! Please contact administrator.":
+                        //    successMsg = "Something went wrong!!! Please contact administrator."
+                        //    isSuccess = false;
+                        //    break;
+                        //case "Your account has been Locked due to multiple failed Login attempts.":
+                        //    successMsg = "Your account has been Locked due to multiple failed Login attempts."
+                        //    isSuccess = false;
+                        //    break;
+                        //case "User Name does not exists.":
+                        //    successMsg = "User Name does not exists."
+                        //    isSuccess = false;
+                        //    break;
+                        default:
+                            successMsg = data.responseResult.stausMessage
+                            isSuccess = false;
                             break;
 
                     }
@@ -242,36 +242,38 @@ var Login = function () {
                 success: function (data) {
                     var successMsg = "";
                     var isSuccess = true;
-                    switch (data.tokenString.accessToken) {
-                        case "You are accessing an Invalid URL.":
-                            isSuccess = false;
-                            successMsg = "You are accessing an Invalid URL.";
-                            break;
-                        case "Your account has been Locked. Please contact administrator.":
-                            isSuccess = false;
-                            successMsg = "Your account has been Locked. Please contact administrator.";
-                            break;
-                        case "You have entered an incorrect Password.":
-                            isSuccess = false;
-                            successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect.';
-                            break;
-                        case "Something went wrong!!! Please contact administrator.":
-                            isSuccess = false;
-                            successMsg = "Something went wrong!!! Please contact administrator.";
-                            break;
-                        case "Your account has been Locked due to multiple failed Login attempts.":
-                            isSuccess = false;
-                            successMsg = "Your account has been Locked due to multiple failed Login attempts.";
-                            break;
-                        case "User Name does not exists.":
-                            successMsg = "User Name does not exists."
-                            isSuccess = false;
-                            break;
-                        default:
+                    switch (data.responseResult.status) {
+                        case 1:
+                            isSuccess = true;
+                            successMsg = "SUCCESS";
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.tokenString.accessToken);
                             sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
                             SetSessionItems(lastPart, data.userDetails[0]);
+                            break;
+                        //case "Your account has been Locked. Please contact administrator.":
+                        //    isSuccess = false;
+                        //    successMsg = "Your account has been Locked. Please contact administrator.";
+                        //    break;
+                        //case "You have entered an incorrect Password.":
+                        //    isSuccess = false;
+                        //    successMsg = 'Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect.';
+                        //    break;
+                        //case "Something went wrong!!! Please contact administrator.":
+                        //    isSuccess = false;
+                        //    successMsg = "Something went wrong!!! Please contact administrator.";
+                        //    break;
+                        //case "Your account has been Locked due to multiple failed Login attempts.":
+                        //    isSuccess = false;
+                        //    successMsg = "Your account has been Locked due to multiple failed Login attempts.";
+                        //    break;
+                        //case "User Name does not exists.":
+                        //    successMsg = "User Name does not exists."
+                        //    isSuccess = false;
+                        //    break;
+                        default:
+                            isSuccess = false;
+                            successMsg = data.responseResult.stausMessage;
                             break;
 
                     }
@@ -585,10 +587,7 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("CustomerID", value.customerID);
     sessionStorage.setItem("UserID", value.userID);
     sessionStorage.setItem("UserName", value.userName);
-    //sessionStorage.setItem("EmailID", value.emailID);
-    //sessionStorage.setItem("MobileNo", value.mobileNo);
     sessionStorage.setItem("RoleID", value.roleID);
-    //sessionStorage.setItem("ContactEmailID", value.contactEmailID);
     sessionStorage.setItem("DefaultCurrency", value.defaultCurrency);
     sessionStorage.setItem("UserType", value.userType);
     sessionStorage.setItem("VendorId", value.vendorID);
@@ -600,26 +599,17 @@ function SetSessionItems(lastPart, value) {
     //sessionStorage.setItem("localcode", value.localecode);
     sessionStorage.setItem("utcoffset", value.utcoffset);
     setTimeout(function () {
-        // alert(sessionStorage.getItem("UserType"))
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
                 IsAcceptedBidTermsRFIRFQ(sessionStorage.getItem("UserType"));
             }
         }
-        //else if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {// && (sessionStorage.getItem("UserType") == "E") || (sessionStorage.getItem("UserType") == "V")
-        //    fnGetUserBasicDetails(lastPart)
-        //}
 
         else {
             fetchMenuItemsForSession(lastPart);
         }
     }, 800);
-    //jQuery.each(data1, function (key, value) {
 
-    //    // if (MemberID != '0') {
-
-
-    //});
 }
 
 function fetchMenuItemsForSession(urlLast) {
@@ -627,7 +617,7 @@ function fetchMenuItemsForSession(urlLast) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "User/getMenuItems/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
+        url: APIPath + "User/getMenuItems/?CustomerID=" + encodeURIComponent(sessionStorage.getItem('CustomerID')) + "&UserType=" + sessionStorage.getItem("UserType"),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
