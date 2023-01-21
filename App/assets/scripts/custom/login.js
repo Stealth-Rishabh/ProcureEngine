@@ -145,7 +145,7 @@ var Login = function () {
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
-      //  lastPart = 'vendor'
+       // lastPart = 'vendor'
         var LinkUrl = window.location.href;
         if (lastPart.toLocaleLowerCase() == "vendor") {
             var pwd = fnencrypt(jQuery("#password").val().trim());
