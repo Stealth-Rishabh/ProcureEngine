@@ -2121,11 +2121,11 @@ function ParametersQuery() {
         //unitrate = thousands_separators(parseFloat(removeThousandSeperator($('#txtunitrate').val())).round(3));  
         unitrate = thousands_separators($('#txtunitrate').val());
     }
-    if ($("#txttargetprice").val() != null || $("#txttargetprice").val() != '') {
-        //TP = thousands_separators(parseFloat(removeThousandSeperator($('#txttargetprice').val())).round(3)); 
-        //TP = thousands_separators($('#txttargetprice').val());
+    if ($("#txttargetprice").val() !== null && $("#txttargetprice").val().trim() !== '') {
+    
         TP = $('#txttargetprice').val().toLocaleString(sessionStorage.getItem("culturecode"));
     }
+
     if ($("#txtpovalue").val() != null || $("#txtpovalue").val() != '') {
         //Povalue = thousands_separators(parseFloat(removeThousandSeperator($('#txtpovalue').val())).round(3));
         Povalue = thousands_separators($('#txtpovalue').val())

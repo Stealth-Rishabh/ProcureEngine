@@ -342,7 +342,7 @@ function thousands_Sep_Text(num) {
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return num_parts.join(".");
 }
-function thousands_separators(num) {
+/*function thousands_separators(num) {
     var res = "";
     if (num != null && num != undefined) {
         x = num.toString();
@@ -362,7 +362,12 @@ function thousands_separators(num) {
         res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     }
     return res;
+}*/
+function thousands_separators(num) {
+    str = num.toLocaleString(sessionStorage.getItem("culturecode"));
+    return str;
 }
+
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
 
@@ -381,7 +386,7 @@ function thousands_separators_NonMadCol(ele) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     ele.value = res;
 }
-function thousands_separators_input(ele) {
+/*function thousands_separators_input(ele) {
     var valArr, val = ele.value;
     val = val.replaceAll(/[^0-9\.]/g, '');
 
@@ -391,7 +396,21 @@ function thousands_separators_input(ele) {
         val = valArr.join('.');
     }
     ele.value = val;
+}*/
+function thousands_separators_input(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 }
+
 function removeZero(ele) {
 
     var val = ele.value;
@@ -2003,4 +2022,9 @@ function localecommaseperator(ele) {
     }
     $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
+}
+
+function localeseperator(ele) {
+    str = ele.toLocaleString(sessionStorage.getItem("culturecode"));
+    return str;
 }
