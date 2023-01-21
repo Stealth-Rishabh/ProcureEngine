@@ -113,11 +113,16 @@ function fetchrfqcomprative() {
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th>Our Requirement</th>"
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
-
                    
-                    strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName +"</th>";
-                    strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName +"</th>";
+                    if (data[0].vendorNames[i].seqNo != '0') {
+                        strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + "99" + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName + "</a></th>";
+                        strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName + "</th>";
+                    }
+                    else {
+                        strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName + "</th>";
+                        strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName + "</th>";
 
+                    }
                     strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName +"</th>";
                     strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName +"</th>";
 
@@ -251,7 +256,8 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
                 strExcel += "<tr><td colspan=5><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
+                      
                         RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                         str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstRA" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithoutgstRAExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -347,7 +353,7 @@ function fetchrfqcomprative() {
                 str += "<tr><td colspan=5 style='text-align:center;'><b>L1 Package</b></td>";
                 strExcel += "<tr><td colspan=5 ><b>L1 Package</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
-                    if (data[0].vendorNames[k].seqno != 0) {
+                    if (data[0].vendorNames[k].seqNo != 0) {
                         RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                         str += "<td>&nbsp;</td><td id=withoutGSTNotL1RankRA" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withoutGSTL1RankRA" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                         strExcel += "<td>&nbsp;</td><td id=withoutGSTNotL1RankRAExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withoutGSTL1RankRAExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -382,9 +388,9 @@ function fetchrfqcomprative() {
                     strExcel += "<td>SrNo</td><td colspan=4><b>Other Commercial Terms</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                        if (data[0].vendorNames[k].seqno != '0') {
+                        if (data[0].vendorNames[k].seqNo != '0') {
 
-                            str += "<td colspan=4 style='text-align:center;'><a href=eRFQReport.html?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + data[0].vendorNames[k].VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=" + $("#ddlrfqVersion option:selected").text().replace(' ', '%20') + "    target='_blank' style='color:#2474f6; text-decoration:underline;'><b>" + data[0].vendorNames[k].vName + "<b></a></td>";
+                            str += "<td colspan=4 style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[k].vendorID + "'\,\'" + "99" + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'><b>" + data[0].vendorNames[k].vName + "<b></a></td>";
                             strExcel += "<td colspan=4 ><b>" + data[0].vendorNames[k].vName; +"</b></td>";
 
                         }
@@ -768,8 +774,10 @@ function fetchReguestforQuotationDetails() {
             $('#tbldetailsExcel > tbody').empty();
         
             if (RFQData.length > 0) {
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+                let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
+                jQuery('#RFQSubject').text(_cleanStringSub)
+                jQuery('#RFQDescription').html(_cleanStringDesc)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
                 jQuery('#refno').html(RFQData[0].general[0].rfqReference)
@@ -854,3 +862,9 @@ $('#btnPDF').click(function () {
     win.focus();
 
 })
+
+sessionStorage.setItem("RFQVersionId", "0")
+function getSummary(vendorid, version) {
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=Final Version" )
+    window.open("eRFQReport.html?param=" + encrypdata, "_blank")
+}

@@ -400,7 +400,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
         // },1000)
 
     }
-
+ 
     _Bidtype = bidtype;
 
     if (bidtype == 'VQ' || bidtype == 'RFQ' || bidtype == 'RFI' || bidtype == 'eRFQ') {
@@ -550,7 +550,7 @@ function fetchReguestforQuotationDetailseRFQ() {
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('.rfqtc').show();
             jQuery('.bidtc').hide();
-
+            jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("hddnRFQID"));
             //abheedev
             $('#uniform-chkIsAccepted').find("span").removeClass('checked');
             $('#btnContinue').attr("disabled", true);
@@ -559,7 +559,7 @@ function fetchReguestforQuotationDetailseRFQ() {
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(_cleanStringDesc)
-            jQuery('#RFQID').text(RFQData[0].general[0].rfqId)
+           
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition)
