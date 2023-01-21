@@ -518,7 +518,7 @@ var displayForS = "";
 
 
 function fetchBidHeaderDetails(bidId) {
-
+   
     var tncAttachment = '';
 
     var anyotherAttachment = '';
@@ -550,7 +550,7 @@ function fetchBidHeaderDetails(bidId) {
         success: function (data, status, jqXHR) {
 
 
-
+           
             if (data.length == 1) {
                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
                 let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
@@ -772,9 +772,9 @@ function fetchVendorDetails() {
         success: function (data, status, jqXHR) {
 
 
-
             if (data.length == 1) {
-
+                let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
+                let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
 
 
                 $('#tblParticipantsService').show();
@@ -787,9 +787,9 @@ function fetchVendorDetails() {
 
                 jQuery("label#lblitem1").text(data[0].bidFor);
 
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
+                jQuery("#lblbidsubject").text(_cleanStringSub);
 
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidDetails").text(_cleanStringDet);
 
                 jQuery("#lblbiddate").text(fnConverToLocalTime(data[0].bidDate));
 

@@ -109,3 +109,10 @@
     font-size: 14px !important;
 }
 
+.borderpdf td {
+    border: 1px solid black !important;
+    border-collapse: collapse !important;
+}
+
+
+

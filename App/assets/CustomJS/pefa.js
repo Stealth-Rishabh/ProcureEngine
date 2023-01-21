@@ -749,11 +749,11 @@ var FormWizard = function () {
                     },
                     txttargetprice: {
                         numberWithComma: true,
-                        maxlength: 10
+                        maxlength: 14
                     },
                     txtlastinvoiceprice: {
                         numberWithComma: true,
-                        maxlength: 10
+                        maxlength: 14
                     },
                     txtStartingPrice: {
                         required: true,
@@ -782,7 +782,13 @@ var FormWizard = function () {
 
                         minlength: jQuery.validator.format("Please select at least one option")
 
-                    }
+                    },
+                    txtlastinvoiceprice: {
+                        maxlength:"please enter no more than 10 digit"
+                    },
+                    txttargetprice: {
+                        maxlength: "please enter no more than 10 digit"
+                    },
 
                 },
 
