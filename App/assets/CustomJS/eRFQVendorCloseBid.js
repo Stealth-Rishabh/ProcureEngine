@@ -1118,11 +1118,10 @@ function Dateandtimevalidate(StartDT, tocheckdt) {
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
-
     var Tab1Data = {
         "BidDate": ST
     }
-    console.log(JSON.stringify(Tab1Data))
+   // console.log(JSON.stringify(Tab1Data))
 
     jQuery.ajax({
         type: "POST",
@@ -1130,6 +1129,7 @@ function Dateandtimevalidate(StartDT, tocheckdt) {
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         data: JSON.stringify(Tab1Data),
         dataType: "json",

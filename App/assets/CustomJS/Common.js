@@ -199,7 +199,6 @@ function onlyNumberKey(evt) {
 }
 function callPagejs(pagejs) {
 
-
     var js = [];
     js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')

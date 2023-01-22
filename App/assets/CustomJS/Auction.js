@@ -5,6 +5,7 @@ function logoutFunction() {
     sessionStorage.setItem("APIPath", 'http://localhost:51739/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
+
 /*function handleDateTimepicker() {
     if (jQuery().datepicker) {
         $('.date-picker').datepicker({
@@ -906,7 +907,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
-
+  
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',

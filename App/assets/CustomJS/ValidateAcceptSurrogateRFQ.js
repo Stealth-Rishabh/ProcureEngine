@@ -35,9 +35,12 @@ function fetchReguestforQuotationDetailseRFQ() {
             sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
             sessionStorage.setItem('hddnRFQRFIID', RFQID);
             sessionStorage.setItem('CustomerID', data[0].customerID);
-            var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-', ''));
-            var currentTime = new Date();
-            if (EndDate > currentTime) {
+            //var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-', ''));
+           // var currentTime = new Date();
+           // if (EndDate > currentTime) {
+
+            //** check end Date in valid or not
+            Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
                 jQuery('#RFQSubject').text(data[0].rfqSubject)
                 jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
 
@@ -54,8 +57,54 @@ function fetchReguestforQuotationDetailseRFQ() {
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
                 jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition);
-
                 jQuery('#TermCondition').html(data[0].rfqTermandCondition);
+
+             /*  }
+                else {
+                    bootbox.alert("This RFQ has already expired !!!", function () {
+                        //   $('.page-container').hide();
+                        $('#btnpassword').attr('disabled', 'disabled')
+                        $('#txtpassword').attr('disabled', 'disabled')
+
+                    });
+                }*/
+
+
+        }
+    });
+    jQuery.unblockUI();
+}
+function Dateandtimevalidate(StartDT) {
+
+    var StartDT = StartDT.replace('-', '');
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+    var Tab1Data = {
+        "BidDate": ST
+    }
+    //console.log(JSON.stringify(Tab1Data))
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        async: false,
+        crossDomain: true,
+        data: JSON.stringify(Tab1Data),
+        dataType: "json",
+        success: function (data) {
+            if (data == "1") {
+                $('#btnpassword').removeAttr('disabled');
+                $('#txtpassword').removeAttr('disabled');
             }
             else {
                 bootbox.alert("This RFQ has already expired !!!", function () {
@@ -65,11 +114,23 @@ function fetchReguestforQuotationDetailseRFQ() {
 
                 });
             }
+        },
+        error: function () {
 
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                bootbox.alert("you have some error.Please try agian.");
+            }
+            jQuery.unblockUI();
+            return false;
 
         }
+
     });
-    jQuery.unblockUI();
+
 }
 
 //abheedev bug 381 start

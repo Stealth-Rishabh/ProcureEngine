@@ -48,7 +48,7 @@ if (window.location.search) {
 
     $('#hdnRfqID').val(RFQID);
 
-    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ');
+    var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ').replace(/%2F/g, '/');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
@@ -117,7 +117,15 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
+    if ($('#hdnRfqID').val() == "432") {
+        $('#tblRFQComprativeBoq').show();
+        $('#tblRFQComprative').hide();
 
+    }
+    else {
+        $('#tblRFQComprativeBoq').hide();
+        $('#tblRFQComprative').show();
+    }
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -144,19 +152,15 @@ function fetchrfqcomprative() {
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
-                if (bidopeningdate != null) {
-                    var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-                    if (_RFQOpenDate <= _CurrentDate) {
-                        if (_openQuotes == 'Y') {
-                            ShowPrice = 'Y';
-                            $('#btnPDF').show()
-                        }
-                    }
+                if (_openQuotes == 'Y') {
+                    ShowPrice = 'Y';
+                    $('#btnPDF').show()
                 }
                 else {
                     ShowPrice = 'N';
                     $('#btnPDF').hide()
                 }
+
             }
             else {
                 ShowPrice = 'Y';
@@ -363,14 +367,14 @@ function fetchrfqcomprative() {
                                         //abheedev backlog 335 end
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                        strExcel += "<td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
                                         }
                                         else {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(data[0].quotesDetails[j].unitRate) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithGST) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                         }
                                         //abheedev backlog 335 end part 2
@@ -810,7 +814,7 @@ function fetchrfqcomprative() {
                     t = k;
 
                 }
-            if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+                if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                     strQ += "<td>After All RFQ Responses</td>"
                     //abheedev bug 349 part2  start
                     strQ += '<td colspan=' + (t + 4) + '><a href="javascript:;" class="btn btn-xs yellow" id=btn_techmapaaprover onclick="fnForwardforAllvendorTechnical()"> Technical Approval</a></td>';

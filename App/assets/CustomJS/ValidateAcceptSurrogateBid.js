@@ -170,6 +170,7 @@ function Dateandtimevalidate(StartDT) {
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         data: JSON.stringify(Tab1Data),
         dataType: "json",
