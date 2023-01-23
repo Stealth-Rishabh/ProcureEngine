@@ -759,4 +759,62 @@ function _base64ToArrayBuffer(base64) {
     return bytes.buffer;
 }
 
+//Check JWT Validity
+function isAuthenticated() {
+    var token = sessionStorage.getItem("Token");
+    var refreshToken = sessionStorage.getItem("RefreshToken");
+    var isValid = true;
+    var ClaimsToken = {
+        "AccessToken": token,
+        "RefreshToken": refreshToken
 
+    }
+    var urlAc = sessionStorage.getItem("APIPath") + "User/refresh";
+    try {
+
+        //decode(token);
+        //const { exp } = decode(refreshToken);
+        //if (Date.now() >= exp * 1000) {
+        if (isTokenExpired(token)) {
+            
+            jQuery.ajax({
+                url: urlAc,
+                data: JSON.stringify(ClaimsToken),
+                type: "POST",
+                async: false,
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                contentType: "application/json",
+                success: function (data) {
+                    sessionStorage.setItem("Token", data.tokenString.accessToken)
+                    sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                    isValid = true
+                },
+                error: function (xhr, status, error) {
+
+                    isValid = false;
+                }
+            });
+            return isValid;
+        }
+    } catch (err) {
+        return false;
+    }
+    return isValid;
+}
+
+function isTokenExpired(token) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split("")
+            .map(function (c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+    );
+
+    const { exp } = JSON.parse(jsonPayload);
+    const expired = Date.now() >= exp * 1000
+    return expired
+}
