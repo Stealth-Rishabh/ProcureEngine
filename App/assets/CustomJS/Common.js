@@ -790,13 +790,14 @@ function isAuthenticated() {
                     isValid = true
                 },
                 error: function (xhr, status, error) {
-
+                    error401Messagebox(error.Message);
                     isValid = false;
                 }
             });
             return isValid;
         }
     } catch (err) {
+        error401Messagebox(err.Message);
         return false;
     }
     return isValid;
