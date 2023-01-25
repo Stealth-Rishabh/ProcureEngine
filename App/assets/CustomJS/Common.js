@@ -769,7 +769,7 @@ function isAuthenticated() {
         "RefreshToken": refreshToken
 
     }
-    var urlAc = sessionStorage.getItem("APIPath") + "User/refresh";
+    var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
     try {
 
         //decode(token);
@@ -785,8 +785,8 @@ function isAuthenticated() {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
-                    sessionStorage.setItem("Token", data.tokenString.accessToken)
-                    sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                    sessionStorage.setItem("Token", data.accessToken)
+                    sessionStorage.setItem("RefreshToken", data.refreshToken);
                     isValid = true
                 },
                 error: function (xhr, status, error) {
