@@ -558,7 +558,7 @@ function fetchBidSummaryVendorScrap() {
            
             jQuery("#tblParticipantsVender").empty();
             if (_isBidStarted == false) {
-                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Bid Start Price (" + $('#lblcurrency').text() + ")</th></thead>");
+                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Start Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
 
                 for (var i = 0; i < data.length; i++) {
                     _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
@@ -568,7 +568,7 @@ function fetchBidSummaryVendorScrap() {
             } else {
                 if (data.length > 0) {
                     var TotalBidValue = '';
-                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th> Status</th><th>Bid Value</th><th>Enter_Quote</th><th>Action</th></thead>");
+                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Start Unit Price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th> Status</th><th>Bid Value</th><th>Enter_Quote</th><th>Action</th></thead>");
                     for (var i = 0; i < data.length; i++) {
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].mqQuotedPrice);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
@@ -760,7 +760,7 @@ function InsUpdQuoteScrap(rowID) {
     else if (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) < parseFloat(($('#ceilingprice' + i).text())) && $('#CP' + i).is(":visible")) {
 
         $('#spanamount' + i).removeClass('hide')
-        $('#spanamount' + i).text('Amount should not be less than Bid start price')
+        $('#spanamount' + i).text('Amount should not be less than Start Unit Price')
         return false
     }
     else if (jQuery("#H1Price" + i).text() != "" && jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {

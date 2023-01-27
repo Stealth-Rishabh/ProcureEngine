@@ -1177,11 +1177,11 @@ function fetchallexportdetails() {
                 if ($('#hdnClosingval').val() == "S") {
                     $(".staggered-item").show();
 
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Destination Port</th><th>Remarks</th><th>TargetRate</th><th>Quantity</th><th>Bid start price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Destination Port</th><th>Remarks</th><th>TargetRate</th><th>Quantity</th><th>Start Unit Price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
                 }
                 else {
 
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Destination Port</th><th>Remarks</th><th>TargetRate</th><th>Quantity</th><th>Bid start price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Destination Port</th><th>Remarks</th><th>TargetRate</th><th>Quantity</th><th>Start Unit Price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th></tr></thead>");
                 }
 
                 for (var i = 0; i < BidData[0].BidSeaExportDetails.length; i++) {
