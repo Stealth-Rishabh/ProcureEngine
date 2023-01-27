@@ -957,7 +957,7 @@ function fetchBidSummaryVendorproduct() {
                     jQuery("#tblParticipantsService").hide();
                     jQuery("#tblParticipantsServiceBeforeStartBid").show();
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
-                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid Unit price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Unit_uote</th><th class=hide>Action</th><th>Remarks</th></thead>");
+                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Start Unit price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Unit_uote</th><th class=hide>Action</th><th>Remarks</th></thead>");
                     for (var i = 0; i < data.length; i++) {
 
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide><span>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
@@ -974,7 +974,7 @@ function fetchBidSummaryVendorproduct() {
                     sessionStorage.setItem('BidClosingType', data[0].bidClosingType)
 
                     if (data[0].bidClosingType == 'A') {
-                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid Unit price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th><th>Enter_Unit_quote</th><th>Action</th></thead>");
+                        jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Start Unit price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th><th>Enter_Unit_quote</th><th>Action</th></thead>");
                         for (var i = 0; i < data.length; i++) {
                         
                             TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lqQuotedPrice);
@@ -1227,7 +1227,7 @@ function InsUpdQuoteSeaExport(index) {
     else if ((parseFloat(removeThousandSeperator($('#ceilingprice' + index).text())) < parseFloat(removeThousandSeperator($('#txtquote' + index).val()))) && $('#ceilingprice' + index).is(":visible")) {
 
         $('#spanamount' + index).removeClass('hide')
-        $('#spanamount' + index).text('Amount should be less than Bid Unit price')
+        $('#spanamount' + index).text('Amount should be less than Start Unit price')
 
         return false
 

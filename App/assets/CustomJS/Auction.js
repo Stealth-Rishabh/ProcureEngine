@@ -364,7 +364,11 @@ function thousands_Sep_Text(num) {
     return res;
 }*/
 function thousands_separators(num) {
-    str = num.toLocaleString(sessionStorage.getItem("culturecode"));
+    
+    let str = "";
+    if (num != null && num != undefined) {
+        str = num.toLocaleString(sessionStorage.getItem("culturecode"));
+    }
     return str;
 }
 
