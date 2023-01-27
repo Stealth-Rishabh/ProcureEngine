@@ -285,17 +285,13 @@ function fetchCountry() {
                 }
 
                 $("#ddlCountry").val('111').trigger("change");
-
                 $("#ddlCountryCd").val('111');
                 $("#ddlCountryCdPhone").val('111');
-
-
-
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
             }
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -309,7 +305,7 @@ function fetchCountry() {
             return false;
             jQuery.unblockUI();
         }
-
+       
     });
 
     jQuery.ajax({

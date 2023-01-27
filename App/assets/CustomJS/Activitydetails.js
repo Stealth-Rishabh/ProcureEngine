@@ -29,10 +29,10 @@ jQuery(document).ready(function () {
     App.init();
     Tasks.initDashboardWidget();
 
-    /* if (sessionStorage.getItem('UserType') == 'E') {
+     if (sessionStorage.getItem('UserType') == 'E') {
          fetchMenuItemsFromSession(0, 0);
  
-     }*/
+     }
 
     fetchDashboardData();
     handleChangePasword();
