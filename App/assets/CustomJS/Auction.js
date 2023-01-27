@@ -163,8 +163,8 @@ var decodeEntities = (function () {
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {
         var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
+        //for (; p > 0 && str[p] != ' '; p--) {
+        //}
         if (p > 0) {
             var left = str.substring(0, p);
             var right = str.substring(p + 1);

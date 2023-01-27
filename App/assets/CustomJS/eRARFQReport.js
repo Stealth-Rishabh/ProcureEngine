@@ -121,9 +121,9 @@ function fetchrfqcomprative() {
                         strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName + "</th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName + "</th>";
 
-                    }               
-                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName +"</th>";
-                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName +"</th>";
+                    }
+                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName + "</th>";
+                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName + "</th>";
 
 
                 }
@@ -191,7 +191,7 @@ function fetchrfqcomprative() {
                         strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
 
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
-                            VendorAmountNoTax = data[0].quotesDetails[j].lowestPriceValue * data[0].quotesDetails[j].quantity
+                            VendorAmountNoTax = data[0].quotesDetails[j].bidFinalPrice * data[0].quotesDetails[j].quantity
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
                                 x = x + 1;
 
@@ -199,24 +199,24 @@ function fetchrfqcomprative() {
 
                                     if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].bidFinalPrice + "</td><td>" + data[0].quotesDetails[j].withGSTBidValue + "</td>";
-                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + " >" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' style='color: blue!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].lowestPriceValue) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";// UnitRate
+                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + " >" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' style='color: blue!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].bidFinalPrice) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";// UnitRate
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].bidFinalPrice + "</td><td>" + data[0].quotesDetails[j].withGSTBidValue + "</td>";
-                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].lowestPriceValue) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";
+                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].bidFinalPrice) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].bidFinalPrice + "</td><td>" + data[0].quotesDetails[j].withGSTBidValue + "</td>";
-                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'  style='color: red!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].lowestPriceValue) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + " >" + thousands_separators(VendorAmountNoTax) + "</td>";
+                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right'  style='color: red!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].bidFinalPrice) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + " >" + thousands_separators(VendorAmountNoTax) + "</td>";
 
                                     }
 
 
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + data[0].quotesDetails[j].initialQuotewithoutGST + "</td><td>" + data[0].quotesDetails[j].rfqVendorPricewithoutGST + "</td><td>" + data[0].quotesDetails[j].bidFinalPrice + "</td><td>" + data[0].quotesDetails[j].withGSTBidValue + "</td>";
-                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + " >" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' style='color: blue!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].lowestPriceValue) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";
+                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators(data[0].quotesDetails[j].initialQuotewithoutGST) + "</td><td class='text-right' id=unitrate" + i + x + " >" + thousands_separators(data[0].quotesDetails[j].rfqVendorPricewithoutGST) + "</td><td class='VendorPriceNoTax text-right' style='color: blue!important;' id=VendorPriceNoTax" + i + x + ">" + thousands_separators(data[0].quotesDetails[j].bidFinalPrice) + "</td><td class='VendorAmountNoTax  text-right' id=VendorAmountNoTax" + i + x + ">" + thousands_separators(VendorAmountNoTax) + "</td>";
 
                                     }
                                     else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
@@ -861,8 +861,9 @@ $('#btnPDF').click(function () {
 
 })
 
-sessionStorage.setItem("RFQVersionId", "0")
+//sessionStorage.setItem("RFQVersionId", "0")
 function getSummary(vendorid, version) {
-    var encrypdata = fnencrypt("RFQID=" + RFQID + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=Final Version" )
+    sessionStorage.setItem("RFQVersionId", version)
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=Final Version")
     window.open("eRFQReport.html?param=" + encrypdata, "_blank")
 }
