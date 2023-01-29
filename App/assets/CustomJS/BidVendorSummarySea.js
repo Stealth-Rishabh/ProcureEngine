@@ -676,10 +676,12 @@ function fnTimeUpdate() {
         "UserID": sessionStorage.getItem('UserID')
 
     }
-    connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
+    setTimeout(function () {
+        connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
 
-    });
+        });
+    }, 1000);
     jQuery.unblockUI();
 }
 
@@ -1757,14 +1759,16 @@ function fnpauseaction(index, seid, sno) {
         "BidID": parseInt(sessionStorage.getItem("BidID")),
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": parseInt(seid),
-        "BidDate": _bidDate,
+        //  "BidDate": _bidDate,
         "Action": $('#btnpause' + index).text(),
         "UserID": sessionStorage.getItem('UserID')
     }
-    connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
-        return console.error(err.toString());
+    setTimeout(function () {
+        connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
 
-    });
+        });
+    }, 1000)
     connection.on("refreshBidStatusAfterPause", function (data) {
         fnbidpause();
         $('#pauseauction').modal('hide');
@@ -2566,9 +2570,11 @@ function sendChatMsgs() {
         + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
         + '</div>'
         + '</div>');
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnVendorConnection').val()).catch(function (err) {
-        return console.error(err.toString());
-    });
+    setTimeout(function () {
+        connection.invoke("SendMessage", JSON.stringify(data), $('#hddnVendorConnection').val()).catch(function (err) {
+            return console.error(err.toString());
+        });
+    }, 1000);
 
     $("#txtChatMsg").val('');
 }
@@ -2591,10 +2597,12 @@ function sendBroadCastChatMsgs() {
         + '<span class="body" style="color: #c3c3c3;">' + $("#txtBroadcastMsg").val() + '</span>'
         + '</div>'
         + '</div>');
-    connection.invoke("SendMessageToGroup", JSON.stringify(data)).catch(function (err) {
-        return console.error(err.toString());
+    setTimeout(function () {
+        connection.invoke("SendMessageToGroup", JSON.stringify(data)).catch(function (err) {
+            return console.error(err.toString());
 
-    });
+        });
+    }, 1000);
     $("#txtBroadcastMsg").val('')
 
 }
@@ -2824,8 +2832,6 @@ function FetchRecomendedVendor(bidid) {
                 $('#tblapprovalprocess').append('<tr><td colspan="15" style="text-align: center; color: Red">No record found</td></tr>')
             }
 
-           
-
         },
         error: function (xhr, status, error) {
 
@@ -2887,7 +2893,6 @@ function ForwardBid(bidid, bidtypeid, bidforid) {
     });
 }
 function ApprovalApp() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorid = 0;
     if (jQuery("#ddlVendors option:selected").val() != undefined) {
@@ -2906,7 +2911,7 @@ function ApprovalApp() {
     };
 
     //alert(JSON.stringify(approvalbyapp))
-    console.log(JSON.stringify(approvalbyapp))
+    //console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ApprovalAir/ApprovalApp",
@@ -2938,7 +2943,6 @@ function ApprovalApp() {
     });
 }
 function ApprovalAdmin() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorid = 0;
     if (jQuery("#ddlVendorsAdmin option:selected").val() != null && jQuery("#ddlVendorsAdmin option:selected").val() != "" && jQuery("#ddlVendorsAdmin option:selected").val() != undefined) {
@@ -3314,7 +3318,6 @@ function fetchGraphData(itemId) {
     graphData = [];
 
     var _date;
-   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -3330,10 +3333,9 @@ function fetchGraphData(itemId) {
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
-                
                     _date = new Date(data[i].submissionTime);
                     _date = fnConverToLocalTimeWithSeconds(_date);
-                   
+
                     //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                     $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
                 }
@@ -3352,7 +3354,7 @@ function fetchGraphData(itemId) {
         }
     }).done(function () {
         $("#graphModalLine").modal('show');
-       
+
         linegraphsforItems(itemId)
     });
 }
@@ -3411,11 +3413,13 @@ function linegraphsforItems(itemId) {
             if (data[0].submissionTime.length > 0) {
 
                 for (var x = 0; x < data[0].submissionTime.length; x++) {
-                    
 
-                  
-                    graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
-                   
+
+                    graphtime.push(fnConverToLocalTimeWithSeconds(data[0].submissionTime[x].subTime));
+
+
+                    //  graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
+
                 }
 
             }
@@ -3480,15 +3484,16 @@ function linegraphsforItems(itemId) {
                     fontSize: '15px',
 
                 },
-            
-            },            
+
+            },
+
             xAxis: {
 
                 title: {
                     text: 'Time'
                 },
 
-                categories:graphtime//,'12:42','15:14','15:14','15:14','15:57']//graphtime
+                categories: graphtime//,'12:42','15:14','15:14','15:14','15:57']//graphtime
 
 
             },
@@ -3506,8 +3511,8 @@ function linegraphsforItems(itemId) {
             credits: {
                 enabled: false
             },
-            
-            
+
+
 
         });
 
@@ -3679,19 +3684,21 @@ function deleteRAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
+    setTimeout(function () {
+        connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    });
+        });
+    }, 1000);
     connection.on("refreshRAQuotes", function (data) {
         fetchBidSummaryDetails(BidID, BidForID)
         successremovequot.show();
@@ -3725,20 +3732,21 @@ function deleteCoalquote() {
 
     }
     //console.log(JSON.stringify(QuoteProduct))
+    setTimeout(function () {
+        connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
-
-    });
+        });
+    }, 1000);
     connection.on("refreshCAQuotes", function (data) {
 
         fetchBidSummaryDetails(BidID, BidForID)
@@ -3772,20 +3780,22 @@ function deletePEFAquote() {
 
     }
     //console.log(JSON.stringify(QuoteProduct))
-    connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+    setTimeout(function () {
+        connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
 
-        //return console.error(err.toString());
-        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-        if (xhr.status == 401) {
-            error401Messagebox(err.Message);
-        }
-        else {
-            fnErrorMessageText('spandanger', '');
-        }
-        jQuery.unblockUI();
-        return false;
+            //return console.error(err.toString());
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
 
-    });
+        });
+    }, 1000);
     connection.on("refreshPEFAQuotes", function (data) {
 
         fetchBidSummaryDetails(BidID, BidForID)

@@ -855,7 +855,7 @@ function fnsaveAttachmentsquestions() {
     var i = 1;
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
+
     if (validateSubmit) {
         $("#tblAttachmentsresponse> tbody > tr").each(function (index) {
 
@@ -931,7 +931,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
     validateSubmit = false;
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (validateSubmit) {
         var Tab2data = {
@@ -1118,10 +1118,11 @@ function Dateandtimevalidate(StartDT, tocheckdt) {
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
         "BidDate": ST
     }
-   // console.log(JSON.stringify(Tab1Data))
+    //console.log(JSON.stringify(Tab1Data))
 
     jQuery.ajax({
         type: "POST",
@@ -1469,8 +1470,8 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
-    
+
+
     if (validateSubmit) {
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();
@@ -1599,7 +1600,7 @@ function saveQuotation() {
 
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-    
+
     if (validateSubmit) {
         $("#tblServicesProduct > tbody > tr").not(':last').each(function () {
             var this_row = $(this);
@@ -1746,9 +1747,10 @@ function fnReplicateToAllItems() {
     PricewithoutGST = 0;
     Price = 0;
     basicprice = 0;
-   // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
+    // var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
-   
+
+
     if (validateSubmit) {
         $('#loader-msg').html('Processing. Please Wait...!');
         $('.progress-form').show();

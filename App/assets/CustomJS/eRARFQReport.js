@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
-    callPagejs('eRARFQReport.js');
     Pageloaded();
-    setInterval(function () { Pageloaded() }, 15000);
+    setInterval(function () { Pageloaded() }, 7000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
             window.location = sessionStorage.getItem('MainUrl');

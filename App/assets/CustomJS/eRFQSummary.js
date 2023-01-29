@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-  
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -236,16 +235,20 @@ function fetchRFQVendorSummary() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            
+          
 
             jQuery("#tblVendorSummary").empty();
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             //Sid RFQ Stages
             jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
-
+               
+                let _subject = "";
                 for (var i = 0; i < BidData.length; i++) {
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
+                   
+                    _subject = StringDecodingMechanism(BidData[i].rfqSubject)
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
                     str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
@@ -339,8 +342,9 @@ function fetchRFQVendorSummary() {
         }
     });
 }
-function getSummary(RFQID, subject) {
-    var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + (subject))
+function getSummary(RFQID,subject) {    
+    let _subject = StringDecodingMechanism(subject)
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + _subject)
     if (sessionStorage.getItem("CustomerID") != 32) {
 
         window.open("eRFQAnalysis.html?param=" + encrypdata, "_blank")
@@ -412,11 +416,11 @@ function fetchBidVendorSummaryDetail() {
             jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
-
-
+                let _subject = "";
+              
                 for (var i = 0; i < BidData.length; i++) {
-
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
+                    _subject = StringDecodingMechanism(BidData[i].rfqSubject)
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 

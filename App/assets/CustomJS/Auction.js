@@ -1,33 +1,11 @@
 function logoutFunction() {
     sessionStorage.clear();
     //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
-    //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
-    sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
+    //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 
-/*function handleDateTimepicker() {
-    if (jQuery().datepicker) {
-        $('.date-picker').datepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        $(".form_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        $(".form_advance_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-
-        $(".form_meridian_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
-    }
-}*/
 function error401Messagebox(error) {
 
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
@@ -229,43 +207,6 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     });
 
 }
-function CheckOnlineStatus(msg) {
-
-
-    var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
-    if (condition == "OFFLINE") {
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "positionClass": "toast-bottom-full-width",
-            "onclick": null,
-            "showDuration": "1000",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-
-        toastr.error('Please check your Internet Connection!', 'Opps, May be you are Offline!')
-
-
-    }
-    else {
-
-    }
-
-}
-function Pageloaded() {
-
-    CheckOnlineStatus("load");
-    document.body.addEventListener("offline", function () {
-
-        CheckOnlineStatus("offline")
-    }, false);
-    document.body.addEventListener("online", function () {
 
 function CheckOnlineStatus(msg) {
 
@@ -309,6 +250,13 @@ function Pageloaded() {
 
     }, false);
 }
+function getTimezoneOffset() {
+    function z(n) { return (n < 10 ? '0' : '') + n }
+    var offset = new Date().getTimezoneOffset();
+    var sign = offset < 0 ? '+' : '-';
+    offset = Math.abs(offset);
+    return sign + z(offset / 60 | 0) + z(offset % 60);
+}
 function BindNoExtensions(divid) {
 
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
@@ -334,7 +282,7 @@ $('#logOut_btn').click(function () {
 });
 //abheedev bug 605 16/12/2022
 function checkfilesize(fileid) {
-   
+
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -444,8 +392,18 @@ function thousands_separators_input(ele) {
     }
     ele.value = val;
 }
+function removeZero(ele) {
+
+    var val = ele.value;
+    if (val == "0") {
+        val = "";
+
+    }
+    ele.value = val;
+}
 
 function removeThousandSeperator(val) {
+    
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -491,7 +449,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -588,7 +546,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
 ////******* Chat functions*********/////////////////////////////
 
 function openForm() {
-    
+
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -632,7 +590,7 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
-    
+
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
@@ -655,7 +613,7 @@ function fetchBroadcastMsgs(userId, msgType) {
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                   
+
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
                             + '<div class="message">'
@@ -706,7 +664,6 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
@@ -728,7 +685,7 @@ function fetchvendor() {
 
                     }
                     else {
-                       
+
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
@@ -772,17 +729,18 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-   
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
+
     jQuery.ajax({
         type: "POSt",
         contentType: "application/json; charset=utf-8",
@@ -820,7 +778,7 @@ function fetchUserChats(userId, msgType) {
                             + '</div>');
                     }
                 }
-                
+
                 if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
                     openForm();
                 }
@@ -847,7 +805,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -903,11 +861,10 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-    
+
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
-  
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
@@ -995,7 +952,7 @@ function fnConverToLocalTime(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "short"
             })
         }
         else {
@@ -1010,7 +967,7 @@ function fnConverToLocalTime(dttime) {
     else return '..'
 }
 function fnSetLocalFromTimeZone(dateTime) {
-  
+
     var retDt = new Date();
     var userTz = sessionStorage.getItem('preferredtimezone');
     var systemDate = new Date();
@@ -1068,15 +1025,13 @@ function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
 }
 function fnConverToLocalTimeWithSeconds(dttime) {
- 
     if (dttime != null) {
         var theStDate = new Date(dttime)
-       
         theStDate = new Date(theStDate + ' UTC');
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "medium"
             })
         }
         else {
@@ -1092,6 +1047,10 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 }
 function keepTimeOnly(date) {
 
+    let timeOnly = new Date(date);
+    timeOnly = timeOnly.toTimeString().slice(0, 9)
+    return timeOnly;
+}
 function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
@@ -1192,25 +1151,6 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
     })
 }
 
-//function fnFileDeleteLocalfolder(path) {
-//    var formData = new window.FormData();
-//    formData.append("Path", path);
-//    $.ajax({
-//        url: 'ConfigureFileAttachment.ashx',
-//        data: formData,
-//        processData: false,
-//        contentType: false,
-//        asyc: false,
-//        type: 'POST',
-//        success: function (data) {
-//            return;
-//        },
-//        error: function () {
-//            console.log('Error in deletion in file from local path')
-//        }
-
-//    });
-//}
 
 function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1452,8 +1392,6 @@ function getUrlVarsURL(URLString) {
     }
     return vars;
 }
-
-
 var code = {
 
     encryptMessage: function (messageToencrypt, secretkey) {
@@ -1544,6 +1482,8 @@ function _base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 }
+
+
 var tableToExcelMultipleSheetwithoutColor = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
@@ -1875,7 +1815,7 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-   
+
     var returnStr = maliciousText;
     returnStr = returnStr.replaceAll('&lt;', '<');
     returnStr = returnStr.replaceAll('&gt;', '>');
@@ -1985,32 +1925,34 @@ function checkPasswordValidation(value) {
 }
 //common function
 function RegisterUser_fetchRegisterUser(docData) {
-  
+
     var data = docData;
     var dataToReturn = "";
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
-    (async () => {jQuery.ajax({
-        //type: "GET",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-           
-            if (data.length > 0) {
-                dataToReturn = data;
-                
-            }
-            else {
-                dataToReturn = '';
-            }
+    (async () => {
+        jQuery.ajax({
+            //type: "GET",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (data) {
+
+                if (data.length > 0) {
+                    dataToReturn = data;
+
+                }
+                else {
+                    dataToReturn = '';
+                }
 
             },
             error: function (xhr, status, error) {
+
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -2021,14 +1963,13 @@ function RegisterUser_fetchRegisterUser(docData) {
                 jQuery.unblockUI();
                 return false;
 
-        }
+            }
 
 
-    });
+        });
     })();
     return dataToReturn;
 }
-
 function fnGetCurrentPrefferedProfileDTTime() {
 
     var theStDate = new Date();
@@ -2046,5 +1987,20 @@ function fnGetCurrentPrefferedProfileDTTime() {
     }
     theStDate = theStDate.replace('at', '-');
     return theStDate;
+
+}
+
+function localecommaseperator(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
 }

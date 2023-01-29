@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-   
+
     Pageloaded();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -21,9 +21,10 @@ jQuery(document).ready(function () {
     }
     Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
     validateAppsubmitData();
-   
+
 
 });
+
 $("#btnExport").click(function (e) {
 
     var dt = new Date();
@@ -219,7 +220,7 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
-
+           
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
             var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
@@ -243,11 +244,17 @@ function fetchrfqcomprative() {
 
             }
             else {
-                if (bidopeningdate == null) {
-                    ShowPrice = 'N';
-
+                if (_openQuotes == 'Y') {
+                    ShowPrice = 'Y';
                 }
                 else {
+                    ShowPrice = 'N';
+                }
+                /*if (bidopeningdate == null) {
+                    ShowPrice = 'N';
+
+                }*/
+                /*else {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
@@ -264,7 +271,7 @@ function fetchrfqcomprative() {
                         ShowPrice = 'N';
 
                     }
-                }
+                }*/
             }
 
             sessionStorage.setItem('ShowPrice', ShowPrice);
@@ -1057,7 +1064,7 @@ function deletequesrow(rowid) {
 
     if (jQuery('#txtquestions> tbody > tr').length == 1 || queslength > 0) {
         $('#btnTechquery').attr('disabled', 'disabled');
-        
+
     }
     else {
         //$('#btnTechquery').removeAttr('disabled')
@@ -1104,12 +1111,12 @@ function submitTechnicalQuery() {
 
                     bootbox.alert("Approval can now be enabled after vendor response or query withdrawal .").on("shown.bs.modal", function (e) {
                         //setTimeout(function () {
-                       
+
                         $('#btnSubmitApp').removeClass('green').addClass('default')
                         $('#btnwithdraw').show()
                         //$('#btnmsz').removeClass('hide')
                         $("#RaiseQuery").modal('hide');
-                      
+
                         jQuery.unblockUI();
                         return true;
                         //}, 1000);
@@ -1931,10 +1938,10 @@ function fnFWDeRFQ() {
         dataType: "json",
         success: function (data) {
 
-          /*  bootbox.alert("Transaction Successful..", function () {
-                window.location = "index.html";
-                return false;
-            });*/
+            /*  bootbox.alert("Transaction Successful..", function () {
+                  window.location = "index.html";
+                  return false;
+              });*/
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -1962,7 +1969,7 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalApp() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     var chkstatus = 'T';
@@ -1995,11 +2002,11 @@ function ApprovalApp() {
             "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
             "ApprovalStatus": approvalstatus,
             "VendorID": parseInt(VID)
-           
+
 
         };
-        
-      //  console.log(JSON.stringify(approvalbyapp));
+
+        //  console.log(JSON.stringify(approvalbyapp));
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",

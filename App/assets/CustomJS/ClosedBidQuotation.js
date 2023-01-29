@@ -617,8 +617,6 @@ var FormWizard = function () {
 
 }();
 function Dateandtimevalidate(dttime, forDT) {
-
-
     var DTTime = new Date();
     DTTime = dttime.replace('-', '');
 
@@ -648,7 +646,6 @@ function Dateandtimevalidate(dttime, forDT) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
             if (forDT == "startdt") {
                 isvalidStartDt = data;
                 if (data == "1") {
@@ -664,7 +661,9 @@ function Dateandtimevalidate(dttime, forDT) {
                 isvalidEndDt = data;
                 //** End Date is Valid
                 if (data == "1") {
-                    Dateandtimevalidate($('#txtenddatettime').val(), 'bidopendt');
+                    if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != '') {
+                        Dateandtimevalidate($('#txtbidopendatetime').val(), 'bidopendt');
+                    }
                 }
             }
 
@@ -688,7 +687,7 @@ function Dateandtimevalidate(dttime, forDT) {
                 }
                 if ($('#txtbidopendatetime').val() != '') {
                     var BidOpenDate = new Date();
-                    BidOpenDate = $('#txtstartdatettime').val().replace('-', '');
+                    BidOpenDate = $('#txtbidopendatetime').val().replace('-', '');
 
                     bidopendate =
                         new Date(BidOpenDate.toLocaleString("en", {
@@ -836,20 +835,22 @@ function InsUpdRFQDEtailTab1() {
     }
     //______________________________________
     var StartDT = new Date();
+    let ST = null;
     if ($('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != "") {
         StartDT = $('#txtstartdatettime').val().replace('-', '');
-    }
-    else {
-        var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
-    }
-    let StTime =
-        new Date(StartDT.toLocaleString("en", {
-            timeZone: sessionStorage.getItem('preferredtimezone')
-        }));
+        let StTime =
+            new Date(StartDT.toLocaleString("en", {
+                timeZone: sessionStorage.getItem('preferredtimezone')
+            }));
 
-    ST = new String(StTime);
-    ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+        ST = new String(StTime);
+        ST = ST.substring(0, ST.indexOf("GMT"));
+        ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+    }
+    //else {
+    //    var StartDT = fnGetCurrentPrefferedProfileDTTime().replace('-', '');
+    //}
+
 
     var BidOpenDate = null;
     let BT = null;

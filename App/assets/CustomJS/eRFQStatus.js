@@ -234,7 +234,6 @@ function CancelRFIRFQ(MailPermit) {
 
 }
 function ViewReport() {
-    debugger;
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + ($('#rq_subject').text()) + "Type=");//encodeURIComponent
     if (sessionStorage.getItem('CustomerID') != "32") {
 
@@ -349,8 +348,6 @@ function ExtendDuration() {
         "ExtendedDateST": ST,// $("#txtextendDate").val(),
         "ExtendedBy": sessionStorage.getItem('UserID')
     }
-    //alert(JSON.stringify(RFQData));
-    console.log(JSON.stringify(RFQData))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

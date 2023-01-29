@@ -4,7 +4,6 @@ jQuery(document).ready(function () {
     $table.floatThead({
         position: 'fixed'
     });
-
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
 
@@ -39,7 +38,7 @@ var _rfqBidType = sessionStorage.getItem("RFQBIDType");
 var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
 if (window.location.search) {
-
+    
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
 
@@ -52,7 +51,7 @@ if (window.location.search) {
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
-
+    
     jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
     fetchReguestforQuotationDetails()
     fetchRFQApproverStatus(RFQID);
@@ -117,15 +116,7 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
-    if ($('#hdnRfqID').val() == "432") {
-        $('#tblRFQComprativeBoq').show();
-        $('#tblRFQComprative').hide();
 
-    }
-    else {
-        $('#tblRFQComprativeBoq').hide();
-        $('#tblRFQComprative').show();
-    }
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -160,7 +151,7 @@ function fetchrfqcomprative() {
                     ShowPrice = 'N';
                     $('#btnPDF').hide()
                 }
-
+                
             }
             else {
                 ShowPrice = 'Y';
@@ -322,7 +313,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class='text-right'>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + data[0].quotesDetails[i].itemDesc + "</td><td>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -814,7 +805,7 @@ function fetchrfqcomprative() {
                     t = k;
 
                 }
-                if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
+            if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                     strQ += "<td>After All RFQ Responses</td>"
                     //abheedev bug 349 part2  start
                     strQ += '<td colspan=' + (t + 4) + '><a href="javascript:;" class="btn btn-xs yellow" id=btn_techmapaaprover onclick="fnForwardforAllvendorTechnical()"> Technical Approval</a></td>';
