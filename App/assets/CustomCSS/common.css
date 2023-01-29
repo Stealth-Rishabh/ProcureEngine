@@ -148,6 +148,10 @@ input#file-excelparameter {
     position: fixed;
     top: -120px;
 }
+input#file-excelparameterB {
+    position: fixed;
+    top: -120px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
