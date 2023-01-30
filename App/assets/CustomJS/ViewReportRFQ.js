@@ -87,7 +87,7 @@ function fetchrfqcomprative(RFQID) {
 
                 //For Printing Header
                 //@abheedev bug349 start
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget price</th>"
                 //@abheedev bug349 end
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
 
