@@ -541,11 +541,12 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-            
+            let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
+            let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
             if (res.result.length > 0) {
                 $("#txtEventref").val(res.result[0].eventReftext);
-                $("#txtTitle").val(res.result[0].nfaSubject);
-                $("#txtNFADetail").val(res.result[0].nfaDescription);
+                $("#txtTitle").val(_cleanStringSub);
+                $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
                     GetEventRefData();
@@ -679,19 +680,20 @@ $("#txtEventref").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].refId != "0") {
-
+            let _cleanStringSub = StringDecodingMechanism(map[item].bidSubject);
+            let _cleanStringDet = StringDecodingMechanism(map[item].bidDetails);
             sessionStorage.setItem('hdnEventrefId', map[item].refId);
             sessionStorage.setItem('hdnEventForID', map[item].bidForID);
 
-            $('#txtTitle').val("NFA -" + map[item].bidSubject)
-            $('#txtNFADetail').val(map[item].bidDetails)
+            $('#txtTitle').val("NFA -" + _cleanStringSub)
+            $('#txtNFADetail').val(_cleanStringDet)
 
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
 
-        return item;
+        return StringDecodingMechanism(item);
     }
 });
 
