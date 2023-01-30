@@ -390,30 +390,34 @@ function thousands_separators_NonMadCol(ele) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     ele.value = res;
 }
-/*function thousands_separators_input(ele) {
+function thousands_separators_input(ele) {
+  
     var valArr, val = ele.value;
     val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
 
+    
     if (val != "") {
         valArr = val.split('.');
-        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(sessionStorage.getItem("culturecode"));
         val = valArr.join('.');
     }
     ele.value = val;
-}*/
-function thousands_separators_input(ele) {
-    var regex = /[^\d,]+/g
+}
+/*function thousands_separators_input(ele) {
+    var regex = /^[0-9,.]+$/g;
     var str = ele.value;
-    if ((regex.test(str))) {
+    if (!(regex.test(str))) {
         str = "";
         $(ele).val("")
     }
-    str = str.replaceAll(',', "")
+    str = str.replaceAll(',', "");
     if (str != "") {
         str = parseFloat(str);
     }
-    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
-}
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")));
+}*/
+
 
 function removeZero(ele) {
 
@@ -2013,7 +2017,7 @@ function fnGetCurrentPrefferedProfileDTTime() {
 
 }
 
-function localecommaseperator(ele) {
+/*function localecommaseperator(ele) {
     var regex = /[^\d,]+/g
     var str = ele.value;
     if ((regex.test(str))) {
@@ -2026,6 +2030,20 @@ function localecommaseperator(ele) {
     }
     $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
 
+}*/
+function localecommaseperator(ele) {
+
+    var valArr, val = ele.value;
+    val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
+
+    if (val != "") {
+        valArr = val.split('.');
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(sessionStorage.getItem("culturecode"));
+        val = valArr.join('.');
+    }
+    ele.value = val;
 }
 
 function localeseperator(ele) {
