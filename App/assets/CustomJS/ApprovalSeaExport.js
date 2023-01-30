@@ -16,6 +16,7 @@ jQuery(document).ready(function () {
         }
     });
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -608,7 +609,7 @@ function Fillhelp(App1) {
     }
 }
 function frmAzurePPCForm() {
-
+    var x = isAuthenticated();
     var i = 0;
     var AzurevendorDetails = [];
    
@@ -949,6 +950,7 @@ function DownloadFilePPC(aID) {
 }
 //**** Add Attachments will do correct after first publishment on AZure
 function addmoreattachments() {
+    var x = isAuthenticated();
     if (jQuery('#file1').val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Attach File Properly');
@@ -1064,6 +1066,7 @@ function fetchAttachments() {
     })
 }
 function fnRemoveAttachment(POID, deletionfor) {
+    var x = isAuthenticated();
     var Attachments = {
         "SrNo": parseInt(POID),
         "DeletionFor": deletionfor,
@@ -1176,6 +1179,7 @@ function deleteApprow(approwid) {
     }
 }
 function MapApprover() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblapprovers tr').length;

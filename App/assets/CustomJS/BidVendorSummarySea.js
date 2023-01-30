@@ -92,6 +92,7 @@ function fnToCheckUserIPaccess() {
             else {
                 $('.page-container').show();
                 Pageloaded()
+                var x = isAuthenticated();
                 fetchvendor();
                 if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                     window.location = sessionStorage.getItem('MainUrl');

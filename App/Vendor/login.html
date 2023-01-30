@@ -322,6 +322,7 @@
                 $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
             }
             Pageloaded()
+            var x = isAuthenticated();
             setInterval(function () { Pageloaded() }, 15000);
             sessionStorage.clear();
             App.init();

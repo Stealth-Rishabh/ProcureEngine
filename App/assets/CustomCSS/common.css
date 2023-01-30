@@ -1098,7 +1098,7 @@ tr.header {
    button{
        margin-bottom:4px !important;
    }
-    a {
+    div {
         /*overflow: hidden;*/
         text-overflow: ellipsis;
         white-space: nowrap;

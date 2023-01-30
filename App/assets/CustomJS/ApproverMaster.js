@@ -172,6 +172,7 @@ function validateApproverMaster() {
 
 };
 function SaveApproverMaster() {
+    var x = isAuthenticated();
     var p_orgId = $("#ddlPurchaseOrg option:selected").val();
     var p_groupId = $("#ddlPurchasegroup option:selected").val();
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
@@ -348,6 +349,7 @@ function validateNBADD() {
 }
 
 function AddWBApprovers() {
+    var x = isAuthenticated();
     if (validateWBADD()) {
         return false;
     }
@@ -379,6 +381,7 @@ function AddWBApprovers() {
     })
 };
 function AddOBApprovers() {
+    var x = isAuthenticated();
     if (validateOBADD()) {
         return false;
     }
@@ -410,6 +413,7 @@ function AddOBApprovers() {
     })
 };
 function AddNBApprovers() {
+    var x = isAuthenticated();
     if (validateNBADD()) {
         return false;
     }
@@ -557,7 +561,7 @@ function onEditClick(idx, checked) {
     jQuery.unblockUI();
 };
 function SaveUpdateData() {
-
+    var x = isAuthenticated();
     var url = "NFA/InsertUpdatePurchaseOrg";
     var idx = $("#hdnmodelOrgID").val();
     var Name = $("#txtmodelPurchaseOrg").val();

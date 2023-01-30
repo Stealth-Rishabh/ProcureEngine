@@ -1,6 +1,7 @@
 
 function onloadcalls() {
     Pageloaded();
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();

@@ -3,6 +3,7 @@ clearsession()
 //FROM HTML
 jQuery(document).ready(function () {
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
