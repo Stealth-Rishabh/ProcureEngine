@@ -102,17 +102,21 @@ function getTokenRedirect(request) {
    debugger;
     request.account = myMSALObj.getAccountByUsername(username);
     request.account.name='-3/5';
-    return myMSALObj.acquireTokenSilent(request)
-       .catch(error => {
-           console.error(error);
-           console.warn("silent token acquisition fails. acquiring token using popup");
-           if (error instanceof msal.InteractionRequiredAuthError) {
-               // fallback to interaction when silent call fails
-               return myMSALObj.acquireTokenRedirect(request);
-           } else {
-               console.error(error);   
-           }
-   });
+    //return myMSALObj.acquireTokenSilent(request)
+    return await myMSALObj.AcquireTokenSilent(scopes, accounts.FirstOrDefault())
+        .WithForceRefresh(true)
+        .ExecuteAsync();
+
+   //    .catch(error => {
+   //        console.error(error);
+   //        console.warn("silent token acquisition fails. acquiring token using popup");
+   //        if (error instanceof msal.InteractionRequiredAuthError) {
+   //            // fallback to interaction when silent call fails
+   //            return myMSALObj.acquireTokenRedirect(request);
+   //        } else {
+   //            console.error(error);   
+   //        }
+   //});
 }
  
 // Acquires and access token and then passes it to the API call
