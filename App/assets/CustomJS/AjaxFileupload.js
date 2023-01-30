@@ -24,6 +24,7 @@ jQuery.extend({
         return jQuery('#' + frameId).get(0);
     },
     createUploadForm: function (id, fileElementId, data) {
+        var x = isAuthenticated();
         //create form	
         var formId = 'jUploadForm' + id;
         var fileId = 'jUploadFile' + id;

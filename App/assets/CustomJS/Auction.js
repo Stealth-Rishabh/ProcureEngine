@@ -469,6 +469,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
+    var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,

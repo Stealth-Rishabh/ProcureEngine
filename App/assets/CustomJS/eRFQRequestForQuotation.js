@@ -6,7 +6,7 @@ jQuery(document).ready(function () {
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
     Pageloaded()
-
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');

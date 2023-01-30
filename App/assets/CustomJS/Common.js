@@ -770,8 +770,7 @@ function isAuthenticated() {
         //decode(token);
         //const { exp } = decode(refreshToken);
         //if (Date.now() >= exp * 1000) {
-        if (isTokenExpired(token)) {
-            
+        if (isTokenExpired(token)) {           
             jQuery.ajax({
                 url: urlAc,
                 data: JSON.stringify(ClaimsToken),

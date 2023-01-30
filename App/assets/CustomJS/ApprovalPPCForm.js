@@ -4,6 +4,7 @@ var PPCID = 0;
 $(document).ready(function () {
 
     Pageloaded()
+    var x = isAuthenticated();
     formvalidate();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -501,7 +502,7 @@ function BindApprovers() {
 
 
 function frmApprovalPPCForm(nfagroupid) {
-
+    var x = isAuthenticated();
     var validVendor = "T";
     var AzurevendorDetails = [];
     $("#tblvendorlist >tbody> tr").each(function (index) {
@@ -717,6 +718,7 @@ function bindPurchaseGroupDDL() {
 
 };
 function addmoreattachments() {
+    var x = isAuthenticated();
     if (jQuery('#file1').val() == "") {
         $('.alert-danger').show();
         $('#spandanger').html('Please Attach File Properly');
@@ -834,6 +836,7 @@ function fetchAttachments() {
     })
 }
 function fnRemoveAttachment(POID, deletionfor) {
+    var x = isAuthenticated();
     var Attachments = {
         "SrNo": parseInt(POID),
         "DeletionFor": deletionfor,

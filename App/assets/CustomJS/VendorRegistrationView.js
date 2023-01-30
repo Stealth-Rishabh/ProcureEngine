@@ -1,6 +1,7 @@
 
 jQuery(document).ready(function () {
     Pageloaded()
+    var x = isAuthenticated();
     Metronic.init();
     fetchCategorymaster1();
     $('#ddlTypeofProduct').select2({

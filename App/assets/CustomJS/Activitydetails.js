@@ -2,9 +2,9 @@ var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
-jQuery(document).ready(function () {
-
+jQuery(document).ready(function () {   
     Pageloaded()
+    var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
@@ -102,6 +102,7 @@ function handleChangePasword() {
 
 }
 function ChangePassword() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     debugger;
     var isSubmit = true;
@@ -217,6 +218,7 @@ function fnConfirmArchive(RFQID) {
 
 }
 function fnArchive(RFQID) {
+    var x = isAuthenticated();
     var Data = {
         "RFQID": parseInt(RFQID),
         "UserID": sessionStorage.getItem('UserID'),
