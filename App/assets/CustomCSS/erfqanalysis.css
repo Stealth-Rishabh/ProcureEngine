@@ -148,6 +148,7 @@ input#file-excelparameter {
     position: fixed;
     top: -120px;
 }
+
 input#file-excelparameterB {
     position: fixed;
     top: -120px;
@@ -1081,8 +1082,9 @@ tr.header {
     padding: 12px;
     animation: 0s ease 0s 1 normal none running none !important;
 }
-.colorwhite{
-    color:white !important;
+
+.colorwhite {
+    color: white !important;
 }
 
 .graphwidth {
@@ -1099,25 +1101,15 @@ tr.header {
 /*mobile specific css*/
 
 @media only screen and (max-width:900px) {
-   button{
-       margin-bottom:4px !important;
-   }
+    button {
+        margin-bottom: 4px !important;
+    }
 
-   
+
     div {
         display: block;
         word-wrap: break-word;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin:2px;        
+        margin-left:2px;
+        padding-bottom:2px;
     }
-    #divappendstatusbar {
-        margin-top: 16px !important;
-        overflow:initial;
-    }
-    label {
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-    
 }
