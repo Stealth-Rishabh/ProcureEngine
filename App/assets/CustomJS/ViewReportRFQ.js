@@ -5,16 +5,42 @@ function getCurrenttime() {
     $('#printed_on').html(postfix);
 }
 
+$(document).ready(function () {
+
+    getCurrenttime();
+    param = getUrlVars()["param"];
+    decryptedstring = fndecrypt(param);
+    RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
+    var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
+    var BidID = getUrlVarsURL(decryptedstring)["BidID"];
+    var Version = getUrlVarsURL(decryptedstring)["Version"];
+    $('#hdnRfqID').val(RFQID)
+    $('#hdnversion').val(Version)
+    fetchReguestforQuotationDetails(RFQID)
+    if (FromPage == "RASumm") {
+        fetchrfqcomprativeRA(RFQID, BidID)
+    }
+    else {
+        fetchrfqcomprative(RFQID)
+    }
+    fetchAttachments();
+    fetchApproverRemarks(RFQID);
+
+
+});
+
 var RFqsub = "";
 var Bidno;
 function fetchReguestforQuotationDetails(RFQID) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
@@ -32,7 +58,7 @@ function fetchReguestforQuotationDetails(RFQID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1229,6 +1255,7 @@ function fetchAttachments() {
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
@@ -1266,17 +1293,23 @@ function fetchAttachments() {
 }
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
+
 function saveAspdf() {
 
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
-    var pdf = new jsPDF('l', 'pt', 'a0');
+    // var pdf = new jsPDF('l', 'pt', 'a0');
+    var pdf = new jsPDF('p', 'pt', 'a0', true);
+
+    pdf.setFontSize(10);// optional
     var options = {
         pagesplit: true
     };
     var encrypdata;
+    // pdf.setLineWidth(2);
+    // pdf.rect(10, 20, 150, 75);
     pdf.addHTML(document.body, options, function () {
         pdf.save('ComprativeAnalysis.pdf');
-        window.close();
+        // window.close();
 
     });
 
@@ -1285,10 +1318,11 @@ function fetchApproverRemarks(RFQID) {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&RFQID=" + RFQID + "&ApprovalType=C",
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + RFQID + "&ApprovalType=C",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
@@ -1309,6 +1343,12 @@ function fetchApproverRemarks(RFQID) {
                 $('#tblapprovalprocess').hide();
                 jQuery.unblockUI();
             }
+            setTimeout(function () {
+
+                saveAspdf();
+                jQuery.unblockUI();
+
+            }, 2000);
 
         },
         error: function (xhr, status, error) {
