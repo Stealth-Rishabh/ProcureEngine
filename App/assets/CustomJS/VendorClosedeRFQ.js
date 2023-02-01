@@ -290,11 +290,20 @@ function fnsubmitQuery() {
             dataType: "json",
             success: function (data) {
                
-                bootbox.alert("Query's Response Submitted Successfully.", function () {
-                    window.location = 'VendorHome.html';
-                    jQuery.unblockUI();
+               
+                if (window.innerWidth <= 768) {
+                    bootbox.alert("Query's Response Submitted Successfully.").on("shown.bs.modal", setTimeout(function (e) {
+                        window.location = "index.html";
+                        return false;
+                    }, 2000));
+                }
+                else {
+                    bootbox.alert("Query's Response Submitted Successfully.", function () {
+                        window.location = 'VendorHome.html';
+                        jQuery.unblockUI();
 
-                });
+                    });
+                }
 
             },
             error: function (xhr, status, error) {

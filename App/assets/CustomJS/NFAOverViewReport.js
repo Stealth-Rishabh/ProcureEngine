@@ -1,5 +1,4 @@
 
-
 $(document).ready(function () {
     formvalidate()
     fetchregisterusers();
@@ -33,11 +32,9 @@ function formvalidate() {
         focusInvalid: false, // do not focus the last invalid input
 
         rules: {
-
-            /* ddlEventType: {
-                 required: true
-             }*/
-
+            ddlconfiguredby: {
+                required: true
+            }
         },
 
         messages: {

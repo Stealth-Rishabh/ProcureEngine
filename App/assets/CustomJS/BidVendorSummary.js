@@ -249,8 +249,10 @@ function formvalidate() {
 
             ddlBidtype: {
                 required: true
+            },
+            ddlconfiguredby: {
+                required: true
             }
-
         },
 
         messages: {
