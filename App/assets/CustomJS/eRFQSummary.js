@@ -114,6 +114,9 @@ function formvalidate() {
         focusInvalid: false, // do not focus the last invalid input
 
         rules: {
+            ddlconfiguredby: {
+                required: true
+            }
         },
 
         messages: {

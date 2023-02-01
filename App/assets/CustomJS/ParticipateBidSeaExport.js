@@ -141,8 +141,8 @@ connection.on("refreshColumnStatus", function (data) {
                     jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
                       
                         let TotalBidValue = '';
-                        TotalBidValue = removeThousandSeperator(parseFloat($("#quantity" + i).text())) * parseFloat(removeThousandSeperator(data[0].lowestQuotedPrice));
-                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                        TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator($("#quantity" + i).text()))) * parseFloat(removeThousandSeperator(data[0].lowestQuotedPrice));
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue : TotalBidValue;
                         if (data[0].seid == $('#seid' + i).text()) {
                             if (data[0].noOfExtension >= 1) {
                                 jQuery('#lblTimeLeft').css('color', 'red');
@@ -174,12 +174,13 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                             $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
-                            $("#totalbidvalue"+i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue.toFixed(2)) : thousands_separators(TotalBidValue))
+                            $("#totalbidvalue"+i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
 
 
                             $("#lblstatus" + i).html(data[0].vendorRank)
 
                             var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
+
 
                             $("#L1Price" + i).html(L1Quote)
 
@@ -979,7 +980,7 @@ function fetchBidSummaryVendorproduct() {
                         for (var i = 0; i < data.length; i++) {
                         
                             TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lqQuotedPrice);
-                            TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                            TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue : TotalBidValue;
                            
 
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
@@ -995,7 +996,7 @@ function fetchBidSummaryVendorproduct() {
 
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(IQuote))
 
-                            $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue.toFixed(2)) : thousands_separators(TotalBidValue))
+                            $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
 
                             $('#spanamount' + i).addClass('hide spanclass');
 
