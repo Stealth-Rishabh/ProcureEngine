@@ -117,7 +117,15 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
+    if ($('#hdnRfqID').val() == "432") {
+        $('#tblRFQComprativeBoq').show();
+        $('#tblRFQComprative').hide();
 
+    }
+    else {
+        $('#tblRFQComprativeBoq').hide();
+        $('#tblRFQComprative').show();
+    }
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
