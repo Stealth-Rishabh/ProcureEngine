@@ -305,8 +305,8 @@ function checkfilesize(fileid) {
     //if (size > 5242880)// checks the file more than 5 MB
     //{
 
-    if (fname.length > 70) {
-        $('.alert-danger').html('File Name should not be more than 70 charachters!')
+    if (fname.length > 200) {
+        $('.alert-danger').html('File Name should not be more than 200 charachters!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
         $('.alert-danger').fadeOut(5000);
