@@ -289,29 +289,31 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 });
 
 function sendChatMsgs() {
-    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
-    var data = {
-        "ChatMsg": _cleanString,
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-        "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+    if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
+        var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
+        var data = {
+            "ChatMsg": _cleanString,
+            "fromID": sessionStorage.getItem("UserID"),
+            "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
+            "msgType": 'S',
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
 
+        }
+        $("#chatList").append('<div class="post in">'
+            + '<div class="message">'
+            + '<span class="arrow"></span>'
+            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
+            + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
+            + '</div>'
+            + '</div>');
+
+        connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        $("#txtChatMsg").val('')
     }
-    $("#chatList").append('<div class="post in">'
-        + '<div class="message">'
-        + '<span class="arrow"></span>'
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
-        + '</div>'
-        + '</div>');
-
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
-        return console.error(err.toString());
-
-    });
-    $("#txtChatMsg").val('')
 }
 
 /////****** Chat END*****************/////
