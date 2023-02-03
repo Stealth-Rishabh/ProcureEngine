@@ -269,7 +269,7 @@ function fetchRFQVendorSummary() {
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
                 }
-
+          
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -287,10 +287,30 @@ function fetchRFQVendorSummary() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                       
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                         if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column >= 7 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
 
                         },
                         {
@@ -508,17 +528,29 @@ function fetchBidVendorSummaryDetail() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                    
                         {
                             extend: 'excelHtml5',
                             exportOptions: {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                        return column === 4 ?
-                                            data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
-                                        data.replace(/<br\s*\/?>/ig, "\r\n");
-                                        data;
+                                        if (column === 4) {
+                                            return column === 4 ? data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
+                                            data.replace(/<br\s*\/?>/ig, "\r\n");
+                                            data;
+                                        }
+                                        else if (column === 11 || column === 12 || column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 7 || (column >= 13 && column <= 15)) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
 
                                     }
 
@@ -710,11 +742,11 @@ function fetchBidVendorSummarySummarization() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 15, "<br/>\n");
-            var BidTP = stringDivider("RFQ Value at Target Price(TP)", 15, "<br/>\n");
-            var BidFinal = stringDivider("RFQ Value as per L1", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 45, "<br/>\n");
+            var BidTP = stringDivider("RFQ Value at Target Price(TP)", 45, "<br/>\n");
+            var BidFinal = stringDivider("RFQ Value as per L1", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarySUmzation").empty();
             //Sid RFQ Stages
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
@@ -760,6 +792,7 @@ function fetchBidVendorSummarySummarization() {
 
                     jQuery('#tblVendorSummarySUmzation').append(str);
                 }
+         
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -774,7 +807,7 @@ function fetchBidVendorSummarySummarization() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                      
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',

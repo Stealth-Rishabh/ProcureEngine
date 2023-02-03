@@ -175,6 +175,7 @@ var RFQBidType = '';
 var RFQEndDate = new Date();
 var _openQuotes = '';
 function fetchrfqcomprative() {
+ 
     var url = '';
     //ShowPrice = "N";
     //alert('1-'+ ShowPrice);
@@ -194,7 +195,7 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+      
             var str = '';
             var strHead = '';
 
@@ -283,7 +284,7 @@ function fetchrfqcomprative() {
                 $('#btnPDF').show()
                 $('#displayComparativetabs').show();
                 //For Printing Header
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>ItemRemark</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 jQuery("#drpVendors").empty();
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
@@ -295,13 +296,13 @@ function fetchrfqcomprative() {
                     if (data[0].vendorNames[i].seqNo != 0) {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
-                        strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
+                        strHeadQ += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
                         jQuery("#drpVendors").append(jQuery("<option ></option>").val(data[0].vendorNames[i].vendorID).html(data[0].vendorNames[i].vName));
 
                     }
                     else {
                         strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                        strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
+                        strHeadQ += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vName; +"</th>";
 
 
                     }
@@ -311,13 +312,13 @@ function fetchrfqcomprative() {
                 strHead += "</tr>"
                 strHeadQ += "</tr>"
 
-                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
 
                 //abheedev bug 436 start
-                var taxHRTextinc = stringDivider("Unit Price (With GST)", 18, "<br/>\n");
-                var taxHRTextEx = stringDivider("Unit Price (Without GST)", 18, "<br/>\n");
-                var initialtaxHRTextEx = stringDivider("Unit Price - R0 (Without GST)  ", 18, "<br/>\n");
-                var HRAmount = stringDivider("Amount (Inc. GST)", 10, "<br/>\n");
+                var taxHRTextinc = stringDivider("Unit Price (With GST)", 24, "<br/>\n");
+                var taxHRTextEx = stringDivider("Unit Price (Without GST)", 32, "<br/>\n");
+                var initialtaxHRTextEx = stringDivider("Unit Price - R0 (Without GST)  ", 32, "<br/>\n");
+                var HRAmount = stringDivider("Amount (Inc. GST)", 24, "<br/>\n");
                 //abheedev bug 436 end
                 for (var j = 0; j < data[0].vendorNames.length; j++) {
 
@@ -329,14 +330,14 @@ function fetchrfqcomprative() {
                 strHead += "</tr>";
                 jQuery('#tblRFQComprative > thead').append(strHead);
                 jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
-
-
+             
                 //For Printing Header Ends
 
 
                 var x = 0;
                 var minprice = 0;
                 var unitrate = 0;
+                let totaltargetprice = 0;
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
                     unitrate = 0;
 
@@ -353,10 +354,9 @@ function fetchrfqcomprative() {
                     x = -1;
                     if (flag == 'T') {
 
-
-                        str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td>";
+                        str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + thousands_separators(data[0].quotesDetails[i].targetPrice) + "</td>";
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
-
+                            totaltargetprice += totaltargetprice + data[0].quotesDetails[i].targetPrice
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {
                                 x = x + 1;
 
@@ -439,7 +439,7 @@ function fetchrfqcomprative() {
 
                 }
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td>";
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -469,7 +469,7 @@ function fetchrfqcomprative() {
 
 
 
-                str += "<tr><td colspan=3 style='text-align:center;'><b>Loading Factor</b></td><td colspan=2 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=4 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
@@ -496,7 +496,7 @@ function fetchrfqcomprative() {
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Loading Reason</b></td>";
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Loading Reason</b></td>";
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
@@ -521,7 +521,7 @@ function fetchrfqcomprative() {
 
 
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].lStatus.length; k++) {
@@ -548,7 +548,7 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
 
 
-                str += "<tr><td colspan=5 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -587,7 +587,7 @@ function fetchrfqcomprative() {
 
                     str += "<tr style='background: #f5f5f5; color:light black;'>";
 
-                    str += "<td><b>SrNo</b></td><td colspan=4><b>Other Commercial Terms</b></td>";
+                    str += "<td><b>SrNo</b></td><td colspan=6><b>Other Commercial Terms</b></td>";
 
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
@@ -624,7 +624,7 @@ function fetchrfqcomprative() {
 
                         if (flag1 == 'T') {
 
-                            str += "<tr><td>" + (p + 1) + "</td><td colspan=4>" + data[0].commercialTerms[p].termName + "</td>";
+                            str += "<tr><td>" + (p + 1) + "</td><td colspan=6>" + data[0].commercialTerms[p].termName + "</td>";
 
 
                             for (var s = 0; s < data[0].commercialTerms.length; s++) {
@@ -667,7 +667,7 @@ function fetchrfqcomprative() {
 
 
 
-                str += "<tr><td colspan=5><b>Vendor Remarks :</b></td>";
+                str += "<tr><td colspan=7><b>Vendor Remarks :</b></td>";
 
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
 
@@ -1183,6 +1183,7 @@ function fnquerywithdaw() {
         }
     });
 }
+
 function withdrawquery() {
     var data = {
         "RFQID": parseInt($('#hdnRfqID').val()),
