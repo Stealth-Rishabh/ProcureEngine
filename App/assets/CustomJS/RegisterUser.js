@@ -175,7 +175,7 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
-
+    debugger
     var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
     var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -322,6 +322,9 @@ function fetchRegisterUser() {
 let ddlCountryCd;
 function EditUser(ctrl) {     
     ddlCountryCd = jQuery(ctrl).closest('tr').find("td:last-child").html()
+    if (ddlCountryCd =="0") {
+        ddlCountryCd =="111";
+    }
     jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
     jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide();   
     jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td:nth-child(3) span:nth-child(2)").html());
@@ -339,7 +342,6 @@ function EditUser(ctrl) {
     $('#ddlCountryCd').select2();
     $("#ddlCountryCd").val(ddlCountryCd).trigger("change");
     if (isActivie == 'Yes') {
-
         jQuery('#chkIsActive').attr('checked', true);
         jQuery('#chkIsActive').closest('span').attr('class', 'checked');
     }
@@ -352,9 +354,6 @@ function EditUser(ctrl) {
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
     fetchUserDetails(UserID);
-
-
-
 
 }
 
@@ -423,7 +422,7 @@ function fetchRoleMaster() {
     });
 }
 
-function clearform() {
+function clearform() {   
     jQuery("#txtUsername").val('');
     jQuery("#txtemail").val('');
     $("#ddlCountryCd").val("111").trigger("change");
