@@ -4,7 +4,6 @@ jQuery(document).ready(function () {
     $('[data-toggle="popover"]').popover({})
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -1272,13 +1271,13 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 
 var totalitemdurationstagger = 0;
 function ConfigureBidForCoalTab2() {
-
     var targetPrice;
     var unitrate = 0
     var BidDuration = 0;
     var povalue = 0;
     var itmduartion = 0, i = 0;
     var tab2Items = '', PriceDetails = [];
+    var _gst = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     totalitemdurationstagger = 0;
@@ -1317,7 +1316,9 @@ function ConfigureBidForCoalTab2() {
 
             }
             var _cleanString3 = StringEncodingMechanism($.trim(this_row.find('td:eq(21)').html()));
-
+            if ($.trim(this_row.find('td:eq(14)').html()) != null && $.trim(this_row.find('td:eq(14)').html()) != '') {
+                _gst = parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(14)').html())))
+            }
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim(this_row.find('td:eq(2)').html()),
@@ -1325,7 +1326,8 @@ function ConfigureBidForCoalTab2() {
                 "Description": description,
                 "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                 "Quantity": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(7)').html()))),
-                "GST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(14)').html()))),
+                //"GST": parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(14)').html()))),
+                "GST": _gst,
                 "UOM": $.trim(this_row.find('td:eq(8)').html()),
                 "LastInvoicePrice": parseFloat(unitrate),
                 "ItemBidDuration": parseInt(itmduartion),
