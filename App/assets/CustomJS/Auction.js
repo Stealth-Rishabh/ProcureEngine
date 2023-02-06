@@ -972,8 +972,10 @@ function fnGetCurrentPrefferedProfileDTTime() {
     return theStDate;
 
 }
-//abheedev bug 353 end
-function fnConverToLocalTime(dttime) {
+
+/*function fnConverToLocalTime(dttime) {
+    debugger
+    
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
@@ -990,10 +992,13 @@ function fnConverToLocalTime(dttime) {
 
         }
         theStDate = theStDate.replace('at', '-');
+      
         return theStDate;
     }
     else return '..'
 }
+*/
+
 function fnSetLocalFromTimeZone(dateTime) {
 
     var retDt = new Date();
@@ -1079,7 +1084,7 @@ function keepTimeOnly(date) {
     timeOnly = timeOnly.toTimeString().slice(0, 9)
     return timeOnly;
 }
-function fnConverToShortDT(dttime) {
+/*function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
 
@@ -1099,7 +1104,8 @@ function fnConverToShortDT(dttime) {
         return theStDate;
     }
     else return '..'
-}
+
+}*/
 
 function fnConverToTime(dttime) {
     if (dttime != null) {
@@ -2050,4 +2056,55 @@ function localecommaseperator(ele) {
 function localeseperator(ele) {
     str = ele.toLocaleString(sessionStorage.getItem("culturecode"));
     return str;
+}
+
+//abheedev changes to date-time formating on 06/02/2023
+function fnConverToLocalTime(dttime) {
+    debugger
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+        theStDate = new Date(theStDate + ' UTC');
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
+        }
+
+        theStDate = theStDate.toLocaleDateString(sessionStorage.getItem('culturecode'), options);
+        //theStDate = theStDate.toLocaleDateString("en-US", options);
+        return theStDate;
+    } else {
+        return '..';
+    }
+}
+
+//date format change by abheedev on 06/02/2023
+function fnConverToShortDT(dttime) {
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
+        }
+
+
+        //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        theStDate = theStDate.toLocaleDateString(sessionStorage.getItem('culturecode'), options);
+        return theStDate;
+    } else {
+        return '..';
+    }
 }
