@@ -269,7 +269,7 @@ function fetchRFQVendorSummary() {
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
                 }
-          
+               
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -295,11 +295,12 @@ function fetchRFQVendorSummary() {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
+                                    
                                          if (column === 0) {
                                             let text = data.match(/>([^<]+)</)[1];
                                             return parseFloat(text);
                                         }
-                                        else if (column >= 7 && column <= 11) {
+                                        else if (column >= 8 && column <= 11) {
                                             let text = removeThousandSeperator(data);
                                             return parseFloat(text);
                                         }
@@ -792,7 +793,7 @@ function fetchBidVendorSummarySummarization() {
 
                     jQuery('#tblVendorSummarySUmzation').append(str);
                 }
-         
+        
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -811,7 +812,27 @@ function fetchBidVendorSummarySummarization() {
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
 
+                                        if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column >= 7 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
                         },
                         {
                             extend: 'pdfHtml5',
