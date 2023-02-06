@@ -93,23 +93,24 @@ function signOut() {
 
 }
 
-function getTokenRedirect(request) {
+async function getTokenRedirect(request) {
 
     /**
     * See here for more info on account retrieval: 
     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
     */
-   debugger;
+    debugger;
+  
     request.account = myMSALObj.getAccountByUsername(username);
-    request.account.name='-3/5';
-    //return myMSALObj.acquireTokenSilent(request)
-    return await myMSALObj.AcquireTokenSilent(scopes, accounts.FirstOrDefault())
+ //   request.account.name='-3/5';
+   // return myMSALObj.acquireTokenSilent
+   return await myMSALObj.acquireTokenSilent(request)
        .catch(error => {
            console.error(error);
            console.warn("silent token acquisition fails. acquiring token using popup");
            if (error instanceof msal.InteractionRequiredAuthError) {
                // fallback to interaction when silent call fails
-               return myMSALObj.acquireTokenRedirect(request);
+               return  myMSALObj.acquireTokenRedirect(request);
            } else {
                console.error(error);   
            }
@@ -137,7 +138,7 @@ function fnGetUserBasicDetails() {
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath")+"User/getUserDetails/",
+            url: "https://pev3proapi.azurewebsites.net/User/getUserDetails/?tokenString="+sessionStorage.getItem("Token"),
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             cache: false,
             crossDomain: true,
@@ -161,8 +162,8 @@ function fnGetUserBasicDetails() {
                      sessionStorage.setItem("BidPreApp", value.bidpreapproval);
                     sessionStorage.setItem("preferredtimezone", value.preferredtimezone);
                     sessionStorage.setItem("timezoneid", value.timeZoneID);
-                       sessionStorage.setItem("culturecode", value.cultureCode);
-                  
+                    sessionStorage.setItem("culturecode", value.cultureCode);
+                    sessionStorage.setItem("utcoffset", value.utcoffset);
                     setTimeout(function () {
                        
                         if (sessionStorage.getItem("UserName") == "" || sessionStorage.getItem("UserName") == null) {

@@ -17,7 +17,6 @@ jQuery(document).ready(function () {
             });
         }
     }
-
     param = getUrlVars()["param"]
     decryptedstring = fndecrypt(param)
     var _RFQid = getUrlVarsURL(decryptedstring)["RFQID"];
@@ -45,6 +44,8 @@ jQuery(document).ready(function () {
     setCommonData();
     fetchMenuItemsFromSession(0, 0);
 });
+
+var _discountValue = 0;
 
 jQuery('#btnpush').click(function (e) {
     jQuery('#approverList > option:selected').appendTo('#mapedapprover');
@@ -91,8 +92,6 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + sessionStorage.getItem('hddnRFQID'));
 }
 function fetchReguestforQuotationDetails() {
-
-
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID') + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -140,7 +139,6 @@ function fetchReguestforQuotationDetails() {
 }
 var verArray = [];
 function RFQFetchQuotedPriceReport() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorattach = '';
 
@@ -153,7 +151,6 @@ function RFQFetchQuotedPriceReport() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
             var totalamountsum = 0.0;
             var withoutGSTValue = 0.0;
 
@@ -252,13 +249,17 @@ function RFQFetchQuotedPriceReport() {
                         }
 
                         if (data[0].quotesDetails[j].rfqtcid != 0 && data[0].quotesDetails[i].rfqParameterId == data[0].quotesDetails[j].rfqParameterId) {
-
-
                             if (data[0].quotesDetails[j].termName == "GST") {
                                 bsicpercentageofGST = withoutGSTValue * (data[0].quotesDetails[j].termRate / 100)
                             }
                             else {
-                                bsicpercentageofGST = data[0].quotesDetails[i].unitRate * (data[0].quotesDetails[j].termRate / 100)
+                                if (data[0].quotesDetails[j].termName != "Discount") {
+                                    bsicpercentageofGST = (data[0].quotesDetails[i].unitRate - _discountValue) * (data[0].quotesDetails[j].termRate / 100)
+                                }
+                                else {
+                                    bsicpercentageofGST = data[0].quotesDetails[i].unitRate * (data[0].quotesDetails[j].termRate / 100);
+                                    _discountValue = bsicpercentageofGST;
+                                }
                             }
                             if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {
                                 if (_basicPrice > 0) {
@@ -448,8 +449,8 @@ function GetQuestions() {
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {
         var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
+        //for (; p > 0 && str[p] != ' '; p--) {
+        //}
         if (p > 0) {
             var left = str.substring(0, p);
             var right = str.substring(p + 1);

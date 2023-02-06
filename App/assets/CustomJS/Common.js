@@ -764,35 +764,40 @@ function isAuthenticated() {
         "RefreshToken": refreshToken
 
     }
-    var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
-    try {
+    if (sessionStorage.getItem('CustomerID' != '32')) {
+        var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
+        try {
 
-        //decode(token);
-        //const { exp } = decode(refreshToken);
-        //if (Date.now() >= exp * 1000) {
-        if (isTokenExpired(token)) {           
-            jQuery.ajax({
-                url: urlAc,
-                data: JSON.stringify(ClaimsToken),
-                type: "POST",
-                async: false,
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                contentType: "application/json",
-                success: function (data) {
-                    sessionStorage.setItem("Token", data.accessToken)
-                    sessionStorage.setItem("RefreshToken", data.refreshToken);
-                    isValid = true
-                },
-                error: function (xhr, status, error) {
-                    error401Messagebox(error.Message);
-                    isValid = false;
-                }
-            });
-            return isValid;
+            //decode(token);
+            //const { exp } = decode(refreshToken);
+            //if (Date.now() >= exp * 1000) {
+            if (isTokenExpired(token)) {
+                jQuery.ajax({
+                    url: urlAc,
+                    data: JSON.stringify(ClaimsToken),
+                    type: "POST",
+                    async: false,
+                    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                    contentType: "application/json",
+                    success: function (data) {
+                        sessionStorage.setItem("Token", data.accessToken)
+                        sessionStorage.setItem("RefreshToken", data.refreshToken);
+                        isValid = true
+                    },
+                    error: function (xhr, status, error) {
+                        error401Messagebox(error.Message);
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            }
+        } catch (err) {
+            error401Messagebox(err.Message);
+            return false;
         }
-    } catch (err) {
-        error401Messagebox(err.Message);
-        return false;
+    }
+    else {
+        isValid = true;
     }
     return isValid;
 }
